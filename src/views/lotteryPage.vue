@@ -393,6 +393,9 @@
               })
               this.$store.dispatch('lt_ordinaryChase')
             }
+            if ('1300'===code) {
+              state.natal=getNatal(new Date(state.NowIssue.slice(0,4),state.NowIssue.slice(5,6),state.NowIssue.slice(7,8)))
+            }
           },
           lt_setLotteryResult:(state, {code, results})=>{              //设置某一彩种的开奖结果
             Vue.set(state.LotteryResults, code, results)
@@ -1380,8 +1383,13 @@
         localStorage.removeItem('Difftime')
         layer.url('本地时间不正确，请调整后进入','/index')
       }*/
-      this.visibilitychange=function(){
-        document.hidden && commit('lt_updateDate')
+      this.visibilitychange=()=>{
+        if (!document.hidden) {
+          var nowSerTime = new Date().getTime()- this.$store.state.Difftime;   //当前的服务器时间
+          nowSerTime=nowSerTime+new Date().getTimezoneOffset()*60*1000-GMT_DIF
+          // console.log(new Date(nowSerTime).format("yyyyMMddhhmmss"));
+          state.Todaystr = new Date(nowSerTime).format("yyyyMMdd");           //今天
+        }
       }
       document.addEventListener("visibilitychange", this.visibilitychange)
     },
