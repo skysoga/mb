@@ -4,9 +4,7 @@ import TitleInfo from '../components/title-info';
 
 export default {
   components: {
-    // LeftMenu,
     Navbar,
-    // Pagination,
     TitleInfo
   },
   data:()=>{

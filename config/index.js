@@ -23,7 +23,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
         '/tools/ssc_ajax.ashx': {
-          target: 'http://dafatest.com/tools/ssc_ajax.ashx',
+          target: 'http://192.168.3.253:99/tools/ssc_ajax.ashx',
           secure: true
         }
     },

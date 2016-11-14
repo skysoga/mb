@@ -43,7 +43,6 @@ var SiteArr=[ //需要校验更新版本的列表
   'NoticeData',
 ]
 var CacheArr = SiteArr.concat(UserArr)
-console.log(CacheArr);
 var state = require('./JSconfig.js')
 ;(function(){
 	function getLocalDate(s){
@@ -56,18 +55,14 @@ var state = require('./JSconfig.js')
   for (var i = CacheArr.length - 1; i >= 0; i--) {
   	state[CacheArr[i]]=getLocalDate(CacheArr[i])
   }
-  for (var i = CacheArr.length - 1; i >= 0; i--) {
-  	state[CacheArr[i]]=getLocalDate(CacheArr[i])
-  }
 })()
 const store = new Vuex.Store({
   state,
   getters:{
   	PhotoPath:state=>state.constant.ImgHost+state.constant.PhotoPath,
-  },
-  watch:{
-  	"Site.BannerList":function(a,b){
-  		console.log(a);
+  	WithdrwHtml:state=>{
+  		//判断提现去处的逻辑写在这里
+  		return "login"
   	}
   },
   mutations: {
@@ -83,8 +78,7 @@ const store = new Vuex.Store({
 			    localStorage.setItem(k,Data[k]);
   			}
   		}
-  	},
-    decrement: state => state.count--
+  	}
   }
 })
 
@@ -213,7 +207,7 @@ const interviewApp = new Vue({
 			  res.json().then((json) => {
 			    if (json.Code===1||json.Code===0) {
 			    	if (json.Code===0) {
-			    		alert("您的登录信息已失效");
+			    		console.log("您的登录信息已失效");
 			    		this.LostUser()
 			    	}
 			    	var Data = this.SetFilter(json.BackData);
@@ -270,12 +264,11 @@ const interviewApp = new Vue({
 	},
 	render: h => h(App)
 });
-var $root = interviewApp.$children[0];
 
 /*router.beforeEach((to, from, next) => {
 	console.log("全局钩子");
 	next();
-});*/
+});
 
 /*router.afterEach((to, from) => {
   //没有next

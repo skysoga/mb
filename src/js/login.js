@@ -1,15 +1,6 @@
 export default {
-  props: ['All'],
   data:()=>{
     return{
-      cfg:{
-        title:"用户登录",
-        nav:false,
-        link:"/index",
-        service:true,
-        user:false,
-        agent:false
-      },
       UserName:'',
       Password:'',
       ImgCode:'test',
