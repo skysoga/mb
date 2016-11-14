@@ -1,0 +1,30 @@
+@import 'scssConfig';
+body{background:#fff;}
+article{
+  // background:#fff;
+  width: 15rem;
+  margin:.5em auto;
+  line-height:1em;
+  h2{
+    font-size:.9em;
+    line-height:1.3;
+  }
+  time{
+    font-size:.7em;
+  }
+  >span{
+    font-size:.7em;
+  }
+  .hr1px{
+    margin:.5em auto;
+  }
+  >div{
+    font-size:.8em;
+    line-height:1.25em;
+    font-weight: normal;
+    strong{
+      font-style:normal;
+      font-weight: normal;
+    }
+  }
+}

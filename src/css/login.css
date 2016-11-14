@@ -1,0 +1,59 @@
+@charset "UTF-8";
+/* 网站主要UI色  目前为墨绿 */
+/*按钮浅绿背景色*/
+/* 按钮深红色 */
+/* 按钮浅红色背景 */
+/* 按钮深灰色 */
+/* 按钮浅灰色 */
+/*背景色*/
+/*主要的灰色文字色*/
+/*一px线颜色*/
+/* 主要金色 */
+/* 文字金色 */
+.cGold { color: #F46E00; }
+
+.cGray { color: #bababa; }
+
+.cGreen { color: #dc2e2e; }
+
+.main { padding-top: 3em; }
+
+table { width: 100%; background-color: #fff; }
+table tr { height: 2.5em; font-size: .8em; line-height: 2.5em; }
+table input { width: 100%; height: -o-calc(100% - 1px); height: -ms-calc(100% - 1px); height: -moz-calc(100% - 1px); height: -webkit-calc(100% - 1px); height: calc(100% - 1px); outline: none; border: 0 none; }
+table tr:last-of-type { height: 1px; }
+
+tr:before { content: ''; position: absolute; left: 0; background: #d0d0d0; width: 100%; height: 1px; -o-transform: scaleY(0.5); -ms-transform: scaleY(0.5); -moz-transform: scaleY(0.5); -webkit-transform: scaleY(0.5); transform: scaleY(0.5); -o-transform-origin: 0 0; -ms-transform-origin: 0 0; -moz-transform-origin: 0 0; -webkit-transform-origin: 0 0; transform-origin: 0 0; }
+
+.BTN { width: 14.4rem; height: 2em; margin: 1em auto 0; line-height: 2em; text-align: center; clear: both; }
+
+.forget { display: block; margin: 0 1rem; text-align: right; color: #dc2e2e; line-height: 1.5em; font-size: .7em; width: 10rem; }
+
+.barcode { margin: .4em; width: 100px; }
+
+html { min-height: 20em; }
+
+table td { width: 8rem; }
+table td:first-of-type { width: 4rem; text-indent: .5em; }
+table td:last-of-type { width: 4rem; }
+table .yzm { float: right; width: 4em; height: 2.5em; }
+table #more { color: #dc2e2e; font-weight: bold; float: right; display: block; width: 2rem; height: 100%; line-height: 2.5em; text-align: center; }
+
+#usedList li:before, #usedList { display: none; width: 100%; position: absolute; /*top: 220px;*/ background-color: #fff; text-align: center; }
+
+#usedList li { height: 2.5em; font-size: .8em; line-height: 2.5em; border-top: 1px solid #d0d0d0; }
+
+#usedList li:last-of-type { border-bottom: 1px solid #d0d0d0; }
+
+.sevice { position: absolute; display: block; text-align: center; padding: 1em; /*margin: 0 auto;*/ bottom: 0; left: 0; right: 0; color: #989898; line-height: 1em; }
+.sevice span { font-size: .6em; display: inline-block; vertical-align: middle; /*margin-top: 1px;*/ /*font-style: normal;*/ }
+.sevice a { font-size: .7em; color: inherit; display: inline-block; vertical-align: middle; padding: 0 .5em; }
+
+.forget { margin-top: 1em; margin-bottom: 1em; }
+.forget span { color: #000; }
+
+.BTN + .BTN { margin-top: .5rem; background: #fff; }
+
+#more.InvitaTip { font-size: 1.3em; line-height: 1.92308em; }
+
+/*# sourceMappingURL=login.css.map */

@@ -1,0 +1,60 @@
+@import "k3.scss","mixin";
+
+
+body{background:$bodyB;}
+.sscBox{
+  background-color: #fff;
+  @include border-radius(.4em);
+  margin-bottom:.2em;
+  width:100%;
+  // border:1px solid $green1;
+  // background-color:$bodyB;
+  .sscBoxTop{
+    color:#666;
+    margin:0 auto;
+    width:94%;
+    height:1.5em;
+    line-height:1.5em;
+    font-size:1.1em;
+    b.fl{
+      font-weight: normal;
+      // color:#333;
+    }
+    .QSelect{
+      span{
+        display:inline-block;
+        width:1.2em;
+        height:1.2em;
+        line-height:1.2em;
+        // background-color:$green1;
+      }
+    }
+  }
+  .hr1px{    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.5, transparent), color-stop(0.5, #eee));}
+  ul{
+    color:#b41d3d;
+    // width:16em;
+    padding:.2em .3em;
+    text-align: left;
+    // display: flex;
+    // flex-wrap:wrap;
+    // justify-content: space-between;
+    // align-items: flex-start;
+    li{
+      font-size:.8em;
+      line-height:1.9em;
+      width:2em;
+      height:2em;
+      padding-top:0;
+      // border-style:dashed;
+      border-color:#eee;
+      @include border-radius(100%);
+      margin:.2em;
+      &.checked{
+        border-color:#b41d3d;
+        background-color:#b41d3d;
+        color:#fff;
+      }
+    }
+  }
+}

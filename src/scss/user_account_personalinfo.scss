@@ -1,0 +1,162 @@
+@import 'scssConfig','optionConfig','mixin';
+.main{
+  line-height: 1.25em;
+  color: #000;
+  padding-bottom:4em;
+}
+.main .hr1px{
+    background-color: #fff;
+}
+.main>div{
+  width: 100%;
+  background-color: #fff;
+  height: auto;
+  overflow: hidden;
+}
+.topInfo {
+  padding-top: .8em;
+  padding-bottom: .8em;
+  line-height: 1.4em;
+    margin-bottom: 1px;
+  padding-left: 0.8rem;
+  padding-right: 0.8em;
+  img{
+    @include border-radius( .15em);
+    height: 3.2em;
+    width: 3.2em;
+    float: left;
+    margin-right: .5rem;
+  }
+  p {
+    /*font-weight:bold;*/
+    font-size: .8em;
+    padding-top:.35em;
+  }
+  span{
+    font-size: .8em;
+    // font-weight: normal;
+  }
+}
+
+.topMoney {
+  padding: 0;
+  vertical-align: middle;
+  text-align: center;
+  a{
+    display: block;
+    float: left;
+    width: 25%;
+    height: 3em;
+    .iconfont{
+        margin-top: .5em;
+        font-size: 1em;
+        vertical-align: middle;
+        display: block;
+        line-height: 1em;
+    }
+    .m0{
+      color:#ff2323;
+    }
+    .m1{
+      color:#ee983d;
+    }
+    .m2{
+      color:#3bcbb3;
+    }
+    span{
+        display: inline-block;
+        font-size: .7em;
+        vertical-align: middle;
+        color: #666;
+    }
+  }
+}
+.main .options{
+  padding: 0;
+}
+
+
+
+/**
+ * 后增加的css
+ */
+.personalInfo{
+    padding-bottom: 4em;
+    padding-top: 2.3em;
+    ul{
+        background: white;
+        &>div{
+          padding: 0.75em 1.3em;
+        }
+        li{
+            font-size: 0.8em;
+            span{
+              float:left;
+            }
+            em{
+              float:right;
+            }
+            i{
+              float:right;
+              color: #ccc;
+              margin-left: 0.25em;
+              margin-right: -0.6em;
+              &:after{
+                    vertical-align: sub;
+              }
+            }
+            input{
+              padding: 0;
+              border: none;
+              text-align: right;
+            }
+            &>div{
+                  padding: 0.75em 0.5em;
+                  margin: 0 0.8em;
+            }
+        }
+        li+li > div{
+            border-top: 1px solid #dddddd;
+        }
+        .headImg{
+          span,i{
+            line-height:3em;
+          }
+          img{
+            @include border-radius(0.2em);
+          }
+        }
+    }
+    ul+ul{
+      margin-top:0.7em;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

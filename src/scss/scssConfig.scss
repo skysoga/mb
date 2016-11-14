@@ -1,0 +1,40 @@
+/* 网站主要UI色  目前为墨绿 */
+$green:#dc2e2e;
+/*按钮浅绿背景色*/
+$green1:#c82721;
+/* 按钮深红色 */
+$btnred:#b91616;
+/* 按钮浅红色背景 */
+$btnred1:#e74a4a;
+/* 按钮深灰色 */
+$btngray:#bababa;
+/* 按钮浅灰色 */
+$btngray1:#e8e8e8;
+/*背景色*/ 
+$bodyB:#efeef4;
+/*主要的灰色文字色*/
+$font-gray:#989898;
+/*一px线颜色*/
+$lineC:#d0d0d0;
+/* 主要金色 */
+$glode:#f4c829;
+/* 文字金色 */ 
+$glod:#F46E00; 
+
+.cGold{
+    color:$glod;
+}
+.cGray{
+    color:$btngray;
+}
+.cGreen{
+    color:$green;
+}
+
+
+$l:(
+  top:2.3em,//定义.top的高度
+  margin:.5em,//定义部分页面距离top的留白间隙
+  bottom:2.5em//定义.bottom的高度
+)
+// $e:em;

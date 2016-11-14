@@ -1,0 +1,61 @@
+@charset "UTF-8";
+/* 网站主要UI色  目前为墨绿 */
+/*按钮浅绿背景色*/
+/* 按钮深红色 */
+/* 按钮浅红色背景 */
+/* 按钮深灰色 */
+/* 按钮浅灰色 */
+/*背景色*/
+/*主要的灰色文字色*/
+/*一px线颜色*/
+/* 主要金色 */
+/* 文字金色 */
+.cGold { color: #F46E00; }
+
+.cGray { color: #bababa; }
+
+.cGreen { color: #dc2e2e; }
+
+html, body { height: 100%; overflow: hidden; }
+
+.main { padding-top: 2.3em; padding-bottom: 0; }
+
+.touchScroll { overflow-y: scroll; -webkit-overflow-scrolling: touch; }
+
+.hr1px { margin-left: 5%; }
+
+.tempWrap { width: 100%; /* background-color: #fff; */ }
+
+.bd { width: 100%; height: 100%; /*overflow: hidden;*/ }
+
+.touchScroll { position: relative; width: 100%; padding: 10px 0; /*margin-left: 5%;*/ height: -ms-calc(100vh - 4.3em) !important; height: -moz-calc(100vh - 4.3em) !important; height: -webkit-calc(100vh - 4.3em) !important; height: calc(100vh - 4.3em) !important; background: white; }
+.touchScroll a { display: block; width: 100%; padding: 4px 5%; color: #000; }
+.touchScroll a > div { line-height: 1.25em; display: inline-block; }
+.touchScroll a > div p { font-size: 0.8em; }
+.touchScroll a > div p span { font-size: 0.8em; margin-left: 0.4em; }
+.touchScroll a > div span { font-size: 0.7em; clear: both; color: #989898; }
+.touchScroll a strong { font-weight: normal; font-size: 0.7em; float: right; }
+.touchScroll a > strong { line-height: 3.8em; }
+.touchScroll .msg { height: 2.5em; text-align: center; font-size: 0.7em; padding: 1.9em 0; color: #4c4c4c; }
+.touchScroll .msg > div { display: inline-block; vertical-align: middle; }
+.touchScroll .msg .svgLoad { display: inline-block; vertical-align: middle; width: 1.25em; height: 1.25em; margin-top: -4px; margin-right: 2px; fill: #333; transform: translateY(1px); }
+.touchScroll .msg.noMore { /*position: fixed;*/ /*background-color: #000;*/ /*bottom:00px;*/ height: 40; /*z-index: 1000;*/ /*     font-size:0.5em; */ }
+.touchScroll .msg.empty { position: relative; top: 50%; margin-top: -90px; /*margin-left: -3%;*/ font-weight: bold; font-size: 60px; line-height: 100px; height: 100px; color: #999; }
+
+.InMoney { color: red !important; }
+
+.OutMoney { color: green; }
+
+.IOMoney { color: #989898; }
+
+.agentBetRecord .touchScroll, .agentBillRecord .touchScroll { height: -ms-calc(100vh - 6.3em - 20px) !important; height: -moz-calc(100vh - 6.3em - 20px) !important; height: -webkit-calc(100vh - 6.3em - 20px) !important; height: calc(100vh - 6.3em - 20px) !important; }
+
+html, body { height: auto; }
+
+.touchScroll { padding: 0; position: static; background-color: #fff; }
+
+.noRead { color: red; margin-top: -.3em; }
+
+.fr.iconfont { margin-top: -.2em; margin-right: -.8em; font-size: 1em; line-height: 3em; height: 3em; width: 3em; text-align: center; color: #989898; }
+
+/*# sourceMappingURL=msgList.css.map */

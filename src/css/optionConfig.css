@@ -1,0 +1,36 @@
+@charset "UTF-8";
+/* 网站主要UI色  目前为墨绿 */
+/*按钮浅绿背景色*/
+/* 按钮深红色 */
+/* 按钮浅红色背景 */
+/* 按钮深灰色 */
+/* 按钮浅灰色 */
+/*背景色*/
+/*主要的灰色文字色*/
+/*一px线颜色*/
+/* 主要金色 */
+/* 文字金色 */
+.cGold { color: #F46E00; }
+
+.cGray { color: #bababa; }
+
+.cGreen { color: #dc2e2e; }
+
+.options { padding: 0; margin-top: 0.6em; }
+.options .hr1px { width: 15.2rem; float: right; }
+.options a { width: 100%; display: block; line-height: 1.5em; padding: 9px .8rem; padding-left: 0; padding-left: 0.8rem; color: #333; /*font-weight: normal;*/ }
+.options a:after { border-bottom: 1px solid #d0d0d0; }
+.options a:first-child i { line-height: 1.25em; }
+.options a:nth-child(3) i:first-child { background: #81c784 !important; }
+.options a:nth-child(5) i:first-child { background: #63b4f6 !important; }
+.options a:nth-child(7) i:first-child { background: #ffb74d !important; }
+.options a i { line-height: 1.25em; }
+.options .o1 { line-height: 1.5625em !important; }
+.options .iconfont { display: inline-block; vertical-align: middle; font-size: 1em; margin-right: .5em; color: white; }
+.options .iconfont.right { color: #ccc; }
+.options span { vertical-align: middle; font-size: .8em; }
+.options .fr { color: #ccc; vertical-align: middle; font-size: .8em; margin-top: .4em; font-style: normal; }
+
+.userCenter .options .iconfont:first-child { background: #7885ca; height: 1.5625em; WIDTH: 1.5625em; -moz-border-radius: 0.1rem; -webkit-border-radius: 0.1rem; border-radius: 0.1rem; line-height: 1.5625em; text-align: center; font-size: 0.8em; }
+
+/*# sourceMappingURL=optionConfig.css.map */

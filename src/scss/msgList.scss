@@ -1,0 +1,25 @@
+@import 'scssConfig','detailList';
+html,body{
+  height:auto;
+}
+.touchScroll{
+  padding:0;
+  position:static;
+  background-color:#fff;
+  // height:auto;
+}
+.noRead{
+  color:red;
+  margin-top:-.3em;
+  // font-size:2em;
+}
+.fr.iconfont{
+  margin-top:-.2em;
+  margin-right:-.8em;
+  font-size:1em;
+  line-height:3em;
+  height:3em;
+  width:3em;
+  text-align: center;
+  color:$font-gray;
+}

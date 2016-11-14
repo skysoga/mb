@@ -1,0 +1,38 @@
+@import "_variable";
+
+.Dice{
+  background-image: unquote("url(" + $imgurl + "/system/common/dice/diceK3.png)");
+  display:inline-block;
+  background-size:200% 600%;
+  vertical-align: middle;
+}
+.Dice1{
+  background-position: 0 -0;
+}
+.Dice2{
+  background-position: 0 -100%;
+}
+.Dice3{
+  background-position: 0 -200%;
+}
+.Dice4{
+  background-position: 0 -300%;
+}
+.Dice5{
+  background-position: 0 -400%;
+}
+.Dice6{
+  background-position: 0 -500%;
+}
+.rDice0{
+  background-position: -100% -0;
+}
+.rDice1{
+  background-position: -100% -100%;
+}
+.rDice2{
+  background-position: -100% -200%;
+}
+.rDice3{
+  background-position: -100% -300%;
+}

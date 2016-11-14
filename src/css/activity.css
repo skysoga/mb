@@ -1,0 +1,70 @@
+@charset "UTF-8";
+/* 活动列表业 */
+/* 被我的银行卡页面user_account_bindcard 继承 */
+/* 网站主要UI色  目前为墨绿 */
+/*按钮浅绿背景色*/
+/* 按钮深红色 */
+/* 按钮浅红色背景 */
+/* 按钮深灰色 */
+/* 按钮浅灰色 */
+/*背景色*/
+/*主要的灰色文字色*/
+/*一px线颜色*/
+/* 主要金色 */
+/* 文字金色 */
+.cGold { color: #F46E00; }
+
+.cGray { color: #bababa; }
+
+.cGreen { color: #dc2e2e; }
+
+.surperise { background: #fff; height: auto; margin: 0.6em 0; clear: both; }
+.surperise a:after { border-bottom: 1px solid #d0d0d0; border-top: 1px solid #d0d0d0; }
+.surperise > .wrap { display: block; height: 3em; padding: .5em 0; /*       background: white; */ }
+.surperise > .wrap img { float: left; width: 2em; height: 2em; -moz-border-radius: 0.2em; -webkit-border-radius: 0.2em; border-radius: 0.2em; margin-left: .8rem; margin-right: .5rem; /* position: absolute; */ /* z-index: 2; */ }
+.surperise > .wrap .img { width: 2.5em; /* position: absolute; */ /* z-index: 2; */ }
+.surperise > .wrap .img + .text { /* @include lcalc(calc(2.5em + 0.8rem + 0.5em)); */ }
+.surperise > .wrap .text { float: left; height: auto; width: 10rem; line-height: 1.4; /* position: absolute; */ /* z-index: 2; */ left: -ms-calc(2.5em + 0.8rem); left: -moz-calc(2.5em + 0.8rem); left: -webkit-calc(2.5em + 0.8rem); left: calc(2.5em + 0.8rem); }
+.surperise > .wrap .text strong { display: block; font-size: .8em; /*line-height: 40px;*/ letter-spacing: .05em; font-weight: normal; }
+.surperise > .wrap .text p { color: #686868; /*text-shadow: 0 1px 0 #fff;*/ font-size: .7em; white-space: nowrap; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+.surperise > .wrap .right { font-size: .7em; margin-top: 0.9em; margin-right: .8rem; color: #989898; /* position: absolute; */ /* z-index: 2; */ /* right:0; */ }
+.surperise:active a:after { background: #d9d9d9; }
+
+.hr1px { width: 15.2rem; float: right; }
+
+/** * 新增活动样式 */
+.activitySort { background: white; }
+
+.rewardStatus { margin: 0.7rem 0.5rem; }
+.rewardStatus em { font-size: 0.8em; }
+
+.activityMian em { display: block; font-style: inherit; margin-bottom: 0.2rem; }
+.activityMian em i { font-style: inherit; color: #ed0404; }
+.activityMian h3 { border-left: 6px solid #109a5a; font-size: 1em; padding-left: 10px; color: #109a5a; margin: 25px; margin-left: 0.5rem; }
+.activityMian table { width: 15rem; text-align: center; color: #666666; font-size: 0.7em; margin: 0 0.5rem; table-layout: fixed; }
+.activityMian table th { height: 2.5em; border: 1px solid #e9e9e9; background: #f2f7ff; font-weight: 300; }
+.activityMian table th:first-child { min-width: 60px; }
+.activityMian table td { height: 35px; border: 1px solid #e9e9e9; font-weight: 300; }
+.activityMian .tip { margin: 0.5rem; font-size: 0.9em; border: 1px solid #e9e9e9; }
+.activityMian .tip p { margin: 0.3rem; }
+
+.wrapExplain { font-size: 0.8em !important; margin: 0.5rem !important; line-height: 1.6 !important; overflow: hidden; }
+.wrapExplain * { font-family: "微软雅黑" !important; font-size: 1em !important; }
+.wrapExplain p { margin: 0 !important; padding: 0 !important; }
+.wrapExplain img { width: 100%; }
+
+.activity .surperise:nth-child(8n+1) .number { background: #fe8580; }
+.activity .surperise:nth-child(8n+2) .number { background: #2ed57b; }
+.activity .surperise:nth-child(8n+3) .number { background: #2ec3d5 !important; }
+.activity .surperise:nth-child(8n+4) .number { background: #2e85d5 !important; }
+.activity .surperise:nth-child(8n+5) .number { background: #d52ebe !important; }
+.activity .surperise:nth-child(8n+6) .number { background: #d52e88 !important; }
+.activity .surperise:nth-child(8n+7) .number { background: #d52e4a !important; }
+.activity .surperise:nth-child(8n+8) .number { background: #64d52e !important; }
+
+.tbplus { position: relative; width: 7em; }
+.tbplus em { position: absolute; right: 0.5em; top: 0.1em; }
+.tbplus ins { border-bottom: 1px solid #e9e9e9; position: absolute; width: 7.5em; -o-transform: rotate(19.5deg); -ms-transform: rotate(19.5deg); -moz-transform: rotate(19.5deg); -webkit-transform: rotate(19.5deg); transform: rotate(19.5deg); left: -0.2em; top: 1.25em; }
+.tbplus i { position: absolute; left: 0.5em; bottom: 0.1em; }
+
+/*# sourceMappingURL=activity.css.map */

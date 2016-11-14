@@ -1,0 +1,56 @@
+@import 'scssConfig','activity';
+body{
+  background-color: $bodyB;
+}
+.surperise{
+  .wrap .text{
+    width:6rem;
+  }
+  .fr{
+    display:inline-block;
+    margin-right:.5rem;
+    position: absolute;
+    z-index: 4;
+    right: 0.5rem;
+    a{
+      font-size: .9em;
+      line-height: 2.7777em;
+      color:$font-gray;
+    }
+    /* a:nth-child(2),a:nth-last-child(2){
+      letter-spacing: .2em;
+    }
+    a:nth-child(2){
+      color:$btnred;
+    }
+    a:nth-last-child(2){
+      color:$green;
+    }*/
+    .modify{
+      color:$green;
+    }
+  }
+    .wrap .text p{
+        width: 12rem;
+    }
+}
+.manageBankcard .surperise .wrap:after{
+  border-top:1px solid #e0e0e0;
+  border-bottom:1px solid #e0e0e0;
+}
+.BTN{
+  width: 14.4rem;
+  height: 2.2em;
+  margin: 1em auto 0;
+  line-height: 2.2em;
+}
+.tips {
+  width: 14rem;
+  padding:.5em;
+  margin:1em auto .2em;
+  font-size:.8em;
+  line-height: 1.5em;
+  border: 1px solid #F8E2B9;
+  background: #FFFDEB;
+  color: $glod;
+}

@@ -1,0 +1,41 @@
+@charset "UTF-8";
+/* 网站主要UI色  目前为墨绿 */
+/*按钮浅绿背景色*/
+/* 按钮深红色 */
+/* 按钮浅红色背景 */
+/* 按钮深灰色 */
+/* 按钮浅灰色 */
+/*背景色*/
+/*主要的灰色文字色*/
+/*一px线颜色*/
+/* 主要金色 */
+/* 文字金色 */
+.cGold { color: #F46E00; }
+
+.cGray { color: #bababa; }
+
+.cGreen { color: #dc2e2e; }
+
+.BTN { width: 80%; height: 2.25em; line-height: 2.25em; margin: 1.5em auto 0; background-color: #e74a4a; border-color: #b91616; color: #fff; border-bottom: 0.25em solid #b91616; font-weight: bold; letter-spacing: .2em; }
+.BTN a { font-size: 1.2em; }
+
+.BTN:active { margin-top: 1.75em; margin-bottom: -.25em; border: 0 none; background-color: #b91616; }
+
+.BTN.unClick { color: #666; background: #e8e8e8 !important; border-color: #bababa; }
+
+.BTN.unClick:active { background-color: #bababa; }
+
+.activityInfo { width: 15rem; background-color: #fff; -moz-border-radius: 0.4rem; -webkit-border-radius: 0.4rem; border-radius: 0.4rem; margin: 3em auto .5em; padding-top: 0; padding-bottom: 1em; }
+.activityInfo .activityImg { display: block; width: 100%; height: 7.5rem; border-top-left-radius: .4rem; border-top-right-radius: .4rem; }
+.activityInfo .activityTitle { margin: 2em 0 .2em; display: inline-block; color: #c82721; padding: .1em 1.6em .1em 1em; background-image: url("../image/title.png"); background-size: 100% 100%; margin-left: -.3em; background-repeat: no-repeat; }
+.activityInfo .activityTitle span { display: inline-block; line-height: 1em; font-size: .7em; }
+.activityInfo .activityMsg { width: 13.5rem; margin: .4em auto; font-size: .7em; color: #333; }
+.activityInfo .Info { width: 80%; margin: 1.5em auto 0; }
+.activityInfo .Info * { font-size: .9em; line-height: 1.5em; font-style: normal; }
+.activityInfo .Info input { width: 100%; height: 2.5em; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em; border-radius: 0.4em; text-align: center; }
+.activityInfo table { width: 90%; margin: 10px auto; text-align: center; border: 1px; border-color: #0099a3; cell-padding: 0; cell-spacing: 1px; line-height: 14px; }
+.activityInfo table th, .activityInfo table td { text-align: center; font-size: 12px; line-height: 14px; height: 30px; }
+.activityInfo table th { background-color: #109a5a; color: #fff; }
+.activityInfo table td { background-color: #E7FBF1; }
+
+/*# sourceMappingURL=activity_info.css.map */

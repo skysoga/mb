@@ -1,0 +1,153 @@
+@import 'scssConfig','mixin'; 
+.top{
+  z-index: 10;
+}
+#banner{
+  width: 100%;
+  height: 8rem;
+  /*opacity: 0;*/
+  /*max-height: 154px;*/
+  overflow: hidden;
+  position: relative;
+  img{
+    width: 100%;
+    height: 8rem;
+  }
+}
+#notice{
+  display: block;
+  height: 2em;
+  line-height: 2em;
+  overflow: hidden;
+  background-color: #fff;
+/*   margin-top: -0.5px; */
+  a{
+    font-size: .7em;
+    display:block;
+    padding: 0 .8rem;
+    height: 100%;
+    overflow: hidden;
+    .iconfont{
+      display: inline-block;
+      margin-right: .2rem;
+      vertical-align: middle;
+    }
+    span{
+      display: inline-block;
+      width: 11.8rem;
+    }
+    .right{
+      // display: inline-block;
+      color: $font-gray;
+    }
+    .gonggao{
+      // font-size: 1.2em;
+      margin-top: -.07em;
+    }
+  }
+  .moreBtn{
+    width: 10px;
+    height: 10px;
+    border-color: #989898;
+    margin-top: 15px;
+  }
+}
+#HotLottery{
+ margin-top:5px;
+ height: auto;
+ overflow: hidden;
+ background-color: #fff;
+ height: 9em;
+ /*opacity: 0;*/ 
+  ul{
+   width: 300%;
+   @include origin(0 0); 
+   @include scale(0.333333,0.333333); 
+   border-bottom: 1px solid #d0d0d0;
+   font-size: 1.5em;
+    li{
+      width: 33.3%;
+      height: 6em;
+      float:left;
+      position:relative;
+      border-top: 0 none;
+      border-left: 0 none;
+      overflow: hidden;
+      a{
+        display: block;
+        height: 100%;
+        line-height: 1.5em;
+        text-indent: 6.4rem;
+        position: relative;
+      }
+      img{
+        display: block;
+        width: 80%;
+        margin: 20px auto;
+      }
+      &:nth-child(1):before,&:nth-child(2):before,&:nth-child(3):before,{
+        display:none;
+      }
+      &:nth-child(3n+1):after{
+        display:none;
+      }
+      &:before,&:after{
+        content:"";
+        position:absolute;
+      }
+      &:before{
+        width:100%;
+        height: 3px;
+        // background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.5, transparent), color-stop(0.5, #d0d0d0));
+        @include bgImg-linear-gradient('90deg, #d0d0d0, #d0d0d0 50%, transparent 50%');
+      }
+      &:after{
+        height:100%;
+        width:3px;
+        top:0;
+        left:0;
+        @include bgImg-linear-gradient('0deg, #d0d0d0, #d0d0d0 50%, transparent 50%');
+        // background-image: -webkit-gradient(linear, left top, right top, color-stop(0.5, transparent), color-stop(0.5, #d0d0d0));
+      }
+    }
+    .active{
+      background-repeat: no-repeat;
+      background-position: .5rem center;
+      /*padding-left: 10%;*/
+      padding-top: 1.7em;
+      background-size: auto 3.5em;
+      p{
+        font-size: 1.5em;
+        font-weight: 400;
+      }
+      span{
+        color: $font-gray;
+        display: block;
+        font-size: 1.1em;
+        padding-left: .2em;
+        letter-spacing: .1em;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          }
+    }
+  }
+}
+
+#HotLottery a:before{
+    font-family: "iconfont";
+    position:absolute;
+    left:-5.25rem;
+    top:0;
+    font-size:3em;
+    line-height:2.1em;
+    text-align:left;
+    color:#e01506;
+}
+
+
+@media only screen and(-webkit - min - device - pixel - ratio: 3) {
+  #HotLottery ul li:before{
+    height: 2px;
+  }
+}

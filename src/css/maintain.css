@@ -1,0 +1,34 @@
+@charset "UTF-8";
+body { margin: 0; height: 100%; font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif; display: table; width: 100%; }
+
+html { box-sizing: border-box; height: 100%; }
+
+*, *:before, *:after { box-sizing: inherit; }
+
+em, i { font-style: initial; color: #e4393c; margin: 0 5px; }
+
+.fix:before, .fix:after { content: ""; display: table; }
+.fix:after { clear: both; overflow: hidden; }
+
+.notFound, .errorContent { width: 100%; margin: 0 auto; height: 380px; position: relative; display: table-cell; vertical-align: middle; height: 455px; text-align: center; }
+.notFound .left, .errorContent .left { /* float: left; */ display: inline; }
+.notFound .right, .errorContent .right { /* float: left; */ display: inline; text-align: left; }
+.notFound .right h1, .errorContent .right h1 { color: #59adf2; font-weight: 400; text-align: center; font-size: 22px; }
+.notFound .right p, .errorContent .right p { color: #666666; line-height: 1.6; text-align: center; }
+
+.maintain { display: table; margin: 0 auto; }
+.maintain img { /* margin-top:50px; */ /* margin-right: 30px; */ }
+
+.errorService { display: inline-block; font-size: 20px; text-decoration: blink; color: #59adf2; border: 1px solid; padding: 6px 14px; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; }
+
+.backHome { color: #59adf2; padding: 0 4px; -moz-border-radius: 0; -webkit-border-radius: 0; border-radius: 0; }
+
+.errorLogo { position: absolute; right: 20px; bottom: 20px; }
+.errorLogo img { height: 50px; }
+
+/** 404页面样式 */
+.notFound { height: 455px; text-align: center; }
+.notFound h1 { color: #59adf2; font-weight: 400; margin: 40px 0; margin-bottom: 20px; font-size: 22px; }
+.notFound p { line-height: 1.8; color: #666; text-align: left; display: table; margin: 0 auto; }
+
+/*# sourceMappingURL=maintain.css.map */

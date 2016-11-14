@@ -1,0 +1,136 @@
+@import "_variable","mixin";
+
+.playerHome{
+    padding-bottom:0;
+    padding-top: 0;
+}
+
+.playerHomeHead{
+    background: unquote("url(" + $imgurl + "/system/common/other/playerHomeBg.jpg) no-repeat");
+    background-size:16rem 8em;
+    text-align: center;
+    height: 7em;
+    position: relative;
+    img{
+/*         @include border-radius(2.5em); */
+        /* border-radius:2em; */
+        width: 5em;
+        height: 5em;
+        /* margin-top: 6em; */
+        /* border: 3px solid white; */
+        /* position: absolute; */
+        /* bottom: -2.5em; */
+        /* margin-left: -2.5em; */
+    }
+}
+.playerHeadImg{
+    border-radius:2.5em;
+    width: 5em;
+    height: 5em;
+    border: 3px solid white;
+    margin-top: 6em;
+    position: absolute;
+    bottom: -2.5em;
+    margin-left: -2.5em;
+    overflow: hidden;
+    display: inline;
+}
+.playerInfo{
+    text-align:center;
+    line-height:1.6;
+    position:relative;
+    margin-top: 2.8em;
+    h1{
+        font-size:0.9em;
+        color:#333333;
+    }
+    h2{
+        font-size:0.7em;
+        color:#666666;
+    }
+    span{
+        font-size:0.8em;
+        background:#59adf2;
+        color:white;
+        padding:0 0.3em;
+        @include border-radius(0.2em);
+    }
+    p{
+        font-size:0.7em;
+        color:#333333;
+        margin:6px 0;
+        padding-bottom: 1.2em;
+        em{
+            margin-right:1.5em;
+        }
+    }
+    ins{
+        position:absolute;
+        background: #da3a3f;
+        color: white;
+        right: 0;
+        display: block;
+        top: -2em;
+        padding: 0.1em 0.8em;
+        border: 1px solid #e2e2e2;
+        border-right: 0;
+        @include border-radius( 1em 0 0 1em);
+        font-size:0.8em;
+    }
+    &:before{
+      content: '';
+      position: absolute;
+      left: 0;
+      background: #d0d0d0;
+      width: 100%;
+      height: 1px;
+      @include scaleY(0.5);
+      @include origin( 0 0);
+      bottom: 0;
+  }
+}
+.cardIcon{
+    p{
+        text-align:center;
+        font-size: 0.9em;
+        color: #333;
+        margin-top: 1em;
+    }
+}
+.cardIconList{
+    font-size:2.5em;
+    padding: 1rem;
+    li{
+        float:left;
+        margin-top: 0.1em;
+        margin-bottom: 0.1em;
+        line-height: 1em;
+        width: 3.5rem;
+        text-align: center;
+        a{
+        }
+        .noActive:before{
+            color:#999;
+        }
+    }
+}
+
+
+
+/** 彩种logo */
+.textK3:before { content: "\e635"; color: #e01506;
+ }
+
+.textXYNC:before { content: "\e63b"; color: #009944; }
+
+.textPK10:before { content: "\e63a"; color: #e70014; }
+
+.textKL8:before { content: "\e639"; color: #f39b02; }
+
+.textPL35:before { content: "\e638"; color: #06a5f9; }
+
+.textFC3D:before { content: "\e637"; color: #3469f5; }
+
+.textSSC:before { content: "\e634"; color: #fa7e00; }
+
+.textSYX5:before { content: "\e636"; color: #38b39e; }
