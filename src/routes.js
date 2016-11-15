@@ -7,6 +7,7 @@ const service =resolve => require(['./views/service'],resolve)
 const notfound =resolve => require(['./views/notfound'],resolve)
 const personalInfo =resolve => require(['./views/personalInfo'],resolve)
 const securityCenter =resolve => require(['./views/securityCenter'],resolve)
+const dailyPrise =resolve => require(['./views/dailyPrise'],resolve)
 
 module.exports = [{
   path: '/',
@@ -58,6 +59,14 @@ module.exports = [{
     nav:1,
   },
   component: activity
+},{
+  path: '/dailyPrise',
+  name: '活动',
+  meta:{
+    title:"活动",
+    nav:1,
+  },
+  component: dailyPrise
 }, {
   path: '/newWinners',
   name: '发现',
@@ -86,7 +95,7 @@ module.exports = [{
     user:1,
   },
   component: personalInfo
-}, {
+},{
   path: '/securityCenter',
   name: '安全中心',
   meta:{
@@ -95,7 +104,7 @@ module.exports = [{
     user:1,
   },
   component: securityCenter
-}, {
+},{
   path: '/agentCenter',
   redirect: '/notfound' //重定向配置
 }, {
