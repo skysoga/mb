@@ -22,10 +22,10 @@
     <div id="HotLottery" v-bind:style="{height:Math.ceil($store.state.LotteryConfig.length/3)*3+'em'}">
       <ul>
       <li v-for="l in $store.state.LotteryConfig">
-        <a class="active L_K3" href="lottery_k3.html?lottery=1401">
+        <router-link class="active L_K3" to="lottery_k3">
           <p>{{$store.state.LotteryList[l].LotteryName}}</p>
           <span>{{$store.state.LotteryList[l].LotteryIntro}}</span>
-        </a>
+        </router-link>
       </li>
       <li v-for="l in 3-($store.state.LotteryConfig.length%3||3)"></li>
       </ul>

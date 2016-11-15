@@ -13,7 +13,7 @@
               <span>我要充值</span>
           </router-link>
 
-          <router-link class="active" data-pwd="True" data-card="True" to="javascript:void(0);">
+          <router-link class="active" data-pwd="True" data-card="True" :to="$store.getters.WithdrwHtml">
               <i class="iconfont m1">&#xe631;</i>
               <span>我要提现</span>
           </router-link>

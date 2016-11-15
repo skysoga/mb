@@ -3,3 +3,4 @@ dist/
 node_modules/
 npm-debug.log
 /html/release
+config/usercfg.js

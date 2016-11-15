@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <title-info :cfg = "this.cfg"></title-info>
+    <title-info></title-info>
     <transition name="fade"  mode="out-in">
       <router-view :All = "this"></router-view>
     </transition>
-    <navbar v-show="this.$route.meta.nav"></navbar>
+    <navbar v-show="$route.meta.nav"></navbar>
   </div>
 </template>
 

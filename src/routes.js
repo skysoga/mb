@@ -7,6 +7,7 @@ const service =resolve => require(['./views/service'],resolve)
 const notfound =resolve => require(['./views/notfound'],resolve)
 const personalInfo =resolve => require(['./views/personalInfo'],resolve)
 const securityCenter =resolve => require(['./views/securityCenter'],resolve)
+const lottery_k3 =resolve => require(['./views/lottery_k3'],resolve)
 const dailyPrise =resolve => require(['./views/dailyPrise'],resolve)
 
 module.exports = [{
@@ -23,6 +24,17 @@ module.exports = [{
     agent:false
   },
   component: index
+}, {
+  path: '/lottery_k3',
+  name: '快3',
+  meta:{
+    title:'快3',
+    nav:0,
+    link:'index',
+    user:1,
+    agent:false
+  },
+  component: lottery_k3
 }, {
   path: '/notfound',
   name: '404',
