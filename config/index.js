@@ -1,6 +1,6 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
-
+var Usercfg = require('./usercfg.js')
 module.exports = {
   build: {
     env: require('./prod.env'),
@@ -18,12 +18,14 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    port: 8080,
+    //这里输入自己电脑的固定ip和要设置的监听端口   端口注意不要和别的再使用的冲突
+    localIP:Usercfg.localIP||"localhost",
+    port: Usercfg.port||8080,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
         '/tools/ssc_ajax.ashx': {
-          target: 'http://192.168.3.253:99/tools/ssc_ajax.ashx',
+          target: (Usercfg.APIhost||'http://192.168.3.253:99')+'/tools/ssc_ajax.ashx',
           secure: true
         }
     },
