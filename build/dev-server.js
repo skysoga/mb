@@ -56,12 +56,12 @@ app.use(hotMiddleware)
 var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
 
-module.exports = app.listen(port, "192.168.3.253",function (err) {
+module.exports = app.listen(port, "192.168.3.122",function (err) {
   if (err) {
     console.log(err)
     return
   }
-  var uri = 'http://192.168.3.253:' + port
+  var uri = 'http://192.168.3.122:' + port
   console.log('Listening at ' + uri + '\n')
   opn(uri)
 })
