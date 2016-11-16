@@ -15,6 +15,7 @@
 		<meta charset="utf-8">
 		<title>DFYL</title>
 		<script src="//cdn.bootcss.com/fetch/1.0.0/fetch.js"></script>
+		<script src="//apps.bdimg.com/libs/layer.m/1.5/layer.m.js"></script>
 		<script>
 			function _fetch(data){
 				var str=[],k;
@@ -27,7 +28,7 @@
 				}
 				data = str.join('&');
 				return fetch('/tools/ssc_ajax.ashx', {
-					credentials:'include',
+					credentials:'same-origin',
 				  method: 'POST',
 				  headers: {
 				    "Content-Type": "application/x-www-form-urlencoded"
@@ -35,6 +36,46 @@
 				  body: data
 				})
 			}
+			;(function(){
+				var warn = '<span class="iconfont">&#xe606;</span>',
+				  tip='<span class="iconfont">&#xe610;</span>'
+				layer.msg=function(msg, time) {
+		      return this.open({ content: msg, time: time?time-1:3,style: 'fill:#ececec',className:'layermsg'});
+		    }
+		    layer.msgWarn=function(msg, time) {
+		      return this.msg(warn+msg,time);
+		    },
+		    layer.msgTip=function(msg, time) {
+		      return this.msg(tip+msg,time);
+		    },
+		    layer.msgWait=function(msg,time) {
+		      return this.open({time:  time?time-1:0,content: layer.icon.load+msg, shadeClose:0 ,className:'layermsg'});
+		    },
+		    layer.url=function(msg,url) {
+		      return layer.open({
+		        className: "layerConfirm",
+		        content: msg,
+		        btn: ["确定"],
+		        end:function(){
+		          if (url==-1) {
+		            history.back(-1);
+		          }else{
+		            location.href = url||location.href;
+		          }
+		        }
+		      })
+		    },
+		    layer.alert=function(msg,fun){
+		      return layer.open({
+		        className: "layerConfirm",
+		        content: msg,
+		        btn: ["确定"],
+		        end:fun&&function(){
+		          fun();
+		        }
+		      })
+		    }
+			})()
 		</script>
 	</head>
 	<body>

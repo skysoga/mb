@@ -88,7 +88,13 @@ module.exports = [{
   path: '/newWinners',
   name: '发现',
   meta:{
-    title:"中奖信息",
+    titleList:[{
+      title:"中奖信息",
+      to:"/newWinners"
+    },{
+      title:"昨日奖金榜",
+      to:"/competition"
+    }],
     nav:1,
   },
   component: newWinners
