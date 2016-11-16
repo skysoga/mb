@@ -8,6 +8,8 @@ const notfound =resolve => require(['./views/notfound'],resolve)
 const personalInfo =resolve => require(['./views/personalInfo'],resolve)
 const securityCenter =resolve => require(['./views/securityCenter'],resolve)
 const lottery_k3 =resolve => require(['./views/lottery_k3'],resolve)
+const register =resolve => require(['./views/register'],resolve)
+
 
 module.exports = [{
   path: '/',
@@ -62,6 +64,18 @@ module.exports = [{
     agent:false
   },
   component: login
+}, {
+  path: '/register',
+  name: '注册',
+  meta:{
+    title:"用户注册",
+    nav:false,
+    link:"/index",
+    service:true,
+    user:false, 
+    agent:false
+  },
+  component: register
 }, {
   path: '/activity',
   name: '活动',

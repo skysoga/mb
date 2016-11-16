@@ -1,9 +1,16 @@
+import BottomBox from '../components/bottom-box';
+
 export default {
   data:()=>{
     return{
       UserName:'',
       Password:'',
       ImgCode:'test',
+      BottomBoxShow: false,
+      BottomBoxList:{
+        'forgetPwd': '忘记密码',
+        'pc': '电脑版'
+      }
     }
   },
   beforeRouteEnter:(to, from, next) => {
@@ -57,5 +64,15 @@ export default {
         })
       })
     },
+    forgetPwd:function(){
+      this.$root.$router.push("/forgetPwd");
+    },
+    pc:function(){
+      location.href="http://"+location.host.replace('m.','www.')+"/index.html?CanPc";
+    },
+  },
+  //子组件
+  components:{
+    'bottom-box': BottomBox
   }
 }

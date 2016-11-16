@@ -18,7 +18,6 @@ const router = new VueRouter({
 
 
 var UserArr=[
-	'UserName',
 	'UserHasSafePwd', //返回是否已经设置安全密码,1为有,0为没有设置
 	'UserSafeQuestions', //返回设置的密保问题,如果没设置可以返回0或者空数组
 	'UserMobile', //返回已绑定手机的模糊状态,如未绑定,返回空字符串或0
@@ -135,7 +134,7 @@ const interviewApp = new Vue({
 	router,
 	watch: {
 		$route(to,from){
-			console.log("监听路由已经变化");
+			// console.log("监听路由已经变化");
 			// console.log(this.$route);
 		}
 	},
@@ -227,7 +226,7 @@ const interviewApp = new Vue({
 				}
 			}
 			if (!newArr.length) {
-				console.log("全部都有");
+				// console.log("全部都有");
 				fun&&fun()
 				return;
 			}
