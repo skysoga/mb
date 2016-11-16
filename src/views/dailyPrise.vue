@@ -35,5 +35,5 @@
 <script src="../js/dailyPrise.js"></script>
 <style lang="scss" scoped>
   @import '../scss/activity.scss';
-  //@import '../scss/activity_info.scss';
+  @import '../scss/activity_info.scss';
 </style>

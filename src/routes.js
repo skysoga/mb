@@ -9,6 +9,8 @@ const personalInfo =resolve => require(['./views/personalInfo'],resolve)
 const securityCenter =resolve => require(['./views/securityCenter'],resolve)
 const lottery_k3 =resolve => require(['./views/lottery_k3'],resolve)
 const dailyPrise =resolve => require(['./views/dailyPrise'],resolve)
+const upgrade =resolve => require(['./views/upgrade'],resolve)
+const activityInfo =resolve => require(['./views/activityInfo'],resolve)
 
 module.exports = [{
   path: '/',
@@ -73,13 +75,32 @@ module.exports = [{
   component: activity
 },{
   path: '/dailyPrise',
-  name: '活动',
+  name: '每日加奖',
   meta:{
-    title:"活动",
-    nav:1,
+    title:"每日加奖",
+    link:"/activity",
+    nav:0,
   },
   component: dailyPrise
-}, {
+},{
+  path: '/upgrade',
+  name: '晋级奖励',
+  meta:{
+    title:"晋级奖励",
+    link:"/activity",
+    nav:0,
+  },
+  component: upgrade
+},{
+  path: '/activityInfo',
+  name: '站长活动',
+  meta:{
+    title:"站长活动",
+    link:"/activity",
+    nav:0,
+  },
+  component: activityInfo
+},{
   path: '/newWinners',
   name: '发现',
   meta:{
@@ -99,9 +120,9 @@ module.exports = [{
   component: userCenter
 },{
   path: '/personalInfo',
-  name: '我的账户',
+  name: '账户信息',
   meta:{
-    title:"我的账户",
+    title:"账户信息",
     nav:1,
     service:true,
     user:1,
