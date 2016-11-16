@@ -41,7 +41,7 @@ export default {
       };
       var err = this.$root.format(ajax);
       if (err) {
-        alert(err[1]);
+        layer.msgWarn(err[1]);
         return;
       }
       ajax.Action="Login";
@@ -52,7 +52,7 @@ export default {
               $root.$router.push("/index");
             })
           }else{
-            alert(json.StrCode);
+            layer.msgWarn(json.StrCode);
           }
         })
       })
