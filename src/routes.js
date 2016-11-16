@@ -2,6 +2,7 @@ const login =resolve => require(['./views/login'],resolve)
 const index =resolve => require(['./views/index'],resolve)
 const activity =resolve => require(['./views/activity'],resolve)
 const newWinners =resolve => require(['./views/newWinners'],resolve)
+const competition =resolve => require(['./views/competition'],resolve)
 const userCenter =resolve => require(['./views/userCenter'],resolve)
 const service =resolve => require(['./views/service'],resolve)
 const notfound =resolve => require(['./views/notfound'],resolve)
@@ -79,6 +80,14 @@ module.exports = [{
   },
   component: newWinners
 }, {
+  path:'/competition',
+  name:'昨日奖金榜',
+  meta:{
+    title:"昨日奖金榜",
+    nav:1
+  },
+  component:competition
+},{
   path: '/userCenter',
   name: '我的账户',
   meta:{
