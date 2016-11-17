@@ -45,6 +45,7 @@ export default {
         return;
       }
       ajax.Action="Login";
+      layer.msgWait("正在登录")
       _fetch(ajax).then((res)=>{
         res.json().then((json) => {
           if (json.Code===1) {

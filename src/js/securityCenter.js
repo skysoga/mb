@@ -2,7 +2,8 @@ const interviewApp=require("../main.js");
 export default {
   data:()=>{
     return{
-      refreshClass:"refresh"
+      refreshClass:"refresh",
+      StarNum:0
     }
   },
   beforeRouteEnter:(to, from, next) => {
@@ -14,10 +15,26 @@ export default {
       'UserMobile', //返回已绑定手机的模糊状态,如未绑定,返回空字符串或0
       'UserMail',
       'UserFirstCardInfo',];
-    interviewApp.AjaxGetInitData(arr,next)
+    interviewApp.GetInitData(arr,next)
     /*next(vm=>{
       vm.getBalance()
     })*/
+  },
+  computed:{
+    StarN:function(){
+        let Num=1
+            !!this.$store.state.UserHasSafePwd?Num+=1:Num+=0
+            !!this.$store.state.UserSafeQuestions?Num+=1:Num+=0
+            !!this.$store.state.UserMobile?Num+=1:Num+=0
+            !!this.$store.state.UserMail?Num+=1:Num+=0
+            this.StarNum=Num
+        return this.StarNum
+    },
+    LevelText:function(){
+      let Num=this.StarN;
+      let nString=Num==5?"极高":Num==4?"高":Num==3?"中":Num==2?"低":"极低"
+      return nString
+    }
   },
   methods:{
     refresh:function(e){
@@ -29,7 +46,23 @@ export default {
       },500)
     },
     getBalance:function(){
-      this.$root.AjaxGetInitData(['UserBalance'])
+      this.$root.GetInitData(['UserBalance'])
+    },
+    loginOut:function(){
+      var vm = this,
+        $root = this.$root;
+      var ajax = {Action:"LogOut"}
+      layer.msgWait("正在退出")
+      _fetch(ajax).then((res)=>{
+        res.json().then((json) => {
+          if (json.Code===1) {
+            this.$root.Logout()
+            this.$router.push("/login")
+          }else{
+            layer.msgWarn(json.StrCode)
+          }
+        })
+      })
     }
   }
 }

@@ -1,0 +1,12 @@
+<template>
+	<div class="activityMian main">
+    <div class="activiTop" id="activiTop" ><img width="100%" :src="Img"></div>
+    <!-- <h3>活动说明</h3> -->
+    <div class="wrapExplain" id="wrapExplain" v-html="Content"></div>
+</div>
+</template>
+<script src="../js/activityInfo.js"></script>
+<style lang="scss" scoped>
+  @import '../scss/activity.scss';
+  @import '../scss/activity_info.scss';
+</style>

@@ -2,19 +2,31 @@ const login =resolve => require(['./views/login'],resolve)
 const index =resolve => require(['./views/index'],resolve)
 const activity =resolve => require(['./views/activity'],resolve)
 const newWinners =resolve => require(['./views/newWinners'],resolve)
-const competition =resolve => require(['./views/competition'],resolve)
 const userCenter =resolve => require(['./views/userCenter'],resolve)
 const service =resolve => require(['./views/service'],resolve)
 const notfound =resolve => require(['./views/notfound'],resolve)
 const personalInfo =resolve => require(['./views/personalInfo'],resolve)
 const securityCenter =resolve => require(['./views/securityCenter'],resolve)
 const lottery_k3 =resolve => require(['./views/lottery_k3'],resolve)
-const Notice =resolve => require(['./views/Notice'],resolve)
-const letter =resolve => require(['./views/letter'],resolve)
+const dailyPrise =resolve => require(['./views/dailyPrise'],resolve)//每日加奖
+const upgrade =resolve => require(['./views/upgrade'],resolve)//晋级奖励
+const activityInfo =resolve => require(['./views/activityInfo'],resolve)//站长活动
+const setPwd =resolve => require(['./views/setPwd'],resolve)//设置密码
+const verifyPwd =resolve => require(['./views/verifyPwd'],resolve)//修改登录密码
+const verifySafePwd =resolve => require(['./views/verifySafePwd'],resolve)//修改安全密码
+const setSafePwd =resolve => require(['./views/setSafePwd'],resolve)//设置安全密码
+const verifyMobile =resolve => require(['./views/verifyMobile'],resolve)//修改手机
+const setMobile =resolve => require(['./views/setMobile'],resolve)//设置手机
+const verifyQuestion =resolve => require(['./views/verifyQuestion'],resolve)//修改密码问题
+const setQuestion =resolve => require(['./views/setQuestion'],resolve)//设置密保问题
+const verifyMail =resolve => require(['./views/verifyMail'],resolve)//修改邮箱
+const setMail =resolve => require(['./views/setMail'],resolve)//设置邮箱
+const manageBankcard =resolve => require(['./views/manageBankcard'],resolve)//银行卡管理
+
 module.exports = [{
   path: '/',
   redirect: '/index' //重定向配置
-}, {
+},{
   path: '/index',
   name: '主页',
   meta:{
@@ -25,6 +37,127 @@ module.exports = [{
     agent:false
   },
   component: index
+},{
+  path: '/manageBankcard',
+  name: '银行卡管理',
+  meta:{
+    title:'银行卡管理',
+    nav:false,
+    link:'/securityCenter',
+    user:true,
+    agent:false
+  },
+  component: manageBankcard
+},{
+  path: '/setMail',
+  name: '设置密保邮箱',
+  meta:{
+    title:'设置密保邮箱',
+    nav:false,
+    link:'/securityCenter',
+    user:true,
+    agent:false
+  },
+  component: setMail
+},{
+  path: '/verifyMail',
+  name: '验证密保邮箱',
+  meta:{
+    title:'验证密保邮箱',
+    nav:false,
+    link:'/securityCenter',
+    user:true,
+    agent:false
+  },
+  component: verifyMail
+},{
+  path: '/setQuestion',
+  name: '设置密保问题',
+  meta:{
+    title:'设置密保问题',
+    nav:false,
+    link:'/securityCenter',
+    user:true,
+    agent:false
+  },
+  component: setQuestion
+},{
+  path: '/verifyQuestion',
+  name: '验证密保问题',
+  meta:{
+    title:'验证密保问题',
+    nav:false,
+    link:'/securityCenter',
+    user:true,
+    agent:false
+  },
+  component: verifyQuestion
+},{
+  path: '/setMobile',
+  name: '设置密保手机',
+  meta:{
+    title:'设置密保手机',
+    nav:false,
+    link:'/securityCenter',
+    user:true,
+    agent:false
+  },
+  component: setMobile
+},{
+  path: '/verifyMobile',
+  name: '验证密保手机',
+  meta:{
+    title:'验证密保手机',
+    nav:false,
+    link:'/securityCenter',
+    user:true,
+    agent:false
+  },
+  component: verifyMobile
+},{
+  path: '/setSafePwd',
+  name: '设置安全密码',
+  meta:{
+    title:'设置安全密码',
+    nav:false,
+    link:'/securityCenter',
+    user:true,
+    agent:false
+  },
+  component: setSafePwd
+},{
+  path: '/verifySafePwd',
+  name: '验证安全密码',
+  meta:{
+    title:'验证安全密码',
+    nav:false,
+    link:'/securityCenter',
+    user:true,
+    agent:false
+  },
+  component: verifySafePwd
+},{
+  path: '/verifyPwd',
+  name: '验证原密码',
+  meta:{
+    title:'验证原密码',
+    nav:false,
+    link:'/securityCenter',
+    user:true,
+    agent:false
+  },
+  component: verifyPwd
+},{
+  path: '/setPwd',
+  name: '设置登录密码',
+  meta:{
+    title:'设置登录密码',
+    nav:false,
+    link:'/securityCenter',
+    user:true,
+    agent:false
+  },
+  component: setPwd
 }, {
   path: '/lottery_k3',
   name: '快3',
@@ -72,7 +205,34 @@ module.exports = [{
     nav:1,
   },
   component: activity
-}, {
+},{
+  path: '/dailyPrise',
+  name: '每日加奖',
+  meta:{
+    title:"每日加奖",
+    link:"/activity",
+    nav:0,
+  },
+  component: dailyPrise
+},{
+  path: '/upgrade',
+  name: '晋级奖励',
+  meta:{
+    title:"晋级奖励",
+    link:"/activity",
+    nav:0,
+  },
+  component: upgrade
+},{
+  path: '/activityInfo',
+  name: '站长活动',
+  meta:{
+    title:"站长活动",
+    link:"/activity",
+    nav:0,
+  },
+  component: activityInfo
+},{
   path: '/newWinners',
   name: '发现',
   meta:{
@@ -87,20 +247,6 @@ module.exports = [{
   },
   component: newWinners
 }, {
-  path:'/competition',
-  name:'昨日奖金榜',
-  meta:{
-    titleList:[{
-      title:"中奖信息",
-      to:"/newWinners"
-    },{
-      title:"昨日奖金榜",
-      to:"/competition"
-    }],
-    nav:1
-  },
-  component:competition
-},{
   path: '/userCenter',
   name: '我的账户',
   meta:{
@@ -112,15 +258,15 @@ module.exports = [{
   component: userCenter
 },{
   path: '/personalInfo',
-  name: '我的账户',
+  name: '账户信息',
   meta:{
-    title:"我的账户",
+    title:"账户信息",
     nav:1,
     service:true,
     user:1,
   },
   component: personalInfo
-}, {
+},{
   path: '/securityCenter',
   name: '安全中心',
   meta:{
@@ -129,7 +275,7 @@ module.exports = [{
     user:1,
   },
   component: securityCenter
-}, {
+},{
   path: '/agentCenter',
   redirect: '/notfound' //重定向配置
 }, {
@@ -137,32 +283,7 @@ module.exports = [{
   redirect: '/notfound' //重定向配置
 },{
   path: '/Notice',
-  name:"站内信与公告",
-  meta:{
-    titleList:[{
-      title:"公告",
-      to:"/Notice"
-    },{
-      title:"站内信",
-      to:"/letter"
-    }],
-    nav:1
-  },
-  component:Notice
-},{
-  path: '/letter',
-  name:"站内信与公告",
-  meta:{
-    titleList:[{
-      title:"公告",
-      to:"/Notice"
-    },{
-      title:"站内信",
-      to:"/letter"
-    }],
-    nav:1
-  },
-  component:letter
+  redirect: '/notfound' //重定向配置
 }, {
   path: '*',
   redirect: '/notfound' //重定向配置
