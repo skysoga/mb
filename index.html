@@ -38,7 +38,9 @@
 			}
 			;(function(){
 				var warn = '<span class="iconfont">&#xe606;</span>',
-				  tip='<span class="iconfont">&#xe610;</span>'
+				  tip='<span class="iconfont">&#xe610;</span>',
+	        load='<svg class="svgLoad" width="30px" height="30px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="uil-default"><rect x="0" y="0" width="100" height="100" fill="none" class="bk"></rect><rect  x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(0 50 50) translate(0 -30)">  <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0s" repeatCount="indefinite"/></rect><rect  x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(30 50 50) translate(0 -30)">  <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.08333333333333333s" repeatCount="indefinite"/></rect><rect  x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(60 50 50) translate(0 -30)">  <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.16666666666666666s" repeatCount="indefinite"/></rect><rect  x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(90 50 50) translate(0 -30)">  <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.25s" repeatCount="indefinite"/></rect><rect  x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(120 50 50) translate(0 -30)">  <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.3333333333333333s" repeatCount="indefinite"/></rect><rect  x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(150 50 50) translate(0 -30)">  <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.4166666666666667s" repeatCount="indefinite"/></rect><rect  x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(180 50 50) translate(0 -30)">  <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.5s" repeatCount="indefinite"/></rect><rect  x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(210 50 50) translate(0 -30)">  <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.5833333333333334s" repeatCount="indefinite"/></rect><rect  x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(240 50 50) translate(0 -30)">  <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.6666666666666666s" repeatCount="indefinite"/></rect><rect  x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(270 50 50) translate(0 -30)">  <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.75s" repeatCount="indefinite"/></rect><rect  x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(300 50 50) translate(0 -30)">  <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.8333333333333334s" repeatCount="indefinite"/></rect><rect  x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(330 50 50) translate(0 -30)">  <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.9166666666666666s" repeatCount="indefinite"/></rect></svg>'
+
 				layer.msg=function(msg, time) {
 		      return this.open({ content: msg, time: time?time-1:3,style: 'fill:#ececec',className:'layermsg'});
 		    }
@@ -49,30 +51,23 @@
 		      return this.msg(tip+msg,time);
 		    },
 		    layer.msgWait=function(msg,time) {
-		      return this.open({time:  time?time-1:0,content: layer.icon.load+msg, shadeClose:0 ,className:'layermsg'});
+		      return this.open({time:  time?time-1:0,content: load+msg+"，请稍候...", shadeClose:0 ,className:'layermsg'});
 		    },
-		    layer.url=function(msg,url) {
+		    layer.url=function(msg,fun) {
 		      return layer.open({
 		        className: "layerConfirm",
 		        content: msg,
 		        btn: ["确定"],
-		        end:function(){
-		          if (url==-1) {
-		            history.back(-1);
-		          }else{
-		            location.href = url||location.href;
-		          }
-		        }
+		        end:fun
 		      })
 		    },
 		    layer.alert=function(msg,fun){
 		      return layer.open({
 		        className: "layerConfirm",
+		        shadeClose: false,
 		        content: msg,
 		        btn: ["确定"],
-		        end:fun&&function(){
-		          fun();
-		        }
+		        end:fun
 		      })
 		    }
 			})()
