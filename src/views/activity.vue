@@ -1,30 +1,20 @@
 <template>
 	<div class="main">
     <div class="innerWrap">
-        <div class="surperise active ">
-            <a class="wrap line" href="/dailyPrise.html">
-                <div class="number"><i>1</i></div>
+        <div v-for="vlue in $store.state.ActivityConfig" class="surperise active ">
+            <router-link class="wrap line" :to="getHtml(vlue.Name)">
+                <div class="number"><i>{{vlue.Type}}</i></div>
                 <div class="text">
-                    <strong>每日加奖</strong>
-                    <p>根据会员昨日投注总额进行奖励</p>
+                    <strong>{{vlue.Name}}</strong>
+                    <p>{{vlue.Intro}}</p>
                 </div>
                 <i class="iconfont right fr"></i>
-            </a>
-        </div>
-
-        <div class="surperise active">
-            <a class="wrap line" href="/upgrade.html">
-                <div class="number"><i>2</i></div>
-                <div class="text">
-                    <strong>晋级奖励</strong>
-                    <p>会员每晋升一个等级，都能获得奖励</p>
-                </div>
-                <i class="iconfont right fr"></i>
-            </a>
+            </router-link>
         </div>
     </div>
   </div>
 </template>
+<script src="../js/activity.js"></script>
 <style lang="scss" scoped>
   @import '../scss/activity.scss';
   .active .number{

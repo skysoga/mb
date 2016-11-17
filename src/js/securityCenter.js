@@ -30,6 +30,20 @@ export default {
     },
     getBalance:function(){
       this.$root.AjaxGetInitData(['UserBalance'])
+    },
+    loginOut:function(){
+      var vm = this,
+        $root = this.$root;
+      var ajax = {Action:"LogOut"}
+      _fetch(ajax).then((res)=>{
+        res.json().then((json) => {
+          if (json.Code===1) {
+            this.$root.Logout()
+          }else{
+            layer.msgWarn(json.StrCode)
+          }
+        })
+      })
     }
   }
 }
