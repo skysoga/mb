@@ -214,7 +214,7 @@ const interviewApp = new Vue({
 			      this.SaveInitData(Data)
 			      fun&&fun()
 			    }else{
-			      alert(json.StrCode);
+			      layer.msgWarn(json.StrCode);
 			    }
 			  })
 			})

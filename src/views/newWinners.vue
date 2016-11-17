@@ -1,8 +1,8 @@
 <template>
 	<div class="newWinner">
     <ul>
-		<transition-group name="list">
-    	<li :data-thisid="item.Id" class="active" v-for="item in bonu_list_data" :key="item">
+			<transition-group name="list">
+    		<li :data-thisid="item.Id" class="active" v-for="item in bonu_list_data" :key="item">
     		<div>
 	    		<a class="headImg" href="#">
 	    			<img :src="$store.getters.PhotoPath+item.UserPhoto" alt="">
@@ -15,7 +15,7 @@
     		</div>
     	</li>
 		</transition-group>
-    </ul>
+		</ul>
 </div>
 </template>
 <script>
@@ -31,7 +31,8 @@
 			    height:0,         //每个li的高度，第一次渲染后获取
 			    listMax:20,       //渲染li的最大数量
 			    cache:[]          //整个模块公用
-			  }
+			  },
+			 newOneData:""
 			}
 		},
 		methods:{
@@ -63,19 +64,20 @@
 			},
 			transitionShow:function(h, t, n, item){
 		    let s = 0;         // 用来记录高度
-	      let perT = t/n;
+				let perT = t/n;
 	      let perH = h/n;
-				var self=this;
-	      setTimeout(function(){
+	      setTimeout(()=>{
 	        if(s >= h){
-						self.bonu_list_data.unshift(item);
-						self.$el.childNodes[0].style.top=0+"px";
+	          //ulBody.prepend(item).css('top', '0px')
+						this.bonu_list_data.unshift(item)
+						this.$el.childNodes[0].style.top="0px"
 	          s = 0;
 	          return;
 	        }else{
 	          s = s + perH;
-						self.$el.childNodes[0].style.top=s+"px";
-	          transitionShow(h,t,n,item)
+	          //ulBody.css('top', s + 'px')
+						this.$el.childNodes[0].style.top=$+"px"
+	          this.transitionShow(h,t,n,item)
 	        }
 	      }, perT)
 		  },
@@ -117,11 +119,13 @@
 <style lang="scss" scoped>
   @import '../scss/newwinners.scss';
   @import '../scss/personalinfo.scss';
-.list-enter-active, .list-leave-active {
-  transition: all 0.5s;
-}
-.list-enter, .list-leave-active {
-	transition: all 0.5s;
-  transform: translateY(-30px);
-}
+	/*.list-enter-active, .list-leave-active {
+  	transition: all 1s;
+		transform: translateY(0px);
+	}
+	.list-enter, .list-leave-active {
+	  opacity: 0;
+	  transition:all 1s;
+		transform: translateY(30px);
+	}*/
 </style>

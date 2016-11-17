@@ -9,7 +9,8 @@ const notfound =resolve => require(['./views/notfound'],resolve)
 const personalInfo =resolve => require(['./views/personalInfo'],resolve)
 const securityCenter =resolve => require(['./views/securityCenter'],resolve)
 const lottery_k3 =resolve => require(['./views/lottery_k3'],resolve)
-
+const Notice =resolve => require(['./views/Notice'],resolve)
+const letter =resolve => require(['./views/letter'],resolve)
 module.exports = [{
   path: '/',
   redirect: '/index' //重定向配置
@@ -75,7 +76,13 @@ module.exports = [{
   path: '/newWinners',
   name: '发现',
   meta:{
-    title:"中奖信息",
+    titleList:[{
+      title:"中奖信息",
+      to:"/newWinners"
+    },{
+      title:"昨日奖金榜",
+      to:"/competition"
+    }],
     nav:1,
   },
   component: newWinners
@@ -83,7 +90,13 @@ module.exports = [{
   path:'/competition',
   name:'昨日奖金榜',
   meta:{
-    title:"昨日奖金榜",
+    titleList:[{
+      title:"中奖信息",
+      to:"/newWinners"
+    },{
+      title:"昨日奖金榜",
+      to:"/competition"
+    }],
     nav:1
   },
   component:competition
@@ -124,7 +137,32 @@ module.exports = [{
   redirect: '/notfound' //重定向配置
 },{
   path: '/Notice',
-  redirect: '/notfound' //重定向配置
+  name:"站内信与公告",
+  meta:{
+    titleList:[{
+      title:"公告",
+      to:"/Notice"
+    },{
+      title:"站内信",
+      to:"/letter"
+    }],
+    nav:1
+  },
+  component:Notice
+},{
+  path: '/letter',
+  name:"站内信与公告",
+  meta:{
+    titleList:[{
+      title:"公告",
+      to:"/Notice"
+    },{
+      title:"站内信",
+      to:"/letter"
+    }],
+    nav:1
+  },
+  component:letter
 }, {
   path: '*',
   redirect: '/notfound' //重定向配置

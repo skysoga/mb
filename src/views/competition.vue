@@ -1,18 +1,19 @@
 <template>
   <div class="competition">
     <table>
-      <tr class="active" data-id="37625">
+      <tr class="active" :data-id="item.UserId" v-for='item in init_bonus_data'>
         <td>
-          <img src="http://images.dafa176.com/system/common/headimg/A9734CC321C8B363.jpg" alt="">
-          	<p>账号昵称：<i style="color:#38f">wu***4</i><br>昨日奖金：<span>￥292320</span></p>
+          <img :src="$store.getters.PhotoPath+item.UserPhoto" alt="">
+          	<p>账号昵称：<i style="color:#38f">{{item.NickName?item.NickName:item.UserName}}</i><br>昨日奖金：<span>￥{{item.Bonus}}</span></p>
         </td>
-        <td><em>1</em></td>
+        <td><em>{{item.Ranking}}</em></td>
     	</tr>
     </table>
   </div>
 </template>
 
 <script type="text/javascript">
+const interviewApp=require("../main.js");
   export default{
     data(){
       return {
@@ -20,13 +21,14 @@
       }
     },
     created(){
-      _fetch().then((res)=>{
+      interviewApp.GetInitData(["RankingList"],function(data){
+        console.log(data.RankingList);
+      });
+      _fetch({Action:"GetInitData",Requirement:["RankingList"]}).then((res)=>{
         if(res.ok){
           res.json().then((data)=>{
-            
+            console.log(data);
           })
-        }else{
-          console.log("request error");
         }
       })
     }
