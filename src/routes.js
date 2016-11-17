@@ -22,6 +22,9 @@ const setQuestion =resolve => require(['./views/setQuestion'],resolve)//设置�
 const verifyMail =resolve => require(['./views/verifyMail'],resolve)//修改邮箱
 const setMail =resolve => require(['./views/setMail'],resolve)//设置邮箱
 const manageBankcard =resolve => require(['./views/manageBankcard'],resolve)//银行卡管理
+const register =resolve => require(['./views/register'],resolve)
+const rechargeWay =resolve => require(['./views/rechargeWay'],resolve)
+
 
 module.exports = [{
   path: '/',
@@ -197,6 +200,18 @@ module.exports = [{
     agent:false
   },
   component: login
+},{
+  path: '/register',
+  name: '注册',
+  meta:{
+    title:"用户注册",
+    nav:false,
+    link:"/index",
+    service:true,
+    user:false,
+    agent:false
+  },
+  component: register
 }, {
   path: '/activity',
   name: '活动',
@@ -275,6 +290,15 @@ module.exports = [{
     user:1,
   },
   component: securityCenter
+},{
+  path: '/rechargeWay',
+  name: '选择充值方式',
+  meta:{
+    title:"选择充值方式",
+    link:"/userCenter",
+    user:1,
+  },
+  component: rechargeWay
 },{
   path: '/agentCenter',
   redirect: '/notfound' //重定向配置
