@@ -23,6 +23,7 @@ const verifyMail =resolve => require(['./views/verifyMail'],resolve)//修改邮�
 const setMail =resolve => require(['./views/setMail'],resolve)//设置邮箱
 const manageBankcard =resolve => require(['./views/manageBankcard'],resolve)//银行卡管理
 const register =resolve => require(['./views/register'],resolve)
+const rechargeWay =resolve => require(['./views/rechargeWay'],resolve)
 
 
 module.exports = [{
@@ -289,6 +290,15 @@ module.exports = [{
     user:1,
   },
   component: securityCenter
+},{
+  path: '/rechargeWay',
+  name: '选择充值方式',
+  meta:{
+    title:"选择充值方式",
+    link:"/userCenter",
+    user:1,
+  },
+  component: rechargeWay
 },{
   path: '/agentCenter',
   redirect: '/notfound' //重定向配置

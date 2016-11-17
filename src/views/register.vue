@@ -158,12 +158,8 @@ export default {
           }
         })
       })
-
-			
 		}
 	},
-
-
 }
 </script>
 
