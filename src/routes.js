@@ -23,6 +23,8 @@ const verifyMail =resolve => require(['./views/verifyMail'],resolve)//修改邮�
 const setMail =resolve => require(['./views/setMail'],resolve)//设置邮箱
 const manageBankcard =resolve => require(['./views/manageBankcard'],resolve)//银行卡管理
 const register =resolve => require(['./views/register'],resolve)
+
+
 module.exports = [{
   path: '/',
   redirect: '/index' //重定向配置
@@ -197,6 +199,18 @@ module.exports = [{
     agent:false
   },
   component: login
+},{
+  path: '/register',
+  name: '注册',
+  meta:{
+    title:"用户注册",
+    nav:false,
+    link:"/index",
+    service:true,
+    user:false,
+    agent:false
+  },
+  component: register
 }, {
   path: '/activity',
   name: '活动',
