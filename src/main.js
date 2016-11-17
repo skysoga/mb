@@ -146,17 +146,10 @@ const interviewApp = new Vue({
 	},
 	methods:{
     Logout:function(){
-      this.ClearInitData(UserArr)
-      this.$router.push("/index")
+      store.commit('ClearInitData', UserArr)
     },
 		Login:function(UserName,fun){
 			this.GetInitData(UserArr,fun)
-		},
-		LostUser:function(){
-			localStorage.removeItem(UserArr[i])
-			for (var i = UserArr.length - 1; i >= 0; i--) {
-				localStorage.removeItem(UserArr[i])
-			}
 		},
 		SetFilter:function(data){
 		  var LotteryList = data.LotteryList;
@@ -176,7 +169,6 @@ const interviewApp = new Vue({
 		    for (let i = LotteryConfig.length - 1; i >= 0; i--) {
 		      if (LotteryConfig[i].LotteryClassID==="14") {
 		        data.LotteryConfig=LotteryConfig[i].LotteryList;
-		        // getLotterysPlan(data.LotteryConfig);
 		        break;
 		      }
 		    }
@@ -215,12 +207,14 @@ const interviewApp = new Vue({
 			_fetch(ajax).then((res)=>{
 			  res.json().then((json) => {
 			    if (json.Code===1||json.Code===0) {
-			    	if (json.Code===0) {
-			    		console.log("您的登录信息已失效");
-			    		this.LostUser()
-			    	}
 			    	var Data = this.SetFilter(json.BackData);
 			      this.SaveInitData(Data)
+			    	if (json.Code===0&&state.UserName) {
+			    		this.Logout()
+			    		layer.alert("您的登录状态已失效,需要重新登录",()=>{
+			    			this.$router.push("/login")
+			    		})
+			    	}
 			      fun&&fun()
 			    }else{
 			      layer.msgWarn(json.StrCode);
