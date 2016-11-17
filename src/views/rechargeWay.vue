@@ -41,6 +41,17 @@ export default {
 		return {
 			imgServer: this.$store.state.constant.ImgHost
 		}
+	},
+	beforeRouteEnter(){
+		
+	},
+	created (){
+		this.$root.GetInitData(['PayLimit'],state=>{
+			console.log(this)
+			console.log(state)
+		})
+
+		console.log(this.$store.state.PayLimit)
 	}
 }
 </script>

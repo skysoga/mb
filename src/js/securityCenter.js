@@ -52,10 +52,12 @@ export default {
       var vm = this,
         $root = this.$root;
       var ajax = {Action:"LogOut"}
+      layer.msgWait("正在退出")
       _fetch(ajax).then((res)=>{
         res.json().then((json) => {
           if (json.Code===1) {
             this.$root.Logout()
+            this.$router.push("/login")
           }else{
             layer.msgWarn(json.StrCode)
           }
