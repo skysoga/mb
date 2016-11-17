@@ -42,17 +42,11 @@ export default {
 			imgServer: this.$store.state.constant.ImgHost
 		}
 	},
-	beforeRouteEnter(){
-		
-	},
-	created (){
-		this.$root.GetInitData(['PayLimit'],state=>{
-			console.log(this)
-			console.log(state)
+	beforeRouteEnter(to,from,next){
+		next(vm=>{
+			vm.$root.AjaxGetInitData(['PayLimit'])
 		})
-
-		console.log(this.$store.state.PayLimit)
-	}
+	},
 }
 </script>
 <style lang = "scss" scoped>
