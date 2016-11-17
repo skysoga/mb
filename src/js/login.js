@@ -41,7 +41,6 @@ export default {
   },
   methods:{
     login:function(e){
-      return
       var vm = this,
         $root = this.$root;
 
