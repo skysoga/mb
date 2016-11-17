@@ -15,7 +15,10 @@ export default {
       'UserMobile', //返回已绑定手机的模糊状态,如未绑定,返回空字符串或0
       'UserMail',
       'UserFirstCardInfo',];
-    interviewApp.GetInitData(arr,next)
+
+    interviewApp.GetInitData(arr, state=>{
+      next()
+    })
     /*next(vm=>{
       vm.getBalance()
     })*/

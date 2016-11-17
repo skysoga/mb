@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import interviewApp  from "../main.js"
 export default {
 	data () {
 		return {
@@ -43,9 +44,10 @@ export default {
 		}
 	},
 	beforeRouteEnter(to,from,next){
-		next(vm=>{
-			vm.$root.AjaxGetInitData(['PayLimit'])
-		})
+		interviewApp.GetInitData(['PayLimit'], state=>{
+			console.log(state)
+      next()
+    })
 	},
 }
 </script>
