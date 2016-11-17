@@ -51,28 +51,21 @@
 		    layer.msgWait=function(msg,time) {
 		      return this.open({time:  time?time-1:0,content: layer.icon.load+msg, shadeClose:0 ,className:'layermsg'});
 		    },
-		    layer.url=function(msg,url) {
+		    layer.url=function(msg,fun) {
 		      return layer.open({
 		        className: "layerConfirm",
 		        content: msg,
 		        btn: ["确定"],
-		        end:function(){
-		          if (url==-1) {
-		            history.back(-1);
-		          }else{
-		            location.href = url||location.href;
-		          }
-		        }
+		        end:fun
 		      })
 		    },
 		    layer.alert=function(msg,fun){
 		      return layer.open({
 		        className: "layerConfirm",
+		        shadeClose: false,
 		        content: msg,
 		        btn: ["确定"],
-		        end:fun&&function(){
-		          fun();
-		        }
+		        end:fun
 		      })
 		    }
 			})()

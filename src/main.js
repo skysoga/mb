@@ -265,13 +265,13 @@ const interviewApp = new Vue({
 	render: h => h(App)
 });
 
-/*router.beforeEach((to, from, next) => {
-	console.log("全局钩子");
+router.beforeEach((to, from, next) => {
+  layer.open({type: 2});
 	next();
 });
 
-/*router.afterEach((to, from) => {
-  //没有next
-});*/
+router.afterEach((to, from) => {
+	layer.closeAll()
+});
 
 module.exports = interviewApp;
