@@ -6,6 +6,7 @@ export default {
       UserName:'',
       Password:'',
       ImgCode:'test',
+
       BottomBoxShow: false,
       BottomBoxList:{
         'forgetPwd': '忘记密码',
@@ -40,18 +41,21 @@ export default {
   },
   methods:{
     login:function(e){
+      return
       var vm = this,
         $root = this.$root;
+
       var ajax = {
         UserName:this.UserName,
         Password:this.Password
       };
-      var err = this.$root.format(ajax);
+      var err = this.$root.format(ajax, ['Password', 'UserName']);
       if (err) {
         layer.msgWarn(err[1]);
         return;
       }
       ajax.Action="Login";
+
       _fetch(ajax).then((res)=>{
         res.json().then((json) => {
           if (json.Code===1) {
