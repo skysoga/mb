@@ -3,7 +3,8 @@ export default {
   data:()=>{
     return{
       refreshClass:"refresh",
-      StarNum:0
+      StarNum:0,
+      LastLogin:{}
     }
   },
   beforeRouteEnter:(to, from, next) => {
@@ -14,6 +15,7 @@ export default {
       'UserSafeQuestions', //返回设置的密保问题,如果没设置可以返回0或者空数组
       'UserMobile', //返回已绑定手机的模糊状态,如未绑定,返回空字符串或0
       'UserMail',
+      'UserLastLoginInfo',
       'UserFirstCardInfo',];
     interviewApp.GetInitData(arr,next)
     /*next(vm=>{
@@ -27,6 +29,7 @@ export default {
             !!this.$store.state.UserSafeQuestions?Num+=1:Num+=0
             !!this.$store.state.UserMobile?Num+=1:Num+=0
             !!this.$store.state.UserMail?Num+=1:Num+=0
+            this.LastLogin=this.$store.state.UserLastLoginInfo[0]
             this.StarNum=Num
         return this.StarNum
     },

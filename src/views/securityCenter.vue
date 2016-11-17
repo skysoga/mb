@@ -5,8 +5,7 @@
       <div class="star">
         <i class="iconfont" v-for="n in 5" :class="{curr:n<=StarN}">&#xe63d;</i>
       </div>
-      <p id="LoginInfo"><!-- 上次登录：2016-09-13 14:18:35<br>
-      国内未能识别的地区 | 不是我登录? --></p>
+      <p id="LoginInfo">上次登录：{{LastLogin.LoginTime}}<br>{{LastLogin.LoginAddr}} | <router-link to="/verifyPwd">不是我登录?</router-link></p>
     </div>
       <div class="options">
           <router-link to="/verifyPwd" class="active">

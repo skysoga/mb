@@ -34,3 +34,6 @@
   </div> -->
 </template>
 <script src="../js/manageBankcard.js"></script>
+<style lang="scss" scoped>
+  @import '../scss/bindcard.scss';
+</style>
