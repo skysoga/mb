@@ -92,6 +92,14 @@ const interviewApp = new Vue({
 		}
 	},
 	methods:{
+    Logout:function(){
+      var d={}
+      for (var i = UserArr.length - 1; i >= 0; i--) {
+        d[UserArr[i]]=null
+      }
+      this.SaveInitData(d)
+      this.$router.push("/index")
+    },
 		Login:function(UserName,fun){
 			this.GetInitData(UserArr,fun)
 		},

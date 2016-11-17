@@ -9,6 +9,10 @@ const personalInfo =resolve => require(['./views/personalInfo'],resolve)
 const securityCenter =resolve => require(['./views/securityCenter'],resolve)
 const lottery_k3 =resolve => require(['./views/lottery_k3'],resolve)
 const register =resolve => require(['./views/register'],resolve)
+const dailyPrise =resolve => require(['./views/dailyPrise'],resolve)
+const upgrade =resolve => require(['./views/upgrade'],resolve)
+const activityInfo =resolve => require(['./views/activityInfo'],resolve)
+
 
 
 module.exports = [{
