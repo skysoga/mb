@@ -1,32 +1,40 @@
-const login =resolve => require(['./views/login'],resolve)
-const index =resolve => require(['./views/index'],resolve)
-const activity =resolve => require(['./views/activity'],resolve)
-const newWinners =resolve => require(['./views/newWinners'],resolve)
-const userCenter =resolve => require(['./views/userCenter'],resolve)
-const service =resolve => require(['./views/service'],resolve)
-const notfound =resolve => require(['./views/notfound'],resolve)
-const personalInfo =resolve => require(['./views/personalInfo'],resolve)
-const securityCenter =resolve => require(['./views/securityCenter'],resolve)
-const lottery_k3 =resolve => require(['./views/lottery_k3'],resolve)
-const dailyPrise =resolve => require(['./views/dailyPrise'],resolve)//每日加奖
-const upgrade =resolve => require(['./views/upgrade'],resolve)//晋级奖励
-const activityInfo =resolve => require(['./views/activityInfo'],resolve)//站长活动
-const setPwd =resolve => require(['./views/setPwd'],resolve)//设置密码
-const verifyPwd =resolve => require(['./views/verifyPwd'],resolve)//修改登录密码
-const verifySafePwd =resolve => require(['./views/verifySafePwd'],resolve)//修改安全密码
-const setSafePwd =resolve => require(['./views/setSafePwd'],resolve)//设置安全密码
-const verifyMobile =resolve => require(['./views/verifyMobile'],resolve)//修改手机
-const setMobile =resolve => require(['./views/setMobile'],resolve)//设置手机
-const verifyQuestion =resolve => require(['./views/verifyQuestion'],resolve)//修改密码问题
-const setQuestion =resolve => require(['./views/setQuestion'],resolve)//设置密保问题
-const verifyMail =resolve => require(['./views/verifyMail'],resolve)//修改邮箱
-const setMail =resolve => require(['./views/setMail'],resolve)//设置邮箱
-const manageBankcard =resolve => require(['./views/manageBankcard'],resolve)//银行卡管理
-const register =resolve => require(['./views/register'],resolve)
-const rechargeWay =resolve => require(['./views/rechargeWay'],resolve)
+import guangying from './guangying'
+
+const login =resolve => require(['../views/login'],resolve)
+const index =resolve => require(['../views/index'],resolve)
+const activity =resolve => require(['../views/activity'],resolve)
+const newWinners =resolve => require(['../views/newWinners'],resolve)
+const userCenter =resolve => require(['../views/userCenter'],resolve)
+const service =resolve => require(['../views/service'],resolve)
+const notfound =resolve => require(['../views/notfound'],resolve)
+const personalInfo =resolve => require(['../views/personalInfo'],resolve)
+const securityCenter =resolve => require(['../views/securityCenter'],resolve)
+const lottery_k3 =resolve => require(['../views/lottery_k3'],resolve)
+const dailyPrise =resolve => require(['../views/dailyPrise'],resolve)//每日加奖
+const upgrade =resolve => require(['../views/upgrade'],resolve)//晋级奖励
+const activityInfo =resolve => require(['../views/activityInfo'],resolve)//站长活动
+const setPwd =resolve => require(['../views/setPwd'],resolve)//设置密码
+const verifyPwd =resolve => require(['../views/verifyPwd'],resolve)//修改登录密码
+const verifySafePwd =resolve => require(['../views/verifySafePwd'],resolve)//修改安全密码
+const setSafePwd =resolve => require(['../views/setSafePwd'],resolve)//设置安全密码
+const verifyMobile =resolve => require(['../views/verifyMobile'],resolve)//修改手机
+const setMobile =resolve => require(['../views/setMobile'],resolve)//设置手机
+const verifyQuestion =resolve => require(['../views/verifyQuestion'],resolve)//修改密码问题
+const setQuestion =resolve => require(['../views/setQuestion'],resolve)//设置密保问题
+const verifyMail =resolve => require(['../views/verifyMail'],resolve)//修改邮箱
+const setMail =resolve => require(['../views/setMail'],resolve)//设置邮箱
+const manageBankcard =resolve => require(['../views/manageBankcard'],resolve)//银行卡管理
 
 
-module.exports = [{
+
+var publicRoute = [
+  {
+    path: '*',
+    redirect: '/notfound' //重定向配置
+  }
+]
+
+var routes = [{
   path: '/',
   redirect: '/index' //重定向配置
 },{
@@ -200,18 +208,6 @@ module.exports = [{
     agent:false
   },
   component: login
-},{
-  path: '/register',
-  name: '注册',
-  meta:{
-    title:"用户注册",
-    nav:false,
-    link:"/index",
-    service:true,
-    user:false,
-    agent:false
-  },
-  component: register
 }, {
   path: '/activity',
   name: '活动',
@@ -291,15 +287,6 @@ module.exports = [{
   },
   component: securityCenter
 },{
-  path: '/rechargeWay',
-  name: '选择充值方式',
-  meta:{
-    title:"选择充值方式",
-    link:"/userCenter",
-    user:1,
-  },
-  component: rechargeWay
-},{
   path: '/agentCenter',
   redirect: '/notfound' //重定向配置
 }, {
@@ -308,7 +295,9 @@ module.exports = [{
 },{
   path: '/Notice',
   redirect: '/notfound' //重定向配置
-}, {
-  path: '*',
-  redirect: '/notfound' //重定向配置
-}]
+},]
+
+routes = routes.concat(guangying).concat(publicRoute)
+
+
+module.exports = routes
