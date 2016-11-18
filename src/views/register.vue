@@ -4,11 +4,13 @@
     <tbody>
       <tr>
         <td>邀请码</td>
-        <td colspan="2"><input class="input fl mL15" 
-        											 type="url"  
-        											 placeholder="请输入邀请码"
-        											 :readonly  = "YqmReadOnly"
-        											 v-model.lazy = "InvitationCode"   /></td>
+        <td colspan="2">
+          <input class="input fl mL15"
+    						 type="url"
+    						 placeholder="请输入邀请码"
+    						 :readonly  = "YqmReadOnly"
+    						 v-model.lazy = "InvitationCode"/>
+        </td>
       </tr>
 
       <tr>
@@ -52,7 +54,7 @@
 export default {
 	data () {
 		return {
-			InvitationCode: '',	
+			InvitationCode: '',
 			UserName: '',
 			Password: '',
 			checkPassword: '',
@@ -154,7 +156,7 @@ export default {
               this.YqmReadOnly = false;
             }
             layer.msgWarn(json.StrCode);
-            this.refreshYzm()	
+            this.refreshYzm()
           }
         })
       })
