@@ -1,31 +1,41 @@
-const login =resolve => require(['./views/login'],resolve)
-const index =resolve => require(['./views/index'],resolve)
-const activity =resolve => require(['./views/activity'],resolve)
-const newWinners =resolve => require(['./views/newWinners'],resolve)
-const userCenter =resolve => require(['./views/userCenter'],resolve)
-const service =resolve => require(['./views/service'],resolve)
-const notfound =resolve => require(['./views/notfound'],resolve)
-const personalInfo =resolve => require(['./views/personalInfo'],resolve)
-const securityCenter =resolve => require(['./views/securityCenter'],resolve)
-const lottery_k3 =resolve => require(['./views/lottery_k3'],resolve)
-const dailyPrise =resolve => require(['./views/dailyPrise'],resolve)//每日加奖
-const upgrade =resolve => require(['./views/upgrade'],resolve)//晋级奖励
-const activityInfo =resolve => require(['./views/activityInfo'],resolve)//站长活动
-const setPwd =resolve => require(['./views/setPwd'],resolve)//设置密码
-const verifyPwd =resolve => require(['./views/verifyPwd'],resolve)//修改登录密码
-const verifySafePwd =resolve => require(['./views/verifySafePwd'],resolve)//修改安全密码
-const setSafePwd =resolve => require(['./views/setSafePwd'],resolve)//设置安全密码
-const verifyMobile =resolve => require(['./views/verifyMobile'],resolve)//修改手机
-const setMobile =resolve => require(['./views/setMobile'],resolve)//设置手机
-const verifyQuestion =resolve => require(['./views/verifyQuestion'],resolve)//修改密码问题
-const setQuestion =resolve => require(['./views/setQuestion'],resolve)//设置密保问题
-const verifyMail =resolve => require(['./views/verifyMail'],resolve)//修改邮箱
-const setMail =resolve => require(['./views/setMail'],resolve)//设置邮箱
-const manageBankcard =resolve => require(['./views/manageBankcard'],resolve)//银行卡管理
-const Notice =resolve => require(['./views/Notice'],resolve)
-const letter =resolve => require(['./views/letter'],resolve)
-const NoticeDetail =resolve => require(['./views/NoticeDetail'],resolve)
-module.exports = [{
+import guangying from './guangying'
+import zhiming from './zhiming'
+
+const login =resolve => require(['../views/login'],resolve)
+const index =resolve => require(['../views/index'],resolve)
+const activity =resolve => require(['../views/activity'],resolve)
+const newWinners =resolve => require(['../views/newWinners'],resolve)
+const userCenter =resolve => require(['../views/userCenter'],resolve)
+const service =resolve => require(['../views/service'],resolve)
+const notfound =resolve => require(['../views/notfound'],resolve)
+const personalInfo =resolve => require(['../views/personalInfo'],resolve)
+const securityCenter =resolve => require(['../views/securityCenter'],resolve)
+const lottery_k3 =resolve => require(['../views/lottery_k3'],resolve)
+const dailyPrise =resolve => require(['../views/dailyPrise'],resolve)//每日加奖
+const upgrade =resolve => require(['../views/upgrade'],resolve)//晋级奖励
+const activityInfo =resolve => require(['../views/activityInfo'],resolve)//站长活动
+const setPwd =resolve => require(['../views/setPwd'],resolve)//设置密码
+const verifyPwd =resolve => require(['../views/verifyPwd'],resolve)//修改登录密码
+const verifySafePwd =resolve => require(['../views/verifySafePwd'],resolve)//修改安全密码
+const setSafePwd =resolve => require(['../views/setSafePwd'],resolve)//设置安全密码
+const verifyMobile =resolve => require(['../views/verifyMobile'],resolve)//修改手机
+const setMobile =resolve => require(['../views/setMobile'],resolve)//设置手机
+const verifyQuestion =resolve => require(['../views/verifyQuestion'],resolve)//修改密码问题
+const setQuestion =resolve => require(['../views/setQuestion'],resolve)//设置密保问题
+const verifyMail =resolve => require(['../views/verifyMail'],resolve)//修改邮箱
+const setMail =resolve => require(['../views/setMail'],resolve)//设置邮箱
+const manageBankcard =resolve => require(['../views/manageBankcard'],resolve)//银行卡管理
+
+
+
+var publicRoute = [
+  {
+    path: '*',
+    redirect: '/notfound' //重定向配置
+  }
+]
+
+var routes = [{
   path: '/',
   redirect: '/index' //重定向配置
 },{
@@ -283,40 +293,9 @@ module.exports = [{
 }, {
   path: '/PLstatement',
   redirect: '/notfound' //重定向配置
-},{
-  path: '/Notice',
-  meta:{
-    titleList:[{
-      title:"网站公告",
-      to:"/Notice"
-    },{
-      title:"站内信",
-      to:"/letter"
-    }]
-  },
-  component: Notice
-}, {
-  path: '/letter',
-  meta:{
-    titleList:[{
-      title:"网站公告",
-      to:"/Notice"
-    },{
-      title:"站内信",
-      to:"/letter"
-    }]
-  },
-  component: letter
-},{
-  path:"/NoticeDetail/:ID",
-  name:"公告",
-  meta:{
-    title:"公告",
-    user:1,
-    link:"/Notice"
-  },
-  component:NoticeDetail
-},{
-  path: '*',
-  redirect: '/notfound' //重定向配置
 }]
+
+routes = routes.concat(guangying).concat(zhiming).concat(publicRoute)
+
+
+module.exports = routes

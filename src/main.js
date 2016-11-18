@@ -3,12 +3,11 @@ import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import { mapState } from 'vuex'
 import App from './App'
+import routes from './routes/routes.js'
 Vue.use(VueRouter)
 Vue.use(Vuex)
 
-
 const _AJAXUrl = '/tools/ssc_ajax.ashx'
-const routes = require('./routes.js')
 const router = new VueRouter({
 	routes,
 	mode:'history',
@@ -62,6 +61,13 @@ const store = new Vuex.Store({
   	WithdrwHtml:state=>{
   		//判断提现去处的逻辑写在这里
   		return "login"
+  	},
+  	PayLimit: state => {
+  		var el = {};
+  		state.PayLimit.forEach(item=>{
+  			el[item.PayName] = [item.MinMoney, item.MaxMoney];
+  		})
+  		return el;
   	}
   },
   mutations: {
@@ -87,60 +93,13 @@ const store = new Vuex.Store({
   }
 })
 
-var _FomatConfig = {
-	ImgCode: {
-		Name: "验证码",
-		Reg: /^[0-9a-zA-Z]{4}$/,
-	},
-	SmsCode: {
-		Name: "短信验证码",
-		Reg: /^\d{4}$/
-	},
-	MailCode:{
-		Name: "邮箱验证码",
-		Reg: /^\d{4}$/
-	},
-	UserName: {
-		Name: "账号",
-		ErrMsg:"账号应为4-15个字符，可使用字母、数字，禁止以0开头",
-		Reg: /^[\w|\d]{4,16}$/
-	},
-	Password: {
-		Name: "密码",
-		ErrMsg:"密码应为6-16位字符",
-		Reg: /^[\w!@#$%^&*.]{6,16}$/
-	},
-	Mobile: {
-		Name: "手机号",
-		ErrMsg:"请输入13|15|18开头的11位手机号码",
-		Reg: /^1[3|5|8]\d{9}$/,
-	},
-	RealName: {
-		Name: "姓名",
-		Reg: /^[\u4e00-\u9fa5 ]{2,10}$/,
-	},
-	BankNum: {
-		Name: "银行卡号",
-		Reg: /^\d{10,19}$/
-	},
-	Money: {
-		Name: "金额",
-		Reg: /^\d{1,}(\.\d{1,2})?$/,
-		Between: [100, 500000] //100~50w之间
-	},
-	Mail:{
-		Name:"邮箱",
-		Reg:/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/
-	}
-}
-
 const interviewApp = new Vue({
 	el: '#app',
 	store,
 	router,
 	watch: {
 		$route(to,from){
-			console.log("监听路由已经变化");
+			// console.log("监听路由已经变化");
 			// console.log(this.$route);
 		}
 	},
@@ -215,7 +174,7 @@ const interviewApp = new Vue({
 			    			this.$router.push("/login")
 			    		})
 			    	}
-			      fun&&fun()
+			      fun&&fun(state)
 			    }else{
 			      layer.msgWarn(json.StrCode);
 			    }
@@ -230,8 +189,8 @@ const interviewApp = new Vue({
 				}
 			}
 			if (!newArr.length) {
-				console.log("全部都有");
-				fun&&fun()
+				// console.log("全部都有");
+				fun&&fun(state)
 				return;
 			}
 			this.AjaxGetInitData(newArr,fun)
@@ -239,18 +198,33 @@ const interviewApp = new Vue({
 		fetchData(){
 			console.log("gaibian");
 		},
-		format:function(obj){
-			var f,v;
-			for(var k in obj){
-				f=_FomatConfig[k];
+		//保证校验时按顺序来
+		format:function(obj, order, cfg){
+			cfg = cfg || {}
+			var f,v
+
+			for(var i = 0;i < order.length;i++){
+				var k = order[i];
+				v = obj[k]
+				f=cfg[k]||store.state._FomatConfig[k]
+
+				// 如果是校验重复的
+				if(k.indexOf('check') > -1){
+					var target = k.slice(5), target_f = cfg[target] || store.state._FomatConfig[target]
+					if(obj[k] !== obj[target]){
+						console.log(obj[k], obj[target])
+						return [k, `两次 ${target_f.Name} 不相同`]
+					}
+				}
+
 				if (f) {
-					v = obj[k];
 					if (!f.Reg.test(v)) {
 						console.log(v);
 						return [k,v?f.ErrMsg:(f.Name+"不能为空")];
 					}
 				}
 			}
+
 			return false;
 		},
 		obj2Formdata:function(obj){
@@ -265,7 +239,8 @@ const interviewApp = new Vue({
 			return str.join('&');
 		}
 	},
-	render: h => h(App)
+	
+	render: h => h(App),
 });
 
 router.beforeEach((to, from, next) => {
@@ -276,5 +251,9 @@ router.beforeEach((to, from, next) => {
 router.afterEach((to, from) => {
 	layer.closeAll()
 });
+
+//全局过滤器
+Vue.filter('num', v=>+v) // 转成数字类型
+
 
 module.exports = interviewApp;

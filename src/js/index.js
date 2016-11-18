@@ -8,7 +8,10 @@ export default {
     // 不！能！获取组件实例 `this`
     // 因为当钩子执行前，组件实例还没被创建
     var arr = ["BannerList","NoticeData","LotteryConfig","LotteryList","SiteConfig"];
-    interviewApp.GetInitData(arr,next)
+    interviewApp.GetInitData(arr, state=>{
+      next();
+    })
+
   },
   created:function(){
   }

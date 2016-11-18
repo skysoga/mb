@@ -20,30 +20,26 @@
         <tr></tr>
       </tbody>
     </table>
-    <a class='forget fr' href="/register.html">没有账号? 立即注册</a>
+    
+    <router-link class='forget fr' to = "/register">没有账号? 立即注册</router-link>
     <div class="loginBtn BTN" v-on:click="login">
       <a>立即登录</a>
     </div>
-    <ul id="usedList">
-    </ul>
-    <div class="sevice">
+
+    <ul id="usedList"></ul>
+    <div class="sevice" @click = "BottomBoxShow=true">
         <a>登录遇到问题?</a>
     </div>
-    <div class = "_problemBox" style="display:none;">
-      <div class="blackBg"></div>
-      <div class="moreLayer">
-        <ul>
-          <!-- <li><a href="/service.html">在线客服</a></li> -->
-          <li><a href="/forgetPwd.html">忘记密码</a></li>
-          <li id = "goPC"><a>电脑版</a></li>
-        </ul>
-        <ul>
-          <li><a href="javascript:;">取消</a></li>
-        </ul>
-      </div>
-    </div>
+
+    <bottom-box v-show = "BottomBoxShow"
+                 :list = "BottomBoxList"
+                 ></bottom-box>
+    
   </div>
 </template>
+
+
+
 <script src="../js/login.js"></script>
 <style lang="scss" scoped>
   @import '../scss/login.scss';
