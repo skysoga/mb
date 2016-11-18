@@ -10,8 +10,11 @@ export default {
     }
   },
   created(){
+    var vm=this
     var arr = ["UserMobile"];
-     this.$root.GetInitData(arr)
+     this.$root.GetInitData(arr,state=>{
+      vm.Phone=state.UserMobile
+     })
   },
   methods:{
     postBtn(){
@@ -48,11 +51,6 @@ export default {
     },
     postMsg(){
       let vm=this
-      if(!this.Phone){
-        layer.msgWarn('请先输入手机号')
-        this.SmsCode=""
-        return;
-      }
       if(!vm.toMsg){return};
       this.toMsg=false
       this.noDo=false
