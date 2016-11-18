@@ -32,6 +32,7 @@ export default {
       }
       delete ajax.checkPassword;
       ajax.action="SetSafePass"
+      layer.msgWait("正在提交")
       _fetch(ajax).then((res)=>{
         res.json().then((json) => {
           if(json.Code===1) {

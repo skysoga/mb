@@ -24,6 +24,7 @@ export default {
         return;
       }
       ajax.Action="VerifySafePwd";
+      layer.msgWait("正在提交")
       _fetch(ajax).then((res)=>{
         res.json().then((json) => {
           if(json.Code===1) {

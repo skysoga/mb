@@ -13,11 +13,11 @@ export default {
     postBtn(){
       var $root=this.$root
       var ajax = {
-        Phone: this.Phone,
+        Mobile: this.Phone,
         SmsCode:this.SmsCode
       }
       var selfCheck = {
-        Phone:{
+        Mobile:{
           Name: '手机号',
           Reg: /^1[3|5|8]\d{9}$/,
           ErrMsg:"手机号为11位！"
@@ -28,19 +28,21 @@ export default {
           ErrMsg:"验证码不正确！"
         }
       }
-      var err = $root.format(ajax, ['Phone','SmsCode'], selfCheck);
+      var err = $root.format(ajax, ['Mobile','SmsCode'], selfCheck);
       if (err) {
         layer.msgWarn(err[1]);
         return;
       }
-      delete ajax.checkPassword;
-      ajax.action="VerifyMobile"
+      ajax.Action="VerifyMobile"
       ajax.Qort="Set"
+      layer.msgWait("正在提交")
       _fetch(ajax).then((res)=>{
         res.json().then((json) => {
           if(json.Code===1) {
             layer.msgWarn(json.StrCode);
-            $root.$router.push('/securityCenter')
+            $root.AjaxGetInitData(["UserMobile"],function(){
+              $root.$router.push('/securityCenter')
+            })
           }else{
             layer.msgWarn(json.StrCode);
           }
@@ -54,13 +56,26 @@ export default {
         this.SmsCode=""
         return;
       }
-      if(!vm.toMsg){return};
-      this.toMsg=false
-      this.noDo=false
       let ajax={
-        Action:"SendMobileCode",
         Mobile:this.Phone,
       }
+      if(!vm.toMsg){return};
+      var selfCheck = {
+        Mobile:{
+          Name: '手机号',
+          Reg: /^1[3|5|8]\d{9}$/,
+          ErrMsg:"手机号为11位！"
+        }
+      }
+      var err = vm.$root.format(ajax, ['Mobile'], selfCheck);
+      if (err) {
+        layer.msgWarn(err[1]);
+        return;
+      }
+      this.toMsg=false
+      this.noDo=false
+      ajax.Action="SendMobileCode"
+      layer.msgWait("正在发送")
       _fetch(ajax).then((res)=>{
         res.json().then((json) => {
           if(json.Code===1) {

@@ -51,17 +51,6 @@ export default {
     }
   },*/
   methods:{
-    refresh:function(e){
-      var t = this,c=this.refreshClass
-      this.refreshClass+=" refreshMove"
-      this.getBalance()
-      setTimeout(()=>{
-        this.refreshClass="refresh"
-      },500)
-    },
-    getBalance:function(){
-      this.$root.GetInitData(['UserBalance'])
-    },
     loginOut:function(){
       var vm = this,
         $root = this.$root;
