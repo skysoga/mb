@@ -1,12 +1,13 @@
 const interviewApp=require("../main.js");
 export default {
-  data:()=>{
+  data(){
     return{
       Password:""
     }
   },
   methods:{
-    postBtn:function(){
+    postBtn(){
+      var $root=this.$root
       var ajax = {
         Password: this.Password
       }
@@ -25,9 +26,9 @@ export default {
       ajax.Action="verifyPass";
       _fetch(ajax).then((res)=>{
         res.json().then((json) => {
-          console.log(json)
           if(json.Code===1) {
             //验证密码
+            $root.$router.push('/setPwd?Q=ResetPwd')
           }else{
             layer.msgWarn(json.StrCode);
           }

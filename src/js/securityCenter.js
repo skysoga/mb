@@ -18,23 +18,17 @@ export default {
       'UserMail',
       'UserLastLoginInfo',
       'UserFirstCardInfo',];
-      // $root.GetInitData(arr,next)
-      // this.StarNum=1;
-      // this.StarNum+=this.$store.state.UserHasSafePwd?1:0
-      // this.StarNum+=this.$store.state.UserSafeQuestions?1:0
-      // this.StarNum+=this.$store.state.UserMobile?1:0
-      // this.StarNum+=this.$store.state.UserMail?1:0
-      // this.LevelText=this.StarNum==5?"极高":this.StarNum==4?"高":this.StarNum==3?"中":this.StarNum==2?"低":"极低"
-      // next(vm=>{
-      //   vm.$root.GetInitData(arr,state=>{
-      //     vm.StarNum=1;
-      //     vm.StarNum+=state.UserHasSafePwd?1:0
-      //     vm.StarNum+=state.UserSafeQuestions?1:0
-      //     vm.StarNum+=state.UserMobile?1:0
-      //     vm.StarNum+=state.UserMail?1:0
-      //     vm.LevelText=vm.StarNum==5?"极高":vm.StarNum==4?"高":vm.StarNum==3?"中":vm.StarNum==2?"低":"极低"
-      //   })
-      // })
+      interviewApp.GetInitData(arr, state=>{
+      next(vm=>{
+        vm.StarNum=1;
+        vm.StarNum+=state.UserHasSafePwd?1:0
+        vm.StarNum+=state.UserSafeQuestions?1:0
+        vm.StarNum+=state.UserMobile?1:0
+        vm.StarNum+=state.UserMail?1:0
+        vm.LastLogin=state.UserLastLoginInfo[0]
+        vm.LevelText=vm.StarNum==5?"极高":vm.StarNum==4?"高":vm.StarNum==3?"中":vm.StarNum==2?"低":"极低"
+      });
+    })
     /*next(vm=>{
       vm.getBalance()
     })*/
