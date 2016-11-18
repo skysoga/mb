@@ -13,8 +13,8 @@ var routes=[
       },{
         title:"站内信",
         to:"/letter"
-      }
-      ]
+      }],
+      link:"/userCenter"
     },
     component:Notice
   },{
@@ -26,7 +26,8 @@ var routes=[
       },{
         title:"站内信",
         to:"/letter"
-      }]
+      }],
+      link:"/userCenter"
     },
     component: letter
   },{
