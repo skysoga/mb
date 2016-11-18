@@ -22,7 +22,9 @@ const setQuestion =resolve => require(['./views/setQuestion'],resolve)//设置�
 const verifyMail =resolve => require(['./views/verifyMail'],resolve)//修改邮箱
 const setMail =resolve => require(['./views/setMail'],resolve)//设置邮箱
 const manageBankcard =resolve => require(['./views/manageBankcard'],resolve)//银行卡管理
-
+const Notice =resolve => require(['./views/Notice'],resolve)
+const letter =resolve => require(['./views/letter'],resolve)
+const NoticeDetail =resolve => require(['./views/NoticeDetail'],resolve)
 module.exports = [{
   path: '/',
   redirect: '/index' //重定向配置
@@ -283,8 +285,38 @@ module.exports = [{
   redirect: '/notfound' //重定向配置
 },{
   path: '/Notice',
-  redirect: '/notfound' //重定向配置
+  meta:{
+    titleList:[{
+      title:"网站公告",
+      to:"/Notice"
+    },{
+      title:"站内信",
+      to:"/letter"
+    }]
+  },
+  component: Notice
 }, {
+  path: '/letter',
+  meta:{
+    titleList:[{
+      title:"网站公告",
+      to:"/Notice"
+    },{
+      title:"站内信",
+      to:"/letter"
+    }]
+  },
+  component: letter
+},{
+  path:"/NoticeDetail/:ID",
+  name:"公告",
+  meta:{
+    title:"公告",
+    user:1,
+    link:"/Notice"
+  },
+  component:NoticeDetail
+},{
   path: '*',
   redirect: '/notfound' //重定向配置
 }]
