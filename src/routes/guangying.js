@@ -30,7 +30,7 @@ var routes = [
     path: '/normalPay',
     name: '普通充值',
     meta: {
-      title: 'df',
+      title: '',
       link: '/rechargeWay',
       user: true,
     },

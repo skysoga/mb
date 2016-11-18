@@ -3,7 +3,7 @@
     <div class="innerWrap">
 
       <div class="surperise active">
-        <router-link class="wrap" to = "normalPay">
+        <router-link class="wrap" to = "normalPay?method=Bank">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/card.png'">
           <div class="text">
             <strong>银行转账</strong>
@@ -14,7 +14,7 @@
       </div>
 
       <div class="surperise active">
-        <router-link class = "wrap" :to = "wechatType === '一般' ? 'normalPay?method=wechat' : 'quickPay?method=wechat'">
+        <router-link class = "wrap" :to = "wechatType === '一般' ? 'normalPay?method=Weixin' : 'quickPay?method=Weixin'">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/weixin.png'">
           <div class="text">
             <strong>微信支付</strong>
@@ -28,7 +28,7 @@
       </div>
 
       <div class="surperise active">
-        <router-link class = "wrap" :to = "aliType === '一般' ? 'normalPay?method=ali' : 'quickPay?method=ali'">
+        <router-link class = "wrap" :to = "aliType === '一般' ? 'normalPay?method=Alipay' : 'quickPay?method=Alipay'">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/alipay.png'">
           <div class="text">
             <strong>支付宝</strong>
@@ -53,7 +53,7 @@ export default {
 			imgServer: this.$store.state.constant.ImgHost,
 			wechatType: '一般',
 			aliType: '一般',
-			payLimit:{}
+			payLimit:{},
 		}
 	},
 	beforeRouteEnter(to,from,next){
@@ -61,19 +61,13 @@ export default {
       next()
     })
 	},
+
   created () {
     let state = this.$store.state
     this.wechatType = state.RechargeWayWeixin[0].PayType || '一般' 
     this.aliType = state.RechargeWayAlipay[0].PayType || '一般'
     this.payLimit = Object.freeze(this.$store.getters.PayLimit)
-    // console.log(this.payLimit)
-    // console.log(this.wechatType, this.aliType)
   },
-  beforeRouteLeave (to, from, next){
-    
-    to.meta.title = to.query.method
-    next()
-  }
 }
 </script>
 <style lang = "scss" scoped>
