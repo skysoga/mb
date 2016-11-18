@@ -40,7 +40,7 @@
           <i class="iconfont right fr"></i>
         </router-link>
       </div>
-      
+
     </div>
   </div>
 </template>
@@ -69,6 +69,11 @@ export default {
     // console.log(this.payLimit)
     // console.log(this.wechatType, this.aliType)
   },
+  beforeRouteLeave (to, from, next){
+    
+    to.meta.title = to.query.method
+    next()
+  }
 }
 </script>
 <style lang = "scss" scoped>

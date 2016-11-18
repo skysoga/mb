@@ -25,8 +25,6 @@ const verifyMail =resolve => require(['../views/verifyMail'],resolve)//修改邮
 const setMail =resolve => require(['../views/setMail'],resolve)//设置邮箱
 const manageBankcard =resolve => require(['../views/manageBankcard'],resolve)//银行卡管理
 
-
-
 var publicRoute = [
   {
     path: '*',

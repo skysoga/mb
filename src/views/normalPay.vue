@@ -1,5 +1,4 @@
 <template>
-
   <div class="main" >
     <table>
       <tr>
@@ -51,6 +50,10 @@ export default{
 			a: 1
 		}
 	},
+	created () {
+		
+
+	}
 }
 </script>
 
