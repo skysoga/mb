@@ -21,7 +21,6 @@
 </template>
 
 <script type="text/javascript">
-  import bindEvent from '../js/touchEvent'
   export default {
     data() {
       return {

@@ -9,7 +9,7 @@
         <tr></tr>
       </tbody>
     </table>
-    <a class='forget fr' href="/resetWay?Q=ResetPwd">找回密码?</a>
+    <router-link class='forget fr' :to="{path:'resetWay',query:{Q:'ResetPwd'}}">找回密码?</router-link>
     <div class="loginBtn BTN"><a @click="postBtn">提交</a></div>
 </div>
 </template>

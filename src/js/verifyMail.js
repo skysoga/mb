@@ -6,20 +6,22 @@ export default {
       MailCode:"",
       reTime:'发送验证码',
       noDo:true,
-      toMsg:true
+      toMsg:true,
+      nextUrl:""
     }
   },
   created(){
+    var Q=this.$route.query.Q
+    if(Q){this.nextUrl=Q.substr(2)}
     var vm=this
     var arr = ["UserMail"];
      this.$root.GetInitData(arr,state=>{
       vm.Mail=state.UserMail
-      console.log(vm.Mail)
      })
   },
   methods:{
     postBtn(){
-      var $root=this.$root
+      var vm=this
       var ajax = {
         Mail: 0,
         MailCode:this.MailCode
@@ -31,7 +33,7 @@ export default {
           ErrMsg:"验证码不正确！"
         }
       }
-      var err = $root.format(ajax, ['MailCode'], selfCheck);
+      var err = vm.$root.format(ajax, ['MailCode'], selfCheck);
       if (err) {
         layer.msgWarn(err[1]);
         return;
@@ -43,7 +45,9 @@ export default {
         res.json().then((json) => {
           if(json.Code===1) {
             layer.msgWarn(json.StrCode);
-            $root.$router.push('/setMail')
+            var url=vm.nextUrl
+            url=url?'/'+url:'/setMail'
+            vm.$root.$router.push(url)
           }else{
             layer.msgWarn(json.StrCode);
           }

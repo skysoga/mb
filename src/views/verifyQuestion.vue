@@ -5,7 +5,6 @@
         <tr>
           <td>问题一</td>
           <td>
-            <!-- <input class="input" placeholder="点击选择密保问题" /> -->
             <select v-model="question1">
                 <option :value="n.Id" v-for="n in Questions">{{n.Question}}</option>
             </select>
@@ -24,7 +23,6 @@
         <tr>
           <td>问题二</td>
           <td>
-            <!-- <input class="input" placeholder="点击选择密保问题" /> -->
             <select v-model="question2">
                <option :value="x.Id" v-for="x in Questions">{{x.Question}}</option>
             </select>

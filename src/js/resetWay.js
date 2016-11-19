@@ -18,12 +18,10 @@ export default {
         ResetMail : '找回邮箱'
       }
     to.meta.title=urlObj[to.query.Q]
-
     next()
   },
   created:function(){
     var getUrl=this.$route.query.Q
-    console.log(this.$store)
     var vm=this
     var urlObj=this.getKey()
      var arr = ['UserSafeQuestions','UserHasSafePwd','UserMobile','UserMail'];
