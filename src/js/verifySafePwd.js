@@ -5,6 +5,10 @@ export default {
       Password:""
     }
   },
+  created(){
+    var Q=this.$route.query.Q
+    console.log(Q)
+  },
   methods:{
     postBtn(){
       var $root=this.$root

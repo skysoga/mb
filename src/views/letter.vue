@@ -55,11 +55,11 @@ export default{
               }
               this.ajaxData.Index++
             }else {
-              console.log("return error")
+              layer.msgWarn(data.StrCode)
             }
           })
         }else {
-          console.log("request error")
+          layer.msgWarn("request error")
         }
       })
     },
