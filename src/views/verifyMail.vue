@@ -4,21 +4,21 @@
       <tbody>
         <tr>
           <td>已绑定邮箱</td>
-          <td><input class="input" type="email" name="Mail" readonly="readonly"/></td>
+          <td><input class="input" type="email" name="Mail" readonly="readonly" :placeholder="Mail"/></td>
         </tr>
         <tr>
           <td>输入验证码</td>
           <td>
-            <input class="input" type="email" name="MailCode" placeholder="请输入验证码" />
+            <input class="input" type="email" v-model="MailCode" placeholder="请输入验证码" />
             <div class="tableBTN">
-              <span class="sendCode">发送验证码</span>
+              <span class="sendCode" @click="postMsg">{{reTime}}</span>
             </div>
           </td>
         </tr>
         <tr></tr>
       </tbody>
     </table>
-    <div class="loginBtn BTN"><a>提交</a></div>
+    <div class="loginBtn BTN"><a @click="postBtn">提交</a></div>
   </div>
 </template>
 <script src="../js/verifyMail.js"></script>
