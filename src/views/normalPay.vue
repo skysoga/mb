@@ -21,18 +21,18 @@
       </tr>
       <tr>
         <td>开户支行</td>
-        <td><input class="cGold" type="text" :value = "nowRender.BankStore" readonly="readonly"><i class="iconfont copy">复制</i></td>
+        <td><input class="cGold" type="text" :value = "nowRender.BankStore"  readonly="readonly"><i class="iconfont copy">复制</i></td>
       </tr>
       <tr>
         <td>充值金额</td>
-        <td><input type="tel" name="Money" placeholder="请输入充值金额"></td>
+        <td><input type="tel" v-model = "Money"  placeholder="请输入充值金额"></td>
       </tr>
       <tr>
         <td>银行账户</td>
-        <td><input type="text" name="PayUser" placeholder="请输入您的银行账户"></td>
+        <td><input type="text" v-model = "PayUser" placeholder="请输入您的银行账户"></td>
       </tr>
     </table>
-    <div class="loginBtn BTN"><a>提交</a></div>
+    <div class="loginBtn BTN"><a @click = "submit">提交</a></div>
     <div class="tips">
       1、请转账到以上银行账户。<br>
       2、请正确填写您的户名和充值金额。<br>
@@ -64,7 +64,8 @@ export default{
       }
     }
 
-    to.meta.title = title[to.path][to.query.method]   //下一页的标题
+    to.meta.title = title[to.path][to.query.method]   //标题
+
 		//获取数据
 		rootApp.AjaxGetInitData(['PayLimit', rechargeWay], state=>{
 			if(shouldCheck.indexOf(method) > -1){
@@ -90,7 +91,6 @@ export default{
 		})
 
 	},
-
 	data () {
 		return {
 			method: 'Bank',
@@ -101,42 +101,21 @@ export default{
 			Alipay:{},
 
 			//当前
-			nowItem:'',
+			nowItem:'',	 
 			nowRender:{},
 
-			//ajax数据
-			ajax:{
-				//银行转账
-				Bank:{
-					Action:'Recharge',
-					Qort:2,
-					Money:0,
-					PayUser:'',
-					ID:1,
-					BankCode:'',
-				},
-				//微信支付
-				Weixin:{
-					Action:'Recharge',
-					Qort:4,
-					Money:0,
-					PayUser:'',
-					ID:1,
-				},
-				//支付宝
-				Alipay:{
-					Action:'Recharge',
-					Qort:3,
-					Money:0,
-					PayUser:'',
-					ID:1,
-				}
-			},
+			//ajax
+			PayUser:'',
+			Money:'',
+			ID:0,
+
+			
 		}
 	},
-	created () {
-		
-
+	computed:{
+		ID (){
+			return this.nowRender.Id
+		}
 	},
 	methods:{
 		//切换充值银行
@@ -146,6 +125,58 @@ export default{
 					this.nowRender = item;
 				}
 			})
+			console.log(this)
+		},
+		submit () {
+			//ajax数据
+			var ajaxConfig = {
+				//银行转账
+				Bank:{
+					Action:'Recharge',
+					Qort:2,
+					PayUser:'',
+					Money:0,
+					ID:1,
+					BankCode:'',
+				},
+				//微信支付
+				Weixin:{
+					Action:'Recharge',
+					Qort:4,
+					PayUser:'',
+					Money:0,
+					ID:1,
+				},
+				//支付宝
+				Alipay:{
+					Action:'Recharge',
+					Qort:3,
+					PayUser:'',
+					Money:0,
+					ID:1,
+				}
+			}
+			var ajax = ajaxConfig[this.method]
+			ajax.PayUser = this.PayUser
+			ajax.Money = this.Money
+			ajax.ID = this.ID
+
+			var RealName={
+				Name: "姓名",
+				Reg: /^[\u4e00-\u9fa5 ]{2,10}$/,
+			}
+
+			if(method === 'Bank'){
+				if(!ajax.PayUser){
+					layer.msgWarn('银行账号不能为空')
+				}else if(RealName.Reg.test(ajax.PayUser)){
+					layer.msgWarn('请输入真实的开户人姓名')		
+				}
+			}
+
+
+
+
 		}
 	}
 }
