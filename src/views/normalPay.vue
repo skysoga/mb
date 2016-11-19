@@ -77,6 +77,7 @@ export default{
 			}
 
 			next(vm=>{
+				console.log(vm.$root)
 				vm.method = method
 				if(method === 'Bank'){
 					vm[method] = Object.freeze(state[rechargeWay])
@@ -125,7 +126,6 @@ export default{
 					this.nowRender = item;
 				}
 			})
-			console.log(this)
 		},
 		submit () {
 			//ajax数据

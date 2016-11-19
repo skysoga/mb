@@ -4,7 +4,9 @@ import Vuex from 'vuex'
 import { mapState } from 'vuex'
 import App from './App'
 import routes from './routes/routes.js'
+import Va from './plugins/va.js'
 
+Vue.use(Va)
 Vue.use(VueRouter)
 Vue.use(Vuex)
 
@@ -255,4 +257,6 @@ router.afterEach((to, from) => {
 
 //全局过滤器
 Vue.filter('num', v=>+v) // 转成数字类型
+
+
 module.exports = interviewApp;

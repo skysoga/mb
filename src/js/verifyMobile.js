@@ -20,7 +20,7 @@ export default {
     postBtn(){
       var $root=this.$root
       var ajax = {
-        Phone: 0,
+        Mobile: 0,
         SmsCode:this.SmsCode
       }
       var selfCheck = {
@@ -35,14 +35,14 @@ export default {
         layer.msgWarn(err[1]);
         return;
       }
-      delete ajax.checkPassword;
       ajax.Action="VerifyMobile"
       ajax.Qort="Verify"
+      layer.msgWait("正在提交")
       _fetch(ajax).then((res)=>{
         res.json().then((json) => {
           if(json.Code===1) {
             layer.msgWarn(json.StrCode);
-            $root.$router.push('/securityCenter')
+            $root.$router.push('/setMobile')
           }else{
             layer.msgWarn(json.StrCode);
           }
@@ -58,6 +58,7 @@ export default {
         Action:"SendMobileCode",
         Mobile:this.Phone,
       }
+      layer.msgWait("正在发送")
       _fetch(ajax).then((res)=>{
         res.json().then((json) => {
           if(json.Code===1) {

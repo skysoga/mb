@@ -1,5 +1,7 @@
 import guangying from './guangying'
+import zhiming from './zhiming'
 import xiaosen from './xiaosen'
+
 const login =resolve => require(['../views/login'],resolve)
 const index =resolve => require(['../views/index'],resolve)
 const activity =resolve => require(['../views/activity'],resolve)
@@ -10,6 +12,7 @@ const notfound =resolve => require(['../views/notfound'],resolve)
 const personalInfo =resolve => require(['../views/personalInfo'],resolve)
 const securityCenter =resolve => require(['../views/securityCenter'],resolve)
 const lottery_k3 =resolve => require(['../views/lottery_k3'],resolve)
+
 
 
 var publicRoute = [
@@ -33,7 +36,7 @@ var routes = [{
     agent:false
   },
   component: index
-},, {
+},{
   path: '/lottery_k3',
   name: '快3',
   meta:{
@@ -129,11 +132,9 @@ var routes = [{
 }, {
   path: '/PLstatement',
   redirect: '/notfound' //重定向配置
-},{
-  path: '/Notice',
-  redirect: '/notfound' //重定向配置
-},]
+}]
 
-routes = routes.concat(guangying).concat(xiaosen).concat(publicRoute)
+routes = routes.concat(guangying).concat(zhiming).concat(xiaosen).concat(publicRoute)
+
 
 module.exports = routes

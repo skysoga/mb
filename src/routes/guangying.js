@@ -3,8 +3,17 @@ const register =resolve => require(['../views/register'],resolve)
 const rechargeWay =resolve => require(['../views/rechargeWay'],resolve)
 const normalPay =resolve => require(['../views/normalPay'],resolve)
 const quickPay =resolve => require(['../views/quickPay'],resolve)
+const va =  resolve =>require(['../views/va'],resolve)
 
 var routes = [
+  {
+    path: '/va' ,
+    name: '测试',
+    meta:{
+      title: '表单验证'
+    },
+    component: va
+  },
   {
     path: '/register',
     name: '注册',
