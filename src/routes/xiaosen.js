@@ -12,6 +12,7 @@ const setQuestion =resolve => require(['../views/setQuestion'],resolve)//设置�
 const verifyMail =resolve => require(['../views/verifyMail'],resolve)//修改邮箱
 const setMail =resolve => require(['../views/setMail'],resolve)//设置邮箱
 const manageBankcard =resolve => require(['../views/manageBankcard'],resolve)//银行卡管理
+const resetWay =resolve => require(['../views/resetWay'],resolve)//忘记密码
 
 var routes = [{
   path: '/manageBankcard',
@@ -161,5 +162,14 @@ var routes = [{
     nav:0,
   },
   component: activityInfo
+},{
+  path: '/resetWay',
+  name: '找回密码',
+  meta:{
+    title:"找回密码",
+    link:"/securityCenter",
+    nav:0,
+  },
+  component: resetWay
 }]
 module.exports = routes

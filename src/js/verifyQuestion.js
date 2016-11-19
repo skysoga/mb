@@ -13,9 +13,10 @@ export default {
     var arr = ["UserSafeQuestions"];
     var vm=this
      this.$root.GetInitData(arr,State=>{
+      var Nums=vm.doOne()
       vm.Questions=State.UserSafeQuestions
-      vm.question1=vm.Questions[0].Id
-      vm.question2=vm.Questions[1].Id
+      vm.question1=vm.Questions[Nums[0]].Id
+      vm.question2=vm.Questions[Nums[1]].Id
      })
   },
   methods:{
@@ -60,6 +61,16 @@ export default {
           }
         })
       })
+    },
+    doOne(){
+      var Arr=[];
+      Arr[0]=Math.floor(Math.random()*3)
+      Arr[1]=Math.floor(Math.random()*3)
+      if(Arr[0]==Arr[1]){
+        return this.doOne()
+      }else{
+        return Arr
+      }
     }
   }
 }
