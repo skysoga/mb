@@ -4,6 +4,7 @@ const Notice =resolve => require(['../views/Notice'],resolve)
 const NoticeDetail =resolve => require(['../views/NoticeDetail'],resolve)
 const playerHome =resolve => require(['../views/playerHome'],resolve)
 const competition =resolve => require(['../views/competition'],resolve)
+const billRecord =resolve => require(['../views/billRecord'],resolve)
 var routes=[
   {
     path: '/Notice',
@@ -45,7 +46,6 @@ var routes=[
     name:"玩家详情",
     meta:{
       title:"玩家信息",
-      user:1,
       link:"/newWinners"
     },
     component:playerHome
@@ -62,6 +62,14 @@ var routes=[
       }]
     },
     component: competition
+  },{
+    path:"/billRecord",
+    name:"交易记录",
+    meta:{
+      title:"交易记录",
+      link:"/userCenter"
+    },
+    component:billRecord
   }
 ]
 
