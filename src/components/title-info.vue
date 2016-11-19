@@ -1,7 +1,6 @@
 <template>
 	<header class="top">
-    <span v-html="this.$route.meta.title">
-    </span>
+    <span v-html="this.$route.meta.title"></span>
     <ul v-show="this.$route.meta.titleList">
     <router-link tag="li" v-for="i in this.$route.meta.titleList" :to="i.to"><a>{{i.title}}</a><router-link>
     </ul>
