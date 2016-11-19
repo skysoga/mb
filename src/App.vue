@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <title-info></title-info>
+    <title-info :meta="$route&&$route.meta"></title-info>
     <transition name="fade"  mode="out-in">
-      <router-view :All = "this"></router-view>
+      <router-view></router-view>
     </transition>
     <navbar v-show="$route.meta.nav"></navbar>
   </div>
