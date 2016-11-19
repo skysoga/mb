@@ -7,9 +7,12 @@ export default {
       question2:"",
       answer1:"",
       answer2:"",
+      nextUrl:""
     }
   },
   created(){
+    var Q=this.$route.query.Q
+    if(Q){this.nextUrl=Q.substr(2)}
     var arr = ["UserSafeQuestions"];
     var vm=this
      this.$root.GetInitData(arr,State=>{
@@ -21,7 +24,7 @@ export default {
   },
   methods:{
     postBtn(){
-      var $root=this.$root
+      var vm=this
       var ajax = {
         Answer1:this.answer1,
         Answer2:this.answer2
@@ -55,7 +58,9 @@ export default {
         res.json().then((json) => {
           if(json.Code===1) {
             layer.msgWarn(json.StrCode);
-            $root.$router.push('/setQuestion')
+            var url=vm.nextUrl
+            url=url?'/'+url:'/setQuestion'
+            vm.$root.$router.push(url)
           }else{
             layer.msgWarn(json.StrCode);
           }

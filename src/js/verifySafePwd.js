@@ -2,16 +2,17 @@ const interviewApp=require("../main.js");
 export default {
   data:()=>{
     return{
-      Password:""
+      Password:"",
+      nextUrl:""
     }
   },
   created(){
     var Q=this.$route.query.Q
-    console.log(Q)
+    if(Q){this.nextUrl=Q.substr(2)}
   },
   methods:{
     postBtn(){
-      var $root=this.$root
+      var vm=this
       var ajax = {
         Password: this.Password
       }
@@ -32,8 +33,9 @@ export default {
       _fetch(ajax).then((res)=>{
         res.json().then((json) => {
           if(json.Code===1) {
-            //验证密码
-            $root.$router.push('/setSafePwd?Q=ResetSafePwd')
+            var url=vm.nextUrl
+            url=url?'/'+url:'/setSafePwd'
+            vm.$root.$router.push(url)
           }else{
             layer.msgWarn(json.StrCode);
           }
