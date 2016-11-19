@@ -1,26 +1,21 @@
 <template id="">
   <div class="main">
     <div class="touchScroll" @touchend="scroll()">
-      <div data-v-e892c7a6=""><a href="/NoticeDetail/2" class="active" data-id="2" data-v-e892c7a6=""><div data-v-e892c7a6=""><p data-v-e892c7a6="">玄德1</p> <span data-v-e892c7a6="">2019-04-01 20:26:27</span></div></a> <div data-v-e892c7a6="" class="hr1px"></div></div>
-      <div data-v-e892c7a6=""><a href="/NoticeDetail/2" class="active" data-id="2" data-v-e892c7a6=""><div data-v-e892c7a6=""><p data-v-e892c7a6="">玄德2</p> <span data-v-e892c7a6="">2019-04-01 20:26:27</span></div></a> <div data-v-e892c7a6="" class="hr1px"></div></div>
-      <div data-v-e892c7a6=""><a href="/NoticeDetail/2" class="active" data-id="2" data-v-e892c7a6=""><div data-v-e892c7a6=""><p data-v-e892c7a6="">玄德3</p> <span data-v-e892c7a6="">2019-04-01 20:26:27</span></div></a> <div data-v-e892c7a6="" class="hr1px"></div></div>
-      <div data-v-e892c7a6=""><a href="/NoticeDetail/2" class="active" data-id="2" data-v-e892c7a6=""><div data-v-e892c7a6=""><p data-v-e892c7a6="">玄德4</p> <span data-v-e892c7a6="">2019-04-01 20:26:27</span></div></a> <div data-v-e892c7a6="" class="hr1px"></div></div>
-      <div data-v-e892c7a6=""><a href="/NoticeDetail/2" class="active" data-id="2" data-v-e892c7a6=""><div data-v-e892c7a6=""><p data-v-e892c7a6="">玄德5</p> <span data-v-e892c7a6="">2019-04-01 20:26:27</span></div></a> <div data-v-e892c7a6="" class="hr1px"></div></div>
-      <div data-v-e892c7a6=""><a href="/NoticeDetail/2" class="active" data-id="2" data-v-e892c7a6=""><div data-v-e892c7a6=""><p data-v-e892c7a6="">玄德6</p> <span data-v-e892c7a6="">2019-04-01 20:26:27</span></div></a> <div data-v-e892c7a6="" class="hr1px"></div></div>
-      <div data-v-e892c7a6=""><a href="/NoticeDetail/2" class="active" data-id="2" data-v-e892c7a6=""><div data-v-e892c7a6=""><p data-v-e892c7a6="">玄德7</p> <span data-v-e892c7a6="">2019-04-01 20:26:27</span></div></a> <div data-v-e892c7a6="" class="hr1px"></div></div>
-      <div data-v-e892c7a6=""><a href="/NoticeDetail/2" class="active" data-id="2" data-v-e892c7a6=""><div data-v-e892c7a6=""><p data-v-e892c7a6="">玄德8</p> <span data-v-e892c7a6="">2019-04-01 20:26:27</span></div></a> <div data-v-e892c7a6="" class="hr1px"></div></div>
-      <div data-v-e892c7a6=""><a href="/NoticeDetail/2" class="active" data-id="2" data-v-e892c7a6=""><div data-v-e892c7a6=""><p data-v-e892c7a6="">玄德9</p> <span data-v-e892c7a6="">2019-04-01 20:26:27</span></div></a> <div data-v-e892c7a6="" class="hr1px"></div></div>
-      <div data-v-e892c7a6=""><a href="/NoticeDetail/2" class="active" data-id="2" data-v-e892c7a6=""><div data-v-e892c7a6=""><p data-v-e892c7a6="">玄德10</p> <span data-v-e892c7a6="">2019-04-01 20:26:27</span></div></a> <div data-v-e892c7a6="" class="hr1px"></div></div>
-      <div class="" v-for="item in renderData">
-        <router-link class="active" :data-id="item.ID" :to="'/NoticeDetail/'+item.ID">
-          <div>
-            <p>{{item.Title}}</p>
-            <span>{{item.Add_Time}}</span>
-          </div>
-        </router-link>
-        <div class="hr1px"></div>
-      </div>
-      <div class="msg" v-html="msg"></div>
+      <template v-if="data_count===0">
+        <div class='fullPageMsg' ><div class='fullPageIcon iconfont'>&#xe63c;</div><p>暂无公告</p></div>
+      </template>
+      <template v-else>
+        <div class="" v-for="item in renderData">
+          <router-link class="active" :data-id="item.ID" :to="'/NoticeDetail/'+item.ID">
+            <div>
+              <p>{{item.Title}}</p>
+              <span>{{item.Add_Time}}</span>
+            </div>
+          </router-link>
+          <div class="hr1px"></div>
+        </div>
+        <div class="msg" v-html="msg[cant_scroll]"></div>
+      </template>
     </div>
   </div>
 </template>
@@ -34,38 +29,34 @@
           Action: "GetMessageData",
           Index: 0
         },
+        cant_scroll: 0,//分别为0(默认状态),1(正在加载),2(已显示全部)
+        msg:[null,layer.icon.load + "正在加载...","已显示全部公告"],
         renderData: [],
-        msg: layer.icon.load + "正在加载...",
         scroollDom: null,
         data_length: 0,
-        data_count: 0,
-        can_scroll: true,
+        data_count: null,
         doc_height: 0,
-        nodata: "<div class='fullPageMsg'><div class='fullPageIcon iconfont'>&#xe63c;</div><p>暂无公告</p></div>"
       }
     },
     methods: {
       getAjaxData: function() {
+        console.log("刷新");
+        this.cant_scroll = 1
         _fetch(this.ajaxData).then((res) => {
           if (res.ok) {
-            res.json().then((data) => {
-              if (data.Code === 1) {
+            res.json().then((json) => {
+              if (json.Code === 1) {
                 if (this.ajaxData.Index === 0) {
-                  if (data.DataCount === 0) {
-                    this.scroollDom.innerHTML = this.nodata
-                  } else {
-                    this.data_count = data.DataCount
-                  }
+                  this.data_count = json.DataCount
                 }
-                this.renderData = this.renderData.concat(data.BackData)
-                this.data_length += data.BackData.length
+                this.renderData = this.renderData.concat(json.BackData)
+                this.data_length += json.BackData.length
                 if (this.data_length >= this.data_count) {
-                  this.msg = "已显示全部公告"
-                  this.can_scroll = false
+                  this.cant_scroll = 2
                 }
                 this.ajaxData.Index++
               } else {
-                layer.msgWarn(data.StrCode)
+                layer.msgWarn(json.StrCode)
               }
             })
           } else {
@@ -74,19 +65,23 @@
         })
       },
       scroll: function() {
-        if (this.can_scroll && this.scroollDom.scrollTop > (this.doc_height / 2)) {
+        if (this.cant_scroll) {
+          return
+        }else if (this.scroollDom.scrollTop > (this.renderData.length-6)*(3*em+1)-this.doc_height) {
           this.getAjaxData()
         }
       }
     },
     mounted() {
-      this.getAjaxData()
+      this.renderData = [{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"}]
+      // this.getAjaxData()
       this.scroollDom = document.querySelector(".touchScroll")
-      this.doc_height = document.body.scrollHeight || document.documentElement.scrollHeight
+      this.doc_height = this.scroollDom.clientHeight
     }
   }
+  require('../scss/msgList.scss')
 </script>
 
-<style lang="scss" scoped>
+<!-- <style lang="scss">
   @import '../scss/msgList.scss'
-</style>
+</style> -->
