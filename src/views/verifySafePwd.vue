@@ -9,7 +9,7 @@
         <tr></tr>
       </tbody>
     </table>
-    <a class='forget fr' href="/resetWay?Q=ResetSafePwd">找回安全密码?</a>
+    <router-link class='forget fr' :to="{path:'resetWay',query:{Q:'ResetSafePwd'}}">找回安全密码?</router-link>
     <div class="loginBtn BTN"><a @click="postBtn">确认修改</a></div>
     <div class="tips">
       安全密码用于提现、绑定银行卡等操作，可保障资金安全。

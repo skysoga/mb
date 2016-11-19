@@ -6,10 +6,13 @@ export default {
       SmsCode:"",
       reTime:'发送验证码',
       noDo:true,
-      toMsg:true
+      toMsg:true,
+      nextUrl:""
     }
   },
   created(){
+    var Q=this.$route.query.Q
+    if(Q){this.nextUrl=Q.substr(2)}
     var vm=this
     var arr = ["UserMobile"];
      this.$root.GetInitData(arr,state=>{
@@ -18,7 +21,7 @@ export default {
   },
   methods:{
     postBtn(){
-      var $root=this.$root
+      var vm=this
       var ajax = {
         Mobile: 0,
         SmsCode:this.SmsCode
@@ -30,7 +33,7 @@ export default {
           ErrMsg:"验证码不正确！"
         }
       }
-      var err = $root.format(ajax, ['SmsCode'], selfCheck);
+      var err = vm.$root.format(ajax, ['SmsCode'], selfCheck);
       if (err) {
         layer.msgWarn(err[1]);
         return;
@@ -42,7 +45,9 @@ export default {
         res.json().then((json) => {
           if(json.Code===1) {
             layer.msgWarn(json.StrCode);
-            $root.$router.push('/setMobile')
+            var url=vm.nextUrl
+            url=url?'/'+url:'/setMobile'
+            vm.$root.$router.push(url)
           }else{
             layer.msgWarn(json.StrCode);
           }
