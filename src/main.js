@@ -3,12 +3,11 @@ import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import { mapState } from 'vuex'
 import App from './App'
+import routes from './routes/routes.js'
 Vue.use(VueRouter)
 Vue.use(Vuex)
 
-
 const _AJAXUrl = '/tools/ssc_ajax.ashx'
-const routes = require('./routes.js')
 const router = new VueRouter({
 	routes,
 	mode:'history',
@@ -62,6 +61,13 @@ const store = new Vuex.Store({
   	WithdrwHtml:state=>{
   		//判断提现去处的逻辑写在这里
   		return "login"
+  	},
+  	PayLimit: state => {
+  		var el = {};
+  		state.PayLimit.forEach(item=>{
+  			el[item.PayName] = [item.MinMoney, item.MaxMoney];
+  		})
+  		return el;
   	}
   },
   mutations: {
@@ -245,5 +251,9 @@ router.beforeEach((to, from, next) => {
 router.afterEach((to, from) => {
 	layer.closeAll()
 });
+
+//全局过滤器
+Vue.filter('num', v=>+v) // 转成数字类型
+
 
 module.exports = interviewApp;

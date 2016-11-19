@@ -4,16 +4,16 @@
       <tbody>
         <tr>
           <td>安全密码</td>
-          <td><input class="input" type="password" name="Password" placeholder="请输入安全密码" /></td>
+          <td><input class="input" type="password" v-model="Password" placeholder="请输入安全密码" /></td>
         </tr>
         <tr>
           <td>确认密码</td>
-          <td><input class="input" type="password" name="checkPassword" placeholder="请再次输入安全密码" /></td>
+          <td><input class="input" type="password" v-model="checkPassword" placeholder="请再次输入安全密码" /></td>
         </tr>
         <tr></tr>
       </tbody>
     </table>
-    <div class="loginBtn BTN"><a>提交</a></div>
+    <div class="loginBtn BTN"><a @click="postBtn">提交</a></div>
     <div class="tips">
       安全密码用于提现、绑定银行卡等操作，可保障资金安全。
     </div>
