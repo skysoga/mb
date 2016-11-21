@@ -32,17 +32,15 @@
 <template>
   <div class = "_problemBox">
 
-    <div class="blackBg"></div>
+    <div class="blackBg" @click = "close"></div>
     <div class="moreLayer">
-
       <ul>
-        <li v-for = "(value,key) in list" @click = "$parent[key](value)">
+        <li v-for = "(value,key) in list" @click = "$parent.bottomBox(key,value)">
           <a>{{value}}</a>
         </li>
       </ul>
-
       <ul>
-        <li><a @click = "$parent.BottomBoxShow = false">取消</a></li>
+        <li><a @click = "close">取消</a></li>
       </ul>
 
     </div>
@@ -52,5 +50,10 @@
 <script>
 export default{
   props:['list'],
+  methods:{
+    close:function () {
+      this.$parent.BottomBoxShow = false
+    }
+  }
 }
 </script>

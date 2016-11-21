@@ -1,6 +1,6 @@
 <template>
 	<div class="main" style="padding-bottom: 0;">
-    <div class='textMore dataType' @click="BottomBoxShow=true"><em>{{dataName}}</em> <i class='iconfont'>&#xe601;</i></div>
+    <datatype></datatype>
     <div class="searchBtn">
       <div class="searchCon">
         <input class="proxySearch" type="text" placeholder="下级报表查询" value="">
@@ -25,9 +25,6 @@
           <li><span>¥0.00</span>代理分红</li>
       </ul>
     </div>
-    <bottom-box v-show = "BottomBoxShow"
-                 :list = "BottomBoxList"
-                 ></bottom-box>
   </div>
 </template>
 <script src="../js/agentReport.js"></script>
