@@ -112,17 +112,17 @@ const interviewApp = new Vue({
 			this.GetInitData(UserArr,fun)
 		},
 		SetFilter:function(data){
-		  var LotteryList = data.LotteryList;
-		  if(LotteryList&&LotteryList.length){
-		    data.LotteryList={};
-		    for (var i = LotteryList.length - 1; i >= 0; i--) {
-		      data.LotteryList[LotteryList[i].LotteryCode]={
-		        LotteryType:LotteryList[i].LotteryType,
-		        LotteryName:LotteryList[i].LotteryName,
-		        LotteryIntro:LotteryList[i].LotteryIntro
-		      }
-		    }
-		  }
+			;(function(LotteryList){
+			  if(LotteryList&&LotteryList.length){
+			    data.LotteryList={};
+			    var c
+			    for (var i = LotteryList.length - 1; i >= 0; i--) {
+			    	c = LotteryList[i].LotteryCode
+			      data.LotteryList[c]= LotteryList[i]
+			      delete data.LotteryList[c].LotteryCode
+			    }
+			  }
+			})(data.LotteryList)
 		  if (data.LotteryConfig&&data.LotteryConfig.length) {
 		    let LotteryConfig = data.LotteryConfig;
 		    delete data.LotteryConfig;
@@ -147,13 +147,15 @@ const interviewApp = new Vue({
 		          data.GradeList[i].JumpBonus=Number(data.GradeList[i].JumpBonus);
 		      }
 		  }
-		  if(data.ActivityConfig){
-		    for (var i = data.ActivityConfig.length - 1; i >= 0; i--) {
-		      if (typeof(data.ActivityConfig.Img)=="obj") {
-		        data.ActivityConfig.Img=data.ActivityConfig.Img[0];
+
+		  ;(function(a){
+		  	if (!a) {return}
+		    for (var i = a.length - 1; i >= 0; i--) {
+		      if (typeof(a[i].Img)=="object") {
+		        a[i].Img=a[i].Img[0];
 		      }
 		    }
-		  }
+		  })(data.ActivityConfig)
 		  return data;
 		},
 		SaveInitData(d){
