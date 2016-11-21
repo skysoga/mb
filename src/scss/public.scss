@@ -659,7 +659,7 @@ content:"\e62c";
 }
 .loadingMsg{
   font-size: 0.7em;
-  // padding: 0.9em 0;
+  padding: 0.9em 0;
   color: #4c4c4c;
   overflow: initial !important;
   /* background: initial !important; */
@@ -872,4 +872,16 @@ content:"\e62c";
   border: none;
   -webkit-tap-highlight-color: transparent;
   outline: none;
+}
+.dataType{
+  z-index: 999;
+  background: initial !important;
+  position: fixed;
+  right: .6em;
+  top: 0;
+  color: white;
+  font-size: 0.8em;
+  height: 2.9em !important;
+  width:initial !important;
+  line-height: 2.9em;
 }

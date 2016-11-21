@@ -1,6 +1,12 @@
-const {interviewApp}=require("../main.js");
+import datatype from '../components/top-right-chose';
 export default {
   data:()=>{
-    return{}
+    return{
+      BetweenType:0,
+    }
+  },
+  //子组件
+  components:{
+    'datatype': datatype
   }
 }

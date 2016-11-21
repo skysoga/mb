@@ -16,6 +16,7 @@ const resetWay =resolve => require(['../views/resetWay'],resolve)//找回方式
 const forgetPwd =resolve => require(['../views/forgetPwd'],resolve)//忘记密码
 const agentCenter =resolve => require(['../views/agentCenter'],resolve)//代理中心
 const agentReport =resolve => require(['../views/agentReport'],resolve)//代理报表
+const manageInvite =resolve => require(['../views/manageInvite'],resolve)//下级开户
 
 var routes = [{
   path: '/manageBankcard',
@@ -205,5 +206,37 @@ var routes = [{
     agent:true
   },
   component: agentReport
+},{
+  path: '/manageInvite',
+  name: '下级开户',
+  meta:{
+    titleList:[{
+        title:"下级开户",
+        to:"/manageInvite"
+      },{
+        title:"邀请码",
+        to:"/manageIcode"
+      }],
+    user:true,
+    link:'/agentCenter',
+    agent:true
+  },
+  component: manageInvite
+},{
+  path: '/manageIcode',
+  name: '邀请码',
+  meta:{
+    titleList:[{
+        title:"下级开户",
+        to:"/manageInvite"
+      },{
+        title:"邀请码",
+        to:"/manageIcode"
+      }],
+    link:'/agentCenter',
+    user:true,
+    agent:true
+  },
+  component: manageInvite
 }]
 module.exports = routes
