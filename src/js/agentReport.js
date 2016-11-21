@@ -13,27 +13,11 @@ export default {
     }
   },
   methods:{
-    dataBtn(){
-      if(this.dataShow!=true){
-        this.dataShow=true
-      }
-    },
-    tfun(value){
+    BottomBoxfun(key,value){
+      console.log(key,value)
       this.dataName=value
       this.BottomBoxShow=false
-    },
-    zfun(value){
-       this.dataName=value
-       this.BottomBoxShow=false
-    },
-    bfun(value){
-       this.dataName=value
-       this.BottomBoxShow=false
-    },
-    sfun(value){
-       this.dataName=value
-       this.BottomBoxShow=false
-    },
+    }
   },
   //子组件
   components:{

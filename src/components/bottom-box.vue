@@ -36,7 +36,7 @@
     <div class="moreLayer">
 
       <ul>
-        <li v-for = "(value,key) in list" @click = "$parent[key](value)">
+        <li v-for = "(value,key) in list" @click = "$parent.BottomBoxfun(key,value)">
           <a>{{value}}</a>
         </li>
       </ul>
