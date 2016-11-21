@@ -8,58 +8,58 @@
       <p id="LoginInfo">上次登录：{{LastLogin.LoginTime}}<br>{{LastLogin.LoginAddr}} | <router-link to="/verifyPwd">不是我登录?</router-link></p>
     </div>
     <div class="options">
-        <router-link :to="'verifyPwd'" class="active">
+        <router-link to="verifyPwd" class="active">
           <span>修改登录密码</span>
           <i class="fr">修改<span class="iconfont right"></span></i>
         </router-link>
 
         <p class="hr1px"></p>
 
-        <router-link  :to="'verifySafePwd'" class="active" v-if="!!$store.state.UserHasSafePwd">
+        <router-link  to="verifySafePwd" class="active" v-if="!!$store.state.UserHasSafePwd">
           <span>已设置安全密码</span>
           <i class="fr">修改<span class="iconfont right"></span></i>
         </router-link>
 
-        <router-link :to="'setSafePwd'" class="active" v-else>
+        <router-link to="setSafePwd" class="active" v-else>
           <span>设置安全密码</span>
           <i class="fr">设置<span class="iconfont right"></span></i>
         </router-link>
 
         <p class="hr1px"></p>
 
-        <router-link :to="'verifyMobile'" class="active" v-if="!!$store.state.UserMobile">
+        <router-link to="verifyMobile" class="active" v-if="!!$store.state.UserMobile">
           <span>已设置密保手机</span>
           <i class="fr">修改<span class="iconfont right"></span></i>
         </router-link>
-        <router-link :to="'setMobile'" class="active" v-else>
+        <router-link to="setMobile" class="active" v-else>
           <span>设置密保手机</span>
           <i class="fr">设置<span class="iconfont right"></span></i>
         </router-link>
 
         <p class="hr1px"></p>
 
-        <router-link :to="'verifyQuestion'" class="active" v-if="!!$store.state.UserSafeQuestions">
+        <router-link to="verifyQuestion" class="active" v-if="!!$store.state.UserSafeQuestions">
           <span>已设置密保问题</span>
           <i class="fr">修改<span class="iconfont right"></span></i>
         </router-link>
-        <router-link :to="'setQuestion'" class="active" v-else>
+        <router-link to="setQuestion" class="active" v-else>
           <span>设置密保问题</span>
           <i class="fr">设置<span class="iconfont right"></span></i>
         </router-link>
 
         <p class="hr1px"></p>
 
-        <router-link :to="'verifyMail'" class="active" v-if="!!$store.state.UserMail">
+        <router-link to="verifyMail" class="active" v-if="!!$store.state.UserMail">
           <span>已设置密保邮箱</span>
           <i class="fr">修改<span class="iconfont right"></span></i>
         </router-link>
 
-        <router-link :to="'setMail'" class="active" v-else>
+        <router-link to="setMail" class="active" v-else>
           <span>设置密保邮箱</span>
           <i class="fr">设置<span class="iconfont right"></span></i>
         </router-link>
         <p class="hr1px"></p>
-        <router-link :to="'manageBankcard'" class="active">
+        <router-link to="manageBankcard" class="active">
           <span>银行卡管理</span>
           <i class="fr">设置<span class="iconfont right"></span></i>
         </router-link>
