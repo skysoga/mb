@@ -12,9 +12,10 @@ const setQuestion =resolve => require(['../views/setQuestion'],resolve)//设置�
 const verifyMail =resolve => require(['../views/verifyMail'],resolve)//修改邮箱
 const setMail =resolve => require(['../views/setMail'],resolve)//设置邮箱
 const manageBankcard =resolve => require(['../views/manageBankcard'],resolve)//银行卡管理
-const resetWay =resolve => require(['../views/resetWay'],resolve)//忘记密码
+const resetWay =resolve => require(['../views/resetWay'],resolve)//找回方式
 const forgetPwd =resolve => require(['../views/forgetPwd'],resolve)//忘记密码
-const agentCenter =resolve => require(['../views/agentCenter'],resolve)//忘记密码
+const agentCenter =resolve => require(['../views/agentCenter'],resolve)//代理中心
+const agentReport =resolve => require(['../views/agentReport'],resolve)//代理报表
 
 var routes = [{
   path: '/manageBankcard',
@@ -189,7 +190,20 @@ var routes = [{
     title:"代理中心",
     link:"/userCenter",
     nav:0,
+    user:true,
+    agent:true
   },
   component: agentCenter
+},{
+  path: '/agentReport',
+  name: '代理报表',
+  meta:{
+    title:"代理报表",
+    link:"/agentCenter",
+    nav:0,
+    user:true,
+    agent:true
+  },
+  component: agentReport
 }]
 module.exports = routes
