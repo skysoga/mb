@@ -1,12 +1,16 @@
 <template id="">
   <div class="main playerHome">
     <div class="playerHomeHead">
-      <div class="playerHeadImg"><img :src="$store.getters.PhotoPath+UserPhoto" alt=""></div>
+      <div class="playerHeadImg">
+        <img v-if="initData.UserPhoto" :src="$store.getters.PhotoPath+initData.UserPhoto" alt="">
+        <img v-else :src="$store.getters.PhotoPath+'defaultHeadImg.png'" alt="">
+      </div>
     </div>
     <div class="playerInfo">
-        <h1>{{checkUserName(initData.UserName,initData.NickName)}}</h1>
+        <h1 v-if="initData.NickName">{{initData.NickName}}</h1>
+        <h1 v-else>昵称未设置</h1>
         <h2>账号:{{initData.UserName}}</h2>
-        <span>性别:{{checkSex(initData.Sex)}}</span>
+        <span v-if="initData.Sex!='2'">性别:{{initData.Sex==='0'?'男':'女'}}</span><span v-else>保密</span>
         <p>头衔：<em>{{initData.Rank}}</em>累计中奖：<i>{{Math.floor(initData.Award)}}</i></p>
         <ins>{{initData.GroupTitle}}</ins>
     </div>
@@ -33,32 +37,10 @@
           {name:"FC3D",state:"noActive"},
           {name:"SSC",state:"noActive"},
           {name:"SYX5",state:"noActive"}
-        ],
-        UserPhoto:"defaultHeadImg.png"
+        ]
       }
     },
     methods:{
-      checkUserName:function(UserName,NickName){
-        if(NickName===UserName||NickName===null||NickName===""){
-            return  "昵称未设置"
-        }else{
-            return NickName
-        }
-      },
-      checkSex:function(sex){
-        if(sex==='0'){
-           return "男"
-         }else if(sex==='1'){
-           return "女"
-         }else{
-           return "保密"
-         }
-      },
-      checkPhoto:function(photo){
-        if(photo){
-			      this.UserPhoto=photo
-    		}
-      },
       sort_lotteryType:function(arr){
         for (var i = 0; i < this.lottery_type.length; i++) {
           for (var j = 0; j < arr.length; j++) {
@@ -82,7 +64,6 @@
                 let typeArr=data.BackData.LotteryType.split(",")
                 this.sort_lotteryType(typeArr)
               }
-              this.checkPhoto(data.BackData.UserPhoto)
             }else {
               layer.msgWarn(data.StrCode)
             }
