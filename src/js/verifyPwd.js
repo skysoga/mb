@@ -1,4 +1,4 @@
-const interviewApp=require("../main.js");
+const {interviewApp}=require("../main.js");
 export default {
   data(){
     return{
@@ -11,19 +11,17 @@ export default {
       var ajax = {
         Password: this.Password
       }
-      var selfCheck = {
-        Password:{
-          Name: '密码',
-          Reg: /^[\w!@#$%^&*.]{6,16}$/,
-          ErrMsg:"密码长度6-16位！",
-        },
-      }
-      var err = this.$root.format(ajax, ['Password'], selfCheck);
+      var _FomatC=this.$store.state._FomatConfig
+      var err = this.$root.format(ajax, ['Password'], _FomatC);
       if (err) {
         layer.msgWarn(err[1]);
         return;
       }
       ajax.Action="verifyPass";
+      var F=sessionStorage.getItem('isFind')
+      if(F){
+        ajax.Action=ajax.Action+'Forget';
+      }
       layer.msgWait("正在提交")
       _fetch(ajax).then((res)=>{
         res.json().then((json) => {

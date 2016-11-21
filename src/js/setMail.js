@@ -1,4 +1,4 @@
-const interviewApp=require("../main.js");
+const {interviewApp}=require("../main.js");
 export default {
   data:()=>{
     return{
@@ -16,24 +16,17 @@ export default {
         Mail: this.Mail,
         MailCode:this.MailCode
       }
-      var selfCheck = {
-        Mail:{
-          Name: '邮箱',
-          Reg: /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/,
-          ErrMsg:"邮箱格式不正确！"
-        },
-        MailCode:{
-          Name: '验证码',
-          Reg: /^\d{4}$/,
-          ErrMsg:"验证码不正确！"
-        }
-      }
-      var err = $root.format(ajax, ['Mail','MailCode'], selfCheck);
+      var _FomatC=this.$store.state._FomatConfig
+      var err = $root.format(ajax, ['Mail','MailCode'], _FomatC);
       if (err) {
         layer.msgWarn(err[1]);
         return;
       }
       ajax.Action="VerifyMail"
+      var F=sessionStorage.getItem('isFind')
+      if(F){
+        ajax.Action=ajax.Action+'Forget';
+      }
       ajax.Qort="Set"
       layer.msgWait("正在提交")
       _fetch(ajax).then((res)=>{

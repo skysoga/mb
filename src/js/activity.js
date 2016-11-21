@@ -1,11 +1,11 @@
-const interviewApp=require("../main.js");
+const {interviewApp}=require("../main.js");
 export default {
   data:()=>{
     return{}
   },
   created:function(){
      var arr = ["ActivityConfig"];
-     this.$root.GetInitData(arr)
+     interviewApp.GetInitData(arr)
    },
    methods:{
      getHtml:name=>{

@@ -1,4 +1,4 @@
-const interviewApp=require("../main.js");
+const {interviewApp}=require("../main.js");
 export default {
   data:()=>{
     return{
@@ -9,6 +9,13 @@ export default {
       toMsg:true,
       nextUrl:""
     }
+  },
+  beforeRouteEnter:(to,from,next)=>{
+    var F=sessionStorage.getItem('isFind')
+    if(F){
+      to.meta.link="/resetWay?Q=ResetPwd"
+    }
+    next()
   },
   created(){
     var Q=this.$route.query.Q
@@ -26,19 +33,17 @@ export default {
         Mail: 0,
         MailCode:this.MailCode
       }
-      var selfCheck = {
-        MailCode:{
-          Name: '验证码',
-          Reg: /^\d{4}$/,
-          ErrMsg:"验证码不正确！"
-        }
-      }
-      var err = vm.$root.format(ajax, ['MailCode'], selfCheck);
+      var _FomatC=this.$store.state._FomatConfig
+      var err = vm.$root.format(ajax, ['MailCode'], _FomatC);
       if (err) {
         layer.msgWarn(err[1]);
         return;
       }
       ajax.Action="VerifyMail"
+      var F=sessionStorage.getItem('isFind')
+      if(F){
+        ajax.Action=ajax.Action+'Forget';
+      }
       ajax.Qort="Verify"
       layer.msgWait("正在提交")
       _fetch(ajax).then((res)=>{
@@ -47,7 +52,7 @@ export default {
             layer.msgWarn(json.StrCode);
             var url=vm.nextUrl
             url=url?'/'+url:'/setMail'
-            vm.$root.$router.push(url)
+            this.$router.push(url)
           }else{
             layer.msgWarn(json.StrCode);
           }

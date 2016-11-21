@@ -1,4 +1,3 @@
-const interviewApp=require("../main.js")
 export default {
   data:()=>{
     return{
@@ -18,6 +17,10 @@ export default {
         ResetMail : '找回邮箱'
       }
     to.meta.title=urlObj[to.query.Q]
+    var F=sessionStorage.getItem('isFind')
+    if(F){
+      to.meta.link='/forgetPwd'
+    }
     next()
   },
   created:function(){

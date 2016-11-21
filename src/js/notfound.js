@@ -1,4 +1,3 @@
-// import "../scss/personalinfo.scss";
 export default {
   props: ['All'],
   data:()=>{

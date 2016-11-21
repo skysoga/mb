@@ -1,4 +1,4 @@
-const interviewApp=require("../main.js");
+const {interviewApp}=require("../main.js");
 export default {
   data:()=>{
     return{
@@ -13,32 +13,25 @@ export default {
         Password: this.Password,
         checkPassword:this.checkPassword
       }
-      var selfCheck = {
-        Password:{
-          Name: '安全密码',
-          Reg: /^[\w!@#$%^&*.]{6,16}$/,
-          ErrMsg:"安全密码长度6-16位！",
-        },
-        checkPassword:{
-          Name: '验证安全密码',
-          Reg: /^[\w!@#$%^&*.]{6,16}$/,
-          ErrMsg:"安全密码长度6-16位！",
-        }
-      }
-      var err = $root.format(ajax, ['Password','checkPassword'], selfCheck);
+      var _FomatC=this.$store.state._FomatConfig
+      var err = $root.format(ajax, ['Password','checkPassword'], _FomatC);
       if (err) {
         layer.msgWarn(err[1]);
         return;
       }
       delete ajax.checkPassword;
-      ajax.action="SetSafePass"
+      ajax.Action="SetSafePass"
+      var F=sessionStorage.getItem('isFind')
+      if(F){
+        ajax.Action=ajax.Action+'Forget';
+      }
       layer.msgWait("正在提交")
       _fetch(ajax).then((res)=>{
         res.json().then((json) => {
           if(json.Code===1) {
             //验证密码
             layer.msgWarn(json.StrCode);
-            $root.$router.push('/securityCenter')
+            this.$router.push('/securityCenter')
           }else{
             layer.msgWarn(json.StrCode);
           }

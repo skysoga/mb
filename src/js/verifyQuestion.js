@@ -1,4 +1,4 @@
-const interviewApp=require("../main.js");
+const {interviewApp}=require("../main.js");
 export default {
   data:()=>{
     return{
@@ -9,6 +9,13 @@ export default {
       answer2:"",
       nextUrl:""
     }
+  },
+  beforeRouteEnter:(to,from,next)=>{
+    var F=sessionStorage.getItem('isFind')
+    if(F){
+      to.meta.link="/resetWay?Q=ResetPwd"
+    }
+    next()
   },
   created(){
     var Q=this.$route.query.Q
@@ -51,6 +58,10 @@ export default {
         return;
       }
       ajax.Action="VerifyQuestion"
+      var F=sessionStorage.getItem('isFind')
+      if(F){
+        ajax.Action=ajax.Action+'Forget';
+      }
       ajax.QuestionID1=this.question1
       ajax.QuestionID2=this.question2
       layer.msgWait("正在提交")
