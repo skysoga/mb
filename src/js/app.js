@@ -1,6 +1,6 @@
 import Navbar from '../components/navbar';
 import TitleInfo from '../components/title-info';
-
+import '../scss/public.scss'
 
 export default {
   components: {

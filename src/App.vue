@@ -9,9 +9,7 @@
 </template>
 
 <script src="./js/app.js"></script>
-
-<style lang="scss">
-  @import './scss/public.scss';
+<style>
   @font-face {
     font-family: 'iconfont';
     src: url('//at.alicdn.com/t/font_1475058654_096525.eot'); /* IE9*/
@@ -120,4 +118,6 @@
     height:40px;
     line-height:40px;
   }
+</style>
+<style lang="scss">
 </style>

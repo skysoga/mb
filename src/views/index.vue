@@ -1,48 +1,11 @@
 <template>
 <div class="main">
   <div id="banner">
-    <div class="hd">
-      <ul>
-
-      </ul>
-    </div>
-    <!-- <div class="bd">
-      <ul v-for="i in $store.state.BannerList">
-        <li>
-          <router-link :to="i.Url"><img :src="$store.state.constant.ImgHost+i.Image"></router-link>
-        </li>
-      </ul>
-    </div> -->
-    <!-- 使用vue-awesome-swiper插件 -->
     <swiper>
      <swiper-slide v-for="i in $store.state.BannerList">
        <router-link :to="i.Url"><img :src="$store.state.constant.ImgHost+i.Image"></router-link>
      </swiper-slide>
-   </swiper>
-    <div class="tempWrap" style="overflow:hidden; position:relative;">
-      <div class="bd" style="width: 1280px; position: relative; overflow: hidden; padding: 0px; margin: 0px; transition-duration: 200ms; transform: translate(-960px, 0px) translateZ(0px);">
-        <ul style="display: table-cell; vertical-align: top; width: 320px;">
-          <li>
-            <a href="/activity.html"><img src="http://images.dafa176.com/test/pc/banner/banner1.png"></a>
-          </li>
-        </ul>
-        <ul style="display: table-cell; vertical-align: top; width: 320px;">
-          <li>
-            <a href="/activity.html"><img src="http://images.dafa176.com/test/pc/banner/banner2.png"></a>
-          </li>
-        </ul>
-        <ul style="display: table-cell; vertical-align: top; width: 320px;">
-          <li>
-            <a href="/activity.html"><img src="http://images.dafa176.com/test/pc/banner/banner3.png"></a>
-          </li>
-        </ul>
-        <ul style="display: table-cell; vertical-align: top; width: 320px;">
-          <li>
-            <a href="/lottery.html"><img src="http://images.dafa176.com/test/pc/banner/banner4.png"></a>
-          </li>
-        </ul>
-      </div>
-    </div>
+    </swiper>
   </div>
   <div class="hr1px" style="position:absolute;z-index:2;width:100%;"></div>
   <div id="notice">
@@ -64,14 +27,4 @@
 </div>
 </template>
 <script src="../js/index.js"></script>
-<script type="text/javascript">
-import { swiper, swiperSlide, swiperPlugins } from 'vue-awesome-swiper'
-  // use
-  export default {
-    components: {
-      swiper,
-      swiperSlide
-    }
-  }
-</script>
 <style lang="scss" scoped>@import '../scss/index.scss';</style>

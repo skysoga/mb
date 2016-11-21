@@ -56,5 +56,8 @@ module.exports = {
     blue:'#38f',
     red:'red'
   },
+  tpl:{
+  	noData:["<div class='fullPageMsg'><div class='fullPageIcon iconfont'>&#xe63c;</div><p>','</p></div>"]
+  },
   _FomatConfig: Object.freeze(_FomatConfig)
 }

@@ -1,7 +1,13 @@
-const interviewApp=require("../main.js");
+const {interviewApp}=require("../main.js");
+import { swiper, swiperSlide, swiperPlugins } from 'vue-awesome-swiper'
+
 export default {
   data:()=>{
     return{}
+  },
+  components: {
+    swiper,
+    swiperSlide
   },
   beforeRouteEnter:(to, from, next) => {
     // 在渲染该组件的对应路由被 confirm 前调用
@@ -11,8 +17,5 @@ export default {
     interviewApp.GetInitData(arr, state=>{
       next();
     })
-
-  },
-  created:function(){
   }
 }

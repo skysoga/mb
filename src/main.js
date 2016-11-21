@@ -68,7 +68,8 @@ const store = new Vuex.Store({
   			el[item.PayName] = [item.MinMoney, item.MaxMoney];
   		})
   		return el;
-  	}
+  	},
+  	NoDataDom:msg => state.tpl.noData.join("msg")
   },
   mutations: {
   	SaveInitData: (state,Data) => {
@@ -213,7 +214,7 @@ const interviewApp = new Vue({
 					var target = k.slice(5), target_f = cfg[target] || store.state._FomatConfig[target]
 					if(obj[k] !== obj[target]){
 						console.log(obj[k], obj[target])
-						return [k, `两次 ${target_f.Name} 不相同`]
+						return [k, `两次${target_f.Name} 不相同`]
 					}
 				}
 
@@ -239,7 +240,7 @@ const interviewApp = new Vue({
 			return str.join('&');
 		}
 	},
-	
+
 	render: h => h(App),
 });
 
@@ -256,4 +257,4 @@ router.afterEach((to, from) => {
 Vue.filter('num', v=>+v) // 转成数字类型
 
 
-module.exports = interviewApp;
+module.exports = {interviewApp,store,state};

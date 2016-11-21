@@ -1,4 +1,4 @@
-const interviewApp=require("../main.js");
+const {interviewApp}=require("../main.js");
 export default {
   data:()=>{
     return{
@@ -38,7 +38,7 @@ export default {
           if(json.Code===1) {
             //验证密码
             layer.msgWarn(json.StrCode);
-            $root.$router.push('/securityCenter')
+            this.$router.push('/securityCenter')
           }else{
             layer.msgWarn(json.StrCode);
           }

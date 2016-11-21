@@ -13,7 +13,7 @@
 </template>
 
 <script type="text/javascript">
-const interviewApp=require("../main.js");
+const {interviewApp}=require("../main.js");
   export default{
     data(){
       return {
