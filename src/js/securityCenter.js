@@ -1,4 +1,4 @@
-const interviewApp=require("../main.js")
+const {interviewApp}=require("../main.js")
 export default {
   data:()=>{
     return{
@@ -14,7 +14,7 @@ export default {
       'UserMobile', //返回已绑定手机的模糊状态,如未绑定,返回空字符串或0
       'UserMail',
       'UserLastLoginInfo',
-      'UserFirstCardInfo',];
+      'UserFirstCardInfo'];
       interviewApp.GetInitData(arr, state=>{
       next(vm=>{
         vm.StarNum=1;
