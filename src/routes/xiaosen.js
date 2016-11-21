@@ -13,6 +13,7 @@ const verifyMail =resolve => require(['../views/verifyMail'],resolve)//修改邮
 const setMail =resolve => require(['../views/setMail'],resolve)//设置邮箱
 const manageBankcard =resolve => require(['../views/manageBankcard'],resolve)//银行卡管理
 const resetWay =resolve => require(['../views/resetWay'],resolve)//忘记密码
+const forgetPwd =resolve => require(['../views/forgetPwd'],resolve)//忘记密码
 
 var routes = [{
   path: '/manageBankcard',
@@ -32,7 +33,7 @@ var routes = [{
     title:'设置密保邮箱',
     nav:false,
     link:'/securityCenter',
-    user:true,
+    user:false,
     agent:false
   },
   component: setMail
@@ -43,7 +44,7 @@ var routes = [{
     title:'验证密保邮箱',
     nav:false,
     link:'/securityCenter',
-    user:true,
+    user:false,
     agent:false
   },
   component: verifyMail
@@ -54,7 +55,7 @@ var routes = [{
     title:'设置密保问题',
     nav:false,
     link:'/securityCenter',
-    user:true,
+    user:false,
     agent:false
   },
   component: setQuestion
@@ -65,7 +66,7 @@ var routes = [{
     title:'验证密保问题',
     nav:false,
     link:'/securityCenter',
-    user:true,
+    user:false,
     agent:false
   },
   component: verifyQuestion
@@ -76,7 +77,7 @@ var routes = [{
     title:'设置密保手机',
     nav:false,
     link:'/securityCenter',
-    user:true,
+    user:false,
     agent:false
   },
   component: setMobile
@@ -87,7 +88,7 @@ var routes = [{
     title:'验证密保手机',
     nav:false,
     link:'/securityCenter',
-    user:true,
+    user:false,
     agent:false
   },
   component: verifyMobile
@@ -98,7 +99,7 @@ var routes = [{
     title:'设置安全密码',
     nav:false,
     link:'/securityCenter',
-    user:true,
+    user:false,
     agent:false
   },
   component: setSafePwd
@@ -109,7 +110,7 @@ var routes = [{
     title:'验证安全密码',
     nav:false,
     link:'/securityCenter',
-    user:true,
+    user:false,
     agent:false
   },
   component: verifySafePwd
@@ -131,7 +132,7 @@ var routes = [{
     title:'设置登录密码',
     nav:false,
     link:'/securityCenter',
-    user:true,
+    user:false,
     agent:false
   },
   component: setPwd
@@ -171,5 +172,14 @@ var routes = [{
     nav:0,
   },
   component: resetWay
+},{
+  path: '/forgetPwd',
+  name: '忘记密码',
+  meta:{
+    title:"忘记密码",
+    link:"/index",
+    nav:0,
+  },
+  component: forgetPwd
 }]
 module.exports = routes

@@ -6,6 +6,14 @@ export default {
       nextUrl:""
     }
   },
+  beforeRouteEnter:(to,from,next)=>{
+    var F=sessionStorage.getItem('isFind')
+    if(F){
+      to.meta.link="/resetWay?Q=ResetPwd"
+    }
+    console.log(to)
+    next()
+  },
   created(){
     var Q=this.$route.query.Q
     if(Q){this.nextUrl=Q.substr(2)}
@@ -16,19 +24,17 @@ export default {
       var ajax = {
         Password: this.Password
       }
-      var selfCheck = {
-        Password:{
-          Name: '安全密码',
-          Reg: /^[\w!@#$%^&*.]{6,16}$/,
-          ErrMsg:"安全密码长度6-16位！",
-        },
-      }
-      var err = this.$root.format(ajax, ['Password'], selfCheck);
+      var _FomatC=this.$store.state._FomatConfig
+      var err = this.$root.format(ajax, ['Password'], _FomatC);
       if (err) {
         layer.msgWarn(err[1]);
         return;
       }
       ajax.Action="VerifySafePwd";
+      var F=sessionStorage.getItem('isFind')
+      if(F){
+        ajax.Action=ajax.Action+'Forget';
+      }
       layer.msgWait("正在提交")
       _fetch(ajax).then((res)=>{
         res.json().then((json) => {
