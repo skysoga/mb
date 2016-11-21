@@ -16,24 +16,17 @@ export default {
         Mobile: this.Phone,
         SmsCode:this.SmsCode
       }
-      var selfCheck = {
-        Mobile:{
-          Name: '手机号',
-          Reg: /^1[3|5|8]\d{9}$/,
-          ErrMsg:"手机号为11位！"
-        },
-        SmsCode:{
-          Name: '验证码',
-          Reg: /^\d{4}$/,
-          ErrMsg:"验证码不正确！"
-        }
-      }
-      var err = $root.format(ajax, ['Mobile','SmsCode'], selfCheck);
+      var _FomatC=this.$store.state._FomatConfig
+      var err = $root.format(ajax, ['Mobile','SmsCode'], _FomatC);
       if (err) {
         layer.msgWarn(err[1]);
         return;
       }
       ajax.Action="VerifyMobile"
+      var F=sessionStorage.getItem('isFind')
+      if(F){
+        ajax.Action=ajax.Action+'Forget';
+      }
       ajax.Qort="Set"
       layer.msgWait("正在提交")
       _fetch(ajax).then((res)=>{

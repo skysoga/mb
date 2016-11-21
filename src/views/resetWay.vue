@@ -22,7 +22,7 @@
         <i class="fr"><span class="iconfont right"></span></i>
       </router-link>
       <p class="hr1px"></p>
-      <router-link :to="'service'" class="active">
+      <router-link :to="'service'" class="active" v-show="reUrl">
         <span>通过在线客服</span>
         <i class="fr"><span class="iconfont right"></span></i>
       </router-link>
