@@ -18,20 +18,20 @@ export default {
         this.dataShow=true
       }
     },
-    tfun(e){
-      this.dataName=e.target.innerText
+    tfun(value){
+      this.dataName=value
       this.BottomBoxShow=false
     },
-    zfun(e){
-       this.dataName=e.target.innerText
+    zfun(value){
+       this.dataName=value
        this.BottomBoxShow=false
     },
-    bfun(e){
-       this.dataName=e.target.innerText
+    bfun(value){
+       this.dataName=value
        this.BottomBoxShow=false
     },
-    sfun(e){
-       this.dataName=e.target.innerText
+    sfun(value){
+       this.dataName=value
        this.BottomBoxShow=false
     },
   },
