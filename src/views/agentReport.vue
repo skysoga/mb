@@ -1,6 +1,6 @@
 <template>
 	<div class="main" style="padding-bottom: 0;">
-    <div class='textMore dataType' @click = "BottomBoxShow=true"><em>{{dataName}}</em> <i class='iconfont'>&#xe601;</i></div>
+    <div class='textMore dataType' @click="BottomBoxShow=true"><em>{{dataName}}</em> <i class='iconfont'>&#xe601;</i></div>
     <div class="searchBtn">
       <div class="searchCon">
         <input class="proxySearch" type="text" placeholder="下级报表查询" value="">

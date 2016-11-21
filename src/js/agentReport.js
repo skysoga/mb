@@ -11,7 +11,7 @@ export default {
         'sfun': '上月'
       }
     }
-  }
+  },
   methods:{
     dataBtn(){
       if(this.dataShow!=true){
