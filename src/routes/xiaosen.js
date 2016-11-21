@@ -14,6 +14,7 @@ const setMail =resolve => require(['../views/setMail'],resolve)//设置邮箱
 const manageBankcard =resolve => require(['../views/manageBankcard'],resolve)//银行卡管理
 const resetWay =resolve => require(['../views/resetWay'],resolve)//忘记密码
 const forgetPwd =resolve => require(['../views/forgetPwd'],resolve)//忘记密码
+const agentCenter =resolve => require(['../views/agentCenter'],resolve)//忘记密码
 
 var routes = [{
   path: '/manageBankcard',
@@ -181,5 +182,14 @@ var routes = [{
     nav:0,
   },
   component: forgetPwd
+},{
+  path: '/agentCenter',
+  name: '代理中心',
+  meta:{
+    title:"代理中心",
+    link:"/userCenter",
+    nav:0,
+  },
+  component: agentCenter
 }]
 module.exports = routes
