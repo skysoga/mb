@@ -1,4 +1,4 @@
-const interviewApp=require("../main.js");
+const {interviewApp}=require("../main.js");
 export default {
   data:()=>{
     return{
@@ -52,7 +52,7 @@ export default {
             layer.msgWarn(json.StrCode);
             var url=vm.nextUrl
             url=url?'/'+url:'/setMail'
-            vm.$root.$router.push(url)
+            this.$router.push(url)
           }else{
             layer.msgWarn(json.StrCode);
           }
