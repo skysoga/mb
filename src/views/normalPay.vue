@@ -25,14 +25,14 @@
       </tr>
       <tr>
         <td>充值金额</td>
-        <td><input type="tel" v-model = "Money"  placeholder="请输入充值金额"></td>
+        <td><input type="tel" tag = "充值金额" v-va:Money   placeholder="请输入充值金额"></td>
       </tr>
       <tr>
         <td>银行账户</td>
-        <td><input type="text" v-model = "PayUser" placeholder="请输入您的银行账户"></td>
+        <td><input type="text" tag = "银行账户"  v-va:PayUser.RealName  placeholder="请输入您的银行账户"></td>
       </tr>
     </table>
-    <div class="loginBtn BTN"><a @click = "submit">提交</a></div>
+    <div class="loginBtn BTN"><a v-va-check>提交</a></div>
     <div class="tips">
       1、请转账到以上银行账户。<br>
       2、请正确填写您的户名和充值金额。<br>
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import rootApp  from "../main.js"
+import {interviewApp}  from "../main.js"
 export default{
 	beforeRouteEnter(to, from, next){
 		var shouldCheck = ['Weixin', 'Alipay']
@@ -67,24 +67,24 @@ export default{
     to.meta.title = title[to.path][to.query.method]   //标题
 
 		//获取数据
-		rootApp.AjaxGetInitData(['PayLimit', rechargeWay], state=>{
+		interviewApp.AjaxGetInitData(['PayLimit', rechargeWay], state=>{
 			if(shouldCheck.indexOf(method) > -1){
 				var PayType = state[rechargeWay][0].PayType
 				//假如充值方式为快捷充值了，就跳转至快捷充值
 				if(PayType !== '一般'){
-					rootApp.$router.push('/quickPay?method=' + method)
+					interviewApp.$router.push('/quickPay?method=' + method)
 				}
 			}
 
 			next(vm=>{
-				console.log(vm.$root)
+				// console.log(vm.$root)
 				vm.method = method
 				if(method === 'Bank'){
 					vm[method] = Object.freeze(state[rechargeWay])
 					var BankCode = state[rechargeWay][0].BankCode
 					vm.nowItem = BankCode;
 					vm.nowRender = state[rechargeWay][0]
-					console.log(vm.nowRender)
+					// console.log(vm.nowRender)
 				}else{
 					vm[method] = Object.freeze(state[rechargeWay][0])
 				}
@@ -156,23 +156,7 @@ export default{
 					ID:1,
 				}
 			}
-			var ajax = ajaxConfig[this.method]
-			ajax.PayUser = this.PayUser
-			ajax.Money = this.Money
-			ajax.ID = this.ID
-
-			var RealName={
-				Name: "姓名",
-				Reg: /^[\u4e00-\u9fa5 ]{2,10}$/,
-			}
-
-			if(method === 'Bank'){
-				if(!ajax.PayUser){
-					layer.msgWarn('银行账号不能为空')
-				}else if(RealName.Reg.test(ajax.PayUser)){
-					layer.msgWarn('请输入真实的开户人姓名')		
-				}
-			}
+			
 
 
 

@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import interviewApp  from "../main.js"
+import {interviewApp}  from "../main.js"
 export default {
 	data () {
 		return {
