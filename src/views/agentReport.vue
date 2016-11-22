@@ -1,7 +1,6 @@
 <template>
 	<div class="main" style="padding-bottom: 0;">
-    <div class='textMore dataType' @click="BottomBoxShow=true"><em>{{DateName}}</em> <i class='iconfont'>&#xe601;</i></div>
-    <div class="searchBtn">
+<datatype></datatype>    <div class="searchBtn">
       <div class="searchCon">
         <input class="proxySearch" type="text" v-model="UserName" placeholder="下级报表查询">
       </div>
@@ -12,10 +11,9 @@
           <li v-for="n in listNum"></li>
       </ul>
     </div>
-    <bottom-box v-show = "BottomBoxShow"
+<bottom-box v-show = "BottomBoxShow"
                  :list = "BottomBoxList"
-                 ></bottom-box>
-  </div>
+                 ></bottom-box>  </div>
 </template>
 <script src="../js/agentReport.js"></script>
 <style lang="scss" scoped>

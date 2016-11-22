@@ -4,6 +4,9 @@ import Vuex from 'vuex'
 import { mapState } from 'vuex'
 import App from './App'
 import routes from './routes/routes.js'
+import Va from './plugins/va.js'
+
+Vue.use(Va)
 Vue.use(VueRouter)
 Vue.use(Vuex)
 
