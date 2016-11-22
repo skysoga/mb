@@ -1,6 +1,7 @@
 <template>
 	<div class="main" style="padding-bottom: 0;">
-<datatype></datatype>    <div class="searchBtn">
+  <datatype></datatype>
+<div class="searchBtn">
       <div class="searchCon">
         <input class="proxySearch" type="text" v-model="UserName" placeholder="下级报表查询">
       </div>
@@ -11,9 +12,8 @@
           <li v-for="n in listNum"></li>
       </ul>
     </div>
-<bottom-box v-show = "BottomBoxShow"
-                 :list = "BottomBoxList"
-                 ></bottom-box>  </div>
+
+</div>
 </template>
 <script src="../js/agentReport.js"></script>
 <style lang="scss" scoped>

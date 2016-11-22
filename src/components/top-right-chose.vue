@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class='textMore dataType' @click="BottomBoxShow=true"><em>{{BottomBoxList[this.$parent.BetweenType]}}</em> <i class='iconfont'>&#xe601;</i></div>
+    <div class='textMore dataType' @click="BottomBoxShow=true"><em>{{BottomBoxList[this.$parent.BetweenType]}}</em>
+    <i class='iconfont'>&#xe601;</i></div>
     <bottom-box v-show = "BottomBoxShow"
                  :list = "BottomBoxList"
                  ></bottom-box>
@@ -19,6 +20,9 @@
       bottomBox(k,v){
         this.BottomBoxShow=false
         this.$parent.BetweenType=k
+        this.$parent.DateName=v
+        this.$parent.DateType=k
+        this.$parent.doSearch()
       }
     },
     //子组件
