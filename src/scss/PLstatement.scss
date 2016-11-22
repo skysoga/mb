@@ -1,0 +1,40 @@
+@import 'mixin';
+
+.PLS .on {
+  border: none;
+}
+
+.PLSinfo {
+  text-align: center;
+  color: white;
+  font-size: 0.7em;
+  padding: 2em 0;
+  background: #5f1a2d;
+  @include bg-linear-gradient('top, #6a202d, #3b052c'); 
+  color: #fced08;
+  span {
+    display: block;
+    font-size: 2em;
+    line-height: 2em;
+    color: #fced08;
+    em {
+      font-size: 0.9em;
+      line-height: 2em;
+    }
+  }
+}
+
+.PLSpm {
+  color: #fae2e2;
+  font-size: 0.7em;
+  padding: 0.6em 0.6em;
+  @include bg-linear-gradient('to left, #c74b18 2%, #fb532f 100%'); 
+  background: #440a2c;
+}
+
+.PLSdetailCon {
+  background: white;
+  margin-top: 0.6em;
+  overflow: hidden;
+  height: 11rem;
+}
