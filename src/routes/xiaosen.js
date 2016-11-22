@@ -12,6 +12,11 @@ const setQuestion =resolve => require(['../views/setQuestion'],resolve)//设置�
 const verifyMail =resolve => require(['../views/verifyMail'],resolve)//修改邮箱
 const setMail =resolve => require(['../views/setMail'],resolve)//设置邮箱
 const manageBankcard =resolve => require(['../views/manageBankcard'],resolve)//银行卡管理
+const resetWay =resolve => require(['../views/resetWay'],resolve)//找回方式
+const forgetPwd =resolve => require(['../views/forgetPwd'],resolve)//忘记密码
+const agentCenter =resolve => require(['../views/agentCenter'],resolve)//代理中心
+const agentReport =resolve => require(['../views/agentReport'],resolve)//代理报表
+const manageInvite =resolve => require(['../views/manageInvite'],resolve)//下级开户
 
 var routes = [{
   path: '/manageBankcard',
@@ -31,7 +36,7 @@ var routes = [{
     title:'设置密保邮箱',
     nav:false,
     link:'/securityCenter',
-    user:true,
+    user:false,
     agent:false
   },
   component: setMail
@@ -42,7 +47,7 @@ var routes = [{
     title:'验证密保邮箱',
     nav:false,
     link:'/securityCenter',
-    user:true,
+    user:false,
     agent:false
   },
   component: verifyMail
@@ -53,7 +58,7 @@ var routes = [{
     title:'设置密保问题',
     nav:false,
     link:'/securityCenter',
-    user:true,
+    user:false,
     agent:false
   },
   component: setQuestion
@@ -64,7 +69,7 @@ var routes = [{
     title:'验证密保问题',
     nav:false,
     link:'/securityCenter',
-    user:true,
+    user:false,
     agent:false
   },
   component: verifyQuestion
@@ -75,7 +80,7 @@ var routes = [{
     title:'设置密保手机',
     nav:false,
     link:'/securityCenter',
-    user:true,
+    user:false,
     agent:false
   },
   component: setMobile
@@ -86,7 +91,7 @@ var routes = [{
     title:'验证密保手机',
     nav:false,
     link:'/securityCenter',
-    user:true,
+    user:false,
     agent:false
   },
   component: verifyMobile
@@ -97,7 +102,7 @@ var routes = [{
     title:'设置安全密码',
     nav:false,
     link:'/securityCenter',
-    user:true,
+    user:false,
     agent:false
   },
   component: setSafePwd
@@ -108,7 +113,7 @@ var routes = [{
     title:'验证安全密码',
     nav:false,
     link:'/securityCenter',
-    user:true,
+    user:false,
     agent:false
   },
   component: verifySafePwd
@@ -130,7 +135,7 @@ var routes = [{
     title:'设置登录密码',
     nav:false,
     link:'/securityCenter',
-    user:true,
+    user:false,
     agent:false
   },
   component: setPwd
@@ -161,5 +166,77 @@ var routes = [{
     nav:0,
   },
   component: activityInfo
+},{
+  path: '/resetWay',
+  name: '找回密码',
+  meta:{
+    title:"找回密码",
+    link:"/securityCenter",
+    nav:0,
+  },
+  component: resetWay
+},{
+  path: '/forgetPwd',
+  name: '忘记密码',
+  meta:{
+    title:"忘记密码",
+    link:"/index",
+    nav:0,
+  },
+  component: forgetPwd
+},{
+  path: '/agentCenter',
+  name: '代理中心',
+  meta:{
+    title:"代理中心",
+    link:"/userCenter",
+    nav:0,
+    user:true,
+    agent:true
+  },
+  component: agentCenter
+},{
+  path: '/agentReport',
+  name: '代理报表',
+  meta:{
+    title:"代理报表",
+    link:"/agentCenter",
+    nav:0,
+    user:true,
+    agent:true
+  },
+  component: agentReport
+},{
+  path: '/manageInvite',
+  name: '下级开户',
+  meta:{
+    titleList:[{
+        title:"下级开户",
+        to:"/manageInvite"
+      },{
+        title:"邀请码",
+        to:"/manageIcode"
+      }],
+    user:true,
+    link:'/agentCenter',
+    agent:true
+  },
+  component: manageInvite
+},{
+  path: '/manageIcode',
+  name: '邀请码',
+  meta:{
+    titleList:[{
+        title:"下级开户",
+        to:"/manageInvite"
+      },{
+        title:"邀请码",
+        to:"/manageIcode"
+      }],
+    link:'/agentCenter',
+    user:true,
+    agent:true
+  },
+  component: manageInvite
 }]
 module.exports = routes

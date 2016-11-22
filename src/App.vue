@@ -1,17 +1,15 @@
 <template>
   <div id="app">
-    <title-info></title-info>
+    <title-info :meta="$route&&$route.meta"></title-info>
     <transition name="fade"  mode="out-in">
-      <router-view :All = "this"></router-view>
+      <router-view></router-view>
     </transition>
     <navbar v-show="$route.meta.nav"></navbar>
   </div>
 </template>
 
 <script src="./js/app.js"></script>
-
-<style lang="scss">
-  @import './scss/public.scss';
+<style>
   @font-face {
     font-family: 'iconfont';
     src: url('//at.alicdn.com/t/font_1475058654_096525.eot'); /* IE9*/
@@ -120,4 +118,6 @@
     height:40px;
     line-height:40px;
   }
+</style>
+<style lang="scss">
 </style>

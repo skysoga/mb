@@ -1,7 +1,7 @@
 <template>
   <div class="competition">
     <table>
-      <tr class="active" :data-id="item.UserId" v-for='item in init_bonus_data'>
+      <tr class="active" :data-id="item.UserId" v-for='item in init_bonus_data' @click="jump(item.UserId)">
         <td>
           <img :src="$store.getters.PhotoPath+item.UserPhoto" alt="">
           	<p>账号昵称：<i style="color:#38f">{{item.NickName?item.NickName:item.UserName}}</i><br>昨日奖金：<span>￥{{item.Bonus}}</span></p>
@@ -13,23 +13,22 @@
 </template>
 
 <script type="text/javascript">
-const interviewApp=require("../main.js");
+const {interviewApp}=require("../main.js");
   export default{
     data(){
       return {
         init_bonus_data:[]
       }
     },
+    methods:{
+      jump:function(id){
+        let router=this.$router
+        router.push({ path: 'playerHome',query:{ID:id}})
+      }
+    },
     created(){
-      interviewApp.GetInitData(["RankingList"],function(data){
-        console.log(data.RankingList);
-      });
-      _fetch({Action:"GetInitData",Requirement:["RankingList"]}).then((res)=>{
-        if(res.ok){
-          res.json().then((data)=>{
-            console.log(data);
-          })
-        }
+      interviewApp.GetInitData(["RankingList"],(data)=>{
+        this.init_bonus_data=data.RankingList
       })
     }
   }

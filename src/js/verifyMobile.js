@@ -1,4 +1,4 @@
-const interviewApp=require("../main.js");
+const {interviewApp}=require("../main.js");
 export default {
   data:()=>{
     return{
@@ -6,10 +6,20 @@ export default {
       SmsCode:"",
       reTime:'发送验证码',
       noDo:true,
-      toMsg:true
+      toMsg:true,
+      nextUrl:""
     }
   },
+  beforeRouteEnter:(to,from,next)=>{
+    var F=sessionStorage.getItem('isFind')
+    if(F){
+      to.meta.link="/resetWay?Q=ResetPwd"
+    }
+    next()
+  },
   created(){
+    var Q=this.$route.query.Q
+    if(Q){this.nextUrl=Q.substr(2)}
     var vm=this
     var arr = ["UserMobile"];
      this.$root.GetInitData(arr,state=>{
@@ -18,31 +28,31 @@ export default {
   },
   methods:{
     postBtn(){
-      var $root=this.$root
+      var vm=this
       var ajax = {
         Mobile: 0,
         SmsCode:this.SmsCode
       }
-      var selfCheck = {
-        SmsCode:{
-          Name: '验证码',
-          Reg: /^\d{4}$/,
-          ErrMsg:"验证码不正确！"
-        }
-      }
-      var err = $root.format(ajax, ['SmsCode'], selfCheck);
+      var _FomatC=this.$store.state._FomatConfig
+      var err = vm.$root.format(ajax, ['SmsCode'], _FomatC);
       if (err) {
         layer.msgWarn(err[1]);
         return;
       }
       ajax.Action="VerifyMobile"
+      var F=sessionStorage.getItem('isFind')
+      if(F){
+        ajax.Action=ajax.Action+'Forget';
+      }
       ajax.Qort="Verify"
       layer.msgWait("正在提交")
       _fetch(ajax).then((res)=>{
         res.json().then((json) => {
           if(json.Code===1) {
             layer.msgWarn(json.StrCode);
-            $root.$router.push('/setMobile')
+            var url=vm.nextUrl
+            url=url?'/'+url:'/setMobile'
+            vm.$root.$router.push(url)
           }else{
             layer.msgWarn(json.StrCode);
           }

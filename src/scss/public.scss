@@ -873,3 +873,15 @@ content:"\e62c";
   -webkit-tap-highlight-color: transparent;
   outline: none;
 }
+.dataType{
+  z-index: 999;
+  background: initial !important;
+  position: fixed;
+  right: .6em;
+  top: 0;
+  color: white;
+  font-size: 0.8em;
+  height: 2.9em !important;
+  width:initial !important;
+  line-height: 2.9em;
+}

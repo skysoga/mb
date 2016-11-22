@@ -41,12 +41,14 @@
               <i class="iconfont right fr"></i>
           </router-link>
           <p class="hr1px"></p>
-          <router-link class="active" id="AgentRebate" to="agentCenter" style="display:none">
-              <i class="iconfont o4">&#xe63e;</i>
-              <span>代理中心</span>
-              <i class="iconfont right fr"></i>
-          </router-link>
-          <p class="hr1px" style="display:none"></p>
+          <template v-if="$store.state.AgentRebate">
+            <router-link class="active" to="agentCenter">
+                <i class="iconfont o4">&#xe63e;</i>
+                <span>代理中心</span>
+                <i class="iconfont right fr"></i>
+            </router-link>
+            <p class="hr1px"></p>
+          </template>
           <router-link class="active" to="PLstatement">
               <i class="iconfont o3">&#xe623;</i>
               <span>今日盈亏</span>

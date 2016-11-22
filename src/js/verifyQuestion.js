@@ -1,4 +1,4 @@
-const interviewApp=require("../main.js");
+const {interviewApp}=require("../main.js");
 export default {
   data:()=>{
     return{
@@ -7,20 +7,31 @@ export default {
       question2:"",
       answer1:"",
       answer2:"",
+      nextUrl:""
     }
   },
+  beforeRouteEnter:(to,from,next)=>{
+    var F=sessionStorage.getItem('isFind')
+    if(F){
+      to.meta.link="/resetWay?Q=ResetPwd"
+    }
+    next()
+  },
   created(){
+    var Q=this.$route.query.Q
+    if(Q){this.nextUrl=Q.substr(2)}
     var arr = ["UserSafeQuestions"];
     var vm=this
      this.$root.GetInitData(arr,State=>{
+      var Nums=vm.doOne()
       vm.Questions=State.UserSafeQuestions
-      vm.question1=vm.Questions[0].Id
-      vm.question2=vm.Questions[1].Id
+      vm.question1=vm.Questions[Nums[0]].Id
+      vm.question2=vm.Questions[Nums[1]].Id
      })
   },
   methods:{
     postBtn(){
-      var $root=this.$root
+      var vm=this
       var ajax = {
         Answer1:this.answer1,
         Answer2:this.answer2
@@ -47,6 +58,10 @@ export default {
         return;
       }
       ajax.Action="VerifyQuestion"
+      var F=sessionStorage.getItem('isFind')
+      if(F){
+        ajax.Action=ajax.Action+'Forget';
+      }
       ajax.QuestionID1=this.question1
       ajax.QuestionID2=this.question2
       layer.msgWait("正在提交")
@@ -54,12 +69,24 @@ export default {
         res.json().then((json) => {
           if(json.Code===1) {
             layer.msgWarn(json.StrCode);
-            $root.$router.push('/setQuestion')
+            var url=vm.nextUrl
+            url=url?'/'+url:'/setQuestion'
+            vm.$root.$router.push(url)
           }else{
             layer.msgWarn(json.StrCode);
           }
         })
       })
+    },
+    doOne(){
+      var Arr=[];
+      Arr[0]=Math.floor(Math.random()*3)
+      Arr[1]=Math.floor(Math.random()*3)
+      if(Arr[0]==Arr[1]){
+        return this.doOne()
+      }else{
+        return Arr
+      }
     }
   }
 }

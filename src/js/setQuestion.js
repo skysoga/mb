@@ -1,4 +1,4 @@
-const interviewApp=require("../main.js");
+const {interviewApp}=require("../main.js");
 export default {
   data:()=>{
     return{
@@ -40,6 +40,10 @@ export default {
         return;
       }
       ajax.Action="SetQuestion"
+      var F=sessionStorage.getItem('isFind')
+      if(F){
+        ajax.Action=ajax.Action+'Forget';
+      }
       ajax.QuestionID1=this.question1
       ajax.QuestionID2=this.question2
       ajax.QuestionID3=this.question3
