@@ -20,23 +20,36 @@
         					 <i class="iconfont copy">复制</i>
 				</td>
       </tr> -->
+
       <tr>
         <td>收款账号</td>
         <td>
         	<input class="cGold" 
 				         type="text" 
-				         v-va:ImgCode.ImgCode = "[{nonvoid:true}]"
-                 va-tag = "收款账户">
+				         v-va:fjk = "[{limit:[12365, 78287]}]"
+                 tag = "收款账户">
         	<i class="iconfont copy">复制</i>
       	</td>
       </tr>
+      
+      <tr>
+        <td @click = "add">开户支行</td>
+        <td>
+          <input class="cGold" 
+                 type="text" 
+                 v-va:ImgCode 
+                 tag = "开户支行">
+          <i class="iconfont copy">复制</i>
+        </td>
+      </tr>
+
       <tr>
         <td @click = "add">开户支行</td>
         <td>
 	        <input class="cGold" 
 				         type="text" 
-				         v-va:Password.canNull = "[{limit:[12345, 100000]},{equal:'name'}]"
-                 va-tag = "开户支行">
+				         v-va:ImgCode.unique
+                 tag = "开户支行">
 	        <i class="iconfont copy">复制</i>
         </td>
       </tr>
@@ -66,6 +79,7 @@ export default{
 	},
 	mounted (){
     // this.$va_setErrMsg('password', 'nonvoid', '请再次输入密码')
+    this.$va_setLimit('fjk',[1,10000000])
     // console.log(this.vaConfig)
 	},
 	methods:{
