@@ -128,84 +128,96 @@ var regList = {
 
 va.install = function(Vue){
 
-	Vue.directive('va',function(el, binding, vnode){
-  	var vm = vnode.context
-		   ,name = binding.arg
-		   ,tag = el.getAttribute('tag')
-		   ,baseCfg = []										//默认的校验规则						 --不用写，默认存在的规则（如非空）
-		   ,optionalConfig = []								//用户选择的配置成套         --与name相关			
-		   ,customConfig = []									//用户自定义的规则（组件中） --bingding.value
-		   ,option = binding.modifiers
+	Vue.directive('va',{
+		bind:function(el, binding, vnode){
+	  	var vm = vnode.context
+			   ,name = binding.arg
+			   ,tag = el.getAttribute('tag')
+			   ,baseCfg = []										//默认的校验规则						 --不用写，默认存在的规则（如非空）
+			   ,optionalConfig = []								//用户选择的配置成套         --与name相关			
+			   ,customConfig = []									//用户自定义的规则（组件中） --bingding.value
+			   ,option = binding.modifiers
 
-  	el.className = 'va' + vm._uid 
-  	el.name = name
-  	vm.vaConfig || (vm.vaConfig = {})
+	  	el.className = 'va' + vm._uid 
+	  	el.name = name
+	  	vm.vaConfig || (vm.vaConfig = {})
 
-  	var eazyNew = (type, typeVal) =>{return new VaConfig(type, typeVal, '', name, tag)}
-  	var NON_VOID = eazyNew('nonvoid', true)
+	  	var eazyNew = (type, typeVal) =>{return new VaConfig(type, typeVal, '', name, tag)}
+	  	var NON_VOID = eazyNew('nonvoid', true)
 
-  	//默认非空,如果加了canNull的修饰符就允许为空
-  	if(!option.canNull){
-	  	baseCfg.push(NON_VOID)
-  	}
+	  	//默认非空,如果加了canNull的修饰符就允许为空
+	  	if(!option.canNull){
+		  	baseCfg.push(NON_VOID)
+	  	}
 
-  	//不能重复的
-  	if(option.unique){
-  		optionalConfig.push(eazyNew('unique', name))
-  	}
+	  	//不能重复的
+	  	if(option.unique){
+	  		optionalConfig.push(eazyNew('unique', name))
+	  	}
 
-  	//如果regList里有name对应的，直接就加进optionalConfig
-  	if(regList[name]){
-  		optionalConfig.push(eazyNew('reg', regList[name])) 
-  	}
+	  	var regOptions = Object.keys(option);
+	  	for(var i = 0;i < regOptions.length;i++){
+	  		var regOption = regOptions[i]
+	  		if(regList[regOptions[i]]){
+	  			optionalConfig.push(eazyNew('reg', regList[regOption]))
+	  		}
+	  	}
 
-  	//用户自定义的规则
-  	if(binding.value){
-	  	customConfig = binding.value.map(item=>{
-		  	let type = Object.keys(item)[0];
-		  	return new VaConfig(type, item[type], '', name, tag)
-	  	})
-  	}
 
-  	//规则由 默认规则 + 修饰符规则 + 写在属性的自定义规则 合并（后面的同type规则会覆盖前面的）
-  	vm.vaConfig[name] = baseCfg.uConcat(optionalConfig).uConcat(customConfig)
+	  	//如果regList里有name对应的，直接就加进optionalConfig
+	  	if(regList[name]){
+	  		optionalConfig.push(eazyNew('reg', regList[name])) 
+	  	}
 
-  	//如果需要立即校验的话，在这里处理
-  	// el.addEventListener('change', function(){
-  	// 	console.log(vm.vaConfig)
-  	// })
+	  	//用户自定义的规则
+	  	if(binding.value){
+		  	customConfig = binding.value.map(item=>{
+			  	let type = Object.keys(item)[0];
+			  	return new VaConfig(type, item[type], '', name, tag)
+		  	})
+	  	}
 
-	  console.log(vm.vaConfig)
+	  	//规则由 默认规则 + 修饰符规则 + 写在属性的自定义规则 合并（后面的同type规则会覆盖前面的）
+	  	vm.vaConfig[name] = baseCfg.uConcat(optionalConfig).uConcat(customConfig)
+
+	  	//如果需要立即校验的话，在这里处理
+	  	// el.addEventListener('change', function(){
+	  	// 	console.log(vm.vaConfig)
+	  	// })
+
+		  console.log(vm.vaConfig)
+	  }
 	})
 
-	Vue.directive('va-check',  function(el, binding, vnode){
-		var vm = vnode.context
-		el.addEventListener('click', function(){
-			var domList = document.getElementsByClassName('va' + vm._uid);
-			vm.vaResult || (vm.vaResult = {})
-			vm.vaVal || (vm.vaVal = {})
+	Vue.directive('va-check', { 
+		bind:function(el, binding, vnode){
+			var vm = vnode.context
+			el.addEventListener('click', function(){
+				var domList = document.getElementsByClassName('va' + vm._uid);
+				vm.vaResult || (vm.vaResult = {})
+				vm.vaVal || (vm.vaVal = {})
 
-			for(var i = 0;i < domList.length;i++){
-				var dom = domList[i],
-						name = dom.name,
-						value = dom.value,
-						conditions = vm.vaConfig[name];
-				
-				vm.vaResult[name] = check(value, conditions);
-				var _result = vm.vaResult[name]
-				//如果返回不为0,则有报错
-				if(_result){
-					//如果返回的是字符串，则为自定义报错； 如果是数组，则使用showErr 报错
-					typeof _result === 'string' ? layer.msgWarn(_result) : showErr(conditions[0].tag, _result)	
-					return
+				for(var i = 0;i < domList.length;i++){
+					var dom = domList[i],
+							name = dom.name,
+							value = dom.value,
+							conditions = vm.vaConfig[name];
+					
+					vm.vaResult[name] = check(value, conditions);
+					var _result = vm.vaResult[name]
+					//如果返回不为0,则有报错
+					if(_result){
+						//如果返回的是字符串，则为自定义报错； 如果是数组，则使用showErr 报错
+						typeof _result === 'string' ? layer.msgWarn(_result) : showErr(conditions[0].tag, _result)	
+						return
+					}
+					vm.vaVal[name] = value
 				}
-				vm.vaVal[name] = value
-			}
-
-			// layer.msgWarn('全部校验成功')
-			console.log(vm.vaVal)
-		})
-
+				
+				// layer.msgWarn('全部校验成功')
+				console.log(vm.vaVal)
+			})
+		}
 	})
 
 	/**

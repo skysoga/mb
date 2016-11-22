@@ -3,8 +3,8 @@ import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import { mapState } from 'vuex'
 import App from './App'
-import routes from './routes/routes.js'
-import Va from './plugins/va.js'
+import routes from './routes/routes'
+import Va from './plugins/va'
 
 Vue.use(Va)
 Vue.use(VueRouter)
