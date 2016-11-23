@@ -17,5 +17,5 @@
 </template>
 <script src="../js/agentReport.js"></script>
 <style lang="scss" scoped>
-  @import '../scss/personalinfo.scss';
+  @import '../scss/personalinfo.scss'
 </style>
