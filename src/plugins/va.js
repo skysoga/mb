@@ -150,11 +150,33 @@ va.install = function(Vue){
 		  	baseCfg.push(NON_VOID)
 	  	}
 
+	  	//需要立即校验的框
+	  	if(option.vanow){
+	  		el.addEventListener('blur', function(){
+					vm.vaResult || (vm.vaResult = {})
+					vm.vaVal || (vm.vaVal = {})
+					var value = el.value,
+							conditions = vm.vaConfig[name];
+
+					vm.vaResult[name] = check(value, conditions);
+					var _result = vm.vaResult[name]
+					if(_result){
+						//如果返回的是字符串，则为自定义报错； 如果是数组，则使用showErr 报错
+						typeof _result === 'string' ? layer.msgWarn(_result) : showErr(conditions[0].tag, _result)	
+						el.value = vm.vaVal[name] = ''
+						return
+					}
+					vm.vaVal[name] = value
+					vm.$vanow()
+	  		})
+	  	}
+
 	  	//不能重复的
 	  	if(option.unique){
 	  		optionalConfig.push(eazyNew('unique', name))
 	  	}
 
+	  	//如果有在正则表里
 	  	var regOptions = Object.keys(option);
 	  	for(var i = 0;i < regOptions.length;i++){
 	  		var regOption = regOptions[i]
@@ -181,13 +203,16 @@ va.install = function(Vue){
 	  	vm.vaConfig[name] = baseCfg.uConcat(optionalConfig).uConcat(customConfig)
 
 	  	//如果需要立即校验的话，在这里处理
-	  	// el.addEventListener('change', function(){
+	  	// el.addEventListener('blur', function(){
 	  	// 	console.log(vm.vaConfig)
 	  	// })
 
 		  console.log(vm.vaConfig)
 	  }
 	})
+
+
+
 
 	Vue.directive('va-check', { 
 		bind:function(el, binding, vnode){
@@ -213,10 +238,11 @@ va.install = function(Vue){
 					}
 					vm.vaVal[name] = value
 				}
-				
+
 				// layer.msgWarn('全部校验成功')
 				console.log(vm.vaVal)
 			})
+
 		}
 	})
 
@@ -240,6 +266,7 @@ va.install = function(Vue){
 			}
 		}
 	}
+
 
 }
 
