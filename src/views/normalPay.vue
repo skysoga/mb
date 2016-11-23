@@ -25,11 +25,11 @@
       </tr>
       <tr>
         <td>充值金额</td>
-        <td><input type="tel" tag = "充值金额" v-va:Money.vanow  placeholder="请输入充值金额"></td>
+        <td><input type="tel" tag = "充值金额" v-va:Money  placeholder="请输入充值金额"></td>
       </tr>
       <tr>
         <td>银行账户</td>
-        <td><input type="text" tag = "银行账户"  v-va:PayUser.RealName.vanow  placeholder="请输入您的银行账户"></td>
+        <td><input type="text" tag = "银行账户"  v-va:PayUser.RealName  placeholder="请输入您的银行账户"></td>
       </tr>
     </table>
     <div class="loginBtn BTN"><a v-va-check>提交</a></div>
