@@ -158,6 +158,12 @@ va.install = function(Vue){
 					var value = el.value,
 							conditions = vm.vaConfig[name];
 
+					//如果允许为空的此时为空，不校验
+					if(value === '' && option.canNull){
+						vm.vaVal[name] = value
+						return 
+					}		
+
 					vm.vaResult[name] = check(value, conditions);
 					var _result = vm.vaResult[name]
 					if(_result){
@@ -201,18 +207,9 @@ va.install = function(Vue){
 
 	  	//规则由 默认规则 + 修饰符规则 + 写在属性的自定义规则 合并（后面的同type规则会覆盖前面的）
 	  	vm.vaConfig[name] = baseCfg.uConcat(optionalConfig).uConcat(customConfig)
-
-	  	//如果需要立即校验的话，在这里处理
-	  	// el.addEventListener('blur', function(){
-	  	// 	console.log(vm.vaConfig)
-	  	// })
-
 		  console.log(vm.vaConfig)
 	  }
 	})
-
-
-
 
 	Vue.directive('va-check', { 
 		bind:function(el, binding, vnode){
@@ -266,7 +263,6 @@ va.install = function(Vue){
 			}
 		}
 	}
-
 
 }
 
