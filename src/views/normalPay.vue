@@ -127,8 +127,8 @@ export default{
 				}
 			})
 		},
-		$vanow (){
-			console.log(this.vaVal)
+		$vanow (para){
+			console.log(para)
 		},
 		submit () {
 			//ajax数据

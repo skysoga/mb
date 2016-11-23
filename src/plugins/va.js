@@ -15,6 +15,7 @@ function unique(arr){
 	return newArr;
 }
 
+//校验函数
 function check(v, conditions){
 	var res = 0;										//0代表OK, 若为数组代表是某个字段的错误
 	//验证函数
@@ -73,7 +74,7 @@ function showErr(name, checkResult){
 		equal: `两次${ext}不相同`,
 		unique: `${name}重复`
 	}
-
+	//使用layer来报错，如果需要自定义报错方式，要把全文的layer集中起来包一层。
 	layer.msgWarn(ERR_MSG[type])
 }
 
@@ -126,8 +127,7 @@ var regList = {
 	Mail: /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/
 }
 
-va.install = function(Vue){
-
+va.install = function(Vue, options){
 	Vue.directive('va',{
 		bind:function(el, binding, vnode){
 	  	var vm = vnode.context
@@ -156,7 +156,8 @@ va.install = function(Vue){
 					vm.vaResult || (vm.vaResult = {})
 					vm.vaVal || (vm.vaVal = {})
 					var value = el.value,
-							conditions = vm.vaConfig[name];
+							conditions = vm.vaConfig[name],
+							para = el.getAttribute('va-para')
 
 					//如果允许为空的此时为空，不校验
 					if(value === '' && option.canNull){
@@ -173,7 +174,7 @@ va.install = function(Vue){
 						return
 					}
 					vm.vaVal[name] = value
-					vm.$vanow()
+					vm.$vanow(para)
 	  		})
 	  	}
 
