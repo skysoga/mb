@@ -8,7 +8,7 @@
     <ul>
         <li><div><span>手机</span><i class="iconfont right"></i><em>{{$store.state.UserMobile||'未绑定'}}</em></div></li>
         <li><div><span>邮箱</span><i class="iconfont right"></i><em>{{$store.state.UserMail||'未绑定'}}</em></div></li>
-        <li><div><span>Q Q</span><i class="iconfont right"></i><em><input v-va:UserQQ :value="$store.state.UserQQ" tag="QQ号码" type="tel" maxlength="12"></em></div></li>
+        <li><div><span>Q Q</span><i class="iconfont right"></i><em><input v-va:QQ.vanow.canNull="[{reg:/^[\b]{5}$/}]" :value="$store.state.UserQQ" tag="QQ号码" type="tel" maxlength="12"></em></div></li>
         <li><div><span>性别</span><i class="iconfont right"></i><em>
             <select name="Sex" tag="性别">
                 <option value="2">保密</option>
