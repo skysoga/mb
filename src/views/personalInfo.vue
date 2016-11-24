@@ -15,6 +15,7 @@
             <em v-if="!$store.state.NickName">
               <input  va-para="NickName"
                       v-va:NickName.vanow.canNull="[{reg:/^[\u4e00-\u9fa5]{0,5}$/}]"
+                      regMsg="请使用五位以内的汉字"
                       tag="昵称"
                       :value="$store.state.NickName"
                       type="text"
