@@ -113,6 +113,7 @@ export default {
       delete ajax.checkPassword;
       ajax.Action="Register";
 
+      var that = this      
       _fetch(ajax).then((res)=>{
         res.json().then((json) => {
         	console.log(json)
@@ -136,7 +137,8 @@ export default {
                       // lStorage.clearlocalStorage(lStorage.Arr.VerifyUser);
 
                       sessionStorage.clear();
-                      this.$route.push('/index')
+                      console.log(that)
+                      this.$router.push('/index')
                 		}else{
                 			layer.msgWarn(json.StrCode);
                 		}
