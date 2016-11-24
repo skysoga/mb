@@ -32,7 +32,7 @@ export default {
       })
     },
     $vanow(e){
-      console.log(this.vaVal,e)
+      console.log(this.vaVal[e])
     }
   },
   components:{

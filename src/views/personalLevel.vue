@@ -13,8 +13,8 @@
           <p class="levelTips">距离下一级需要0分 每充值1元加1分</p>
           <div class="levelBar fix">
               <div class="left">VIP{{$store.state.UserGrade}}</div>
-              <p class="u-progress"><span class="pgbar" id="progress" style="width: 20%;"><span class="pging"><em class="point"><ins id="UserGradeGrow">0分</ins><i></i></em></span></span></p>
-              <div class="right">VIP0</div>
+              <p class="u-progress"><span class="pgbar" id="progress" style="width: 20%;"><span class="pging"><em class="point"><ins>0分</ins><i></i></em></span></span></p>
+              <div class="right">VIP{{$store.state.UserGrade<9?$store.state.UserGrade+1:'9'}}</div>
               <p>0%</p>
           </div>
       </div>
