@@ -204,7 +204,12 @@ va.install = function(Vue, options){
 	  	if(binding.value){
 		  	customConfig = binding.value.map(item=>{
 			  	let type = Object.keys(item)[0];
-			  	return new VaConfig(type, item[type], '', name, tag)
+			  	if(type === 'reg'){
+			  		return regNew(item[type])
+			  	}else{
+			  		return eazyNew(type, item[type])
+			  	}
+			  	// return new VaConfig(type, item[type], '', name, tag)
 		  	})
 	  	}
 

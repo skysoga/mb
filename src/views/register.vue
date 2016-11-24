@@ -138,7 +138,7 @@ export default {
 
                       sessionStorage.clear();
                       console.log(that)
-                      this.$router.push('/index')
+                      that.$router.push('/index')
                 		}else{
                 			layer.msgWarn(json.StrCode);
                 		}
@@ -146,19 +146,19 @@ export default {
                 })
               },
               no: function no() {
-								this.UserName= ''
-								this.Password= ''
-								this.checkPassword= ''
-								this.ImgCode= ''
+								that.UserName= ''
+								that.Password= ''
+								that.checkPassword= ''
+								that.ImgCode= ''
               }
             });
           }else{
-            if(json.Code === 2){
+            if(json.Code === -2){
               localStorage.removeItem('InvitationCode');
-              this.YqmReadOnly = false;
+              that.YqmReadOnly = false;
             }
             layer.msgWarn(json.StrCode);
-            this.refreshYzm()
+            that.refreshYzm()
           }
         })
       })
