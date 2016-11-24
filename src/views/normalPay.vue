@@ -4,7 +4,7 @@
       <tr>
         <td>选择银行</td>
         <td>
-          <select v-model = "nowItem" @change = "changeBankAccount">
+          <select v-model = "BankCode" @change = "changeBankAccount">
           	<option v-for = "option in Bank" :value = "option.BankCode">{{option.BankName}}</option>
           </select>
           <i class="iconfont unfold"></i>
@@ -82,7 +82,7 @@ export default{
 				if(method === 'Bank'){
 					vm[method] = Object.freeze(state[rechargeWay])
 					var BankCode = state[rechargeWay][0].BankCode
-					vm.nowItem = BankCode;
+					vm.BankCode = BankCode;
 					vm.nowRender = state[rechargeWay][0]
 					// console.log(vm.nowRender)
 				}else{
@@ -102,12 +102,10 @@ export default{
 			Alipay:{},
 
 			//当前
-			nowItem:'',	 
+			BankCode:'',	 
 			nowRender:{},
 
 			//ajax
-			PayUser:'',
-			Money:'',
 			ID:0,
 
 			
@@ -122,17 +120,14 @@ export default{
 		//切换充值银行
 		changeBankAccount (){
 			this.Bank.forEach(item=>{
-				if(item.BankCode === this.nowItem){
+				if(item.BankCode === this.BankCode){
 					this.nowRender = item;
 				}
 			})
 		},
-		$vanow (para){
-			console.log(para)
-		},
-		submit () {
+		$vaSubmit () {
 			//ajax数据
-			var ajaxConfig = {
+			var ajax = {
 				//银行转账
 				Bank:{
 					Action:'Recharge',
@@ -160,7 +155,15 @@ export default{
 				}
 			}
 			
+			var nowAjax = ajax[this.method]
+			nowAjax.PayUser = this.vaVal.PayUser
+			nowAjax.Money = this.vaVal.Money
+			nowAjax.ID = this.ID
+			if(this.method === 'Bank'){
+			  nowAjax.BankCode = this.BankCode
+			}
 
+			
 
 
 

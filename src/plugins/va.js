@@ -137,12 +137,14 @@ va.install = function(Vue, options){
 			   ,optionalConfig = []								//用户选择的配置成套         --与name相关			
 			   ,customConfig = []									//用户自定义的规则（组件中） --bingding.value
 			   ,option = binding.modifiers
-
+			   ,regMsg = el.getAttribute('regMsg') || ''
+			
 	  	el.className = 'va' + vm._uid 
 	  	el.name = name
 	  	vm.vaConfig || (vm.vaConfig = {})
 
 	  	var eazyNew = (type, typeVal) =>{return new VaConfig(type, typeVal, '', name, tag)}
+	  	var regNew = (typeVal) =>{return new VaConfig('reg', typeVal, regMsg, name, tag)}    //正则的新建
 	  	var NON_VOID = eazyNew('nonvoid', true)
 
 	  	//默认非空,如果加了canNull的修饰符就允许为空
@@ -157,7 +159,7 @@ va.install = function(Vue, options){
 					vm.vaVal || (vm.vaVal = {})
 					var value = el.value,
 							conditions = vm.vaConfig[name],
-							para = el.getAttribute('va-para')
+							para = el.getAttribute('va-para')				//传给回调的参数
 
 					//如果允许为空的此时为空，不校验
 					if(value === '' && option.canNull){
@@ -174,7 +176,7 @@ va.install = function(Vue, options){
 						return
 					}
 					vm.vaVal[name] = value
-					vm.$vanow(para)
+					vm.$vanow(para)					//写在实例内部method的回调
 	  		})
 	  	}
 
@@ -188,14 +190,14 @@ va.install = function(Vue, options){
 	  	for(var i = 0;i < regOptions.length;i++){
 	  		var regOption = regOptions[i]
 	  		if(regList[regOptions[i]]){
-	  			optionalConfig.push(eazyNew('reg', regList[regOption]))
+	  			optionalConfig.push(regNew(regList[regOption]))
 	  		}
 	  	}
 
 
 	  	//如果regList里有name对应的，直接就加进optionalConfig
 	  	if(regList[name]){
-	  		optionalConfig.push(eazyNew('reg', regList[name])) 
+	  		optionalConfig.push(regNew(regList[name])) 
 	  	}
 
 	  	//用户自定义的规则
@@ -236,7 +238,8 @@ va.install = function(Vue, options){
 					}
 					vm.vaVal[name] = value
 				}
-
+				//校验通过的回调
+				vm.$vaSubmit()
 				// layer.msgWarn('全部校验成功')
 				console.log(vm.vaVal)
 			})
