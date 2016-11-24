@@ -14,6 +14,9 @@ export default {
     var arr=['UserName','UserNickName','UserGrade','UserMobile','UserMail','UserPhoto','UserSex','UserQQ','UserBirthDay','UserGradeGrow','GradeList']
     this.$root.GetInitData(arr)
   },
+  mounted(){
+    //this.$va_setErrMsg('NickName','reg','请使用五位以内的汉字')
+  },
   methods:{
     upHeadImg(){
       var arr={Action:'UpdateUserPhoto',UserPhoto:this.DefaultPhoto}

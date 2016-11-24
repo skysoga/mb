@@ -1,8 +1,28 @@
 <template>
 	<div class="main personalInfo">
     <ul>
-        <li class="headImg" @click="HeadImgBoxShow=true"><div><span>头像</span><i class="iconfont right"></i><em><img :src="$store.getters.PhotoPath+$store.state.UserPhoto" alt="" width="50" height="50"></em></div></li>
-        <li><div><span>昵称</span><i class="iconfont right"></i><em v-if="!$store.state.NickName"><input va-para="NickName" v-va:NickName.vanow.canNull tag="昵称" :value="$store.state.NickName" type="text" placeholder="请设置昵称"></em><em v-else>{{$store.state.NickName}}</em></div></li>
+        <li class="headImg" @click="HeadImgBoxShow=true">
+          <div>
+            <span>头像</span>
+            <i class="iconfont right"></i>
+            <em><img :src="$store.getters.PhotoPath+$store.state.UserPhoto" alt="" width="50" height="50"></em>
+          </div>
+        </li>
+        <li>
+          <div>
+            <span>昵称</span>
+            <i class="iconfont right"></i>
+            <em v-if="!$store.state.NickName">
+              <input  va-para="NickName"
+                      v-va:NickName.vanow.canNull="[{reg:/^[\u4e00-\u9fa5]{0,5}$/}]"
+                      tag="昵称"
+                      :value="$store.state.NickName"
+                      type="text"
+                      placeholder="请设置昵称">
+            </em>
+            <em v-else>{{$store.state.NickName}}</em>
+          </div>
+        </li>
         <li><div><span>账号</span><em>{{$store.state.UserName}}</em></div></li>
     </ul>
     <ul>
