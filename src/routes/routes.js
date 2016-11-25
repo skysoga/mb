@@ -9,7 +9,6 @@ const newWinners =resolve => require(['../views/newWinners'],resolve)
 const userCenter =resolve => require(['../views/userCenter'],resolve)
 const service =resolve => require(['../views/service'],resolve)
 const notfound =resolve => require(['../views/notfound'],resolve)
-const personalInfo =resolve => require(['../views/personalInfo'],resolve)
 const securityCenter =resolve => require(['../views/securityCenter'],resolve)
 const lottery_k3 =resolve => require(['../views/lottery_k3'],resolve)
 
@@ -108,16 +107,6 @@ var routes = [{
   },
   component: userCenter
 },{
-  path: '/personalInfo',
-  name: '账户信息',
-  meta:{
-    title:"账户信息",
-    nav:1,
-    service:true,
-    user:1,
-  },
-  component: personalInfo
-},{
   path: '/securityCenter',
   name: '安全中心',
   meta:{
@@ -126,12 +115,6 @@ var routes = [{
     user:1,
   },
   component: securityCenter
-},{
-  path: '/agentCenter',
-  redirect: '/notfound' //重定向配置
-}, {
-  path: '/PLstatement',
-  redirect: '/notfound' //重定向配置
 }]
 
 routes = routes.concat(guangying).concat(zhiming).concat(xiaosen).concat(publicRoute)
