@@ -20,7 +20,9 @@ const manageInvite =resolve => require(['../views/manageInvite'],resolve)//下�
 const manageIcode =resolve => require(['../views/manageIcode'],resolve)//邀请码
 const personalInfo =resolve => require(['../views/personalInfo'],resolve)//个人信息
 const personalLevel =resolve => require(['../views/personalLevel'],resolve)//等级头衔
-const PLstatement =resolve => require(['../views/PLstatement'],resolve)//等级头衔
+const PLstatement =resolve => require(['../views/PLstatement'],resolve)//今日盈亏
+const setBankcard =resolve => require(['../views/setBankcard'],resolve)//设置银行卡
+const verifyBankcard =resolve => require(['../views/verifyBankcard'],resolve)//验证银行卡
 
 var routes = [{
   path: '/manageBankcard',
@@ -281,5 +283,23 @@ var routes = [{
     user:true
   },
   component: PLstatement
+},{
+  path: '/setBankcard',
+  name: '绑定银行卡',
+  meta:{
+    title:"绑定银行卡",
+    link:'/manageBankcard',
+    user:true
+  },
+  component: setBankcard
+},{
+  path: '/verifyBankcard',
+  name: '验证银行卡',
+  meta:{
+    title:"验证银行卡",
+    link:'/manageBankcard',
+    user:true
+  },
+  component: verifyBankcard
 }]
 module.exports = routes
