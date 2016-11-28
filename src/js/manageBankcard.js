@@ -4,7 +4,7 @@ export default {
     return{
       CardList:'',
       tipHtml:'',
-      FiveUnlok:false,
+      FiveUnlok:true,
       oneCarLok:'',
       bankArr:{
         '农业银行':'ABC',
@@ -40,6 +40,9 @@ export default {
     },
     setTip(){
       var List=this.CardList
+      if(List==null){
+        return this.$router.push('/securityCenter')
+      }
       var Tips=''
       if(!List.length){
         Tips='您尚未绑定银行卡，一共可以绑定5张银行卡。'
@@ -53,7 +56,9 @@ export default {
         this.FiveUnlok=false
       }
       this.tipHtml=Tips
-      console.log(this.FiveUnlok)
+    },
+    setImg(name){
+      return this.bankArr[name]+'.png'
     }
   }
 }

@@ -43,15 +43,19 @@ export default {
                   title: "温馨提示",
                   btn: ["是","否"],
                   yes:function(){
-                    vm.$root.$router.push('/setBankcard?Q='+vm.isOrUrl)
+                    vm.upPwd(function(){
+                      vm.$root.$router.push('/setBankcard?Q='+vm.isOrUrl)
+                    })
                   },
                   no:function(){
-                    vm.$root.$router.push('/securityCenter')
+                    vm.upPwd(function(){
+                      vm.$root.$router.push('/securityCenter')
+                    })
                   }
                 })
               break;
               default:
-                vm.$root.AjaxGetInitData(["UserHasSafePwd"],function(){
+                vm.upPwd(function(){
                   vm.$root.$router.push('/securityCenter')
                 })
               break;
@@ -61,6 +65,9 @@ export default {
           }
         })
       })
+    },
+    upPwd(fun){
+      this.$root.AjaxGetInitData(["UserHasSafePwd"],fun())
     }
   }
 }

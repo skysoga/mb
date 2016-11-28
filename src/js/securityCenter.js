@@ -49,7 +49,7 @@ export default {
     setNextUrl(){
       if(!this.HasSafePwd){
         this.$router.push("/setSafePwd?Q=bindCard")
-      }else if(this.FirstCard){
+      }else if(!this.FirstCard){
         this.$router.push("/setBankcard")
       }else{
         this.$router.push("/manageBankcard")
