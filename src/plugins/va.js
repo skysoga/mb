@@ -29,7 +29,7 @@ function check(v, conditions){
 			}
 		},
 		reg:(v, reg)=> reg.test(v) ? 0 : ['reg'],				//正则
-		limit:(v, interval)=> (v >= interval[0] && v <= interval[1]) ? 0 : ['limit', interval],
+		limit:(v, interval)=> (+v >= interval[0] && +v <= interval[1]) ? 0 : ['limit', interval],
 		equal: (v, target)=>{														//和什么相等
 			var _list = document.getElementsByName(target), _target
 			for(var i = 0;i < _list.length;i++){
@@ -50,7 +50,6 @@ function check(v, conditions){
 		var condi = conditions[i], 
 				type = condi.type, 
 				typeVal = condi.typeVal
-		// console.log(type,v, typeVal)
 		res = cfg[type](v, typeVal)
 		
 		//如果有自定义报错信息， 返回自定义的报错信息
@@ -139,12 +138,12 @@ va.install = function(Vue, options){
 			   ,option = binding.modifiers
 			   ,regMsg = el.getAttribute('regMsg') || ''
 			
+			var eazyNew = (type, typeVal) =>{return new VaConfig(type, typeVal, '', name, tag)}
+			var regNew = (typeVal) =>{return new VaConfig('reg', typeVal, regMsg, name, tag)}    //正则的新建
+
 	  	el.className = 'va' + vm._uid 
 	  	el.name = name
 	  	vm.vaConfig || (vm.vaConfig = {})
-
-	  	var eazyNew = (type, typeVal) =>{return new VaConfig(type, typeVal, '', name, tag)}
-	  	var regNew = (typeVal) =>{return new VaConfig('reg', typeVal, regMsg, name, tag)}    //正则的新建
 	  	var NON_VOID = eazyNew('nonvoid', true)
 
 	  	//默认非空,如果加了canNull的修饰符就允许为空
@@ -209,14 +208,14 @@ va.install = function(Vue, options){
 			  	}else{
 			  		return eazyNew(type, item[type])
 			  	}
-			  	// return new VaConfig(type, item[type], '', name, tag)
 		  	})
 	  	}
 
-	  	//规则由 默认规则 + 修饰符规则 + 写在属性的自定义规则 合并（后面的同type规则会覆盖前面的）
-	  	vm.vaConfig[name] = baseCfg.uConcat(optionalConfig).uConcat(customConfig)
-		  console.log(vm.vaConfig)
-	  }
+	  	//规则由 默认规则 + 修饰符规则 + 写在属性的自定义规则 + 用户直接加到vm.vaConfig里的规则 合并（后面的同type规则会覆盖前面的）
+	  	vm.vaConfig[name] || (vm.vaConfig[name] = [])
+	  	vm.vaConfig[name] = baseCfg.uConcat(optionalConfig).uConcat(customConfig).uConcat(vm.vaConfig[name])
+	  	console.log(vm.vaConfig)
+	  },
 	})
 
 	Vue.directive('va-check', { 
@@ -233,8 +232,10 @@ va.install = function(Vue, options){
 							value = dom.value,
 							conditions = vm.vaConfig[name];
 					
-					vm.vaResult[name] = check(value, conditions);
-					var _result = vm.vaResult[name]
+
+					// vm.vaResult[name] = check(value, conditions);
+					var _result = check(value, conditions)
+
 					//如果返回不为0,则有报错
 					if(_result){
 						//如果返回的是字符串，则为自定义报错； 如果是数组，则使用showErr 报错
@@ -255,24 +256,7 @@ va.install = function(Vue, options){
 	/**
    **  在实例的monuted周期使用 api设置自定义配置
 	 */
-	
-	//设置自定义报错信息
-	Vue.prototype.$va_setErrMsg = function(name, type, errMsg){
-		for(var i = 0, _conditions = this.vaConfig[name]; i < _conditions.length; i++){
-			if(_conditions[i].type === type){
-				_conditions[i].errMsg = errMsg
-			}
-		}
-	}
-	//设置区间限制
-	Vue.prototype.$va_setLimit = function(name, limit){
-		for(var i = 0, _conditions = this.vaConfig[name]; i < _conditions.length;i++){
-			if(_conditions[i].type === 'limit'){
-				_conditions[i].typeVal = limit;
-			}
-		}
-	}
-
+	Vue.prototype.VaConfig = VaConfig
 }
 
 module.exports = va

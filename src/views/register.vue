@@ -137,8 +137,8 @@ export default {
                       // lStorage.clearlocalStorage(lStorage.Arr.VerifyUser);
 
                       sessionStorage.clear();
-                      console.log(that)
-                      that.$router.push('/index')
+                      that.$root.Logout()
+                      that.$router.push('/login')
                 		}else{
                 			layer.msgWarn(json.StrCode);
                 		}
