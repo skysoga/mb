@@ -41,5 +41,21 @@ export default {
         return
       }
     }
+  },
+  methods:{
+    getBtn(){
+      if(this.UnClick)return;
+      var dataArr={Action:"GetReward",Qort:"每日加奖"}
+      layer.msgWait("正在处理")
+      _fetch(dataArr).then(ref=>{
+        ref.json().then(json=>{
+          if(json.Code==1){
+            layer.msgWarn(json.StrCode)
+          }else{
+            layer.msgWarn(json.StrCode)
+          }
+        })
+      })
+    }
   }
 }

@@ -1,12 +1,11 @@
 <template>
 <div class="main levelTitle">
       <div class="levelTitleHeader">
-          <h5><ins>vip</ins><span>头衔：</span></h5>
           <div class="levelTitleInfo fix">
               <img :src="$store.getters.PhotoPath+$store.state.UserPhoto" alt="">
               <div class="rightInfo">
                   <h1><ins>{{$store.state.UserName}}</ins><i class="vip"></i><span>VIP{{$store.state.UserGrade}}</span></h1>
-                  <i>头衔：</i>
+                  <i>头衔：{{GradeName}}</i>
                   <em>成长值：{{$store.state.UserGradeGrow}}分</em>
               </div>
           </div>
