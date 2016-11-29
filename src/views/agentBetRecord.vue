@@ -119,9 +119,9 @@ export default {
   methods:{
     search:function(index){
       let page_index=index||0
+      console.log(page_index)
       this.li_state=["","","",""]
       this.li_state[page_index]="on"
-      if(this.searchWord===this.oldName){return}
       this.oldName=this.ajaxData.UserName  //储存上一状态的用户名
       if(this.UnFindUser[this.searchWord]){
         layer.msgWarn(this.UnFindUser[this.searchWord])
@@ -130,6 +130,7 @@ export default {
       }else{
         this.ajaxData.UserName=this.searchWord||0
         if(!this.temp_ajax[this.ajaxData.UserName]){
+          console.log("无占位缓存")
           this.temp_ajax[this.ajaxData.UserName]={}
           for(var i=0;i<4;i++){
             this.temp_ajax[this.ajaxData.UserName][i]={State:i+1,
@@ -144,7 +145,8 @@ export default {
         }else{
           if(this.temp_ajax[this.ajaxData.UserName][page_index].DataCount===null){//说明只是生成占位，并没有请求过数据
             this.getData(page_index)
-          }else{}//说明数据真的有缓存,不需要任何操作，因为vue会根据变化自动渲染
+            console.log("占位缓存")
+          }else{console.log("缓存")}//说明数据真的有缓存,不需要任何操作，因为vue会根据变化自动渲染
         }
       }
     },
