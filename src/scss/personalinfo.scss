@@ -206,7 +206,7 @@
       left: 0;
     }
     ul:after{
-      
+
     }
 }
 
@@ -519,7 +519,7 @@
     height: 1em;
     @include border-radius( 4px);
     background: #d27c43;
-    @include bg-linear-gradient('to right, #d7484f 2%, #cfad39 100%'); 
+    @include bg-linear-gradient('to right, #d7484f 2%, #cfad39 100%');
     @include border-radius( 0.8em 0 0 0.8em);
 }
 
@@ -544,7 +544,7 @@
 
 .safeTop{
   background:#444867;
-    @include bg-linear-gradient('top, #4b4f6f,#2e304c'); 
+    @include bg-linear-gradient('top, #4b4f6f,#2e304c');
     padding: 1em;
     text-align: center;
     h5{
@@ -582,7 +582,7 @@
 }
 
 /**
- * 
+ *
  */
 .col3TableTitle{
   position:fixed;
@@ -655,7 +655,7 @@
   height:26rem;
   background: initial !important;
   li span{
-    line-height: 1.5em; 
+    line-height: 1.5em;
   }
 }
 .creatAccountTitle{
@@ -727,8 +727,8 @@
   }
   input{
     display:inline-block;
+    width:16em;
     @include widthCalc(calc(100% - 5em));
-    width:17em;
     border:none;
     background: white;
   }
@@ -774,7 +774,7 @@ input[type="radio"]:checked + label:before {
     width:initial;
   }
   tr{
-    
+
     &:active{
       background:#d9d9d9;
     }
@@ -805,7 +805,7 @@ input[type="radio"]:checked + label:before {
     input{
       text-align:center;
     }
-    
+
     li:first-child{
       &:before{
           visibility: initial;

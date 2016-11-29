@@ -3,7 +3,10 @@ import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import { mapState } from 'vuex'
 import App from './App'
-import routes from './routes/routes.js'
+import routes from './routes/routes'
+import Va from './plugins/va'
+
+Vue.use(Va)
 Vue.use(VueRouter)
 Vue.use(Vuex)
 
@@ -26,7 +29,14 @@ var UserArr=[
 	'UserNickName',
 	'UserFirstCardInfo', //返回绑定的第一张银行卡的模糊信息
 	'AgentRebate',//获取代理人返点情况
-	'UserUpGradeBonus'
+	'UserUpGradeBonus',
+  'UserGrade',
+  'UserQQ',
+  'UserMobile',
+  'UserMail',
+  'UserBirthDay',
+  'UserGradeGrow',
+  'UserSex'
 ]
 var SiteArr=[ //需要校验更新版本的列表
   'LotteryConfig', //所有彩种列表
@@ -258,5 +268,25 @@ router.afterEach((to, from) => {
 //全局过滤器
 Vue.filter('num', v=>+v) // 转成数字类型
 
+//全局指令
+Vue.directive('copyBtn', {
+	bind: function(el, binding, vnode){
+		el.addEventListener('click', function(){
+			var siblings= Array.prototype.filter.call(el.parentNode.children, function(child){ return child !== el; });
+			var targetInput = siblings[0];
+			targetInput.select()
+			document.execCommand('copy')
+		})
+	}
+})
+
+//如果检测到copy事件
+document.addEventListener('copy', function(e){
+	var el = e.target
+	var btn = [].filter.call(el.parentNode.children, child=>(child !== el))[0]
+	if(btn.className.indexOf('copy') > -1){
+		layer.msgWarn('已将内容复制到剪切板')
+	}
+})
 
 module.exports = {interviewApp,store,state};

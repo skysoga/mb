@@ -6,13 +6,15 @@ export default {
       Img:''
     }
   },
+  beforeRouteEnter:(to,from,next)=>{
+        var name= to.query.name
+        to.meta.title=name
+        next()
+  },
   created:function(){
     var arr = ["ActivityConfig"];
-     this.$root.GetInitData(arr)
-  },
-  mounted:function(){
-    var vm=this;
-    var xname=location.search.split('=')[1]
+    this.$root.GetInitData(arr)
+    var xname=this.$route.query.name
     var dataArr=state.ActivityConfig
     for(var i=0;i<dataArr.length;i++){
       if(dataArr[i].Name==decodeURIComponent(xname)){

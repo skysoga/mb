@@ -17,6 +17,12 @@ const forgetPwd =resolve => require(['../views/forgetPwd'],resolve)//忘记密�
 const agentCenter =resolve => require(['../views/agentCenter'],resolve)//代理中心
 const agentReport =resolve => require(['../views/agentReport'],resolve)//代理报表
 const manageInvite =resolve => require(['../views/manageInvite'],resolve)//下级开户
+const manageIcode =resolve => require(['../views/manageIcode'],resolve)//邀请码
+const personalInfo =resolve => require(['../views/personalInfo'],resolve)//个人信息
+const personalLevel =resolve => require(['../views/personalLevel'],resolve)//等级头衔
+const PLstatement =resolve => require(['../views/PLstatement'],resolve)//今日盈亏
+const setBankcard =resolve => require(['../views/setBankcard'],resolve)//设置银行卡
+const verifyBankcard =resolve => require(['../views/verifyBankcard'],resolve)//验证银行卡
 
 var routes = [{
   path: '/manageBankcard',
@@ -237,6 +243,63 @@ var routes = [{
     user:true,
     agent:true
   },
-  component: manageInvite
+  component: manageIcode
+},{
+  path: '/personalInfo',
+  name: '个人信息',
+  meta:{
+    titleList:[{
+        title:"个人信息",
+        to:"/personalInfo"
+      },{
+        title:"等级头衔",
+        to:"/personalLevel"
+      }],
+    link:'/userCenter',
+    user:true
+  },
+  component: personalInfo
+},{
+  path: '/personalLevel',
+  name: '等级头衔',
+  meta:{
+    titleList:[{
+        title:"个人信息",
+        to:"/personalInfo"
+      },{
+        title:"等级头衔",
+        to:"/personalLevel"
+      }],
+    link:'/userCenter',
+    user:true
+  },
+  component: personalLevel
+},{
+  path: '/PLstatement',
+  name: '今日盈亏',
+  meta:{
+    title:"今日盈亏",
+    link:'/userCenter',
+    user:true
+  },
+  component: PLstatement
+},{
+  path: '/setBankcard',
+  name: '绑定银行卡',
+  meta:{
+    title:"绑定银行卡",
+    link:'/manageBankcard',
+    user:true
+  },
+  component: setBankcard
+},{
+  path: '/verifyBankcard',
+  name: '验证银行卡',
+  meta:{
+    title:"验证银行卡",
+    link:'/manageBankcard',
+    user:true
+  },
+  component: verifyBankcard
 }]
 module.exports = routes

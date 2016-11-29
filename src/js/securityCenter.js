@@ -5,7 +5,9 @@ export default {
       refreshClass:"refresh",
       StarNum:0,
       LevelText:0,
-      LastLogin:{}
+      LastLogin:'',
+      HasSafePwd:'',
+      FirstCard:''
     }
   },
   beforeRouteEnter:(to, from, next) => {
@@ -22,7 +24,9 @@ export default {
         vm.StarNum+=state.UserSafeQuestions?1:0
         vm.StarNum+=state.UserMobile?1:0
         vm.StarNum+=state.UserMail?1:0
+        vm.HasSafePwd=state.UserHasSafePwd?1:0
         vm.LastLogin=state.UserLastLoginInfo[0]
+        vm.FirstCard=state.UserFirstCardInfo?1:0
         vm.LevelText=vm.StarNum==5?"极高":vm.StarNum==4?"高":vm.StarNum==3?"中":vm.StarNum==2?"低":"极低"
       });
     })
@@ -41,6 +45,15 @@ export default {
           }
         })
       })
+    },
+    setNextUrl(){
+      if(!this.HasSafePwd){
+        this.$router.push("/setSafePwd?Q=bindCard")
+      }else if(!this.FirstCard){
+        this.$router.push("/setBankcard")
+      }else{
+        this.$router.push("/manageBankcard")
+      }
     }
   }
 }

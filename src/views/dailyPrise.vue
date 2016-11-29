@@ -1,35 +1,31 @@
 <template>
 	<div class="activityMian main">
     <div class="activiTop">
-        <img width="100%">
-        <div class="rewardStatus" style="display:none">
-            <em class="e1">昨日投注：<i>0</i></em>
-            <em class="e2">当前等级：<i>未登录</i></em>
-            <em class="e3">加奖比例：<i>0</i></em>
-            <em class="e4">可得加奖：<i>0</i></em>
+        <img width="100%" :src="Img">
+        <div class="rewardStatus" v-if="StateData">
+            <em class="e1">昨日投注：<i>{{StateData.YesterdayBet}}</i></em>
+            <em class="e2">当前等级：<i>VIP{{StateData.UserGrade}}</i></em>
+            <em class="e3">加奖比例：<i>{{StateData.BonusRate}}</i></em>
+            <em class="e4">可得加奖：<i>{{StateData.Bonus}}</i></em>
         </div>
-        <div class="BTN unClick">
-            <a>不可领取</a>
-        </div>
+        <div class="BTN" v-if="Login" :class="{unClick:UnClick}"><a @click="getBtn">{{ClickMsg}}</a></div>
     </div>
     <h3>加奖比例</h3>
     <table>
         <tr>
             <th>等级/投注额</th>
-            <th>100+</th>
-            <th>10000+</th>
-            <th>200000+</th>
+            <th v-for="v in RewardData[0].Title">{{v}}</th>
         </tr>
-        <!-- <tr>
-            <td>vip1</td>
-            <td>0.1%</td>
-            <td>0.3%</td>
-            <td>0.6%</td>
+        <tr v-for="n in RewardData">
+            <td>{{n.Grade}}</td>
+            <td>{{n.Rewards[0]}}</td>
+            <td>{{n.Rewards[1]}}</td>
+            <td>{{n.Rewards[2]}}</td>
         </tr>
-         -->
+
     </table>
     <h3>活动说明</h3>
-    <div class="wrapExplain"></div>
+    <div class="wrapExplain" v-html="Content"></div>
 </div>
 </template>
 <script src="../js/dailyPrise.js"></script>
