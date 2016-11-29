@@ -5,7 +5,7 @@
     <table>
       <tr>
         <td>充值金额</td>
-        <td><input  type="tel" tag = "充值金额" v-va:Money  v-model = 'Money'  placeholder="请输入充值金额"></td>
+        <td><input  type="tel" tag = "充值金额" v-va:Money v-model = 'Money'  placeholder="请输入充值金额"></td>
       </tr>
       <tr></tr>
     </table>
@@ -57,6 +57,7 @@ export default {
 		}
 	},
 	created (){
+		console.log(this.$route)
 		var method = this.$route.query.method 			//'Bank', 'Weixin', 'Alipay'
 		this.method = method
 		var rechargeWay = 'RechargeWay' + method

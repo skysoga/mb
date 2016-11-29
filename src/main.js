@@ -29,7 +29,14 @@ var UserArr=[
 	'UserNickName',
 	'UserFirstCardInfo', //返回绑定的第一张银行卡的模糊信息
 	'AgentRebate',//获取代理人返点情况
-	'UserUpGradeBonus'
+	'UserUpGradeBonus',
+  'UserGrade',
+  'UserQQ',
+  'UserMobile',
+  'UserMail',
+  'UserBirthDay',
+  'UserGradeGrow',
+  'UserSex'
 ]
 var SiteArr=[ //需要校验更新版本的列表
   'LotteryConfig', //所有彩种列表

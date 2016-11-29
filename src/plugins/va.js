@@ -130,7 +130,7 @@ va.install = function(Vue, options){
 	Vue.directive('va',{
 		bind:function(el, binding, vnode){
 	  	var vm = vnode.context
-			   ,name = binding.arg
+			   ,name = binding.arg === 'EXTEND' ? el.getAttribute('name') : binding.arg
 			   ,tag = el.getAttribute('tag')
 			   ,baseCfg = []										//默认的校验规则						 --不用写，默认存在的规则（如非空）
 			   ,optionalConfig = []								//用户选择的配置成套         --与name相关			
@@ -192,7 +192,6 @@ va.install = function(Vue, options){
 	  			optionalConfig.push(regNew(regList[regOption]))
 	  		}
 	  	}
-
 
 	  	//如果regList里有name对应的，直接就加进optionalConfig
 	  	if(regList[name]){

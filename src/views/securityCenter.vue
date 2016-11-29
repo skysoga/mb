@@ -59,10 +59,10 @@
           <i class="fr">设置<span class="iconfont right"></span></i>
         </router-link>
         <p class="hr1px"></p>
-        <router-link to="manageBankcard" class="active">
+        <a class="active" @click="setNextUrl">
           <span>银行卡管理</span>
           <i class="fr">设置<span class="iconfont right"></span></i>
-        </router-link>
+        </a>
     </div>
     <div class="options">
         <a id="loginOut" class="active" @click="loginOut">
