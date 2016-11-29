@@ -13,10 +13,11 @@
               <div class='fullPageMsg' ><div class='fullPageIcon iconfont'>&#xe63c;</div><p>暂无记录</p></div>
             </template>
             <template v-else>
-              <div class="" v-for="item in temp_ajax[0].res_data">
-                <a class="active">
-                  <div><p>{{item.TypeName}}</p><span>{{item.AddTime}}</span> </div>
-                  <strong :class="money_class">{{check_money(item.InMoney,item.OutMoney)}}</strong>
+              <div class="" v-for="item in temp_ajax[0].res_data" @click="jump(item.ID)">
+                <a class="active" href="betDetail.html?id=104">
+                  <div><p>{{item.LotteryName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span></div>
+                  <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
+                  <strong class="" v-else>{{item.State}}</strong>
                 </a>
                 <div class="hr1px"></div>
               </div>
@@ -30,10 +31,10 @@
               <div class='fullPageMsg' ><div class='fullPageIcon iconfont'>&#xe63c;</div><p>暂无记录</p></div>
             </template>
             <template v-else>
-              <div class="" v-for="item in temp_ajax[1].res_data">
-                <a class="active">
-                   <div><p>提现扣款</p><span>{{item.AddTime}}</span> </div>
-                   <div class="fr"><strong class="OutMoney">{{"-"+item.OutMoney}}</strong><span class="fr">{{item.State}}</span></div>
+              <div class="" v-for="item in temp_ajax[1].res_data" @click="jump(item.ID)">
+                <a class="active" href="betDetail.html?id=103">
+                  <div><p>{{item.LotteryName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span></div>
+                  <div class="fr"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
                 </a>
                 <div class="hr1px"></div>
               </div>
@@ -47,14 +48,30 @@
               <div class='fullPageMsg' ><div class='fullPageIcon iconfont'>&#xe63c;</div><p>暂无记录</p></div>
             </template>
             <template v-else>
-              <div class="" v-for="item in temp_ajax[2].res_data">
-                <a class="active">
-                    <div><p>{{item.TypeName}}</p><span>{{item.AddTime}}</span> </div>
-                    <div class="fr"><strong class="InMoney">{{"+"+item.ApplyMoney}}</strong><span class="fr">{{item.State}}</span></div>
+              <div class="" v-for="item in temp_ajax[2].res_data" @click="jump(item.ID)">
+                <a class="active" href="betDetail.html?id=713677">
+                  <div><p>{{item.LotteryName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span> </div>
+                  <strong class="">{{item.State}}</strong>
                 </a>
                 <div class="hr1px"></div>
               </div>
               <div class="msg noMore" v-html="msg[temp_ajax[2].cant_scroll]"></div>
+            </template>
+          </div>
+        </div>
+        <div class="scrollBox" v-if="li_state[3]">
+          <div class="touchScroll" @touchend="scroll(3)">
+            <template v-if="temp_ajax[3].DataCount===0">
+              <div class='fullPageMsg' ><div class='fullPageIcon iconfont'>&#xe63c;</div><p>暂无记录</p></div>
+            </template>
+            <template v-else>
+              <div class="" v-for="item in temp_ajax[3].res_data" @click="jump(item.ID)">
+                <a class="active" href="betDetail.html?id=5330390">
+                  <div><p>{{item.LotteryName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span> </div>
+                  <strong class="OutMoney">{{item.State}}</strong></a>
+                <div class="hr1px"></div>
+              </div>
+              <div class="msg noMore" v-html="msg[temp_ajax[3].cant_scroll]"></div>
             </template>
           </div>
         </div>
@@ -67,75 +84,67 @@
 export default {
   data(){
     return {
+      li_arr_obj:["全部","已中奖","未中奖","等待开奖"],
+      li_state:["on","","",""],
       ajaxData:{
-        Action:"GetBillRecord",
-        BetweenDays:15,
+        Action:"GetBetData",
+        BetweenDays:7,
         Index:0,
         UserId:0,
-        DataNum:10,
-        Type:-1
+        DataNum:20,
+        LotteryCode:-1,
+        State:1
       },
-      money_class:"",
-      li_arr_obj:["所有类型","提现记录","充值记录"],
-      li_state:["on",null,null],//代表tab的显隐状态，默认“所有类型”显示
-      type:['GetBillRecord','GetWithdrawRecord','GetRechargeRecord'],
-      msg:[null,layer.icon.load + "正在加载...","已显示15天内全部记录"],
-      document_scrollTop:0,
-      document_height:0,
-      window_height:0,
-      //temp_ajax用来储存每个页面的状态，以及返回来的数据，因为页面切换的时候要还原当前页面的数据
       temp_ajax:[{   //这样初始化的原因是：可以不用$set来设置数组变化的问题，如果用for循环生成的话，
-        Action:"GetBillRecord", //下面this.get()函数里面的索引都要用$set设置
+        State:1, //下面this.get()函数里面的索引都要用$set设置
         Index:0,
         DataCount:null,
         data_totalpage:0,
         cant_scroll:0, //为0,1,2分别对应上面的msg状态
         res_data:[] //储存三个页面返回来的数据
       },{
-        Action:"GetWithdrawRecord",
+        State:2,
         Index:0,
         DataCount:null,
         data_totalpage:0,
         cant_scroll:0,
         res_data:[]
       },{
-        Action:"GetRechargeRecord",
+        State:3,
         Index:0,
         DataCount:null,
         data_totalpage:0,
         cant_scroll:0,
         res_data:[]
-      }]
+      },{
+        State:4,
+        Index:0,
+        DataCount:null,
+        data_totalpage:0,
+        cant_scroll:0,
+        res_data:[]
+      }],
+      msg:[null,layer.icon.load + "正在加载...","已显示7天内全部记录"],
+      document_scrollTop:0,
+      document_height:0,
+      window_height:0
     }
   },
   mounted(){
     this.scroll_element=document.querySelector(".touchScroll")
-    for(var i=0;i<this.type.length;i++){
-      this.ajaxData.Action=this.type[i]
+    for(var i=0;i<4;i++){
+      this.ajaxData.State=i+1
       this.getData(i)
     }
   },
   methods:{
-    check_money:function(inmoney,outmoney){
-      let inm=parseFloat(inmoney)
-      let out=parseFloat(outmoney)
-      inm=inm?inm:0
-      out=out?out:0
-      if(inm-out>=0){
-        this.money_class='InMoney'
-        return "+"+(inm-out)
-      }else{
-        this.money_class='OutMoney'
-        return inm-out
-      }
-    },
     show_state:function(index){
-      this.li_state=[null,null,null]
+      this.li_state=["","","",""]
       this.li_state[index]="on"
     },
     getData:function(i){
       this.temp_ajax[i].cant_scroll=1
-      this.ajaxData=Object.assign(this.ajaxData,{Action:this.temp_ajax[i].Action,Index:this.temp_ajax[i].Index})
+      this.ajaxData=Object.assign(this.ajaxData,{State:this.temp_ajax[i].State,Index:this.temp_ajax[i].Index})
       _fetch(this.ajaxData).then((res)=>{
         if(res.ok){
             res.json().then((data)=>{
@@ -169,9 +178,11 @@ export default {
       }else if (this.document_scrollTop-40>this.document_height-this.window_height) {
         this.getData(i)
       }
+    },
+    jump:function(id){
+      this.$router.push({ path: 'betDetail',query:{ID:id}})
     }
-  }
-
+  },
 }
 </script>
 
