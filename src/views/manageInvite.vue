@@ -2,22 +2,25 @@
 	<div class="main creatAccount" style="padding-bottom: 0;">
     <div class="creatAccountTitle radio">
       开户类型
-        <input type="radio" value="1" name="sex" id="radio1" checked>
+        <input type="radio" value="1" v-model="UserType" id="radio1">
         <label for="radio1">代理类型</label>
-        <input type="radio" value="0" name="sex" id="radio2">
+        <input type="radio" value="0" v-model="UserType" id="radio2">
         <label for="radio2">玩家类型</label>
         <p>请先为下级设置返点，返点越低下级赔率越低</p>
     </div>
     <div class="tabLI">
       <ul class="creatAccountDetail Backli">
         <li v-for="n in $store.state.AgentRebate">
-          <span>{{caiName[n.LotteryType]}}</span><input :name="n.LotteryType"
+          <span>{{caiName[n.LotteryType]}}</span><input
+                 v-va:EXTEND
                  type="number"
+                 :name="n.LotteryType"
+                 :tag="caiName[n.LotteryType]"
                  :placeholder="'自身返点'+n.Point+'，可设置返点'+n.MinPoint+'-'+n.Point"
                  :min="n.MinPoint"
                  :max="n.Point"></li>
       </ul>
-      <a class="BTN submitBtn">生成邀请码</a>
+      <a class="BTN submitBtn" v-va-check>生成邀请码</a>
     </div>
   </div>
 </template>

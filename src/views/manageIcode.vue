@@ -2,9 +2,9 @@
 	<div class="main creatAccount" style="padding-bottom: 0;">
     <div class="creatAccountTitle radio">
       开户类型
-        <input type="radio" value="1" name="sex" id="radio1" checked>
+        <input type="radio" value="1" v-model="UserType" id="radio1">
         <label for="radio1">代理类型</label>
-        <input type="radio" value="0" name="sex" id="radio2">
+        <input type="radio" value="0" v-model="UserType" id="radio2">
         <label for="radio2">玩家类型</label>
     </div>
     <div class="tabLI" id="TouchScroll">
