@@ -268,5 +268,25 @@ router.afterEach((to, from) => {
 //全局过滤器
 Vue.filter('num', v=>+v) // 转成数字类型
 
+//全局指令
+Vue.directive('copyBtn', {
+	bind: function(el, binding, vnode){
+		el.addEventListener('click', function(){
+			var siblings= Array.prototype.filter.call(el.parentNode.children, function(child){ return child !== el; });
+			var targetInput = siblings[0];
+			targetInput.select()
+			document.execCommand('copy')
+		})
+	}
+})
+
+//如果检测到copy事件
+document.addEventListener('copy', function(e){
+	var el = e.target
+	var btn = [].filter.call(el.parentNode.children, child=>(child !== el))[0]
+	if(btn.className.indexOf('copy') > -1){
+		layer.msgWarn('已将内容复制到剪切板')
+	}
+})
 
 module.exports = {interviewApp,store,state};
