@@ -6,7 +6,7 @@
           <img class="fl" :src="$store.getters.PhotoPath+setImg(n.BankName)">
           <div class="text">
             <strong>{{n.BankName}}</strong>
-            <p>尾号：***********8654</p>
+            <p>尾号：*********{{n.CardNum.substr(-4)}}</p>
           </div>
           <div class="fr">
               <a v-if="n.IsUnlok">已锁定</a>
