@@ -77,7 +77,14 @@ function showErr(name, checkResult){
 	layer.msgWarn(ERR_MSG[type])
 }
 
-//va配置的构造函数
+/**
+ * [VaConfig va配置的构造函数]
+ * @param {[string]} type    [校验类型，如reg, limit等等]
+ * @param {[*]} typeVal 			[根据校验类型配置的值]
+ * @param {[string]} errMsg  [报错信息]
+ * @param {[string]} name    [用以ajax的字段名]
+ * @param {[string]} tag     [中文名，用以报错]
+ */
 function VaConfig(type, typeVal, errMsg, name, tag){
 	this.type = type, this.typeVal = typeVal, this.errMsg = errMsg, this.name = name, this.tag = tag
 }
