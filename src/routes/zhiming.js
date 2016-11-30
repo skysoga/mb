@@ -7,6 +7,9 @@ const competition = resolve => require(['../views/competition'], resolve)
 const billRecord = resolve => require(['../views/billRecord'], resolve)
 const agentMember = resolve => require(['../views/agentMember'], resolve)
 const lowerReport = resolve => require(['../views/lowerReport'], resolve)
+const betRecord = resolve => require(['../views/betRecord'], resolve)
+const betDetail = resolve => require(['../views/betDetail'], resolve)
+const agentBetRecord = resolve => require(['../views/agentBetRecord'], resolve)
 var routes = [{
   path: '/Notice',
   meta: {
@@ -77,7 +80,7 @@ var routes = [{
   meta: {
     title: "会员管理",
     link: "/agentCenter",
-    user:1
+    user: 1
   },
   component: agentMember
 }, {
@@ -86,9 +89,36 @@ var routes = [{
   meta: {
     title: "下级报表",
     link: "/agentCenter",
-    user:1
+    user: 1
   },
   component: lowerReport
+}, {
+  path: "/betRecord",
+  name: "投注记录",
+  meta: {
+    title: "投注记录",
+    link: "/userCenter",
+    user: 1
+  },
+  component: betRecord
+}, {
+  path: "/betDetail",
+  name: "投注详情",
+  meta: {
+    title: "投注详情",
+    link: "/betRecord",
+    user: 1
+  },
+  component: betDetail
+}, {
+  path: "/agentBetRecord",
+  name: "投注明细",
+  meta: {
+    title: "投注明细",
+    link: "/agentCenter",
+    user: 1
+  },
+  component: agentBetRecord
 }]
 
 module.exports = routes;
