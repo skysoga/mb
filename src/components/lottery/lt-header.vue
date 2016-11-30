@@ -16,7 +16,7 @@
               <ul class="betFilter fix"><li class="curr">五星</li><li>四星</li><li>前三</li><li>中三</li><li>后三</li><li>前二</li><li>后二</li><li>一星</li><li>大小单双</li></ul> -->
 							
 							<ul class="betFilterAnd">
-								<li v-for = "(subGroup, subGroupName) in config['五星']">
+								<li v-for = "(subGroup, subGroupName) in config[group]">
 									<span>{{subGroupName}}</span>
 									<div class="fix">
 										<a class="curr" v-for = "(mode, modeName)  in subGroup">
@@ -67,9 +67,7 @@
 		},
 		methods:{
 			changeGroup(group){
-				console.log(this.group)
 				this.group = group
-				console.log(this.group)
 			}
 		}
 	}
