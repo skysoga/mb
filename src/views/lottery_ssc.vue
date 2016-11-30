@@ -117,7 +117,13 @@
 	export default {
 		components:{
 			'lt-header': lt_header
+		},
+		data () {
+			return {
+				
+			}
 		}
+
 	}
 </script>
 

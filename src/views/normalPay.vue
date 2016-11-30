@@ -138,9 +138,53 @@ export default{
       Weixin:'微信支付',
       Alipay: '支付宝'
     }
+    var shouldCheck = ['Weixin', 'Alipay']
+		var method = to.query.method			//'Bank', 'Weixin', 'Alipay'
+		var rechargeWay = 'RechargeWay' + method
+    to.meta.title = title[method]   //标题
 
-    to.meta.title = title[to.query.method]   //标题
-    next()
+    interviewApp.AjaxGetInitData([rechargeWay], state=>{
+    	next(vm=>{
+				//如果没数据进维护页
+				if(!state[rechargeWay] || !state[rechargeWay][0]){
+					vm.underMaintain = true
+					return
+				}
+				console.log(state[rechargeWay])
+				//有快捷支付的要检验下，如果数据不对要跳到快捷充值去
+				if(shouldCheck.indexOf(method) > -1){
+					var PayType = state[rechargeWay][0].PayType
+					//假如充值方式为快捷充值了，就跳转至快捷充值
+					if(PayType !== '一般'){
+						interviewApp.$router.push('/quickPay?method=' + method)
+					}
+				}
+				
+				vm.underMaintain = false
+				//银行转账
+				if(method === 'Bank'){
+					vm[method] = Object.freeze(state[rechargeWay])
+					var BankCode = state[rechargeWay][0].BankCode
+					vm.BankCode = BankCode;
+					vm.nowRender = state[rechargeWay][0]
+					// console.log(vm.nowRender)
+				}else{
+					vm.nowRender = state[rechargeWay][0]
+					vm.ID = state[rechargeWay][0].Id
+					var xurl = ''
+					if(state[rechargeWay][0].CodeImg === '0' || !state[rechargeWay][0].CodeImg){
+						xurl = '/../system/common/other/noQRcode.png'
+					}else{
+						xurl = state[rechargeWay][0].CodeImg
+					}
+					vm.nowRender.CodeImg =  state.constant.ImgHost + xurl
+				}
+    		
+    	})
+
+
+		})
+    
 	},
 	data () {
 		return {
@@ -173,10 +217,9 @@ export default{
 		}
 	},
 	created (){
-		var shouldCheck = ['Weixin', 'Alipay']
 		var method = this.$route.query.method 			//'Bank', 'Weixin', 'Alipay'
 		this.method = method
-		var rechargeWay = 'RechargeWay' + method
+
 		var limitName = {
 			Bank: '银行转账',
 			Weixin: '微信支付',
@@ -184,42 +227,7 @@ export default{
 		}
 
 		//获取数据
-		interviewApp.AjaxGetInitData(['PayLimit', rechargeWay], state=>{
-			//如果没数据进维护页
-			if(!state[rechargeWay] || !state[rechargeWay][0]){
-				this.underMaintain = true
-				return
-			}
-			console.log(state[rechargeWay])
-			//有快捷支付的要检验下，如果数据不对要跳到快捷充值去
-			if(shouldCheck.indexOf(method) > -1){
-				var PayType = state[rechargeWay][0].PayType
-				//假如充值方式为快捷充值了，就跳转至快捷充值
-				if(PayType !== '一般'){
-					// interviewApp.$router.push('/quickPay?method=' + method)
-				}
-			}
-			
-			this.underMaintain = false
-			//银行转账
-			if(method === 'Bank'){
-				this[method] = Object.freeze(state[rechargeWay])
-				var BankCode = state[rechargeWay][0].BankCode
-				this.BankCode = BankCode;
-				this.nowRender = state[rechargeWay][0]
-				// console.log(this.nowRender)
-			}else{
-				this.nowRender = state[rechargeWay][0]
-				this.ID = state[rechargeWay][0].Id
-				var xurl = ''
-				if(state[rechargeWay][0].CodeImg === '0' || !state[rechargeWay][0].CodeImg){
-					xurl = '/../system/common/other/noQRcode.png'
-				}else{
-					xurl = state[rechargeWay][0].CodeImg
-				}
-				this.nowRender.CodeImg =  state.constant.ImgHost + xurl
-			}
-
+		interviewApp.AjaxGetInitData(['PayLimit'], state=>{
 			//设置金额的限制
 			this.vaConfig ||(this.vaConfig = {})
 			this.vaConfig['Money'] || (this.vaConfig['Money'] = [])
