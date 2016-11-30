@@ -64,6 +64,7 @@ var state = require('./JSconfig.js')
   	state[CacheArr[i]]=getLocalDate(CacheArr[i])
   }
 })()
+
 const store = new Vuex.Store({
   state,
   getters:{

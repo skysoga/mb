@@ -3,6 +3,9 @@ const register =resolve => require(['../views/register'],resolve)
 const rechargeWay =resolve => require(['../views/rechargeWay'],resolve)
 const normalPay =resolve => require(['../views/normalPay'],resolve)
 const quickPay =resolve => require(['../views/quickPay'],resolve)
+const lottery_ssc = resolve => require(['../views/lottery_ssc'],resolve)
+const lotteryPage = resolve => require(['../views/lotteryPage'],resolve)
+const lottery_k3 = resolve => require(['../views/lottery_k3'],resolve)
 
 var routes = [
   {
@@ -44,6 +47,26 @@ var routes = [
       user: true
     },
     component: quickPay
+  },{
+    path: '/lottery',
+    name: '彩种',
+    meta: {
+      link: '/index',
+      user: true,
+    },
+    children:[
+      {
+        path: 'ssc/:code',
+        name: '时时彩',
+        component: lottery_ssc
+      },
+      {
+        path: 'k3/:code',
+        name: '快三',
+        component: lottery_k3
+      }
+    ],
+    component: lotteryPage
   }
 ]
 
