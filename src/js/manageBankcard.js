@@ -4,7 +4,7 @@ export default {
     return{
       CardList:'',
       tipHtml:'',
-      FiveUnlok:false,
+      FiveUnlok:true,
       oneCarLok:'',
       bankArr:{
         '农业银行':'ABC',
@@ -40,6 +40,9 @@ export default {
     },
     setTip(){
       var List=this.CardList
+      if(List==null){
+        return this.$router.push('/securityCenter')
+      }
       var Tips=''
       if(!List.length){
         Tips='您尚未绑定银行卡，一共可以绑定5张银行卡。'
@@ -49,11 +52,16 @@ export default {
         this.FiveUnlok=true
       }else{
         Tips='您已绑定' +List.length+ '张银行卡，一共可以绑定5张银行卡。为了您的资金安全，成功提现的银行卡会自动锁定，无法删除和修改。'
-        this.oneCarLok=List[0].IsUnlok==true?true:false
+        this.oneCarLok=List[0].IsUnlok?true:false
+        if(List[0].IsUnlok){
+          Tips='<p>您的银行卡已经锁定，不能进行银行卡信息的增加和删除</p><route-link class="alink" to="/service">联系客服</route-link>'
+        }
         this.FiveUnlok=false
       }
       this.tipHtml=Tips
-      console.log(this.FiveUnlok)
+    },
+    setImg(name){
+      return this.bankArr[name]+'.png'
     }
   }
 }

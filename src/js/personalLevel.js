@@ -4,6 +4,7 @@ export default {
     return{
       UserGrade:'',
       UserGradeGrow:'',
+      GradeName:'',
       upGrow:'',
       perVal:''
     }
@@ -13,16 +14,18 @@ export default {
     this.$root.GetInitData(arr,stage=>{
       this.UserGrade=stage.UserGrade
       this.UserGradeGrow=stage.UserGradeGrow
+      this.getPerLong(stage.UserGrade)
     })
-    this.getPerLong(this.UserGrade)
   },
   methods:{
     getPerLong(num){
       var Obj=this.$store.state.GradeList[num].GradeGrow
       var minObj=this.$store.state.GradeList[num-1].GradeGrow
-      this.perVal=(minObj-this.UserGradeGrow)/(Obj-this.UserGradeGrow)*100+'%'
+      console.log(this.perVal)
+      this.perVal=parseInt(((this.UserGradeGrow||minObj)-minObj)/(Obj-minObj)*100)+'%'
       this.upGrow=Obj-this.UserGradeGrow
-      console.log(Obj)
+      this.GradeName=this.$store.state.GradeList[num-1].GradeName
+      console.log(this.perVal)
     }
   }
 }

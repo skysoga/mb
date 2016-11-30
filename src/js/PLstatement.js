@@ -2,8 +2,38 @@ const {interviewApp,state}=require("../main.js");
 export default {
   data:()=>{
     return{
-      Content:'',
-      Img:''
+      AllProfitLoss:'',
+      Betting:'',
+      BonusMoney:'',
+      Activity:'',
+      Rebate:'',
+      Recharge:'',
+      Withdraw:''
+    }
+  },
+  created(){
+    this.getData(0)
+  },
+  methods:{
+    getData(index){
+      let dataArr={Action:"GetProfitLoss",BetweenDays:index}
+      layer.msgWait("正在处理")
+      _fetch(dataArr).then(ref=>{
+        ref.json().then(json=>{
+          if(json.Code==1){
+            this.AllProfitLoss=json.AllProfitLoss
+            this.Betting=json.Betting
+            this.BonusMoney=json.BonusMoney
+            this.Activity=json.Activity
+            this.Rebate=json.Rebate
+            this.Recharge=json.Recharge
+            this.Withdraw=json.Withdraw
+            layer.msgWarn(json.StrCode)
+          }else{
+            layer.msgWarn(json.StrCode)
+          }
+        })
+      })
     }
   }
 }

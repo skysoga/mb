@@ -160,7 +160,7 @@ va.install = function(Vue, options){
 
 	  	//需要立即校验的框
 	  	if(option.vanow){
-	  		el.addEventListener('blur', function(){
+	  		el.addEventListener('change', function(){
 					vm.vaResult || (vm.vaResult = {})
 					vm.vaVal || (vm.vaVal = {})
 					var value = el.value,
