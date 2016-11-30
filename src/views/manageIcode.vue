@@ -8,37 +8,45 @@
         <label for="radio2">玩家类型</label>
     </div>
     <div class="tabLI" id="TouchScroll">
-      <div class="InviteTableBox" data-key="false" style="display:none">
+      <div class="InviteTableBox" data-key="false" v-show="UserType==0">
         <table class="col3Table manageInviteTable">
             <tbody><tr>
               <th>邀请码</th>
               <th>生成时间</th>
               <th>状态</th>
             </tr>
-            <tr>
-              <td style="color:#38f">12345678</td>
-              <td>2016-11-11</td>
-              <td>注册(1)</td>
+            <tr v-for="n in wjList">
+              <td style="color:#38f">{{n.InviteCode}}</td>
+              <td>{{n.AddTime}}</td>
+              <td>{{n.State}}</td>
             </tr>
           </tbody>
         </table>
         <div class="msg loadingMsg">已显示全部记录</div>
+        <div class="fullPageMsg" v-show="!wjList">
+          <div class="fullPageIcon iconfont">&#xe63c;</div>
+          <p>暂无记录</p>
+        </div>
       </div>
-      <div class="InviteTableBox" data-key="false">
+      <div class="InviteTableBox" data-key="false" v-show="UserType==1">
         <table class="col3Table manageInviteTable">
             <tbody><tr>
               <th>邀请码</th>
               <th>生成时间</th>
               <th>状态</th>
             </tr>
-            <tr>
-              <td style="color:#38f">12345678</td>
-              <td>2016-11-11</td>
-              <td>注册(1)</td>
+            <tr v-for="n in dlList">
+              <td style="color:#38f">{{n.InviteCode}}</td>
+              <td>{{n.AddTime}}</td>
+              <td>{{n.State}}</td>
             </tr>
           </tbody>
         </table>
         <div class="msg loadingMsg">已显示全部记录</div>
+        <div class="fullPageMsg" v-show="!dlList">
+          <div class="fullPageIcon iconfont">&#xe63c;</div>
+          <p>暂无记录</p>
+        </div>
       </div>
     </div>
   </div>
