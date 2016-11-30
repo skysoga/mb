@@ -51,7 +51,7 @@ function check(v, conditions){
 				type = condi.type, 
 				typeVal = condi.typeVal
 		res = cfg[type](v, typeVal)
-		
+		// console.log(res, v, type,typeVal)
 		//如果有自定义报错信息， 返回自定义的报错信息
 		if(res){
 			res = condi.errMsg || res
@@ -128,7 +128,7 @@ var regList = {
 	Mobile: /^1[3|5|8]\d{9}$/,
 	RealName: /^[\u4e00-\u9fa5 ]{2,10}$/,
 	BankNum: /^\d{10,19}$/,
-	Money: /^\d{1,}(\.\d{1,2})?$/,
+	Money: /^([1-9]\d*|0)$/,
 	Answer: /^\S+$/,
 	Mail: /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/
 }
@@ -238,10 +238,7 @@ va.install = function(Vue, options){
 							value = dom.value,
 							conditions = vm.vaConfig[name];
 					
-
-					// vm.vaResult[name] = check(value, conditions);
 					var _result = check(value, conditions)
-
 					//如果返回不为0,则有报错
 					if(_result){
 						//如果返回的是字符串，则为自定义报错； 如果是数组，则使用showErr 报错
