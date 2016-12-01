@@ -3,7 +3,8 @@ export default {
   data:()=>{
     return{
       Content:'',
-      Img:''
+      Img:'',
+      noimg:false
     }
   },
   beforeRouteEnter:(to,from,next)=>{
@@ -19,7 +20,8 @@ export default {
     for(var i=0;i<dataArr.length;i++){
       if(dataArr[i].Name==decodeURIComponent(xname)){
         this.Content=dataArr[i].Content
-        this.Img=dataArr[i].Img[0]||''
+        this.Img=dataArr[i].Img
+        this.noimg=this.Img||true
         return
       }
     }

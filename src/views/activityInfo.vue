@@ -1,6 +1,6 @@
 <template>
 	<div class="activityMian main">
-    <div class="activiTop" id="activiTop" ><img v-show="Img" width="100%" :src="$store.state.constant.ImgHost+Img"></div>
+    <div class="activiTop" id="activiTop" ><img v-show="noimg" width="100%" :src="$store.state.constant.ImgHost+Img"></div>
     <!-- <h3>活动说明</h3> -->
     <div class="wrapExplain" id="wrapExplain" v-html="Content"></div>
 </div>

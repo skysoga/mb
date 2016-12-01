@@ -8,21 +8,21 @@ export default {
       UnClick:true,
       ClickMsg:'',
       Login:'',
-      Img:''
+      Img:'',
+      noimg:false
     }
   },
   created:function(){
     var theArr={Action:'GetActivityStateData',Qort:'每日加奖'}
     _fetch(theArr).then(res=>{
         res.json().then(data=>{
-          console.log(data)
           var Data=data.BackData
           if(data.Code==1){
             this.StateData=Data||0
           }
         })
       })
-    var arr = ["ActivityConfig","Login","RewardData"]
+    var arr = ["ActivityConfig","RewardData"]
     this.$root.GetInitData(arr)
     var xname='每日加奖'
     var dataArr=state.ActivityConfig
@@ -33,11 +33,11 @@ export default {
     }
     this.UnClick=thState!=0?true:false
     this.ClickMsg=thState==0?'立即领取':thState=='1'?'已领取':'不可领取'
-    this.Login=state.Login||1
     for(var i=0;i<dataArr.length;i++){
       if(dataArr[i].Name==decodeURIComponent(xname)){
         this.Content=dataArr[i].Content
-        this.Img=dataArr[i].Img[0]||''
+        this.Img=dataArr[i].Img
+        this.noimg=this.Img||true
         return
       }
     }
@@ -50,6 +50,8 @@ export default {
       _fetch(dataArr).then(ref=>{
         ref.json().then(json=>{
           if(json.Code==1){
+            this.UnClick=true
+            this.ClickMsg="已领取"
             layer.msgWarn(json.StrCode)
           }else{
             layer.msgWarn(json.StrCode)

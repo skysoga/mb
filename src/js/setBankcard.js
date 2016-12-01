@@ -31,26 +31,28 @@ export default {
             }
     }
   },
-  created(){
-    var Qort=Number(this.$route.query.id)
-    this.Qort=Qort||'add'
-    var vm=this
+  beforeRouteEnter(to,from,next){
+    var Qort=Number(to.query.id)
+    Qort=Qort||'add'
     if(Qort){
       var Trr={Action:"GetCardDetail",BankCardID:Qort}
       _fetch(Trr).then(ref=>{
         ref.json().then(json=>{
-          var son=json.BackData
-          if(json.Code==1){
-            vm.Address_P=son.Address_P
-            vm.BankID=vm.getBandId(son.BankName)
-            vm.BankNum=son.CardNum
-            vm.RealName=son.RealName
-            vm.$nextTick(function(){
-              vm.Address_C=son.Address_C
-            })
-          }else{
-            vm.$router.push('/manageBankcard')
-          }
+          next(vm=>{
+            var son=json.BackData
+            if(json.Code==1){
+              vm.Address_P=son.Address_P
+              vm.BankID=vm.getBandId(son.BankName)
+              vm.BankNum=son.CardNum
+              vm.RealName=son.RealName
+              vm.Qort=Qort
+              vm.$nextTick(function(){
+                vm.Address_C=son.Address_C
+              })
+            }else{
+              vm.$router.push('/manageBankcard')
+            }
+          })
         })
       })
     }

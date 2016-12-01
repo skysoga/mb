@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <title-info :meta="$route&&$route.meta"></title-info>
+    <title-info :meta="$route&&$route.matched[0].meta"></title-info>
     <transition name="fade"  mode="out-in">
       <router-view></router-view>
     </transition>
