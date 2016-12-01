@@ -18,8 +18,7 @@ export default {
     getData(index){
       let dataArr={Action:"GetProfitLoss",BetweenDays:index}
       layer.msgWait("正在加载")
-      _fetch(dataArr).then(ref=>{
-        ref.json().then(json=>{
+      _fetch(dataArr).then(json=>{
           var datas=json.BackData
           if(json.Code==1){
             this.AllProfitLoss=datas.AllProfitLoss
@@ -33,7 +32,6 @@ export default {
           }else{
             layer.msgWarn(json.StrCode)
           }
-        })
       })
     }
   }

@@ -21,7 +21,7 @@
               <th>生成时间</th>
               <th>状态</th>
             </tr>
-            <tr v-for="n in ArrList">
+            <tr v-for="(n,index) in ArrList" @click="getList(index,n.InviteCode)">
               <td style="color:#38f">{{n.InviteCode}}</td>
               <td>{{n.AddTime}}</td>
               <td>{{n.State}}</td>
@@ -32,6 +32,14 @@
         </template>
       </div>
     </div>
+    <!-- 弹窗 -->
+    <bottom-box v-show = "BottomBoxShow"
+                 :list = "BottomBoxList"
+                 ></bottom-box>
+    <Detail-box v-show = "DetailShow"
+                :dlist = "DetailList"
+                ></Detail-box>
+    <!-- 弹窗End -->
   </div>
 </template>
 <script src="../js/memberCode.js"></script>

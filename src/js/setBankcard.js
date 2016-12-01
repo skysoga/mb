@@ -36,8 +36,7 @@ export default {
     Qort=Qort||'add'
     if(Qort){
       var Trr={Action:"GetCardDetail",BankCardID:Qort}
-      _fetch(Trr).then(ref=>{
-        ref.json().then(json=>{
+      _fetch(Trr).then(json=>{
           next(vm=>{
             var son=json.BackData
             if(json.Code==1){
@@ -53,7 +52,6 @@ export default {
               vm.$router.push('/manageBankcard')
             }
           })
-        })
       })
     }
   },
@@ -80,8 +78,7 @@ export default {
       arr.BankNum=this.BankNum
       arr.SafePassword=this.SafePassword
       arr.Qort=this.Qort
-      _fetch(arr).then(ref=>{
-        ref.json().then(json=>{
+      _fetch(arr).then(json=>{
           if(json.Code==1){
             layer.msgWarn(json.StrCode)
             vm.$root.AjaxGetInitData(['UserBankCardList'],function(){
@@ -90,7 +87,6 @@ export default {
           }else{
             layer.msgWarn(json.StrCode)
           }
-        })
       })
     },
     getBandId(name){

@@ -36,8 +36,7 @@ export default {
         ajax.Action=ajax.Action+'Forget';
       }
       layer.msgWait("正在提交")
-      _fetch(ajax).then((res)=>{
-        res.json().then((json) => {
+      _fetch(ajax).then((json)=>{
           if(json.Code===1) {
             var url=vm.nextUrl
             url=url?'/'+url:'/setSafePwd'
@@ -45,7 +44,6 @@ export default {
           }else{
             layer.msgWarn(json.StrCode);
           }
-        })
       })
     }
   }
