@@ -28,7 +28,7 @@ export default {
     for(var i=0;i<dataArr.length;i++){
       if(dataArr[i].Name==decodeURIComponent(xname)){
         this.Content=dataArr[i].Content
-        this.Img=state.constant.ImgHost+state.constant.PhotoPath+dataArr[i].Img[0]
+        this.Img=state.constant.ImgHost+dataArr[i].Img[0]
         return
       }
     }

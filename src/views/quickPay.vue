@@ -30,9 +30,29 @@ export default {
       Weixin:'微信支付',
       Alipay: '支付宝'
     }
+    var method = to.query.method 			//'Bank', 'Weixin', 'Alipay'
+    var rechargeWay = 'RechargeWay' + method
 
-    to.meta.title = title[to.query.method]   //标题
-    next()
+    to.meta.title = title[method]   //标题
+		//获取数据
+		interviewApp.AjaxGetInitData([rechargeWay], state=>{
+			next(vm=>{
+				//如果没数据进维护页
+				if(!state[rechargeWay] || !state[rechargeWay][0]){
+					vm.underMaintain = true
+					return
+				}
+
+				//如果数据不对要跳到普通充值去
+				var PayType = state[rechargeWay][0].PayType
+				if(PayType === '一般'){
+					interviewApp.$router.push('/normalPay?method=' + method)
+				}
+				
+				vm.underMaintain = false
+				vm.nowRender = state[rechargeWay][0]
+			})
+		})    
 	},
 	data () {
 		return {
@@ -57,7 +77,6 @@ export default {
 		}
 	},
 	created (){
-		console.log(this.$route)
 		var method = this.$route.query.method 			//'Bank', 'Weixin', 'Alipay'
 		this.method = method
 		var rechargeWay = 'RechargeWay' + method
@@ -67,22 +86,7 @@ export default {
 		}
 
 		//获取数据
-		interviewApp.AjaxGetInitData(['PayLimit', rechargeWay], state=>{
-			//如果没数据进维护页
-			if(!state[rechargeWay] || !state[rechargeWay][0]){
-				this.underMaintain = true
-				return
-			}
-
-			//如果数据不对要跳到普通充值去
-			var PayType = state[rechargeWay][0].PayType
-			if(PayType === '一般'){
-				interviewApp.$router.push('/normalPay?method=' + method)
-			}
-			
-			this.underMaintain = false
-			this.nowRender = state[rechargeWay][0]
-
+		interviewApp.AjaxGetInitData(['PayLimit'], state=>{
 			//设置金额的限制
 			this.vaConfig ||(this.vaConfig = {})
 			this.vaConfig['Money'] || (this.vaConfig['Money'] = [])

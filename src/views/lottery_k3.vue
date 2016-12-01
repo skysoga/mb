@@ -47,6 +47,15 @@
     </footer>
   </div>
 </template>
+
+<script>
+export default {
+  created (){
+    console.log(this.$route)
+  }
+}
+</script>
+
 <style lang="scss" scoped>
   @import '../scss/k3.scss';
 </style>
