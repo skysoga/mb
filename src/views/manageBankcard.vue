@@ -2,8 +2,8 @@
 	<div class="main manageBankcard" data="">
     <div class="innerWrap">
       <div class="surperise">
-        <div class="wrap" v-for="n in CardList">
-          <img class="fl" :src="$store.getters.PhotoPath+setImg(n.BankName)">
+        <div class="wrap" v-for="n in $store.state.UserBankCardList">
+          <img class="fl" :src="$store.state.constant.ImgHost+'/system/common/bank/'+setImg(n.BankName)">
           <div class="text">
             <strong>{{n.BankName}}</strong>
             <p>尾号：*********{{n.CardNum.substr(-4)}}</p>

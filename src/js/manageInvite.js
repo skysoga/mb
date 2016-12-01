@@ -7,12 +7,12 @@ export default {
     }
   },
   created(){
+    var vm=this
      var arr = ["AgentRebate"];
      this.$root.GetInitData(arr,state=>{
       this.caiList=state.AgentRebate
-      console.log(this.caiList)
      })
-     var vm=this
+     console.log(this.$refs)
     vm.vaConfig || (vm.vaConfig = {})/*初始化vaConfig对象*/
     for(var i=0;i<vm.caiList.length;i++){
       var item = vm.caiList[i]
@@ -23,6 +23,7 @@ export default {
    methods:{
     $vaSubmit(){
       var inputObj=this.vaVal
+      var vm=this
       var Objrr='';var i=-1;for(var n in inputObj){++i;if(i>0){Objrr+='@'}Objrr+=n+'#'+inputObj[n];}
       var Arr={Action:"SetInviteUrl"}
           Arr.PointJson=Objrr
@@ -31,7 +32,21 @@ export default {
       _fetch(Arr).then(ref=>{
         ref.json().then(json=>{
           if(json.Code==1){
-            layer.msgWarn(json.StrCode)
+            layer.open({
+              shadeClose: false,
+              className: "layerConfirm",
+              content: json.StrCode + '，是否查看?',
+              title: "温馨提示",
+              btn: ["确定", '取消'],
+              yes:function(index){
+                layer.close(index)
+                vm.$root.$router.push('/manageIcode')
+              },
+              no:function(index){
+                layer.close(index)
+                location.reload()
+              }
+            })
             console.log(this.vaConfig)
           }else{
             layer.msgWarn(json.StrCode)

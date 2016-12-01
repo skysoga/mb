@@ -1,7 +1,7 @@
 <template>
 	<div class="activityMian main">
     <div class="activiTop">
-        <img width="100%" :src="Img">
+        <img width="100%" v-show="Img" :src="$store.state.constant.ImgHost+Img">
         <div class="rewardStatus" v-if="StateData">
             <em class="e1">昨日投注：<i>{{StateData.YesterdayBet}}</i></em>
             <em class="e2">当前等级：<i>VIP{{StateData.UserGrade}}</i></em>
