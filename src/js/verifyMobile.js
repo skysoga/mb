@@ -46,8 +46,7 @@ export default {
       }
       ajax.Qort="Verify"
       layer.msgWait("正在提交")
-      _fetch(ajax).then((res)=>{
-        res.json().then((json) => {
+      _fetch(ajax).then((json)=>{
           if(json.Code===1) {
             layer.msgWarn(json.StrCode);
             var url=vm.nextUrl
@@ -56,7 +55,6 @@ export default {
           }else{
             layer.msgWarn(json.StrCode);
           }
-        })
       })
     },
     postMsg(){
@@ -69,8 +67,7 @@ export default {
         Mobile:this.Phone,
       }
       layer.msgWait("正在发送")
-      _fetch(ajax).then((res)=>{
-        res.json().then((json) => {
+      _fetch(ajax).then((json)=>{
           if(json.Code===1) {
             vm.reTimex()
             layer.msgWarn(json.StrCode);
@@ -79,7 +76,6 @@ export default {
             layer.msgWarn(json.StrCode);
             return
           }
-        })
       })
     },
     reTimex(){

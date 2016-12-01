@@ -32,18 +32,16 @@ export default {
     renderData(Type,Name){
         let RenData={Action:"GetAgencyHender",BetweenType:Type,UserName:Name}
         layer.msgWait("正在加载")
-        _fetch(RenData).then(res=>{
-          res.json().then(json=>{
+        _fetch(RenData).then(json=>{
             var xarr=json.BackData
             if(json.Code==1){
+              layer.closeAll()
               sessionStorage.setItem('agentReport'+Name+Type,JSON.stringify(xarr))
-              layer.msgWarn("加载完成");
               this.Datalist=xarr
               this.listLong()
             }else{
               layer.msgWarn(json.StrCode)
             }
-          })
         })
     },
     NameFun(key){

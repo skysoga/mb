@@ -14,13 +14,11 @@ export default {
   },
   created:function(){
     var theArr={Action:'GetActivityStateData',Qort:'每日加奖'}
-    _fetch(theArr).then(res=>{
-        res.json().then(data=>{
+    _fetch(theArr).then(data=>{
           var Data=data.BackData
           if(data.Code==1){
             this.StateData=Data||0
           }
-        })
       })
     var arr = ["ActivityConfig","RewardData"]
     this.$root.GetInitData(arr)
@@ -47,8 +45,7 @@ export default {
       if(this.UnClick)return;
       var dataArr={Action:"GetReward",Qort:"每日加奖"}
       layer.msgWait("正在处理")
-      _fetch(dataArr).then(ref=>{
-        ref.json().then(json=>{
+      _fetch(dataArr).then(json=>{
           if(json.Code==1){
             this.UnClick=true
             this.ClickMsg="已领取"
@@ -56,7 +53,6 @@ export default {
           }else{
             layer.msgWarn(json.StrCode)
           }
-        })
       })
     }
   }

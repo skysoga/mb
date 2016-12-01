@@ -29,8 +29,7 @@ export default {
       }
       ajax.Qort="Set"
       layer.msgWait("正在提交")
-      _fetch(ajax).then((res)=>{
-        res.json().then((json) => {
+      _fetch(ajax).then((json)=>{
           if(json.Code===1) {
             layer.msgWarn(json.StrCode);
             $root.AjaxGetInitData(["UserMobile"],function(){
@@ -39,7 +38,6 @@ export default {
           }else{
             layer.msgWarn(json.StrCode);
           }
-        })
       })
     },
     postMsg(){
@@ -69,8 +67,7 @@ export default {
       this.noDo=false
       ajax.Action="SendMobileCode"
       layer.msgWait("正在发送")
-      _fetch(ajax).then((res)=>{
-        res.json().then((json) => {
+      _fetch(ajax).then((json)=>{
           if(json.Code===1) {
             vm.reTimex()
             layer.msgWarn(json.StrCode);
@@ -79,7 +76,6 @@ export default {
             layer.msgWarn(json.StrCode);
             return
           }
-        })
       })
     },
     reTimex(){
