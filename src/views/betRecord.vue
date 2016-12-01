@@ -31,7 +31,7 @@
               <div class='fullPageMsg' ><div class='fullPageIcon iconfont'>&#xe63c;</div><p>暂无记录</p></div>
             </template>
             <template v-else>
-              <div class="" v-for="item in temp_ajax[1].res_data" @click="jump(item.ID)">
+              <div class="" v-for="item in temp_ajax[1].res_data">
                 <a class="active" href="betDetail.html?id=103">
                   <div><p>{{item.LotteryName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span></div>
                   <div class="fr"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
@@ -48,7 +48,7 @@
               <div class='fullPageMsg' ><div class='fullPageIcon iconfont'>&#xe63c;</div><p>暂无记录</p></div>
             </template>
             <template v-else>
-              <div class="" v-for="item in temp_ajax[2].res_data" @click="jump(item.ID)">
+              <div class="" v-for="item in temp_ajax[2].res_data">
                 <a class="active" href="betDetail.html?id=713677">
                   <div><p>{{item.LotteryName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span> </div>
                   <strong class="">{{item.State}}</strong>
@@ -65,7 +65,7 @@
               <div class='fullPageMsg' ><div class='fullPageIcon iconfont'>&#xe63c;</div><p>暂无记录</p></div>
             </template>
             <template v-else>
-              <div class="" v-for="item in temp_ajax[3].res_data" @click="jump(item.ID)">
+              <div class="" v-for="item in temp_ajax[3].res_data">
                 <a class="active" href="betDetail.html?id=5330390">
                   <div><p>{{item.LotteryName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span> </div>
                   <strong class="OutMoney">{{item.State}}</strong></a>
@@ -132,6 +132,8 @@ export default {
   },
   mounted(){
     this.scroll_element=document.querySelector(".touchScroll")
+    this.window_height=document.documentElement.clientHeight||document.body.clientHeight
+    this.document_height=document.documentElement.scrollHeight||document.body.scollHeight
     for(var i=0;i<4;i++){
       this.ajaxData.State=i+1
       this.getData(i)
@@ -171,8 +173,6 @@ export default {
     },
     scroll:function(i){
       this.document_scrollTop=this.scroll_element.scrollTop
-      this.window_height=document.documentElement.clientHeight||document.body.clientHeight
-      this.document_height=document.documentElement.scrollHeight||document.body.scollHeight
       if (this.temp_ajax[i].cant_scroll) {
         return
       }else if (this.document_scrollTop-40>this.document_height-this.window_height) {
@@ -180,7 +180,7 @@ export default {
       }
     },
     jump:function(id){
-      this.$router.push({ path: 'betDetail',query:{ID:id}})
+        router.push({ path: 'betDetail',query:{ID:id}})
     }
   },
 }
