@@ -8,7 +8,8 @@ export default {
       ClickMsg:'',
       Login:'',
       isBouns:'',
-      Img:''
+      Img:'',
+      noimg:false
     }
   },
   created:function(){
@@ -24,11 +25,12 @@ export default {
     }
     this.UnClick=thState!=0?true:false
     this.ClickMsg=thState==0?'立即领取':thState==1?'已领取':'不可领取'
-    this.Login=state.Login||1
+    this.Login=state.Login==null&&true
     for(var i=0;i<dataArr.length;i++){
       if(dataArr[i].Name==decodeURIComponent(xname)){
         this.Content=dataArr[i].Content
-        this.Img=state.constant.ImgHost+dataArr[i].Img[0]
+        this.Img=dataArr[i].Img
+        this.noimg=this.Img||true
         return
       }
     }
