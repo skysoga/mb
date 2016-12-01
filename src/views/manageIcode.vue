@@ -7,47 +7,49 @@
         <input type="radio" value="0" v-model="UserType" id="radio2">
         <label for="radio2">玩家类型</label>
     </div>
-    <div class="tabLI" id="TouchScroll">
-      <div class="InviteTableBox" data-key="false" v-show="UserType==0">
+    <div class="tabLI" id="TouchScroll" ref="TouchScroll" @touchend="scroll">
+      <div class="InviteTableBox" data-key="false">
+        <template v-if="data_count===0">
+          <div class="fullPageMsg"><div class="fullPageIcon iconfont">&#xe63c;</div><p>暂无记录</p></div>
+        </template>
+        <template v-else>
         <table class="col3Table manageInviteTable">
             <tbody><tr>
               <th>邀请码</th>
               <th>生成时间</th>
               <th>状态</th>
             </tr>
-            <tr v-for="n in wjList">
+            <tr v-for="n in ArrList">
               <td style="color:#38f">{{n.InviteCode}}</td>
               <td>{{n.AddTime}}</td>
               <td>{{n.State}}</td>
             </tr>
+            <tr><td colspan="3" class="msg loadingMsg" v-html="msg[cant_scroll]"></td></tr>
           </tbody>
         </table>
-        <div class="msg loadingMsg">已显示全部记录</div>
-        <div class="fullPageMsg" v-show="!wjList">
-          <div class="fullPageIcon iconfont">&#xe63c;</div>
-          <p>暂无记录</p>
-        </div>
+        </template>
       </div>
-      <div class="InviteTableBox" data-key="false" v-show="UserType==1">
+     <!--  <div class="InviteTableBox" data-key="false" v-show="UserType==1">
+        <template v-if="data_count===0">
+          <div class="fullPageMsg"><div class="fullPageIcon iconfont">&#xe63c;</div><p>暂无记录</p></div>
+        </template>
+        <template v-else>
         <table class="col3Table manageInviteTable">
             <tbody><tr>
               <th>邀请码</th>
               <th>生成时间</th>
               <th>状态</th>
             </tr>
-            <tr v-for="n in dlList">
+            <tr v-for="n in ArrList">
               <td style="color:#38f">{{n.InviteCode}}</td>
               <td>{{n.AddTime}}</td>
               <td>{{n.State}}</td>
             </tr>
+            <tr><td colspan="3" class="msg loadingMsg" v-html="msg[cant_scroll]"></td></tr>
           </tbody>
         </table>
-        <div class="msg loadingMsg">已显示全部记录</div>
-        <div class="fullPageMsg" v-show="!dlList">
-          <div class="fullPageIcon iconfont">&#xe63c;</div>
-          <p>暂无记录</p>
-        </div>
-      </div>
+        </template>
+      </div> -->
     </div>
   </div>
 </template>

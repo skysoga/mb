@@ -41,6 +41,8 @@ export default {
       _fetch(dataArr).then(ref=>{
         ref.json().then(json=>{
           if(json.Code==1){
+            this.UnClick=true
+            this.ClickMsg="已领取"
             layer.msgWarn(json.StrCode)
           }else{
             layer.msgWarn(json.StrCode)

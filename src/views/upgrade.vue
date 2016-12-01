@@ -15,7 +15,7 @@
             <th>跳级奖励</th>
         </tr>
         <tr v-for="n in GradeList">
-            <td>{{n.Grade}}</td>
+            <td>VIP{{n.Grade}}</td>
             <td>{{n.GradeGrow}}</td>
             <td>{{n.Bonus}}</td>
             <td>{{n.JumpBonus}}</td>
