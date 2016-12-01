@@ -105,27 +105,21 @@ export default {
         index: this.ajaxData.Index,
         betweentype:this.ajaxData.BetweenType
       }
-      _fetch(this.ajaxData).then((res) => {
-        if (res.ok) {
-          res.json().then((json) => {
-            if (json.Code === 1) {
-              this.cant_scroll = 0
-              if (this.ajaxData.Index === 0) {
-                this.data_count = json.DataCount
-                this.data_totalpage = Math.ceil(json.DataCount / this.ajaxData.DataNum)
-              }
-              this.ajaxData.Index++
-                if (this.ajaxData.Index >= this.data_totalpage) {
-                  this.cant_scroll = 2
-                }
-              this.save_dataM(temp_ajax, json.BackData,this.data_count,this.cant_scroll)
-              this.check_data()
-            } else {
-              layer.msgWarn(json.StrCode)
+      _fetch(this.ajaxData).then((json) => {
+        if (json.Code === 1) {
+          this.cant_scroll = 0
+          if (this.ajaxData.Index === 0) {
+            this.data_count = json.DataCount
+            this.data_totalpage = Math.ceil(json.DataCount / this.ajaxData.DataNum)
+          }
+          this.ajaxData.Index++
+            if (this.ajaxData.Index >= this.data_totalpage) {
+              this.cant_scroll = 2
             }
-          })
+          this.save_dataM(temp_ajax, json.BackData,this.data_count,this.cant_scroll)
+          this.check_data()
         } else {
-          layer.msgWarn("request error")
+          layer.msgWarn(json.StrCode)
         }
       })
     },

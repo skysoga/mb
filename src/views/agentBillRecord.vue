@@ -147,32 +147,26 @@ export default {
         Action: this.temp_ajax[this.ajaxData.UserName][i].Action,
         Index: this.temp_ajax[this.ajaxData.UserName][i].Index
       })
-      _fetch(this.ajaxData).then((res) => {
-        if (res.ok) {
-          res.json().then((data) => {
-            if (data.Code === 1) {
-              this.temp_ajax = Object.assign({}, this.temp_ajax, this.create_obj(this.temp_ajax, this.ajaxData.UserName, i, 0))
-              if (this.temp_ajax[this.ajaxData.UserName][i].Index === 0) {
-                this.temp_ajax[this.ajaxData.UserName][i].DataCount = data.DataCount
-                this.temp_ajax[this.ajaxData.UserName][i].data_totalpage = Math.ceil(data.DataCount / this.ajaxData.DataNum)
-              }
-              this.temp_ajax[this.ajaxData.UserName][i].Index++
-                if (this.temp_ajax[this.ajaxData.UserName][i].Index >= this.temp_ajax[this.ajaxData.UserName][i].data_totalpage) {
-                  this.temp_ajax = Object.assign({}, this.temp_ajax, this.create_obj(this.temp_ajax, this.ajaxData.UserName, i, 2))
-                }
-              this.temp_ajax[this.ajaxData.UserName][i].res_data = this.temp_ajax[this.ajaxData.UserName][i].res_data.concat(data.BackData)
-            } else if (data.Code === 2) {
-              delete this.temp_ajax[this.ajaxData.UserName]
-              layer.msgWarn(data.StrCode)
-              this.UnFindUser[this.ajaxData.UserName] = data.StrCode
-              this.searchWord = this.oldName || ''
-              this.ajaxData.UserName = this.oldName
-            } else {
-              layer.msgWarn(data.StrCode)
+      _fetch(this.ajaxData).then((data) => {
+        if (data.Code === 1) {
+          this.temp_ajax = Object.assign({}, this.temp_ajax, this.create_obj(this.temp_ajax, this.ajaxData.UserName, i, 0))
+          if (this.temp_ajax[this.ajaxData.UserName][i].Index === 0) {
+            this.temp_ajax[this.ajaxData.UserName][i].DataCount = data.DataCount
+            this.temp_ajax[this.ajaxData.UserName][i].data_totalpage = Math.ceil(data.DataCount / this.ajaxData.DataNum)
+          }
+          this.temp_ajax[this.ajaxData.UserName][i].Index++
+            if (this.temp_ajax[this.ajaxData.UserName][i].Index >= this.temp_ajax[this.ajaxData.UserName][i].data_totalpage) {
+              this.temp_ajax = Object.assign({}, this.temp_ajax, this.create_obj(this.temp_ajax, this.ajaxData.UserName, i, 2))
             }
-          })
+          this.temp_ajax[this.ajaxData.UserName][i].res_data = this.temp_ajax[this.ajaxData.UserName][i].res_data.concat(data.BackData)
+        } else if (data.Code === 2) {
+          delete this.temp_ajax[this.ajaxData.UserName]
+          layer.msgWarn(data.StrCode)
+          this.UnFindUser[this.ajaxData.UserName] = data.StrCode
+          this.searchWord = this.oldName || ''
+          this.ajaxData.UserName = this.oldName
         } else {
-          layer.msgWarn("request error")
+          layer.msgWarn(data.StrCode)
         }
       })
     },
