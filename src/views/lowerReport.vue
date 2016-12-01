@@ -39,11 +39,12 @@ export default {
     return {
       ajaxData: {
         Action: "GetReportInfo",
-        BetweenType:1,
+        BetweenType:0,
         Index:0,
         DataNum:13,
         UserName:0
       },
+      BetweenType:0,//顶部右侧按钮，默认为0，每次点击将会返回值
       res_data: [],
       msg: [null, layer.icon.load + "正在加载...", "已显示全部数据"],
       window_height: 0, //窗口高度
@@ -52,12 +53,7 @@ export default {
       data_count: null,
       data_totalpage: 0, //总页数
       BottomBoxShow: false, //控制底部弹框的显，隐状态
-      BottomBoxList: {
-        UserName:"<i class='iconfont'></i>",
-        Report:"查看报表",
-        Lower:"查看下级",
-        Return:"返回上级"
-      },
+      BottomBoxList: {},
       agent_path_name: [0],
       data_storage: {}, //缓存数据
     }
@@ -67,21 +63,21 @@ export default {
     'bottom-box': bottombox
   },
   methods: {
-    // check_data: function() {
-    //   let result = this.data_storage[[this.ajaxData.UserName,this.ajaxData.BetweenType].join('')]
-    //   if (result) {
-    //     if (result.index === 0) {
-    //       this.res_data = result.save_data
-    //     } else {
-    //       this.res_data = this.res_data.concat(result.save_data)
-    //     }
-    //   } else {
-    //     result = "" //占位
-    //     this.getData()
-    //   }
-    // },
+    check_data: function() {
+      let result = this.data_storage[[this.ajaxData.UserName,this.ajaxData.BetweenType].join("")]
+      if (result) {
+        if (result.index === 0) {
+          this.res_data = result.save_data
+        } else {
+          this.res_data = this.res_data.concat(result.save_data)
+        }
+      } else {
+        result = "" //占位
+        this.getData()
+      }
+    },
     save_dataM: function(temp, saveData) {
-      this.data_storage[[temp.username,temp.betweentype].join('')] = {
+      this.data_storage[[temp.username,temp.betweentype].join("")] = {
         save_data: saveData,
         index: temp.index
       }
@@ -94,7 +90,7 @@ export default {
     getData: function() {
       this.cant_scroll = 1
       let temp_ajax = {
-        userid: this.ajaxData.UserName,
+        username: this.ajaxData.UserName,
         index: this.ajaxData.Index,
         betweentype:this.ajaxData.BetweenType
       }
@@ -130,26 +126,26 @@ export default {
       }
     },
     look_agent: function(UserName, LowerCount) {
-      // this.BottomBoxList = {}
-      // if (Number(LowerCount)) {
-      //   this.$set(this.BottomBoxList, UserName + " ", '查看下级')
-      // }
-      // if (this.agent_path_id.length > 1) {
-      //   this.$set(this.BottomBoxList, this.agent_path_id[this.agent_path_id.length - 2] + "  ", '返回上级')
-      // }
-      // this.$set(this.BottomBoxList, "1", UserName)
+      this.BottomBoxList = {}
+      if (Number(LowerCount)) {
+        this.$set(this.BottomBoxList, UserName, '查看下级')
+      }
+      if (this.agent_path_name.length > 1) {
+        this.$set(this.BottomBoxList, this.agent_path_name[this.agent_path_name.length - 2] + "  ", '返回上级')
+      }
+      this.$set(this.BottomBoxList, "1", UserName)
       this.BottomBoxShow = true
     },
     bottomBox: function(a, b) {
        if (b === "查看下级") {
-        this.ajaxData.UserId = Number(a)
+        this.ajaxData.UserName = a
         this.reset()
-        this.agent_path_id.push(this.ajaxData.UserId)
+        this.agent_path_name.push(this.ajaxData.UserName)
         this.BottomBoxShow = false
       } else if (b === "返回上级") {
-        this.ajaxData.UserId = this.agent_path_id[this.agent_path_id.length - 2]
+        this.ajaxData.UserName = this.agent_path_name[this.agent_path_name.length - 2]
         this.reset()
-        this.agent_path_id.pop()
+        this.agent_path_name.pop()
         this.BottomBoxShow = false
       }
     }
