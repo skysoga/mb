@@ -1,6 +1,6 @@
 <template id="">
   <div class="main">
-    <div class="touchScroll" @touchend="scroll()">
+    <div class="touchScroll" @touchend="scroll()" ref="div">
       <template v-if="data_count===0">
         <div class='fullPageMsg' ><div class='fullPageIcon iconfont'>&#xe63c;</div><p>暂无公告</p></div>
       </template>
@@ -39,12 +39,12 @@
     },
     methods: {
       getAjaxData: function() {
-        console.log("刷新");
         this.cant_scroll = 1
         _fetch(this.ajaxData).then((res) => {
           if (res.ok) {
             res.json().then((json) => {
               if (json.Code === 1) {
+                this.cant_scroll=0
                 if (this.ajaxData.Index === 0) {
                   this.data_count = json.DataCount
                 }
@@ -66,16 +66,13 @@
       scroll: function() {
         if (this.cant_scroll) {
           return
-        }else if (this.scroollDom.scrollTop > (this.renderData.length-6)*(3*em+1)-this.doc_height) {
+        }else if (this.$refs.div.scrollTop > (this.renderData.length-6)*(3*em+1)-this.$refs.div.clientHeight) {
           this.getAjaxData()
         }
       }
     },
     mounted() {
-      this.renderData = [{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"},{ID: 2, Title: "测试", Add_Time: "2019-04-01 20:26:27"}]
-      // this.getAjaxData()
-      this.scroollDom = document.querySelector(".touchScroll")
-      this.doc_height = this.scroollDom.clientHeight
+      this.getAjaxData()
     }
   }
   require('../scss/msgList.scss')

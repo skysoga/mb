@@ -1,8 +1,11 @@
 <template>
   <div class="main">
+    <div>
+      <div class="textMore dataType" v-if="res_data.State==='等待开奖'" @click='CancelBet()'><em>撤单</em></div>
+    </div>
     <div class="tzHead">
       <div class="fl iconfont" :class="lottery_icon" style="font-size: 2.5em;margin: 0 .4em 0 1rem;width:1em"></div>
-      <h1>{{res_data.LotteryName}}</h1><span style="color:#000">{{res_data.State}}</span><p>第{{res_data.IssueNo}}期</p>
+      <h1>{{res_data.LotteryName}}</h1><span :style="state_color[res_data.State]">{{res_data.State}}</span><p>第{{res_data.IssueNo}}期</p>
     </div>
     <table>
       <tr><td>投注时间</td><td>{{res_data.AddTime}}</td></tr>
@@ -24,11 +27,18 @@
 </template>
 
 <script>
+
 export default {
   data(){
     return {
       res_data:{},
-      lottery_icon:""
+      lottery_icon:"",
+      state_color:{
+        "等待开奖":"color:green",
+        "未中奖":"color:#000",
+        "已中奖":"color:red",
+        "已撤单":"color:#bababa"
+      }
     }
   },
   methods:{
@@ -64,15 +74,17 @@ export default {
     }
   },
   mounted(){
-    _fetch({Action:"GetBetDetail",UserId:0,ID:this.$route.query.ID}).then((res)=>{
+    _fetch({
+      Action:"GetBetDetail",
+      UserId:this.$route.query.UID||0,
+      ID:this.$route.query.ID
+    }).then((res)=>{
       if(res.ok){
         res.json().then((json)=>{
           if(json.Code===1){
             this.res_data=json.BackData
             let type=json.BackData.LotteryName.substr(json.BackData.LotteryName.length-2)
             this.transType(type)
-            // if (json.BackData.State==="等待开奖") {
-            // }
           }else {
             layer.msgWarn(json.StrCode)
           }
