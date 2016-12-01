@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div>
-      <div class="textMore dataType" v-if="res_data.State==='等待开奖'" @click='CancelBet()'><em>撤单</em></div>
+      <div class="textMore dataType" v-if="res_data.State==='等待开奖'" @click='CancelBet($route.query.ID)'><em>撤单</em></div>
     </div>
     <div class="tzHead">
       <div class="fl iconfont" :class="lottery_icon" style="font-size: 2.5em;margin: 0 .4em 0 1rem;width:1em"></div>
@@ -10,7 +10,8 @@
     <table>
       <tr><td>投注时间</td><td>{{res_data.AddTime}}</td></tr>
       <tr><td>投注单号</td><td>{{res_data.SerialNum}}</td></tr><tr><td>投注金额</td><td>¥{{res_data.BetMoney}}元</td></tr>
-      <tr><td>派送奖金</td><td>¥{{res_data.Bonus}}元</td></tr><tr v-if="res_data.State!='等待开奖'"><td>开奖号码</td><td id="lotteryopen">{{res_data.OpenNum}}</td></tr>
+      <tr><td>派送奖金</td><td>¥{{res_data.Bonus}}元</td></tr>
+      <tr v-if="res_data.State==='已中奖'||res_data.State==='未中奖'"><td>开奖号码</td><td id="lotteryopen">{{res_data.OpenNum}}</td></tr>
       <tr></tr>
     </table>
     <section>
@@ -42,35 +43,53 @@ export default {
     }
   },
   methods:{
-    transType:function(type){
-        switch(type){
-        case '快3':
-            this.lottery_icon = 'L_K3';
-            break;
-        case '时彩':
-        case '分彩':
-        case '时乐':
-            this.lottery_icon = 'L_SSC';
-            break;
-        case '选5':
-            this.lottery_icon = 'L_SYX5';
-            break;
-        case '10':
-            this.lottery_icon = 'L_PK10';
-            break;
-        case '农场':
-            this.lottery_icon = 'L_XYNC';
-            break;
-        case '乐8':
-            this.lottery_icon = 'L_KL8';
-            break;
-        case '3D':
-            this.lottery_icon = 'L_FC3D';
-            break;
-        case '/5':
-            this.lottery_icon = 'L_PL35';
-            break;
+    CancelBet:function(id){
+      layer.open({
+        shadeClose: false,
+        content: '撤单不可恢复，是否确认撤单？',
+        title: "温馨提示",
+        className: "layerConfirm",
+        btn: ["确定", "取消"],
+        yes: function() {
+          _fetch({Action:"CancelBet",ID:id}).then((data)=>{
+            if(data.Code===1){
+              layer.url(data.StrCode)
+            }else {
+              layer.msgWarn(data.StrCode)
+            }
+          })
         }
+      })
+    },
+    transType:function(type){
+      switch(type){
+      case '快3':
+        this.lottery_icon = 'L_K3'
+        break
+      case '时彩':
+      case '分彩':
+      case '时乐':
+        this.lottery_icon = 'L_SSC'
+        break
+      case '选5':
+        this.lottery_icon = 'L_SYX5'
+        break
+      case '10':
+        this.lottery_icon = 'L_PK10'
+        break
+      case '农场':
+        this.lottery_icon = 'L_XYNC'
+        break
+      case '乐8':
+        this.lottery_icon = 'L_KL8'
+        break
+      case '3D':
+        this.lottery_icon = 'L_FC3D'
+        break
+      case '/5':
+        this.lottery_icon = 'L_PL35'
+        break
+      }
     }
   },
   mounted(){
@@ -78,19 +97,13 @@ export default {
       Action:"GetBetDetail",
       UserId:this.$route.query.UID||0,
       ID:this.$route.query.ID
-    }).then((res)=>{
-      if(res.ok){
-        res.json().then((json)=>{
-          if(json.Code===1){
-            this.res_data=json.BackData
-            let type=json.BackData.LotteryName.substr(json.BackData.LotteryName.length-2)
-            this.transType(type)
-          }else {
-            layer.msgWarn(json.StrCode)
-          }
-        })
+    }).then((json)=>{
+      if(json.Code===1){
+        this.res_data=json.BackData
+        let type=json.BackData.LotteryName.substr(json.BackData.LotteryName.length-2)
+        this.transType(type)
       }else {
-        layer.msgWarn("request error")
+        layer.msgWarn(json.StrCode)
       }
     })
   }

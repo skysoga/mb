@@ -25,9 +25,9 @@
               <template v-if="x==2">
                 <div class="" v-for="item in temp_ajax[x-1].res_data">
                   <a class="active">
-                    <div><p>{{item.TypeName}}</p><span>{{item.AddTime}}</span> </div>
+                    <div><p>提现扣款</p><span>{{item.AddTime}}</span> </div>
                     <div class="fr">
-                      <strong class="OutMoney">-{{item.ApplyMoney}}</strong>
+                      <strong class="OutMoney">-{{item.OutMoney}}</strong>
                       <span class="fr">{{item.State}}</span>
                     </div>
                   </a>
@@ -118,26 +118,20 @@ export default {
     getData:function(i){
       this.temp_ajax[i].cant_scroll=1
       this.ajaxData=Object.assign(this.ajaxData,{Action:this.temp_ajax[i].Action,Index:this.temp_ajax[i].Index})
-      _fetch(this.ajaxData).then((res)=>{
-        if(res.ok){
-            res.json().then((data)=>{
-              if(data.Code===1){
-                this.temp_ajax[i].cant_scroll=0
-                if(this.temp_ajax[i].Index===0){
-                  this.temp_ajax[i].DataCount=data.DataCount
-                  this.temp_ajax[i].data_totalpage=Math.ceil(data.DataCount/this.ajaxData.DataNum)
-                }
-                this.temp_ajax[i].Index++
-                if(this.temp_ajax[i].Index>=this.temp_ajax[i].data_totalpage){
-                  this.temp_ajax[i].cant_scroll=2
-                }
-                this.temp_ajax[i].res_data=this.temp_ajax[i].res_data.concat(data.BackData)
-              }else {
-                layer.msgWarn(data.StrCode)
-              }
-            })
+      _fetch(this.ajaxData).then((data)=>{
+        if(data.Code===1){
+          this.temp_ajax[i].cant_scroll=0
+          if(this.temp_ajax[i].Index===0){
+            this.temp_ajax[i].DataCount=data.DataCount
+            this.temp_ajax[i].data_totalpage=Math.ceil(data.DataCount/this.ajaxData.DataNum)
+          }
+          this.temp_ajax[i].Index++
+          if(this.temp_ajax[i].Index>=this.temp_ajax[i].data_totalpage){
+            this.temp_ajax[i].cant_scroll=2
+          }
+          this.temp_ajax[i].res_data=this.temp_ajax[i].res_data.concat(data.BackData)
         }else {
-          layer.msgWarn("request error")
+          layer.msgWarn(data.StrCode)
         }
       })
     },

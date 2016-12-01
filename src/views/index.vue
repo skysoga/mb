@@ -13,15 +13,15 @@
   </div>
   <div class="hr1px"></div>
 
-  <div id="HotLottery" v-bind:style="{height:Math.ceil($store.state.LotteryConfig.length/3)*3+'em'}">
-    <ul>
-      <li v-for="l in $store.state.LotteryConfig">
+  <div id="HotLottery" v-bind:style="{height:Math.ceil($store.state.LotteryConfig[2].LotteryList.length/3)*3+'em'}">
+    <ul v-for="lo in $store.state.LotteryConfig" v-if="lo.LotteryClassID=='14'">
+      <li v-for="l in lo.LotteryList">
         <router-link class="active L_K3" to="lottery_k3">
           <p>{{$store.state.LotteryList[l].LotteryName}}</p>
           <span>{{$store.state.LotteryList[l].LotteryIntro}}</span>
         </router-link>
       </li>
-      <li v-for="l in 3-($store.state.LotteryConfig.length%3||3)"></li>
+      <li v-for="l in 3-(lo.LotteryList.length%3||3)"></li>
     </ul>
   </div>
 </div>

@@ -30,16 +30,14 @@ export default {
       }
       ajax.Action="Login";
       layer.msgWait("正在登录")
-      _fetch(ajax).then((res)=>{
-        res.json().then((json) => {
-          if (json.Code===1) {
-            this.$root.Login(this.UserName,function(){
-              $root.$router.push("/index");
-            })
-          }else{
-            layer.msgWarn(json.StrCode);
-          }
-        })
+      _fetch(ajax).then((json)=>{
+        if (json.Code===1) {
+          this.$root.Login(this.UserName,function(){
+            $root.$router.push("/index");
+          })
+        }else{
+          layer.msgWarn(json.StrCode);
+        }
       })
     },
     forgetPwd:function(){

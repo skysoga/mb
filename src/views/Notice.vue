@@ -6,12 +6,12 @@
       </template>
       <template v-else>
         <div class="" v-for="item in renderData">
-          <router-link class="active" :data-id="item.ID" :to="'/NoticeDetail/'+item.ID">
+          <a class="active" :data-id="item.ID" @click="jump(item.ID)">
             <div>
               <p>{{item.Title}}</p>
               <span>{{item.Add_Time}}</span>
             </div>
-          </router-link>
+          </a>
           <div class="hr1px"></div>
         </div>
         <div class="msg" v-html="msg[cant_scroll]"></div>
@@ -31,35 +31,31 @@
         cant_scroll: 0,//分别为0(默认状态),1(正在加载),2(已显示全部)
         msg:[null,layer.icon.load + "正在加载...","已显示全部公告"],
         renderData: [],
-        scroollDom: null,
         data_length: 0,
         data_count: null,
         doc_height: 0,
       }
     },
     methods: {
+      jump:function(id){
+        this.$router.push({path:"NoticeDetail",query:{ID:id}})
+      },
       getAjaxData: function() {
         this.cant_scroll = 1
-        _fetch(this.ajaxData).then((res) => {
-          if (res.ok) {
-            res.json().then((json) => {
-              if (json.Code === 1) {
-                this.cant_scroll=0
-                if (this.ajaxData.Index === 0) {
-                  this.data_count = json.DataCount
-                }
-                this.renderData = this.renderData.concat(json.BackData)
-                this.data_length += json.BackData.length
-                if (this.data_length >= this.data_count) {
-                  this.cant_scroll = 2
-                }
-                this.ajaxData.Index++
-              } else {
-                layer.msgWarn(json.StrCode)
-              }
-            })
+        _fetch(this.ajaxData).then((json) => {
+          if (json.Code === 1) {
+            this.cant_scroll=0
+            if (this.ajaxData.Index === 0) {
+              this.data_count = json.DataCount
+            }
+            this.renderData = this.renderData.concat(json.BackData)
+            this.data_length += json.BackData.length
+            if (this.data_length >= this.data_count) {
+              this.cant_scroll = 2
+            }
+            this.ajaxData.Index++
           } else {
-            layer.msgWarn("request error")
+            layer.msgWarn(json.StrCode)
           }
         })
       },
@@ -77,7 +73,3 @@
   }
   require('../scss/msgList.scss')
 </script>
-
-<!-- <style lang="scss">
-  @import '../scss/msgList.scss'
-</style> -->
