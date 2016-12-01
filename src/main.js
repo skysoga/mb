@@ -134,16 +134,17 @@ const interviewApp = new Vue({
 			    }
 			  }
 			})(data.LotteryList)
-		  if (data.LotteryConfig&&data.LotteryConfig.length) {
-		    let LotteryConfig = data.LotteryConfig;
-		    delete data.LotteryConfig;
-		    for (let i = LotteryConfig.length - 1; i >= 0; i--) {
-		      if (LotteryConfig[i].LotteryClassID==="14") {
-		        data.LotteryConfig=LotteryConfig[i].LotteryList;
-		        break;
-		      }
-		    }
-		  }
+			
+		  // if (data.LotteryConfig&&data.LotteryConfig.length) {
+		  //   let LotteryConfig = data.LotteryConfig;
+		  //   delete data.LotteryConfig;
+		  //   for (let i = LotteryConfig.length - 1; i >= 0; i--) {
+		  //     if (LotteryConfig[i].LotteryClassID==="14") {
+		  //       data.LotteryConfig=LotteryConfig[i].LotteryList;
+		  //       break;
+		  //     }
+		  //   }
+		  // }
 
 		  if (data.NoticeData&&data.NoticeData.length) {
 		    if (data.NoticeData.length>2) {
