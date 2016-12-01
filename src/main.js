@@ -17,7 +17,7 @@ const router = new VueRouter({
 	linkActiveClass:"on",
 	// exact: true
 });
-
+var needVerify=0
 
 var UserArr=[
 	'UserHasSafePwd', //返回是否已经设置安全密码,1为有,0为没有设置
@@ -133,16 +133,6 @@ const interviewApp = new Vue({
 			    }
 			  }
 			})(data.LotteryList)
-		  if (data.LotteryConfig&&data.LotteryConfig.length) {
-		    let LotteryConfig = data.LotteryConfig;
-		    delete data.LotteryConfig;
-		    for (let i = LotteryConfig.length - 1; i >= 0; i--) {
-		      if (LotteryConfig[i].LotteryClassID==="14") {
-		        data.LotteryConfig=LotteryConfig[i].LotteryList;
-		        break;
-		      }
-		    }
-		  }
 
 		  if (data.NoticeData&&data.NoticeData.length) {
 		    if (data.NoticeData.length>2) {
@@ -177,8 +167,10 @@ const interviewApp = new Vue({
 			}
 			ajax.Requirement=arr;
 			_fetch(ajax).then((res)=>{
-			  res.json().then((json) => {
+				var cres = res.clone()
+			  cres.json().then((json) => {
 			    if (json.Code===1||json.Code===0) {
+			    	needVerify=0
 			    	var Data = this.SetFilter(json.BackData);
 			      this.SaveInitData(Data)
 			    	if (json.Code===0&&state.UserName) {
@@ -263,6 +255,12 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach((to, from) => {
 	layer.closeAll()
+	needVerify++
+	console.log(needVerify);
+	if (needVerify>5) {
+		needVerify=0
+		interviewApp.GetInitData(["CloudUrl"])
+	}
 });
 
 //全局过滤器
@@ -288,5 +286,36 @@ document.addEventListener('copy', function(e){
 		layer.msgWarn('已将内容复制到剪切板')
 	}
 })
+
+
+window._fetch=function (data){
+	var str=[],k;
+	for(var i in data){
+		k=data[i];
+		if (typeof(k)==="object") {
+			k=JSON.stringify(k);
+		}
+		str.push(i+'='+k);
+	}
+	data = str.join('&');
+	return fetch('/tools/ssc_ajax.ashx', {
+		credentials:'same-origin',
+	  method: 'POST',
+	  headers: {
+	    "Content-Type": "application/x-www-form-urlencoded"
+	  },
+	  body: data
+	})/*.then((res)=>{
+		var cres = res.clone()
+		setTimeout(function(){
+			cres.json().then(json=>{
+				if (json.Code==0) {
+					console.log(interviewApp.$routes);
+				}
+			})
+		},2000)
+	})*/
+}
+
 
 module.exports = {interviewApp,store,state};
