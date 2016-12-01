@@ -19,7 +19,6 @@ export default{
   },
   methods:{
     getAjaxData(){
-      console.log("刷新");
       this.cant_scroll = 1
       var vm=this
       _fetch(this.arr).then(ref=>{
@@ -37,7 +36,6 @@ export default{
                   vm.cant_scroll = 2
                 }
               vm.arr.Index++
-              console.log(vm.arr.Index)
             }
           }else{
             layer.msgWarn(json.StrCode)

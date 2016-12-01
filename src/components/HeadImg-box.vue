@@ -1,3 +1,15 @@
+<!--
+组件名称：头像设置组件
+使用说明：
+引入方式：import HeadImgbox from '../components/HeadImg-box'
+组件显示与关闭:HeadImgBoxShow=true|false
+列表：list
+关闭事件:@click="close"
+父组件绑定：
+<HeadImg-box v-show="HeadImgBoxShow"
+                 :list = "HeadImgBoxList"
+                 ></HeadImg-box>
+-->
 <template>
   <div class="_changeHeadImg" v-show="this.$parent.HeadImgBoxShow">
     <div class="backShaw"></div>

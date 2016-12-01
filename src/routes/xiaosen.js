@@ -24,7 +24,7 @@ const PLstatement =resolve => require(['../views/PLstatement'],resolve)//今日�
 const setBankcard =resolve => require(['../views/setBankcard'],resolve)//设置银行卡
 const verifyBankcard =resolve => require(['../views/verifyBankcard'],resolve)//验证银行卡
 const AgentCode =resolve => require(['../views/AgentCode'],resolve)//邀请码代理
-const memberCode =resolve => require(['../views/memberCode'],resolve)//邀请码代理
+const memberCode =resolve => require(['../views/memberCode'],resolve)//邀请码玩家
 
 var routes = [{
   path: '/manageBankcard',
@@ -247,15 +247,15 @@ var routes = [{
   },
   component: manageIcode,
   children:[{
-    path:'',
-    component:AgentCode
-  },{
-    path:'AgentCode',
-    component:AgentCode
-  },{
-    path:'memberCode',
-    component:memberCode
-  }]
+      path:'',
+      component:AgentCode
+    },{
+      path:'AgentCode',
+      component:AgentCode
+    },{
+      path:'memberCode',
+      component:memberCode
+    }]
 },{
   path: '/personalInfo',
   name: '个人信息',
