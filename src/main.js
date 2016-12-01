@@ -5,7 +5,6 @@ import { mapState } from 'vuex'
 import App from './App'
 import routes from './routes/routes'
 import Va from './plugins/va'
-
 Vue.use(Va)
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -167,24 +166,22 @@ const interviewApp = new Vue({
 				Action:"GetInitData"
 			}
 			ajax.Requirement=arr;
-			_fetch(ajax).then((res)=>{
-				var cres = res.clone()
-			  cres.json().then((json) => {
-			    if (json.Code===1||json.Code===0) {
-			    	needVerify=0
-			    	var Data = this.SetFilter(json.BackData);
-			      this.SaveInitData(Data)
-			    	if (json.Code===0&&state.UserName) {
-			    		this.Logout()
-			    		layer.alert("您的登录状态已失效,需要重新登录",()=>{
-			    			this.$router.push("/login")
-			    		})
-			    	}
-			      fun&&fun(state)
-			    }else{
-			      layer.msgWarn(json.StrCode);
-			    }
-			  })
+			_fetch(ajax).then((json)=>{
+		    if (json.Code===1||json.Code===0) {
+		    	needVerify=0
+		    	var Data = this.SetFilter(json.BackData);
+		    	console.log(Data);
+		      this.SaveInitData(Data)
+		    	if (json.Code===0&&state.UserName) {
+		    		this.Logout()
+		    		layer.alert("您的登录状态已失效,需要重新登录",()=>{
+		    			this.$router.push("/login")
+		    		})
+		    	}
+		      fun&&fun(state)
+		    }else{
+		      layer.msgWarn(json.StrCode);
+		    }
 			})
 		},
 		GetInitData(arr,fun){
@@ -299,23 +296,23 @@ window._fetch=function (data){
 		str.push(i+'='+k);
 	}
 	data = str.join('&');
-	return fetch('/tools/ssc_ajax.ashx', {
-		credentials:'same-origin',
-	  method: 'POST',
-	  headers: {
-	    "Content-Type": "application/x-www-form-urlencoded"
-	  },
-	  body: data
-	})/*.then((res)=>{
-		var cres = res.clone()
-		setTimeout(function(){
-			cres.json().then(json=>{
+	return new Promise(function(resolve, reject){
+		fetch('/tools/ssc_ajax.ashx', {
+			credentials:'same-origin',
+		  method: 'POST',
+		  headers: {
+		    "Content-Type": "application/x-www-form-urlencoded"
+		  },
+		  body: data
+		}).then((res)=>{
+			res.json().then(json=>{
 				if (json.Code==0) {
 					console.log(interviewApp.$routes);
 				}
+				resolve(json)
 			})
-		},2000)
-	})*/
+		})
+	})
 }
 
 
