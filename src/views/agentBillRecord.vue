@@ -2,7 +2,7 @@
 <div class="main">
   <div class="searchBtn">
     <div class="searchCon">
-      <input class="proxySearch" type="text" placeholder="下级投注查询" v-model="searchWord">
+      <input class="proxySearch" type="text" placeholder="下级交易查询" v-model="searchWord">
     </div>
     <a id="submitBtn">
       <div class="submitTouch" @click="search(li_state)"><i class="iconfont"></i></div>
@@ -15,7 +15,7 @@
       </ul>
     </div>
     <div class="bd dontSelect">
-      <div class="scrollBox" v-for="x in 4">
+      <div class="scrollBox" v-for="x in 3">
         <div class="touchScroll" @touchend="scroll(x-1)" v-if="li_state==x-1" ref="div">
           <template v-if="temp_ajax[ajaxData.UserName][x-1].DataCount===0">
           <div class='fullPageMsg'>
@@ -27,9 +27,11 @@
                   <template v-if="x==1">
                   <div class="" v-for="item in temp_ajax[ajaxData.UserName][x-1].res_data">
                     <a class="active">
-                      <div><p>{{item.UserName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span></div>
-                      <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
-                      <strong class="" v-else>{{item.State}}</strong>
+                      <div><p>{{item.UserName}}</p><span>{{item.AddTime}}</span> </div>
+                      <div class="fr">
+                        <strong :class="check_money(item.InMoney,item.OutMoney)>0?'InMoney':'OutMoney'">{{check_money(item.InMoney,item.OutMoney)}}</strong>
+                        <span class="fr">{{item.TypeName}}</span>
+                      </div>
                     </a>
                     <div class="hr1px"></div>
                   </div>
@@ -48,21 +50,8 @@
                 <template v-if="x==3">
                 <div class="" v-for="item in temp_ajax[ajaxData.UserName][x-1].res_data">
                   <a class="active">
-                    <div>
-                      <p>{{item.UserName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span></div>
-                    <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
-                    <strong class="" v-else>{{item.State}}</strong>
-                  </a>
-                  <div class="hr1px"></div>
-                </div>
-                </template>
-                <template v-if="x==4">
-                <div class="" v-for="item in temp_ajax[ajaxData.UserName][x-1].res_data">
-                  <a class="active">
-                    <div>
-                      <p>{{item.UserName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span></div>
-                    <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
-                    <strong class="" v-else>{{item.State}}</strong>
+                    <div><p>{{item.UserName}}</p><span>{{item.AddTime}}</span> </div>
+                    <div class="fr"><div class="fr"><strong class="InMoney">+{{item.InMoney}}</strong><span class="fr">{{item.State}}</span></div> </div>
                   </a>
                   <div class="hr1px"></div>
                 </div>
@@ -80,19 +69,19 @@
 export default {
   data() {
     return {
-      li_arr_obj: ["全部", "已中奖", "未中奖", "等待开奖"],
+      li_arr_obj: ["所有类型","提现记录","交易记录"],
       li_state: 0,
       ajaxData: {
-        Action: "GetAgentBetData",
-        BetweenDays: 7,
+        Action: "GetAgentBillRecord",
+        BetweenDays: 15,
         Index: 0,
         UserName: 0,
         DataNum: 20,
-        LotteryCode: -1,
-        State: 1
+        Type: -1
       },
+      type:['GetAgentBillRecord','GetAgentWithdrawRecord','GetAgentRechargeRecord'],
       data_totalpage: 0,
-      msg: [null, layer.icon.load + "正在加载...", "已显示7天内全部记录"],
+      msg: [null, layer.icon.load + "正在加载...", "已显示15天内全部记录"],
       temp_ajax: {},
       UnFindUser: {},
       oldName: 0,
@@ -110,11 +99,10 @@ export default {
       } else {
         this.ajaxData.UserName = this.searchWord || 0
         if (!this.temp_ajax[this.ajaxData.UserName]) {
-          console.log("无占位缓存")
           this.temp_ajax[this.ajaxData.UserName] = {}
-          for (var i = 0; i < 4; i++) {
+          for (var i = 0; i < 3; i++) {
             this.temp_ajax[this.ajaxData.UserName][i] = {
-              State: i + 1,
+              Action: this.type[i],
               Index: 0,
               DataCount: null, //用datacount来判断是否有请求过，压入缓存，因为有请求过，datacount就会变化为0或者具体的number数值
               data_totalpage: 0,
@@ -126,16 +114,20 @@ export default {
         } else {
           if (this.temp_ajax[this.ajaxData.UserName][page_index].DataCount === null) { //说明只是生成占位，并没有请求过数据
             this.getData(page_index)
-            console.log("占位缓存")
-          } else {
-            console.log("缓存")
-          } //说明数据真的有缓存,不需要任何操作，因为vue会根据变化自动渲染
+          } else {} //说明数据真的有缓存,不需要任何操作，因为vue会根据变化自动渲染
         }
       }
     },
-    create_obj: function(obj, username, i, j) {
-      obj[username][i].cant_scroll = j
-      return obj
+    check_money:function(inmoney,outmoney){
+      let inm=parseFloat(inmoney)
+      let out=parseFloat(outmoney)
+      inm=inm?inm:0
+      out=out?out:0
+      if(inm-out>=0){
+        return "+"+(inm-out)
+      }else{
+        return inm-out
+      }
     },
     scroll:function(i){
       if (this.temp_ajax[this.ajaxData.UserName][i].cant_scroll) {
@@ -144,11 +136,15 @@ export default {
         this.getData(i)
       }
     },
+    create_obj: function(obj, username, i, j) {
+      obj[username][i].cant_scroll = j
+      return obj
+    },
     getData: function(i) {
       this.temp_ajax = Object.assign({}, this.temp_ajax, this.create_obj(this.temp_ajax, this.ajaxData.UserName, i, 1))
         //从中间态中取数据
       this.ajaxData = Object.assign(this.ajaxData, {
-        State: this.temp_ajax[this.ajaxData.UserName][i].State,
+        Action: this.temp_ajax[this.ajaxData.UserName][i].Action,
         Index: this.temp_ajax[this.ajaxData.UserName][i].Index
       })
       _fetch(this.ajaxData).then((res) => {

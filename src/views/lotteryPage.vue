@@ -2,113 +2,35 @@
 	<router-view></router-view>
 </template>
 <script>
+	import lt_ssc_config from '../js/lt_ssc_config.json'
 	export default{
 		created(){
-			const lt_config = {
-				'五星':{
-					'直选':{
-						'复式':{
-							mode:'H11',
-							group:'五星',
-							subGroup: '直选',
-							name:'复式',
-							tag:'五星直选复式',
-							tip:'每位至少选择一个号码，竞猜开奖号码的全部五位，号码和位置都对应即中奖，奖金{bonus}元', 
-						},
-						'单式':{
-							mode:'H12',
-							group:'五星',
-							subGroup: '直选',
-							name: '单式',
-							tag: '五星直选单式',
-							tip:'每位至少选择一个号码，竞猜开奖号码的全部五位，号码和位置都对应即中奖，奖金{bonus}元'
-						}
-					},
-					'组选':{
-						'组选120':{
-							mode:'H21',
-							group:'五星',
-							subGroup:'组选',
-							name:'组选120',
-							tag:'五星组选120',
-							tip:'至少选择五个号码投注，竞猜开奖号码的全部五位，号码一致顺序不限即中奖，奖金{bonus}元'
-						},
-						'组选60':{
-							mode:'H22',
-							group:'五星',
-							subGroup:'组选',
-							name:'组选60',
-							tag:'五星组选60',
-							tip:'至少选择1个二重号码和3个单号号码组成一注，竞猜开奖号码的全部五位，号码一致顺序不限即中奖，奖金{bonus}元'
-						},
-						'组选30':{
-							mode:'H23',
-							group:'五星',
-							subGroup:'组选',
-							name:'组选30',
-							tag:'五星组选30',
-							tip:'至少选择2个二重号码和1个单号号码组成一注，竞猜开奖号码的全部五位，号码一致顺序不限即中奖，奖金{bonus}元'
-						},
-						'组选20':{
-							mode:'H24',
-							group:'五星',
-							subGroup:'组选',
-							name:'组选20',
-							tag:'五星组选20',
-							tip:'至少选择1个三重号码和2个单号号码组成一注，竞猜开奖号码的全部五位，号码一致顺序不限即中奖，奖金{bonus}元'
-						},
-						'组选10':{
-							mode:'H25',
-							group:'五星',
-							subGroup:'组选',
-							name:'组选20',
-							tag:'五星组选10',
-							tip:'至少选择1个三重号码和2个单号号码组成一注，竞猜开奖号码的全部五位，号码一致顺序不限即中奖，奖金{bonus}元'
-						},
-						'组选5':{
-							mode:'H26',
-							group:'五星',
-							subGroup:'组选',
-							name:'组选20',
-							tag:'五星组选10',
-							tip:'至少选择1个四重号码和1个单号号码组成一注，竞猜开奖号码的全部五位，号码一致顺序不限即中奖，奖金<ins class = "_tipBonus"></ins>元'
-						}
-					},
-					'不定位':{
-						'一码不定位':{
-							mode:'H31',
-							group:'五星',
-							subGroup: '不定位',
-							name: '一码不定位',
-							tag: '五星一码不定位',
-							tip:'每位至少选择一个号码，竞猜开奖号码的全部五位，号码和位置都对应即中奖，奖金{bonus}元'
-						}
-					}
-				}
-			}
-
 			const lt = {
 				state:{
 					bet: {},
 					basket:[],
 					scheme:{},
-					page:{},
-					config:lt_config
+					page:{
+						name: '复式',
+						mode: 'H11',
+						group: '五星',
+						subGroup: '直选',
+						tag: '五星直选复式',
+					},
+					box:'',
+					config:lt_ssc_config
 				},
 				getters: {
-					showName: state =>{
-						return '姓名：' + state.name 
-					}
 				},
 				mutations:{
-					addA(state){
-						state.name += 'B'
+					lt_changeBox(state, boxName){
+						state.box = boxName
+					},
+					lt_changeMode(state, page){
+						state.page = page
 					}
 				},
 				actions: {
-					add(context){
-						context.commit('addA')
-					}
 				}
 			}
 
