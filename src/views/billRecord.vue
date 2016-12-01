@@ -3,58 +3,47 @@
     <div class="" id="leftTabBox">
       <div class="hd">
           <ul>
-            <li v-for="(x,index) in li_arr_obj" :class="li_state[index]" @click="show_state(index)">{{x}}</li>
+            <li v-for="(x,index) in li_arr_obj" :class="li_state==index?'on':null" @click="li_state=index">{{x}}</li>
           </ul>
       </div>
       <div class="bd dontSelect">
-        <div class="scrollBox" v-if="li_state[0]">
-          <div class="touchScroll" @touchend="scroll(0)">
-            <template v-if="temp_ajax[0].DataCount===0">
+        <div class="scrollBox" v-for="x in 3">
+          <div class="touchScroll" @touchend="scroll(x-1)" v-if="li_state==x-1" ref="div">
+            <template v-if="temp_ajax[x-1].DataCount===0">
               <div class='fullPageMsg' ><div class='fullPageIcon iconfont'>&#xe63c;</div><p>暂无记录</p></div>
             </template>
             <template v-else>
-              <div class="" v-for="item in temp_ajax[0].res_data">
+              <template v-if="x==1">
+                <div class="" v-for="item in temp_ajax[x-1].res_data">
+                  <a class="active">
+                    <div><p>{{item.TypeName}}</p><span>{{item.AddTime}}</span> </div>
+                    <strong :class="check_money(item.InMoney,item.OutMoney)>0?'InMoney':'OutMoney'">{{check_money(item.InMoney,item.OutMoney)}}</strong>
+                  </a>
+                  <div class="hr1px"></div>
+                </div>
+              </template>
+              <template v-if="x==2">
+                <div class="" v-for="item in temp_ajax[x-1].res_data">
+                  <a class="active">
+                    <div><p>{{item.TypeName}}</p><span>{{item.AddTime}}</span> </div>
+                    <div class="fr">
+                      <strong class="OutMoney">-{{item.ApplyMoney}}</strong>
+                      <span class="fr">{{item.State}}</span>
+                    </div>
+                  </a>
+                  <div class="hr1px"></div>
+                </div>
+              </template>
+              <template v-if="x==3">
+              <div class="" v-for="item in temp_ajax[x-1].res_data">
                 <a class="active">
                   <div><p>{{item.TypeName}}</p><span>{{item.AddTime}}</span> </div>
-                  <strong :class="money_class">{{check_money(item.InMoney,item.OutMoney)}}</strong>
+                  <div class="fr"><strong class="InMoney">{{"+"+item.ApplyMoney}}</strong><span class="fr">{{item.State}}</span></div>
                 </a>
                 <div class="hr1px"></div>
               </div>
-              <div class="msg noMore" v-html="msg[temp_ajax[0].cant_scroll]"></div>
-            </template>
-          </div>
-        </div>
-        <div class="scrollBox" v-if="li_state[1]">
-          <div class="touchScroll" @touchend="scroll(1)">
-            <template v-if="temp_ajax[1].DataCount===0">
-              <div class='fullPageMsg' ><div class='fullPageIcon iconfont'>&#xe63c;</div><p>暂无记录</p></div>
-            </template>
-            <template v-else>
-              <div class="" v-for="item in temp_ajax[1].res_data">
-                <a class="active">
-                   <div><p>提现扣款</p><span>{{item.AddTime}}</span> </div>
-                   <div class="fr"><strong class="OutMoney">{{"-"+item.OutMoney}}</strong><span class="fr">{{item.State}}</span></div>
-                </a>
-                <div class="hr1px"></div>
-              </div>
-              <div class="msg noMore" v-html="msg[temp_ajax[1].cant_scroll]"></div>
-            </template>
-          </div>
-        </div>
-        <div class="scrollBox" v-if="li_state[2]">
-          <div class="touchScroll" @touchend="scroll(2)">
-            <template v-if="temp_ajax[2].DataCount===0">
-              <div class='fullPageMsg' ><div class='fullPageIcon iconfont'>&#xe63c;</div><p>暂无记录</p></div>
-            </template>
-            <template v-else>
-              <div class="" v-for="item in temp_ajax[2].res_data">
-                <a class="active">
-                    <div><p>{{item.TypeName}}</p><span>{{item.AddTime}}</span> </div>
-                    <div class="fr"><strong class="InMoney">{{"+"+item.ApplyMoney}}</strong><span class="fr">{{item.State}}</span></div>
-                </a>
-                <div class="hr1px"></div>
-              </div>
-              <div class="msg noMore" v-html="msg[temp_ajax[2].cant_scroll]"></div>
+              </template>
+              <div class="msg noMore" v-html="msg[temp_ajax[x-1].cant_scroll]"></div>
             </template>
           </div>
         </div>
@@ -75,12 +64,10 @@ export default {
         DataNum:10,
         Type:-1
       },
-      money_class:"",
       li_arr_obj:["所有类型","提现记录","充值记录"],
-      li_state:["on",null,null],//代表tab的显隐状态，默认“所有类型”显示
+      li_state:0,//代表tab的显隐状态，默认“所有类型”显示
       type:['GetBillRecord','GetWithdrawRecord','GetRechargeRecord'],
       msg:[null,layer.icon.load + "正在加载...","已显示15天内全部记录"],
-      document_scrollTop:0,
       document_height:0,
       window_height:0,
       //temp_ajax用来储存每个页面的状态，以及返回来的数据，因为页面切换的时候要还原当前页面的数据
@@ -109,7 +96,8 @@ export default {
     }
   },
   mounted(){
-    this.scroll_element=document.querySelector(".touchScroll")
+    this.window_height=document.documentElement.clientHeight||document.body.clientHeight
+    this.document_height=document.documentElement.scrollHeight||document.body.scollHeight
     for(var i=0;i<this.type.length;i++){
       this.ajaxData.Action=this.type[i]
       this.getData(i)
@@ -122,16 +110,10 @@ export default {
       inm=inm?inm:0
       out=out?out:0
       if(inm-out>=0){
-        this.money_class='InMoney'
         return "+"+(inm-out)
       }else{
-        this.money_class='OutMoney'
         return inm-out
       }
-    },
-    show_state:function(index){
-      this.li_state=[null,null,null]
-      this.li_state[index]="on"
     },
     getData:function(i){
       this.temp_ajax[i].cant_scroll=1
@@ -149,7 +131,6 @@ export default {
                 if(this.temp_ajax[i].Index>=this.temp_ajax[i].data_totalpage){
                   this.temp_ajax[i].cant_scroll=2
                 }
-                //this.$set(this.res_data,i,this.res_data[0].concat(data.BackData))
                 this.temp_ajax[i].res_data=this.temp_ajax[i].res_data.concat(data.BackData)
               }else {
                 layer.msgWarn(data.StrCode)
@@ -161,17 +142,13 @@ export default {
       })
     },
     scroll:function(i){
-      this.document_scrollTop=this.scroll_element.scrollTop
-      this.window_height=document.documentElement.clientHeight||document.body.clientHeight
-      this.document_height=document.documentElement.scrollHeight||document.body.scollHeight
       if (this.temp_ajax[i].cant_scroll) {
         return
-      }else if (this.document_scrollTop-40>this.document_height-this.window_height) {
+      }else if (this.$refs.div[0].scrollTop-50>this.document_height-this.window_height) {
         this.getData(i)
       }
     }
   }
-
 }
 </script>
 

@@ -17,17 +17,18 @@ export default {
   methods:{
     getData(index){
       let dataArr={Action:"GetProfitLoss",BetweenDays:index}
-      layer.msgWait("正在处理")
+      layer.msgWait("正在加载")
       _fetch(dataArr).then(ref=>{
         ref.json().then(json=>{
+          var datas=json.BackData
           if(json.Code==1){
-            this.AllProfitLoss=json.AllProfitLoss
-            this.Betting=json.Betting
-            this.BonusMoney=json.BonusMoney
-            this.Activity=json.Activity
-            this.Rebate=json.Rebate
-            this.Recharge=json.Recharge
-            this.Withdraw=json.Withdraw
+            this.AllProfitLoss=datas.AllProfitLoss
+            this.Betting=datas.Betting
+            this.BonusMoney=datas.BonusMoney
+            this.Activity=datas.Activity
+            this.Rebate=datas.Rebate
+            this.Recharge=datas.Recharge
+            this.Withdraw=datas.Withdraw
             layer.msgWarn(json.StrCode)
           }else{
             layer.msgWarn(json.StrCode)

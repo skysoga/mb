@@ -45,7 +45,6 @@
           if (res.ok) {
             res.json().then((json) => {
               if (json.Code === 1) {
-                this.cant_scroll=0
                 if (this.ajaxData.Index === 0) {
                   this.data_count = json.DataCount
                 }
@@ -53,7 +52,6 @@
                 this.data_length += json.BackData.length
                 if (this.data_length >= this.data_count) {
                   this.cant_scroll = 2
-
                 }
                 this.ajaxData.Index++
               } else {
