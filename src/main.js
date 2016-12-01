@@ -5,7 +5,6 @@ import { mapState } from 'vuex'
 import App from './App'
 import routes from './routes/routes'
 import Va from './plugins/va'
-
 Vue.use(Va)
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -17,7 +16,7 @@ const router = new VueRouter({
 	linkActiveClass:"on",
 	// exact: true
 });
-
+var needVerify=0
 
 var UserArr=[
 	'UserHasSafePwd', //返回是否已经设置安全密码,1为有,0为没有设置
@@ -134,16 +133,6 @@ const interviewApp = new Vue({
 			    }
 			  }
 			})(data.LotteryList)
-		  if (data.LotteryConfig&&data.LotteryConfig.length) {
-		    let LotteryConfig = data.LotteryConfig;
-		    delete data.LotteryConfig;
-		    for (let i = LotteryConfig.length - 1; i >= 0; i--) {
-		      if (LotteryConfig[i].LotteryClassID==="14") {
-		        data.LotteryConfig=LotteryConfig[i].LotteryList;
-		        break;
-		      }
-		    }
-		  }
 
 		  if (data.NoticeData&&data.NoticeData.length) {
 		    if (data.NoticeData.length>2) {
@@ -177,22 +166,22 @@ const interviewApp = new Vue({
 				Action:"GetInitData"
 			}
 			ajax.Requirement=arr;
-			_fetch(ajax).then((res)=>{
-			  res.json().then((json) => {
-			    if (json.Code===1||json.Code===0) {
-			    	var Data = this.SetFilter(json.BackData);
-			      this.SaveInitData(Data)
-			    	if (json.Code===0&&state.UserName) {
-			    		this.Logout()
-			    		layer.alert("您的登录状态已失效,需要重新登录",()=>{
-			    			this.$router.push("/login")
-			    		})
-			    	}
-			      fun&&fun(state)
-			    }else{
-			      layer.msgWarn(json.StrCode);
-			    }
-			  })
+			_fetch(ajax).then((json)=>{
+		    if (json.Code===1||json.Code===0) {
+		    	needVerify=0
+		    	var Data = this.SetFilter(json.BackData);
+		    	console.log(Data);
+		      this.SaveInitData(Data)
+		    	if (json.Code===0&&state.UserName) {
+		    		this.Logout()
+		    		layer.alert("您的登录状态已失效,需要重新登录",()=>{
+		    			this.$router.push("/login")
+		    		})
+		    	}
+		      fun&&fun(state)
+		    }else{
+		      layer.msgWarn(json.StrCode);
+		    }
 			})
 		},
 		GetInitData(arr,fun){
@@ -264,6 +253,12 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach((to, from) => {
 	layer.closeAll()
+	needVerify++
+	console.log(needVerify);
+	if (needVerify>5) {
+		needVerify=0
+		interviewApp.GetInitData(["CloudUrl"])
+	}
 });
 
 //全局过滤器
@@ -289,5 +284,36 @@ document.addEventListener('copy', function(e){
 		layer.msgWarn('已将内容复制到剪切板')
 	}
 })
+
+
+window._fetch=function (data){
+	var str=[],k;
+	for(var i in data){
+		k=data[i];
+		if (typeof(k)==="object") {
+			k=JSON.stringify(k);
+		}
+		str.push(i+'='+k);
+	}
+	data = str.join('&');
+	return new Promise(function(resolve, reject){
+		fetch('/tools/ssc_ajax.ashx', {
+			credentials:'same-origin',
+		  method: 'POST',
+		  headers: {
+		    "Content-Type": "application/x-www-form-urlencoded"
+		  },
+		  body: data
+		}).then((res)=>{
+			res.json().then(json=>{
+				if (json.Code==0) {
+					console.log(interviewApp.$routes);
+				}
+				resolve(json)
+			})
+		})
+	})
+}
+
 
 module.exports = {interviewApp,store,state};
