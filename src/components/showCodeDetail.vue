@@ -17,7 +17,7 @@
     <div class="creatAccountDetail">
     <h3 class="line"><em>返点详情</em><a @click="close"><i class="iconfont"></i></a></h3>
     <ul class="infoshow">
-        <li v-for="n in dlist"><span>时时彩 </span><input type="number" value="7" disabled></li>
+        <li v-for="n in dlist"><span>{{n.Name}}</span><input type="number" :value="n.Num" disabled></li>
     </ul>
     </div>
   </div>

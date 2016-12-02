@@ -55,21 +55,15 @@
       }
     },
     created(){
-      _fetch({Action:"GetCard",UserId:this.$route.query.ID}).then((res)=>{
-        if(res.ok){
-          res.json().then((data)=>{
-            if(data.Code===1){
-              this.initData=data.BackData
-              if (data.BackData.LotteryType) {
-                let typeArr=data.BackData.LotteryType.split(",")
-                this.sort_lotteryType(typeArr)
-              }
-            }else {
-              layer.msgWarn(data.StrCode)
-            }
-          })
+      _fetch({Action:"GetCard",UserId:this.$route.query.ID}).then((data)=>{
+        if(data.Code===1){
+          this.initData=data.BackData
+          if (data.BackData.LotteryType) {
+            let typeArr=data.BackData.LotteryType.split(",")
+            this.sort_lotteryType(typeArr)
+          }
         }else {
-          layer.msgWarn("request error")
+          layer.msgWarn(data.StrCode)
         }
       })
     }
