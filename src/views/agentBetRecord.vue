@@ -26,17 +26,17 @@
               <template v-else>
                   <template v-if="x==1">
                   <div class="" v-for="item in temp_ajax[ajaxData.UserName][x-1].res_data">
-                    <a class="active">
+                    <a class="active" @click="jump(item.ID,item.UserId)">
                       <div><p>{{item.UserName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span></div>
                       <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
-                      <strong class="" v-else>{{item.State}}</strong>
+                      <strong :class="item.State==='等待开奖'?'OutMoney':''" v-else>{{item.State}}</strong>
                     </a>
                     <div class="hr1px"></div>
                   </div>
                 </template>
                 <template v-if="x==2">
                 <div class="" v-for="item in temp_ajax[ajaxData.UserName][x-1].res_data">
-                  <a class="active">
+                  <a class="active" @click="jump(item.ID,item.UserId)">
                     <div>
                       <p>{{item.UserName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span></div>
                     <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
@@ -47,7 +47,7 @@
                 </template>
                 <template v-if="x==3">
                 <div class="" v-for="item in temp_ajax[ajaxData.UserName][x-1].res_data">
-                  <a class="active">
+                  <a class="active" @click="jump(item.ID,item.UserId)">
                     <div>
                       <p>{{item.UserName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span></div>
                     <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
@@ -58,11 +58,10 @@
                 </template>
                 <template v-if="x==4">
                 <div class="" v-for="item in temp_ajax[ajaxData.UserName][x-1].res_data">
-                  <a class="active">
+                  <a class="active" @click="jump(item.ID,item.UserId)">
                     <div>
                       <p>{{item.UserName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span></div>
-                    <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
-                    <strong class="" v-else>{{item.State}}</strong>
+                     <strong class="OutMoney">{{item.State}}</strong>
                   </a>
                   <div class="hr1px"></div>
                 </div>
@@ -151,35 +150,32 @@ export default {
         State: this.temp_ajax[this.ajaxData.UserName][i].State,
         Index: this.temp_ajax[this.ajaxData.UserName][i].Index
       })
-      _fetch(this.ajaxData).then((res) => {
-        if (res.ok) {
-          res.json().then((data) => {
-            if (data.Code === 1) {
-              this.temp_ajax = Object.assign({}, this.temp_ajax, this.create_obj(this.temp_ajax, this.ajaxData.UserName, i, 0))
-              if (this.temp_ajax[this.ajaxData.UserName][i].Index === 0) {
-                this.temp_ajax[this.ajaxData.UserName][i].DataCount = data.DataCount
-                this.temp_ajax[this.ajaxData.UserName][i].data_totalpage = Math.ceil(data.DataCount / this.ajaxData.DataNum)
-              }
-              this.temp_ajax[this.ajaxData.UserName][i].Index++
-                if (this.temp_ajax[this.ajaxData.UserName][i].Index >= this.temp_ajax[this.ajaxData.UserName][i].data_totalpage) {
-                  this.temp_ajax = Object.assign({}, this.temp_ajax, this.create_obj(this.temp_ajax, this.ajaxData.UserName, i, 2))
-                }
-              this.temp_ajax[this.ajaxData.UserName][i].res_data = this.temp_ajax[this.ajaxData.UserName][i].res_data.concat(data.BackData)
-            } else if (data.Code === 2) {
-              delete this.temp_ajax[this.ajaxData.UserName]
-              layer.msgWarn(data.StrCode)
-              this.UnFindUser[this.ajaxData.UserName] = data.StrCode
-              this.searchWord = this.oldName || ''
-              this.ajaxData.UserName = this.oldName
-            } else {
-              layer.msgWarn(data.StrCode)
+      _fetch(this.ajaxData).then((data) => {
+        if (data.Code === 1) {
+          this.temp_ajax = Object.assign({}, this.temp_ajax, this.create_obj(this.temp_ajax, this.ajaxData.UserName, i, 0))
+          if (this.temp_ajax[this.ajaxData.UserName][i].Index === 0) {
+            this.temp_ajax[this.ajaxData.UserName][i].DataCount = data.DataCount
+            this.temp_ajax[this.ajaxData.UserName][i].data_totalpage = Math.ceil(data.DataCount / this.ajaxData.DataNum)
+          }
+          this.temp_ajax[this.ajaxData.UserName][i].Index++
+            if (this.temp_ajax[this.ajaxData.UserName][i].Index >= this.temp_ajax[this.ajaxData.UserName][i].data_totalpage) {
+              this.temp_ajax = Object.assign({}, this.temp_ajax, this.create_obj(this.temp_ajax, this.ajaxData.UserName, i, 2))
             }
-          })
+          this.temp_ajax[this.ajaxData.UserName][i].res_data = this.temp_ajax[this.ajaxData.UserName][i].res_data.concat(data.BackData)
+        } else if (data.Code === 2) {
+          delete this.temp_ajax[this.ajaxData.UserName]
+          layer.msgWarn(data.StrCode)
+          this.UnFindUser[this.ajaxData.UserName] = data.StrCode
+          this.searchWord = this.oldName || ''
+          this.ajaxData.UserName = this.oldName
         } else {
-          layer.msgWarn("request error")
+          layer.msgWarn(data.StrCode)
         }
       })
     },
+    jump:function(id,userid){
+      this.$router.push({path:'betDetail',query:{ID:id,UID:userid}})
+    }
   },
   created() {
     this.search()

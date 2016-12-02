@@ -1,5 +1,6 @@
 //志明负责的路由
 const letter = resolve => require(['../views/letter'], resolve)
+const letterDetail = resolve => require(['../views/letterDetail'], resolve)
 const Notice = resolve => require(['../views/Notice'], resolve)
 const NoticeDetail = resolve => require(['../views/NoticeDetail'], resolve)
 const playerHome = resolve => require(['../views/playerHome'], resolve)
@@ -38,7 +39,7 @@ var routes = [{
   },
   component: letter
 }, {
-  path: "/NoticeDetail/:ID",
+  path: "/NoticeDetail",
   name: "公告",
   meta: {
     title: "公告",
@@ -46,6 +47,15 @@ var routes = [{
     link: "/Notice"
   },
   component: NoticeDetail
+},{
+  path: "/letterDetail",
+  name: "站内信",
+  meta: {
+    title: "站内信",
+    user: 1,
+    link: "/letter"
+  },
+  component: letterDetail
 }, {
   path: "/playerHome",
   name: "玩家详情",

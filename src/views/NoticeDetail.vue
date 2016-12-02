@@ -19,18 +19,12 @@
     created() {
       _fetch({
         Action: "GetNoticeContent",
-        ID: this.$route.params.ID
-      }).then((res) => {
-        if (res.ok) {
-          res.json().then((data) => {
-            if (data.Code === 1) {
-              this.initData = data.BackData[0];
-            } else {
-              layer.msgWarn("return error");
-            }
-          })
+        ID: this.$route.query.ID
+      }).then((data) => {
+        if (data.Code === 1) {
+          this.initData = data.BackData[0];
         } else {
-          layer.msgWarn("request error");
+          layer.msgWarn("return error");
         }
       })
     }

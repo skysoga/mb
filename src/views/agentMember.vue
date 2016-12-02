@@ -105,52 +105,40 @@ export default {
         userid: this.ajaxData.UserId,
         index: this.ajaxData.Index
       }
-      _fetch(this.ajaxData).then((res) => {
-        if (res.ok) {
-          res.json().then((json) => {
-            if (json.Code === 1) {
-              this.cant_scroll = 0
-              if (this.ajaxData.Index === 0) {
-                this.data_count = json.DataCount
-                this.data_totalpage = Math.ceil(json.DataCount / this.ajaxData.DataNum)
-              }
-              this.ajaxData.Index++
-                if (this.ajaxData.Index >= this.data_totalpage) {
-                  this.cant_scroll = 2
-                }
-              this.save_dataM(temp_ajax, json.BackData)
-              this.check_data()
-            } else {
-              layer.msgWarn(json.StrCode)
+      _fetch(this.ajaxData).then((json) => {
+        if (json.Code === 1) {
+          this.cant_scroll = 0
+          if (this.ajaxData.Index === 0) {
+            this.data_count = json.DataCount
+            this.data_totalpage = Math.ceil(json.DataCount / this.ajaxData.DataNum)
+          }
+          this.ajaxData.Index++
+            if (this.ajaxData.Index >= this.data_totalpage) {
+              this.cant_scroll = 2
             }
-          })
+          this.save_dataM(temp_ajax, json.BackData)
+          this.check_data()
         } else {
-          layer.msgWarn("request error")
+          layer.msgWarn(json.StrCode)
         }
       })
     },
     checkRebate: function(ajaxData_obj) {
-      _fetch(ajaxData_obj).then((res) => {
-        if (res.ok) {
-          res.json().then((json) => {
-            if (json.Code === 1) {
-              let code_arr = []
-              let StrCode = json.StrCode
-              code_arr = StrCode.split("@")
-              for (var i = 0; i < code_arr.length; i++) {
-                let temp_obj = code_arr[i].split("#")
-                this.code_obj[i] = {
-                  lotteryname: temp_obj[0],
-                  value: temp_obj[1]
-                }
-              }
-              this.isShow = true //弹窗显示
-            } else {
-              layer.msgWarn(data.StrCode)
+      _fetch(ajaxData_obj).then((json) => {
+        if (json.Code === 1) {
+          let code_arr = []
+          let StrCode = json.StrCode
+          code_arr = StrCode.split("@")
+          for (var i = 0; i < code_arr.length; i++) {
+            let temp_obj = code_arr[i].split("#")
+            this.code_obj[i] = {
+              lotteryname: temp_obj[0],
+              value: temp_obj[1]
             }
-          })
+          }
+          this.isShow = true //弹窗显示
         } else {
-          layer.msgWarn("check rebate error")
+          layer.msgWarn(data.StrCode)
         }
       })
     },
