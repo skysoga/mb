@@ -248,12 +248,15 @@ var routes = [{
   component: manageIcode,
   children:[{
       path:'',
+      name:'代理',
       component:AgentCode
     },{
       path:'AgentCode',
+      name:'代理',
       component:AgentCode
     },{
       path:'memberCode',
+      name:'玩家',
       component:memberCode
     }]
 },{

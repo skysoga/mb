@@ -145,7 +145,7 @@ export default {
     scroll: function() {
       if (this.cant_scroll) {
         return
-      } else if (this.$refs.div[0].scrollTop + 50 > this.document_height - this.window_height) {
+      } else if (this.$refs.div.scrollTop + 50 > this.document_height - this.window_height) {
         this.getData()
       }
     },
