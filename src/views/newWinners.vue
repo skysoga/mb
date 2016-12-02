@@ -40,17 +40,11 @@
 				_fetch({
 					action,
 					datanum
-				}).then((res) => {
-					if (res.ok) {
-						res.json().then((data) => {
-							if (data.Code === 1) {
-								cb(data);
-							} else {
-								console.log("return error");
-							}
-						})
+				}).then((data) => {
+					if (data.Code === 1) {
+						cb(data);
 					} else {
-						console.log("request error");
+						console.log("return error");
 					}
 				})
 			},
