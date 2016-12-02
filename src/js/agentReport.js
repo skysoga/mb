@@ -42,6 +42,10 @@ export default {
             }else{
               layer.msgWarn(json.StrCode)
               this.isDataNot=true
+              this.UserName=""
+              this.DateType=0
+              this.DateName="今天"
+              this.renderData(0,0)
             }
         })
     },

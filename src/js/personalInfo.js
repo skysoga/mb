@@ -73,7 +73,6 @@ export default {
             layer.msgWarn(data.StrCode)
             this.$root.AjaxGetInitData([Obj[key]],function(data){
               vm.$root.SaveInitData(data.BackData)
-              console.log(key+'更新成功')
             })
           }else{
             layer.msgWarn(data.StrCode)
