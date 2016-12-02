@@ -139,14 +139,19 @@
 				getters: {
 				},
 				mutations:{
+					//变更弹出框
 					lt_changeBox:(state, boxName)=>{state.box = boxName},
+					//变更玩法
 					lt_changeMode:(state, mode)=>{state.mode = mode},
+					//变更彩种
 					lt_changeLottery:(state, lotteryObj)=>{
 						state.lottery = lotteryObj
 					},
+					//变更配置（进入各具体彩种页时，设置）
 					lt_initConfig:(state, config)=>{state.config = config}
 				},
 				actions: {
+					//变更彩种
 					lt_changeLottery:({commit,rootState}, code)=>{
 						commit('lt_changeLottery', rootState.LotteryList[code])
 					}
