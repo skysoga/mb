@@ -59,5 +59,9 @@ module.exports = {
   tpl:{
   	noData:["<div class='fullPageMsg'><div class='fullPageIcon iconfont'>&#xe63c;</div><p>','</p></div>"]
   },
-  _FomatConfig: Object.freeze(_FomatConfig)
+  _FomatConfig: Object.freeze(_FomatConfig),
+  DAY_TIME: 24 * 60 * 60 * 1000,
+  HOUR_TIME: 60 * 60 * 1000, 
+  MINUTE_TIME: 60 * 1000,
+  SECOND_TIME: 1000, 
 }

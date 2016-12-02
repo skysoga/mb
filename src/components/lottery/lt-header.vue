@@ -43,7 +43,10 @@
 	  </div>
 
     <div class="lotterySort">
-	    <div @click = "toggleTypeSelect"><em>{{lotteryName}}</em><i class="iconfont">&#xe61e;</i></div>
+	    <div @click = "toggleTypeSelect">
+		    <em>{{lotteryName}}</em><i class="iconfont">&#xe61e;</i>
+	    </div>
+
       <div class="lotteryList fix" v-if = "ifShowTypeSelect">
       	<a v-for = "item in LotteryList"
       		 @click = "changeLottery(item.LotteryCode)">
@@ -57,7 +60,7 @@
 <script>
 	import {mapState} from 'vuex'
 	export default {
-		props:['ltype'],			// 'ssc','11x5'
+		props:['ltype', 'lcode'],			// 'ssc','11x5'
 		created(){
 			this.pageConfig = {
 				'ssc':{
@@ -81,10 +84,10 @@
 					})
 				}
 			})
+
 			var defaultMode = this.pageConfig[this.ltype].defaultMode
-			console.log(defaultMode)
 			this.mode = this.config[defaultMode[0]][defaultMode[1]][0]					//title的默认值
-			this.LotteryName = this.LotteryList[0].LotteryName	//默认值
+			this.LotteryName = this.$store.state.LotteryList[this.lcode].LotteryName	//默认值
 		},
 		data () {
 			return {

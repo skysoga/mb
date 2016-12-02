@@ -1,14 +1,16 @@
 <template>
-	<router-view></router-view>
+	<keep-alive>
+		<router-view></router-view>
+	</keep-alive>
 </template>
 <script>
 	import lt_ssc from '../json/lt_ssc.json'
 	import {interviewApp as rootApp} from '../main.js'
 	export default{
 		beforeRouteEnter(to, from, next){
-			rootApp.GetInitData(['LotteryList','LotteryConfig'], state=>{
-				next()
-			})
+			//校验LotteryList， 和LotteryConfig
+			rootApp.GetInitData(['LotteryList','LotteryConfig'], state=>{})
+			next()
 		},
 		created(){
 			//留着11选5测试数据
@@ -154,12 +156,13 @@
 					//变更彩种
 					lt_changeLottery:({commit,rootState}, code)=>{
 						commit('lt_changeLottery', rootState.LotteryList[code])
+						this.$router.push(code)
 					}
 				}
 			}
 
 			let store = this.$store
 			store.state.lt || store.registerModule('lt', lt)
-		}
+		},
 	}
 </script>

@@ -1,7 +1,7 @@
 <template>
 <div class="DontSelect sscActive">
 	<!-- 头部： 玩法选择， 同类彩种选择-->
-	<lt-header ltype = "ssc"></lt-header>  
+	<lt-header ltype = "ssc" :lcode = "lcode"></lt-header>  
   
 
   <!-- 开奖号码 以及 投注截止时间  -->
@@ -79,7 +79,14 @@
 <script>
 	import lt_header from '../components/lottery/lt-header'
   import lt_ssc from '../json/lt_ssc.json'
+  import {DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME} from '../JSconfig'
 	export default {
+    beforeRouteEnter(to, from, next){
+      //获取返点--不阻塞
+      //获取开奖计划--阻塞
+      console.log(DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME)
+      next()
+    },
 		components:{
 			'lt-header': lt_header
 		},
@@ -87,6 +94,7 @@
       //从路径上获取彩种
       [,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
       this.$store.commit('lt_initConfig', lt_ssc)
+      console.log(this.lcode)
     },
 		data () {
 			return {

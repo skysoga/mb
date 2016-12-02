@@ -26,9 +26,7 @@ export default{
     getAjaxData(){
       this.cant_scroll = 1
       var vm=this
-      _fetch(this.arr).then(ref=>{
-        if (ref.ok) {
-        ref.json().then(json=>{
+      _fetch(this.arr).then(json=>{
           if(json.Code==1){
             if(json.BackData.length){
               vm.cant_scroll=0
@@ -45,10 +43,6 @@ export default{
           }else{
             layer.msgWarn(json.StrCode)
           }
-        })
-      }else{
-         layer.msgWarn("request error")
-      }
       })
     },
     scroll(){
