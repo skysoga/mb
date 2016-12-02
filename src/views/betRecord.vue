@@ -104,7 +104,6 @@ export default {
         res_data:[]
       }],
       msg:[null,layer.icon.load + "正在加载...","已显示7天内全部记录"],
-      document_scrollTop:0,
       document_height:0,
       window_height:0
     }

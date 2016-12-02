@@ -13,18 +13,18 @@
   <table class="ajaxContent col3Table col3TableCon" @touchend="scroll()">
     <template v-if="data_count===0">
           <div class='fullPageMsg' ><div class='fullPageIcon iconfont'>&#xe63c;</div><p>暂无记录</p></div>
-</template>
-        <template v-else>
-<tr class="active" :data-id="item.UserId" v-for="item in res_data" @click="look_agent(item.UserId,item.UserName,item.LowerCount)">
-  <td><ins style="color:#38f">{{item.UserName}}</ins></td>
-  <td>{{item.UserType}}</td>
-  <td>{{splitTime(item.LoginTime)}}</td>
-  <td style="color:red">{{item.LowerCount}}</td>
-</tr>
-<tr>
-  <td class="msg loadingMsg" v-html='msg[cant_scroll]' colspan="4"></td>
-</tr>
-</template>
+    </template>
+    <template v-else>
+    <tr class="active" :data-id="item.UserId" v-for="item in res_data" @click="look_agent(item.UserId,item.UserName,item.LowerCount)">
+      <td><ins style="color:#38f">{{item.UserName}}</ins></td>
+      <td>{{item.UserType}}</td>
+      <td>{{splitTime(item.LoginTime)}}</td>
+      <td style="color:red">{{item.LowerCount}}</td>
+    </tr>
+    <tr>
+      <td class="msg loadingMsg" v-html='msg[cant_scroll]' colspan="4"></td>
+    </tr>
+    </template>
     </table>
     <bottom-box v-show = "BottomBoxShow" :list = "BottomBoxList"></bottom-box>
     <div class="showCodeDetail" v-if="isShow">
@@ -145,7 +145,7 @@ export default {
     scroll: function() {
       if (this.cant_scroll) {
         return
-      } else if (this.$refs.div[0].scrollTop + 50 > this.document_height - this.window_height) {
+      } else if (this.$refs.div.scrollTop + 50 > this.document_height - this.window_height) {
         this.getData()
       }
     },
