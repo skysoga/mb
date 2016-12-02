@@ -51,14 +51,13 @@ var routes = [
     path: '/lottery',
     name: '彩种',
     meta: {
-      link: '/index',
       user: true,
     },
     children:[
       {
         path: 'ssc/:code',
         name: '时时彩',
-        component: lottery_ssc
+        component: lottery_ssc,
       },
       {
         path: 'k3/:code',
