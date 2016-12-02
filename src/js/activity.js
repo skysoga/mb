@@ -1,9 +1,9 @@
 const {interviewApp}=require("../main.js");
 export default {
-  data:()=>{
+  data(){
     return{}
   },
-  created:function(){
+  created(){
      var arr = ["ActivityConfig"];
      interviewApp.GetInitData(arr)
    },

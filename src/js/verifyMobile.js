@@ -1,6 +1,6 @@
 const {interviewApp}=require("../main.js");
 export default {
-  data:()=>{
+  data(){
     return{
       Phone:"",
       SmsCode:"",

@@ -1,16 +1,19 @@
 import bottombox from '../components/bottom-box'
 import showCodeDetail from '../components/showCodeDetail'
 export default{
+  props:['UserType'],
   data(){
     return{
       arr:{
         Action:"GetInviteUrl",
-        UserType:0,
+        UserType:'',
         Index:0,
         DataNum:15
       },
       data_count:null,
       ArrList:[],
+      ArrNum:'',
+      ArrIndex:'',
       data_length:0,
       scroollDom:null,
       msg:[null,layer.icon.load + "正在加载...","已显示全部内容"],
@@ -19,13 +22,15 @@ export default{
       BottomBoxShow:false,
       BottomBoxList:["查看返点详情","删除邀请码"],
       DetailShow:false,
-      DetailList:[0,0]
+      DetailList:[],
+      caiName:{SSC:"时时彩",XYNC:"幸运农场",PK10:"北京PK10",KL8:"北京快乐8",PL35:"排列3/5",FC3D:"福彩3D",SYX5:"11选5",K3:"快3"}
     }
   },
   methods:{
     getAjaxData(){
       this.cant_scroll = 1
       var vm=this
+      this.arr.UserType=vm.UserType
       _fetch(this.arr).then(json=>{
           if(json.Code==1){
             if(json.BackData.length){
@@ -39,6 +44,8 @@ export default{
                   vm.cant_scroll = 2
                 }
               vm.arr.Index++
+            }else{
+              vm.data_count=0
             }
           }else{
             layer.msgWarn(json.StrCode)
@@ -53,23 +60,65 @@ export default{
       }
     },
     bottomBox(val,key){
+      var vm=this
       if(val){
-        console.log('删除邀请码')
+        layer.open({
+          content: '您确定要删除邀请码吗？',
+          className: "layerConfirm",
+          btn: ['确定', '取消'],
+          yes: function(index){
+            layer.close(index)
+            vm.delData(vm.ArrNum)
+          }
+        })
       }else{
-        console.log('查看返点详情')
         this.DetailShow=true
       }
       this.BottomBoxShow=false
-      console.log(val,key)
     },
     getList(index,num){
       this.BottomBoxShow=true
-      console.log(index,num)
+      this.ArrIndex=index
+      this.ArrNum=num
+      var vm=this
+      var Arr={Action:"GetRebateInfo",InviteCode:num};
+      _fetch(Arr).then(json=>{
+        if(json.Code==1){
+          vm.setString(json.StrCode)
+        }else{
+          layer.msgWarn(json.StrCode)
+        }
+      })
+    },
+    delData(Num){
+      var vm=this
+      var Arr={Action:"DelInviteUrl",InviteCode:Num};
+      _fetch(Arr).then(json=>{
+        if(json.Code==1){
+          this.ArrList.splice(vm.ArrIndex,1)
+          if(!this.ArrList)this.data_count=0;
+        }else{
+          layer.msgWarn(json.StrCode)
+        }
+      })
+    },
+    setString(String){
+      var vm=this
+      var Arr=String.split('@')
+      var listArr=[]
+      for(var i=Arr.length-1;i>=0;i--){
+        var theObj={}
+        var Key=Arr[i].split('#')
+        theObj.Name=vm.caiName[Key[0]]
+        theObj.Num=Key[1]
+        listArr.push(theObj)
+      }
+      vm.DetailList=listArr
     }
   },
   mounted(){
     this.getAjaxData()
-    this.scroollDom = this.$refs.main
+    this.scroollDom = this.$parent.$refs.main
     this.doc_height = this.scroollDom.clientHeight
   },
   components:{
