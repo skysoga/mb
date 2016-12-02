@@ -318,7 +318,6 @@ window._fetch=function (data){
 window._fetchT=function (data){
   var str=[],k;
   for(var i in data){
-    console.log(data)
     k=data[i];
     if (typeof(k)==="object") {
       k=JSON.stringify(k);
