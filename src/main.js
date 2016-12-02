@@ -306,6 +306,7 @@ window._fetch=function (data){
 		  body: data
 		}).then((res)=>{
 			res.json().then(json=>{
+        console.log(json)
 				if (json.Code==0) {
 					console.log(interviewApp.$routes);
 				}
@@ -313,6 +314,36 @@ window._fetch=function (data){
 			})
 		})
 	})
+}
+// 获取图形码接口专用
+window._fetchT=function (data){
+  var str=[],k;
+  for(var i in data){
+    k=data[i];
+    if (typeof(k)==="object") {
+      k=JSON.stringify(k);
+    }
+    str.push(i+'='+k);
+  }
+  data = str.join('&');
+  return new Promise(function(resolve, reject){
+    fetch('/tools/ssc_ajax.ashx', {
+      credentials:'same-origin',
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: data
+    }).then((res)=>{
+      console.log(res)
+      res.text().then(text=>{
+        if (text.Code==0) {
+          console.log(interviewApp.$routes);
+        }
+        resolve(text)
+      })
+    })
+  })
 }
 
 
