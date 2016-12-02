@@ -50,13 +50,13 @@
         <tr>
           <td>开户人姓名</td>
           <td>
-            <input type="text" v-va:RealName tag="开户人姓名" v-model="RealName" value="" placeholder="请输入银行卡的姓名">
+            <input type="text" v-va:RealName tag="开户人姓名" v-model.trim="RealName" value="" placeholder="请输入银行卡的姓名">
           </td>
         </tr>
         <tr>
           <td>银行卡号</td>
           <td>
-            <input type="tel" v-va:BankNum tag="银行卡号" v-model="BankNum" value="" placeholder="请输入银行卡的卡号">
+            <input type="tel" v-va:BankNum tag="银行卡号" v-model.trim="BankNum" value="" placeholder="请输入银行卡的卡号">
           </td>
         </tr>
         <tr>
@@ -68,7 +68,7 @@
         <tr>
           <td>安全密码</td>
           <td>
-            <input type="password" v-va:SafePassword="[{reg:/^\d{6}$/}]" v-model="SafePassword" tag="安全密码"  placeholder="请输入您的安全密码">
+            <input type="password" v-va:SafePassword="[{reg:/^\d{6}$/}]" v-model.trim="SafePassword" tag="安全密码"  placeholder="请输入您的安全密码">
           </td>
         </tr>
         <tr></tr>

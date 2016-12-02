@@ -4,11 +4,11 @@
       <tbody>
         <tr>
           <td>登录密码</td>
-          <td><input class="input" type="password" v-model="Password" placeholder="请输入登录密码" /></td>
+          <td><input class="input" type="password" v-model.trim="Password" placeholder="请输入登录密码" /></td>
         </tr>
         <tr>
           <td>确认密码</td>
-          <td><input class="input" type="password" v-model="checkPassword" placeholder="请再次输入密码" /></td>
+          <td><input class="input" type="password" v-model.trim="checkPassword" placeholder="请再次输入密码" /></td>
         </tr>
         <tr></tr>
       </tbody>

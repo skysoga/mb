@@ -9,7 +9,7 @@
         <tr>
           <td>输入验证码</td>
           <td>
-            <input class="input" type="email" v-model="MailCode" placeholder="请输入验证码" />
+            <input class="input" type="email" v-model.trim="MailCode" placeholder="请输入验证码" />
             <div class="tableBTN">
               <span class="sendCode" @click="postMsg">{{reTime}}</span>
             </div>

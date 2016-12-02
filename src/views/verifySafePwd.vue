@@ -4,7 +4,7 @@
       <tbody>
         <tr>
           <td>原安全密码</td>
-          <td><input class="input" type="password" v-model="Password" placeholder="请输入当前所使用的密码" /></td>
+          <td><input class="input" type="password" v-model.trim="Password" placeholder="请输入当前所使用的密码" /></td>
         </tr>
         <tr></tr>
       </tbody>
