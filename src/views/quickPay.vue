@@ -128,15 +128,13 @@ export default {
 			nowAjax.ID = this.nowRender.Id
 			nowAjax.BankCode = this.nowRender.PayType
 
-			_fetch(nowAjax).then((res)=>{
-      	res.json().then((json) => {
-      		this.Money = ''
-      		if(json.Code === 1){
-						layer.msgWarn(json.StrCode);      			
-      		}else{
-      			layer.msgWarn(json.StrCode);
-      		}
-      	})
+			_fetch(nowAjax).then((json)=>{
+    		this.Money = ''
+    		if(json.Code === 1){
+					layer.msgWarn(json.StrCode);      			
+    		}else{
+    			layer.msgWarn(json.StrCode);
+    		}
       })
 		},
 

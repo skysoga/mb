@@ -13,7 +13,7 @@
         </tr>
         <tr>
           <td>答案</td>
-          <td><input class="input" type="text" v-model="answer1" placeholder="请输入答案" /></td>
+          <td><input class="input" type="text" v-model.trim="answer1" placeholder="请输入答案" /></td>
         </tr>
         <tr></tr>
       </tbody>
@@ -31,7 +31,7 @@
         </tr>
         <tr>
           <td>答案</td>
-          <td><input class="input" type="text" v-model="answer2" placeholder="请输入答案" /></td>
+          <td><input class="input" type="text" v-model.trim="answer2" placeholder="请输入答案" /></td>
         </tr>
         <tr></tr>
       </tbody>
