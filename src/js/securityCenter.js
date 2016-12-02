@@ -35,15 +35,13 @@ export default {
     loginOut:function(){
       var ajax = {Action:"LogOut"}
       layer.msgWait("正在退出")
-      _fetch(ajax).then((res)=>{
-        res.json().then((json) => {
+      _fetch(ajax).then((json)=>{
           if (json.Code===1) {
             interviewApp.Logout()
             this.$router.push("/login")
           }else{
             layer.msgWarn(json.StrCode)
           }
-        })
       })
     },
     setNextUrl(){

@@ -29,8 +29,7 @@ export default {
           Arr.PointJson=Objrr
           Arr.UserType=this.UserType
           Arr.Remark="未设置"
-      _fetch(Arr).then(ref=>{
-        ref.json().then(json=>{
+      _fetch(Arr).then(json=>{
           if(json.Code==1){
             layer.open({
               shadeClose: false,
@@ -51,7 +50,6 @@ export default {
           }else{
             layer.msgWarn(json.StrCode)
           }
-        })
       })
     }
    }

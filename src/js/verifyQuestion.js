@@ -65,8 +65,7 @@ export default {
       ajax.QuestionID1=this.question1
       ajax.QuestionID2=this.question2
       layer.msgWait("正在提交")
-      _fetch(ajax).then((res)=>{
-        res.json().then((json) => {
+      _fetch(ajax).then((json)=>{
           if(json.Code===1) {
             layer.msgWarn(json.StrCode);
             var url=vm.nextUrl
@@ -75,7 +74,6 @@ export default {
           }else{
             layer.msgWarn(json.StrCode);
           }
-        })
       })
     },
     doOne(){

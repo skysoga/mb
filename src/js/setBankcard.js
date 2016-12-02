@@ -31,27 +31,27 @@ export default {
             }
     }
   },
-  created(){
-    var Qort=Number(this.$route.query.id)
-    this.Qort=Qort||'add'
-    var vm=this
+  beforeRouteEnter(to,from,next){
+    var Qort=Number(to.query.id)
+    Qort=Qort||'add'
     if(Qort){
       var Trr={Action:"GetCardDetail",BankCardID:Qort}
-      _fetch(Trr).then(ref=>{
-        ref.json().then(json=>{
-          var son=json.BackData
-          if(json.Code==1){
-            vm.Address_P=son.Address_P
-            vm.BankID=vm.getBandId(son.BankName)
-            vm.BankNum=son.CardNum
-            vm.RealName=son.RealName
-            vm.$nextTick(function(){
-              vm.Address_C=son.Address_C
-            })
-          }else{
-            vm.$router.push('/manageBankcard')
-          }
-        })
+      _fetch(Trr).then(json=>{
+          next(vm=>{
+            var son=json.BackData
+            if(json.Code==1){
+              vm.Address_P=son.Address_P
+              vm.BankID=vm.getBandId(son.BankName)
+              vm.BankNum=son.CardNum
+              vm.RealName=son.RealName
+              vm.Qort=Qort
+              vm.$nextTick(function(){
+                vm.Address_C=son.Address_C
+              })
+            }else{
+              vm.$router.push('/manageBankcard')
+            }
+          })
       })
     }
   },
@@ -78,8 +78,7 @@ export default {
       arr.BankNum=this.BankNum
       arr.SafePassword=this.SafePassword
       arr.Qort=this.Qort
-      _fetch(arr).then(ref=>{
-        ref.json().then(json=>{
+      _fetch(arr).then(json=>{
           if(json.Code==1){
             layer.msgWarn(json.StrCode)
             vm.$root.AjaxGetInitData(['UserBankCardList'],function(){
@@ -88,7 +87,6 @@ export default {
           }else{
             layer.msgWarn(json.StrCode)
           }
-        })
       })
     },
     getBandId(name){

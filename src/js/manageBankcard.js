@@ -26,11 +26,13 @@ export default {
       }
     }
   },
-  created(){
+  beforeRouteEnter(to,from,next){
     var arr = ["UserBankCardList"];
-     this.$root.GetInitData(arr,state=>{
-      this.CardList=state.UserBankCardList
-      this.setTip()
+     interviewApp.GetInitData(arr,state=>{
+      next(vm=>{
+        vm.CardList=state.UserBankCardList
+        vm.setTip()
+      })
      })
   },
   methods:{
