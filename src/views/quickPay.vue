@@ -5,7 +5,7 @@
     <table>
       <tr>
         <td>充值金额</td>
-        <td><input  type="tel" tag = "充值金额" v-va:Money v-model = 'Money'  placeholder="请输入充值金额"><label v-va-test:Money.ha> 发送验证码</label></td>
+        <td><input  type="tel" tag = "充值金额" v-va:Money v-model = 'Money'  placeholder="请输入充值金额"></td>
       </tr>
       <tr></tr>
     </table>
@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import {interviewApp}  from "../main.js"
 export default {
 	beforeRouteEnter(to, from, next){
 		var title = {
@@ -35,11 +34,11 @@ export default {
 
     to.meta.title = title[method]   //标题
 		//获取数据
-		interviewApp.AjaxGetInitData([rechargeWay], state=>{
+		RootApp.AjaxGetInitData([rechargeWay], state=>{
 			//如果数据不对要跳到普通充值去
 			var PayType = state[rechargeWay][0].PayType
 			if(PayType === '一般'){
-				interviewApp.$router.push('/normalPay?method=' + method)
+				RootApp.$router.push('/normalPay?method=' + method)
 			}
 
 			next(vm=>{
@@ -86,7 +85,7 @@ export default {
 		}
 
 		//获取数据
-		interviewApp.AjaxGetInitData(['PayLimit'], state=>{
+		RootApp.AjaxGetInitData(['PayLimit'], state=>{
 			//设置金额的限制
 			this.vaConfig ||(this.vaConfig = {})
 			this.vaConfig['Money'] || (this.vaConfig['Money'] = [])
@@ -137,10 +136,6 @@ export default {
     		}
       })
 		},
-    ha(){
-      console.log(this.vaConfig)
-      console.log(this.vaVal)
-    }
 
 	}
 }
