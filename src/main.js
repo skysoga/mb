@@ -222,7 +222,6 @@ const interviewApp = new Vue({
 
 				if (f) {
 					if (!f.Reg.test(v)) {
-						console.log(v);
 						return [k,v?f.ErrMsg:(f.Name+"不能为空")];
 					}
 				}
