@@ -1,4 +1,3 @@
-const {interviewApp}=require("../main.js")
 export default {
   data:()=>{
     return{
@@ -17,7 +16,7 @@ export default {
       'UserMail',
       'UserLastLoginInfo',
       'UserFirstCardInfo'];
-      interviewApp.GetInitData(arr, state=>{
+      RootApp.GetInitData(arr, state=>{
       next(vm=>{
         vm.StarNum=1;
         vm.StarNum+=state.UserHasSafePwd?1:0
@@ -37,7 +36,7 @@ export default {
       layer.msgWait("正在退出")
       _fetch(ajax).then((json)=>{
           if (json.Code===1) {
-            interviewApp.Logout()
+            RootApp.Logout()
             this.$router.push("/login")
           }else{
             layer.msgWarn(json.StrCode)

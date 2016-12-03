@@ -1,4 +1,3 @@
-const {interviewApp}=require("../main.js");
 export default {
   data:()=>{
     return{
@@ -7,7 +6,7 @@ export default {
   },
   beforeRouteEnter:(to, from, next) => {
     var arr = ["UserBalance"];
-    interviewApp.GetInitData(arr, state=>{
+    RootApp.GetInitData(arr, state=>{
       next()
     })
   },
@@ -21,7 +20,7 @@ export default {
       },500)
     },
     getBalance:function(){
-      interviewApp.AjaxGetInitData(['UserBalance'])
+      RootApp.AjaxGetInitData(['UserBalance'])
     }
   }
 }

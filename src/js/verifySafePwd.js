@@ -1,4 +1,3 @@
-const {interviewApp}=require("../main.js");
 export default {
   data:()=>{
     return{
@@ -11,7 +10,6 @@ export default {
     if(F){
       to.meta.link="/resetWay?Q=ResetPwd"
     }
-    console.log(to)
     next()
   },
   created(){
