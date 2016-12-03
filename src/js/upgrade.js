@@ -40,8 +40,7 @@ export default {
       if(this.UnClick)return;
       var dataArr={Action:"GetReward",Qort:"晋级奖励"}
       layer.msgWait("正在处理")
-      _fetch(dataArr).then(ref=>{
-        ref.json().then(json=>{
+      _fetch(dataArr).then(json=>{
           if(json.Code==1){
             this.UnClick=true
             this.ClickMsg="已领取"
@@ -49,7 +48,6 @@ export default {
           }else{
             layer.msgWarn(json.StrCode)
           }
-        })
       })
     }
   }

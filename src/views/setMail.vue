@@ -4,12 +4,12 @@
       <tbody>
         <tr>
           <td>邮箱</td>
-          <td><input class="input" type="email" v-model="Mail" placeholder="请输入您要绑定的邮箱地址" value=""/></td>
+          <td><input class="input" type="email" v-model.trim="Mail" placeholder="请输入您要绑定的邮箱地址" value=""/></td>
         </tr>
         <tr>
           <td>输入验证码</td>
           <td>
-            <input class="input" type="email" v-model="MailCode" placeholder="输入验证码" />
+            <input class="input" type="email" v-model.trim="MailCode" placeholder="输入验证码" />
             <div class="tableBTN">
               <span class="sendCode" @click="postMsg">{{reTime}}</span>
             </div>

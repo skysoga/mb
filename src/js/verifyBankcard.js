@@ -13,15 +13,13 @@ export default {
           arr.BankNum=this.BankNum
           arr.RealName=this.RealName
           layer.msgWait("正在提交")
-          _fetch(arr).then(res=>{
-            res.json().then(json=>{
+          _fetch(arr).then(json=>{
               if(json.Code==1){
                 layer.msgWarn(json.StrCode)
                 vm.$router.push('/setBankcard')
               }else{
                 layer.msgWarn(json.StrCode)
               }
-            })
           })
     }
   }

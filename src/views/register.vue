@@ -82,10 +82,8 @@ export default {
 	methods:{
 		//刷新验证码
 		refreshYzm () {
-			_fetch({Action:'GetImageCode'}).then((res)=>{
-				res.text().then((text)=>{
-					this.YzmSrc = 'data:image/png;base64,R0lGODlhPAAWAPcAAAAAAAAAMwAAZgAAmQAAzAAA/wArAAArMwArZgArmQArzAAr/wBVAABVMwBVZgBVmQBVzABV/wCAAACAMwCAZgCAmQCAzACA/wCqAACqMwCqZgCqmQCqzACq/wDVAADVMwDVZgDVmQDVzADV/wD/AAD/MwD/ZgD/mQD/zAD//zMAADMAMzMAZjMAmTMAzDMA/zMrADMrMzMrZjMrmTMrzDMr/zNVADNVMzNVZjNVmTNVzDNV/zOAADOAMzOAZjOAmTOAzDOA/zOqADOqMzOqZjOqmTOqzDOq/zPVADPVMzPVZjPVmTPVzDPV/zP/ADP/MzP/ZjP/mTP/zDP//2YAAGYAM2YAZmYAmWYAzGYA/2YrAGYrM2YrZmYrmWYrzGYr/2ZVAGZVM2ZVZmZVmWZVzGZV/2aAAGaAM2aAZmaAmWaAzGaA/2aqAGaqM2aqZmaqmWaqzGaq/2bVAGbVM2bVZmbVmWbVzGbV/2b/AGb/M2b/Zmb/mWb/zGb//5kAAJkAM5kAZpkAmZkAzJkA/5krAJkrM5krZpkrmZkrzJkr/5lVAJlVM5lVZplVmZlVzJlV/5mAAJmAM5mAZpmAmZmAzJmA/5mqAJmqM5mqZpmqmZmqzJmq/5nVAJnVM5nVZpnVmZnVzJnV/5n/AJn/M5n/Zpn/mZn/zJn//8wAAMwAM8wAZswAmcwAzMwA/8wrAMwrM8wrZswrmcwrzMwr/8xVAMxVM8xVZsxVmcxVzMxV/8yAAMyAM8yAZsyAmcyAzMyA/8yqAMyqM8yqZsyqmcyqzMyq/8zVAMzVM8zVZszVmczVzMzV/8z/AMz/M8z/Zsz/mcz/zMz///8AAP8AM/8AZv8Amf8AzP8A//8rAP8rM/8rZv8rmf8rzP8r//9VAP9VM/9VZv9Vmf9VzP9V//+AAP+AM/+AZv+Amf+AzP+A//+qAP+qM/+qZv+qmf+qzP+q///VAP/VM//VZv/Vmf/VzP/V////AP//M///Zv//mf//zP///wAAAAAAAAAAAAAAACH5BAEAAPwALAAAAAA8ABYAAAj' + text;
-				})
+			_fetchT({Action:'GetImageCode'}).then((text)=>{
+				this.YzmSrc = 'data:image/png;base64,R0lGODlhPAAWAPcAAAAAAAAAMwAAZgAAmQAAzAAA/wArAAArMwArZgArmQArzAAr/wBVAABVMwBVZgBVmQBVzABV/wCAAACAMwCAZgCAmQCAzACA/wCqAACqMwCqZgCqmQCqzACq/wDVAADVMwDVZgDVmQDVzADV/wD/AAD/MwD/ZgD/mQD/zAD//zMAADMAMzMAZjMAmTMAzDMA/zMrADMrMzMrZjMrmTMrzDMr/zNVADNVMzNVZjNVmTNVzDNV/zOAADOAMzOAZjOAmTOAzDOA/zOqADOqMzOqZjOqmTOqzDOq/zPVADPVMzPVZjPVmTPVzDPV/zP/ADP/MzP/ZjP/mTP/zDP//2YAAGYAM2YAZmYAmWYAzGYA/2YrAGYrM2YrZmYrmWYrzGYr/2ZVAGZVM2ZVZmZVmWZVzGZV/2aAAGaAM2aAZmaAmWaAzGaA/2aqAGaqM2aqZmaqmWaqzGaq/2bVAGbVM2bVZmbVmWbVzGbV/2b/AGb/M2b/Zmb/mWb/zGb//5kAAJkAM5kAZpkAmZkAzJkA/5krAJkrM5krZpkrmZkrzJkr/5lVAJlVM5lVZplVmZlVzJlV/5mAAJmAM5mAZpmAmZmAzJmA/5mqAJmqM5mqZpmqmZmqzJmq/5nVAJnVM5nVZpnVmZnVzJnV/5n/AJn/M5n/Zpn/mZn/zJn//8wAAMwAM8wAZswAmcwAzMwA/8wrAMwrM8wrZswrmcwrzMwr/8xVAMxVM8xVZsxVmcxVzMxV/8yAAMyAM8yAZsyAmcyAzMyA/8yqAMyqM8yqZsyqmcyqzMyq/8zVAMzVM8zVZszVmczVzMzV/8z/AMz/M8z/Zsz/mcz/zMz///8AAP8AM/8AZv8Amf8AzP8A//8rAP8rM/8rZv8rmf8rzP8r//9VAP9VM/9VZv9Vmf9VzP9V//+AAP+AM/+AZv+Amf+AzP+A//+qAP+qM/+qZv+qmf+qzP+q///VAP/VM//VZv/Vmf/VzP/V////AP//M///Zv//mf//zP///wAAAAAAAAAAAAAAACH5BAEAAPwALAAAAAA8ABYAAAj' + text;
 			})
 		},
 		register () {
@@ -114,53 +112,44 @@ export default {
       ajax.Action="Register";
 
       var that = this      
-      _fetch(ajax).then((res)=>{
-        res.json().then((json) => {
-        	console.log(json)
-          if(json.Code===1) {
-           layer.open({
-              shadeClose: false,
-              className: "layerConfirm",
-              content: json.StrCode + '，是否立即登录?',
-              title: "温馨提示",
-              btn: ["登录", '取消'],
-              yes: function yes(index) {
-                layer.close(index);
-                var ajax1 = ajax;
-                ajax1.Action="Login";
-                _fetch(ajax1).then((res)=>{
-                	res.json().then((json) => {
-                		if(json.Code === 1){
-
-                			//此处放置清空缓存的东东
-                      // lStorage.clearlocalStorage(lStorage.Arr.UserCache);
-                      // lStorage.clearlocalStorage(lStorage.Arr.VerifyUser);
-
-                      sessionStorage.clear();
-                      that.$root.Logout()
-                      that.$router.push('/login')
-                		}else{
-                			layer.msgWarn(json.StrCode);
-                		}
-                	})
-                })
-              },
-              no: function no() {
-								that.UserName= ''
-								that.Password= ''
-								that.checkPassword= ''
-								that.ImgCode= ''
-              }
-            });
-          }else{
-            if(json.Code === -2){
-              localStorage.removeItem('InvitationCode');
-              that.YqmReadOnly = false;
+      _fetch(ajax).then((json)=>{
+      	console.log(json)
+        if(json.Code===1) {
+         layer.open({
+            shadeClose: false,
+            className: "layerConfirm",
+            content: json.StrCode + '，是否立即登录?',
+            title: "温馨提示",
+            btn: ["登录", '取消'],
+            yes: function yes(index) {
+              layer.close(index);
+              var ajax1 = ajax;
+              ajax1.Action="Login";
+              _fetch(ajax1).then((json)=>{
+            		if(json.Code === 1){
+                  sessionStorage.clear();
+                  that.$root.Logout()
+                  that.$router.push('/login')
+            		}else{
+            			layer.msgWarn(json.StrCode);
+            		}
+            	})
+            },
+            no: function no() {
+							that.UserName= ''
+							that.Password= ''
+							that.checkPassword= ''
+							that.ImgCode= ''
             }
-            layer.msgWarn(json.StrCode);
-            that.refreshYzm()
+          });
+        }else{
+          if(json.Code === -2){
+            localStorage.removeItem('InvitationCode');
+            that.YqmReadOnly = false;
           }
-        })
+          layer.msgWarn(json.StrCode);
+          that.refreshYzm()
+        }
       })
 		}
 	},

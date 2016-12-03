@@ -1,37 +1,40 @@
 <template>
 	<header class="sscHeader fix">
-    <a href="/" class="iconfont"></a>
+    <router-link to="/index" class="iconfont back"></router-link>
     <div class="playSort">
       <p>玩
         <br>法</p>
-        <span >
-	        <em  @click = "toggleSelectBox">{{page.tag}}</em>
-	        <i @click = "toggleSelectBox" class="iconfont">&#xe61e;</i>
 
-	        <div v-if = "ifShowBox">
+        <span>
+        	<div @click = "toggleModeSelect">
+		        <em>{{mode.tag}}</em>
+		        <i class="iconfont">&#xe61e;</i>
+					</div>
+	        <div v-if = "ifShowModeSelect">
 	          <div class="playSortMore">
 	            <div class="playSortMoreCon">
 								
 								<ul class="betFilter fix">
 									<li v-for = "(groupItem,group) in config" 
 										  @click = "changeGroup(groupItem)"
-										  :class = "group === page.group ? 'curr': ''">
+										  :class = "group === mode.group ? 'curr': ''">
 										{{group}}
 									</li>
 								</ul>
 								
 								<ul class="betFilterAnd">
-									<li v-for = "(subGroup, subGroupName) in config[page.group]">
+									<li v-for = "(subGroup, subGroupName) in config[mode.group]">
 										<span>{{subGroupName}}</span>
 										<div class="fix">
-											<a v-for = "mode in subGroup" 
-													:class = "mode.mode === page.mode? 'curr': ''"
-													@click = "changeMode(mode)">
-												{{mode.name}}
+											<a v-for = "modeItem in subGroup" 
+													:class = "modeItem.mode === mode.mode? 'curr': ''"
+													@click = "changeMode(modeItem)">
+												{{modeItem.name}}
 											</a>
 	                  </div>
 	                </li>
 								</ul>
+
 	            </div>
 	          </div>
 	      	</div>
@@ -40,12 +43,15 @@
 	  </div>
 
     <div class="lotterySort">
-	    <em>江苏</em><i class="iconfont">&#xe61e;</i>
-      <div class="lotteryList fix">
-	      <a>重庆时时彩</a>
-	      <a>新疆时时彩</a>
-	      <a>天津时时彩</a>
-	      <a>大发时时彩</a>
+	    <div @click = "toggleTypeSelect">
+		    <em>{{lotteryName}}</em><i class="iconfont">&#xe61e;</i>
+	    </div>
+
+      <div class="lotteryList fix" v-if = "ifShowTypeSelect">
+      	<a v-for = "item in LotteryList"
+      		 @click = "changeLottery(item.LotteryCode)">
+      	  {{item.LotteryName}}
+    	  </a>
       </div>
     </div>
   </header>
@@ -54,15 +60,46 @@
 <script>
 	import {mapState} from 'vuex'
 	export default {
+		props:['ltype', 'lcode'],			// 'ssc','11x5'
+		created(){
+			this.pageConfig = {
+				'ssc':{
+					typeName:'时时彩',
+					defaultMode:['五星', '直选']
+				},
+				'11x5':{
+					typeName:'11选5',
+					defaultMode:['选一', '前三一码不定位']
+				}
+			}
+
+			var LotteryConfig = this.$store.state.LotteryConfig
+			LotteryConfig.forEach(item=>{
+				//这个地方“时时彩应该是个变量”
+				if(item.LotteryClassName === this.pageConfig[this.ltype].typeName){
+					this.LotteryList = item.LotteryList.map(code=>{
+						var el = this.$store.state.LotteryList[code]
+						el.LotteryCode = code
+						return el
+					})
+				}
+			})
+
+			var defaultMode = this.pageConfig[this.ltype].defaultMode
+			this.mode = this.config[defaultMode[0]][defaultMode[1]][0]					//title的默认值
+			this.LotteryName = this.$store.state.LotteryList[this.lcode].LotteryName	//默认值
+		},
 		data () {
 			return {
-				page:{
-					name: '复式',
-					mode: 'H11',
-					group: '五星',
-					subGroup: '直选',
-					tag: '五星直选复式',
+				mode:{
+					name: '',	   //如：复式
+					mode: '',		 //如：H11
+					group: '',	 //如：五星
+					subGroup: '',//如：直选
+					tag: '',		 //如：五星直选复式
 				},
+				LotteryList: [],
+				LotteryName: '',
 			}
 		},
 		methods:{
@@ -71,28 +108,51 @@
 					var subGroupItem = groupItem[subGroup]
 					subGroupItem.forEach(modeItem=>{
 						if(modeItem.mode.indexOf('11') > -1 || modeItem.mode === 'I91'){
-							this.page = modeItem
-							this.$store.commit('lt_changeMode', this.page)
+							this.mode = modeItem
+							this.$store.commit('lt_changeMode', this.mode)
 						}
 					})
 				}
 			},
-			changeMode(mode){ 
-				this.page = mode
-				this.$store.commit('lt_changeMode', this.page)
+			changeMode(modeItem){ 
+				this.mode = modeItem
+				this.$store.commit('lt_changeMode', this.mode)
+				this.$store.commit('lt_changeBox', '')
 			},
-			toggleSelectBox(){
-				if(this.$store.state.lt.box === 'selectMode'){
-					this.$store.commit('lt_changeBox', '')
-				}else{
-					this.$store.commit('lt_changeBox', 'selectMode')
-				}
+			changeLottery(code){
+				this.LotteryList.forEach(item=>{
+					if(item.LotteryCode === code){
+						this.LotteryName = item.LotteryName
+					}
+				})
+				this.$store.dispatch('lt_changeLottery', code)
+				this.$store.commit('lt_changeBox', '')	
+			},
+			toggleModeSelect(){
+				this.$store.state.lt.box === 'modeSelect' ?
+					 this.$store.commit('lt_changeBox', '') : 
+						 this.$store.commit('lt_changeBox', 'modeSelect')
+			},
+			toggleTypeSelect(){
+				this.$store.state.lt.box === 'typeSelect' ?
+					 this.$store.commit('lt_changeBox', '') : 
+						 this.$store.commit('lt_changeBox', 'typeSelect')
 			}
 		},
 		computed: mapState({
 			config: state=>state.lt.config,
-			ifShowBox (){
-				return this.$store.state.lt.box === 'selectMode'
+			ifShowModeSelect (){
+				return this.$store.state.lt.box === 'modeSelect'
+			},
+			ifShowTypeSelect (){
+				return this.$store.state.lt.box === 'typeSelect'
+			},
+			lotteryName(){
+				var removeName = {
+					'ssc':'时时彩',
+					'11x5': '11选5'
+				}
+				return this.LotteryName.replace(removeName[this.ltype], '')
 			}
 		})
 	}

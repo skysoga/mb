@@ -289,17 +289,15 @@ export default{
 			  nowAjax.BankCode = this.BankCode
 			}
 
-			_fetch(nowAjax).then((res)=>{
-      	res.json().then((json) => {
-      		this.PayUser = ''
-      		this.Money = ''
-      		if(json.Code === 1){
-						layer.msgWarn(json.StrCode);      			
-      		}else{
-      			layer.msgWarn(json.StrCode);
-      		}
-      	})
-      })
+			_fetch(nowAjax).then((json)=>{
+    		this.PayUser = ''
+    		this.Money = ''
+    		if(json.Code === 1){
+					layer.msgWarn(json.StrCode);      			
+    		}else{
+    			layer.msgWarn(json.StrCode);
+    		}
+    	})
 		},
 
 	}

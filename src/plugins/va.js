@@ -23,7 +23,7 @@ function check(v, conditions){
 		//非空
 		nonvoid: (v, bool)=>{
 			if(bool){
-				return v ? 0 : ['nonvoid'];
+				return v.trim() ? 0 : ['nonvoid'];
 			}else{
 				return 0;
 			}

@@ -13,18 +13,18 @@
   <table class="ajaxContent col3Table col3TableCon" @touchend="scroll()">
     <template v-if="data_count===0">
           <div class='fullPageMsg' ><div class='fullPageIcon iconfont'>&#xe63c;</div><p>暂无记录</p></div>
-</template>
-        <template v-else>
-<tr class="active" :data-id="item.UserId" v-for="item in res_data" @click="look_agent(item.UserId,item.UserName,item.LowerCount)">
-  <td><ins style="color:#38f">{{item.UserName}}</ins></td>
-  <td>{{item.UserType}}</td>
-  <td>{{splitTime(item.LoginTime)}}</td>
-  <td style="color:red">{{item.LowerCount}}</td>
-</tr>
-<tr>
-  <td class="msg loadingMsg" v-html='msg[cant_scroll]' colspan="4"></td>
-</tr>
-</template>
+    </template>
+    <template v-else>
+    <tr class="active" :data-id="item.UserId" v-for="item in res_data" @click="look_agent(item.UserId,item.UserName,item.LowerCount)">
+      <td><ins style="color:#38f">{{item.UserName}}</ins></td>
+      <td>{{item.UserType}}</td>
+      <td>{{splitTime(item.LoginTime)}}</td>
+      <td style="color:red">{{item.LowerCount}}</td>
+    </tr>
+    <tr>
+      <td class="msg loadingMsg" v-html='msg[cant_scroll]' colspan="4"></td>
+    </tr>
+    </template>
     </table>
     <bottom-box v-show = "BottomBoxShow" :list = "BottomBoxList"></bottom-box>
     <div class="showCodeDetail" v-if="isShow">
@@ -83,15 +83,21 @@ export default {
         } else {
           this.res_data = this.res_data.concat(result.save_data)
         }
+        this.data_count=result.data_count
+        this.cant_scroll=result.cant_scroll
+        this.ajaxData.Index=result.Index
       } else {
         result = "" //占位
+        this.res_data=[] //清空页面
         this.getData()
       }
     },
-    save_dataM: function(temp, saveData) {
+    save_dataM: function(temp, saveData,count,scroll_state) {
       this.data_storage[temp.userid] = {
         save_data: saveData,
-        index: temp.index
+        index: temp.index,
+        data_count:count,
+        cant_scroll:scroll_state
       }
     },
     reset: function() {
@@ -105,59 +111,47 @@ export default {
         userid: this.ajaxData.UserId,
         index: this.ajaxData.Index
       }
-      _fetch(this.ajaxData).then((res) => {
-        if (res.ok) {
-          res.json().then((json) => {
-            if (json.Code === 1) {
-              this.cant_scroll = 0
-              if (this.ajaxData.Index === 0) {
-                this.data_count = json.DataCount
-                this.data_totalpage = Math.ceil(json.DataCount / this.ajaxData.DataNum)
-              }
-              this.ajaxData.Index++
-                if (this.ajaxData.Index >= this.data_totalpage) {
-                  this.cant_scroll = 2
-                }
-              this.save_dataM(temp_ajax, json.BackData)
-              this.check_data()
-            } else {
-              layer.msgWarn(json.StrCode)
+      _fetch(this.ajaxData).then((json) => {
+        if (json.Code === 1) {
+          this.cant_scroll = 0
+          if (this.ajaxData.Index === 0) {
+            this.data_count = json.DataCount
+            this.data_totalpage = Math.ceil(json.DataCount / this.ajaxData.DataNum)
+          }
+          this.ajaxData.Index++
+            if (this.ajaxData.Index >= this.data_totalpage) {
+              this.cant_scroll = 2
             }
-          })
+          this.save_dataM(temp_ajax, json.BackData,this.data_count,this.cant_scroll)
+          this.check_data()
         } else {
-          layer.msgWarn("request error")
+          layer.msgWarn(json.StrCode)
         }
       })
     },
     checkRebate: function(ajaxData_obj) {
-      _fetch(ajaxData_obj).then((res) => {
-        if (res.ok) {
-          res.json().then((json) => {
-            if (json.Code === 1) {
-              let code_arr = []
-              let StrCode = json.StrCode
-              code_arr = StrCode.split("@")
-              for (var i = 0; i < code_arr.length; i++) {
-                let temp_obj = code_arr[i].split("#")
-                this.code_obj[i] = {
-                  lotteryname: temp_obj[0],
-                  value: temp_obj[1]
-                }
-              }
-              this.isShow = true //弹窗显示
-            } else {
-              layer.msgWarn(data.StrCode)
+      _fetch(ajaxData_obj).then((json) => {
+        if (json.Code === 1) {
+          let code_arr = []
+          let StrCode = json.StrCode
+          code_arr = StrCode.split("@")
+          for (var i = 0; i < code_arr.length; i++) {
+            let temp_obj = code_arr[i].split("#")
+            this.code_obj[i] = {
+              lotteryname: temp_obj[0],
+              value: temp_obj[1]
             }
-          })
+          }
+          this.isShow = true //弹窗显示
         } else {
-          layer.msgWarn("check rebate error")
+          layer.msgWarn(data.StrCode)
         }
       })
     },
     scroll: function() {
       if (this.cant_scroll) {
         return
-      } else if (this.$refs.div[0].scrollTop + 50 > this.document_height - this.window_height) {
+      } else if (this.$refs.div.scrollTop + 50 > this.document_height - this.window_height) {
         this.getData()
       }
     },

@@ -1,6 +1,6 @@
 const {interviewApp,state}=require("../main.js");
 export default {
-  data:()=>{
+  data(){
     return{
       Content:'',
       Img:'',
@@ -12,7 +12,7 @@ export default {
         to.meta.title=name
         next()
   },
-  created:function(){
+  created(){
     var arr = ["ActivityConfig"];
     this.$root.GetInitData(arr)
     var xname=this.$route.query.name

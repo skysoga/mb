@@ -8,8 +8,7 @@ export default {
       DateType:"",
       Datalist:"",
       listNum:"",
-      //BottomBoxShow: false,
-      //BottomBoxList:['今天','昨天','本月','上月'],
+      isDataNot:true,
       NameObj:{BetMoney:"投注金额", Bonus:"中奖金额", ActivityMoney:"活动礼金", RebateMoney:"团队返点", ProfitMoney:"团队盈利", RechargeMoney:"充值金额", WithdrawMoney:"提现金额", FirstChargeNum:"首充人数", RegisterNum:"注册人数", BetNum:"投注人数", TeamNum:"下级人数", TeamBalance:"团队余额", AgentRebate:"代理返点", AgentWages:"代理工资", AgentDividends:"代理分红"}    }
   },
   created(){
@@ -25,25 +24,29 @@ export default {
       var ObjS=sessionStorage.getItem('agentReport'+Name+Type)
       if(ObjS){
         this.Datalist=JSON.parse(ObjS)
+        this.isDataNot=false
       }else{
         this.renderData(Type,Name)
       }
     },
     renderData(Type,Name){
         let RenData={Action:"GetAgencyHender",BetweenType:Type,UserName:Name}
-        layer.msgWait("正在加载")
-        _fetch(RenData).then(res=>{
-          res.json().then(json=>{
+        _fetch(RenData).then(json=>{
             var xarr=json.BackData
             if(json.Code==1){
+              layer.closeAll()
+              this.isDataNot=false
               sessionStorage.setItem('agentReport'+Name+Type,JSON.stringify(xarr))
-              layer.msgWarn("加载完成");
               this.Datalist=xarr
               this.listLong()
             }else{
               layer.msgWarn(json.StrCode)
+              this.isDataNot=true
+              this.UserName=""
+              this.DateType=0
+              this.DateName="今天"
+              this.renderData(0,0)
             }
-          })
         })
     },
     NameFun(key){

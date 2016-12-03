@@ -29,8 +29,7 @@ export default {
           Arr.PointJson=Objrr
           Arr.UserType=this.UserType
           Arr.Remark="未设置"
-      _fetch(Arr).then(ref=>{
-        ref.json().then(json=>{
+      _fetch(Arr).then(json=>{
           if(json.Code==1){
             layer.open({
               shadeClose: false,
@@ -40,7 +39,8 @@ export default {
               btn: ["确定", '取消'],
               yes:function(index){
                 layer.close(index)
-                vm.$root.$router.push('/manageIcode')
+                var msg=Arr.UserType==1?'AgentCode':'memberCode'
+                vm.$root.$router.push('/manageIcode/'+msg)
               },
               no:function(index){
                 layer.close(index)
@@ -51,7 +51,6 @@ export default {
           }else{
             layer.msgWarn(json.StrCode)
           }
-        })
       })
     }
    }

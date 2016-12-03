@@ -29,8 +29,7 @@ export default {
       }
       ajax.Qort="Set"
       layer.msgWait("正在提交")
-      _fetch(ajax).then((res)=>{
-        res.json().then((json) => {
+      _fetch(ajax).then((json)=>{
           if(json.Code===1) {
             layer.msgWarn(json.StrCode);
             $root.AjaxGetInitData(["UserMail"],function(){
@@ -39,7 +38,6 @@ export default {
           }else{
             layer.msgWarn(json.StrCode);
           }
-        })
       })
     },
     postMsg(){
@@ -68,8 +66,7 @@ export default {
       this.toMsg=false
       this.noDo=false
       layer.msgWait("正在发送")
-      _fetch(ajax).then((res)=>{
-        res.json().then((json) => {
+      _fetch(ajax).then((json)=>{
           if(json.Code===1) {
             vm.reTimex()
             layer.msg("我们已向您的邮箱发送了验证码！<br/>如未收到，请检查垃圾邮箱。");
@@ -78,7 +75,6 @@ export default {
             layer.msgWarn(json.StrCode);
             return
           }
-        })
       })
     },
     reTimex(){

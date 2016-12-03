@@ -21,8 +21,7 @@ export default {
     upHeadImg(){
       var arr={Action:'UpdateUserPhoto',UserPhoto:this.DefaultPhoto}
       layer.msgWait("正在提交")
-      _fetch(arr).then(res=>{
-        res.json().then(data=>{
+      _fetch(arr).then(data=>{
           if(data.Code==1){
            this.$root.AjaxGetInitData(['UserPhoto'],()=>{
               layer.msgWarn(data.StrCode)
@@ -31,7 +30,6 @@ export default {
           }else{
             layer.msgWarn(data.StrCode)
           }
-        })
       })
     },
     $vanow(name){
@@ -70,18 +68,15 @@ export default {
       }
       ajaxData[key]=value
       layer.msgWait("正在提交")
-      _fetch(ajaxData).then(res=>{
-        res.json().then(data=>{
+      _fetch(ajaxData).then(data=>{
           if(data.Code===1){
             layer.msgWarn(data.StrCode)
             this.$root.AjaxGetInitData([Obj[key]],function(data){
               vm.$root.SaveInitData(data.BackData)
-              console.log(key+'更新成功')
             })
           }else{
             layer.msgWarn(data.StrCode)
           }
-        })
       })
     }
   },

@@ -51,8 +51,7 @@ export default {
       ajax.Question2=this.getTitle(this.question2)
       ajax.Question3=this.getTitle(this.question3)
       layer.msgWait("正在提交")
-      _fetch(ajax).then((res)=>{
-        res.json().then((json) => {
+      _fetch(ajax).then((json)=>{
           if(json.Code===1) {
             layer.msgWarn(json.StrCode)
             $root.AjaxGetInitData(["UserSafeQuestions"],function(){
@@ -61,7 +60,6 @@ export default {
           }else{
             layer.msgWarn(json.StrCode)
           }
-        })
       })
     },
     OddGet(){
