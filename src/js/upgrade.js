@@ -21,7 +21,7 @@ export default {
     this.isBouns=state.UserUpGradeBonus
     var thState=-1
     if(this.isBouns){
-      thState=this.isBouns.State||'不可领取'
+      thState=this.isBouns.State
     }
     this.UnClick=thState!=0?true:false
     this.ClickMsg=thState==0?'立即领取':thState==1?'已领取':'不可领取'

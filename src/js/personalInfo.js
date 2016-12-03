@@ -1,4 +1,3 @@
-const {interviewApp,state}=require("../main.js");
 import HeadImgbox from '../components/HeadImg-box'
 export default {
   data:()=>{
