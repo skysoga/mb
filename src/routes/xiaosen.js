@@ -25,7 +25,6 @@ const setBankcard =resolve => require(['../views/setBankcard'],resolve)//设置�
 const verifyBankcard =resolve => require(['../views/verifyBankcard'],resolve)//验证银行卡
 const AgentCode =resolve => require(['../views/AgentCode'],resolve)//邀请码代理
 const memberCode =resolve => require(['../views/memberCode'],resolve)//邀请码玩家
-const demo =resolve => require(['../views/demo'],resolve)//调式用
 
 var routes = [{
   path: '/manageBankcard',
@@ -314,9 +313,5 @@ var routes = [{
     user:true
   },
   component: verifyBankcard
-},{
-  path:'/demo',
-  name:'demo',
-  component:demo
 }]
 module.exports = routes

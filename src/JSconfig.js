@@ -61,7 +61,8 @@ module.exports = {
   },
   _FomatConfig: Object.freeze(_FomatConfig),
   DAY_TIME: 24 * 60 * 60 * 1000,
-  HOUR_TIME: 60 * 60 * 1000, 
+  HOUR_TIME: 60 * 60 * 1000,
   MINUTE_TIME: 60 * 1000,
-  SECOND_TIME: 1000, 
+  SECOND_TIME: 1000,
+  GMT_DIF:new Date().getTimezoneOffset()*60*1000
 }
