@@ -1,8 +1,8 @@
 <template>
 <div class="DontSelect sscActive">
 	<!-- 头部： 玩法选择， 同类彩种选择-->
-	<lt-header ltype = "ssc" :lcode = "lcode"></lt-header>  
-  
+	<lt-header ltype = "ssc" :lcode = "lcode"></lt-header>
+
 
   <!-- 开奖号码 以及 投注截止时间  -->
   <div class="isLotteryCon fix">
@@ -84,7 +84,6 @@
     beforeRouteEnter(to, from, next){
       //获取返点--不阻塞
       //获取开奖计划--阻塞
-      console.log(DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME)
       next()
     },
 		components:{
@@ -94,7 +93,20 @@
       //从路径上获取彩种
       [,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
       this.$store.commit('lt_initConfig', lt_ssc)
-      console.log(this.lcode)
+    },
+    mounted(){
+      function getServerTime(fun) {
+        _fetch({Action: "GetServerTimeMillisecond"}).then((json)=>{
+          console.log(json)
+          console.log('jkk')
+        })
+        console.log('jkk')
+      }
+      _fetch({Action: "GetServerTimeMillisecond"}).then((json)=>{
+        console.log(json)
+        console.log('jkk')
+      })
+      getServerTime()
     },
 		data () {
 			return {

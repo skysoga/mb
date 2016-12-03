@@ -6,12 +6,17 @@
 <script>
 	import lt_ssc from '../json/lt_ssc.json'
 	import {interviewApp as rootApp} from '../main.js'
+	import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 	export default{
 		beforeRouteEnter(to, from, next){
 			//校验LotteryList， 和LotteryConfig
 			rootApp.GetInitData(['LotteryList','LotteryConfig'], state=>{})
+
 			next()
 		},
+		computed:mapState({
+			LotteryList: 'LotteryList'
+		}),
 		created(){
 			//留着11选5测试数据
 			const lt_11x5 = {
@@ -129,6 +134,7 @@
 						subGroup: '', //直选
 						tag: '',			//五星直选复式
 					},
+					//当前彩种的详情
 					lottery:{
 						LotteryIntro: '',	//全天120期
 						LotteryName: '',	//重庆时时彩
@@ -136,7 +142,12 @@
 						LotteryCode: ''		//1000
 					},
 					box:'',						//当前弹出框
-					config:{}					//在各种彩种页面
+					config:{},				//在各种彩种页面,
+
+					//期号计算相关
+					// LotteryPlan:[],		//当前彩种开奖计划
+					// SerTime: 0, 			//服务器时间 （本地时间-差值+）
+
 				},
 				getters: {
 				},
@@ -146,23 +157,22 @@
 					//变更玩法
 					lt_changeMode:(state, mode)=>{state.mode = mode},
 					//变更彩种
-					lt_changeLottery:(state, lotteryObj)=>{
-						state.lottery = lotteryObj
+					lt_changeLottery:(state, code)=>{
+						state.lottery = this.LotteryList[code]
+						this.$router.push(code)
 					},
 					//变更配置（进入各具体彩种页时，设置）
-					lt_initConfig:(state, config)=>{state.config = config}
+					lt_initConfig:(state, config)=>{state.config = config},
+
 				},
 				actions: {
-					//变更彩种
-					lt_changeLottery:({commit,rootState}, code)=>{
-						commit('lt_changeLottery', rootState.LotteryList[code])
-						this.$router.push(code)
-					}
+
 				}
 			}
 
 			let store = this.$store
 			store.state.lt || store.registerModule('lt', lt)
 		},
+
 	}
 </script>

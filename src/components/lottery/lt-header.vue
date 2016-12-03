@@ -13,20 +13,20 @@
 	        <div v-if = "ifShowModeSelect">
 	          <div class="playSortMore">
 	            <div class="playSortMoreCon">
-								
+
 								<ul class="betFilter fix">
-									<li v-for = "(groupItem,group) in config" 
+									<li v-for = "(groupItem,group) in config"
 										  @click = "changeGroup(groupItem)"
 										  :class = "group === mode.group ? 'curr': ''">
 										{{group}}
 									</li>
 								</ul>
-								
+
 								<ul class="betFilterAnd">
 									<li v-for = "(subGroup, subGroupName) in config[mode.group]">
 										<span>{{subGroupName}}</span>
 										<div class="fix">
-											<a v-for = "modeItem in subGroup" 
+											<a v-for = "modeItem in subGroup"
 													:class = "modeItem.mode === mode.mode? 'curr': ''"
 													@click = "changeMode(modeItem)">
 												{{modeItem.name}}
@@ -103,6 +103,7 @@
 			}
 		},
 		methods:{
+			//更改玩法群
 			changeGroup(groupItem){
 				for(var subGroup in groupItem){
 					var subGroupItem = groupItem[subGroup]
@@ -114,28 +115,32 @@
 					})
 				}
 			},
-			changeMode(modeItem){ 
+			//更改玩法
+			changeMode(modeItem){
 				this.mode = modeItem
 				this.$store.commit('lt_changeMode', this.mode)
 				this.$store.commit('lt_changeBox', '')
 			},
+			//更改彩种
 			changeLottery(code){
 				this.LotteryList.forEach(item=>{
 					if(item.LotteryCode === code){
 						this.LotteryName = item.LotteryName
 					}
 				})
-				this.$store.dispatch('lt_changeLottery', code)
-				this.$store.commit('lt_changeBox', '')	
+				this.$store.commit('lt_changeLottery', code)
+				this.$store.commit('lt_changeBox', '')
 			},
+			//玩法选择框，切换
 			toggleModeSelect(){
 				this.$store.state.lt.box === 'modeSelect' ?
-					 this.$store.commit('lt_changeBox', '') : 
+					 this.$store.commit('lt_changeBox', '') :
 						 this.$store.commit('lt_changeBox', 'modeSelect')
 			},
+			//彩种选择框，切换
 			toggleTypeSelect(){
 				this.$store.state.lt.box === 'typeSelect' ?
-					 this.$store.commit('lt_changeBox', '') : 
+					 this.$store.commit('lt_changeBox', '') :
 						 this.$store.commit('lt_changeBox', 'typeSelect')
 			}
 		},

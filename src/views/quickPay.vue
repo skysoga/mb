@@ -36,17 +36,17 @@ export default {
     to.meta.title = title[method]   //标题
 		//获取数据
 		interviewApp.AjaxGetInitData([rechargeWay], state=>{
+			//如果数据不对要跳到普通充值去
+			var PayType = state[rechargeWay][0].PayType
+			if(PayType === '一般'){
+				interviewApp.$router.push('/normalPay?method=' + method)
+			}
+
 			next(vm=>{
 				//如果没数据进维护页
 				if(!state[rechargeWay] || !state[rechargeWay][0]){
 					vm.underMaintain = true
 					return
-				}
-
-				//如果数据不对要跳到普通充值去
-				var PayType = state[rechargeWay][0].PayType
-				if(PayType === '一般'){
-					interviewApp.$router.push('/normalPay?method=' + method)
 				}
 				
 				vm.underMaintain = false
