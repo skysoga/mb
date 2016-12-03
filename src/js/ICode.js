@@ -13,6 +13,7 @@ export default{
       data_count:null,
       ArrList:[],
       ArrNum:'',
+      CodeInit:{},
       ArrIndex:'',
       data_length:0,
       scroollDom:null,
@@ -82,13 +83,18 @@ export default{
       this.ArrNum=num
       var vm=this
       var Arr={Action:"GetRebateInfo",InviteCode:num};
-      _fetch(Arr).then(json=>{
-        if(json.Code==1){
-          vm.setString(json.StrCode)
-        }else{
-          layer.msgWarn(json.StrCode)
-        }
-      })
+      if(vm.CodeInit[num]){
+        vm.setString(vm.CodeInit[num])
+      }else{
+        _fetch(Arr).then(json=>{
+          if(json.Code==1){
+            vm.setString(json.StrCode)
+            vm.CodeInit[num]=json.StrCode
+          }else{
+            layer.msgWarn(json.StrCode)
+          }
+        })
+      }
     },
     delData(Num){
       var vm=this
