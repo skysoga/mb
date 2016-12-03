@@ -83,15 +83,21 @@ export default {
         } else {
           this.res_data = this.res_data.concat(result.save_data)
         }
+        this.data_count=result.data_count
+        this.cant_scroll=result.cant_scroll
+        this.ajaxData.Index=result.Index
       } else {
         result = "" //占位
+        this.res_data=[] //清空页面
         this.getData()
       }
     },
-    save_dataM: function(temp, saveData) {
+    save_dataM: function(temp, saveData,count,scroll_state) {
       this.data_storage[temp.userid] = {
         save_data: saveData,
-        index: temp.index
+        index: temp.index,
+        data_count:count,
+        cant_scroll:scroll_state
       }
     },
     reset: function() {
@@ -116,7 +122,7 @@ export default {
             if (this.ajaxData.Index >= this.data_totalpage) {
               this.cant_scroll = 2
             }
-          this.save_dataM(temp_ajax, json.BackData)
+          this.save_dataM(temp_ajax, json.BackData,this.data_count,this.cant_scroll)
           this.check_data()
         } else {
           layer.msgWarn(json.StrCode)
