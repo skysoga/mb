@@ -1,4 +1,3 @@
-const {interviewApp}=require("../main.js");
 export default {
   data:()=>{
     return{
@@ -28,7 +27,7 @@ export default {
   },
   beforeRouteEnter(to,from,next){
     var arr = ["UserBankCardList"];
-     interviewApp.GetInitData(arr,state=>{
+     RootApp.GetInitData(arr,state=>{
       next(vm=>{
         vm.CardList=state.UserBankCardList
         vm.setTip()

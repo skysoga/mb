@@ -1,4 +1,3 @@
-const {interviewApp,state}=require("../main.js");
 export default {
   data:()=>{
     return{
@@ -16,9 +15,9 @@ export default {
     var arr = ["ActivityConfig","Login","GradeList","UserUpGradeBonus"];
     this.$root.GetInitData(arr)
     var xname='晋级奖励'
-    var dataArr=state.ActivityConfig
-    this.GradeList=state.GradeList
-    this.isBouns=state.UserUpGradeBonus
+    var dataArr=this.$store.state.ActivityConfig
+    this.GradeList=this.$store.state.GradeList
+    this.isBouns=this.$store.state.UserUpGradeBonus
     var thState=-1
     if(this.isBouns){
       thState=this.isBouns.State

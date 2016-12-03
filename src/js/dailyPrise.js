@@ -1,4 +1,3 @@
-const {interviewApp,state}=require("../main.js");
 export default {
   data:()=>{
     return{
@@ -23,8 +22,8 @@ export default {
     var arr = ["ActivityConfig","RewardData"]
     this.$root.GetInitData(arr)
     var xname='每日加奖'
-    var dataArr=state.ActivityConfig
-    this.RewardData=state.RewardData
+    var dataArr=this.$store.state.ActivityConfig
+    this.RewardData=this.$store.state.RewardData
     var thState=-1
     if(this.StateData){
       thState=this.StateData.State||'不可领取'

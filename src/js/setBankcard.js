@@ -1,4 +1,3 @@
-const {interviewApp}=require("../main.js");
 const CityJson=require("./CityJson.js")
 export default {
   data:()=>{
