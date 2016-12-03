@@ -50,7 +50,7 @@ var SiteArr=[ //需要校验更新版本的列表
   'NoticeData',
 ]
 var CacheArr = SiteArr.concat(UserArr)
-var state = require('./JSconfig.js')
+window.state = require('./JSconfig.js')
 ;(function(){
 	function getLocalDate(s){
 		s = localStorage.getItem(CacheArr[i]);
@@ -64,7 +64,7 @@ var state = require('./JSconfig.js')
   }
 })()
 
-const store = new Vuex.Store({
+window.store = new Vuex.Store({
   state,
   getters:{
   	PhotoPath:state=>state.constant.ImgHost+state.constant.PhotoPath,
@@ -104,7 +104,7 @@ const store = new Vuex.Store({
   }
 })
 
-const interviewApp = new Vue({
+window.RootApp = new Vue({
 	el: '#app',
 	store,
 	router,
@@ -257,7 +257,7 @@ router.afterEach((to, from) => {
 	console.log(needVerify);
 	if (needVerify>5) {
 		needVerify=0
-		interviewApp.GetInitData(["CloudUrl"])
+		RootApp.GetInitData(["CloudUrl"])
 	}
 });
 
@@ -307,13 +307,10 @@ window._fetch=function (data){
 		}).then((res)=>{
 			res.json().then(json=>{
 				if (json.Code==0) {
-					console.log(interviewApp.$routes);
+					console.log(RootApp.$routes);
 				}
 				resolve(json)
 			})
 		})
 	})
 }
-
-
-module.exports = {interviewApp,store,state};
