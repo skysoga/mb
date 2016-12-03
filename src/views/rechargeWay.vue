@@ -46,7 +46,6 @@
 </template>
 
 <script>
-import {interviewApp}  from "../main.js"
 export default {
 	data () {
 		return {
@@ -57,14 +56,14 @@ export default {
 		}
 	},
 	beforeRouteEnter(to,from,next){
-		interviewApp.AjaxGetInitData(['PayLimit','RechargeWayWeixin', 'RechargeWayAlipay','RechargeWayBank'], state=>{
+		RootApp.AjaxGetInitData(['PayLimit','RechargeWayWeixin', 'RechargeWayAlipay','RechargeWayBank'], state=>{
       next()
     })
 	},
 
   created () {
     let state = this.$store.state
-    this.wechatType = state.RechargeWayWeixin[0].PayType || '一般' 
+    this.wechatType = state.RechargeWayWeixin[0].PayType || '一般'
     this.aliType = state.RechargeWayAlipay[0].PayType || '一般'
     this.payLimit = Object.freeze(this.$store.getters.PayLimit)
   },

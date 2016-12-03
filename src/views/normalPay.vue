@@ -130,7 +130,6 @@
 </template>
 
 <script>
-import {interviewApp}  from "../main.js"
 export default{
 	beforeRouteEnter(to, from, next){
 		var title = {
@@ -143,12 +142,12 @@ export default{
 		var rechargeWay = 'RechargeWay' + method
     to.meta.title = title[method]   //标题
 
-    interviewApp.AjaxGetInitData([rechargeWay], state=>{
+    RootApp.AjaxGetInitData([rechargeWay], state=>{
 			if(shouldCheck.indexOf(method) > -1){
 				var PayType = state[rechargeWay][0].PayType
 				//假如充值方式为快捷充值了，就跳转至快捷充值
 				if(PayType !== '一般'){
-					interviewApp.$router.push('/quickPay?method=' + method)
+					RootApp.$router.push('/quickPay?method=' + method)
 				}
 			}
 
@@ -228,7 +227,7 @@ export default{
 		}
 
 		//获取数据
-		interviewApp.AjaxGetInitData(['PayLimit'], state=>{
+		RootApp.AjaxGetInitData(['PayLimit'], state=>{
 			//设置金额的限制
 			this.vaConfig ||(this.vaConfig = {})
 			this.vaConfig['Money'] || (this.vaConfig['Money'] = [])

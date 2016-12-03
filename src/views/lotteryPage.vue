@@ -5,40 +5,19 @@
 </template>
 <script>
 	import lt_ssc from '../json/lt_ssc.json'
-	import {interviewApp as rootApp} from '../main.js'
 	import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 	export default{
 		beforeRouteEnter(to, from, next){
 			//校验LotteryList， 和LotteryConfig-- 不阻塞，仅发起
-			rootApp.GetInitData(['LotteryList','LotteryConfig'], state=>{})
-			next()
-			// var SerTime = localStorage.getItem('SerTime')
-			// var getServerTime = (function(){
-			// 	var cantGetTime = 0
-			// 	return function(){
-			// 		_fetch({Action: "GetServerTimeMillisecond"}).then((json)=>{
-			// 			if(data.Code === 1) {
-			// 	        fun(Number(data.Data));
-			// 	    }else{
-			//         cantGetTime++;
-			//         if(cantGetTime > 4) {
-			//           layer.msgWarn("因无法同步服务器时间,您将无法投注,请检查网络情况")
-			//         }else{
-			//           getServerTime();
-			//         }
-			//       }
-			// 		})
-			// 	}
-			// })
-
-
-			// if(!SerTime){
-
-
-			// }else{
-			// 	next()
-			// }
-			// console.log(SerTime)
+			RootApp.GetInitData(['LotteryList','LotteryConfig'], state=>{})
+			var Difftime = localStorage.getItem('Difftime')
+			if(!Difftime){
+				console.log('没有')
+				RootApp.getServerTime(next)
+			}else{
+				console.log('有')
+				next()
+			}
 		},
 		computed:mapState({
 			LotteryList: 'LotteryList'

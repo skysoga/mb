@@ -5,6 +5,7 @@ import { mapState } from 'vuex'
 import App from './App'
 import routes from './routes/routes'
 import Va from './plugins/va'
+import {GMT_DIF} from './JSconfig'
 Vue.use(Va)
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -102,7 +103,13 @@ window.store = new Vuex.Store({
   			state[arr[i]]=null
   		}
   	},
-  }
+    setDifftime:(state, SerTime)=>{
+      var Difftime = new Date().getTime()- SerTime
+      state.Difftime = Difftime
+      localStorage.setItem('Difftime',Difftime)
+      console.log('获取了时间：'  + Difftime)
+    }
+  },
 })
 
 window.RootApp = new Vue({
@@ -110,11 +117,7 @@ window.RootApp = new Vue({
 	store,
 	router,
   created(){
-    // if (!localStorage.getItem('Difftime')) {
-    //     getServerTime(function(serTime){
-    //         localStorage.setItem('Difftime',new Date().getTime()-serTime+GMTdif);
-    //     });
-    // }
+    this.getServerTime();
   },
 	watch: {
 		$route(to,from){
@@ -247,7 +250,26 @@ window.RootApp = new Vue({
 				str.push(i+'='+k);
 			}
 			return str.join('&');
-		}
+		},
+    getServerTime: (function(){
+      var cantGetTime = 0
+      return function(fun){
+        _fetch({Action: "GetServerTimeMillisecond"}).then((json)=>{
+          if(json.Code === 1) {
+            var SerTime = json.Data
+            store.commit('setDifftime', SerTime)
+            fun && fun()
+          }else{
+            cantGetTime++;
+            if(cantGetTime > 4) {
+              layer.msgWarn("因无法同步服务器时间,您将无法投注,请检查网络情况")
+            }else{
+              getServerTime();
+            }
+          }
+        })
+      }
+    })()
 	},
 
 	render: h => h(App),
@@ -293,7 +315,9 @@ document.addEventListener('copy', function(e){
 })
 
 
-window._fetch=function (data){
+window._fetch = _fetch
+
+function _fetch(data){
 	var str=[],k;
 	for(var i in data){
 		k=data[i];
@@ -321,8 +345,9 @@ window._fetch=function (data){
 		})
 	})
 }
+
 // 获取图形码接口专用
-window._fetchT=function (data){
+window._fetchT=function _fetchT(data){
   var str=[],k;
   for(var i in data){
     k=data[i];
@@ -343,10 +368,10 @@ window._fetchT=function (data){
     }).then((res)=>{
       res.text().then(text=>{
         if (text.Code==0) {
-          console.log(interviewApp.$routes);
         }
         resolve(text)
       })
     })
   })
 }
+
