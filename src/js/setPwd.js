@@ -6,19 +6,9 @@ export default {
     }
   },
   methods:{
-    postBtn(){
+    $vaSubmit(){
       var $root=this.$root
-      var ajax = {
-        Password: this.Password,
-        checkPassword:this.checkPassword
-      }
-      var _FomatC=this.$store.state._FomatConfig
-      var err = $root.format(ajax, ['Password','checkPassword'], _FomatC);
-      if (err) {
-        layer.msgWarn(err[1]);
-        return;
-      }
-      delete ajax.checkPassword;
+      var ajax = {Password: this.Password}
       ajax.Action="SetPass"
       var F=sessionStorage.getItem('isFind')
       if(F){

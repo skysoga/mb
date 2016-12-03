@@ -9,7 +9,7 @@
         <tr>
           <td>输入验证码</td>
           <td>
-            <input class="input" type="email" v-model.trim="MailCode" placeholder="请输入验证码" />
+            <input class="input" type="email" v-va:MailCode tag="验证码" v-model.trim="MailCode" placeholder="请输入验证码" />
             <div class="tableBTN">
               <span class="sendCode" @click="postMsg">{{reTime}}</span>
             </div>
@@ -18,7 +18,7 @@
         <tr></tr>
       </tbody>
     </table>
-    <div class="loginBtn BTN"><a @click="postBtn">提交</a></div>
+    <div class="loginBtn BTN"><a v-va-check>提交</a></div>
   </div>
 </template>
 <script src="../js/verifyMail.js"></script>

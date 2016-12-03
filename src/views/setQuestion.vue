@@ -6,7 +6,7 @@
           <td>问题一</td>
           <td>
             <!-- <input class="input" placeholder="点击选择密保问题" /> -->
-            <select v-model="question1">
+            <select v-model="question1" v-va:question1.unique tag="问题一">
               <option value="">点击选择密保问题</option>
               <option :value="n.Question_Id" v-for="n in Questions">{{n.Question}}</option>
             </select>
@@ -26,7 +26,7 @@
           <td>问题二</td>
           <td>
             <!-- <input class="input" placeholder="点击选择密保问题" /> -->
-            <select v-model="question2">
+            <select v-model="question2" v-va:question2.unique  tag = "问题2">
               <option value="">点击选择密保问题</option>
               <option :value="n.Question_Id" v-for="n in Questions">{{n.Question}}</option>
             </select>
@@ -60,7 +60,7 @@
         <tr></tr>
       </tbody>
     </table>
-    <div class="loginBtn BTN"><a @click="postBtn">确定</a></div>
+    <div class="loginBtn BTN"><a v-va-check>确定</a></div>
   </div>
 </template>
 <script src="../js/setQuestion.js"></script>
