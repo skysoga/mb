@@ -5,7 +5,7 @@
     <table>
       <tr>
         <td>充值金额</td>
-        <td><input  type="tel" tag = "充值金额" v-va:Money v-model = 'Money'  placeholder="请输入充值金额"></td>
+        <td><input  type="tel" tag = "充值金额" v-va:Money v-model = 'Money'  placeholder="请输入充值金额"><label v-va-test:Money.ha> 发送验证码</label></td>
       </tr>
       <tr></tr>
     </table>
@@ -36,6 +36,12 @@ export default {
     to.meta.title = title[method]   //标题
 		//获取数据
 		interviewApp.AjaxGetInitData([rechargeWay], state=>{
+			//如果数据不对要跳到普通充值去
+			var PayType = state[rechargeWay][0].PayType
+			if(PayType === '一般'){
+				interviewApp.$router.push('/normalPay?method=' + method)
+			}
+
 			next(vm=>{
 				//如果没数据进维护页
 				if(!state[rechargeWay] || !state[rechargeWay][0]){
@@ -43,16 +49,10 @@ export default {
 					return
 				}
 
-				//如果数据不对要跳到普通充值去
-				var PayType = state[rechargeWay][0].PayType
-				if(PayType === '一般'){
-					interviewApp.$router.push('/normalPay?method=' + method)
-				}
-				
 				vm.underMaintain = false
 				vm.nowRender = state[rechargeWay][0]
 			})
-		})    
+		})
 	},
 	data () {
 		return {
@@ -122,7 +122,7 @@ export default {
 					BankCode:0
 				}
 			}
-			
+
 			var nowAjax = ajax[this.method]
 			nowAjax.Money = this.vaVal.Money
 			nowAjax.ID = this.nowRender.Id
@@ -131,12 +131,16 @@ export default {
 			_fetch(nowAjax).then((json)=>{
     		this.Money = ''
     		if(json.Code === 1){
-					layer.msgWarn(json.StrCode);      			
+					layer.msgWarn(json.StrCode);
     		}else{
     			layer.msgWarn(json.StrCode);
     		}
       })
 		},
+    ha(){
+      console.log(this.vaConfig)
+      console.log(this.vaVal)
+    }
 
 	}
 }

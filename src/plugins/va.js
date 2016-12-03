@@ -47,8 +47,8 @@ function check(v, conditions){
 	}
 
 	for(var i = 0;i < conditions.length;i++){
-		var condi = conditions[i], 
-				type = condi.type, 
+		var condi = conditions[i],
+				type = condi.type,
 				typeVal = condi.typeVal
 		res = cfg[type](v, typeVal)
 		// console.log(res, v, type,typeVal)
@@ -56,7 +56,7 @@ function check(v, conditions){
 		if(res){
 			res = condi.errMsg || res
 			break
-		}		
+		}
 	}
 
 	return res;
@@ -98,7 +98,7 @@ Array.prototype.uConcat = function(arr){
 		// console.log(i, comb[i])
 		var type = comb[i].type
 		if(unique[type]){
-			var index = unique[type].index 
+			var index = unique[type].index
 			unique[type] = comb[i]
 			unique[type].index = index;
 		}else{
@@ -140,15 +140,15 @@ va.install = function(Vue, options){
 			   ,name = binding.arg === 'EXTEND' ? el.getAttribute('name') : binding.arg
 			   ,tag = el.getAttribute('tag')
 			   ,baseCfg = []										//默认的校验规则						 --不用写，默认存在的规则（如非空）
-			   ,optionalConfig = []								//用户选择的配置成套         --与name相关			
+			   ,optionalConfig = []								//用户选择的配置成套         --与name相关
 			   ,customConfig = []									//用户自定义的规则（组件中） --bingding.value
 			   ,option = binding.modifiers
 			   ,regMsg = el.getAttribute('regMsg') || ''
-			
+
 			var eazyNew = (type, typeVal) =>{return new VaConfig(type, typeVal, '', name, tag)}
 			var regNew = (typeVal) =>{return new VaConfig('reg', typeVal, regMsg, name, tag)}    //正则的新建
 
-	  	el.className = 'va' + vm._uid 
+	  	el.className = 'va' + vm._uid
 	  	el.name = name
 	  	vm.vaConfig || (vm.vaConfig = {})
 	  	var NON_VOID = eazyNew('nonvoid', true)
@@ -170,14 +170,14 @@ va.install = function(Vue, options){
 					//如果允许为空的此时为空，不校验
 					if(value === '' && option.canNull){
 						vm.vaVal[name] = value
-						return 
-					}		
+						return
+					}
 
 					vm.vaResult[name] = check(value, conditions);
 					var _result = vm.vaResult[name]
 					if(_result){
 						//如果返回的是字符串，则为自定义报错； 如果是数组，则使用showErr 报错
-						typeof _result === 'string' ? layer.msgWarn(_result) : showErr(conditions[0].tag, _result)	
+						typeof _result === 'string' ? layer.msgWarn(_result) : showErr(conditions[0].tag, _result)
 						el.value = vm.vaVal[name] = ''
 						return
 					}
@@ -202,7 +202,7 @@ va.install = function(Vue, options){
 
 	  	//如果regList里有name对应的，直接就加进optionalConfig
 	  	if(regList[name]){
-	  		optionalConfig.push(regNew(regList[name])) 
+	  		optionalConfig.push(regNew(regList[name]))
 	  	}
 
 	  	//用户自定义的规则
@@ -224,7 +224,7 @@ va.install = function(Vue, options){
 	  },
 	})
 
-	Vue.directive('va-check', { 
+	Vue.directive('va-check', {
 		bind:function(el, binding, vnode){
 			var vm = vnode.context
 			el.addEventListener('click', function(){
@@ -236,13 +236,13 @@ va.install = function(Vue, options){
 					var dom = domList[i],
 							name = dom.name,
 							value = dom.value,
-							conditions = vm.vaConfig[name];
-					
+							conditions = vm.vaConfig[name]
+
 					var _result = check(value, conditions)
 					//如果返回不为0,则有报错
 					if(_result){
 						//如果返回的是字符串，则为自定义报错； 如果是数组，则使用showErr 报错
-						typeof _result === 'string' ? layer.msgWarn(_result) : showErr(conditions[0].tag, _result)	
+						typeof _result === 'string' ? layer.msgWarn(_result) : showErr(conditions[0].tag, _result)
 						return
 					}
 					vm.vaVal[name] = value
@@ -255,6 +255,34 @@ va.install = function(Vue, options){
 
 		}
 	})
+
+	Vue.directive('va-test',{
+		bind: function(el, binding, vnode){
+			var vm = vnode.context
+			el.addEventListener('click', function(){
+				vm.vaResult || (vm.vaResult = {})
+				vm.vaVal || (vm.vaVal = {})
+
+				var dom = document.getElementsByName(binding.arg)[0],
+						name = dom.name,
+					  value = dom.value,
+					  conditions = vm.vaConfig[name]
+
+				var _result = check(value, conditions)
+				//如果返回不为0，则有报错
+				if(_result){
+					//如果返回的是字符串，则为自定义报错； 如果是数组，则使用showErr 报错
+					typeof _result === 'string' ? layer.msgWarn(_result) : showErr(conditions[0].tag, _result)
+					return
+				}
+
+				vm.vaVal[name] = value
+				var callback = Object.keys(binding.modifiers)[0]
+				vm[callback]()
+			})
+		}
+	})
+
 
 	/**
    **  在实例的monuted周期使用 api设置自定义配置

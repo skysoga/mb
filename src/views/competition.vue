@@ -13,7 +13,7 @@
 </template>
 
 <script type="text/javascript">
-const {interviewApp}=require("../main.js");
+
   export default{
     data(){
       return {
@@ -27,7 +27,7 @@ const {interviewApp}=require("../main.js");
       }
     },
     created(){
-      interviewApp.GetInitData(["RankingList"],(data)=>{
+      RootApp.GetInitData(["RankingList"],(data)=>{
         this.init_bonus_data=data.RankingList
       })
     }

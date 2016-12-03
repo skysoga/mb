@@ -1,8 +1,7 @@
 <template>
 <div class="DontSelect sscActive">
 	<!-- 头部： 玩法选择， 同类彩种选择-->
-	<lt-header ltype = "ssc" :lcode = "lcode"></lt-header>  
-  
+	<lt-header ltype = "ssc" :lcode = "lcode"></lt-header>
 
   <!-- 开奖号码 以及 投注截止时间  -->
   <div class="isLotteryCon fix">
@@ -13,7 +12,7 @@
   	</div>
   	<div class="lotteryClose"><span>1021049期投注截止</span>
       <div class="waitNumber">
-        <em>00:49:36</em>
+        <em>{{day}}</em>
       </div>
     </div>
   </div>
@@ -61,18 +60,19 @@
           <p>每位选1个号码为1注</p>
         </div>
       </div>
-      <div class="betCart"><a><i class="iconfont">&#xe75a;<em>88</em></i>号码篮</a></div>
+      <div class="betCart" ><a><i class="iconfont">&#xe75a;<em>88</em></i>号码篮</a></div>
     </div>
     <div class="multipleCon">
       <div class="multipleConLine fix">
         <div class="multiple"><em class="noMore">-</em><input type="tel" value="1"><em>+</em>
         </div><span>倍</span>
         <div class="moneyUnit">
-          <a class="curr">元</a><a>角</a><a>分</a>
+          <a class="curr" >元</a><a>角</a><a>分</a>
         </div>
       </div>
     </div>
   </div>
+
 </div>
 </template>
 
@@ -83,8 +83,7 @@
 	export default {
     beforeRouteEnter(to, from, next){
       //获取返点--不阻塞
-      //获取开奖计划--阻塞
-      console.log(DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME)
+      //获取开奖计划--不阻塞
       next()
     },
 		components:{
@@ -94,14 +93,16 @@
       //从路径上获取彩种
       [,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
       this.$store.commit('lt_initConfig', lt_ssc)
-      console.log(this.lcode)
     },
 		data () {
 			return {
 				ltype:'', //彩种类型
-        lcode:''  //彩种code
+        lcode:'',  //彩种code
 			}
-		}
+		},
+    computed:{
+
+    },
 
 	}
 </script>

@@ -51,7 +51,7 @@
 	      4、请务必转账后再提交订单,否则无法及时查到您的款项！
 	    </div>
 	  </div>
-	
+
 	  <div class="main" v-if= "method === 'Weixin' && !underMaintain ">
 	    <input name="GetMoneyUser" type="hidden" value="" readonly="readonly">
 	    <table>
@@ -80,7 +80,7 @@
 	      5、请务必转账后再提交订单,否则无法及时查到您的款项！
 	    </div>
 	  </div>
-		
+
 		<div class="main" v-if= "method === 'Alipay' && !underMaintain ">
 	    <table>
 	      <tr>
@@ -144,6 +144,14 @@ export default{
     to.meta.title = title[method]   //标题
 
     interviewApp.AjaxGetInitData([rechargeWay], state=>{
+			if(shouldCheck.indexOf(method) > -1){
+				var PayType = state[rechargeWay][0].PayType
+				//假如充值方式为快捷充值了，就跳转至快捷充值
+				if(PayType !== '一般'){
+					interviewApp.$router.push('/quickPay?method=' + method)
+				}
+			}
+
     	next(vm=>{
 				//如果没数据进维护页
 				if(!state[rechargeWay] || !state[rechargeWay][0]){
@@ -152,14 +160,7 @@ export default{
 				}
 				console.log(state[rechargeWay])
 				//有快捷支付的要检验下，如果数据不对要跳到快捷充值去
-				if(shouldCheck.indexOf(method) > -1){
-					var PayType = state[rechargeWay][0].PayType
-					//假如充值方式为快捷充值了，就跳转至快捷充值
-					if(PayType !== '一般'){
-						interviewApp.$router.push('/quickPay?method=' + method)
-					}
-				}
-				
+
 				vm.underMaintain = false
 				//银行转账
 				if(method === 'Bank'){
@@ -179,12 +180,12 @@ export default{
 					}
 					vm.nowRender.CodeImg =  state.constant.ImgHost + xurl
 				}
-    		
+
     	})
 
 
 		})
-    
+
 	},
 	data () {
 		return {
@@ -194,7 +195,7 @@ export default{
 			Bank:[],									//银行的比较多，先拿个数组存起来
 			isSupportCopy: !!document.execCommand,			//支不支持这个属性
 			//当前
-			BankCode:'',	 
+			BankCode:'',
 			nowRender:{},
 			limit:'',
 			//ajax
@@ -280,7 +281,7 @@ export default{
 					BankCode:0
 				}
 			}
-			
+
 			var nowAjax = ajax[this.method]
 			nowAjax.PayUser = this.vaVal.PayUser
 			nowAjax.Money = this.vaVal.Money
@@ -293,7 +294,7 @@ export default{
     		this.PayUser = ''
     		this.Money = ''
     		if(json.Code === 1){
-					layer.msgWarn(json.StrCode);      			
+					layer.msgWarn(json.StrCode);
     		}else{
     			layer.msgWarn(json.StrCode);
     		}

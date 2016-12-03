@@ -79,7 +79,8 @@ window.store = new Vuex.Store({
   		})
   		return el;
   	},
-  	NoDataDom:msg => state.tpl.noData.join("msg")
+  	NoDataDom:msg => state.tpl.noData.join("msg"),
+
   },
   mutations: {
   	SaveInitData: (state,Data) => {
@@ -100,7 +101,7 @@ window.store = new Vuex.Store({
   			localStorage.removeItem(arr[i])
   			state[arr[i]]=null
   		}
-  	}
+  	},
   }
 })
 
@@ -108,6 +109,13 @@ window.RootApp = new Vue({
 	el: '#app',
 	store,
 	router,
+  created(){
+    // if (!localStorage.getItem('Difftime')) {
+    //     getServerTime(function(serTime){
+    //         localStorage.setItem('Difftime',new Date().getTime()-serTime+GMTdif);
+    //     });
+    // }
+  },
 	watch: {
 		$route(to,from){
 			// console.log("监听路由已经变化");
