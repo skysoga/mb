@@ -109,6 +109,7 @@ export default {
     }
   },
   mounted(){
+    console.log(this.$el,)
     this.window_height=document.documentElement.clientHeight||document.body.clientHeight
     this.document_height=document.documentElement.scrollHeight||document.body.scollHeight
     for(var i=0;i<4;i++){
