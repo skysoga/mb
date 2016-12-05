@@ -8,6 +8,7 @@ export default {
       RealName:'',
       BankID:'',
       SafePassword:'',
+      nextUrl:'',
       BankNum:'',
       Qort:'',
       Banklist:{
@@ -31,10 +32,12 @@ export default {
     }
   },
   beforeRouteEnter(to,from,next){
-    var Qort=Number(to.query.id)
-    Qort=Qort||'add'
-    if(Qort){
-      var Trr={Action:"GetCardDetail",BankCardID:Qort}
+    var Qort=to.query.id
+    var nextto=Qort=='withdraw'?'/withdraw':'/manageBankcard'
+    var cid=Qort=='withdraw'?'add':Qort||'add'
+    var Trr={Action:"GetCardDetail",BankCardID:cid}
+    if(cid!=='add'){
+      to.meta.title="修改银行卡"
       _fetch(Trr).then(json=>{
           next(vm=>{
             var son=json.BackData
@@ -43,14 +46,21 @@ export default {
               vm.BankID=vm.getBandId(son.BankName)
               vm.BankNum=son.CardNum
               vm.RealName=son.RealName
-              vm.Qort=Qort
+              vm.Qort=cid
               vm.$nextTick(function(){
                 vm.Address_C=son.Address_C
+                vm.nextUrl=nextto
               })
             }else{
-              vm.$router.push('/manageBankcard')
+              layer.msgWarn(json.StrCode)
             }
           })
+      })
+    }else{
+      next(vm=>{
+        vm.getCardlist()
+        vm.Qort='add'
+        vm.nextUrl=nextto
       })
     }
   },
@@ -80,9 +90,10 @@ export default {
       _fetch(arr).then(json=>{
           if(json.Code==1){
             layer.msgWarn(json.StrCode)
-            vm.$root.AjaxGetInitData(['UserBankCardList'],function(){
-              vm.$router.push('/manageBankcard')
+            RootApp.AjaxGetInitData(['UserBankCardList','UserFirstCardInfo'],state=>{
+              RootApp.$router.push(vm.nextUrl)
             })
+            console.log(vm.nextUrl)
           }else{
             layer.msgWarn(json.StrCode)
           }
@@ -92,6 +103,16 @@ export default {
       for(var n in this.Banklist){
         if(this.Banklist[n]==name)return n
     }
+    },
+    getCardlist(){
+      var arr=['UserBankCardList']
+      RootApp.GetInitData(arr,state=>{
+        var CardLeng=state.UserBankCardList.length
+        console.log(CardLeng)
+        if(CardLeng>=5){
+          RootApp.$router.push("/manageBankcard")
+        }
+      })
     }
   }
 }

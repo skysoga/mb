@@ -62,7 +62,7 @@
         <tr>
           <td>确认卡号</td>
           <td>
-            <input type="tel" v-va:checkBankNum.BankNum.unique tag="确认卡号" value=""  placeholder="请再次输入银行卡号">
+            <input type="tel" v-va:checkBankNum.BankNum = "[{'equal':'BankNum'}]" tag="确认卡号" value=""  placeholder="请再次输入银行卡号">
           </td>
         </tr>
         <tr>

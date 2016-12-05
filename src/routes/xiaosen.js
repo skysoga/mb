@@ -25,6 +25,7 @@ const setBankcard =resolve => require(['../views/setBankcard'],resolve)//设置�
 const verifyBankcard =resolve => require(['../views/verifyBankcard'],resolve)//验证银行卡
 const AgentCode =resolve => require(['../views/AgentCode'],resolve)//邀请码代理
 const memberCode =resolve => require(['../views/memberCode'],resolve)//邀请码玩家
+const withdraw =resolve => require(['../views/withdraw'],resolve)//提现
 
 var routes = [{
   path: '/manageBankcard',
@@ -313,5 +314,14 @@ var routes = [{
     user:true
   },
   component: verifyBankcard
+},{
+  path:'/withdraw',
+  name:'提现',
+  meta:{
+    title:"我要提现",
+    link:'/userCenter',
+    user:true
+  },
+  component:withdraw
 }]
 module.exports = routes

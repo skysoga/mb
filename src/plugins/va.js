@@ -60,6 +60,7 @@ function check(v, conditions){
 		res = cfg[type](v, typeVal)
 		// console.log(res, v, type,typeVal)
 		//如果有自定义报错信息， 返回自定义的报错信息
+    console.log(res)
 		if(res){
 			res = condi.errMsg || res
 			break

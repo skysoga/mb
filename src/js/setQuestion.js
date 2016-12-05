@@ -17,8 +17,19 @@ export default {
       vm.Questions=State.SafeQuestionList
      })
   },
+  mounted(){
+    var vm = this
+    // 替换验证错误信息
+    for(var config in vm.vaConfig){
+      vm.vaConfig[config].map(function(item){
+        if(item.type === 'unique'){
+          item.errMsg = '请勿选择相同的问题'
+        }
+      })
+    }
+  },
   methods:{
-    postBtn(){
+    $vaSubmit(){
       var $root=this.$root
       var ajax = {
         Answer1:this.answer1,
@@ -26,18 +37,18 @@ export default {
         Answer3:this.answer3
       }
 
-      if(!this.question1||!this.question2||!this.question3){
-        layer.msgWarn('请选择问题');
-        return;
-      }
-      if(this.OddGet()!=3){
-        layer.msgWarn('请勿选择相同的问题');
-        return;
-      }
-      if(!this.answer1||!this.answer2||!this.answer3){
-        layer.msgWarn('您还有信息未填写');
-        return;
-      }
+      // if(!this.question1||!this.question2||!this.question3){
+      //   layer.msgWarn('请选择问题');
+      //   return;
+      // }
+      // if(this.OddGet()!=3){
+      //   layer.msgWarn('请勿选择相同的问题');
+      //   return;
+      // }
+      // if(!this.answer1||!this.answer2||!this.answer3){
+      //   layer.msgWarn('您还有信息未填写');
+      //   return;
+      // }
       ajax.Action="SetQuestion"
       var F=sessionStorage.getItem('isFind')
       if(F){

@@ -70,7 +70,6 @@ window.store = new Vuex.Store({
   getters:{
   	PhotoPath:state=>state.constant.ImgHost+state.constant.PhotoPath,
   	WithdrwHtml:state=>{
-  		//判断提现去处的逻辑写在这里
   		return "login"
   	},
   	PayLimit: state => {

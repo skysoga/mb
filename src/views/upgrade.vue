@@ -4,7 +4,7 @@
     <img alt="" v-show="noimg" width="100%" :src="$store.state.constant.ImgHost+Img">
       <div class="rewardStatus" v-if="isBouns"><em class="e1">当前等级：<i>VIP{{isBouns.Grade}}</i></em>
         <em class="e2">晋级奖励：<i>{{isBouns.GradeBonus}}</i></em></div>
-      <div class="BTN" v-if="Login" :class="{unClick:UnClick}"><a @click="getBtn">{{ClickMsg}}</a></div>
+      <div class="BTN" v-if="isBouns" :class="{unClick:UnClick}"><a @click="getBtn">{{ClickMsg}}</a></div>
     </div>
     <h3>晋级机制</h3>
     <table>

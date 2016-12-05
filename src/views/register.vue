@@ -111,7 +111,7 @@ export default {
       delete ajax.checkPassword;
       ajax.Action="Register";
 
-      var that = this      
+      var that = this
       _fetch(ajax).then((json)=>{
       	console.log(json)
         if(json.Code===1) {
@@ -128,8 +128,10 @@ export default {
               _fetch(ajax1).then((json)=>{
             		if(json.Code === 1){
                   sessionStorage.clear();
-                  that.$root.Logout()
-                  that.$router.push('/login')
+                  RootApp.Logout()
+                  RootApp.Login(this.UserName,function(){
+                    RootApp.$router.push("/index");
+                  })
             		}else{
             			layer.msgWarn(json.StrCode);
             		}
