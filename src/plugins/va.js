@@ -60,6 +60,7 @@ function check(v, conditions){
 		res = cfg[type](v, typeVal)
 		// console.log(res, v, type,typeVal)
 		//如果有自定义报错信息， 返回自定义的报错信息
+    console.log(res)
 		if(res){
 			res = condi.errMsg || res
 			break
@@ -280,6 +281,7 @@ va.install = function(Vue, options){
 
 				var _result = check(value, conditions)
 				//如果返回不为0，则有报错
+        console.log(_result)
 				if(_result){
 					//如果返回的是字符串，则为自定义报错； 如果是数组，则使用showErr 报错
 					typeof _result === 'string' ? layer.msgWarn(_result) : showErr(conditions[0].tag, _result)

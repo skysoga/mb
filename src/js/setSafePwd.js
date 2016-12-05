@@ -10,19 +10,11 @@ export default {
     this.isOrUrl=this.$route.query.Q
   },
    methods:{
-    postBtn(){
+    $vaSubmit(){
       var vm=this
       var ajax = {
-        Password: this.Password,
-        checkPassword:this.checkPassword
+        Password: this.Password
       }
-      var _FomatC=this.$store.state._FomatConfig
-      var err = vm.$root.format(ajax, ['Password','checkPassword'], _FomatC);
-      if (err) {
-        layer.msgWarn(err[1]);
-        return;
-      }
-      delete ajax.checkPassword;
       ajax.Action="SetSafePass"
       var F=sessionStorage.getItem('isFind')
       if(F){

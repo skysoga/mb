@@ -28,34 +28,45 @@ export default {
       vm.question2=vm.Questions[Nums[1]].Id
      })
   },
+  mounted(){
+    var vm = this
+    // 替换验证错误信息
+    for(var config in vm.vaConfig){
+      vm.vaConfig[config].map(function(item){
+        if(item.type === 'unique'){
+          item.errMsg = '请勿选择相同的问题'
+        }
+      })
+    }
+  },
   methods:{
-    postBtn(){
+    $vaSubmit(){
       var vm=this
       var ajax = {
         Answer1:this.answer1,
         Answer2:this.answer2
       }
-      if(this.question1==this.question2){
-        layer.msgWarn('问题不能相同');
-        return;
-      };
-      var selfCheck = {
-        Answer1:{
-          Name: '问题一答案',
-          Reg: /^[\u4e00-\u9fa5_a-zA-Z0-9]+$/,
-          ErrMsg:"问题一答案不能为空！"
-        },
-        Answer2:{
-          Name: '问题二答案',
-          Reg: /^[\u4e00-\u9fa5_a-zA-Z0-9]+$/,
-          ErrMsg:"问题二答案不能为空！"
-        }
-      }
-      var err = this.$root.format(ajax, ['Answer1','Answer2'], selfCheck);
-      if (err) {
-        layer.msgWarn(err[1]);
-        return;
-      }
+      // if(this.question1==this.question2){
+      //   layer.msgWarn('问题不能相同');
+      //   return;
+      // };
+      // var selfCheck = {
+      //   Answer1:{
+      //     Name: '问题一答案',
+      //     Reg: /^[\u4e00-\u9fa5_a-zA-Z0-9]+$/,
+      //     ErrMsg:"问题一答案不能为空！"
+      //   },
+      //   Answer2:{
+      //     Name: '问题二答案',
+      //     Reg: /^[\u4e00-\u9fa5_a-zA-Z0-9]+$/,
+      //     ErrMsg:"问题二答案不能为空！"
+      //   }
+      // }
+      // var err = this.$root.format(ajax, ['Answer1','Answer2'], selfCheck);
+      // if (err) {
+      //   layer.msgWarn(err[1]);
+      //   return;
+      // }
       ajax.Action="VerifyQuestion"
       var F=sessionStorage.getItem('isFind')
       if(F){

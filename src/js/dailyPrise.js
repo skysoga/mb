@@ -11,14 +11,18 @@ export default {
       noimg:false
     }
   },
-  created:function(){
-    var theArr={Action:'GetActivityStateData',Qort:'每日加奖'}
+  beforeRouteEnter(to,from,next){
+     var theArr={Action:'GetActivityStateData',Qort:'每日加奖'}
     _fetch(theArr).then(data=>{
-          var Data=data.BackData
+          next(vm=>{
+            var Data=data.BackData
           if(data.Code==1){
-            this.StateData=Data||0
+            vm.StateData=Data||0
           }
+          })
       })
+  },
+  created:function(){
     var arr = ["ActivityConfig","RewardData"]
     this.$root.GetInitData(arr)
     var xname='每日加奖'

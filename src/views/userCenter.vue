@@ -13,11 +13,10 @@
               <span>我要充值</span>
           </router-link>
 
-          <router-link class="active" data-pwd="True" data-card="True" :to="$store.getters.WithdrwHtml">
+          <a class="active" data-pwd="True" data-card="True" @click="setUrl">
               <i class="iconfont m1">&#xe631;</i>
               <span>我要提现</span>
-          </router-link>
-
+          </a>
           <router-link class="active" to="billRecord">
               <i class="iconfont m2">&#xe630;</i>
               <span>交易记录</span>
