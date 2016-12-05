@@ -14,7 +14,7 @@ export default {
   watch:{
     $route(to,from){
       // console.log("路由监听");
-      var meta = to.meta
+      var meta = to.matched[0].meta
       var state = this.$store.state
       if(meta.user){
         // console.log("需要登录")

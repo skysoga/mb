@@ -50,24 +50,18 @@ var routes = [
   },{
     path: '/lottery',
     name: '彩种',
-    meta: {
-      user: true,
-    },
+    // meta: {
+    //   user: true,
+    // },
     children:[
       {
         path: 'ssc/:code',
         name: '时时彩',
-        meta:{
-          user:true
-        },
         component: lottery_ssc,
       },
       {
         path: 'k3/:code',
         name: '快三',
-        meta:{
-          user:true
-        },
         component: lottery_k3
       }
     ],

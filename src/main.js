@@ -365,6 +365,7 @@ window._fetchT=function _fetchT(data){
       },
       body: data
     }).then((res)=>{
+
       res.text().then(text=>{
         if (text.Code==0) {
         }

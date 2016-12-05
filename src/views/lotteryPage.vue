@@ -147,6 +147,7 @@
 		      box:'',           //当前弹出框
 		      config:{},        //在各种彩种页面,
 		      LotteryPlan:[],		//当前彩种的彩种计划
+		      LotteryResults:{},//各彩种开奖结果的缓存（包含不同彩种）
 		      PlanLen:0,				//当前彩种的彩种计划长度
 		      IssueNo:0,				//期号索引:从0开始，到PlanLen-1
 		      //期号计算相关
@@ -217,14 +218,14 @@
 	      	lt_updateIssue:(state)=>{
 	      		console.log('updateIssue待完成')
 	      	}
-
-
 		    },
 		    actions: {
 		    	//变更彩种的异步操作
 		    	lt_updateLottery:({state, rootState, commit, dispatch}, code)=>{
-		      	commit('lt_changeLottery', code)
-		      	dispatch('lt_updatePlan', code)
+		      	commit('lt_changeLottery', code)	//变更彩种
+		      	dispatch('lt_updatePlan', code)		//更新计划
+		      	//test
+		      	dispatch('lt_getResults', code)
 		      },
 		      lt_updatePlan:({state, rootState, commit, dispatch}, code)=>{
 		      	//获取开奖计划，这个以后如果组件内部有用，就单独拉一个action
@@ -284,7 +285,18 @@
 		      	}
 
 
+		      },
+		      lt_getResults:({state, rootState, commit, dispatch}, code)=>{
+		      	// _fetch({
+		       //    Action: "GetLotteryOpen",
+		       //    LotteryCode: code,
+		       //    IssueNo: 20161205081,
+		       //    DataNum: 10
+		       //  }).then((json)=>{
+		       //  	console.log(json)
+		       //  })
 		      }
+
 		    }
 		  }
 
