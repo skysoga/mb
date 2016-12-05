@@ -107,7 +107,7 @@ window.store = new Vuex.Store({
       var Difftime = new Date().getTime()- SerTime
       state.Difftime = Difftime
       localStorage.setItem('Difftime',Difftime)
-      console.log('获取了时间：'  + Difftime)
+      console.log('获取了时间：'  + Difftime, SerTime)
     }
   },
 })
@@ -375,3 +375,30 @@ window._fetchT=function _fetchT(data){
   })
 }
 
+
+/**
+ * [format 为Date对象追加format方法]
+ * @param  {[string]} format [设置要输出的目标格式 如"yyyy-MM-dd hh:mm:ss" ]
+ * @return {[string]}        [按格式输出的时间字符串]
+ * 示例console.log(new Date().format("yyyyMd hh:mm:ss")) 输出2016816 14:12:17;
+ */
+Date.prototype.format = function(format) {
+  var date = {
+  "M+": this.getMonth() + 1,
+  "d+": this.getDate(),
+  "h+": this.getHours(),
+  "m+": this.getMinutes(),
+  "s+": this.getSeconds(),
+  "q+": Math.floor((this.getMonth() + 3) / 3),
+  "S+": this.getMilliseconds()
+  };
+  if (/(y+)/i.test(format)) {
+  format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
+  }
+  for (var k in date) {
+  if (new RegExp("(" + k + ")").test(format)) {
+    format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
+  }
+  }
+  return format;
+}
