@@ -17,7 +17,7 @@
               <template v-for="(n,index) in UserBankList">
                 <div class="hr1px"></div>
                 <div class="bankCard" @click="setCard(UserBankList[index],n.BankCardID)">
-                  <img :src="'http://images.dafa176.com/system/common/bank/'+bankArr[n.BankName]+'.png'">
+                  <img :src="$store.state.constant.ImgHost+'/system/common/bank/'+bankArr[n.BankName]+'.png'">
                   <p>{{n.BankName}}</p>
                   <span>{{n.CardNum}}</span>
                 </div>
