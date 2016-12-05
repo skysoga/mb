@@ -57,6 +57,7 @@ export default {
           })
       })
     }else{
+      to.meta.title="绑定银行卡"
       next(vm=>{
         vm.getCardlist()
         vm.Qort='add'
