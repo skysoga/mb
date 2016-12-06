@@ -26,6 +26,7 @@ const verifyBankcard =resolve => require(['../views/verifyBankcard'],resolve)//�
 const AgentCode =resolve => require(['../views/AgentCode'],resolve)//邀请码代理
 const memberCode =resolve => require(['../views/memberCode'],resolve)//邀请码玩家
 const withdraw =resolve => require(['../views/withdraw'],resolve)//提现
+const tool =resolve => require(['../views/tool'],resolve)//清缓存工具
 
 var routes = [{
   path: '/manageBankcard',
@@ -323,5 +324,13 @@ var routes = [{
     user:true
   },
   component:withdraw
+},{
+  path:'/tool',
+  name:'清缓存工具',
+  meta:{
+    title:'工具',
+    link:'/index'
+  },
+  component:tool
 }]
 module.exports = routes
