@@ -4,6 +4,13 @@ export default {
       Password:""
     }
   },
+  created(){
+    var F=sessionStorage.getItem('isFind')
+    var U=localStorage.getItem('UserName')
+    if(!(U||F)){
+      RootApp.$router.push('/login')
+    }
+  },
   methods:{
     $vaSubmit(){
       var $root=this.$root

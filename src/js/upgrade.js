@@ -17,7 +17,6 @@ export default {
     var dataArr=this.$store.state.ActivityConfig
     this.GradeList=this.$store.state.GradeList
     this.isBouns=this.$store.state.UserUpGradeBonus
-    console.log(this.isBouns)
     var thState=-1
     if(this.isBouns){
       thState=this.isBouns.State||-1

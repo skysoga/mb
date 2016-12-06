@@ -6,8 +6,15 @@ export default {
       isOrUrl:""
     }
   },
-  created(){
-    this.isOrUrl=this.$route.query.Q
+  beforeRouteEnter(to,from,next){
+    var F=sessionStorage.getItem('isFind')
+    var U=localStorage.getItem('UserName')
+    if(!(U||F)){
+      RootApp.$router.push('/login')
+    }
+    next(vm=>{
+      vm.isOrUrl=RootApp.$router.query.Q
+    })
   },
    methods:{
     $vaSubmit(){
@@ -34,19 +41,19 @@ export default {
                   btn: ["是","否"],
                   yes:function(){
                     vm.upPwd(function(){
-                      vm.$root.$router.push('/setBankcard?Q='+vm.isOrUrl)
+                      RootApp.$router.push('/setBankcard?Q='+vm.isOrUrl)
                     })
                   },
                   no:function(){
                     vm.upPwd(function(){
-                      vm.$root.$router.push('/securityCenter')
+                      RootApp.$router.push('/securityCenter')
                     })
                   }
                 })
               break;
               default:
                 vm.upPwd(function(){
-                  vm.$root.$router.push('/securityCenter')
+                  RootApp.$router.push('/securityCenter')
                 })
               break;
             }
