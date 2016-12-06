@@ -7,6 +7,10 @@ export default {
   },
   beforeRouteEnter:(to,from,next)=>{
     var F=sessionStorage.getItem('isFind')
+    var U=localStorage.getItem('UserName')
+    if(!(U||F)){
+      RootApp.$router.push('/login')
+    }
     if(F){
       to.meta.link="/resetWay?Q=ResetPwd"
     }
