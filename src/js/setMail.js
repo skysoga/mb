@@ -8,6 +8,14 @@ export default {
       toMsg:true
     }
   },
+  beforeRouteEnter(to,from,next){
+    var F=sessionStorage.getItem('isFind')
+    var U=localStorage.getItem('UserName')
+    if(!(U||F)){
+      RootApp.$router.push('/login')
+    }
+    next()
+  },
   methods:{
     $vaSubmit(){
       var $root=this.$root

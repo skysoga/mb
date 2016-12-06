@@ -32,12 +32,17 @@ export default {
     }
   },
   beforeRouteEnter(to,from,next){
+    var U=localStorage.getItem('UserName')
+    if(!U){
+      RootApp.$router.push('/login')
+    }
     var Qort=to.query.id
     var nextto=Qort=='withdraw'?'/withdraw':'/manageBankcard'
     var cid=Qort=='withdraw'?'add':Qort||'add'
     var Trr={Action:"GetCardDetail",BankCardID:cid}
     if(cid!=='add'){
       to.meta.title="修改银行卡"
+      to.meta.link='/manageBankcard'
       _fetch(Trr).then(json=>{
           next(vm=>{
             var son=json.BackData
@@ -52,12 +57,13 @@ export default {
                 vm.nextUrl=nextto
               })
             }else{
-              RootApp.$router.push('/manageBankcard')
+              RootApp.$router.push('/securityCenter')
             }
           })
       })
     }else{
       to.meta.title="绑定银行卡"
+      to.meta.link='/securityCenter'
       next(vm=>{
         vm.getCardlist()
         vm.Qort='add'
@@ -102,7 +108,7 @@ export default {
                 title: "温馨提示",
                 btn: ["留在本页","返回安全中心"],
                 no(index){
-                  RootApp.$router.push("/manageBankcard")
+                  RootApp.$router.push("/securityCenter")
                 },
                 yes(index){
                   layer.close(index)
@@ -119,9 +125,11 @@ export default {
     getCardlist(){
       var arr=['UserBankCardList']
       RootApp.GetInitData(arr,state=>{
-        var CardLeng=state.UserBankCardList.length
-        if(CardLeng>=5){
-          RootApp.$router.push("/manageBankcard")
+        if(state.UserBankCardList){
+          var CardLeng=state.UserBankCardList.length||0
+          if(CardLeng>=5){
+            RootApp.$router.push("/manageBankcard")
+          }
         }
       })
     }

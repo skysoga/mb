@@ -3,7 +3,7 @@ export default {
     return{
       Content:'',
       Img:'',
-      noimg:false
+      isimg:true
     }
   },
   beforeRouteEnter:(to,from,next)=>{
@@ -20,7 +20,7 @@ export default {
       if(dataArr[i].Name==decodeURIComponent(xname)){
         this.Content=dataArr[i].Content
         this.Img=dataArr[i].Img
-        this.noimg=this.Img||true
+        this.isimg=this.Img||false
         return
       }
     }

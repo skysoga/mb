@@ -11,6 +11,8 @@ export default {
     next()
   },
   created(){
+    sessionStorage.clear()
+    localStorage.clear("UserHasSafePwd","UserMail","UserMobile","UserSafeQuestions")
     this.imgUrl()
   },
   methods:{
@@ -26,7 +28,6 @@ export default {
             RootApp.SaveInitData(json.BackData)
             sessionStorage.setItem('isFind',true)
            RootApp.$router.push({path:'resetWay',query:{Q:'ResetPwd'}})
-            //vm.$root.$router.push('/resetWay?Q=ResetPwd')
           }else{
             layer.msgWarn(json.StrCode)
           }

@@ -5,9 +5,16 @@ export default {
       checkPassword:""
     }
   },
+  beforeRouteEnter(to,from,next){
+    var F=sessionStorage.getItem('isFind')
+    var U=localStorage.getItem('UserName')
+    if(!(U||F)){
+      RootApp.$router.push('/login')
+    }
+    next()
+  },
   methods:{
     $vaSubmit(){
-      var $root=this.$root
       var ajax = {Password: this.Password}
       ajax.Action="SetPass"
       var F=sessionStorage.getItem('isFind')
@@ -20,11 +27,11 @@ export default {
             //验证密码
             layer.msgWarn(json.StrCode);
             if(F){
-                $root.$router.push('/login')
+                RootApp.$router.push('/login')
                 sessionStorage.clear('isFind')
                 return
               }
-            $root.$router.push('/securityCenter')
+            RootApp.$router.push('/securityCenter')
           }else{
             layer.msgWarn(json.StrCode);
           }
