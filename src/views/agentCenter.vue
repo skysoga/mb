@@ -36,6 +36,17 @@
         </div>
   </div>
 </template>
+<script>
+  export default{
+    beforeRouteEnter(to,from,next){
+      var U=localStorage.getItem('UserName')
+      if(!U){
+        RootApp.$router.push('/login')
+      }
+      next()
+    }
+  }
+</script>
 <style lang="scss" scoped>
   @import '../scss/personalinfo.scss';
 </style>

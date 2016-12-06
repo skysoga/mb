@@ -5,7 +5,7 @@
       <tr>
         <td>邀请码</td>
         <td colspan="2">
-          <input class="input fl mL15"
+          <input v-va:InvitationCode="[{'reg':/^[a-zA-Z0-9]{8}$/}]" regMsg="您输入的邀请码错误或者已过期" tag="邀请码" class="input fl mL15"
     						 type="url"
     						 placeholder="请输入邀请码"
     						 :readonly  = "YqmReadOnly"
@@ -15,22 +15,22 @@
 
       <tr>
         <td>账号</td>
-        <td  colspan="2"><input class="input fl mL15" type="url" v-model.lazy="UserName " placeholder="请输入账号" /></td>
+        <td  colspan="2"><input class="input fl mL15" type="url" v-va:UserName tag="帐号" v-model.lazy="UserName " placeholder="请输入账号" /></td>
       </tr>
 
       <tr>
         <td>设置密码</td>
-        <td colspan="2"><input class="input fl mL15" type="password" v-model.lazy="Password" placeholder="请输入密码" /></td>
+        <td colspan="2"><input class="input fl mL15" type="password" v-va:Password tag="设置密码" v-model.lazy="Password" placeholder="请输入密码" /></td>
       </tr>
 
       <tr>
         <td>确认密码</td>
-        <td colspan="2"><input class="input fl mL15" type="password" v-model.lazy="checkPassword" placeholder="请再次输入密码" /></td>
+        <td colspan="2"><input class="input fl mL15" type="password" v-va:checkPassword.Password="[{'equal':'Password'}]" tag="确认密码" v-model.lazy="checkPassword" placeholder="请再次输入密码" /></td>
       </tr>
 
       <tr>
         <td>验证码</td>
-        <td ><input class="input" type="email" v-model.lazy="ImgCode" placeholder="请输入验证码" autocomplete="off"></td>
+        <td ><input class="input" type="email" v-va:ImgCode tag="验证码" v-model.lazy="ImgCode" placeholder="请输入验证码" autocomplete="off"></td>
         <td @click = 'refreshYzm'>
           <img class="yzm" :src="YzmSrc">
         </td>
@@ -43,7 +43,7 @@
   </table>
 
   <router-link class='forget fr' to = "/login">已有账号? 立即登录</router-link>
-  <div class="loginBtn BTN mt30" @click = "register">
+  <div class="loginBtn BTN mt30" v-va-check>
     <a>立即注册</a>
   </div>
 </div>
@@ -86,29 +86,28 @@ export default {
 				this.YzmSrc = 'data:image/png;base64,R0lGODlhPAAWAPcAAAAAAAAAMwAAZgAAmQAAzAAA/wArAAArMwArZgArmQArzAAr/wBVAABVMwBVZgBVmQBVzABV/wCAAACAMwCAZgCAmQCAzACA/wCqAACqMwCqZgCqmQCqzACq/wDVAADVMwDVZgDVmQDVzADV/wD/AAD/MwD/ZgD/mQD/zAD//zMAADMAMzMAZjMAmTMAzDMA/zMrADMrMzMrZjMrmTMrzDMr/zNVADNVMzNVZjNVmTNVzDNV/zOAADOAMzOAZjOAmTOAzDOA/zOqADOqMzOqZjOqmTOqzDOq/zPVADPVMzPVZjPVmTPVzDPV/zP/ADP/MzP/ZjP/mTP/zDP//2YAAGYAM2YAZmYAmWYAzGYA/2YrAGYrM2YrZmYrmWYrzGYr/2ZVAGZVM2ZVZmZVmWZVzGZV/2aAAGaAM2aAZmaAmWaAzGaA/2aqAGaqM2aqZmaqmWaqzGaq/2bVAGbVM2bVZmbVmWbVzGbV/2b/AGb/M2b/Zmb/mWb/zGb//5kAAJkAM5kAZpkAmZkAzJkA/5krAJkrM5krZpkrmZkrzJkr/5lVAJlVM5lVZplVmZlVzJlV/5mAAJmAM5mAZpmAmZmAzJmA/5mqAJmqM5mqZpmqmZmqzJmq/5nVAJnVM5nVZpnVmZnVzJnV/5n/AJn/M5n/Zpn/mZn/zJn//8wAAMwAM8wAZswAmcwAzMwA/8wrAMwrM8wrZswrmcwrzMwr/8xVAMxVM8xVZsxVmcxVzMxV/8yAAMyAM8yAZsyAmcyAzMyA/8yqAMyqM8yqZsyqmcyqzMyq/8zVAMzVM8zVZszVmczVzMzV/8z/AMz/M8z/Zsz/mcz/zMz///8AAP8AM/8AZv8Amf8AzP8A//8rAP8rM/8rZv8rmf8rzP8r//9VAP9VM/9VZv9Vmf9VzP9V//+AAP+AM/+AZv+Amf+AzP+A//+qAP+qM/+qZv+qmf+qzP+q///VAP/VM//VZv/Vmf/VzP/V////AP//M///Zv//mf//zP///wAAAAAAAAAAAAAAACH5BAEAAPwALAAAAAA8ABYAAAj' + text;
 			})
 		},
-		register () {
+		$vaSubmit() {
 			var ajax = {
 				InvitationCode: this.InvitationCode,
 				UserName: this.UserName,
 				Password: this.Password,
-				checkPassword: this.checkPassword,
 				ImgCode: this.ImgCode,
 			}
 
-			var selfCheck = {
-				InvitationCode:{
-					Name: '邀请码',
-					Reg: /^[a-zA-Z0-9]{8}$/,
-					ErrMsg:"您输入的邀请码错误或者已过期！",
-				},
-			}
+			// var selfCheck = {
+			// 	InvitationCode:{
+			// 		Name: '邀请码',
+			// 		Reg: /^[a-zA-Z0-9]{8}$/,
+			// 		ErrMsg:"您输入的邀请码错误或者已过期！",
+			// 	},
+			// }
 
-			var err = this.$root.format(ajax, ['InvitationCode', 'UserName', 'Password', 'checkPassword', 'ImgCode'], selfCheck);
-      if (err) {
-        layer.msgWarn(err[1]);
-        return;
-      }
-      delete ajax.checkPassword;
+			// var err = this.$root.format(ajax, ['InvitationCode', 'UserName', 'Password', 'checkPassword', 'ImgCode'], selfCheck);
+   //    if (err) {
+   //      layer.msgWarn(err[1]);
+   //      return;
+   //    }
+   //    delete ajax.checkPassword;
       ajax.Action="Register";
 
       var that = this

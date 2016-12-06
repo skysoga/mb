@@ -32,6 +32,10 @@ export default {
     }
   },
   beforeRouteEnter(to,from,next){
+    var U=localStorage.getItem('UserName')
+    if(!U){
+      RootApp.$router.push('/login')
+    }
     var Qort=to.query.id
     var nextto=Qort=='withdraw'?'/withdraw':'/manageBankcard'
     var cid=Qort=='withdraw'?'add':Qort||'add'
