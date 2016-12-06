@@ -64,5 +64,6 @@ module.exports = {
   HOUR_TIME: 60 * 60 * 1000,
   MINUTE_TIME: 60 * 1000,
   SECOND_TIME: 1000,
-  GMT_DIF:new Date().getTimezoneOffset()*60*1000
+  GMT_DIF:new Date().getTimezoneOffset()*60*1000,
+  Difftime: localStorage.getItem('Difftime') || null
 }
