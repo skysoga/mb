@@ -115,9 +115,6 @@ window.RootApp = new Vue({
 	el: '#app',
 	store,
 	router,
-  created(){
-    this.getServerTime();
-  },
 	watch: {
 		$route(to,from){
 			// console.log("监听路由已经变化");

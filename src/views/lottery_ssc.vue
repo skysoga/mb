@@ -3,19 +3,24 @@
 	<!-- 头部： 玩法选择， 同类彩种选择-->
 	<lt-header ltype = "ssc" :lcode = "lcode"></lt-header>
 
+
   <!-- 开奖号码 以及 投注截止时间  -->
   <div class="isLotteryCon fix">
-  	<div class="isLottery"><span>1021049期开奖号码<i class="iconfont">&#xe601;</i></span>
+  	<!-- <div class="isLottery">
+      <span>1021049期开奖号码<i class="iconfont">&#xe601;</i></span>
 			<div class="openNumber">
 				<em>2</em><em>3</em><em>5</em><em>6</em><em>7</em>
 			</div>
-  	</div>
+  	</div> -->
+    <lt-result></lt-result>
+
   	<div class="lotteryClose"><span>1021049期投注截止</span>
       <div class="waitNumber">
-        <em>{{day}}</em>
+        <em>00:00:11</em>
       </div>
     </div>
   </div>
+
   <!-- 投注区 -->
   <div class="sscMain">
     <div class="sscTips">
@@ -78,6 +83,7 @@
 
 <script>
 	import lt_header from '../components/lottery/lt-header'
+  import lt_result from '../components/lottery/lt-result'
   import lt_ssc from '../json/lt_ssc.json'
   import {DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME} from '../JSconfig'
 	export default {
@@ -87,7 +93,8 @@
       next()
     },
 		components:{
-			'lt-header': lt_header
+			'lt-header': lt_header,
+      'lt-result': lt_result,
 		},
     created(){
       //从路径上获取彩种
