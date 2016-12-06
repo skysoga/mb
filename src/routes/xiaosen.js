@@ -26,6 +26,7 @@ const verifyBankcard =resolve => require(['../views/verifyBankcard'],resolve)//�
 const AgentCode =resolve => require(['../views/AgentCode'],resolve)//邀请码代理
 const memberCode =resolve => require(['../views/memberCode'],resolve)//邀请码玩家
 const withdraw =resolve => require(['../views/withdraw'],resolve)//提现
+const rebateDes =resolve => require(['../views/rebateDes'],resolve)//提现
 
 var routes = [{
   path: '/manageBankcard',
@@ -323,5 +324,14 @@ var routes = [{
     user:true
   },
   component:withdraw
+},{
+  path:'/rebateDes',
+  name:'返点赔率表',
+  meta:{
+    title:"返点赔率表",
+    link:'/userCenter',
+    user:true
+  },
+  component:rebateDes
 }]
 module.exports = routes
