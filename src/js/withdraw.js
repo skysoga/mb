@@ -62,12 +62,13 @@ export default{
             content:"提现申请提交成功，请在3-5分钟后查询是否到账。",
             btn:["返回我的账户","留在本页"],
             yes:function(){
+              vm.upTime()
               vm.$router.push("/userCenter")
             },
             no:function(){
-              vm.$nextTick(()=>{
-                layer.closeAll()
-              })
+              vm.upTime()
+              layer.closeAll()
+              //location.reload()
             }
           })
         }else{
@@ -100,6 +101,13 @@ export default{
         Arr.unshift(key)
         this.ArrData.BankCardID=id
         this.UserBankList=Arr
+    },
+    upTime(){
+      var vm=this
+      var arr=['WithdrawRemainTimes']
+      RootApp.AjaxGetInitData(arr,ref=>{
+        vm.ReGetTime=ref.WithdrawRemainTimes
+      })
     }
   }
 }

@@ -25,7 +25,7 @@ export default {
       };
       var err = this.$root.format(ajax, ['Password', 'UserName']);
       if (err) {
-        layer.msgWarn(err[1]);
+        layer.msgWarn(err[1])
         return;
       }
       ajax.Action="Login";
@@ -33,19 +33,20 @@ export default {
       _fetch(ajax).then((json)=>{
         if (json.Code===1) {
           this.$root.Login(this.UserName,function(){
-            $root.$router.push("/index");
+            $root.$router.push("/index")
           })
         }else{
-          layer.msgWarn(json.StrCode);
+          layer.msgWarn(json.StrCode)
         }
       })
     },
-    forgetPwd:function(){
-      this.$root.$router.push("/forgetPwd");
-    },
-    pc:function(){
-      location.href="http://"+location.host.replace('m.','www.')+"/index.html?CanPc";
-    },
+    bottomBox(key,val){
+      if(key=='forgetPwd'){
+        RootApp.$router.push("/forgetPwd")
+      }else if(key=='pc'){
+        location.href="http://"+location.host.replace('m.','www.')+"/index.html?CanPc";
+      }
+    }
   },
   //子组件
   components:{

@@ -52,7 +52,7 @@ export default {
                 vm.nextUrl=nextto
               })
             }else{
-              layer.msgWarn(json.StrCode)
+              RootApp.$router.push('/manageBankcard')
             }
           })
       })
@@ -94,9 +94,20 @@ export default {
             RootApp.AjaxGetInitData(['UserBankCardList','UserFirstCardInfo'],state=>{
               RootApp.$router.push(vm.nextUrl)
             })
-            console.log(vm.nextUrl)
           }else{
-            layer.msgWarn(json.StrCode)
+            layer.open({
+                shadeClose: false,
+                className: "layerConfirm",
+                content: json.StrCode,
+                title: "温馨提示",
+                btn: ["留在本页","返回安全中心"],
+                no(index){
+                  RootApp.$router.push("/manageBankcard")
+                },
+                yes(index){
+                  layer.close(index)
+                }
+              })
           }
       })
     },
@@ -109,7 +120,6 @@ export default {
       var arr=['UserBankCardList']
       RootApp.GetInitData(arr,state=>{
         var CardLeng=state.UserBankCardList.length
-        console.log(CardLeng)
         if(CardLeng>=5){
           RootApp.$router.push("/manageBankcard")
         }
