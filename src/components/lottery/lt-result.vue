@@ -117,6 +117,13 @@ export default {
     },40)
 
     console.log(state.lt.LotteryResults)
+    if(!state.lt.LotteryResults[this.lcode]){
+      store.commit({
+        type: 'lt_setLotteryResult',
+        code: this.lcode,
+        results:[]
+      })
+    }
 
   },
   data(){
@@ -139,10 +146,11 @@ export default {
     },
     pastOpen(){
       return state.lt.LotteryResults[this.lcode].map(item=>{
-        item.IssueNo = item.IssueNo.slice(4)        //把年份砍掉
-        item.LotteryOpen = item.LotteryOpen.split(',')
-        item.OpenTime = item.OpenTime.split(' ')[1] //开奖时间的时分秒
-        return item
+        var el = {}
+        el.IssueNo = item.IssueNo.slice(4)        //把年份砍掉
+        el.LotteryOpen = item.LotteryOpen.split(',')
+        el.OpenTime = item.OpenTime.split(' ')[1] //开奖时间的时分秒
+        return el
       })
     }
   }

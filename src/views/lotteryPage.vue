@@ -263,7 +263,9 @@
 			      state.displayResults = false	//进入等待开奖动画
 	      	},
 	      	lt_setLotteryResult:(state, {code, results})=>{
-	      		state.LotteryResults[code] = results
+	      		Vue.set(state.LotteryResults, code, results)
+	      		// state.LotteryResults[code] = results
+	      		console.log(state.LotteryResults)
 	      		state.resultNums = results[0].LotteryOpen.split(',')
 	      	},
 	      	lt_setIssueNo:(state, IssueNo)=>{state.IssueNo = IssueNo},
