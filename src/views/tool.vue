@@ -9,6 +9,7 @@
       clearStorage(){
         localStorage.clear()
         sessionStorage.clear()
+        layer.msgWarn("缓存清除成功!")
       }
     }
   }
