@@ -239,17 +239,6 @@ window.RootApp = new Vue({
 
 			return false;
 		},
-		obj2Formdata:function(obj){
-			var str=[],k;
-			for(var i in obj){
-				k=obj[i];
-				if (typeof(k)==="object") {
-					k=JSON.stringify(k);
-				}
-				str.push(i+'='+k);
-			}
-			return str.join('&');
-		},
     getServerTime: (function(){
       var cantGetTime = 0
       return function(fun){
@@ -270,16 +259,17 @@ window.RootApp = new Vue({
       }
     })()
 	},
-
 	render: h => h(App),
 });
 
 router.beforeEach((to, from, next) => {
-  layer.open({type: 2});
+  // layer.open({type: 2});
+  state.turning=true
 	next();
 });
 
 router.afterEach((to, from) => {
+	state.turning=false
 	layer.closeAll()
 	needVerify++
 	console.log(needVerify);
@@ -335,6 +325,7 @@ function _fetch(data){
 		  },
 		  body: data
 		}).then((res)=>{
+			// console.log(new Date(res.headers.get('Date')).getTime())
 			res.json().then(json=>{
 				if (json.Code==0) {
 					console.log(RootApp.$routes);
