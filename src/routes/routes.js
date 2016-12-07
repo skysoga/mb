@@ -6,11 +6,13 @@ const login =resolve => require(['../views/login'],resolve)
 const index =resolve => require(['../views/index'],resolve)
 const activity =resolve => require(['../views/activity'],resolve)
 const newWinners =resolve => require(['../views/newWinners'],resolve)
+const newWinnersInfo =resolve => require(['../views/newWinnersInfo'],resolve)
 const userCenter =resolve => require(['../views/userCenter'],resolve)
 const service =resolve => require(['../views/service'],resolve)
 const notfound =resolve => require(['../views/notfound'],resolve)
 const securityCenter =resolve => require(['../views/securityCenter'],resolve)
 const lottery_k3 =resolve => require(['../views/lottery_k3'],resolve)
+const competition =resolve => require(['../views/competition'],resolve)
 
 
 
@@ -88,14 +90,24 @@ var routes = [{
   meta:{
     titleList:[{
       title:"中奖信息",
-      to:"/newWinners"
+      to:"/newWinners/newWinnersInfo"
     },{
       title:"昨日奖金榜",
-      to:"/competition"
+      to:"/newWinners/competition"
     }],
-    nav:1,
+    nav:true,
   },
-  component: newWinners
+  component: newWinners,
+  children:[{
+    path:"",
+    redirect:"/newWinners/newWinnersInfo"
+  },{
+    path:"newWinnersInfo",
+    component:newWinnersInfo
+  },{
+    path:"competition",
+    component:competition
+  }]
 }, {
   path: '/userCenter',
   name: '我的账户',
