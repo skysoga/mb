@@ -57,8 +57,10 @@ module.exports = {
     red:'red'
   },
   tpl:{
-  	noData:["<div class='fullPageMsg'><div class='fullPageIcon iconfont'>&#xe63c;</div><p>','</p></div>"]
+  	noData:["<div class='fullPageMsg'><div class='fullPageIcon iconfont'>&#xe63c;</div><p>','</p></div>"],
+  	load:layer.icon.load
   },
+  turning:false,//是否在路由切换中
   _FomatConfig: Object.freeze(_FomatConfig),
   DAY_TIME: 24 * 60 * 60 * 1000,
   HOUR_TIME: 60 * 60 * 1000,

@@ -57,7 +57,16 @@ export default {
                 vm.nextUrl=nextto
               })
             }else{
-              RootApp.$router.push('/securityCenter')
+              layer.open({
+                shadeClose: false,
+                className: "layerConfirm",
+                content: json.StrCode,
+                title: "温馨提示",
+                btn: ["返回安全中心"],
+                yes(index){
+                  RootApp.$router.push("/securityCenter")
+                }
+              })
             }
           })
       })
