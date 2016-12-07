@@ -50,27 +50,6 @@ export default {
         Answer1:this.answer1,
         Answer2:this.answer2
       }
-      // if(this.question1==this.question2){
-      //   layer.msgWarn('问题不能相同');
-      //   return;
-      // };
-      // var selfCheck = {
-      //   Answer1:{
-      //     Name: '问题一答案',
-      //     Reg: /^[\u4e00-\u9fa5_a-zA-Z0-9]+$/,
-      //     ErrMsg:"问题一答案不能为空！"
-      //   },
-      //   Answer2:{
-      //     Name: '问题二答案',
-      //     Reg: /^[\u4e00-\u9fa5_a-zA-Z0-9]+$/,
-      //     ErrMsg:"问题二答案不能为空！"
-      //   }
-      // }
-      // var err = this.$root.format(ajax, ['Answer1','Answer2'], selfCheck);
-      // if (err) {
-      //   layer.msgWarn(err[1]);
-      //   return;
-      // }
       ajax.Action="VerifyQuestion"
       var F=sessionStorage.getItem('isFind')
       if(F){
