@@ -126,6 +126,10 @@
 			}
 
 			var timer1, timer2
+					,wait4Results = 0
+					,wait4BetRecord = false
+
+
 			const lt = {
 		    state:{
 		      bet: {},        //当前投注情况
@@ -143,7 +147,9 @@
 		        LotteryIntro: '', //全天120期
 		        LotteryName: '',  //重庆时时彩
 		        LotteryType: '',  //SSC
-		        LotteryCode: ''   //1000
+		        LotteryCode: '',   //1000
+		        VerifyEndTime:'',
+		        VerifyIssue:''
 		      },
 		      box:'',           //当前弹出框
 		      config:{},        //在各种彩种页面,
@@ -158,8 +164,7 @@
 		      Tomorrowstr:'',
 		      Yestodaystr:'',
 		      //counter或flag
-		      wait4Results:0,
-		      wait4BetRecord:false,
+		      displayResults: false,	//false显示等待开奖的动画， true显示开奖结果
 
 		    },
 		    getters: {
@@ -198,10 +203,12 @@
 		        //除去日期的服务器时间
 		        _SerTime = (new Date().getTime()- store.state.Difftime - GMT_DIF) % DAY_TIME
 		        for (var planLen = LotteryPlan.length, i = LotteryPlan.length - 1; i >= 0; i--) {
-		          _timeE=LotteryPlan[i].EndTime.split(':');
-		          EndTime=LotteryPlan[i].End = _timeE[0]*3600000 + _timeE[1]*60000 + _timeE[2]*1000;			//某期结束时间
-		          _timeS=LotteryPlan[i].StartTime.split(':');
-		          StartTime=LotteryPlan[i].Start = _timeS[0]*3600000 + _timeS[1]*60000 + _timeS[2]*1000; //某期开始时间
+		          _timeE = LotteryPlan[i].EndTime.split(':');
+		          EndTime = _timeE[0]*3600000 + _timeE[1]*60000 + _timeE[2]*1000;			//某期结束时间
+		          Vue.set(LotteryPlan[i],'End', EndTime)
+		          _timeS = LotteryPlan[i].StartTime.split(':');
+		          StartTime = _timeS[0]*3600000 + _timeS[1]*60000 + _timeS[2]*1000; //某期开始时间
+		          Vue.set(LotteryPlan[i],'Start', StartTime)
 
 		          if(i === planLen-1 && _SerTime >= EndTime){
 		          	//i 等于最后一期， 而且服务器时间大于最后一期的EndTime
@@ -253,15 +260,20 @@
 	      		var code = state.lottery.Lotterycode 	//当前彩种号
   		      Vue.set(state, 'NowIssue', computeIssue(code, state.IssueNo))				//当前期 (可以下注的这一期)
 			      Vue.set(state, 'OldIssue', computeIssue(code, state.IssueNo - 1)) 	//上一期
+			      state.displayResults = false	//进入等待开奖动画
 	      	},
 	      	lt_setLotteryResult:(state, {code, results})=>{
 	      		state.LotteryResults[code] = results
 	      		state.resultNums = results[0].LotteryOpen.split(',')
 	      	},
 	      	lt_setIssueNo:(state, IssueNo)=>{state.IssueNo = IssueNo},
-	      	lt_setWait4Results:(state, num)=>{state.wait4Results =  num},
-	      	lt_setWait4BetRecord:(state, bool)=>{state.wait4BetRecord = bool}
+	      	lt_displayResults:(state, bool)=>{
+	      		state.displayResults = bool
+	      	},
 		    },
+
+
+
 		    actions: {
 		    	//变更彩种的异步操作
 		    	lt_updateLottery:({state, rootState, commit, dispatch}, code)=>{
@@ -270,8 +282,8 @@
 		      	 * 清除方案的代码在mutation中写
 		      	 */
 		      	dispatch('lt_getResults', code)		//获得开奖结果
-		      	state.wait4Results = 0						//重置开奖counter
-		      	state.wait4BetRecord = false      //重置获取投注/追号记录的flag
+		      	wait4Results = 0
+		      	wait4BetRecord = false
 		      	clearTimeout(timer1)
 		      	clearTimeout(timer2)
 
@@ -335,11 +347,11 @@
 		      lt_getResults:({state, rootState, commit, dispatch}, code)=>{
 		      	var Results = state.LotteryResults[code] ||[]
 			      		,IssueNo = Results.length?Results[0].IssueNo:0;
-
+			      		console.log(code)
 		      	_fetch({
 		          Action: "GetLotteryOpen",
 		          LotteryCode: code,
-		          IssueNo: 20161205081,
+		          IssueNo: IssueNo,
 		          DataNum: 10
 		        }).then((json)=>{
 		        	if(json.Code === 1) {
@@ -419,12 +431,11 @@
 		        var Results = state.LotteryResults[state.lottery.LotteryCode]
 			        	,len = Results?Results.length:0;
 
-			      if(!state.wait4BetRecord){
+			      if(!wait4BetRecord){
 			      	//如果在获取我的投注/我的追号,则不进入
-
       	      if(!len || Results[0].IssueNo*1 < state.OldIssue*1) {
       	      	//没有计划 或者 有计划且上一期还没开奖，就以一定频率轮询开奖结果
-				        commit('lt_setWait4Results', state.wait4Results + 1)	//wait4Results++
+      	      	wait4Results++
 
 				        var interval
 				        switch(state.lottery.LotteryCode){
@@ -436,36 +447,32 @@
 				            interval=30
 				        }
 
-				        if (state.wait4Results>5 && state.wait4Results%interval===0) {
-				        	dispatch('lt_getResults')		//获取开奖结果
+				        if (wait4Results>5 && wait4Results%interval===0) {
+				        	dispatch('lt_getResults', state.lottery.LotteryCode)		//获取开奖结果
 				        }
 				      }else if(Results[0].IssueNo*1 > state.OldIssue*1){
 				      	//暂停销售
+				      	console.log('暂停销售')
 				      }else{
 				      	//开奖
-    	          console.log("还没写开奖结果的改变");
-    	          /**
-    	           * 这里写开奖结果的改变
-    	           */
-    	          commit('lt_setWait4BetRecord', true)  //开始进入获取我的投注的过程
+				      	console.log('开奖')
+				      	commit('lt_displayResults', true)
+				      	wait4BetRecord = true
     	          timer1 = setTimeout(()=>{
-    	          	dispatch('lt_updateBetRecord')
+    	          	//获取我的投注
     	          }, 6000)
 
     	          timer2 = setTimeout(()=>{
-    	          	dispatch('lt_updateBetRecord')
+    	          	//获取我的投注
+    	          	wait4Results = 0
+    	          	wait4BetRecord = false
     	          }, 12000)
-
 
 				      }
 
 			      }
 
 		      },
-		      lt_updateBetRecord:({state, rootState, commit, dispatch})=>{
-		      	commit('lt_setWait4Results', 0)
-		      	console.log('更新我的投注/我的追号')
-		      }
 
 		    }
 		  }

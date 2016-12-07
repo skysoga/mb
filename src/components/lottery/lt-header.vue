@@ -50,7 +50,7 @@
       <div class="lotteryList fix" v-if = "ifShowTypeSelect">
       	<a v-for = "item in LotteryList"
       		 @click = "changeLottery(item.LotteryCode)">
-      	  {{item.LotteryName}}
+	      	  {{item.LotteryName}}
     	  </a>
       </div>
     </div>
@@ -60,8 +60,9 @@
 <script>
 	import {mapState} from 'vuex'
 	export default {
-		props:['ltype', 'lcode'],			// 'ssc','11x5'
+		// props:['ltype', 'lcode'],			// 'ssc','11x5'
 		created(){
+			[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
 			this.pageConfig = {
 				'ssc':{
 					typeName:'时时彩',
@@ -78,8 +79,7 @@
 				//这个地方“时时彩应该是个变量”
 				if(item.LotteryClassName === this.pageConfig[this.ltype].typeName){
 					this.LotteryList = item.LotteryList.map(code=>{
-						var el = this.$store.state.LotteryList[code]
-						el.LotteryCode = code
+						var el = state.LotteryList[code]
 						return el
 					})
 				}
@@ -100,6 +100,8 @@
 				},
 				LotteryList: [],
 				LotteryName: '',
+				ltype: '',			//彩种类型
+				lcode: ''				//彩种code
 			}
 		},
 		methods:{

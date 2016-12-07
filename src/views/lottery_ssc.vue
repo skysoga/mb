@@ -1,17 +1,11 @@
 <template>
 <div class="DontSelect sscActive">
 	<!-- 头部： 玩法选择， 同类彩种选择-->
-	<lt-header ltype = "ssc" :lcode = "lcode"></lt-header>
-
+	<lt-header></lt-header>
 
   <!-- 开奖号码 以及 投注截止时间  -->
   <div class="isLotteryCon fix">
-  	<!-- <div class="isLottery">
-      <span>1021049期开奖号码<i class="iconfont">&#xe601;</i></span>
-			<div class="openNumber">
-				<em>2</em><em>3</em><em>5</em><em>6</em><em>7</em>
-			</div>
-  	</div> -->
+    <!-- 开奖结果和历史开奖结果 -->
     <lt-result></lt-result>
 
   	<div class="lotteryClose"><span>1021049期投注截止</span>

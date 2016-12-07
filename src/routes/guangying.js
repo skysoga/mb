@@ -50,6 +50,7 @@ var routes = [
   },{
     path: '/lottery',
     name: '彩种',
+    component: lotteryPage,
     // meta: {
     //   user: true,
     // },
@@ -64,8 +65,7 @@ var routes = [
         name: '快三',
         component: lottery_k3
       }
-    ],
-    component: lotteryPage
+    ]
   }
 ]
 
