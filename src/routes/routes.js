@@ -6,7 +6,7 @@ const login =resolve => require(['../views/login'],resolve)
 const index =resolve => require(['../views/index'],resolve)
 const activity =resolve => require(['../views/activity'],resolve)
 const newWinners =resolve => require(['../views/newWinners'],resolve)
-const newWinnersInfo =resolve => require(['../views/newWinnersInfo'],resolve)
+const center =resolve => require(['../views/center'],resolve)
 const userCenter =resolve => require(['../views/userCenter'],resolve)
 const service =resolve => require(['../views/service'],resolve)
 const notfound =resolve => require(['../views/notfound'],resolve)
@@ -85,25 +85,25 @@ var routes = [{
   },
   component: activity
 },{
-  path: '/newWinners',
+  path: '/center',
   name: '发现',
   meta:{
     titleList:[{
       title:"中奖信息",
-      to:"/newWinners/newWinnersInfo"
+      to:"/center/newWinners"
     },{
       title:"昨日奖金榜",
-      to:"/newWinners/competition"
+      to:"/center/competition"
     }],
     nav:true,
   },
-  component: newWinners,
+  component: center,
   children:[{
     path:"",
-    redirect:"/newWinners/newWinnersInfo"
+    redirect:"/center/newWinners"
   },{
-    path:"newWinnersInfo",
-    component:newWinnersInfo
+    path:"newWinners",
+    component:newWinners
   },{
     path:"competition",
     component:competition
