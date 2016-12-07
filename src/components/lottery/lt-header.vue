@@ -6,7 +6,7 @@
         <br>法</p>
 
         <span>
-        	<div @click = "toggleModeSelect">
+        	<div @click.stop = "toggleModeSelect">
 		        <em>{{mode.tag}}</em>
 		        <i class="iconfont">&#xe61e;</i>
 					</div>
@@ -43,7 +43,7 @@
 	  </div>
 
     <div class="lotterySort">
-	    <div @click = "toggleTypeSelect">
+	    <div @click.stop = "toggleTypeSelect">
 		    <em>{{lotteryName}}</em><i class="iconfont">&#xe61e;</i>
 	    </div>
 
@@ -121,7 +121,6 @@
 			changeMode(modeItem){
 				this.mode = modeItem
 				this.$store.commit('lt_changeMode', this.mode)
-				this.$store.commit('lt_changeBox', '')
 			},
 			//更改彩种
 			changeLottery(code){
@@ -131,7 +130,6 @@
 					}
 				})
 				this.$store.dispatch('lt_updateLottery', code)
-				this.$store.commit('lt_changeBox', '')
 			},
 			//玩法选择框，切换
 			toggleModeSelect(){

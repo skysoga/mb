@@ -1,21 +1,21 @@
 <template>
   <div>
 
-    <div class="isLottery" >
+    <div class="isLottery" @click.stop = "togglePastOpen">
       <span>{{oldIssue}}期开奖号码<i class="iconfont">&#xe601;</i></span>
+      <!-- 开奖号码 -->
       <div class="openNumber">
         <em v-for = "item in display">{{item}}</em>
-        <!-- <em>2</em><em>3</em><em>5</em><em>6</em><em>7</em> -->
       </div>
     </div>
 
-    <table class="pastOpen">
+    <table class="pastOpen" v-if = "ifShowPastOpen">
       <tr>
         <th>期号</th>
         <th>开奖号码</th>
         <th>开奖时间</th>
       </tr>
-
+      <!-- 历史开奖的列表 -->
       <tr v-for = "item in pastOpen">
         <td>{{item.IssueNo}}</td>
         <td>
@@ -23,77 +23,6 @@
         </td>
         <td>{{item.OpenTime}}</td>
       </tr>
-<!--
-      <tr>
-        <td>1128040</td>
-        <td><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a></td>
-        <td>8</td>
-        <td>大</td>
-        <td>单</td>
-      </tr>
-      <tr>
-        <td>1128040</td>
-        <td><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a></td>
-        <td>8</td>
-        <td>大</td>
-        <td>单</td>
-      </tr>
-      <tr>
-        <td>1128040</td>
-        <td><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a></td>
-        <td>8</td>
-        <td>大</td>
-        <td>单</td>
-      </tr>
-      <tr>
-        <td>1128040</td>
-        <td><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a></td>
-        <td>8</td>
-        <td>大</td>
-        <td>单</td>
-      </tr>
-      <tr>
-        <td>1128040</td>
-        <td><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a></td>
-        <td>8</td>
-        <td>大</td>
-        <td>单</td>
-      </tr>
-      <tr>
-        <td>1128040</td>
-        <td><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a></td>
-        <td>8</td>
-        <td>大</td>
-        <td>单</td>
-      </tr>
-      <tr>
-        <td>1128040</td>
-        <td><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a></td>
-        <td>8</td>
-        <td>大</td>
-        <td>单</td>
-      </tr>
-      <tr>
-        <td>1128040</td>
-        <td><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a></td>
-        <td>8</td>
-        <td>大</td>
-        <td>单</td>
-      </tr>
-      <tr>
-        <td>1128040</td>
-        <td><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a></td>
-        <td>8</td>
-        <td>大</td>
-        <td>单</td>
-      </tr>
-      <tr>
-        <td>2228040</td>
-        <td><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a><a><span>20</span></a></td>
-        <td>82</td>
-        <td>大</td>
-        <td>单</td>
-      </tr> -->
     </table>
   </div>
 </template>
@@ -116,15 +45,6 @@ export default {
       this.wait4Results = arr
     },40)
 
-    console.log(state.lt.LotteryResults)
-    if(!state.lt.LotteryResults[this.lcode]){
-      store.commit({
-        type: 'lt_setLotteryResult',
-        code: this.lcode,
-        results:[]
-      })
-    }
-
   },
   data(){
     return {
@@ -140,7 +60,14 @@ export default {
   },
   computed:{
     oldIssue:()=>state.lt.OldIssue.slice(4),
-    results:()=>state.lt.resultNums,
+    results(){
+      var _results = state.lt.LotteryResults[this.lcode]
+      if(!_results){
+        return []
+      }else{
+        return _results[0].LotteryOpen.split(',')
+      }
+    },
     display(){
       return state.lt.displayResults ? this.results : this.wait4Results
     },
@@ -152,7 +79,17 @@ export default {
         el.OpenTime = item.OpenTime.split(' ')[1] //开奖时间的时分秒
         return el
       })
+    },
+    ifShowPastOpen(){
+      return this.$store.state.lt.box === 'pastOpen'
     }
+  },
+  methods:{
+    togglePastOpen(){
+      this.$store.state.lt.box === 'pastOpen' ?
+         this.$store.commit('lt_changeBox', '') :
+           this.$store.commit('lt_changeBox', 'pastOpen')
+    },
   }
 }
 </script>

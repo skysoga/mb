@@ -1,7 +1,9 @@
 <template>
-	<keep-alive>
-		<router-view></router-view>
-	</keep-alive>
+	<div @click = "closeBox">
+		<keep-alive>
+			<router-view ></router-view>
+		</keep-alive>
+	</div>
 </template>
 <script>
 	import lt_ssc from '../json/lt_ssc.json'
@@ -155,14 +157,15 @@
 		      config:{},        //在各种彩种页面,
 		      LotteryPlan:[],		//当前彩种的彩种计划
 		      LotteryResults:{},//各彩种开奖结果的缓存（包含不同彩种）
+		      BetRecord:[],			//投注记录
 		      PlanLen:0,				//当前彩种的彩种计划长度
 		      IssueNo:0,				//期号索引:从0开始，到PlanLen-1
-		      resultNums:[],		//本彩种开奖结果的号码数组
 
 		      //渲染用
 		      Todaystr:'',
 		      Tomorrowstr:'',
 		      Yestodaystr:'',
+		      TimeBar:'00:00:00',      //倒计时内容
 		      //counter或flag
 		      displayResults: false,	//false显示等待开奖的动画， true显示开奖结果
 
@@ -262,16 +265,15 @@
 			      Vue.set(state, 'OldIssue', computeIssue(code, state.IssueNo - 1)) 	//上一期
 			      state.displayResults = false	//进入等待开奖动画
 	      	},
-	      	lt_setLotteryResult:(state, {code, results})=>{
+	      	lt_setLotteryResult:(state, {code, results})=>{							//设置某一彩种的开奖结果
 	      		Vue.set(state.LotteryResults, code, results)
-	      		// state.LotteryResults[code] = results
-	      		console.log(state.LotteryResults)
-	      		state.resultNums = results[0].LotteryOpen.split(',')
 	      	},
-	      	lt_setIssueNo:(state, IssueNo)=>{state.IssueNo = IssueNo},
-	      	lt_displayResults:(state, bool)=>{
+	      	lt_setIssueNo:(state, IssueNo)=>{state.IssueNo = IssueNo},	//设置当前期号
+	      	lt_displayResults:(state, bool)=>{													//展示开奖结果或开奖动画
 	      		state.displayResults = bool
 	      	},
+	      	lt_updateTimeBar:(state, text)=>{state.TimeBar = text;},			//倒计时的内容
+	      	lt_setBetRecord:(state, BetRecord)=>{state.BetRecord =BetRecord;console.log(state)}	//投注记录
 		    },
 
 
@@ -279,7 +281,16 @@
 		    actions: {
 		    	//变更彩种的异步操作
 		    	lt_updateLottery:({state, rootState, commit, dispatch}, code)=>{
+		    		//进入每个彩种，先把开奖结果初始化，如果不存在的话
+		      	if(!state.LotteryResults[code]){
+			      	commit({
+			      		type:'lt_setLotteryResult',
+			      		code,
+			      		results: []
+			      	})
+		      	}
 		      	commit('lt_changeLottery', code)	//变更彩种
+
 		      	/**
 		      	 * 清除方案的代码在mutation中写
 		      	 */
@@ -413,21 +424,19 @@
 		          });
 		        }
 
-
 		        Countdown = Math.floor(Countdown/1000);   //转成以秒为单位
-		        console.log(Countdown)
 		        if(Countdown>600){
 			        //如果Countdown大于10分钟，则进入预售
-		         	//预售中
+		        	commit('lt_updateTimeBar', '预售中')
 		        }else{
 		        	//倒计时渲染
-		          // var hh=Math.floor(Countdown/3600);
-		          // var MM=Math.floor(Countdown%3600/60);
-		          // var ss=Math.floor(Countdown%60);
-		          // hh=hh>9?hh:('0'+hh);
-		          // MM=MM>9?MM:('0'+MM);
-		          // ss=ss>9?ss:('0'+ss);
-		          // baseData.DomJson.TimeBar.innerText = hh+':'+MM+':'+ss;
+		          var hh=Math.floor(Countdown/3600);
+		          var MM=Math.floor(Countdown%3600/60);
+		          var ss=Math.floor(Countdown%60);
+		          hh=hh>9?hh:('0'+hh);
+		          MM=MM>9?MM:('0'+MM);
+		          ss=ss>9?ss:('0'+ss);
+		          commit('lt_updateTimeBar', hh+':'+MM+':'+ss)
 		        }
 
 		        var Results = state.LotteryResults[state.lottery.LotteryCode]
@@ -453,19 +462,18 @@
 				        	dispatch('lt_getResults', state.lottery.LotteryCode)		//获取开奖结果
 				        }
 				      }else if(Results[0].IssueNo*1 > state.OldIssue*1){
-				      	//暂停销售
-				      	console.log('暂停销售')
+				      	commit('lt_updateTimeBar', '暂停销售')		//暂停销售
 				      }else{
 				      	//开奖
 				      	console.log('开奖')
 				      	commit('lt_displayResults', true)
 				      	wait4BetRecord = true
     	          timer1 = setTimeout(()=>{
-    	          	//获取我的投注
+    	          	dispatch('lt_updateBetRecord')			//获取我的投注
     	          }, 6000)
 
     	          timer2 = setTimeout(()=>{
-    	          	//获取我的投注
+    	          	dispatch('lt_updateBetRecord')			//获取我的投注
     	          	wait4Results = 0
     	          	wait4BetRecord = false
     	          }, 12000)
@@ -475,6 +483,15 @@
 			      }
 
 		      },
+		      lt_updateBetRecord:({state, rootState, commit, dispatch})=>{
+
+		      	_fetch({Action: 'GetBetSideBar'}).then((json)=>{
+		      		if(json.Code === 1){
+		      			var betting = json.Data.BettingOrders
+		      			commit('lt_setBetRecord', betting)
+		      		}
+		      	})
+		      }
 
 		    }
 		  }
@@ -483,13 +500,18 @@
 			state.lt || store.registerModule('lt', lt)
 			store.commit('lt_updateDate')
 			store.dispatch('lt_updateLottery', this.$route.params.code)
+			// store.dispatch('lt_updateBetRecord')
 
-			var count = 0;
 			setInterval(()=>{
 				store.dispatch('lt_refresh')
 			},1000)
 
 		},
+		methods:{
+			closeBox(){
+				store.commit('lt_changeBox', '')
+			}
+		}
 
 	}
 </script>

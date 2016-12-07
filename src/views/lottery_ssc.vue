@@ -7,12 +7,8 @@
   <div class="isLotteryCon fix">
     <!-- 开奖结果和历史开奖结果 -->
     <lt-result></lt-result>
-
-  	<div class="lotteryClose"><span>1021049期投注截止</span>
-      <div class="waitNumber">
-        <em>00:00:11</em>
-      </div>
-    </div>
+    <!-- 倒计时和我的投注 -->
+    <lt-timebar></lt-timebar>
   </div>
 
   <!-- 投注区 -->
@@ -78,17 +74,18 @@
 <script>
 	import lt_header from '../components/lottery/lt-header'
   import lt_result from '../components/lottery/lt-result'
+  import lt_timebar from '../components/lottery/lt-timebar'
   import lt_ssc from '../json/lt_ssc.json'
   import {DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME} from '../JSconfig'
 	export default {
     beforeRouteEnter(to, from, next){
       //获取返点--不阻塞
-      //获取开奖计划--不阻塞
       next()
     },
 		components:{
 			'lt-header': lt_header,
       'lt-result': lt_result,
+      'lt-timebar': lt_timebar
 		},
     created(){
       //从路径上获取彩种
@@ -101,9 +98,6 @@
         lcode:'',  //彩种code
 			}
 		},
-    computed:{
-
-    },
 
 	}
 </script>
