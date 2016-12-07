@@ -11,31 +11,27 @@ export default {
     next()
   },
   created(){
+    sessionStorage.clear()
+    localStorage.clear("UserHasSafePwd","UserMail","UserMobile","UserSafeQuestions")
     this.imgUrl()
   },
   methods:{
-    postBtn(){
+    $vaSubmit(){
       var vm=this
-      var _FomatC=this.$store.state._FomatConfig
       var ArrData={
         UserName:this.UserName,
         ImgCode:this.ImgCode
       }
-      var err=this.$root.format(ArrData,['UserName','ImgCode'],_FomatC)
-      if(err){
-        layer.msgWarn(err[1]);
-        return;
-      }
       ArrData.Action='SetSessionUser'
-      _fetch(ArrData).then(data=>{
-          var Data=data
-          if(Data.Code==1){
-            vm.$root.SaveInitData(data.BackData)
+      _fetch(ArrData).then(json=>{
+          if(json.Code==1){
+            RootApp.SaveInitData(json.BackData)
             sessionStorage.setItem('isFind',true)
-            // vm.$root.$router.push({path:'resetWay',query:{Q:'ResetPwd'}})
-            vm.$root.$router.push('/resetWay?Q=ResetPwd')
+           RootApp.$router.push({path:'resetWay',query:{Q:'ResetPwd'}})
+          }else{
+            layer.msgWarn(json.StrCode)
           }
-          this.imgUrl()
+          vm.imgUrl()
       })
     },
     imgUrl(){

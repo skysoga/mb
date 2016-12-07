@@ -18,6 +18,10 @@ export default {
       }
     to.meta.title=urlObj[to.query.Q]
     var F=sessionStorage.getItem('isFind')
+    var U=localStorage.getItem('UserName')
+    if(!(U||F)){
+      RootApp.$router.push('/login')
+    }
     if(F){
       to.meta.link='/forgetPwd'
     }
@@ -27,8 +31,8 @@ export default {
     var getUrl=this.$route.query.Q
     var vm=this
     var urlObj=this.getKey()
-     var arr = ['UserSafeQuestions','UserHasSafePwd','UserMobile','UserMail'];
-     vm.$root.GetInitData(arr,stage=>{
+     var arr = ['UserSafeQuestions','UserHasSafePwd','UserMobile','UserMail']
+     RootApp.GetInitData(arr,stage=>{
       vm.ResetSafePwd=!!stage.UserHasSafePwd
       vm.ResetMobile=!!stage.UserMobile
       vm.ResetQuestion=!!stage.UserSafeQuestions
