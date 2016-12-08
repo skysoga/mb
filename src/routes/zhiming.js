@@ -1,9 +1,12 @@
 //志明负责的路由
+// const found = resolve => require(['../views/found'], resolve)
 const letter = resolve => require(['../views/letter'], resolve)
+const newWinners =resolve => require(['../views/newWinners'],resolve)
 const letterDetail = resolve => require(['../views/letterDetail'], resolve)
 const Notice = resolve => require(['../views/Notice'], resolve)
 const NoticeDetail = resolve => require(['../views/NoticeDetail'], resolve)
 const playerHome = resolve => require(['../views/playerHome'], resolve)
+const competition = resolve => require(['../views/competition'], resolve)
 const billRecord = resolve => require(['../views/billRecord'], resolve)
 const agentMember = resolve => require(['../views/agentMember'], resolve)
 const lowerReport = resolve => require(['../views/lowerReport'], resolve)
@@ -63,7 +66,7 @@ var routes = [{
     link: "/center"
   },
   component: playerHome
-}, {
+},{
   path: "/billRecord",
   name: "交易记录",
   meta: {
@@ -125,6 +128,39 @@ var routes = [{
     user: 1
   },
   component: agentBillRecord
-}]
+},/**{
+  path: "/found",
+  name: "发现",
+  meta: {
+    titleList: [{
+      title: "中奖信息",
+      to: "/newWinners"
+    }, {
+      title: "昨日奖金榜",
+      to: "/competition"
+    }],
+    nav:1
+  },
+  component: found,
+  children:[{
+      path: '',
+      meta:{
+        nav:1
+      },
+      component: newWinners
+    },{
+      path:"/competition",
+      meta:{
+        nav:1
+      },
+      component:competition
+    },{
+      path:"/newWinners",
+      meta:{
+        nav:1
+      },
+      component:newWinners
+    }]
+}**/]
 
 module.exports = routes;

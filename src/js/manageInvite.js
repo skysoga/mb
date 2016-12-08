@@ -12,7 +12,6 @@ export default {
      this.$root.GetInitData(arr,state=>{
       this.caiList=state.AgentRebate
      })
-     console.log(this.$refs)
     vm.vaConfig || (vm.vaConfig = {})/*初始化vaConfig对象*/
     for(var i=0;i<vm.caiList.length;i++){
       var item = vm.caiList[i]
@@ -47,7 +46,6 @@ export default {
                 location.reload()
               }
             })
-            console.log(this.vaConfig)
           }else{
             layer.msgWarn(json.StrCode)
           }

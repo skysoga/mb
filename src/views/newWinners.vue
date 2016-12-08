@@ -1,8 +1,21 @@
 <template>
-	<div class="newWinner">
-    <ul>
-			<transition-group name="list">
-				<li :data-thisid="item.Id" class="active" v-for="item in bonu_list_data" :key="item" @click="jump(item.Id)">
+	<div class="newWinner" ref="div">
+    <ul ref="ul">
+			 <transition-group name="list">
+				 <li :data-thisid="item.UserId" class="active" v-for="item in bonu_list_data2"  @click="jump(item.UserId)" :key='item'>
+					 <div>
+						 <a class="headImg" href="#">
+							 <img :src="$store.getters.PhotoPath+item.UserPhoto" alt="">
+						 </a>
+						 <div class="right">
+							 <a href="#" style="color:#38f">{{item.UserName?item.UserName:item.Nickname}}</a>
+							 <span>在{{item.LotteryName}}<br>喜中</span><em>￥{{item.Bonus}}</em>
+						 </div>
+						 <i class="iconfont right fr"></i>
+					 </div>
+				 </li>
+			 </transition-group>
+				<li :data-thisid="item.UserId" class="active" v-for="item in bonu_list_data"  @click="jump(item.UserId)">
 					<div>
 						<a class="headImg" href="#">
 							<img :src="$store.getters.PhotoPath+item.UserPhoto" alt="">
@@ -14,7 +27,6 @@
 						<i class="iconfont right fr"></i>
 					</div>
 				</li>
-			</transition-group>
 		</ul>
 </div>
 </template>
@@ -23,6 +35,7 @@
 		data() {
 			return {
 				bonu_list_data: [],
+				bonu_list_data2:[],
 				config: {
 					firstPageNum: 10, //首屏渲染的数据量,直接渲染
 					firstPageExt: 40, //首屏额外获取的数据量,存入cache
@@ -32,7 +45,8 @@
 					listMax: 20, //渲染li的最大数量
 					cache: [] //整个模块公用
 				},
-				newOneData: ""
+				newOneData: "",
+				li_arr:[]
 			}
 		},
 		methods: {
@@ -59,25 +73,26 @@
 					fn(item)
 				}, time)
 			},
-			transitionShow: function(h, t, n, item) {
-				let s = 0; // 用来记录高度
-				let perT = t / n;
-				let perH = h / n;
-				setTimeout(() => {
-					if (s >= h) {
-						//ulBody.prepend(item).css('top', '0px')
-						this.bonu_list_data.unshift(item)
-						this.$el.childNodes[0].style.top = "0px"
-						s = 0;
-						return;
-					} else {
-						s = s + perH;
-						//ulBody.css('top', s + 'px')
-						this.$el.childNodes[0].style.top = $ + "px"
-						this.transitionShow(h, t, n, item)
-					}
-				}, perT)
-			},
+			 transitionShow : function(){
+				let s = 0;                      // 用来记录高度
+				return function(h, t, n, item){
+					let perT = t/n;
+					let perH = h/n;
+					setTimeout(() => {
+						if (s >= h) {
+							this.bonu_list_data2.unshift(item)
+							this.$el.childNodes[0].top=0
+							s = 0;
+							return;
+						} else {
+							s = s + perH;
+							//ulBody.css('top', s + 'px')
+							this.$el.childNodes[0].top=s+"px"
+							this.transitionShow(h, t, n, item)
+						}
+					}, perT)
+				}
+			}(),
 			//每隔time(毫秒)，获取数据，并通过回调传出
 			getCache: function(time, fn) {
 				setInterval(() => {
@@ -117,16 +132,35 @@
 		}
 	}
 </script>
+
 <style lang="scss" scoped>
 	@import '../scss/newwinners.scss';
 	@import '../scss/personalinfo.scss';
-	/*.list-enter-active, .list-leave-active {
-  	transition: all 1s;
-		transform: translateY(0px);
+
+	.list-enter-active{
+  	animation: bounce-in .5s;
 	}
-	.list-enter, .list-leave-active {
-	  opacity: 0;
-	  transition:all 1s;
-		transform: translateY(30px);
-	}*/
+	@keyframes bounce-in {
+		0% {
+			height: 0px;
+		}
+	}
+	@-moz-keyframes bounce-in {
+		0% {
+			height: 0px;
+		}
+	}
+	@-webkit-keyframes bounce-in {
+		0% {
+			height: 0px;
+		}
+	}
+	@-o-keyframes bounce-in {
+		0% {
+			height: 0px;
+		}
+	}
+.newWinner ul li:last-child{
+	margin-bottom: 0px;
+}
 </style>

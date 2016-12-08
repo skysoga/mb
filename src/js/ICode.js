@@ -82,7 +82,7 @@ export default{
       this.ArrIndex=index
       this.ArrNum=num
       var vm=this
-      var Arr={Action:"GetRebateInfo",InviteCode:num};
+      var Arr={Action:"GetRebateInfo",InviteCode:num}
       if(vm.CodeInit[num]){
         vm.setString(vm.CodeInit[num])
       }else{
@@ -98,11 +98,11 @@ export default{
     },
     delData(Num){
       var vm=this
-      var Arr={Action:"DelInviteUrl",InviteCode:Num};
+      var Arr={Action:"DelInviteUrl",InviteCode:Num}
       _fetch(Arr).then(json=>{
         if(json.Code==1){
-          this.ArrList.splice(vm.ArrIndex,1)
-          if(!this.ArrList)this.data_count=0;
+          vm.ArrList.splice(vm.ArrIndex,1)
+          vm.data_count=vm.ArrList.length
         }else{
           layer.msgWarn(json.StrCode)
         }
