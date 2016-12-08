@@ -1,3 +1,6 @@
+window.rem = document.body.clientWidth/16;
+window.em = Math.sqrt((rem-20)*.9)+20;
+document.write("<style>html{font-size:"+rem+"px;}body{font-size:"+em+"px;}</style>");
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
@@ -11,13 +14,13 @@ Vue.use(VueRouter)
 Vue.use(Vuex)
 
 const _AJAXUrl = '/tools/ssc_ajax.ashx'
-const router = new VueRouter({
+window.router = new VueRouter({
 	routes,
 	mode:'history',
 	linkActiveClass:"on",
 	// exact: true
 });
-var needVerify=0
+var needVerify=sessionStorage.getItem("needVerify")||0
 
 var UserArr=[
 	'UserHasSafePwd', //返回是否已经设置安全密码,1为有,0为没有设置
@@ -278,13 +281,17 @@ window.RootApp = new Vue({
   layer.msgWait=function(msg,time) {
     return this.open({time:  time?time-1:0,content: layer.icon.load+msg+"，请稍候...", shadeClose:0 ,className:'layermsg'});
   },
-  layer.url=function(msg,str) {
+  layer.url=function(msg,s) {
     return layer.open({
       className: "layerConfirm",
       content: msg,
       btn: ["确定"],
       end:function(){
-      	RootApp.$router.push(str)
+      	if (typeof(str)=='string') {
+      		router.push(s)
+      	}else{
+      		router.go(s)
+      	}
       }
     })
   },
@@ -308,12 +315,12 @@ router.beforeEach((to, from, next) => {
 router.afterEach((to, from) => {
 	state.turning=false
 	layer.closeAll()
-	needVerify++
-	console.log(needVerify);
-	if (needVerify>5) {
+	if (needVerify%5==0) {
 		needVerify=0
-		RootApp.GetInitData(["CloudUrl"])
+		RootApp.AjaxGetInitData(["CloudUrl"])
 	}
+	needVerify++
+	sessionStorage.setItem("needVerify",needVerify)
 });
 
 //全局过滤器
