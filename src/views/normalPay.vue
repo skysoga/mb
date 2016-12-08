@@ -144,7 +144,7 @@ export default{
 
     RootApp.AjaxGetInitData([rechargeWay], state=>{
 			if(shouldCheck.indexOf(method) > -1){
-				var PayType = state[rechargeWay][0].PayType
+				var PayType = state[rechargeWay]&&state[rechargeWay][0].PayType
 				//假如充值方式为快捷充值了，就跳转至快捷充值
 				if(PayType !== '一般'){
 					RootApp.$router.push('/quickPay?method=' + method)

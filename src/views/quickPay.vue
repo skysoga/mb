@@ -19,6 +19,9 @@
     <div class="fullPageIcon iconfont">&#xe626;</div>
     <p>{{pageName}}维护中···<br/>请使用其他充值方式！</p>
   </div>
+  <div v-if="QrImg" style="position: absolute;overflow-x: hidden;z-index: 5; background: rgb(255, 255, 255); width: 100%; height: 100%; overflow-y: scroll; top: 0px; left: 0px;">
+    <iframe :src="QrImg" frameborder="0" style="position: relative; margin-left: 160px; width: 1000px; height: 100%; margin-top: 0px; left: -500px;"></iframe>
+  </div>
 </div>
 </template>
 
@@ -36,7 +39,7 @@ export default {
 		//获取数据
 		RootApp.AjaxGetInitData([rechargeWay], state=>{
 			//如果数据不对要跳到普通充值去
-			var PayType = state[rechargeWay][0].PayType
+			var PayType = state[rechargeWay]&&state[rechargeWay][0].PayType
 			if(PayType === '一般'){
 				RootApp.$router.push('/normalPay?method=' + method)
 			}
@@ -58,7 +61,9 @@ export default {
 			method: '',								//什么充值方式
 			pageName: '',							//维护的名字
 			underMaintain: false,			//是否维护
-
+      QrImg:'',
+      BankCode:'',
+      styleObject:'',
 			//当前
 			nowRender:{},
 			limit:'',
@@ -77,6 +82,7 @@ export default {
 	},
 	created (){
 		var method = this.$route.query.method 			//'Bank', 'Weixin', 'Alipay'
+    console.log(method)
 		this.method = method
 		var rechargeWay = 'RechargeWay' + method
 		var limitName = {
@@ -100,6 +106,7 @@ export default {
 	},
 	methods:{
 		$vaSubmit () {
+      var vm=this
 			//ajax数据
 			var ajax = {
 				//微信支付
@@ -121,16 +128,18 @@ export default {
 					BankCode:0
 				}
 			}
-
 			var nowAjax = ajax[this.method]
 			nowAjax.Money = this.vaVal.Money
 			nowAjax.ID = this.nowRender.Id
-			nowAjax.BankCode = this.nowRender.PayType
+			nowAjax.BankCode =this.nowRender.PayType
+      this.BankCode=this.nowRender.PayType
 
 			_fetch(nowAjax).then((json)=>{
     		this.Money = ''
     		if(json.Code === 1){
+          console.log(json)
 					layer.msgWarn(json.StrCode);
+          this.QrImg=json.BackUrl
     		}else{
     			layer.msgWarn(json.StrCode);
     		}
