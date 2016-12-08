@@ -18,9 +18,12 @@
           <img class="img" :src="imgServer + '/../system/common/bank/pay/weixin.png'">
           <div class="text">
             <strong>微信支付</strong>
-            <p>
+            <p v-if="!weixMsg">
               单笔最低<ins>{{wechatType === '一般' ? payLimit['微信支付'][0]: payLimit['微信快捷'][0] | num}}</ins>元，
                   最高<ins>{{wechatType === '一般' ? payLimit['微信支付'][1]: payLimit['微信快捷'][1] | num}}</ins>元。
+            </p>
+            <p v-else>
+            {{weixMsg}}
             </p>
           </div>
           <i class="iconfont right fr"></i>
@@ -56,6 +59,7 @@ export default {
 			wechatType: '一般',
 			aliType: '一般',
 			payLimit:{},
+      weixMsg:'',
       aliMsg:''
 		}
 	},
@@ -67,7 +71,12 @@ export default {
 
   created () {
     let state = this.$store.state
-    this.wechatType = state.RechargeWayWeixin[0].PayType || '一般'
+    if(state.RechargeWayWeixin){
+      this.weixMsg=false
+      this.wechatType = state.RechargeWayWeixin[0].PayType || '一般'
+    }else{
+      this.weixMsg="微信支付维护中..."
+    }
     if(state.RechargeWayAlipay){
       this.aliMsg=false
       this.aliType = state.RechargeWayAlipay[0].PayType || '一般'
