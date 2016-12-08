@@ -38,7 +38,6 @@
       },
       getServerTime(){
           var isTime=new Date(new Date().getTime()- store.state.Difftime)
-          console.log(isTime)
           var Hours=isTime.getHours()
           var Minute=isTime.getMinutes()
           if(Hours==0&&Minute<20){
