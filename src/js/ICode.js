@@ -101,8 +101,8 @@ export default{
       var Arr={Action:"DelInviteUrl",InviteCode:Num};
       _fetch(Arr).then(json=>{
         if(json.Code==1){
-          this.ArrList.splice(vm.ArrIndex,1)
-          if(!this.ArrList)this.data_count=0;
+          vm.ArrList.splice(vm.ArrIndex,1)
+          vm.data_count=vm.ArrList.length
         }else{
           layer.msgWarn(json.StrCode)
         }
