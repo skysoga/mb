@@ -1,25 +1,27 @@
 export default {
   data(){
     return{
-      Phone:"",
+      Mobile:"",
       SmsCode:"",
       reTime:'发送验证码',
       noDo:true,
       toMsg:true
     }
   },
+  beforeRouteEnter(to,from,next){
+    var F=sessionStorage.getItem('isFind')
+    var U=localStorage.getItem('UserName')
+    if(!(U||F)){
+      RootApp.$router.push('/login')
+    }
+    next()
+  },
   methods:{
-    postBtn(){
+    $vaSubmit(){
       var $root=this.$root
       var ajax = {
-        Mobile: this.Phone,
+        Mobile: this.Mobile,
         SmsCode:this.SmsCode
-      }
-      var _FomatC=this.$store.state._FomatConfig
-      var err = $root.format(ajax, ['Mobile','SmsCode'], _FomatC);
-      if (err) {
-        layer.msgWarn(err[1]);
-        return;
       }
       ajax.Action="VerifyMobile"
       var F=sessionStorage.getItem('isFind')
@@ -41,27 +43,10 @@ export default {
     },
     postMsg(){
       let vm=this
-      if(!this.Phone){
-        layer.msgWarn('请先输入手机号')
-        this.SmsCode=""
-        return;
-      }
       let ajax={
-        Mobile:this.Phone,
+        Mobile:this.Mobile,
       }
       if(!vm.toMsg){return};
-      var selfCheck = {
-        Mobile:{
-          Name: '手机号',
-          Reg: /^1[3|5|8]\d{9}$/,
-          ErrMsg:"手机号为11位！"
-        }
-      }
-      var err = vm.$root.format(ajax, ['Mobile'], selfCheck);
-      if (err) {
-        layer.msgWarn(err[1]);
-        return;
-      }
       this.toMsg=false
       this.noDo=false
       ajax.Action="SendMobileCode"

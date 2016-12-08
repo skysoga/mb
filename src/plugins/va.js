@@ -15,6 +15,13 @@ function unique(arr){
 	return newArr;
 }
 
+function addClass(dom, _class){
+	var hasClass = !!dom.className.match(new RegExp('(\\s|^)' + _class + '(\\s|$)'))
+	if(!hasClass){
+		dom.className += ' ' + _class
+	}
+}
+
 //校验函数
 function check(v, conditions){
 	var res = 0;										//0代表OK, 若为数组代表是某个字段的错误
@@ -39,8 +46,8 @@ function check(v, conditions){
 			}
 			return (_target.value === v) ? 0 : ['equal', _target.getAttribute('tag')]
 		},
-		unique:(v, name)=>{
-			var _list = document.getElementsByName(name),
+		unique:(v)=>{
+			var _list = document.getElementsByClassName('unique'),
 					valList = [].map.call(_list, item=>item.value)
 			return (unique(valList).length === valList.length) ? 0 : ['unique']
 		}
@@ -53,6 +60,7 @@ function check(v, conditions){
 		res = cfg[type](v, typeVal)
 		// console.log(res, v, type,typeVal)
 		//如果有自定义报错信息， 返回自定义的报错信息
+    console.log(res)
 		if(res){
 			res = condi.errMsg || res
 			break
@@ -150,6 +158,7 @@ va.install = function(Vue, options){
 
 	  	el.className = 'va' + vm._uid
 	  	el.name = name
+
 	  	vm.vaConfig || (vm.vaConfig = {})
 	  	var NON_VOID = eazyNew('nonvoid', true)
 
@@ -212,6 +221,9 @@ va.install = function(Vue, options){
 			  	if(type === 'reg'){
 			  		return regNew(item[type])
 			  	}else{
+			  		if(type === 'unique'){
+			  			addClass(el, 'unique')
+			  		}
 			  		return eazyNew(type, item[type])
 			  	}
 		  	})
@@ -220,7 +232,6 @@ va.install = function(Vue, options){
 	  	//规则由 默认规则 + 修饰符规则 + 写在属性的自定义规则 + 用户直接加到vm.vaConfig里的规则 合并（后面的同type规则会覆盖前面的）
 	  	vm.vaConfig[name] || (vm.vaConfig[name] = [])
 	  	vm.vaConfig[name] = baseCfg.uConcat(optionalConfig).uConcat(customConfig).uConcat(vm.vaConfig[name])
-	  	console.log(vm.vaConfig)
 	  },
 	})
 
@@ -270,6 +281,7 @@ va.install = function(Vue, options){
 
 				var _result = check(value, conditions)
 				//如果返回不为0，则有报错
+        console.log(_result)
 				if(_result){
 					//如果返回的是字符串，则为自定义报错； 如果是数组，则使用showErr 报错
 					typeof _result === 'string' ? layer.msgWarn(_result) : showErr(conditions[0].tag, _result)

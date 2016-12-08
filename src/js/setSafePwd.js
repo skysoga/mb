@@ -6,23 +6,22 @@ export default {
       isOrUrl:""
     }
   },
-  created(){
-    this.isOrUrl=this.$route.query.Q
+  beforeRouteEnter(to,from,next){
+    var F=sessionStorage.getItem('isFind')
+    var U=localStorage.getItem('UserName')
+    if(!(U||F)){
+      RootApp.$router.push('/login')
+    }
+    next(vm=>{
+      vm.isOrUrl=RootApp.$router.query.Q
+    })
   },
    methods:{
-    postBtn(){
+    $vaSubmit(){
       var vm=this
       var ajax = {
-        Password: this.Password,
-        checkPassword:this.checkPassword
+        Password: this.Password
       }
-      var _FomatC=this.$store.state._FomatConfig
-      var err = vm.$root.format(ajax, ['Password','checkPassword'], _FomatC);
-      if (err) {
-        layer.msgWarn(err[1]);
-        return;
-      }
-      delete ajax.checkPassword;
       ajax.Action="SetSafePass"
       var F=sessionStorage.getItem('isFind')
       if(F){
@@ -42,19 +41,19 @@ export default {
                   btn: ["是","否"],
                   yes:function(){
                     vm.upPwd(function(){
-                      vm.$root.$router.push('/setBankcard?Q='+vm.isOrUrl)
+                      RootApp.$router.push('/setBankcard?Q='+vm.isOrUrl)
                     })
                   },
                   no:function(){
                     vm.upPwd(function(){
-                      vm.$root.$router.push('/securityCenter')
+                      RootApp.$router.push('/securityCenter')
                     })
                   }
                 })
               break;
               default:
                 vm.upPwd(function(){
-                  vm.$root.$router.push('/securityCenter')
+                  RootApp.$router.push('/securityCenter')
                 })
               break;
             }

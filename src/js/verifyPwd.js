@@ -4,17 +4,18 @@ export default {
       Password:""
     }
   },
+  created(){
+    var F=sessionStorage.getItem('isFind')
+    var U=localStorage.getItem('UserName')
+    if(!(U||F)){
+      RootApp.$router.push('/login')
+    }
+  },
   methods:{
-    postBtn(){
+    $vaSubmit(){
       var $root=this.$root
       var ajax = {
         Password: this.Password
-      }
-      var _FomatC=this.$store.state._FomatConfig
-      var err = this.$root.format(ajax, ['Password'], _FomatC);
-      if (err) {
-        layer.msgWarn(err[1]);
-        return;
       }
       ajax.Action="verifyPass";
       var F=sessionStorage.getItem('isFind')

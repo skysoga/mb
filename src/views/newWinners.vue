@@ -2,7 +2,7 @@
 	<div class="newWinner" ref="div">
     <ul ref="ul">
 			 <transition-group name="list">
-				 <li :data-thisid="item.Id" class="active" v-for="item in bonu_list_data2"  @click="jump(item.Id)" :key='item'>
+				 <li :data-thisid="item.UserId" class="active" v-for="item in bonu_list_data2"  @click="jump(item.UserId)" :key='item'>
 					 <div>
 						 <a class="headImg" href="#">
 							 <img :src="$store.getters.PhotoPath+item.UserPhoto" alt="">
@@ -15,7 +15,7 @@
 					 </div>
 				 </li>
 			 </transition-group>
-				<li :data-thisid="item.Id" class="active" v-for="item in bonu_list_data"  @click="jump(item.Id)">
+				<li :data-thisid="item.UserId" class="active" v-for="item in bonu_list_data"  @click="jump(item.UserId)">
 					<div>
 						<a class="headImg" href="#">
 							<img :src="$store.getters.PhotoPath+item.UserPhoto" alt="">
@@ -81,13 +81,13 @@
 					setTimeout(() => {
 						if (s >= h) {
 							this.bonu_list_data2.unshift(item)
-							this.$refs.ul.top=0+"px"
+							this.$el.childNodes[0].top=0
 							s = 0;
 							return;
 						} else {
 							s = s + perH;
 							//ulBody.css('top', s + 'px')
-							this.$refs.ul.top = s + "px"
+							this.$el.childNodes[0].top=s+"px"
 							this.transitionShow(h, t, n, item)
 						}
 					}, perT)
@@ -106,7 +106,7 @@
 			},
 			jump:function(id){
         let router=this.$router
-        router.push({ path: 'playerHome',query:{ID:id}})
+        router.push({ path: '/playerHome',query:{ID:id}})
       }
 		},
 		created() {
@@ -160,30 +160,6 @@
 			height: 0px;
 		}
 	}
-	// .list-enter{
-	// 	animation: bounce-in .5s;
-	// }
-
-	// @keyframes bounce-out {
-	// 	100% {
-	// 		height: 0px;
-	// 	}
-	// }
-	// @-moz-keyframes bounce-out {
-	// 	0% {
-	// 		height: 0px;
-	// 	}
-	// }
-	// @-webkit-keyframes bounce-out {
-	// 	0% {
-	// 		height: 0px;
-	// 	}
-	// }
-	// @-o-keyframes bounce-out {
-	// 	0% {
-	// 		height: 0px;
-	// 	}
-	// }
 .newWinner ul li[data-v-43fd5709]:last-child{
 	margin-bottom: 0px;
 }

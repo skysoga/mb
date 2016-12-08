@@ -5,26 +5,28 @@ export default {
       GradeList:'',
       UnClick:true,
       ClickMsg:'',
-      Login:'',
       isBouns:'',
       Img:'',
       noimg:false
     }
   },
+  beforeRouteEnter(to,from,next){
+    var arr = ["ActivityConfig","GradeList","UserUpGradeBonus"];
+    RootApp.GetInitData(arr,ref=>{
+      next()
+    })
+  },
   created:function(){
-    var arr = ["ActivityConfig","Login","GradeList","UserUpGradeBonus"];
-    this.$root.GetInitData(arr)
     var xname='晋级奖励'
-    var dataArr=this.$store.state.ActivityConfig
-    this.GradeList=this.$store.state.GradeList
-    this.isBouns=this.$store.state.UserUpGradeBonus
+    var dataArr=store.state.ActivityConfig
+    this.GradeList=store.state.GradeList
+    this.isBouns=store.state.UserUpGradeBonus
     var thState=-1
     if(this.isBouns){
-      thState=this.isBouns.State
+      thState=this.isBouns.State||-1
     }
     this.UnClick=thState!=0?true:false
     this.ClickMsg=thState==0?'立即领取':thState==1?'已领取':'不可领取'
-    this.Login=state.Login==null&&true
     for(var i=0;i<dataArr.length;i++){
       if(dataArr[i].Name==decodeURIComponent(xname)){
         this.Content=dataArr[i].Content

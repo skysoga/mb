@@ -5,6 +5,7 @@ import { mapState } from 'vuex'
 import App from './App'
 import routes from './routes/routes'
 import Va from './plugins/va'
+import {GMT_DIF} from './JSconfig'
 Vue.use(Va)
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -69,7 +70,6 @@ window.store = new Vuex.Store({
   getters:{
   	PhotoPath:state=>state.constant.ImgHost+state.constant.PhotoPath,
   	WithdrwHtml:state=>{
-  		//判断提现去处的逻辑写在这里
   		return "login"
   	},
   	PayLimit: state => {
@@ -102,20 +102,19 @@ window.store = new Vuex.Store({
   			state[arr[i]]=null
   		}
   	},
-  }
+    setDifftime:(state, SerTime)=>{
+      var Difftime = new Date().getTime()- SerTime
+      state.Difftime = Difftime
+      localStorage.setItem('Difftime',Difftime)
+      console.log('获取了时间：'  + Difftime, SerTime)
+    }
+  },
 })
 
 window.RootApp = new Vue({
 	el: '#app',
 	store,
 	router,
-  created(){
-    // if (!localStorage.getItem('Difftime')) {
-    //     getServerTime(function(serTime){
-    //         localStorage.setItem('Difftime',new Date().getTime()-serTime+GMTdif);
-    //     });
-    // }
-  },
 	watch: {
 		$route(to,from){
 			// console.log("监听路由已经变化");
@@ -125,6 +124,7 @@ window.RootApp = new Vue({
 	methods:{
     Logout:function(){
       store.commit('ClearInitData', UserArr)
+      sessionStorage.clear()
     },
 		Login:function(UserName,fun){
 			this.GetInitData(UserArr,fun)
@@ -237,28 +237,37 @@ window.RootApp = new Vue({
 
 			return false;
 		},
-		obj2Formdata:function(obj){
-			var str=[],k;
-			for(var i in obj){
-				k=obj[i];
-				if (typeof(k)==="object") {
-					k=JSON.stringify(k);
-				}
-				str.push(i+'='+k);
-			}
-			return str.join('&');
-		}
+    getServerTime: (function(){
+      var cantGetTime = 0
+      return function(fun){
+        _fetch({Action: "GetServerTimeMillisecond"}).then((json)=>{
+          if(json.Code === 1) {
+            var SerTime = json.Data
+            store.commit('setDifftime', SerTime)
+            fun && fun()
+          }else{
+            cantGetTime++;
+            if(cantGetTime > 4) {
+              layer.msgWarn("因无法同步服务器时间,您将无法投注,请检查网络情况")
+            }else{
+              getServerTime();
+            }
+          }
+        })
+      }
+    })()
 	},
-
 	render: h => h(App),
 });
 
 router.beforeEach((to, from, next) => {
-  layer.open({type: 2});
+  // layer.open({type: 2});
+  state.turning=true
 	next();
 });
 
 router.afterEach((to, from) => {
+	state.turning=false
 	layer.closeAll()
 	needVerify++
 	console.log(needVerify);
@@ -293,7 +302,9 @@ document.addEventListener('copy', function(e){
 })
 
 
-window._fetch=function (data){
+window._fetch = _fetch
+
+function _fetch(data){
 	var str=[],k;
 	for(var i in data){
 		k=data[i];
@@ -312,6 +323,7 @@ window._fetch=function (data){
 		  },
 		  body: data
 		}).then((res)=>{
+			// console.log(new Date(res.headers.get('Date')).getTime())
 			res.json().then(json=>{
 				if (json.Code==0) {
 					console.log(RootApp.$routes);
@@ -321,8 +333,9 @@ window._fetch=function (data){
 		})
 	})
 }
+
 // 获取图形码接口专用
-window._fetchT=function (data){
+window._fetchT=function _fetchT(data){
   var str=[],k;
   for(var i in data){
     k=data[i];
@@ -341,12 +354,40 @@ window._fetchT=function (data){
       },
       body: data
     }).then((res)=>{
+
       res.text().then(text=>{
         if (text.Code==0) {
-          console.log(interviewApp.$routes);
         }
         resolve(text)
       })
     })
   })
+}
+
+
+/**
+ * [format 为Date对象追加format方法]
+ * @param  {[string]} format [设置要输出的目标格式 如"yyyy-MM-dd hh:mm:ss" ]
+ * @return {[string]}        [按格式输出的时间字符串]
+ * 示例console.log(new Date().format("yyyyMd hh:mm:ss")) 输出2016816 14:12:17;
+ */
+Date.prototype.format = function(format) {
+  var date = {
+  "M+": this.getMonth() + 1,
+  "d+": this.getDate(),
+  "h+": this.getHours(),
+  "m+": this.getMinutes(),
+  "s+": this.getSeconds(),
+  "q+": Math.floor((this.getMonth() + 3) / 3),
+  "S+": this.getMilliseconds()
+  };
+  if (/(y+)/i.test(format)) {
+  format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
+  }
+  for (var k in date) {
+  if (new RegExp("(" + k + ")").test(format)) {
+    format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
+  }
+  }
+  return format;
 }

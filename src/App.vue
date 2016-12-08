@@ -4,7 +4,7 @@
     <transition name="fade"  mode="out-in">
       <router-view></router-view>
     </transition>
-    <navbar v-show="$route.meta.nav"></navbar>
+    <navbar v-show="$route.matched[0].meta.nav"></navbar>
   </div>
 </template>
 

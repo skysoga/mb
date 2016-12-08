@@ -10,33 +10,38 @@ export default {
       answer3:""
     }
   },
+  beforeRouteEnter(to,from,next){
+    var F=sessionStorage.getItem('isFind')
+    var U=localStorage.getItem('UserName')
+    if(!(U||F)){
+      RootApp.$router.push('/login')
+    }
+    next()
+  },
   created(){
     var arr = ["SafeQuestionList"];
     var vm=this
-     this.$root.GetInitData(arr,State=>{
+     RootApp.GetInitData(arr,State=>{
       vm.Questions=State.SafeQuestionList
      })
   },
+  mounted(){
+    var vm = this
+    // 替换验证错误信息
+    for(var config in vm.vaConfig){
+      vm.vaConfig[config].map(function(item){
+        if(item.type === 'unique'){
+          item.errMsg = '请勿选择相同的问题'
+        }
+      })
+    }
+  },
   methods:{
-    postBtn(){
-      var $root=this.$root
+    $vaSubmit(){
       var ajax = {
         Answer1:this.answer1,
         Answer2:this.answer2,
         Answer3:this.answer3
-      }
-
-      if(!this.question1||!this.question2||!this.question3){
-        layer.msgWarn('请选择问题');
-        return;
-      }
-      if(this.OddGet()!=3){
-        layer.msgWarn('请勿选择相同的问题');
-        return;
-      }
-      if(!this.answer1||!this.answer2||!this.answer3){
-        layer.msgWarn('您还有信息未填写');
-        return;
       }
       ajax.Action="SetQuestion"
       var F=sessionStorage.getItem('isFind')
@@ -53,8 +58,8 @@ export default {
       _fetch(ajax).then((json)=>{
           if(json.Code===1) {
             layer.msgWarn(json.StrCode)
-            $root.AjaxGetInitData(["UserSafeQuestions"],function(){
-              $root.$router.push('/securityCenter')
+            RootApp.AjaxGetInitData(["UserSafeQuestions"],function(){
+              RootApp.$router.push('/securityCenter')
             })
           }else{
             layer.msgWarn(json.StrCode)

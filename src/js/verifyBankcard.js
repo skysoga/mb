@@ -7,7 +7,6 @@ export default {
   },
   methods:{
     $vaSubmit(){
-      var vm=this
       var arr={Action:"FirstCardVerify"}
           arr.BankNum=this.BankNum
           arr.RealName=this.RealName
@@ -15,7 +14,7 @@ export default {
           _fetch(arr).then(json=>{
               if(json.Code==1){
                 layer.msgWarn(json.StrCode)
-                vm.$router.push('/setBankcard')
+                RootApp.$router.push('/setBankcard')
               }else{
                 layer.msgWarn(json.StrCode)
               }

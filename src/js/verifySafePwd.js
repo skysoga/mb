@@ -7,6 +7,10 @@ export default {
   },
   beforeRouteEnter:(to,from,next)=>{
     var F=sessionStorage.getItem('isFind')
+    var U=localStorage.getItem('UserName')
+    if(!(U||F)){
+      RootApp.$router.push('/login')
+    }
     if(F){
       to.meta.link="/resetWay?Q=ResetPwd"
     }
@@ -17,16 +21,10 @@ export default {
     if(Q){this.nextUrl=Q.substr(2)}
   },
   methods:{
-    postBtn(){
+    $vaSubmit(){
       var vm=this
       var ajax = {
         Password: this.Password
-      }
-      var _FomatC=this.$store.state._FomatConfig
-      var err = this.$root.format(ajax, ['Password'], _FomatC);
-      if (err) {
-        layer.msgWarn(err[1]);
-        return;
       }
       ajax.Action="VerifySafePwd";
       var F=sessionStorage.getItem('isFind')

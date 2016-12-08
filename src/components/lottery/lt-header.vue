@@ -128,7 +128,7 @@
 						this.LotteryName = item.LotteryName
 					}
 				})
-				this.$store.commit('lt_changeLottery', code)
+				this.$store.dispatch('lt_updateLottery', code)
 				this.$store.commit('lt_changeBox', '')
 			},
 			//玩法选择框，切换

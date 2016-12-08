@@ -11,6 +11,10 @@ export default {
   },
   beforeRouteEnter:(to,from,next)=>{
     var F=sessionStorage.getItem('isFind')
+    var U=localStorage.getItem('UserName')
+    if(!(U||F)){
+      RootApp.$router.push('/login')
+    }
     if(F){
       to.meta.link="/resetWay?Q=ResetPwd"
     }
@@ -26,17 +30,11 @@ export default {
      })
   },
   methods:{
-    postBtn(){
+    $vaSubmit(){
       var vm=this
       var ajax = {
         Mail: 0,
         MailCode:this.MailCode
-      }
-      var _FomatC=this.$store.state._FomatConfig
-      var err = vm.$root.format(ajax, ['MailCode'], _FomatC);
-      if (err) {
-        layer.msgWarn(err[1]);
-        return;
       }
       ajax.Action="VerifyMail"
       var F=sessionStorage.getItem('isFind')

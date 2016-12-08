@@ -63,7 +63,7 @@ var routes = [{
   name: "玩家详情",
   meta: {
     title: "玩家信息",
-    link: "/newWinners"
+    link: "/center"
   },
   component: playerHome
 },{
@@ -161,34 +161,6 @@ var routes = [{
       },
       component:newWinners
     }]
-}**/,{
-path: "/newWinners",
-name: "发现",
-meta: {
-  titleList: [{
-    title: "中奖信息",
-    to: "/newWinners"
-  }, {
-    title: "昨日奖金榜",
-    to: "/competition"
-  }],
-  nav:1
-},
-component: newWinners
-},{
-  path: "/competition",
-  name: "昨日奖金榜",
-  meta: {
-    titleList: [{
-      title: "中奖信息",
-      to: "/newWinners"
-    }, {
-      title: "昨日奖金榜",
-      to: "/competition"
-    }],
-    nav:1
-  },
-  component: competition
-}]
+}**/]
 
 module.exports = routes;

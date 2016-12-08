@@ -1,7 +1,7 @@
 export default {
   data(){
     return{
-      Phone:"",
+      Mobile:"",
       SmsCode:"",
       reTime:'发送验证码',
       noDo:true,
@@ -11,6 +11,10 @@ export default {
   },
   beforeRouteEnter:(to,from,next)=>{
     var F=sessionStorage.getItem('isFind')
+    var U=localStorage.getItem('UserName')
+    if(!(U||F)){
+      RootApp.$router.push('/login')
+    }
     if(F){
       to.meta.link="/resetWay?Q=ResetPwd"
     }
@@ -22,21 +26,15 @@ export default {
     var vm=this
     var arr = ["UserMobile"];
      this.$root.GetInitData(arr,state=>{
-      vm.Phone=state.UserMobile
+      vm.Mobile=state.UserMobile
      })
   },
   methods:{
-    postBtn(){
+    $vaSubmit(){
       var vm=this
       var ajax = {
         Mobile: 0,
         SmsCode:this.SmsCode
-      }
-      var _FomatC=this.$store.state._FomatConfig
-      var err = vm.$root.format(ajax, ['SmsCode'], _FomatC);
-      if (err) {
-        layer.msgWarn(err[1]);
-        return;
       }
       ajax.Action="VerifyMobile"
       var F=sessionStorage.getItem('isFind')
@@ -63,7 +61,7 @@ export default {
       this.noDo=false
       let ajax={
         Action:"SendMobileCode",
-        Mobile:this.Phone,
+        Mobile:this.Mobile,
       }
       layer.msgWait("正在发送")
       _fetch(ajax).then((json)=>{

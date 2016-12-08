@@ -54,17 +54,20 @@
         }
       }
     },
-    created(){
-      _fetch({Action:"GetCard",UserId:this.$route.query.ID}).then((data)=>{
-        if(data.Code===1){
-          this.initData=data.BackData
-          if (data.BackData.LotteryType) {
-            let typeArr=data.BackData.LotteryType.split(",")
-            this.sort_lotteryType(typeArr)
+    beforeRouteEnter(to,from,next){
+      console.log(from.path)
+      _fetch({Action:"GetCard",UserId:to.query.ID}).then((data)=>{
+        next(vm=>{
+          if(data.Code===1){
+            vm.initData=data.BackData
+            if (data.BackData.LotteryType) {
+              let typeArr=data.BackData.LotteryType.split(",")
+              vm.sort_lotteryType(typeArr)
+            }
+          }else {
+            layer.msgWarn(data.StrCode)
           }
-        }else {
-          layer.msgWarn(data.StrCode)
-        }
+        })
       })
     }
   }
