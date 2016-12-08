@@ -260,6 +260,45 @@ window.RootApp = new Vue({
 	render: h => h(App),
 });
 
+;(function(){
+	var warn = '<span class="iconfont">&#xe606;</span>',
+	  tip='<span class="iconfont">&#xe610;</span>'
+  layer.icon={}
+  layer.icon.load=state.tpl.load
+
+	layer.msg=function(msg, time) {
+    return this.open({ content: msg, time: time?time-1:3,style: 'fill:#ececec',className:'layermsg'});
+  }
+  layer.msgWarn=function(msg, time) {
+    return this.msg(warn+msg,time);
+  },
+  layer.msgTip=function(msg, time) {
+    return this.msg(tip+msg,time);
+  },
+  layer.msgWait=function(msg,time) {
+    return this.open({time:  time?time-1:0,content: layer.icon.load+msg+"，请稍候...", shadeClose:0 ,className:'layermsg'});
+  },
+  layer.url=function(msg,str) {
+    return layer.open({
+      className: "layerConfirm",
+      content: msg,
+      btn: ["确定"],
+      end:function(){
+      	RootApp.$router.push(str)
+      }
+    })
+  },
+  layer.alert=function(msg,fun){
+    return layer.open({
+      className: "layerConfirm",
+      shadeClose: false,
+      content: msg,
+      btn: ["确定"],
+      end:fun
+    })
+  }
+})()
+
 router.beforeEach((to, from, next) => {
   // layer.open({type: 2});
   state.turning=true
