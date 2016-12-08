@@ -18,7 +18,7 @@
 </template>
 
 <script type="text/javascript">
-import {GMT_DIF} from '../JSconfig'
+//import {GMT_DIF} from '../JSconfig'//-GMT_DIF 用于时差修正
   export default{
     data(){
       return {
@@ -27,21 +27,25 @@ import {GMT_DIF} from '../JSconfig'
       }
     },
     beforeRouteEnter(to,from,next){
-      var isTime=new Date(new Date().getTime()- store.state.Difftime - GMT_DIF)
-      var Hours=isTime.getHours()
-      var Minute=isTime.getMinutes()
-      next(vm=>{
-        if(Hours==0&&Minute<20){
-          vm.serverTime=true
-        }else{
-          vm.serverTime=false
-        }
+      next(ref=>{
+        ref.getServerTime()
       })
     },
     methods:{
       jump:function(id){
         let router=this.$router
         router.push({ path: '/playerHome',query:{ID:id}})
+      },
+      getServerTime(){
+          var isTime=new Date(new Date().getTime()- store.state.Difftime)
+          console.log(isTime)
+          var Hours=isTime.getHours()
+          var Minute=isTime.getMinutes()
+          if(Hours==0&&Minute<20){
+            this.serverTime=true
+          }else{
+            this.serverTime=false
+          }
       }
     },
     created(){
