@@ -62,8 +62,6 @@ export default {
 			pageName: '',							//维护的名字
 			underMaintain: false,			//是否维护
       QrImg:'',
-      BankCode:'',
-      styleObject:'',
 			//当前
 			nowRender:{},
 			limit:'',
@@ -82,7 +80,6 @@ export default {
 	},
 	created (){
 		var method = this.$route.query.method 			//'Bank', 'Weixin', 'Alipay'
-    console.log(method)
 		this.method = method
 		var rechargeWay = 'RechargeWay' + method
 		var limitName = {
@@ -132,12 +129,10 @@ export default {
 			nowAjax.Money = this.vaVal.Money
 			nowAjax.ID = this.nowRender.Id
 			nowAjax.BankCode =this.nowRender.PayType
-      this.BankCode=this.nowRender.PayType
 
 			_fetch(nowAjax).then((json)=>{
     		this.Money = ''
     		if(json.Code === 1){
-          console.log(json)
 					layer.msgWarn(json.StrCode);
           this.QrImg=json.BackUrl
     		}else{

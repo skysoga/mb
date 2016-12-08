@@ -157,7 +157,6 @@ export default{
 					vm.underMaintain = true
 					return
 				}
-				console.log(state[rechargeWay])
 				//有快捷支付的要检验下，如果数据不对要跳到快捷充值去
 
 				vm.underMaintain = false
