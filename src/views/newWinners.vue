@@ -91,7 +91,7 @@
 			},
 			jump:function(id){
         let router=this.$router
-        router.push({ path: 'playerHome',query:{ID:id}})
+        router.push({ path: '/playerHome',query:{ID:id}})
       }
 		},
 		created() {

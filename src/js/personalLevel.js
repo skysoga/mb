@@ -20,11 +20,9 @@ export default {
     getPerLong(num){
       var Obj=this.$store.state.GradeList[num].GradeGrow
       var minObj=this.$store.state.GradeList[num-1].GradeGrow
-      console.log(this.perVal)
       this.perVal=parseInt(((this.UserGradeGrow||minObj)-minObj)/(Obj-minObj)*100)+'%'
       this.upGrow=Obj-this.UserGradeGrow
       this.GradeName=this.$store.state.GradeList[num-1].GradeName
-      console.log(this.perVal)
     }
   }
 }

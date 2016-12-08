@@ -124,6 +124,7 @@ window.RootApp = new Vue({
 	methods:{
     Logout:function(){
       store.commit('ClearInitData', UserArr)
+      sessionStorage.clear()
     },
 		Login:function(UserName,fun){
 			this.GetInitData(UserArr,fun)

@@ -10,13 +10,17 @@ export default {
       noimg:false
     }
   },
-  created:function(){
+  beforeRouteEnter(to,from,next){
     var arr = ["ActivityConfig","GradeList","UserUpGradeBonus"];
-    this.$root.GetInitData(arr)
+    RootApp.GetInitData(arr,ref=>{
+      next()
+    })
+  },
+  created:function(){
     var xname='晋级奖励'
-    var dataArr=this.$store.state.ActivityConfig
-    this.GradeList=this.$store.state.GradeList
-    this.isBouns=this.$store.state.UserUpGradeBonus
+    var dataArr=store.state.ActivityConfig
+    this.GradeList=store.state.GradeList
+    this.isBouns=store.state.UserUpGradeBonus
     var thState=-1
     if(this.isBouns){
       thState=this.isBouns.State||-1

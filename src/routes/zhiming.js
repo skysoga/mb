@@ -4,7 +4,6 @@ const letterDetail = resolve => require(['../views/letterDetail'], resolve)
 const Notice = resolve => require(['../views/Notice'], resolve)
 const NoticeDetail = resolve => require(['../views/NoticeDetail'], resolve)
 const playerHome = resolve => require(['../views/playerHome'], resolve)
-const competition = resolve => require(['../views/competition'], resolve)
 const billRecord = resolve => require(['../views/billRecord'], resolve)
 const agentMember = resolve => require(['../views/agentMember'], resolve)
 const lowerReport = resolve => require(['../views/lowerReport'], resolve)
@@ -61,22 +60,9 @@ var routes = [{
   name: "玩家详情",
   meta: {
     title: "玩家信息",
-    link: "/newWinners"
+    link: "/center"
   },
   component: playerHome
-}, {
-  path: '/competition',
-  name: "昨日奖金榜",
-  meta: {
-    titleList: [{
-      title: "中奖信息",
-      to: "/newWinners"
-    }, {
-      title: "昨日奖金榜",
-      to: "/competition"
-    }]
-  },
-  component: competition
 }, {
   path: "/billRecord",
   name: "交易记录",
