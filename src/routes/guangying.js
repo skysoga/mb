@@ -56,12 +56,12 @@ var routes = [
     // },
     children:[
       {
-        path: 'ssc/:code',
+        path: 'SSC/:code',
         name: '时时彩',
         component: lottery_ssc,
       },
       {
-        path: 'k3/:code',
+        path: 'K3/:code',
         name: '快三',
         component: lottery_k3
       }

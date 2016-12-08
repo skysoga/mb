@@ -127,6 +127,11 @@
 				}
 			}
 
+			var pageConfig = {
+				'SSC': lt_ssc,
+				'11X5': lt_11x5
+			}
+
 			var timer1, timer2
 					,wait4Results = 0
 					,wait4BetRecord = false
@@ -153,6 +158,8 @@
 		        VerifyEndTime:'',
 		        VerifyIssue:''
 		      },
+		      Rebate:{},        //返点,根据type而不同
+		      Odds:{},					//奖金,根据type而不同
 		      box:'',           //当前弹出框
 		      config:{},        //在各种彩种页面,
 		      LotteryPlan:[],		//当前彩种的彩种计划
@@ -186,7 +193,7 @@
 		      	 */
 		      },
 		      //变更配置（进入各具体彩种页时，设置）
-		      lt_initConfig:(state, config)=>{state.config = config},
+		      lt_initConfig:(state, config)=>{state.config = pageConfig[state.lottery.LotteryType]},
 		      lt_updateDate:function(state){
 		        var nowSerTime = new Date().getTime()-store.state.Difftime;   //当前的服务器时间
 		        state.Todaystr = new Date(nowSerTime).format("yyyyMMdd");     //今天
@@ -273,7 +280,11 @@
 	      		state.displayResults = bool
 	      	},
 	      	lt_updateTimeBar:(state, text)=>{state.TimeBar = text;},			//倒计时的内容
-	      	lt_setBetRecord:(state, BetRecord)=>{state.BetRecord =BetRecord;console.log(state)}	//投注记录
+	      	lt_setBetRecord:(state, BetRecord)=>{state.BetRecord =BetRecord;},	//投注记录
+	      	lt_setRebate:(state, {rebate, LotteryType})=>{
+	      		Vue.set(state.Rebate, LotteryType, rebate.Rebate)
+	      		Vue.set(state.Odds, LotteryType, rebate.Odds)
+	      	}
 		    },
 
 
@@ -360,7 +371,7 @@
 		      lt_getResults:({state, rootState, commit, dispatch}, code)=>{
 		      	var Results = state.LotteryResults[code] ||[]
 			      		,IssueNo = Results.length?Results[0].IssueNo:0;
-			      		console.log(code)
+
 		      	_fetch({
 		          Action: "GetLotteryOpen",
 		          LotteryCode: code,
@@ -438,9 +449,10 @@
 		          ss=ss>9?ss:('0'+ss);
 		          commit('lt_updateTimeBar', hh+':'+MM+':'+ss)
 		        }
-
 		        var Results = state.LotteryResults[state.lottery.LotteryCode]
 			        	,len = Results?Results.length:0;
+
+			      // console.log(wait4BetRecord, wait4Results, Results[0].IssueNo*1,state.OldIssue*1)
 
 			      if(!wait4BetRecord){
 			      	//如果在获取我的投注/我的追号,则不进入
@@ -457,22 +469,24 @@
 				          default:
 				            interval=30
 				        }
-
 				        if (wait4Results>5 && wait4Results%interval===0) {
+				        	// console.log('获取开奖结果')
 				        	dispatch('lt_getResults', state.lottery.LotteryCode)		//获取开奖结果
 				        }
 				      }else if(Results[0].IssueNo*1 > state.OldIssue*1){
 				      	commit('lt_updateTimeBar', '暂停销售')		//暂停销售
 				      }else{
 				      	//开奖
-				      	console.log('开奖')
+				      	// console.log('开奖')
 				      	commit('lt_displayResults', true)
 				      	wait4BetRecord = true
     	          timer1 = setTimeout(()=>{
+    	          	// console.log('6s')
     	          	dispatch('lt_updateBetRecord')			//获取我的投注
     	          }, 6000)
 
     	          timer2 = setTimeout(()=>{
+    	          	// console.log('12s')
     	          	dispatch('lt_updateBetRecord')			//获取我的投注
     	          	wait4Results = 0
     	          	wait4BetRecord = false
@@ -483,31 +497,78 @@
 			      }
 
 		      },
+	      	//获取我的投注
 		      lt_updateBetRecord:({state, rootState, commit, dispatch})=>{
-
 		      	_fetch({Action: 'GetBetSideBar'}).then((json)=>{
 		      		if(json.Code === 1){
 		      			var betting = json.Data.BettingOrders
 		      			commit('lt_setBetRecord', betting)
 		      		}
 		      	})
-		      }
+		      },
+		      lt_getRebate:({state, rootState, commit, dispatch})=>{
+		      	var type = state.lottery.LotteryType
+		      	var _rebate = sessionStorage.getItem('Rebate' + type)
+		      	if(_rebate){
+		      		commit({
+		      			type:'lt_setRebate',
+		      			rebate: JSON.parse(_rebate),
+		      			LotteryType: type
+		      		})
+						}else{
+			      	_fetch({
+								Action: 'GetBetRebate',
+								LotteryType: type
+							}).then((json)=>{
+								if(json.Code === 1){
+									console.log(json)
+									sessionStorage.setItem('Rebate' + type, JSON.stringify(json.BackData))
+									commit({
+				      			type:'lt_setRebate',
+				      			rebate: json.BackData,
+				      			LotteryType: type
+				      		})
+								}
+							})
 
+						}
+		      }
 		    }
 		  }
 
+
+		  var ltype, lcode, _mode, _group, _subGroup
+		  //各彩种默认玩法
+		  var defaultMode = {
+				'SSC':['五星', '直选'],
+				'11X5':['选一', '前三一码不定位']
+			};
+		  ;[,ltype, lcode] = this.$route.fullPath.slice(1).split('/')
+		  _group = defaultMode[ltype][0]			//默认的玩法群
+		  _subGroup = defaultMode[ltype][1]		//默认的玩法组
+
 			//注册彩种模块 --lt
 			state.lt || store.registerModule('lt', lt)
+			//生成昨天今天明天字符串
 			store.commit('lt_updateDate')
-			store.dispatch('lt_updateLottery', this.$route.params.code)
-			// store.dispatch('lt_updateBetRecord')
-
+			//切换彩种
+			store.dispatch('lt_updateLottery', lcode)
+			//设置页面配置
+		  store.commit('lt_initConfig')
+		  //设置默认的玩法
+			store.commit('lt_changeMode', state.lt.config[_group][_subGroup][0])
+			//获取我的投注
+			store.dispatch('lt_updateBetRecord')
+			//获取返点
+			store.dispatch('lt_getRebate')
+			//每隔1s调用一次refresh
 			setInterval(()=>{
 				store.dispatch('lt_refresh')
 			},1000)
 
 		},
 		methods:{
+			//点击页面其他部分关闭所有盒子
 			closeBox(){
 				store.commit('lt_changeBox', '')
 			}
