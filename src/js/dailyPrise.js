@@ -14,7 +14,6 @@ export default {
   beforeRouteEnter(to,from,next){
      var theArr={Action:'GetActivityStateData',Qort:'每日加奖'}
     _fetch(theArr).then(json=>{
-      console.log(json)
           next(vm=>{
             if(json.Code==1){
               vm.StateData=json.BackData||0

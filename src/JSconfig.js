@@ -67,5 +67,6 @@ module.exports = {
   MINUTE_TIME: 60 * 1000,
   SECOND_TIME: 1000,
   GMT_DIF:new Date().getTimezoneOffset()*60*1000,
-  Difftime: localStorage.getItem('Difftime') || null
+  Difftime: localStorage.getItem('Difftime') || null,
+  PERBET: 2,    //每注2元
 }
