@@ -1,29 +1,35 @@
 <template>
-<div>
- <div class="main" v-if= "!underMaintain ">
-    <input name="GetMoneyUser" type="hidden" value="" readonly="readonly">
-    <table>
-      <tr>
-        <td>充值金额</td>
-        <td><input  type="tel" tag = "充值金额" v-va:Money v-model = 'Money'  placeholder="请输入充值金额"></td>
-      </tr>
-      <tr></tr>
-    </table>
-    <div class="loginBtn BTN"><a v-va-check>提交</a></div>
-    <div class="tips">
-       1、扫一扫弹出的二维码进行充值。<br>
-	     2、可以使用其他手机扫二维码进行充值，也可以将二维码保存到相册再使用微信识别相册中的二维码进行充值，该二维码仅当次有效，每次充值前务必重新保存最新的二维码。<br>
+  <div class="main">
+    <div class="fullPageMsg" v-if="underMaintain">
+      <div class="fullPageIcon iconfont">&#xe626;</div>
+      <p>{{pageName}}维护中···
+        <br/>请使用其他充值方式！</p>
+    </div>
+    <template v-else>
+      <input name="GetMoneyUser" type="hidden" value="" readonly="readonly">
+      <table>
+        <tr>
+          <td>充值金额</td>
+          <td>
+            <input type="tel" tag="充值金额" v-va:Money v-model='Money' placeholder="请输入充值金额">
+          </td>
+        </tr>
+        <tr></tr>
+      </table>
+      <div class="loginBtn BTN"><a v-va-check>提交</a></div>
+      <div class="tips">
+        1、扫一扫弹出的二维码进行充值。
+        <br> 2、可以使用其他手机扫二维码进行充值，也可以将二维码保存到相册再使用微信识别相册中的二维码进行充值，该二维码仅当次有效，每次充值前务必重新保存最新的二维码。
+        <br>
+      </div>
+    </template>
+    {{BankCode}}
+    <div id="iframeWrap" v-show="QrImg">
+      <iframe :src="QrImg" frameborder="0" :style="css[PayType]"></iframe>
     </div>
   </div>
-	<div class="fullPageMsg" v-if = "underMaintain">
-    <div class="fullPageIcon iconfont">&#xe626;</div>
-    <p>{{pageName}}维护中···<br/>请使用其他充值方式！</p>
-  </div>
-  <div v-if="QrImg" style="position: absolute;overflow-x: hidden;z-index: 5; background: rgb(255, 255, 255); width: 100%; height: 100%; overflow-y: scroll; top: 0px; left: 0px;">
-    <iframe :src="QrImg" frameborder="0" style="position: relative; margin-left: 160px; width: 1000px; height: 100%; margin-top: 0px; left: -500px;"></iframe>
-  </div>
-</div>
 </template>
+
 
 <script>
 export default {
@@ -46,6 +52,7 @@ export default {
 
 			next(vm=>{
 				//如果没数据进维护页
+        vm.PayType=PayType
 				if(!state[rechargeWay] || !state[rechargeWay][0]){
 					vm.underMaintain = true
 					return
@@ -59,6 +66,7 @@ export default {
 	data () {
 		return {
 			method: '',								//什么充值方式
+      PayType:null,
 			pageName: '',							//维护的名字
 			underMaintain: false,			//是否维护
       QrImg:'',
@@ -67,6 +75,12 @@ export default {
 			limit:'',
 			//ajax
 			Money: '',
+      css:{
+        '通汇卡':{
+          'margin-top':2.5*em-100+'px',
+          'left':'-500px'
+        }
+      }
 		}
 	},
 	computed:{
@@ -147,4 +161,20 @@ export default {
 
 <style lang = "scss" scoped>
 	@import '../scss/securityCenter.scss';
+  #iframeWrap{
+    position:absolute;
+    z-index:5;
+    background:#fff;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    top:0;
+    left:0
+  }
+  iframe{
+    position:relative;
+    margin-left:8rem;
+    width:1000px;
+    height:920px
+  }
 </style>

@@ -1,10 +1,12 @@
 <template>
   <div id="app">
-    <title-info :meta="$route&&$route.matched[0].meta"></title-info>
+    <template v-if="$route&&$route.matched[0]">
+      <title-info :meta="$route.matched[0].meta"></title-info>
+      <navbar v-show="$route.matched[0].meta.nav"></navbar>
+    </template>
     <transition name="fade"  mode="out-in">
       <router-view></router-view>
     </transition>
-    <navbar v-show="$route.matched[0].meta.nav"></navbar>
   </div>
 </template>
 
