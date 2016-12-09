@@ -6,7 +6,6 @@
         <br/>请使用其他充值方式！</p>
     </div>
     <template v-else>
-      <input name="GetMoneyUser" type="hidden" value="" readonly="readonly">
       <table>
         <tr>
           <td>充值金额</td>
@@ -23,7 +22,6 @@
         <br>
       </div>
     </template>
-    {{BankCode}}
     <div id="iframeWrap" v-show="QrImg">
       <iframe :src="QrImg" frameborder="0" :style="css[PayType]"></iframe>
     </div>
@@ -147,7 +145,7 @@ export default {
 			_fetch(nowAjax).then((json)=>{
     		this.Money = ''
     		if(json.Code === 1){
-					layer.msgWarn(json.StrCode);
+					layer.msg(json.StrCode);
           this.QrImg=json.BackUrl
     		}else{
     			layer.msgWarn(json.StrCode);
