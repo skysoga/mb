@@ -51,9 +51,9 @@ var routes = [
     path: '/lottery',
     name: '彩种',
     component: lotteryPage,
-    // meta: {
-    //   user: true,
-    // },
+    meta: {
+      user: true,
+    },
     children:[
       {
         path: 'SSC/:code',

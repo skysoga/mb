@@ -9,7 +9,7 @@
 	import lt_ssc from '../json/lt_ssc.json'
 	import Vue from 'vue'
 	import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
-	import {DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF} from '../JSconfig'
+	import {DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../JSconfig'
 
 	export default{
 		beforeRouteEnter(to, from, next){
@@ -23,6 +23,8 @@
 			}
 		},
 		created(){
+			//这里获取一次服务器时间，用以校正
+			RootApp.getServerTime()
 			//留着11选5测试数据
 			const lt_11x5 = {
 				'选一':{
@@ -131,6 +133,9 @@
 				'SSC': lt_ssc,
 				'11X5': lt_11x5
 			}
+			var awardSetter = {
+  			'SSC':getSSCRebate
+  		}
 
 			var timer1, timer2
 					,wait4Results = 0
@@ -139,11 +144,39 @@
 
 			const lt = {
 		    state:{
-		      bet: {},        //当前投注情况
+		      bet: {
+					  betting_number: '',		//投注号码字符串
+					  betting_count: 0,			//投注注数
+					  betting_money: 0,			//投注金额
+					  betting_model: 1,			//单位(1,0.1,0.01)
+					  graduation_count:1,		//倍数
+		      },
+		      tmp: {
+		      	'10000':[],
+		      	'1000':[],
+		      	'100':[],
+		      	'10':[],
+		      	'1':[],
+		      	'xxxx':[],
+		      	'xxx':[],
+		      	'xx':[],
+		      	'x':[],
+		      	'i10000':[],
+		      	'i1000':[],
+		      	'i100':[],
+		      	'i10':[],
+		      	'i1':[],
+		      	'psum27':[],
+		      	'csum26':[],
+		      	'psum18':[],
+		      	'csum17':[],
+		      	'baodan':[],
+		      	'whole':[],
+		      },        //即时的投注号码情况
 		      basket:[],      //号码篮
 		      scheme:{},      //追号相关
 		      mode:{
-		        name: '',     //复式
+		        name: '',     //直选复式
 		        mode: '',     //H11
 		        group: '',    //五星
 		        subGroup: '', //直选
@@ -160,6 +193,7 @@
 		      },
 		      Rebate:{},        //返点,根据type而不同
 		      Odds:{},					//奖金,根据type而不同
+		      award:'',					//当前彩种、当前玩法以元为单位的奖金
 		      box:'',           //当前弹出框
 		      config:{},        //在各种彩种页面,
 		      LotteryPlan:[],		//当前彩种的彩种计划
@@ -183,7 +217,17 @@
 		      //变更弹出框
 		      lt_changeBox:(state, boxName)=>{state.box = boxName},
 		      //变更玩法
-		      lt_changeMode:(state, mode)=>{state.mode = mode},
+		      lt_changeMode:(state, mode)=>{
+		      	var type = state.lottery.LotteryType   //彩种类型 SSC、K3
+		      			,Odds = state.Odds[type] || []
+
+		      	state.mode = mode
+		      	for(var item in state.tmp){
+		      		state.tmp[item] = []
+		      	}
+		      	//更改玩法时，对应玩法的奖金也跟着变
+		      	state.award = awardSetter[type](mode.mode, Odds)
+		      },
 		      //变更彩种
 		      lt_changeLottery:(state, code)=>{
 		        state.lottery = store.state.LotteryList[code]
@@ -282,9 +326,25 @@
 	      	lt_updateTimeBar:(state, text)=>{state.TimeBar = text;},			//倒计时的内容
 	      	lt_setBetRecord:(state, BetRecord)=>{state.BetRecord =BetRecord;},	//投注记录
 	      	lt_setRebate:(state, {rebate, LotteryType})=>{
+	      		var mode = state.mode.mode
+	      		state.award = awardSetter[LotteryType](mode, rebate.Odds)
 	      		Vue.set(state.Rebate, LotteryType, rebate.Rebate)
 	      		Vue.set(state.Odds, LotteryType, rebate.Odds)
+	      	},
+	      	//以上为期号计算相关，以下为投注相关
+
+	      	//即时投注号码的更改
+	      	lt_updateTmp:(state, {alias, arr})=>{
+	      		Vue.set(state.tmp, alias, arr)
+	      	},
+	      	lt_setBetStr:(state, betStr)=>{
+	      		state.bet.betting_number = betStr
+	      	},
+	      	lt_setBetCount:(state, betCount)=>{
+	      		state.bet.betting_count = betCount
+	      		state.bet.betting_money = PERBET * betCount * state.bet.graduation_count * state.bet.betting_model
 	      	}
+
 		    },
 
 
@@ -480,12 +540,12 @@
 				      	// console.log('开奖')
 				      	commit('lt_displayResults', true)
 				      	wait4BetRecord = true
-    	          timer1 = setTimeout(()=>{
+    	          this.timer1 = setTimeout(()=>{
     	          	// console.log('6s')
     	          	dispatch('lt_updateBetRecord')			//获取我的投注
     	          }, 6000)
 
-    	          timer2 = setTimeout(()=>{
+    	          this.timer2 = setTimeout(()=>{
     	          	// console.log('12s')
     	          	dispatch('lt_updateBetRecord')			//获取我的投注
     	          	wait4Results = 0
@@ -528,6 +588,7 @@
 				      			rebate: json.BackData,
 				      			LotteryType: type
 				      		})
+
 								}
 							})
 
@@ -562,7 +623,7 @@
 			//获取返点
 			store.dispatch('lt_getRebate')
 			//每隔1s调用一次refresh
-			setInterval(()=>{
+			this.baseLoop = setInterval(()=>{
 				store.dispatch('lt_refresh')
 			},1000)
 
@@ -572,7 +633,35 @@
 			closeBox(){
 				store.commit('lt_changeBox', '')
 			}
+		},
+		beforeDestroy(){
+			clearTimeout(this.timer1)
+			clearTimeout(this.timer2)
+			clearInterval(this.baseLoop)
 		}
 
 	}
+
+	function getSSCRebate(mode, Odds){
+    //前三中三后三一样，前二后二一样
+    switch(mode[0]){
+      case 'E':
+      case 'D':
+        mode = 'F' + mode.slice(1);
+        break;
+      case 'B':
+        mode = 'C' + mode.slice(1);
+        break;
+      case 'I':
+        if(mode === 'I92')mode = 'I91';
+        if(mode === 'I94' || mode === 'I95')mode = 'I93';
+        break;
+    }
+    var rebateSSC = Odds
+    for(var i = 0;i < rebateSSC.length;i++){
+      if(rebateSSC[i].PlayCode === mode){
+        return rebateSSC[i].Bonus;
+      }
+    }
+  }
 </script>
