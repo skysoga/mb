@@ -10,7 +10,7 @@
 		        <em>{{mode.tag}}</em>
 		        <i class="iconfont">&#xe61e;</i>
 					</div>
-	        <div v-if = "ifShowModeSelect">
+	        <div v-show = "ifShowModeSelect">
 	          <div class="playSortMore">
 	            <div class="playSortMoreCon">
 
@@ -47,7 +47,7 @@
 		    <em>{{lotteryName}}</em><i class="iconfont">&#xe61e;</i>
 	    </div>
 
-      <div class="lotteryList fix" v-if = "ifShowTypeSelect">
+      <div class="lotteryList fix" v-show = "ifShowTypeSelect">
       	<a v-for = "item in LotteryList"
       		 @click = "changeLottery(item.LotteryCode)">
 	      	  {{item.LotteryName}}
