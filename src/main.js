@@ -140,10 +140,11 @@ window.RootApp = new Vue({
 			    for (var i = LotteryList.length - 1; i >= 0; i--) {
 			    	c = LotteryList[i].LotteryCode
 			      data.LotteryList[c]= LotteryList[i]
-			      delete data.LotteryList[c].LotteryCode
+			      // delete data.LotteryList[c].LotteryCode
 			    }
 			  }
 			})(data.LotteryList)
+
 
 		  if (data.NoticeData&&data.NoticeData.length) {
 		    if (data.NoticeData.length>2) {

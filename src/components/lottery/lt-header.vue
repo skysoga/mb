@@ -6,17 +6,17 @@
         <br>法</p>
 
         <span>
-        	<div @click = "toggleModeSelect">
+        	<div @click.stop = "toggleModeSelect">
 		        <em>{{mode.tag}}</em>
 		        <i class="iconfont">&#xe61e;</i>
 					</div>
-	        <div v-if = "ifShowModeSelect">
+	        <div v-show = "ifShowModeSelect">
 	          <div class="playSortMore">
 	            <div class="playSortMoreCon">
 
 								<ul class="betFilter fix">
 									<li v-for = "(groupItem,group) in config"
-										  @click = "changeGroup(groupItem)"
+										  @click.stop = "changeGroup(groupItem)"
 										  :class = "group === mode.group ? 'curr': ''">
 										{{group}}
 									</li>
@@ -43,14 +43,14 @@
 	  </div>
 
     <div class="lotterySort">
-	    <div @click = "toggleTypeSelect">
+	    <div @click.stop = "toggleTypeSelect">
 		    <em>{{lotteryName}}</em><i class="iconfont">&#xe61e;</i>
 	    </div>
 
-      <div class="lotteryList fix" v-if = "ifShowTypeSelect">
+      <div class="lotteryList fix" v-show = "ifShowTypeSelect">
       	<a v-for = "item in LotteryList"
       		 @click = "changeLottery(item.LotteryCode)">
-      	  {{item.LotteryName}}
+	      	  {{item.LotteryName}}
     	  </a>
       </div>
     </div>
@@ -60,46 +60,26 @@
 <script>
 	import {mapState} from 'vuex'
 	export default {
-		props:['ltype', 'lcode'],			// 'ssc','11x5'
 		created(){
-			this.pageConfig = {
-				'ssc':{
-					typeName:'时时彩',
-					defaultMode:['五星', '直选']
-				},
-				'11x5':{
-					typeName:'11选5',
-					defaultMode:['选一', '前三一码不定位']
-				}
-			}
+			[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
 
+			//处理得各彩种的List
 			var LotteryConfig = this.$store.state.LotteryConfig
 			LotteryConfig.forEach(item=>{
-				//这个地方“时时彩应该是个变量”
-				if(item.LotteryClassName === this.pageConfig[this.ltype].typeName){
+				if(item.LotteryClassID.indexOf(this.lcode.slice(0,2)) > -1){
 					this.LotteryList = item.LotteryList.map(code=>{
-						var el = this.$store.state.LotteryList[code]
-						el.LotteryCode = code
+						var el = state.LotteryList[code]
 						return el
 					})
 				}
 			})
-
-			var defaultMode = this.pageConfig[this.ltype].defaultMode
-			this.mode = this.config[defaultMode[0]][defaultMode[1]][0]					//title的默认值
-			this.LotteryName = this.$store.state.LotteryList[this.lcode].LotteryName	//默认值
 		},
 		data () {
 			return {
-				mode:{
-					name: '',	   //如：复式
-					mode: '',		 //如：H11
-					group: '',	 //如：五星
-					subGroup: '',//如：直选
-					tag: '',		 //如：五星直选复式
-				},
 				LotteryList: [],
 				LotteryName: '',
+				ltype: '',			//彩种类型
+				lcode: ''				//彩种code
 			}
 		},
 		methods:{
@@ -108,18 +88,16 @@
 				for(var subGroup in groupItem){
 					var subGroupItem = groupItem[subGroup]
 					subGroupItem.forEach(modeItem=>{
+						//切换Group时，subGroup第一个为默认选项
 						if(modeItem.mode.indexOf('11') > -1 || modeItem.mode === 'I91'){
-							this.mode = modeItem
-							this.$store.commit('lt_changeMode', this.mode)
+							this.$store.commit('lt_changeMode', modeItem)
 						}
 					})
 				}
 			},
 			//更改玩法
 			changeMode(modeItem){
-				this.mode = modeItem
-				this.$store.commit('lt_changeMode', this.mode)
-				this.$store.commit('lt_changeBox', '')
+				this.$store.commit('lt_changeMode', modeItem)
 			},
 			//更改彩种
 			changeLottery(code){
@@ -129,7 +107,6 @@
 					}
 				})
 				this.$store.dispatch('lt_updateLottery', code)
-				this.$store.commit('lt_changeBox', '')
 			},
 			//玩法选择框，切换
 			toggleModeSelect(){
@@ -145,7 +122,9 @@
 			}
 		},
 		computed: mapState({
+			mode:state=>state.lt.mode,
 			config: state=>state.lt.config,
+			LotteryName: state=>state.lt.lottery.LotteryName,
 			ifShowModeSelect (){
 				return this.$store.state.lt.box === 'modeSelect'
 			},
@@ -154,8 +133,8 @@
 			},
 			lotteryName(){
 				var removeName = {
-					'ssc':'时时彩',
-					'11x5': '11选5'
+					'SSC':'时时彩',
+					'11X5': '11选5'
 				}
 				return this.LotteryName.replace(removeName[this.ltype], '')
 			}
