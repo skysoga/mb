@@ -16,6 +16,7 @@
 			//校验LotteryList， 和LotteryConfig-- 不阻塞，仅发起
 			RootApp.GetInitData(['LotteryList','LotteryConfig'], state=>{})
 			var Difftime = localStorage.getItem('Difftime')
+			console.log('base')
 			if(Difftime === null){
 				RootApp.getServerTime(next)//没获取Difftime就再获取一次
 			}else{
