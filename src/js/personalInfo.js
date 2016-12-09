@@ -11,10 +11,7 @@ export default {
   },
   created(){
     var arr=['UserName','UserNickName','UserGrade','UserMobile','UserMail','UserPhoto','UserSex','UserQQ','UserBirthDay','UserGradeGrow','GradeList']
-    this.$root.GetInitData(arr)
-  },
-  mounted(){
-    //this.$va_setErrMsg('NickName','reg','请使用五位以内的汉字')
+    RootApp.GetInitData(arr)
   },
   methods:{
     upHeadImg(){
@@ -22,7 +19,7 @@ export default {
       layer.msgWait("正在提交")
       _fetch(arr).then(data=>{
           if(data.Code==1){
-           this.$root.AjaxGetInitData(['UserPhoto'],()=>{
+           RootApp.AjaxGetInitData(['UserPhoto'],()=>{
               layer.msgWarn(data.StrCode)
               this.HeadImgBoxShow=false
             })
@@ -70,8 +67,8 @@ export default {
       _fetch(ajaxData).then(data=>{
           if(data.Code===1){
             layer.msgWarn(data.StrCode)
-            this.$root.AjaxGetInitData([Obj[key]],function(data){
-              vm.$root.SaveInitData(data.BackData)
+            RootApp.AjaxGetInitData([Obj[key]],function(data){
+              RootApp.SaveInitData(data.BackData)
             })
           }else{
             layer.msgWarn(data.StrCode)
