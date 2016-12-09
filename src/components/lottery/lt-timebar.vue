@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if = "$store.state.lt.OldIssue">
     <!-- 倒计时 -->
     <div class="lotteryClose" @click.stop = "toggleBetRecord">
       <span>{{nowIssue}}期投注截止</span>
@@ -9,7 +9,7 @@
     </div>
 
     <!-- 我的投注 -->
-    <table class="pastOpen" v-if = "ifShowBetRecord">
+    <table class="pastOpen" v-show = "ifShowBetRecord">
       <tr>
         <th>期号</th>
         <th>投注金额</th>
