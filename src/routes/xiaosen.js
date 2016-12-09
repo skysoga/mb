@@ -27,7 +27,6 @@ const AgentCode =resolve => require(['../views/AgentCode'],resolve)//邀请码�
 const memberCode =resolve => require(['../views/memberCode'],resolve)//邀请码玩家
 const withdraw =resolve => require(['../views/withdraw'],resolve)//提现
 const tool =resolve => require(['../views/tool'],resolve)//清缓存工具
-const demo =resolve => require(['../views/demo'],resolve)//调试
 var routes = [{
   path: '/manageBankcard',
   name: '银行卡管理',
@@ -333,9 +332,5 @@ var routes = [{
   },
   component:tool
 
-},{
-  path:'/demo',
-  name:'demo',
-  component:demo
 }]
 module.exports = routes
