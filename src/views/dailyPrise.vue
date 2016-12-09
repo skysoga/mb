@@ -2,13 +2,13 @@
 	<div class="activityMian main">
     <div class="activiTop">
         <img width="100%" v-show="noimg" :src="$store.state.constant.ImgHost+Img">
-        <div class="rewardStatus" v-if="StateData">
-            <em class="e1">昨日投注：<i>{{StateData.YesterdayBet}}</i></em>
-            <em class="e2">当前等级：<i>VIP{{StateData.UserGrade}}</i></em>
-            <em class="e3">加奖比例：<i>{{StateData.BonusRate}}</i></em>
-            <em class="e4">可得加奖：<i>{{StateData.Bonus}}</i></em>
+        <div class="rewardStatus">
+            <em class="e1">昨日投注：<i v-if="StateData.YesterdayBet">{{StateData.YesterdayBet}}</i><i v-else>0</i></em>
+            <em class="e2">当前等级：<i v-if="StateData.UserGrade">VIP{{StateData.UserGrade}}</i><i v-else>未登录</i></em>
+            <em class="e3">加奖比例：<i v-if="StateData.BonusRate">{{StateData.BonusRate}}</i><i v-else>0</i></em>
+            <em class="e4">可得加奖：<i v-if="StateData.Bonus">{{StateData.Bonus}}</i><i v-else>0</i></em>
         </div>
-        <div class="BTN" v-if="StateData" :class="{unClick:UnClick}"><a @click="getBtn">{{ClickMsg}}</a></div>
+        <div class="BTN" :class="{unClick:UnClick}"><a @click="getBtn">{{ClickMsg}}</a></div>
     </div>
     <h3>加奖比例</h3>
     <table>
