@@ -16,7 +16,6 @@
 			//校验LotteryList， 和LotteryConfig-- 不阻塞，仅发起
 			RootApp.GetInitData(['LotteryList','LotteryConfig'], state=>{})
 			var Difftime = localStorage.getItem('Difftime')
-			console.log('base')
 			if(Difftime === null){
 				RootApp.getServerTime(next)//没获取Difftime就再获取一次
 			}else{
@@ -338,13 +337,26 @@
 	      	lt_updateTmp:(state, {alias, arr})=>{
 	      		Vue.set(state.tmp, alias, arr)
 	      	},
+	      	//设置投注字符串
 	      	lt_setBetStr:(state, betStr)=>{
 	      		state.bet.betting_number = betStr
 	      	},
+	      	//设置投注数，还有计算单注金额
 	      	lt_setBetCount:(state, betCount)=>{
 	      		state.bet.betting_count = betCount
-	      		state.bet.betting_money = PERBET * betCount * state.bet.graduation_count * state.bet.betting_model
-	      	}
+	      		state.bet.betting_money = PERBET * state.bet.betting_count * state.bet.graduation_count * state.bet.betting_model
+	      	},
+	      	//设置倍数
+	      	lt_setPower:(state, power)=>{
+	      		state.bet.graduation_count = power
+	      		state.bet.betting_money = PERBET * state.bet.betting_count * state.bet.graduation_count * state.bet.betting_model
+	      	},
+	      	//设置元角分
+	      	lt_setUnit:(state, unit)=>{
+	      		state.bet.betting_model = unit
+	      		state.bet.betting_money = PERBET * state.bet.betting_count * state.bet.graduation_count * state.bet.betting_model
+	      	},
+
 
 		    },
 
@@ -469,6 +481,8 @@
 			        return;
 			      }
 
+
+			      if(!state.LotteryPlan.length) return
 		        var Countdown = state.LotteryPlan[state.IssueNo % state.PlanLen].End
 			                        +(state.IssueNo>=state.PlanLen) * DAY_TIME
 			                        -_SerTime;
@@ -512,8 +526,6 @@
 		        }
 		        var Results = state.LotteryResults[state.lottery.LotteryCode]
 			        	,len = Results?Results.length:0;
-
-			      // console.log(wait4BetRecord, wait4Results, Results[0].IssueNo*1,state.OldIssue*1)
 
 			      if(!wait4BetRecord){
 			      	//如果在获取我的投注/我的追号,则不进入
@@ -615,7 +627,7 @@
 			store.commit('lt_updateDate')
 			//切换彩种
 			store.dispatch('lt_updateLottery', lcode)
-			//设置页面配置
+			//设置页面配置-SSC、K3
 		  store.commit('lt_initConfig')
 		  //设置默认的玩法
 			store.commit('lt_changeMode', state.lt.config[_group][_subGroup][0])

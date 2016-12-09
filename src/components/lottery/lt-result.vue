@@ -8,21 +8,23 @@
       </div>
     </div>
 
-    <table class="pastOpen" v-show = "ifShowPastOpen">
-      <tr>
-        <th>期号</th>
-        <th>开奖号码</th>
-        <th>开奖时间</th>
-      </tr>
-      <!-- 历史开奖的列表 -->
-      <tr v-for = "item in pastOpen">
-        <td>{{item.IssueNo}}</td>
-        <td>
-          <a v-for = "num in item.LotteryOpen"><span>{{num}}</span></a>
-        </td>
-        <td>{{item.OpenTime}}</td>
-      </tr>
-    </table>
+    <template v-if = "$store.state.lt.LotteryResults[lcode]">
+      <table class="pastOpen" v-show = "ifShowPastOpen">
+        <tr>
+          <th>期号</th>
+          <th>开奖号码</th>
+          <th>开奖时间</th>
+        </tr>
+        <!-- 历史开奖的列表 -->
+        <tr v-for = "item in pastOpen">
+          <td>{{item.IssueNo}}</td>
+          <td>
+            <a v-for = "num in item.LotteryOpen"><span>{{num}}</span></a>
+          </td>
+          <td>{{item.OpenTime}}</td>
+        </tr>
+      </table>
+    </template>
   </div>
 </template>
 
@@ -61,7 +63,7 @@ export default {
     oldIssue:()=>state.lt.OldIssue.slice(4),
     results(){
       var _results = state.lt.LotteryResults[this.lcode]
-      if(!_results){
+      if(!_results || !_results.length){
         return []
       }else{
         return _results[0].LotteryOpen.split(',')

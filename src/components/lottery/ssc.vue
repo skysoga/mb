@@ -4,15 +4,22 @@
       <p>{{tip}}{{award}}元 </p>
       <!-- <p>每位至少选1个号码，按位猜对号码即中196000元 </p> -->
     </div>
-    <betbox v-for = "alias in ltCfg[mode].render"
+
+    <!-- <div class="textareaNumber">
+      <textarea placeholder=" 每1个号码之间请用空格( )、逗号(,)、分号(;)隔开"></textarea>
+    </div> -->
+
+    <notebet></notebet>
+    <!-- <betbox v-for = "alias in ltCfg[mode].render"
             :alias = "alias"
             v-on:choose = "whenChoose">
-            </betbox>
+            </betbox> -->
   </div>
 </template>
 
 <script>
 import betbox from './betbox'
+import notebet from './notebet'
 import {factorial, mul, C, combNoRepeat} from '../../js/kit'
 var ltCfg = {
   H11:{
@@ -23,12 +30,14 @@ var ltCfg = {
     render:['whole'],
     alg:(order, tmp)=>C(tmp['whole'].length, 5)
   },
+
 }
 
 export default {
   props:['mode'],
   components:{
-    'betbox': betbox
+    'betbox': betbox,
+    'notebet': notebet
   },
   created(){
 

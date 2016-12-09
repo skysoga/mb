@@ -7,7 +7,7 @@
         <em>+</em>
         <div>
           <h3>已选{{betCount}}注，{{betMoney}}元</h3>
-          <p>每位选1个号码为1注</p>
+          <!-- <p>每位选1个号码为1注,, 砍掉</p> -->
         </div>
       </div>
       <div class="betCart" ><a><i class="iconfont">&#xe75a;<em>88</em></i>号码篮</a></div>
@@ -15,10 +15,22 @@
 
     <div class="multipleCon">
       <div class="multipleConLine fix">
-        <div class="multiple"><em class="noMore">-</em><input type="tel" value="1"><em>+</em>
-        </div><span>倍</span>
+        <div class="multiple">
+          <!-- 倍率 -->
+          <em class="noMore" @click = "reduce">-</em>
+          <input type="tel"  v-model.lazy = "power">
+          <em @click = "add">+</em>
+        </div>
+        <span>倍</span>
         <div class="moneyUnit">
-          <a class="curr" >元</a><a>角</a><a>分</a>
+          <a v-for =  "obj in unitArr"
+             @click = "changeUnit(obj.unit)"
+             :class = "unit === obj.unit ? 'curr' : '' ">
+            {{obj.word}}
+          </a>
+         <!--  <a class="curr">元</a>
+          <a>角</a>
+          <a>分</a> -->
         </div>
       </div>
     </div>
@@ -27,13 +39,41 @@
 </template>
 
 <script>
+import {Max_Rate} from '../../JSconfig'
 export default {
   created(){
-    console.log('jkjk')
+  },
+  data(){
+    return {
+      unitArr:[
+        {unit: 1, word: '元'},
+        {unit: 0.1, word: '角'},
+        {unit: 0.01, word: '分'},
+      ],
+      power: 1,
+      unit: 1
+    }
   },
   computed:{
     betCount:()=>state.lt.bet.betting_count,
     betMoney:()=>state.lt.bet.betting_money
+  },
+  watch:{
+    power(val){
+      store.commit('lt_setPower', +val)
+    }
+  },
+  methods:{
+    reduce(){
+      this.power > 1 && this.power--      //倍数必须大于1
+    },
+    add(){
+      this.power < Max_Rate && this.power ++   //倍数小于最大倍数限制
+    },
+    changeUnit(unit){
+      this.unit = unit
+      store.commit('lt_setUnit', unit)
+    }
   }
 }
 </script>
