@@ -172,6 +172,7 @@
 		      	'csum17':[],
 		      	'baodan':[],
 		      	'whole':[],
+		      	'notebet':[]
 		      },        //即时的投注号码情况
 		      basket:[],      //号码篮
 		      scheme:{},      //追号相关
@@ -227,6 +228,10 @@
 		      	}
 		      	//更改玩法时，对应玩法的奖金也跟着变
 		      	state.award = awardSetter[type](mode.mode, Odds)
+		      	//更换玩法，bet清空
+		      	state.bet.betting_number = ''
+		      	state.bet.betting_count = 0
+		      	state.bet.betting_money = 0
 		      },
 		      //变更彩种
 		      lt_changeLottery:(state, code)=>{

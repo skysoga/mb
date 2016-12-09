@@ -6,7 +6,6 @@
         <br/>请使用其他充值方式！</p>
     </div>
     <template v-else>
-      <input name="GetMoneyUser" type="hidden" value="" readonly="readonly">
       <table>
         <tr>
           <td>充值金额</td>
@@ -23,9 +22,8 @@
         <br>
       </div>
     </template>
-    {{BankCode}}
     <div id="iframeWrap" v-show="QrImg">
-      <iframe :src="QrImg" frameborder="0" :style="css[PayType]"></iframe>
+      <iframe :src="QrImg" frameborder="0" :style="css[nowRender.PayType]"></iframe>
     </div>
   </div>
 </template>
@@ -79,6 +77,26 @@ export default {
         '通汇卡':{
           'margin-top':2.5*em-100+'px',
           'left':'-500px'
+        },
+        '银宝':{
+          'margin-top':2.5*em-235+'px',
+          'left':'-499px'
+        },
+        '闪付':{
+          'margin-top':2.5*em-40+'px',
+          'left':'-500px',
+          '-webkit-transform':'scale(.4)',
+          '-ms-transform':'scale(.4)',
+          '-moz-transform':'scale(.4)',
+          'transform':'scale(.4)',
+          '-webkit-transform-origin':'center 100px',
+          '-moz-transform-origin':'center 100px',
+          '-ms-transform-origin':'center 100px',
+          'transform-origin':'center 100px'
+        },
+        '乐盈':{
+          'margin-top':2.5*em-235+'px',
+          'left':'-230px'
         }
       }
 		}
@@ -143,11 +161,11 @@ export default {
 			nowAjax.Money = this.vaVal.Money
 			nowAjax.ID = this.nowRender.Id
 			nowAjax.BankCode =this.nowRender.PayType
-
+      console.log(nowAjax.BankCode)
 			_fetch(nowAjax).then((json)=>{
     		this.Money = ''
     		if(json.Code === 1){
-					layer.msgWarn(json.StrCode);
+					layer.msg(json.StrCode);
           this.QrImg=json.BackUrl
     		}else{
     			layer.msgWarn(json.StrCode);

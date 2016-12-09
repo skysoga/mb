@@ -38,16 +38,7 @@
 </template>
 
 <script>
-function unique(arr){
-  var hashTable = {}, newArr = [];
-  for(var i = 0;i < arr.length;i++){
-    if(!hashTable[arr[i]]){
-      hashTable[arr[i]] = true;
-      newArr.push(arr[i]);
-    }
-  }
-  return newArr;
-}
+import {unique} from '../../js/kit'
 
 function isArrayEqual(a, b){
   return a.every((item, index)=>b[index]===item ) && a.length === b.length

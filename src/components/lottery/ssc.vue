@@ -5,15 +5,16 @@
       <!-- <p>每位至少选1个号码，按位猜对号码即中196000元 </p> -->
     </div>
 
-    <!-- <div class="textareaNumber">
-      <textarea placeholder=" 每1个号码之间请用空格( )、逗号(,)、分号(;)隔开"></textarea>
-    </div> -->
-
-    <notebet></notebet>
-    <!-- <betbox v-for = "alias in ltCfg[mode].render"
+    <!-- 普通 -->
+    <betbox v-if = "isNaN(ltCfg[mode])"
+            v-for = "alias in ltCfg[mode].render"
             :alias = "alias"
             v-on:choose = "whenChoose">
-            </betbox> -->
+            </betbox>
+
+    <!-- 单式 -->
+    <notebet v-if = "!isNaN(ltCfg[mode])" :len = "ltCfg[mode]"></notebet>
+
   </div>
 </template>
 
@@ -21,15 +22,20 @@
 import betbox from './betbox'
 import notebet from './notebet'
 import {factorial, mul, C, combNoRepeat} from '../../js/kit'
+
+// 单式只要传一个数字
 var ltCfg = {
   H11:{
     render:['10000', '1000', '100', '10', '1'],
     alg:(order, tmp)=>mul(5, getBetSum(order, tmp))
   },
+  H12:5,
   H21:{
     render:['whole'],
     alg:(order, tmp)=>C(tmp['whole'].length, 5)
   },
+
+
 
 }
 

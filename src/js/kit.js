@@ -74,7 +74,18 @@ function combNoRepeat(singleArr, combArr, n){
   return a * kit.C(m-1, n) + b * kit.C(m, n);
 }
 
-export {factorial, mul, C, combNoRepeat}
+function unique(arr){
+  var hashTable = {}, newArr = [];
+  for(var i = 0;i < arr.length;i++){
+    if(!hashTable[arr[i]]){
+      hashTable[arr[i]] = true;
+      newArr.push(arr[i]);
+    }
+  }
+  return newArr;
+}
+
+export {factorial, mul, C, combNoRepeat, unique}
 
 // var kit = (function(){
 //   return {

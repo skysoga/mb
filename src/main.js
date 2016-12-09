@@ -326,7 +326,11 @@ router.afterEach((to, from) => {
 
 //全局过滤器
 Vue.filter('num', v=>+v) // 转成数字类型
-
+Vue.filter('betstr', {
+  'write':function(val, oldVal){
+    return val + 'a'
+  }
+})
 //全局指令
 Vue.directive('copyBtn', {
 	bind: function(el, binding, vnode){
