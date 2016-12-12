@@ -22,9 +22,9 @@
       <div class="multipleConLine fix">
         <div class="multiple">
           <!-- 倍率 -->
-          <em class="noMore" @click = "reduce">-</em>
+          <em :class="canReduce ? '':'noMore'" @click = "reduce">-</em>
           <input type="tel"  v-model.lazy = "power">
-          <em @click = "add">+</em>
+          <em :class="canAdd ? '':'noMore'"  @click = "add">+</em>
         </div>
         <span>倍</span>
         <div class="moneyUnit">
@@ -63,7 +63,13 @@ export default {
     betCount:()=>state.lt.bet.betting_count,
     betMoney:()=>state.lt.bet.betting_money.toFixed(2),
     betStr:()=>state.lt.bet.betting_number,
-    betAmount:()=>state.lt.basket.length
+    betAmount:()=>state.lt.basket.length,
+    canReduce(){
+      return this.power > 1
+    },
+    canAdd(){
+      return this.power < Max_Rate
+    },
   },
   watch:{
     power(val){
@@ -73,6 +79,7 @@ export default {
   methods:{
     reduce(){
       this.power > 1 && this.power--      //倍数必须大于1
+      console.log(this.canReduce)
     },
     add(){
       this.power < Max_Rate && this.power ++   //倍数小于最大倍数限制

@@ -71,7 +71,7 @@ function combNoRepeat(singleArr, combArr, n){
       b = notcommon.length,
       m = combArr.length;
 
-  return a * kit.C(m-1, n) + b * kit.C(m, n);
+  return a * C(m-1, n) + b * C(m, n);
 }
 
 function unique(arr){
