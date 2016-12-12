@@ -99,7 +99,6 @@
 			//更改玩法
 			changeMode(modeItem){
 				this.$store.commit('lt_changeMode', modeItem)
-        console.log(this.ha)
 			},
 			//更改彩种
 			changeLottery(code){
@@ -145,14 +144,11 @@
       'dynamic-height':{
         'componentUpdated'(el, binding, vnode){
           var vm = vnode.context,
-              bodyHeight = document.body.clientHeight,
+              bodyHeight = window.screen.height,
               h1 = vm.$refs.lotterySort.offsetHeight,
               h2 = vm.$refs.betFilter.offsetHeight
 
-          el.style.height = bodyHeight - h1 - h2
-          console.log(document.body.clientHeight)
-          console.log(vm.$refs.lotterySort.offsetHeight)
-          console.log(vm.$refs.betFilter.offsetHeight)
+          el.style.height = bodyHeight - h1 - h2 + 'px'
         }
       }
     }

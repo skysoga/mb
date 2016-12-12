@@ -42,7 +42,10 @@ function isArrayEqual(a, b){
 var _0to9 = [0,1,2,3,4,5,6,7,8,9],
     _dsds = ['大', '小', '单', '双'],
     filters = ['全', '大', '小', '奇', '偶', '清'],
-    _0to27 = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27]
+    _0to27 = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27],
+    _1to26 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26],
+    _0to18 = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
+    _1to17 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]
 
 var cfg = {
   '10000': {tag: '万位', itemArr: _0to9, filters: filters},
@@ -61,7 +64,11 @@ var cfg = {
   'i10': {tag: '十位', itemArr: _dsds, filters: ['清']},
   'i1': {tag: '个位', itemArr: _dsds, filters: ['清']},
   'whole':{itemArr: _0to9, filters: ['清']},
-  'psum27':{itemArr: _0to27, filters: ['清']}
+  'psum27':{itemArr: _0to27, filters: ['清']},
+  'psum18':{itemArr: _0to18, filters: ['清']},
+  'csum26':{itemArr: _1to26, filters:['清']},
+  'csum17':{itemArr: _1to17, filters:['清']},
+  'baodan':{itemArr: _0to9, filters:['清']}
 }
 var refer = {
   '全':[0,1,2,3,4,5,6,7,8,9],
@@ -110,10 +117,23 @@ export default {
       var _pos = this.chosen.indexOf(item),
           _chosen = this.chosen.slice(0)
           // console.log(_chosen,_pos)
+
+      if(this.alias === 'baodan'){
+        store.commit({
+          type:'lt_updateTmp',
+          alias: this.alias,
+          arr: [item]
+        })
+        this.$emit('choose')
+        return
+      }
+
+      //如果已经存在，就删除该项
       if(_pos > -1){
         _chosen.splice(_pos, 1)
         var tmp = _chosen
       }else{
+        //不存在添加该项
         _chosen.push(item)
         //去重加排序
         _chosen = unique(_chosen)

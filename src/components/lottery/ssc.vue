@@ -21,7 +21,8 @@
 <script>
 import betbox from './betbox'
 import notebet from './notebet'
-import {factorial, mul, C, combNoRepeat} from '../../js/kit'
+import {factorial, mul, C, combNoRepeat, unique, normalSum2, normalSum3, accumulate,
+  diff2, diff3, combSum2, combSum3} from '../../js/kit'
 
 var countSingle = (order,tmp)=>betSum(order,tmp)[0]  //单行计数
 // 单式只要传一个数字
@@ -54,71 +55,71 @@ var ltCfg = {
   /**前三**/
   F11:{render:['10000','1000','100'],alg:(order, tmp)=>mul(3, betSum(order, tmp))},
   F12:3,
-  F13:{render:['psum27'],},
-  F14:{render:['whole'],},
-  F21:{render:['csum26'],},
-  F22:{render:['whole'],},
-  F23:{render:['whole'],},
+  F13:{render:['psum27'],alg:(order,tmp)=>accumulate(tmp['psum27'], normalSum3)},
+  F14:{render:['whole'],alg:(order,tmp)=>accumulate(tmp['whole'],diff3)},
+  F21:{render:['csum26'],alg:(order,tmp)=>accumulate(tmp['csum26'], combSum3)},
+  F22:{render:['whole'],alg:(order,tmp)=>2 * C(tmp['whole'].length, 2)},
+  F23:{render:['whole'],alg:(order,tmp)=>C(tmp['whole'].length,3)},
   F24:3,
-  F25:{render:['baodan'],},
+  F25:{render:['baodan'],alg:(order,tmp)=>54},
   F26:3,
   F27:3,
-  F31:{render:['whole'],},
-  F32:{render:['whole'],},
+  F31:{render:['whole'],alg:countSingle},
+  F32:{render:['whole'],alg:(order,tmp)=>C(tmp['whole'].length,2)},
   /**中三**/
-  E11:{render:['10000','1000','100'],},
+  E11:{render:['10000','1000','100'],alg:(order, tmp)=>mul(3, betSum(order, tmp))},
   E12:3,
-  E13:{render:['psum27'],},
-  E14:{render:['whole'],},
-  E21:{render:['csum26'],},
-  E22:{render:['whole'],},
-  E23:{render:['whole'],},
+  E13:{render:['psum27'],alg:(order,tmp)=>accumulate(tmp['psum27'], normalSum3)},
+  E14:{render:['whole'],alg:(order,tmp)=>accumulate(tmp['whole'],diff3)},
+  E21:{render:['csum26'],alg:(order,tmp)=>accumulate(tmp['csum26'], combSum3)},
+  E22:{render:['whole'],alg:(order,tmp)=>2 * C(tmp['whole'].length, 2)},
+  E23:{render:['whole'],alg:(order,tmp)=>C(tmp['whole'].length,3)},
   E24:3,
-  E25:{render:['baodan'],},
+  E25:{render:['baodan'],alg:(order,tmp)=>54},
   E26:3,
   E27:3,
-  E31:{render:['whole'],},
-  E32:{render:['whole'],},
+  E31:{render:['whole'],alg:countSingle},
+  E32:{render:['whole'],alg:(order,tmp)=>C(tmp['whole'].length,2)},
   /**后三**/
-  D11:{render:['10000','1000','100'],},
+  D11:{render:['10000','1000','100'],alg:(order, tmp)=>mul(3, betSum(order, tmp))},
   D12:3,
-  D13:{render:['psum27'],},
-  D14:{render:['whole'],},
-  D21:{render:['csum26'],},
-  D22:{render:['whole'],},
-  D23:{render:['whole'],},
+  D13:{render:['psum27'],alg:(order,tmp)=>accumulate(tmp['psum27'], normalSum3)},
+  D14:{render:['whole'],alg:(order,tmp)=>accumulate(tmp['whole'],diff3)},
+  D21:{render:['csum26'],alg:(order,tmp)=>accumulate(tmp['csum26'], combSum3)},
+  D22:{render:['whole'],alg:(order,tmp)=>2 * C(tmp['whole'].length, 2)},
+  D23:{render:['whole'],alg:(order,tmp)=>C(tmp['whole'].length,3)},
   D24:3,
-  D25:{render:['baodan'],},
+  D25:{render:['baodan'],alg:(order,tmp)=>54},
   D26:3,
   D27:3,
-  D31:{render:['whole'],},
-  D32:{render:['whole'],},
+  D31:{render:['whole'],alg:countSingle},
+  D32:{render:['whole'],alg:(order,tmp)=>C(tmp['whole'].length,2)},
   /**前二**/
-  C11:{render:['10000','1000'],},
+  C11:{render:['10000','1000'],alg:(order,tmp)=>mul(2,betSum(order,tmp))},
   C12:2,
-  C13:{render:['psum18'],},
-  C14:{render:['whole'],},
-  C21:{render:['whole'],},
+  C13:{render:['psum18'],alg:(order,tmp)=>accumulate(tmp['psum18'],normalSum2)},
+  C14:{render:['whole'],alg:(order,tmp)=>accumulate(tmp['whole'],diff2)},
+  C21:{render:['whole'],alg:(order,tmp)=>C(tmp['whole'].length,2)},
   C22:2,
-  C23:{render:['csum17'],},
-  C24:{render:['baodan'],},
+  C23:{render:['csum17'],alg:(order,tmp)=>accumulate(tmp['csum17'].map(item=>item),combSum2)},
+  C24:{render:['baodan'],alg:(order,tmp)=>9},
   /**后二**/
-  B11:{render:['10000','1000'],},
+  B11:{render:['10000','1000'],alg:(order,tmp)=>mul(2,betSum(order,tmp))},
   B12:2,
-  B13:{render:['psum18'],},
-  B14:{render:['whole'],},
-  B21:{render:['whole'],},
+  B13:{render:['psum18'],alg:(order,tmp)=>accumulate(tmp['psum18'],normalSum2)},
+  B14:{render:['whole'],alg:(order,tmp)=>accumulate(tmp['whole'],diff2)},
+  B21:{render:['whole'],alg:(order,tmp)=>C(tmp['whole'].length,2)},
   B22:2,
-  B23:{render:['csum17'],},
-  B24:{render:['baodan'],},
+  B23:{render:['csum17'],alg:(order,tmp)=>accumulate(tmp['csum17'].map(item=>item),combSum2)},
+  B24:{render:['baodan'],alg:(order,tmp)=>9},
   /**一星**/
   A11:{render:['10000', '1000', '100', '10', '1'],alg:(order, tmp)=>betSum(order, tmp).reduce(function(a,b){return a + b})},
   /**大小单双**/
-  I91:{render:['i10000','i1000'],},
-  I92:{render:['i10','i1'],},
-  I93:{render:['i10000','i1000','i100'],},
-  I94:{render:['i1000','i100','i10'],},
-  I95:{render:['i100','i10','i1'],},
+  I91:{render:['i10000','i1000'],alg:(order,tmp)=>mul(2,betSum(order,tmp))},
+  I92:{render:['i10','i1'],alg:(order,tmp)=>mul(2,betSum(order,tmp))},
+  I93:{render:['i10000','i1000','i100'],alg:(order,tmp)=>mul(3,betSum(order,tmp))},
+  I94:{render:['i1000','i100','i10'],alg:(order,tmp)=>mul(3,betSum(order,tmp))},
+  I95:{render:['i100','i10','i1'],alg:(order,tmp)=>mul(3,betSum(order,tmp))},
 }
 
 export default {
@@ -126,9 +127,6 @@ export default {
   components:{
     'betbox': betbox,
     'notebet': notebet
-  },
-  created(){
-
   },
   data(){
     return {
@@ -145,10 +143,9 @@ export default {
           ,tmp = state.lt.tmp                     //即时投注号码
           ,result = this.ltCfg[this.mode].alg(order, tmp)  //当前投注注数
 
+      console.log(result)
       store.commit('lt_setBetStr', getBetStr(order, tmp))
       store.commit('lt_setBetCount', result)
-      console.log(betSum(order, tmp))    //获得每个框的号码数
-      console.log(this.ltCfg[this.mode].alg(order, tmp))
     }
   }
 }
