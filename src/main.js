@@ -327,6 +327,7 @@ window.RootApp = new Vue({
   	}
   	return layer.open({
   	  className: "layerConfirm",
+  	  title:"温馨提示",
   	  shadeClose: false,
   	  content: msg,
   	  btn: btn,
