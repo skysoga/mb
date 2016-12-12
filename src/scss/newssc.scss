@@ -443,6 +443,9 @@
     color:#a9a9a9;
     line-height: 1em;
     padding-top: 0.4em;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis; 
   }
   em{
     position: absolute;
