@@ -89,7 +89,8 @@ import BottomBox from '../components/bottom-box';
               }
             }
             this.ArrObj={Data:isArr,Mode:Mode}
-            this.theWidth={width:this.ArrObj.Data.length*4.49+"rem"}
+            this.theWidth={width:this.ArrObj.Data.length*7.4*.7*em+2+'px'}
+            console.log(this.ArrObj.Data.length,this.ArrObj.Data.length*7.4*.7*em+2+'px')
       },
       Rebate(Max,Min){//返点区间
           var isArr=[],
