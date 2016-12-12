@@ -96,5 +96,5 @@ export default {
 </script>
 
 <style lang = "scss" scoped>
-  @import '../../scss/newssc.scss';
+  @import '../../scss/isLotteryCon.scss';
 </style>

@@ -157,5 +157,131 @@ export default {
 </script>
 
 <style lang = "scss" scoped>
-  @import '../../scss/newssc.scss';
+@import '../../scss/scssConfig','../../scss/mixin';
+.selectNumber{
+  margin:0.6em;
+  display: table;
+  position: relative;
+  &:before{
+    content:"";
+    position: absolute;
+    top:-.3em;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    @include bgImg-linear-gradient('90deg, #d0d0d0, #d0d0d0 50%, transparent 50%');
+  }
+  .title{
+    height: 1.85em;
+    width: 3rem;
+    display: table-cell;
+    em{
+      font-size: 0.75em;
+      height: 1.7em;
+      width:2.6em;
+      display: block;
+      text-align: center;
+      line-height: 1.6em;
+      color:#bbb39c;
+      background: #f4f1e2;
+      border:1px solid #ece7d9;
+      border-bottom-left-radius: .3em;
+      border-top-left-radius: .3em;
+      border-right: none;
+      position: relative;
+      z-index: 3;
+      margin-top: .8em;
+      &:before,&:after{
+        content:"";
+        position: absolute;
+        // display: none;
+      }
+      &:before{
+        width: 0;
+        height: 0;
+        right: -.6em;
+        top: 0;
+        border-top: .79em solid transparent;
+        border-left: .6em solid #f4f1e2;
+        border-bottom: .79em solid transparent;
+        z-index: 2;
+      }
+      &:after{
+        width: 0;
+        height: 0;
+        right: -.64em;
+        transform:scale(1.1);
+        top: 0;
+        border-top: .79em solid transparent;
+        border-left: .6em solid #ece7d9;
+        border-bottom: .79em solid transparent;
+        z-index: 1;
+      }
+    }
+  }
+}
+.selectNumberCenter{
+  .numberContent{
+    text-align: center;
+  }
+}
+.filterNumber{
+  float: right;
+  font-size: 0.7em;
+  color:#999;
+  a{
+    display: inline-block;
+    height: 1.6em;
+    width: 1.6em;
+    line-height:1.6em;
+    text-align: center;
+    vertical-align: middle;
+    margin-left: 0.2em;
+    float: left;
+    display: initial;
+    vertical-align: initial;
+    padding-top: 0.15em;
+  }
+  .curr,a:active{
+    color:#ff8a00;
+    background: #ffe8cc;
+    border-radius: 50%;
+    font-size: 1.1em;
+    width: 1.7em;
+    height: 1.7em;
+    line-height: 1.7em;
+    padding: 0;
+  }
+}
+.numberContent{
+  padding: 0.6em 0;
+  width: 13rem;
+  display: table-cell;
+  a{
+    width: calc((16rem - 2.4em) / 6);
+    width: -webkit-calc((16rem - 2.4em) / 6);
+    display: inline-block;
+    text-align: center;
+  }
+  span{
+    display: inline-block;
+    width: 1.7em;
+    height: 1.7em;
+    line-height: 1.6em;
+    text-align: center;
+    color:#dc3b40;
+    background: white;
+    border-radius: 50%;
+    border: 1px solid #bfbfbf;
+    font-size: 1em;
+    margin:0.3em;
+  }
+  .curr{
+    span{
+      background: #dc3b40;
+      color:white;
+      border:1px solid #dc3b40;
+    }
+  }
+}
 </style>
