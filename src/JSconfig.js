@@ -72,4 +72,5 @@ module.exports = {
   Max_Rate:10000,   //最大倍数
   Max_Chase_Issue: 50 , //追号最大期数
   Max_Expect_Rate: 20000, //追号最大预期盈利率限制
+  needVerify:sessionStorage.getItem("needVerify")||0
 }
