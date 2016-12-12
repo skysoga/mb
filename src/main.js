@@ -334,7 +334,7 @@ window.RootApp = new Vue({
   	  	fun1()
         layer.close(index)
       },
-      no:fun2
+      no:fun2,
   	  end:fun3
   	})
   }
