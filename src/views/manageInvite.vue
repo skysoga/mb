@@ -6,7 +6,7 @@
         <label for="radio1">代理类型</label>
         <input type="radio" value="0" v-model="UserType" id="radio2">
         <label for="radio2">玩家类型</label>
-        <p>请先为下级设置返点，返点越低下级赔率越低</p>
+        <p>请先为下级设置返点，<router-link style="color:#dc3b40" to="/rebateDes">点击查看返点赔率表</router-link></p>
     </div>
     <div class="tabLI">
       <ul class="creatAccountDetail Backli">

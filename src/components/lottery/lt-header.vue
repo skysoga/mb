@@ -310,7 +310,7 @@
   text-align: left;
   padding:.2rem .4rem;
   padding-left: 1.6rem;
-  overflow: hidden;
+  overflow: scroll;
   li{
     &:last-child{
       span:after{

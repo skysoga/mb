@@ -6,12 +6,17 @@ export default {
       caiList:''
     }
   },
-  created(){
-    var vm=this
-     var arr = ["AgentRebate"];
-     this.$root.GetInitData(arr,state=>{
-      this.caiList=state.AgentRebate
+  beforeRouteEnter(to,from,next){
+    var arr = ["AgentRebate"];
+     RootApp.GetInitData(arr,state=>{
+      next(vm=>{
+        vm.caiList=state.AgentRebate
+      })
      })
+  },
+  created(){
+    this.TipShow=false
+    var vm=this
     vm.vaConfig || (vm.vaConfig = {})/*初始化vaConfig对象*/
     for(var i=0;i<vm.caiList.length;i++){
       var item = vm.caiList[i]
