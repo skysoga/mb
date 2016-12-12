@@ -14,7 +14,7 @@
 	          <div class="playSortMore">
 	            <div class="playSortMoreCon">
 
-								<ul class="betFilter fix">
+								<ul class="betFilter fix" ref = "betFilter">
 									<li v-for = "(groupItem,group) in config"
 										  @click.stop = "changeGroup(groupItem)"
 										  :class = "group === mode.group ? 'curr': ''">
@@ -22,7 +22,7 @@
 									</li>
 								</ul>
 
-								<ul class="betFilterAnd">
+								<ul class="betFilterAnd" v-dynamic-height>
 									<li v-for = "(subGroup, subGroupName) in config[mode.group]">
 										<span>{{subGroupName}}</span>
 										<div class="fix">
@@ -42,7 +42,7 @@
 	      </span>
 	  </div>
 
-    <div class="lotterySort">
+    <div class="lotterySort" ref = "lotterySort">
 	    <div @click.stop = "toggleTypeSelect">
 		    <em>{{lotteryName}}</em><i class="iconfont">&#xe61e;</i>
 	    </div>
@@ -58,6 +58,7 @@
 </template>
 
 <script>
+  import Vue from 'vue'
 	import {mapState} from 'vuex'
 	export default {
 		created(){
@@ -98,6 +99,7 @@
 			//更改玩法
 			changeMode(modeItem){
 				this.$store.commit('lt_changeMode', modeItem)
+        console.log(this.ha)
 			},
 			//更改彩种
 			changeLottery(code){
@@ -138,7 +140,22 @@
 				}
 				return this.LotteryName.replace(removeName[this.ltype], '')
 			}
-		})
+		}),
+    directives:{
+      'dynamic-height':{
+        'componentUpdated'(el, binding, vnode){
+          var vm = vnode.context,
+              bodyHeight = document.body.clientHeight,
+              h1 = vm.$refs.lotterySort.offsetHeight,
+              h2 = vm.$refs.betFilter.offsetHeight
+
+          el.style.height = bodyHeight - h1 - h2
+          console.log(document.body.clientHeight)
+          console.log(vm.$refs.lotterySort.offsetHeight)
+          console.log(vm.$refs.betFilter.offsetHeight)
+        }
+      }
+    }
 	}
 </script>
 

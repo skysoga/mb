@@ -1,7 +1,7 @@
 <template>
 	<div @click = "closeBox">
 		<keep-alive>
-			<router-view ></router-view>
+			<router-view></router-view>
 		</keep-alive>
 	</div>
 </template>
