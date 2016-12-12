@@ -34,6 +34,10 @@ var ltCfg = {
     render:['whole'],
     alg:(order, tmp)=>C(tmp['whole'].length, 5)
   },
+  A11:{
+    render:['10000', '1000', '100', '10', '1'],
+    alg:(order, tmp)=>getBetSum(order, tmp).reduce(function(a,b){return a + b})
+  }
 
 
 
@@ -100,5 +104,20 @@ function getBetSum(order, tmp){
 </script>
 
 <style lang = "scss" scoped>
-@import '../../scss/newssc.scss';
+/*@import '../../scss/newssc.scss';*/
+@import '../../scss/scssConfig','../../scss/mixin';
+.sscMain{
+  margin-bottom: 3.6em;
+  // padding-bottom: 3.2em;
+}
+
+.sscTips{
+  margin:0 0.6em;
+  margin-top:5.3em;
+  color:#333;
+  padding-top: .6em;
+  p{
+    font-size: 0.65em;
+  }
+}
 </style>

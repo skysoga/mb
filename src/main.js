@@ -1,3 +1,12 @@
+try {
+  sessionStorage.setItem('TextLocalStorage', 'hello world');
+  sessionStorage.getItem('TextLocalStorage');
+  sessionStorage.removeItem('TextLocalStorage');
+} catch(e) {
+  alert('您的浏览器太旧或者开启了无痕浏览模式，无法浏览网页，请更换浏览器或退出无痕模式，给您带来的不便，表示抱歉！');
+  localStorage={setItem:function(d){},getItem:function(d){}};
+  sessionStorage={setItem:function(d){},getItem:function(d){}};
+}
 window.rem = document.body.clientWidth/16;
 window.em = Math.sqrt((rem-20)*.9)+20;
 document.write("<style>html{font-size:"+rem+"px;}body{font-size:"+em+"px;}</style>");
@@ -184,12 +193,6 @@ window.RootApp = new Vue({
 		    	var Data = this.SetFilter(json.BackData);
 		    	console.log(Data);
 		      this.SaveInitData(Data)
-		    	if (json.Code===0&&state.UserName) {
-		    		this.Logout()
-		    		layer.alert("您的登录状态已失效,需要重新登录",()=>{
-		    			this.$router.push("/login")
-		    		})
-		    	}
 		      fun&&fun(state)
 		    }else{
 		      layer.msgWarn(json.StrCode);
@@ -259,7 +262,17 @@ window.RootApp = new Vue({
           }
         })
       }
-    })()
+    })(),
+		beforEnter:function(to){
+			var meta = to.matched[0].meta
+			if(meta.user){
+			  if (!state.UserName) {
+			    router.push("/login")
+			  }else if(state.agent){
+			    state.AgentRebate||router.push("/notfount")
+			  }
+			}
+		},
 	},
 	render: h => h(App),
 });
@@ -269,7 +282,7 @@ window.RootApp = new Vue({
 	  tip='<span class="iconfont">&#xe610;</span>'
   layer.icon={}
   layer.icon.load=state.tpl.load
-
+  layer.load=function(){layer.open({type: 2})}
 	layer.msg=function(msg, time) {
     return this.open({ content: msg, time: time?time-1:3,style: 'fill:#ececec',className:'layermsg'});
   }
@@ -304,12 +317,35 @@ window.RootApp = new Vue({
       btn: ["确定"],
       end:fun
     })
+  },
+  layer.confirm=function(msg,btn,fun1,fun2,fun3){
+  	if (!btn.length) {
+  		fun3=fun2
+  		fun2=fun1
+  		fun1=btn
+  		btn=["确定","取消"]
+  	}
+  	return layer.open({
+  	  className: "layerConfirm",
+  	  title:"温馨提示",
+  	  shadeClose: false,
+  	  content: msg,
+  	  btn: btn,
+  	  yes: function(index) {
+  	  	fun1()
+        layer.close(index)
+      },
+      no:fun2,
+  	  end:fun3
+  	})
   }
 })()
 
 router.beforeEach((to, from, next) => {
   // layer.open({type: 2});
+  console.log("beforeEach");
   state.turning=true
+  RootApp.beforEnter(to)
 	next();
 });
 
@@ -326,11 +362,7 @@ router.afterEach((to, from) => {
 
 //全局过滤器
 Vue.filter('num', v=>+v) // 转成数字类型
-Vue.filter('betstr', {
-  'write':function(val, oldVal){
-    return val + 'a'
-  }
-})
+
 //全局指令
 Vue.directive('copyBtn', {
 	bind: function(el, binding, vnode){
@@ -360,7 +392,7 @@ function _fetch(data){
 	for(var i in data){
 		k=data[i];
 		if (typeof(k)==="object") {
-			k=JSON.stringify(k);
+			k= encodeURIComponent(JSON.stringify(k));
 		}
 		str.push(i+'='+k);
 	}
@@ -374,10 +406,18 @@ function _fetch(data){
 		  },
 		  body: data
 		}).then((res)=>{
-			// console.log(new Date(res.headers.get('Date')).getTime())
 			res.json().then(json=>{
 				if (json.Code==0) {
-					console.log(RootApp.$routes);
+					if(state.UserName){
+						RootApp.Logout()
+						layer.alert("您的登录信息已失效<br>需要重新登录",function(){
+							var meta = RootApp._route.matched[0]
+							meta = meta&&meta.meta
+							if(meta&&meta.user){
+						    router.push("/login")
+							}
+						})
+					}
 				}
 				resolve(json)
 			})
