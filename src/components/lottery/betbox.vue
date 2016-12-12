@@ -1,5 +1,5 @@
 <template>
-   <div class="selectNumber">
+   <div class="selectNumber fix">
       <div class="title fix">
         <em>{{tag}}</em>
         <!-- 全大小奇偶清 -->

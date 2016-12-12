@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="lottery_ssc">
 <div class="DontSelect sscActive">
 	<!-- 头部： 玩法选择， 同类彩种选择-->
 	<lt-header></lt-header>
