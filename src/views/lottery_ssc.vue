@@ -54,8 +54,7 @@
 </div>
 </template>
 <style lang = "scss" scoped>
-  @import '../scss/newssc.scss';
-
+@import '../scss/newssc.scss';
 </style>
 <script>
 	import lt_header from '../components/lottery/lt-header'

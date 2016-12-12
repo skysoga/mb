@@ -104,5 +104,20 @@ function getBetSum(order, tmp){
 </script>
 
 <style lang = "scss" scoped>
-@import '../../scss/newssc.scss';
+/*@import '../../scss/newssc.scss';*/
+@import '../../scss/scssConfig','../../scss/mixin';
+.sscMain{
+  margin-bottom: 3.6em;
+  // padding-bottom: 3.2em;
+}
+
+.sscTips{
+  margin:0 0.6em;
+  margin-top:5.3em;
+  color:#333;
+  padding-top: .6em;
+  p{
+    font-size: 0.65em;
+  }
+}
 </style>
