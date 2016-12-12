@@ -69,4 +69,7 @@ module.exports = {
   GMT_DIF:new Date().getTimezoneOffset()*60*1000,
   Difftime: localStorage.getItem('Difftime') || null,
   PERBET: 2,    //每注2元
+  Max_Rate:10000,   //最大倍数
+  Max_Chase_Issue: 50 , //追号最大期数
+  Max_Expect_Rate: 20000, //追号最大预期盈利率限制
 }

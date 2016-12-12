@@ -8,12 +8,14 @@ export default {
       perVal:''
     }
   },
-  created(){
+  beforeRouteEnter(to,from,next){
     var arr=['UserName','UserNickName','UserGrade','UserPhoto','UserGradeGrow','GradeList']
-    this.$root.GetInitData(arr,stage=>{
-      this.UserGrade=stage.UserGrade
-      this.UserGradeGrow=stage.UserGradeGrow
-      this.getPerLong(stage.UserGrade)
+    RootApp.GetInitData(arr,stage=>{
+      next(vm=>{
+        vm.UserGrade=stage.UserGrade
+        vm.UserGradeGrow=stage.UserGradeGrow
+        vm.getPerLong(stage.UserGrade)
+      })
     })
   },
   methods:{

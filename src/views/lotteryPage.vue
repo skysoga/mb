@@ -16,7 +16,6 @@
 			//校验LotteryList， 和LotteryConfig-- 不阻塞，仅发起
 			RootApp.GetInitData(['LotteryList','LotteryConfig'], state=>{})
 			var Difftime = localStorage.getItem('Difftime')
-			console.log('base')
 			if(Difftime === null){
 				RootApp.getServerTime(next)//没获取Difftime就再获取一次
 			}else{
@@ -138,7 +137,7 @@
   			'SSC':getSSCRebate
   		}
 
-			var timer1, timer2
+			var timer1, timer2, timer3
 					,wait4Results = 0
 					,wait4BetRecord = false
 
@@ -173,6 +172,7 @@
 		      	'csum17':[],
 		      	'baodan':[],
 		      	'whole':[],
+		      	'notebet':[]
 		      },        //即时的投注号码情况
 		      basket:[],      //号码篮
 		      scheme:{},      //追号相关
@@ -213,6 +213,7 @@
 
 		    },
 		    getters: {
+
 		    },
 		    mutations:{
 		      //变更弹出框
@@ -223,19 +224,15 @@
 		      			,Odds = state.Odds[type] || []
 
 		      	state.mode = mode
-		      	for(var item in state.tmp){
-		      		state.tmp[item] = []
-		      	}
+		      	store.commit('lt_clearBet')
 		      	//更改玩法时，对应玩法的奖金也跟着变
 		      	state.award = awardSetter[type](mode.mode, Odds)
+		      	//更换玩法，bet清空
 		      },
 		      //变更彩种
 		      lt_changeLottery:(state, code)=>{
 		        state.lottery = store.state.LotteryList[code]
 		        RootApp.$router.push(code)		//更改路由
-		      	/**
-		      	 * 此处应有清除方案的代码
-		      	 */
 		      },
 		      //变更配置（进入各具体彩种页时，设置）
 		      lt_initConfig:(state, config)=>{state.config = pageConfig[state.lottery.LotteryType]},
@@ -338,14 +335,42 @@
 	      	lt_updateTmp:(state, {alias, arr})=>{
 	      		Vue.set(state.tmp, alias, arr)
 	      	},
+	      	//设置投注字符串
 	      	lt_setBetStr:(state, betStr)=>{
 	      		state.bet.betting_number = betStr
 	      	},
+	      	//设置投注数，还有计算单注金额
 	      	lt_setBetCount:(state, betCount)=>{
 	      		state.bet.betting_count = betCount
-	      		state.bet.betting_money = PERBET * betCount * state.bet.graduation_count * state.bet.betting_model
-	      	}
-
+	      		state.bet.betting_money = PERBET * state.bet.betting_count * state.bet.graduation_count * state.bet.betting_model
+	      	},
+	      	//设置倍数
+	      	lt_setPower:(state, power)=>{
+	      		state.bet.graduation_count = power
+	      		state.bet.betting_money = PERBET * state.bet.betting_count * state.bet.graduation_count * state.bet.betting_model
+	      	},
+	      	//设置元角分
+	      	lt_setUnit:(state, unit)=>{
+	      		state.bet.betting_model = unit
+	      		state.bet.betting_money = PERBET * state.bet.betting_count * state.bet.graduation_count * state.bet.betting_model
+	      	},
+	      	//添加bet到plan中
+	      	lt_addBet:(state)=>{
+	      		var baseBet = new BaseBet()
+	      		state.basket.push(baseBet)
+	      		store.commit('lt_clearBet')
+	      	},
+	      	//清空bet
+	      	lt_clearBet:(state)=>{
+	      		state.bet.betting_number = ''
+	      		state.bet.betting_count = 0
+	      		state.bet.betting_money = 0
+	      		state.bet.graduation_count = 1
+      			for(var item in state.tmp){
+		      		state.tmp[item] = []
+		      	}
+	      	},
+	      	lt_clearBasket:(state)=>{state.basket = []}
 		    },
 
 
@@ -469,6 +494,8 @@
 			        return;
 			      }
 
+
+			      if(!state.LotteryPlan.length) return
 		        var Countdown = state.LotteryPlan[state.IssueNo % state.PlanLen].End
 			                        +(state.IssueNo>=state.PlanLen) * DAY_TIME
 			                        -_SerTime;
@@ -512,8 +539,6 @@
 		        }
 		        var Results = state.LotteryResults[state.lottery.LotteryCode]
 			        	,len = Results?Results.length:0;
-
-			      // console.log(wait4BetRecord, wait4Results, Results[0].IssueNo*1,state.OldIssue*1)
 
 			      if(!wait4BetRecord){
 			      	//如果在获取我的投注/我的追号,则不进入
@@ -594,6 +619,56 @@
 							})
 
 						}
+		      },
+		      lt_confirmBet:({state, rootState, commit, dispatch})=>{
+
+		      	_fetch({
+		      		'action':'AddBetting',
+		      		'data': {BettingData:state.basket}
+		      	}).then((json)=>{
+		      		if(json.Code === 1){
+		      			layer.msg(json.StrCode)
+		      			commit('lt_clearBet')
+		      			commit('lt_clearBasket')
+		      			commit('lt_changeBox', '')
+		      			//隔3s获取我的投注
+		      			timer3 = setTimeout(()=>{
+		      				dispatch('lt_updateBetRecord')
+		      			}, 3000)
+		      		}else if(json.Code === -9){
+		      			//清除rebate
+
+
+
+
+		      		}else{
+		      			layer.msgWarn(json.StrCode)
+		      		}
+		      	})
+
+
+
+		    //   	 $.ajax({
+			   //    	load:true,
+						// 	data: {
+						// 		'action': 'AddBetting',
+						// 		'data':JSON.stringify({'BettingData': ajaxPlans})
+						// 	},
+						// 	success: function(data){
+						// 		console.log(data)
+						// 		if(data.Code === 1){
+						// 			layer.msgWarn(data.StrCode);
+						// 			Event.trigger('clearPlans');		//投注成功清空方案列表
+						// 			setTimeout(function(){
+						// 				baseData.updateBetRecord()
+						// 			}, 3000)
+						// 		}else if(data.Code === -9){
+						// 			baseData.ClearRebate();
+						// 		}else{
+						// 			layer.msgWarn(data.StrCode)
+						// 		}
+						// 	}
+						// });
 		      }
 		    }
 		  }
@@ -615,7 +690,7 @@
 			store.commit('lt_updateDate')
 			//切换彩种
 			store.dispatch('lt_updateLottery', lcode)
-			//设置页面配置
+			//设置页面配置-SSC、K3
 		  store.commit('lt_initConfig')
 		  //设置默认的玩法
 			store.commit('lt_changeMode', state.lt.config[_group][_subGroup][0])
@@ -641,6 +716,23 @@
 			clearInterval(this.baseLoop)
 		}
 
+	}
+
+	function BaseBet(){
+		var lt = state.lt,
+				bet = state.lt.bet
+
+
+		this.lottery_code = lt.lottery.LotteryCode,											//彩种
+		this.play_detail_code = lt.lottery.LotteryCode + lt.mode.mode,	//玩法code
+		this.betting_number = bet.betting_number,   										//投注号码
+		this.betting_count = bet.betting_count,													//这个方案多少注
+		this.betting_money = bet.betting_money,						//一注单价 * 投注数量 * 单位 * 倍数
+
+		this.betting_point = lt.award + '-' + lt.Rebate[lt.lottery.LotteryType]  ,					//赔率
+		this.betting_model = bet.betting_model,										//元角分
+		this.betting_issuseNo = lt.NowIssue,									//当前期号
+		this.graduation_count = bet.graduation_count								//当前倍率
 	}
 
 	function getSSCRebate(mode, Odds){

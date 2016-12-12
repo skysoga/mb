@@ -391,7 +391,7 @@ function _fetch(data){
 	for(var i in data){
 		k=data[i];
 		if (typeof(k)==="object") {
-			k=JSON.stringify(k);
+			k= encodeURIComponent(JSON.stringify(k));
 		}
 		str.push(i+'='+k);
 	}
@@ -405,7 +405,6 @@ function _fetch(data){
 		  },
 		  body: data
 		}).then((res)=>{
-			// console.log(new Date(res.headers.get('Date')).getTime())
 			res.json().then(json=>{
 				if (json.Code==0) {
 					if(state.UserName){

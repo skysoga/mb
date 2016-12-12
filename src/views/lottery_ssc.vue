@@ -1,4 +1,5 @@
 <template>
+<div class="lottery_ssc">
 <div class="DontSelect sscActive">
 	<!-- 头部： 玩法选择， 同类彩种选择-->
 	<lt-header></lt-header>
@@ -16,40 +17,53 @@
 
   <!-- 倍和单位， 确认投注， 号码篮 -->
   <lt-footer></lt-footer>
-  <!-- <div class="sscFooter active">
+</div>
 
-    <div class="sscBetInfo fix">
-      <div class="betContent">
-        <em>+</em>
-        <div>
-          <h3>已选1注，2.00元</h3>
-          <p>每位选1个号码为1注</p>
-        </div>
-      </div>
-      <div class="betCart" ><a><i class="iconfont">&#xe75a;<em>88</em></i>号码篮</a></div>
+<basket @click.native.stop></basket>
+
+<!-- <div class="cart" v-show = "true">
+  <header class="top sscHeader fix" ><a href="/index" class="iconfont back"></a><div class="playSort">号码蓝</div></header>
+  <div class="cartMain">
+    <div class="someBtn"><a>机选1注</a><a>机选5注</a><a>继续选号</a></div>
+    <div class="cartContent">
+      <ul class="numberbox">
+        <li><em>8,8,8,8,8</em><span>五星直选 1注×2.0元 = 2.00元</span><a></a></li>
+        <li><em>8,8,8,8,8</em><span>五星直选 1注×2.0元 = 2.00元</span><a></a></li>
+      </ul>
+      <div class="clear">清空</div>
+  </div>
+  </div>
+  <div class="cartTotal">
+    <div class="change">
+      <label>投<input type="tel">倍</label>
+      <label>追<input type="tel">期<div class="stop">
+        <input type="checkbox" id="stop"><label for="stop">中奖后停止追号</label>
+      </div></label>
     </div>
-
-    <div class="multipleCon">
-      <div class="multipleConLine fix">
-        <div class="multiple"><em class="noMore">-</em><input type="tel" value="1"><em>+</em>
-        </div><span>倍</span>
-        <div class="moneyUnit">
-          <a class="curr" >元</a><a>角</a><a>分</a>
-        </div>
+    <div class="result fix">
+      <div class="left">
+        <span>2注×1=4.00元</span>
+        <em>可用余额 88.80元</em>
+      </div>
+      <div class="right">
+        <i>立即投注</i>
       </div>
     </div>
-
-  </div> -->
-
+  </div>
+</div> -->
 </div>
 </template>
+<style lang = "scss" scoped>
+  @import '../scss/newssc.scss';
 
+</style>
 <script>
 	import lt_header from '../components/lottery/lt-header'
   import lt_result from '../components/lottery/lt-result'
   import lt_timebar from '../components/lottery/lt-timebar'
   import lt_footer from '../components/lottery/lt-footer'
   import ssc from '../components/lottery/ssc'
+  import basket from '../components/lottery/basket'
   import {DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME} from '../JSconfig'
 
 	export default {
@@ -61,7 +75,8 @@
       'lt-result': lt_result,
       'lt-timebar': lt_timebar,
       'lt-footer': lt_footer,
-      'ssc': ssc
+      'ssc': ssc,
+      'basket': basket,
 		},
     created(){
       //从路径上获取彩种
@@ -81,7 +96,3 @@
 
 	}
 </script>
-
-<style lang = "scss" scoped>
-	@import '../scss/newssc.scss';
-</style>

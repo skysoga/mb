@@ -1,20 +1,15 @@
 <template>
-   <div class="selectNumber">
+   <div class="selectNumber fix">
       <div class="title fix">
         <em>{{tag}}</em>
-        <div class="filterNumber">
+        <!-- 全大小奇偶清 -->
+        <!-- <div class="filterNumber">
           <a v-for = "item in filters"
              @click = "filter(item)"
              :class = "filterLight(item)">
              {{item}}
          </a>
-         <!--  <a class="curr">全</a>
-          <a>大</a>
-          <a>小</a>
-          <a>奇</a>
-          <a>偶</a>
-          <a>清</a> -->
-        </div>
+        </div> -->
       </div>
 
       <div class="numberContent">
@@ -38,16 +33,7 @@
 </template>
 
 <script>
-function unique(arr){
-  var hashTable = {}, newArr = [];
-  for(var i = 0;i < arr.length;i++){
-    if(!hashTable[arr[i]]){
-      hashTable[arr[i]] = true;
-      newArr.push(arr[i]);
-    }
-  }
-  return newArr;
-}
+import {unique} from '../../js/kit'
 
 function isArrayEqual(a, b){
   return a.every((item, index)=>b[index]===item ) && a.length === b.length
