@@ -38,7 +38,8 @@ export default {
     }
     var Qort=to.query.id
     var nextto=Qort=='withdraw'?'/withdraw':'/manageBankcard'
-    var cid=Qort=='withdraw'?'add':Qort||'add'
+    var cid=Qort=='withdraw'?'add':(Qort||'add')
+    console.log(cid)
     var Trr={Action:"GetCardDetail",BankCardID:cid}
     if(cid!=='add'){
       to.meta.title="修改银行卡"
@@ -105,9 +106,8 @@ export default {
       arr.Qort=this.Qort
       _fetch(arr).then(json=>{
           if(json.Code==1){
-            layer.msgWarn(json.StrCode)
             RootApp.AjaxGetInitData(['UserBankCardList','UserFirstCardInfo'],state=>{
-              RootApp.$router.push(vm.nextUrl)
+              layer.url(json.StrCode,vm.nextUrl)
             })
           }else{
             layer.open({

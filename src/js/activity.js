@@ -2,9 +2,11 @@ export default {
   data(){
     return{}
   },
-  created(){
+  beforeRouteEnter(to,from,next){
      var arr = ["ActivityConfig"];
-     RootApp.GetInitData(arr)
+     RootApp.GetInitData(arr,state=>{
+      next()
+     })
    },
    methods:{
      getHtml:name=>{

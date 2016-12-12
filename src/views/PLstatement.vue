@@ -2,7 +2,7 @@
 <div class="main PLS">
     <div class="PLSinfo">
         盈利金额
-        <span>{{AllProfitLoss}}</span>
+        <span>{{ArrObj.AllProfitLoss}}</span>
     </div>
     <div class="PLSpm">
         <i class="iconfont">&#xe610;</i>
@@ -10,12 +10,12 @@
     </div>
     <div class="PLSdetailCon">
     <ul class="PLSdetail fix">
-        <li><span>{{Betting}}</span>投注金额</li>
-        <li><span>{{BonusMoney}}</span>中奖金额</li>
-        <li><span>{{Activity}}</span>活动礼金</li>
-        <li><span>{{Rebate}}</span>返点金额</li>
-        <li><span>{{Recharge}}</span>充值金额</li>
-        <li><span>{{Withdraw}}</span>提现金额</li>
+        <li><span>{{ArrObj.Betting}}</span>投注金额</li>
+        <li><span>{{ArrObj.BonusMoney}}</span>中奖金额</li>
+        <li><span>{{ArrObj.Activity}}</span>活动礼金</li>
+        <li><span>{{ArrObj.Rebate}}</span>返点金额</li>
+        <li><span>{{ArrObj.Recharge}}</span>充值金额</li>
+        <li><span>{{ArrObj.Withdraw}}</span>提现金额</li>
     </ul>
     </div>
 </div>

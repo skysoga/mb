@@ -13,7 +13,7 @@ export default {
       RootApp.$router.push('/login')
     }
     next(vm=>{
-      vm.isOrUrl=RootApp.$router.query.Q
+      vm.isOrUrl=RootApp.$route.query.Q||''
     })
   },
    methods:{

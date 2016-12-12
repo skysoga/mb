@@ -42,5 +42,22 @@ export default {
 </script>
 
 <style lang = "scss" scoped>
-@import '../../scss/newssc.scss';
+
+.textareaNumber{
+  background: white;
+  margin: 0.6em;
+  padding: 0.6em;
+  height:9.6em;
+  textarea{
+    font-size: 0.7em;
+    width:100%;
+    height: 12em;
+    margin:0;
+    border:none;
+    color:#666;
+    &:focus{
+      outline: none;
+    }
+  }
+}
 </style>

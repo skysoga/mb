@@ -14,7 +14,7 @@
 	          <div class="playSortMore">
 	            <div class="playSortMoreCon">
 
-								<ul class="betFilter fix">
+								<ul class="betFilter fix" ref = "betFilter">
 									<li v-for = "(groupItem,group) in config"
 										  @click.stop = "changeGroup(groupItem)"
 										  :class = "group === mode.group ? 'curr': ''">
@@ -22,7 +22,7 @@
 									</li>
 								</ul>
 
-								<ul class="betFilterAnd">
+								<ul class="betFilterAnd" v-dynamic-height>
 									<li v-for = "(subGroup, subGroupName) in config[mode.group]">
 										<span>{{subGroupName}}</span>
 										<div class="fix">
@@ -42,7 +42,7 @@
 	      </span>
 	  </div>
 
-    <div class="lotterySort">
+    <div class="lotterySort" ref = "lotterySort">
 	    <div @click.stop = "toggleTypeSelect">
 		    <em>{{lotteryName}}</em><i class="iconfont">&#xe61e;</i>
 	    </div>
@@ -58,6 +58,7 @@
 </template>
 
 <script>
+  import Vue from 'vue'
 	import {mapState} from 'vuex'
 	export default {
 		created(){
@@ -138,10 +139,248 @@
 				}
 				return this.LotteryName.replace(removeName[this.ltype], '')
 			}
-		})
+		}),
+    directives:{
+      'dynamic-height':{
+        'componentUpdated'(el, binding, vnode){
+          var vm = vnode.context,
+              bodyHeight = window.screen.height,
+              h1 = vm.$refs.lotterySort.offsetHeight,
+              h2 = vm.$refs.betFilter.offsetHeight
+
+          el.style.height = bodyHeight - h1 - h2 + 'px'
+        }
+      }
+    }
 	}
 </script>
 
 <style lang = "scss" scoped>
-	@import '../../scss/newssc.scss';
+	/*@import '../../scss/newssc.scss';*/
+@import '../../scss/scssConfig','../../scss/mixin';
+	.sscHeader{
+  background: #dc3b40;
+  color:white;
+  text-align: center;
+  height: 2.3em;
+  position: fixed;
+  top:0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  > .iconfont{
+    position: absolute;
+    left: 0;
+    top:0;
+    display: inline-block;
+    vertical-align: top;
+    height: 2.3em;
+    line-height: 2.3em;
+    padding: 0 0.6em;
+  }
+  .playSort{
+    display: inline-block;
+    height: 2.3em;
+    line-height: 2.3em;
+    p{
+      font-size: 0.6em;
+      display: inline-block;
+      line-height: 1.2em;
+      height: 2.4em;
+      vertical-align: middle;
+      margin-left:-1.4em;
+      text-align: left;
+      position: absolute;
+      margin-top: 0.8em;
+    }
+    > span{
+      display: inline-block;
+      font-size: 0.8em;
+      border-radius: 0.2em;
+      border:1px solid #fff;
+      vertical-align: top;
+      height: 2em;
+      margin:0.45em 0;
+      line-height: 1.9em;
+      padding: 0 0.6em;
+      i{
+        padding-left:0.2em;
+        font-size: 0.9em;
+      }
+    }
+    &.active{
+      .playSortMore{
+        display: block;
+      }
+    }
+  }
+  .lotterySort{
+    float: right;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 2.875em;
+    line-height: 2.875em;
+    padding: 0 0.8em;
+    font-size: 0.8em;
+    i{
+      padding-left:0.2em;
+      font-size: 0.9em;
+    }
+    &.active{
+      .lotteryList{
+        display: block;
+      }
+    }
+  }
+}
+.lotteryList{
+  z-index: 12;
+  position: fixed;
+  right: 0;
+  top:2.9em;
+  background: white;
+  width: 11em;
+  box-shadow: 0 2px 10px rgba(41, 41, 41, 0.08);
+  a{
+    color:#333;
+    float: left;
+    width: 6em;
+    font-size: .9em;
+    text-align: center;
+    &:nth-child(odd):after {
+      content: "";
+      display: block;
+      background-image: -ms-linear-gradient(90deg, transparent 50%, #d0d0d0, #d0d0d0 50%);
+      background-image: -moz-linear-gradient(90deg, transparent 50%, #d0d0d0, #d0d0d0 50%);
+      background-image: -webkit-linear-gradient(90deg, transparent 50%, #d0d0d0, #d0d0d0 50%);
+      height: 1px;
+      width: 100%;
+      position: absolute;
+    }
+    &:nth-last-of-type(1):after,&:nth-last-of-type(2):after{
+      display: none;
+    }
+    &:active{
+      background: #ddd;
+    }
+    &:first-child:before {
+      position: absolute;
+      content: "";
+      display: block;
+      width: 0;
+      height: 0;
+      border-bottom: 1em solid rgba(255, 255, 255, 0.96);
+      border-left: 1em solid transparent;
+      right: 0;
+      top: -0.96em;
+    }
+  }
+}
+.betFilter{
+    padding: 0.3em;
+    box-shadow: 0 2px 10px rgba(41, 41, 41, 0.08);
+    li{
+    }
+    .curr{
+    }
+}
+.betFilter li,.betFilterAnd a{
+  padding:0 0.8em;
+  line-height: 2em;
+  @include border-radius(3px);
+  cursor: pointer;
+  text-align: center;
+  color: #555;
+  font-size: 0.9em;
+  margin: 0.3em;
+  float:left;
+  border:1px solid #ddd;
+}
+.betFilter .curr,.betFilterAnd .curr{
+  background: #ff9726;
+  border:1px solid #ff9726;
+  color: white;
+}
+.betFilterAnd{
+  text-align: left;
+  padding:.2rem .4rem;
+  padding-left: 1.6rem;
+  overflow: scroll;
+  li{
+    &:last-child{
+      span:after{
+        background: white;
+      }
+    }
+  }
+  li+li{
+    border-top:1px dotted #ddd;
+  }
+  div{
+    vertical-align: top;
+    width: 11.5rem;
+    display: inline-block;
+    padding: .3em;
+  }
+  span{
+    color:#666;
+    vertical-align: top;
+    width: 2.5rem;
+    display: inline-block;
+    margin-top:.3em;
+    line-height: 2.8em;
+    font-size: .9em;
+    position: relative;
+    &:before,&:after{
+      content: "";
+      position: absolute;
+      display: block;
+    }
+    &:before{
+      left: -1rem;
+      top:1.1em;
+      width: .3em;
+      height: .3em;
+      border:.2em solid #ddd;
+      border-radius: .6em;
+      background: white;
+      z-index: 14;
+    }
+    &:after{
+      width: 1px;
+      height: 10em;
+      @include bgImg-linear-gradient('0deg, #d0d0d0, #d0d0d0 50%, transparent 50%');
+      left: -.82rem;
+      top:1.1em;
+      z-index: 13;
+    }
+  }
+  a{
+    color:#666;
+    border:1px solid #ddd;
+    display: inline-block;
+    border-radius: .3em;
+  }
+}
+
+.sscMain{
+  margin-bottom: 3.6em;
+  // padding-bottom: 3.2em;
+}
+
+
+.playSortMore{
+  background: rgba(0, 0, 0, 0.4);
+  top: 2.85em;
+  position: fixed;
+  bottom:0;
+  width:100%;
+  left:0;
+  z-index: 999;
+  // display: none;
+}
+.playSortMoreCon{
+  background: white;
+}
 </style>

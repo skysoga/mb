@@ -1,13 +1,7 @@
 export default {
   data:()=>{
     return{
-      AllProfitLoss:'',
-      Betting:'',
-      BonusMoney:'',
-      Activity:'',
-      Rebate:'',
-      Recharge:'',
-      Withdraw:''
+      ArrObj:''
     }
   },
   beforeRouteEnter(to,from,next){
@@ -16,13 +10,7 @@ export default {
           next(vm=>{
             var datas=json.BackData
             if(json.Code==1){
-              vm.AllProfitLoss=datas.AllProfitLoss
-              vm.Betting=datas.Betting
-              vm.BonusMoney=datas.BonusMoney
-              vm.Activity=datas.Activity
-              vm.Rebate=datas.Rebate
-              vm.Recharge=datas.Recharge
-              vm.Withdraw=datas.Withdraw
+              vm.ArrObj=datas
             }else{
               layer.msgWarn(json.StrCode)
             }
