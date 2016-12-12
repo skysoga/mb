@@ -5,7 +5,7 @@ export default {
     }
   },
   beforeRouteEnter:(to, from, next) => {
-    var arr = ["UserBalance","UserHasSafePwd","UserFirstCardInfo","AgentRebate"];
+    var arr = ["UserBalance","UserHasSafePwd","UserFirstCardInfo","AgentRebate","UserPhoto"];
     RootApp.GetInitData(arr, state=>{
       next()
     })
