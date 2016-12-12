@@ -362,6 +362,10 @@
 	      		state.bet.betting_model = unit
 	      		state.bet.betting_money = PERBET * state.bet.betting_count * state.bet.graduation_count * state.bet.betting_model
 	      	},
+	      	//添加bet到plan中
+	      	lt_addBet:(state)=>{
+	      		console.log(new BaseBet())
+	      	}
 
 
 		    },
@@ -659,6 +663,22 @@
 			clearInterval(this.baseLoop)
 		}
 
+	}
+
+	function BaseBet(){
+		var lt = state.lt,
+				bet = state.lt.bet
+
+		this.lottery_code = lt.lottery.LotteryCode,											//彩种
+		this.play_detail_code = lt.lottery.LotteryCode + lt.mode.mode,	//玩法code
+		this.betting_number = bet.betting_number,   										//投注号码
+		this.betting_count = bet.betting_count,													//这个方案多少注
+		this.betting_money = PERBET * bet.betting_count * bet.betting_model * bet.graduation_count,						//一注单价 * 投注数量 * 单位 * 倍数
+
+		this.betting_point = lt.award + '-' + lt[lt.mode.mode]  ,					//赔率
+		this.betting_model = bet.betting_model,										//元角分
+		this.betting_issuseNo = lt.NowIssue,									//当前期号
+		this.graduation_count = bet.graduation_count								//当前倍率
 	}
 
 	function getSSCRebate(mode, Odds){

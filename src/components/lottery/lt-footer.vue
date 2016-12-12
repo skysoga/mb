@@ -3,7 +3,7 @@
   <div class="sscFooter" :class = "betCount ? 'active' : ''">
 
     <div class="sscBetInfo fix">
-      <div class="betContent" @click = "add2Plan">
+      <div class="betContent" @click = "addBet">
         <em>+</em>
         <div>
           <h3>已选{{betCount}}注，{{betMoney}}元</h3>
@@ -78,6 +78,9 @@ export default {
     changeUnit(unit){
       this.unit = unit
       store.commit('lt_setUnit', unit)
+    },
+    addBet(){
+      store.commit('lt_addBet')
     }
   }
 }
