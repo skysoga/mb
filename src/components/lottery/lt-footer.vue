@@ -1,16 +1,21 @@
 <template>
   <!-- 倍和单位， 确认投注， 号码篮 -->
-  <div class="sscFooter active">
+  <div class="sscFooter" :class = "betCount ? 'active' : ''">
 
     <div class="sscBetInfo fix">
-      <div class="betContent">
+      <div class="betContent" @click = "add2Plan">
         <em>+</em>
         <div>
           <h3>已选{{betCount}}注，{{betMoney}}元</h3>
-          <!-- <p>每位选1个号码为1注,, 砍掉</p> -->
+          <p>每位选1个号码为1注,sdfsdfdsf,砍掉</p>
         </div>
       </div>
-      <div class="betCart" ><a><i class="iconfont">&#xe75a;<em>88</em></i>号码篮</a></div>
+
+      <div class="betCart" >
+        <a>
+          <i class="iconfont">&#xe75a;<em>88</em></i>
+          号码篮</a>
+      </div>
     </div>
 
     <div class="multipleCon">
@@ -56,7 +61,7 @@ export default {
   },
   computed:{
     betCount:()=>state.lt.bet.betting_count,
-    betMoney:()=>state.lt.bet.betting_money
+    betMoney:()=>state.lt.bet.betting_money.toFixed(2)
   },
   watch:{
     power(val){
