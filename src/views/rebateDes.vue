@@ -1,6 +1,6 @@
 <template>
   <div class="main rebateDes" style="padding-bottom:0">
-    <div class="testShow" v-show="ArrObj&&BetweenType=='SSC'"><i class="iconfont">&#xe624;</i>时时彩是基数2元一注的奖金模式，奖金÷2换算成赔率。</div>
+    <div class="testShow" v-show="ArrObj&&BetweenType=='SSC'" style="padding:5px"><i class="iconfont">&#xe624;</i>时时彩是基数2元1注的奖金模式,奖金÷2换算成赔率。</div>
     <div class="rebateContent fix">
       <template v-if="ArrObj">
         <ul class="rebateTitle">
