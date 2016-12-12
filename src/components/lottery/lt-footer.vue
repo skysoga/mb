@@ -1,19 +1,19 @@
 <template>
   <!-- 倍和单位， 确认投注， 号码篮 -->
-  <div class="sscFooter" :class = "betCount ? 'active' : ''">
+  <div class="sscFooter " :class = "betCount ? 'active' : ''">
 
     <div class="sscBetInfo fix">
       <div class="betContent" @click = "addBet">
         <em>+</em>
         <div>
           <h3>已选{{betCount}}注，{{betMoney}}元</h3>
-          <p>每位选1个号码为1注,sdfsdfdsf,砍掉</p>
+          <p>{{betCount ? betStr: ''}}</p>
         </div>
       </div>
 
       <div class="betCart" >
-        <a>
-          <i class="iconfont">&#xe75a;<em>88</em></i>
+        <a @click.stop = "showBasket">
+          <i class="iconfont">&#xe75a;<em>{{betAmount}}</em></i>
           号码篮</a>
       </div>
     </div>
@@ -61,7 +61,9 @@ export default {
   },
   computed:{
     betCount:()=>state.lt.bet.betting_count,
-    betMoney:()=>state.lt.bet.betting_money.toFixed(2)
+    betMoney:()=>state.lt.bet.betting_money.toFixed(2),
+    betStr:()=>state.lt.bet.betting_number,
+    betAmount:()=>state.lt.basket.length
   },
   watch:{
     power(val){
@@ -80,7 +82,18 @@ export default {
       store.commit('lt_setUnit', unit)
     },
     addBet(){
+      //如果没有选择一注， 就没有反应
+      if(this.betCount <= 0){
+        return
+      }
       store.commit('lt_addBet')
+    },
+    showBasket(){
+     //如果号码篮没有注单， 就没有反应
+      if(this.betAmount <= 0){
+        return
+      }
+      store.commit('lt_changeBox', 'basket')
     }
   }
 }

@@ -34,6 +34,10 @@ var ltCfg = {
     render:['whole'],
     alg:(order, tmp)=>C(tmp['whole'].length, 5)
   },
+  A11:{
+    render:['10000', '1000', '100', '10', '1'],
+    alg:(order, tmp)=>getBetSum(order, tmp).reduce(function(a,b){return a + b})
+  }
 
 
 
