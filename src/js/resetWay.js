@@ -9,6 +9,8 @@ export default {
     }
   },
   beforeRouteEnter:(to, from, next) => {
+    var arr = ['UserSafeQuestions','UserHasSafePwd','UserMobile','UserMail']
+     RootApp.GetInitData(arr)
     var urlObj={
         ResetPwd : '找回密码',
         ResetSafePwd: '找回安全密码',
@@ -19,31 +21,29 @@ export default {
     to.meta.title=urlObj[to.query.Q]
     var F=sessionStorage.getItem('isFind')
     var U=localStorage.getItem('UserName')
-    if(!(U||F)){
-      RootApp.$router.push('/login')
-    }
-    if(F){
-      to.meta.link='/forgetPwd'
-    }
-    next()
+    next(vm=>{
+      if(!(U||F)){
+        router.push('/login')
+      }
+      if(F){
+        to.meta.link='/forgetPwd'
+      }
+    })
   },
   created:function(){
     var getUrl=this.$route.query.Q
     var vm=this
     var urlObj=this.getKey()
-     var arr = ['UserSafeQuestions','UserHasSafePwd','UserMobile','UserMail']
-     RootApp.GetInitData(arr,stage=>{
-      vm.ResetSafePwd=!!stage.UserHasSafePwd
-      vm.ResetMobile=!!stage.UserMobile
-      vm.ResetQuestion=!!stage.UserSafeQuestions
-      vm.ResetMail=!!stage.UserMail
+      vm.ResetSafePwd=!!store.state.UserHasSafePwd
+      vm.ResetMobile=!!store.state.UserMobile
+      vm.ResetQuestion=!!store.state.UserSafeQuestions
+      vm.ResetMail=!!store.state.UserMail
       if(urlObj[getUrl]){
         vm.reUrl=getUrl
         if(getUrl!='ResetPwd'){
           vm[getUrl]=false
         }
       }
-     })
    },
    methods:{
     getKey(){

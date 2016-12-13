@@ -9,7 +9,7 @@ export default {
     var F=sessionStorage.getItem('isFind')
     var U=localStorage.getItem('UserName')
     if(!(U||F)){
-      RootApp.$router.push('/login')
+      router.push('/login')
     }
     if(F){
       to.meta.link="/resetWay?Q=ResetPwd"
@@ -36,7 +36,7 @@ export default {
           if(json.Code===1) {
             var url=vm.nextUrl
             url=url?'/'+url:'/setSafePwd'
-            vm.$root.$router.push(url)
+            router.push(url)
           }else{
             layer.msgWarn(json.StrCode);
           }

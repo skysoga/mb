@@ -8,7 +8,7 @@ export default {
     var F=sessionStorage.getItem('isFind')
     var U=localStorage.getItem('UserName')
     if(!(U||F)){
-      RootApp.$router.push('/login')
+      router.push('/login')
     }
   },
   methods:{
@@ -26,7 +26,7 @@ export default {
       _fetch(ajax).then((json)=>{
           if(json.Code===1) {
             //验证密码
-            $root.$router.push('/setPwd?Q=ResetPwd')
+            router.push('/setPwd?Q=ResetPwd')
           }else{
             layer.msgWarn(json.StrCode);
           }

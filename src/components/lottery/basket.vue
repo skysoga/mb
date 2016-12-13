@@ -174,8 +174,9 @@ left: 0;
 }
 }
 .cartContent{
-box-shadow: 0 0 .5em #ccc;
-margin:0 .6em;
+  box-shadow: 0 0 .5em #ccc;
+  margin:0 .6em;
+  overflow: scroll;
 }
 .clear{
 background-color: white;
@@ -206,11 +207,17 @@ li{
     color:#ff8a00;
     font-size: .75em;
     line-height: 1.2em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 90%;
   }
   span{
     font-size: .75em;
     color:#666;
     line-height: 1em;
+    width: 90%;
+    display: block;
   }
   a{
     display: block;

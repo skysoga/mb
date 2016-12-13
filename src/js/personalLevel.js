@@ -20,11 +20,12 @@ export default {
   },
   methods:{
     getPerLong(num){
-      var Obj=this.$store.state.GradeList[num].GradeGrow
-      var minObj=this.$store.state.GradeList[num-1].GradeGrow
+      var num=Number(num)||0
+      var Obj=num?this.$store.state.GradeList[num].GradeGrow:0
+      var minObj=num?this.$store.state.GradeList[num-1].GradeGrow:0
       this.perVal=parseInt(((this.UserGradeGrow||minObj)-minObj)/(Obj-minObj)*100)+'%'
-      this.upGrow=Obj-this.UserGradeGrow
-      this.GradeName=this.$store.state.GradeList[num-1].GradeName
+      this.upGrow=Obj-this.UserGradeGrow||0
+      this.GradeName=num?this.$store.state.GradeList[num-1].GradeName:this.UserGrade
     }
   }
 }
