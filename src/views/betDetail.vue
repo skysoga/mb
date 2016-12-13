@@ -92,19 +92,18 @@ export default {
       }
     }
   },
-  mounted(){
-    _fetch({
-      Action:"GetBetDetail",
-      UserId:this.$route.query.UID||0,
-      ID:this.$route.query.ID
-    }).then((json)=>{
-      if(json.Code===1){
-        this.res_data=json.BackData
-        let type=json.BackData.LotteryName.substr(json.BackData.LotteryName.length-2)
-        this.transType(type)
-      }else {
-        layer.msgWarn(json.StrCode)
-      }
+  beforeRouteEnter(to,from,next){
+    console.log(from.path)
+    _fetch({Action:"GetBetDetail",UserId:to.query.UID||0,ID:to.query.ID}).then((data)=>{
+      next(vm=>{
+        if(data.Code===1){
+          vm.res_data=data.BackData
+          let type=data.BackData.LotteryName.substr(data.BackData.LotteryName.length-2)
+          vm.transType(type)
+        }else {
+          layer.msgWarn(data.StrCode)
+        }
+      })
     })
   }
 }
