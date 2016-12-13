@@ -14,7 +14,7 @@ export default {
           _fetch(arr).then(json=>{
               if(json.Code==1){
                 layer.msgWarn(json.StrCode)
-                RootApp.$router.push('/setBankcard')
+                router.push('/setBankcard')
               }else{
                 layer.msgWarn(json.StrCode)
               }

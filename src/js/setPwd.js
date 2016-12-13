@@ -9,7 +9,7 @@ export default {
     var F=sessionStorage.getItem('isFind')
     var U=localStorage.getItem('UserName')
     if(!(U||F)){
-      RootApp.$router.push('/login')
+      router.push('/login')
     }
     next()
   },
@@ -27,11 +27,11 @@ export default {
             //验证密码
             layer.msgWarn(json.StrCode);
             if(F){
-                RootApp.$router.push('/login')
+                router.push('/login')
                 sessionStorage.clear('isFind')
                 return
               }
-            RootApp.$router.push('/securityCenter')
+            router.push('/securityCenter')
           }else{
             layer.msgWarn(json.StrCode);
           }
