@@ -72,9 +72,8 @@
       this.getData()
     }
   }
-  require('../scss/msgList.scss')
 </script>
-<!--
-<style lang="sass" scoped>
+
+<style lang="scss" scoped>
     @import '../scss/msgList.scss';
-</style> -->
+</style>

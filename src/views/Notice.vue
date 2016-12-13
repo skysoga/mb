@@ -71,5 +71,5 @@
       this.getAjaxData()
     }
   }
-  require('../scss/msgList.scss')
 </script>
+<style lang="scss" scoped>@import '../scss/msgList.scss';</style>
