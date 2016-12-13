@@ -7,29 +7,32 @@
 
   <div class="cartMain">
     <div class="someBtn" ref = "someBtn">
-      <a>机选1注</a><a>机选5注</a><a @click.stop = "back">继续选号</a>
+      <a @click.stop = "random(1)">机选1注</a>
+      <a @click.stop = "random(5)">机选5注</a>
+      <a @click.stop = "back">继续选号</a>
     </div>
 
-    <div class="cartContent">
+    <div class="cartContent" v-dynamic-height>
       <ul class="numberbox">
-        <li v-for = "bet in basket">
+        <li v-for = "(bet,index) in basket">
           <em>{{bet.betting_number}}</em>
-          <span>五星直选 {{bet.betting_count}}注×{{PERBET * bet.betting_model}}元×{{bet.graduation_count}}倍  = {{bet.betting_money}}元</span><a></a>
+          <span>五星直选 {{bet.betting_count}}注×{{PERBET * bet.betting_model}}元×{{bet.graduation_count}}倍  = {{bet.betting_money}}元</span>
+          <a @click = "deleteBet(index)"></a>
         </li>
  <!--        <li><em>8,8,8,8,8</em><span>五星直选 1注×2.0元 = 2.00元</span><a></a></li>
         <li><em>8,8,8,8,8</em><span>五星直选 1注×2.0元 = 2.00元</span><a></a></li> -->
       </ul>
-      <div class="clear">清空</div>
+      <div class="clear" v-show = "ifShowClearAll" @click = "clearBasket">清空</div>
   </div>
   </div>
   <div class="cartTotal">
-    <div class="change">
+    <div class="change" ref = "change">
       <label>投<input type="tel">倍</label>
       <label>追<input type="tel">期<div class="stop">
         <input type="checkbox" id="stop"><label for="stop">中奖后停止追号</label>
       </div></label>
     </div>
-    <div class="result fix">
+    <div class="result fix" ref = "result">
       <div class="left">
         <span>2注×1=4.00元</span>
         <em>可用余额 88.80元</em>
@@ -43,11 +46,24 @@
 </template>
 
 <script>
+
 import {PERBET} from '../../JSconfig'
+function getBetStr(arr){
+  arr = arr.map(item=>item.join(' ')).map(item=>{
+    if(item===''){
+      return '_'
+    }else{
+      return item
+    }
+  })
+
+  return arr.join(',')
+}
+
+var randomCfg = {
+  H11:()=>[0,0,0,0,0].map(item=>[Math.floor(Math.random() * 10)])
+}
 export default {
-  created(){
-    console.log(this.basket)
-  },
   data(){
     return {
       PERBET:PERBET
@@ -57,7 +73,9 @@ export default {
     basket:()=>state.lt.basket,
     ifShowBasket(){
       return this.$store.state.lt.box === 'basket'
-    }
+    },
+    ifShowClearAll:()=>!!state.lt.basket.length,
+    mode:()=>state.lt.mode.mode
   },
   methods:{
     //返回投注页
@@ -66,6 +84,53 @@ export default {
     },
     confirmBet(){
       store.dispatch('lt_confirmBet')
+    },
+    deleteBet(index){
+      store.commit('lt_deleteBet', index)
+    },
+    clearBasket(){
+      store.commit('lt_clearBasket')
+    },
+    //机选n注
+    random(n){
+
+      function BaseBet(){
+        var lt = state.lt,
+            bet = state.lt.bet
+
+        this.lottery_code = lt.lottery.LotteryCode,                     //彩种
+        this.play_detail_code = lt.lottery.LotteryCode + lt.mode.mode,  //玩法code
+        this.betting_number = betStr,                       //投注号码
+
+        this.betting_count = 1,                         //这个方案多少注
+        this.betting_money = PERBET * 1 * bet.betting_model * bet.graduation_count,  //一注单价 * 投注数量 * 单位 * 倍数
+
+        this.betting_point = lt.award + '-' + lt.Rebate[lt.lottery.LotteryType]  ,          //赔率
+        this.betting_model = bet.betting_model,                   //元角分
+        this.betting_issuseNo = lt.NowIssue,                  //当前期号
+        this.graduation_count = bet.graduation_count                //当前倍率
+      }
+
+      for(var i = 0;i < n;i++){
+        var randomArr = randomCfg[this.mode]()
+        var betStr = getBetStr(randomArr)
+        store.commit('lt_addRandomBet', new BaseBet())
+      }
+
+    }
+  },
+  directives:{
+    'dynamic-height':{
+      'componentUpdated'(el, binding, vnode){
+        var vm = vnode.context,
+            bodyHeight = window.screen.height,
+            h1 = vm.$refs.playSort.offsetHeight,
+            h2 = vm.$refs.someBtn.offsetHeight,
+            h3 = vm.$refs.change.offsetHeight,
+            h4 = vm.$refs.result.offsetHeight
+
+        el.style.height = bodyHeight - h1 - h2 - h3 - h4 + 'px'
+      }
     }
   }
 }

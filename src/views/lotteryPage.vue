@@ -10,6 +10,7 @@
 	import Vue from 'vue'
 	import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 	import {DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../JSconfig'
+	import {bus} from '../js/kit'
 
 	export default{
 		beforeRouteEnter(to, from, next){
@@ -225,6 +226,7 @@
 
 		      	state.mode = mode
 		      	store.commit('lt_clearBet')
+		      	bus.$emit('clearNoteStr')   //清空文本框文字
 		      	//更改玩法时，对应玩法的奖金也跟着变
 		      	state.award = awardSetter[type](mode.mode, Odds)
 		      	//更换玩法，bet清空
@@ -360,6 +362,9 @@
 	      		state.basket.push(baseBet)
 	      		store.commit('lt_clearBet')
 	      	},
+	      	lt_addRandomBet:(state, arr)=>{
+	      		state.basket.push(arr)
+	      	},
 	      	//清空bet
 	      	lt_clearBet:(state)=>{
 	      		state.bet.betting_number = ''
@@ -370,7 +375,8 @@
 		      		state.tmp[item] = []
 		      	}
 	      	},
-	      	lt_clearBasket:(state)=>{state.basket = []}
+	      	lt_clearBasket:(state)=>{state.basket = []},
+	      	lt_deleteBet:(state, index)=>{state.basket.splice(index,1)}
 		    },
 
 
@@ -721,7 +727,6 @@
 	function BaseBet(){
 		var lt = state.lt,
 				bet = state.lt.bet
-
 
 		this.lottery_code = lt.lottery.LotteryCode,											//彩种
 		this.play_detail_code = lt.lottery.LotteryCode + lt.mode.mode,	//玩法code
