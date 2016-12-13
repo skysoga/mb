@@ -13,7 +13,7 @@ export default {
     RootApp.GetInitData(arr,stage=>{
       next(vm=>{
         vm.UserGrade=stage.UserGrade
-        vm.UserGradeGrow=stage.UserGradeGrow
+        vm.UserGradeGrow=stage.UserGradeGrow||0
         vm.getPerLong(stage.UserGrade)
       })
     })
