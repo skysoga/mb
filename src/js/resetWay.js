@@ -23,7 +23,7 @@ export default {
     var U=localStorage.getItem('UserName')
     next(vm=>{
       if(!(U||F)){
-        RootApp.$router.push('/login')
+        router.push('/login')
       }
       if(F){
         to.meta.link='/forgetPwd'

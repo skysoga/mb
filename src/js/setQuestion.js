@@ -14,7 +14,7 @@ export default {
     var F=sessionStorage.getItem('isFind')
     var U=localStorage.getItem('UserName')
     if(!(U||F)){
-      RootApp.$router.push('/login')
+      router.push('/login')
     }
     next()
   },
@@ -59,7 +59,7 @@ export default {
           if(json.Code===1) {
             layer.msgWarn(json.StrCode)
             RootApp.AjaxGetInitData(["UserSafeQuestions"],function(){
-              RootApp.$router.push('/securityCenter')
+              router.push('/securityCenter')
             })
           }else{
             layer.msgWarn(json.StrCode)

@@ -12,20 +12,21 @@ export default {
   beforeRouteEnter:(to,from,next)=>{
     var F=sessionStorage.getItem('isFind')
     var U=localStorage.getItem('UserName')
-    if(!(U||F)){
-      RootApp.$router.push('/login')
-    }
-    if(F){
-      to.meta.link="/resetWay?Q=ResetPwd"
-    }
-    next()
+    next(vm=>{
+      if(!(U||F)){
+        router.push('/login')
+      }
+      if(F){
+        to.meta.link="/resetWay?Q=ResetPwd"
+      }
+    })
   },
   created(){
     var Q=this.$route.query.Q
     if(Q){this.nextUrl=Q.substr(2)}
     var vm=this
     var arr = ["UserMail"];
-     this.$root.GetInitData(arr,state=>{
+     RootApp.GetInitData(arr,state=>{
       vm.Mail=state.UserMail
      })
   },
@@ -48,7 +49,7 @@ export default {
             layer.msgWarn(json.StrCode);
             var url=vm.nextUrl
             url=url?'/'+url:'/setMail'
-            this.$router.push(url)
+            router.push(url)
           }else{
             layer.msgWarn(json.StrCode);
           }

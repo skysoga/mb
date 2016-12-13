@@ -27,7 +27,7 @@ export default {
             FistCard=store.state.UserFirstCardInfo;
         if(safaPwd){
           if(FistCard&&FistCard[0]){
-            RootApp.$router.push("/withdraw")
+            router.push("/withdraw")
           }else{
             layer.open({
               shadeClose: false,
@@ -36,7 +36,7 @@ export default {
               title: "温馨提示",
               btn: ["是","否"],
               yes:function(){
-                RootApp.$router.push("/setBankcard?id=withdraw")
+                router.push("/setBankcard?Q=withdraw")
               }
             })
           }
@@ -48,7 +48,7 @@ export default {
             title: "温馨提示",
             btn: ["是","否"],
             yes:function(){
-              RootApp.$router.push("/setSafePwd?Q=withdraw")
+              router.push("/setSafePwd?Q=withdraw")
             }
           })
         }

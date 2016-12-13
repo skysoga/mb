@@ -12,7 +12,7 @@ export default {
     var F=sessionStorage.getItem('isFind')
     var U=localStorage.getItem('UserName')
     if(!(U||F)){
-      RootApp.$router.push('/login')
+      router.push('/login')
     }
     next()
   },
@@ -33,8 +33,8 @@ export default {
       _fetch(ajax).then((json)=>{
           if(json.Code===1) {
             layer.msgWarn(json.StrCode);
-            $root.AjaxGetInitData(["UserMail"],function(){
-              $root.$router.push('/securityCenter')
+            RootApp.AjaxGetInitData(["UserMail"],function(){
+              router.push('/securityCenter')
             })
           }else{
             layer.msgWarn(json.StrCode);

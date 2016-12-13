@@ -37,7 +37,7 @@ export default {
   methods:{
     setCard(){
       var Xurl=this.oneCarLok?'/verifyBankcard':'/setBankcard'
-      this.$router.push(Xurl)
+      router.push(Xurl)
     },
     setTip(){
       var List=this.CardList
