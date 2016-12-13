@@ -65,7 +65,8 @@
               vm.sort_lotteryType(typeArr)
             }
           }else {
-            layer.msgWarn(data.StrCode)
+            layer.url(data.StrCode,from.path)
+            //layer.msgWarn(data.StrCode)
           }
         })
       })

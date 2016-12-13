@@ -160,7 +160,7 @@
 			height: 0px;
 		}
 	}
-.newWinner ul li[data-v-43fd5709]:last-child{
+.newWinner ul li:last-child{
 	margin-bottom: 0px;
 }
 </style>
