@@ -13,7 +13,8 @@
             </betbox>
 
     <!-- 单式 -->
-    <notebet v-if = "!isNaN(ltCfg[mode])" :len = "ltCfg[mode]"></notebet>
+    <notebet v-if = "!isNaN(ltCfg[mode])"
+             :len = "ltCfg[mode]"></notebet>
 
   </div>
 </template>

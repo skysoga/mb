@@ -2,11 +2,14 @@
   <div class="cart" v-show = "ifShowBasket">
   <header class="top sscHeader fix" >
     <a class="iconfont back" @click.stop = "back"></a>
-    <div class="playSort">号码篮</div>
+    <div class="playSort" ref = "playSort">号码篮</div>
   </header>
 
   <div class="cartMain">
-    <div class="someBtn"><a>机选1注</a><a>机选5注</a><a>继续选号</a></div>
+    <div class="someBtn" ref = "someBtn">
+      <a>机选1注</a><a>机选5注</a><a @click.stop = "back">继续选号</a>
+    </div>
+
     <div class="cartContent">
       <ul class="numberbox">
         <li v-for = "bet in basket">

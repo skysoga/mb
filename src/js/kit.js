@@ -1,3 +1,6 @@
+import Vue from 'vue'
+var bus = new Vue()     //空vue用来做事件管理
+
 //阶乘
 var factorial = (function(){
   var cache = {};
@@ -317,4 +320,4 @@ function accumulate(arr, fn){
 }
 
 export {factorial, mul, C, combNoRepeat, unique, normalSum2, normalSum3, accumulate,
-  diff2, diff3, combSum2, combSum3}
+  diff2, diff3, combSum2, combSum3, bus}

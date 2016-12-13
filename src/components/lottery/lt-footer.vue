@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import {bus} from '../../js/kit'
 import {Max_Rate} from '../../JSconfig'
 export default {
   created(){
@@ -79,7 +80,6 @@ export default {
   methods:{
     reduce(){
       this.power > 1 && this.power--      //倍数必须大于1
-      console.log(this.canReduce)
     },
     add(){
       this.power < Max_Rate && this.power ++   //倍数小于最大倍数限制
@@ -93,6 +93,7 @@ export default {
       if(this.betCount <= 0){
         return
       }
+      bus.$emit('clearNoteStr')   //清空文本框文字
       store.commit('lt_addBet')
     },
     showBasket(){
@@ -186,7 +187,7 @@ export default {
     padding-top: 0.4em;
     white-space:nowrap;
     overflow:hidden;
-    text-overflow:ellipsis; 
+    text-overflow:ellipsis;
   }
   em{
     position: absolute;

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import {unique} from '../../js/kit'
+import {unique, bus} from '../../js/kit'
 function getLegalStr(str){
   str = str.replace(/^\s+/g, '');
   str = str.replace(/[^\d,，;；\s]/g, '');
@@ -16,6 +16,12 @@ function getLegalStr(str){
 
 export default {
   props:['len'],
+  created(){
+    bus.$off('clearNoteStr')
+    bus.$on('clearNoteStr', ()=>{
+      this.betStr = ''
+    })
+  },
   data(){
     return {
       betStr:'',
@@ -36,7 +42,7 @@ export default {
         arr: betArr
       })
     }
-  }
+  },
 
 }
 </script>
