@@ -1,3 +1,18 @@
+;(function(){
+	try {
+	  sessionStorage.setItem('TextLocalStorage', 'hello world');
+	  sessionStorage.getItem('TextLocalStorage');
+	  sessionStorage.removeItem('TextLocalStorage');
+	} catch(e) {
+	  alert('您的浏览器太旧或者开启了无痕浏览模式，无法浏览网页，请更换浏览器或退出无痕模式，给您带来的不便，表示抱歉！');
+	  localStorage={setItem:function(d){},getItem:function(d){}};
+	  sessionStorage={setItem:function(d){},getItem:function(d){}};
+	}
+})()
+document.cookie = "Site="+location.hostname.replace('.com','')
+window.rem = document.body.clientWidth/16;
+window.em = Math.sqrt((rem-20)*.9)+20;
+document.write("<style>html{font-size:"+rem+"px;}body{font-size:"+em+"px;}</style>");
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
@@ -11,15 +26,14 @@ Vue.use(VueRouter)
 Vue.use(Vuex)
 
 const _AJAXUrl = '/tools/ssc_ajax.ashx'
-const router = new VueRouter({
+window.router = new VueRouter({
 	routes,
 	mode:'history',
 	linkActiveClass:"on",
 	// exact: true
 });
-var needVerify=0
 
-var UserArr=[
+var UserArr = [
 	'UserHasSafePwd', //返回是否已经设置安全密码,1为有,0为没有设置
 	'UserSafeQuestions', //返回设置的密保问题,如果没设置可以返回0或者空数组
 	'UserMobile', //返回已绑定手机的模糊状态,如未绑定,返回空字符串或0
@@ -28,15 +42,19 @@ var UserArr=[
 	'UserPhoto', //返回用户头像的图片地址
 	'UserNickName',
 	'UserFirstCardInfo', //返回绑定的第一张银行卡的模糊信息
-	'AgentRebate',//获取代理人返点情况
+	'AgentRebate', //获取代理人返点情况
 	'UserUpGradeBonus',
-  'UserGrade',
-  'UserQQ',
-  'UserMobile',
-  'UserMail',
-  'UserBirthDay',
-  'UserGradeGrow',
-  'UserSex'
+	'UserGrade',
+	'UserQQ',
+	'UserMobile',
+	'UserMail',
+	'UserBirthDay',
+	'UserGradeGrow',
+	'UserSex',
+	'UserHasSafePwd',
+	'UserBalance',
+	'UserFirstCardInfo',
+	'UserLastLoginInfo'
 ]
 var SiteArr=[ //需要校验更新版本的列表
   'LotteryConfig', //所有彩种列表
@@ -64,7 +82,6 @@ window.state = require('./JSconfig.js')
   	state[CacheArr[i]]=getLocalDate(CacheArr[i])
   }
 })()
-
 window.store = new Vuex.Store({
   state,
   getters:{
@@ -127,7 +144,9 @@ window.RootApp = new Vue({
       sessionStorage.clear()
     },
 		Login:function(UserName,fun){
-			this.GetInitData(UserArr,fun)
+			// this.GetInitData(UserArr,fun)
+			this.SaveInitData({UserName:UserName})
+			fun()
 		},
 		SetFilter:function(data){
 			;(function(LotteryList){
@@ -137,10 +156,11 @@ window.RootApp = new Vue({
 			    for (var i = LotteryList.length - 1; i >= 0; i--) {
 			    	c = LotteryList[i].LotteryCode
 			      data.LotteryList[c]= LotteryList[i]
-			      delete data.LotteryList[c].LotteryCode
+			      // delete data.LotteryList[c].LotteryCode
 			    }
 			  }
 			})(data.LotteryList)
+
 
 		  if (data.NoticeData&&data.NoticeData.length) {
 		    if (data.NoticeData.length>2) {
@@ -170,22 +190,17 @@ window.RootApp = new Vue({
 			store.commit('SaveInitData', d)
 		},
 		AjaxGetInitData(arr,fun){
+    	state.needVerify=0
+    	sessionStorage.setItem("needVerify",state.needVerify)
 			var ajax = {
 				Action:"GetInitData"
 			}
 			ajax.Requirement=arr;
 			_fetch(ajax).then((json)=>{
 		    if (json.Code===1||json.Code===0) {
-		    	needVerify=0
 		    	var Data = this.SetFilter(json.BackData);
 		    	console.log(Data);
 		      this.SaveInitData(Data)
-		    	if (json.Code===0&&state.UserName) {
-		    		this.Logout()
-		    		layer.alert("您的登录状态已失效,需要重新登录",()=>{
-		    			this.$router.push("/login")
-		    		})
-		    	}
 		      fun&&fun(state)
 		    }else{
 		      layer.msgWarn(json.StrCode);
@@ -255,26 +270,98 @@ window.RootApp = new Vue({
           }
         })
       }
-    })()
+    })(),
+		beforEnter:function(to){
+			var meta = to.matched[0].meta
+			if(meta.user){
+			  if (!state.UserName) {
+			    router.push("/login")
+			  }else if(state.agent){
+			    state.AgentRebate||router.push("/notfount")
+			  }
+			}
+		},
 	},
 	render: h => h(App),
 });
 
+;(function(){
+	var warn = '<span class="iconfont">&#xe606;</span>',
+	  tip='<span class="iconfont">&#xe610;</span>'
+  layer.icon={}
+  layer.icon.load=state.tpl.load
+  layer.load=function(){layer.open({type: 2})}
+	layer.msg=function(msg, time) {
+    return this.open({ content: msg, time: time?time-1:3,style: 'fill:#ececec',className:'layermsg'});
+  }
+  layer.msgWarn=function(msg, time) {
+    return this.msg(warn+msg,time);
+  },
+  layer.msgTip=function(msg, time) {
+    return this.msg(tip+msg,time);
+  },
+  layer.msgWait=function(msg,time) {
+    return this.open({time:  time?time-1:0,content: layer.icon.load+msg+"，请稍候...", shadeClose:0 ,className:'layermsg'});
+  },
+  layer.url=function(msg,s) {
+    return layer.open({
+      className: "layerConfirm",
+      content: msg,
+      btn: ["确定"],
+      end:function(){
+      	if (typeof(s)=='string') {
+      		router.push(s)
+      	}else{
+      		router.go(s)
+      	}
+      }
+    })
+  },
+  layer.alert=function(msg,fun){
+    return layer.open({
+      className: "layerConfirm",
+      shadeClose: false,
+      content: msg,
+      btn: ["确定"],
+      end:fun
+    })
+  },
+  layer.confirm=function(msg,btn,fun1,fun2,fun3){
+  	if (!btn.length) {
+  		fun3=fun2
+  		fun2=fun1
+  		fun1=btn
+  		btn=["确定","取消"]
+  	}
+  	return layer.open({
+  	  className: "layerConfirm",
+  	  title:"温馨提示",
+  	  shadeClose: false,
+  	  content: msg,
+  	  btn: btn,
+  	  yes: function(index) {
+  	  	fun1()
+        layer.close(index)
+      },
+      no:fun2,
+  	  end:fun3
+  	})
+  }
+})()
+
 router.beforeEach((to, from, next) => {
   // layer.open({type: 2});
+  console.log("beforeEach");
   state.turning=true
+  RootApp.beforEnter(to)
 	next();
 });
 
 router.afterEach((to, from) => {
 	state.turning=false
 	layer.closeAll()
-	needVerify++
-	console.log(needVerify);
-	if (needVerify>5) {
-		needVerify=0
-		RootApp.GetInitData(["CloudUrl"])
-	}
+	state.needVerify++
+	sessionStorage.setItem("needVerify",state.needVerify)
 });
 
 //全局过滤器
@@ -309,7 +396,7 @@ function _fetch(data){
 	for(var i in data){
 		k=data[i];
 		if (typeof(k)==="object") {
-			k=JSON.stringify(k);
+			k= encodeURIComponent(JSON.stringify(k));
 		}
 		str.push(i+'='+k);
 	}
@@ -323,10 +410,18 @@ function _fetch(data){
 		  },
 		  body: data
 		}).then((res)=>{
-			// console.log(new Date(res.headers.get('Date')).getTime())
 			res.json().then(json=>{
 				if (json.Code==0) {
-					console.log(RootApp.$routes);
+					if(state.UserName){
+						RootApp.Logout()
+						layer.alert("您的登录信息已失效<br>需要重新登录",function(){
+							var meta = RootApp._route.matched[0]
+							meta = meta&&meta.meta
+							if(meta&&meta.user){
+						    router.push("/login")
+							}
+						})
+					}
 				}
 				resolve(json)
 			})
@@ -385,9 +480,9 @@ Date.prototype.format = function(format) {
   format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
   }
   for (var k in date) {
-  if (new RegExp("(" + k + ")").test(format)) {
-    format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
-  }
+	  if (new RegExp("(" + k + ")").test(format)) {
+	    format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
+	  }
   }
   return format;
 }

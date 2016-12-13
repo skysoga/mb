@@ -12,9 +12,10 @@ export default {
     }
   },
   beforeRouteEnter(to,from,next){
+    var arr = ["ActivityConfig","RewardData"]
+    RootApp.GetInitData(arr)
      var theArr={Action:'GetActivityStateData',Qort:'每日加奖'}
     _fetch(theArr).then(json=>{
-      console.log(json)
           next(vm=>{
             if(json.Code==1){
               vm.StateData=json.BackData||0
@@ -23,11 +24,9 @@ export default {
       })
   },
   created:function(){
-    var arr = ["ActivityConfig","RewardData"]
-    this.$root.GetInitData(arr)
     var xname='每日加奖'
-    var dataArr=this.$store.state.ActivityConfig
-    this.RewardData=this.$store.state.RewardData
+    var dataArr=store.state.ActivityConfig
+    this.RewardData=store.state.RewardData
     var thState=-1
     if(this.StateData){
       thState=this.StateData.State||'不可领取'

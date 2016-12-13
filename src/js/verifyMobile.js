@@ -13,7 +13,7 @@ export default {
     var F=sessionStorage.getItem('isFind')
     var U=localStorage.getItem('UserName')
     if(!(U||F)){
-      RootApp.$router.push('/login')
+      router.push('/login')
     }
     if(F){
       to.meta.link="/resetWay?Q=ResetPwd"
@@ -25,7 +25,7 @@ export default {
     if(Q){this.nextUrl=Q.substr(2)}
     var vm=this
     var arr = ["UserMobile"];
-     this.$root.GetInitData(arr,state=>{
+     RootApp.GetInitData(arr,state=>{
       vm.Mobile=state.UserMobile
      })
   },
@@ -48,7 +48,7 @@ export default {
             layer.msgWarn(json.StrCode);
             var url=vm.nextUrl
             url=url?'/'+url:'/setMobile'
-            vm.$root.$router.push(url)
+            router.push(url)
           }else{
             layer.msgWarn(json.StrCode);
           }

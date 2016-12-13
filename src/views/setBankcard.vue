@@ -68,7 +68,7 @@
         <tr>
           <td>安全密码</td>
           <td>
-            <input type="password" v-va:SafePassword="[{reg:/^\d{6}$/}]" v-model.trim="SafePassword" tag="安全密码"  placeholder="请输入您的安全密码">
+            <input type="password" v-va:SafePassword.Password v-model.trim="SafePassword" tag="安全密码"  placeholder="请输入您的安全密码">
           </td>
         </tr>
         <tr></tr>

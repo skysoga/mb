@@ -6,23 +6,23 @@
         <br>法</p>
 
         <span>
-        	<div @click = "toggleModeSelect">
+        	<div @click.stop = "toggleModeSelect">
 		        <em>{{mode.tag}}</em>
 		        <i class="iconfont">&#xe61e;</i>
 					</div>
-	        <div v-if = "ifShowModeSelect">
+	        <div v-show = "ifShowModeSelect">
 	          <div class="playSortMore">
 	            <div class="playSortMoreCon">
 
-								<ul class="betFilter fix">
+								<ul class="betFilter fix" ref = "betFilter">
 									<li v-for = "(groupItem,group) in config"
-										  @click = "changeGroup(groupItem)"
+										  @click.stop = "changeGroup(groupItem)"
 										  :class = "group === mode.group ? 'curr': ''">
 										{{group}}
 									</li>
 								</ul>
 
-								<ul class="betFilterAnd">
+								<ul class="betFilterAnd" v-dynamic-height>
 									<li v-for = "(subGroup, subGroupName) in config[mode.group]">
 										<span>{{subGroupName}}</span>
 										<div class="fix">
@@ -42,15 +42,15 @@
 	      </span>
 	  </div>
 
-    <div class="lotterySort">
-	    <div @click = "toggleTypeSelect">
+    <div class="lotterySort" ref = "lotterySort">
+	    <div @click.stop = "toggleTypeSelect">
 		    <em>{{lotteryName}}</em><i class="iconfont">&#xe61e;</i>
 	    </div>
 
-      <div class="lotteryList fix" v-if = "ifShowTypeSelect">
+      <div class="lotteryList fix" v-show = "ifShowTypeSelect">
       	<a v-for = "item in LotteryList"
       		 @click = "changeLottery(item.LotteryCode)">
-      	  {{item.LotteryName}}
+	      	  {{item.LotteryName}}
     	  </a>
       </div>
     </div>
@@ -58,48 +58,29 @@
 </template>
 
 <script>
+  import Vue from 'vue'
 	import {mapState} from 'vuex'
 	export default {
-		props:['ltype', 'lcode'],			// 'ssc','11x5'
 		created(){
-			this.pageConfig = {
-				'ssc':{
-					typeName:'时时彩',
-					defaultMode:['五星', '直选']
-				},
-				'11x5':{
-					typeName:'11选5',
-					defaultMode:['选一', '前三一码不定位']
-				}
-			}
+			[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
 
+			//处理得各彩种的List
 			var LotteryConfig = this.$store.state.LotteryConfig
 			LotteryConfig.forEach(item=>{
-				//这个地方“时时彩应该是个变量”
-				if(item.LotteryClassName === this.pageConfig[this.ltype].typeName){
+				if(item.LotteryClassID.indexOf(this.lcode.slice(0,2)) > -1){
 					this.LotteryList = item.LotteryList.map(code=>{
-						var el = this.$store.state.LotteryList[code]
-						el.LotteryCode = code
+						var el = state.LotteryList[code]
 						return el
 					})
 				}
 			})
-
-			var defaultMode = this.pageConfig[this.ltype].defaultMode
-			this.mode = this.config[defaultMode[0]][defaultMode[1]][0]					//title的默认值
-			this.LotteryName = this.$store.state.LotteryList[this.lcode].LotteryName	//默认值
 		},
 		data () {
 			return {
-				mode:{
-					name: '',	   //如：复式
-					mode: '',		 //如：H11
-					group: '',	 //如：五星
-					subGroup: '',//如：直选
-					tag: '',		 //如：五星直选复式
-				},
 				LotteryList: [],
 				LotteryName: '',
+				ltype: '',			//彩种类型
+				lcode: ''				//彩种code
 			}
 		},
 		methods:{
@@ -108,18 +89,16 @@
 				for(var subGroup in groupItem){
 					var subGroupItem = groupItem[subGroup]
 					subGroupItem.forEach(modeItem=>{
+						//切换Group时，subGroup第一个为默认选项
 						if(modeItem.mode.indexOf('11') > -1 || modeItem.mode === 'I91'){
-							this.mode = modeItem
-							this.$store.commit('lt_changeMode', this.mode)
+							this.$store.commit('lt_changeMode', modeItem)
 						}
 					})
 				}
 			},
 			//更改玩法
 			changeMode(modeItem){
-				this.mode = modeItem
-				this.$store.commit('lt_changeMode', this.mode)
-				this.$store.commit('lt_changeBox', '')
+				this.$store.commit('lt_changeMode', modeItem)
 			},
 			//更改彩种
 			changeLottery(code){
@@ -129,7 +108,6 @@
 					}
 				})
 				this.$store.dispatch('lt_updateLottery', code)
-				this.$store.commit('lt_changeBox', '')
 			},
 			//玩法选择框，切换
 			toggleModeSelect(){
@@ -145,7 +123,9 @@
 			}
 		},
 		computed: mapState({
+			mode:state=>state.lt.mode,
 			config: state=>state.lt.config,
+			LotteryName: state=>state.lt.lottery.LotteryName,
 			ifShowModeSelect (){
 				return this.$store.state.lt.box === 'modeSelect'
 			},
@@ -154,15 +134,253 @@
 			},
 			lotteryName(){
 				var removeName = {
-					'ssc':'时时彩',
-					'11x5': '11选5'
+					'SSC':'时时彩',
+					'11X5': '11选5'
 				}
 				return this.LotteryName.replace(removeName[this.ltype], '')
 			}
-		})
+		}),
+    directives:{
+      'dynamic-height':{
+        'componentUpdated'(el, binding, vnode){
+          var vm = vnode.context,
+              bodyHeight = window.screen.height,
+              h1 = vm.$refs.lotterySort.offsetHeight,
+              h2 = vm.$refs.betFilter.offsetHeight
+
+          el.style.height = bodyHeight - h1 - h2 + 'px'
+        }
+      }
+    }
 	}
 </script>
 
 <style lang = "scss" scoped>
-	@import '../../scss/newssc.scss';
+	/*@import '../../scss/newssc.scss';*/
+@import '../../scss/scssConfig','../../scss/mixin';
+	.sscHeader{
+  background: #dc3b40;
+  color:white;
+  text-align: center;
+  height: 2.3em;
+  position: fixed;
+  top:0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  > .iconfont{
+    position: absolute;
+    left: 0;
+    top:0;
+    display: inline-block;
+    vertical-align: top;
+    height: 2.3em;
+    line-height: 2.3em;
+    padding: 0 0.6em;
+  }
+  .playSort{
+    display: inline-block;
+    height: 2.3em;
+    line-height: 2.3em;
+    p{
+      font-size: 0.6em;
+      display: inline-block;
+      line-height: 1.2em;
+      height: 2.4em;
+      vertical-align: middle;
+      margin-left:-1.4em;
+      text-align: left;
+      position: absolute;
+      margin-top: 0.8em;
+    }
+    > span{
+      display: inline-block;
+      font-size: 0.8em;
+      border-radius: 0.2em;
+      border:1px solid #fff;
+      vertical-align: top;
+      height: 2em;
+      margin:0.45em 0;
+      line-height: 1.9em;
+      padding: 0 0.6em;
+      i{
+        padding-left:0.2em;
+        font-size: 0.9em;
+      }
+    }
+    &.active{
+      .playSortMore{
+        display: block;
+      }
+    }
+  }
+  .lotterySort{
+    float: right;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 2.875em;
+    line-height: 2.875em;
+    padding: 0 0.8em;
+    font-size: 0.8em;
+    i{
+      padding-left:0.2em;
+      font-size: 0.9em;
+    }
+    &.active{
+      .lotteryList{
+        display: block;
+      }
+    }
+  }
+}
+.lotteryList{
+  z-index: 12;
+  position: fixed;
+  right: 0;
+  top:2.9em;
+  background: white;
+  width: 11em;
+  box-shadow: 0 2px 10px rgba(41, 41, 41, 0.08);
+  a{
+    color:#333;
+    float: left;
+    width: 6em;
+    font-size: .9em;
+    text-align: center;
+    &:nth-child(odd):after {
+      content: "";
+      display: block;
+      background-image: -ms-linear-gradient(90deg, transparent 50%, #d0d0d0, #d0d0d0 50%);
+      background-image: -moz-linear-gradient(90deg, transparent 50%, #d0d0d0, #d0d0d0 50%);
+      background-image: -webkit-linear-gradient(90deg, transparent 50%, #d0d0d0, #d0d0d0 50%);
+      height: 1px;
+      width: 100%;
+      position: absolute;
+    }
+    &:nth-last-of-type(1):after,&:nth-last-of-type(2):after{
+      display: none;
+    }
+    &:active{
+      background: #ddd;
+    }
+    &:first-child:before {
+      position: absolute;
+      content: "";
+      display: block;
+      width: 0;
+      height: 0;
+      border-bottom: 1em solid rgba(255, 255, 255, 0.96);
+      border-left: 1em solid transparent;
+      right: 0;
+      top: -0.96em;
+    }
+  }
+}
+.betFilter{
+    padding: 0.3em;
+    box-shadow: 0 2px 10px rgba(41, 41, 41, 0.08);
+    li{
+    }
+    .curr{
+    }
+}
+.betFilter li,.betFilterAnd a{
+  padding:0 0.8em;
+  line-height: 2em;
+  @include border-radius(3px);
+  cursor: pointer;
+  text-align: center;
+  color: #555;
+  font-size: 0.9em;
+  margin: 0.3em;
+  float:left;
+  border:1px solid #ddd;
+}
+.betFilter .curr,.betFilterAnd .curr{
+  background: #ff9726;
+  border:1px solid #ff9726;
+  color: white;
+}
+.betFilterAnd{
+  text-align: left;
+  padding:.2rem .4rem;
+  padding-left: 1.6rem;
+  overflow: scroll;
+  li{
+    &:last-child{
+      span:after{
+        background: white;
+      }
+    }
+  }
+  li+li{
+    border-top:1px dotted #ddd;
+  }
+  div{
+    vertical-align: top;
+    width: 11.5rem;
+    display: inline-block;
+    padding: .3em;
+  }
+  span{
+    color:#666;
+    vertical-align: top;
+    width: 2.5rem;
+    display: inline-block;
+    margin-top:.3em;
+    line-height: 2.8em;
+    font-size: .9em;
+    position: relative;
+    &:before,&:after{
+      content: "";
+      position: absolute;
+      display: block;
+    }
+    &:before{
+      left: -1rem;
+      top:1.1em;
+      width: .3em;
+      height: .3em;
+      border:.2em solid #ddd;
+      border-radius: .6em;
+      background: white;
+      z-index: 14;
+    }
+    &:after{
+      width: 1px;
+      height: 10em;
+      @include bgImg-linear-gradient('0deg, #d0d0d0, #d0d0d0 50%, transparent 50%');
+      left: -.82rem;
+      top:1.1em;
+      z-index: 13;
+    }
+  }
+  a{
+    color:#666;
+    border:1px solid #ddd;
+    display: inline-block;
+    border-radius: .3em;
+  }
+}
+
+.sscMain{
+  margin-bottom: 3.6em;
+  // padding-bottom: 3.2em;
+}
+
+
+.playSortMore{
+  background: rgba(0, 0, 0, 0.4);
+  top: 2.85em;
+  position: fixed;
+  bottom:0;
+  width:100%;
+  left:0;
+  z-index: 999;
+  // display: none;
+}
+.playSortMoreCon{
+  background: white;
+}
 </style>

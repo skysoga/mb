@@ -1,23 +1,25 @@
 <template>
   <div id="app">
-    <title-info :meta="$route&&$route.matched[0].meta"></title-info>
+    <template v-if="$route&&$route.matched[0]">
+      <title-info :meta="$route.matched[0].meta"></title-info>
+      <navbar v-show="$route.matched[0].meta.nav"></navbar>
+    </template>
     <transition name="fade"  mode="out-in">
       <router-view></router-view>
     </transition>
-    <navbar v-show="$route.matched[0].meta.nav"></navbar>
   </div>
 </template>
 
 <script src="./js/app.js"></script>
 <style>
-  @font-face {
-    font-family: 'iconfont';
-    src: url('//at.alicdn.com/t/font_1475058654_096525.eot'); /* IE9*/
-    src: url('//at.alicdn.com/t/font_1475058654_096525.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-    url('//at.alicdn.com/t/font_1475058654_096525.woff') format('woff'), /* chrome、firefox */
-    url('//at.alicdn.com/t/font_1475058654_096525.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
-    url('//at.alicdn.com/t/font_1475058654_096525.svg#iconfont') format('svg'); /* iOS 4.1- */
-  }
+@font-face {
+  font-family: 'iconfont';  /* project id 107431 */
+  src: url('//at.alicdn.com/t/font_ina5jtbuld5wb3xr.eot');
+  src: url('//at.alicdn.com/t/font_ina5jtbuld5wb3xr.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_ina5jtbuld5wb3xr.woff') format('woff'),
+  url('//at.alicdn.com/t/font_ina5jtbuld5wb3xr.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_ina5jtbuld5wb3xr.svg#iconfont') format('svg');
+}
   .laymshade {
     background-color: rgba(0, 0, 0, .3);
   }

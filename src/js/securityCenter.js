@@ -34,7 +34,6 @@ export default {
           sessionStorage.setItem("UserLastLoginInfo",JSON.stringify(state.UserLastLoginInfo[0]))
           vm.LastLogin=state.UserLastLoginInfo[0]
         }
-        console.log(sessLogin)
         vm.FirstCard=!!state.UserFirstCardInfo?1:0
         vm.LevelText=vm.StarNum==5?"极高":vm.StarNum==4?"高":vm.StarNum==3?"中":vm.StarNum==2?"低":"极低"
       });
@@ -47,7 +46,7 @@ export default {
       _fetch(ajax).then((json)=>{
           if (json.Code===1) {
             RootApp.Logout()
-            this.$router.push("/login")
+            router.push("/login")
           }else{
             layer.msgWarn(json.StrCode)
           }
@@ -55,11 +54,11 @@ export default {
     },
     setNextUrl(){
       if(!this.HasSafePwd){
-        this.$router.push("/setSafePwd?Q=bindCard")
+        router.push("/setSafePwd?Q=bindCard")
       }else if(!this.FirstCard){
-        this.$router.push("/setBankcard")
+        router.push("/setBankcard")
       }else{
-        this.$router.push("/manageBankcard")
+        router.push("/manageBankcard")
       }
     }
   }

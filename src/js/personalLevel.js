@@ -8,21 +8,24 @@ export default {
       perVal:''
     }
   },
-  created(){
+  beforeRouteEnter(to,from,next){
     var arr=['UserName','UserNickName','UserGrade','UserPhoto','UserGradeGrow','GradeList']
-    this.$root.GetInitData(arr,stage=>{
-      this.UserGrade=stage.UserGrade
-      this.UserGradeGrow=stage.UserGradeGrow
-      this.getPerLong(stage.UserGrade)
+    RootApp.GetInitData(arr,stage=>{
+      next(vm=>{
+        vm.UserGrade=stage.UserGrade
+        vm.UserGradeGrow=stage.UserGradeGrow
+        vm.getPerLong(stage.UserGrade)
+      })
     })
   },
   methods:{
     getPerLong(num){
-      var Obj=this.$store.state.GradeList[num].GradeGrow
-      var minObj=this.$store.state.GradeList[num-1].GradeGrow
+      var num=Number(num)||0
+      var Obj=num?this.$store.state.GradeList[num].GradeGrow:0
+      var minObj=num?this.$store.state.GradeList[num-1].GradeGrow:0
       this.perVal=parseInt(((this.UserGradeGrow||minObj)-minObj)/(Obj-minObj)*100)+'%'
-      this.upGrow=Obj-this.UserGradeGrow
-      this.GradeName=this.$store.state.GradeList[num-1].GradeName
+      this.upGrow=Obj-this.UserGradeGrow||0
+      this.GradeName=num?this.$store.state.GradeList[num-1].GradeName:this.UserGrade
     }
   }
 }

@@ -13,7 +13,7 @@ export default {
     var F=sessionStorage.getItem('isFind')
     var U=localStorage.getItem('UserName')
     if(!(U||F)){
-      RootApp.$router.push('/login')
+      router.push('/login')
     }
     if(F){
       to.meta.link="/resetWay?Q=ResetPwd"
@@ -25,7 +25,7 @@ export default {
     if(Q){this.nextUrl=Q.substr(2)}
     var arr = ["UserSafeQuestions"];
     var vm=this
-     this.$root.GetInitData(arr,State=>{
+     RootApp.GetInitData(arr,State=>{
       var Nums=vm.doOne()
       vm.Questions=State.UserSafeQuestions
       vm.question1=vm.Questions[Nums[0]].Id
@@ -63,7 +63,7 @@ export default {
             layer.msgWarn(json.StrCode);
             var url=vm.nextUrl
             url=url?'/'+url:'/setQuestion'
-            vm.$root.$router.push(url)
+            router.push(url)
           }else{
             layer.msgWarn(json.StrCode);
           }

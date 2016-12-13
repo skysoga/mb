@@ -26,6 +26,7 @@ const verifyBankcard =resolve => require(['../views/verifyBankcard'],resolve)//�
 const AgentCode =resolve => require(['../views/AgentCode'],resolve)//邀请码代理
 const memberCode =resolve => require(['../views/memberCode'],resolve)//邀请码玩家
 const withdraw =resolve => require(['../views/withdraw'],resolve)//提现
+const rebateDes =resolve => require(['../views/rebateDes'],resolve)//返点赔率表
 const tool =resolve => require(['../views/tool'],resolve)//清缓存工具
 var routes = [{
   path: '/manageBankcard',
@@ -323,7 +324,22 @@ var routes = [{
 	user:true
   },
   component:withdraw
-},{
+},
+{
+  path:'/rebateDes',
+  name:'返点赔率',
+  meta:{
+    title:'返点赔率表',
+    link:'/manageInvite',
+    nav:0,
+    user:true
+  },
+  children: [
+        { path: '/rebateDes/:id', component: rebateDes},
+      ],
+  component:rebateDes
+},
+{
   path:'/tool',
   name:'清缓存工具',
   meta:{

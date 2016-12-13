@@ -10,7 +10,7 @@
           </div>
           <div class="fr">
               <a v-if="n.IsUnlok">已锁定</a>
-              <router-link v-if="!n.IsUnlok" class="modify" :to="'setBankcard?id='+n.BankCardID">修改</router-link>
+              <router-link v-if="!n.IsUnlok" class="modify" :to="'setBankcard?Q='+n.BankCardID">修改</router-link>
               <a v-else>修改</a>
           </div>
         </div>

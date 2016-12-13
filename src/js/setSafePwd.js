@@ -10,10 +10,10 @@ export default {
     var F=sessionStorage.getItem('isFind')
     var U=localStorage.getItem('UserName')
     if(!(U||F)){
-      RootApp.$router.push('/login')
+      router.push('/login')
     }
     next(vm=>{
-      vm.isOrUrl=RootApp.$router.query.Q
+      vm.isOrUrl=RootApp.$route.query.Q||''
     })
   },
    methods:{
@@ -41,19 +41,19 @@ export default {
                   btn: ["是","否"],
                   yes:function(){
                     vm.upPwd(function(){
-                      RootApp.$router.push('/setBankcard?Q='+vm.isOrUrl)
+                      router.push('/setBankcard?Q='+vm.isOrUrl)
                     })
                   },
                   no:function(){
                     vm.upPwd(function(){
-                      RootApp.$router.push('/securityCenter')
+                      router.push('/securityCenter')
                     })
                   }
                 })
               break;
               default:
                 vm.upPwd(function(){
-                  RootApp.$router.push('/securityCenter')
+                  router.push('/securityCenter')
                 })
               break;
             }
@@ -63,7 +63,7 @@ export default {
       })
     },
     upPwd(fun){
-      this.$root.AjaxGetInitData(["UserHasSafePwd"],fun())
+      RootApp.AjaxGetInitData(["UserHasSafePwd"],fun())
     }
   }
 }
