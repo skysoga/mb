@@ -4,16 +4,16 @@
           <div class="levelTitleInfo fix">
               <img :src="$store.getters.PhotoPath+$store.state.UserPhoto" alt="">
               <div class="rightInfo">
-                  <h1><ins>{{$store.state.UserName}}</ins><i class="vip"></i><span>VIP{{$store.state.UserGrade}}</span></h1>
+                  <h1><ins>{{$store.state.UserName}}</ins><i class="vip"></i><span v-if="Number(UserGrade)">VIP{{UserGrade}}</span><span v-else>{{UserGrade}}</span></h1>
                   <i>头衔：{{GradeName}}</i>
-                  <em>成长值：{{$store.state.UserGradeGrow}}分</em>
+                  <em>成长值：{{UserGradeGrow}}分</em>
               </div>
           </div>
-          <p class="levelTips">距离下一级需要{{upGrow}}分 每充值1元加1分</p>
+          <p class="levelTips" v-if="Number(UserGrade)">距离下一级需要{{upGrow}}分 每充值1元加1分</p>
           <div class="levelBar fix">
-              <div class="left">VIP{{$store.state.UserGrade}}</div>
+              <div class="left">VIP{{UserGrade}}</div>
               <p class="u-progress"><span class="pgbar" id="progress" :style="{'width':perVal}"></span></p>
-              <div class="right">VIP{{$store.state.UserGrade<9?Number($store.state.UserGrade)+1:'9'}}</div>
+              <div class="right">VIP{{UserGrade<9?Number(UserGrade)+1:'9'}}</div>
               <p>{{perVal}}</p>
           </div>
       </div>
