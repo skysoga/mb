@@ -34,12 +34,11 @@ export default {
   beforeRouteEnter(to,from,next){
     var U=localStorage.getItem('UserName')
     if(!U){
-      RootApp.$router.push('/login')
+      router.push('/login')
     }
-    var Qort=to.query.id
+    var Qort=to.query.Q
     var nextto=Qort=='withdraw'?'/withdraw':'/manageBankcard'
     var cid=Qort=='withdraw'?'add':(Qort||'add')
-    console.log(cid)
     var Trr={Action:"GetCardDetail",BankCardID:cid}
     if(cid!=='add'){
       to.meta.title="修改银行卡"
@@ -58,16 +57,7 @@ export default {
                 vm.nextUrl=nextto
               })
             }else{
-              layer.open({
-                shadeClose: false,
-                className: "layerConfirm",
-                content: json.StrCode,
-                title: "温馨提示",
-                btn: ["返回安全中心"],
-                yes(index){
-                  RootApp.$router.push("/securityCenter")
-                }
-              })
+              layer.url(json.StrCode,"/securityCenter")
             }
           })
       })
@@ -117,7 +107,7 @@ export default {
                 title: "温馨提示",
                 btn: ["留在本页","返回安全中心"],
                 no(index){
-                  RootApp.$router.push("/securityCenter")
+                  router.push("/securityCenter")
                 },
                 yes(index){
                   layer.close(index)
@@ -137,7 +127,7 @@ export default {
         if(state.UserBankCardList){
           var CardLeng=state.UserBankCardList.length||0
           if(CardLeng>=5){
-            RootApp.$router.push("/manageBankcard")
+            layer.url("不能超过五张银行卡！","/manageBankcard")
           }
         }
       })

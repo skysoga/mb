@@ -309,7 +309,7 @@ window.RootApp = new Vue({
       content: msg,
       btn: ["确定"],
       end:function(){
-      	if (typeof(str)=='string') {
+      	if (typeof(s)=='string') {
       		router.push(s)
       	}else{
       		router.go(s)
