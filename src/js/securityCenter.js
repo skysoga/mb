@@ -35,7 +35,6 @@ export default {
             sessionStorage.setItem("UserLastLoginInfo",JSON.stringify(state.UserLastLoginInfo[0]))
             vm.LastLogin=state.UserLastLoginInfo[0]
           }
-          console.log(state.UserLastLoginInfo[0])
           vm.FirstCard=!!state.UserFirstCardInfo?1:0
           vm.LevelText=vm.StarNum==5?"极高":vm.StarNum==4?"高":vm.StarNum==3?"中":vm.StarNum==2?"低":"极低"
         });
