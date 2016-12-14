@@ -161,7 +161,6 @@ export default {
 			nowAjax.Money = this.vaVal.Money
 			nowAjax.ID = this.nowRender.Id
 			nowAjax.BankCode =this.nowRender.PayType
-      console.log(nowAjax.BankCode)
 			_fetch(nowAjax).then((json)=>{
     		this.Money = ''
     		if(json.Code === 1){

@@ -104,9 +104,11 @@ export default{
     },
     upTime(){
       var vm=this
-      var arr=['WithdrawRemainTimes']
+      var arr=['UserBalance', 'UserWithdrawAvail','WithdrawRemainTimes']
       RootApp.AjaxGetInitData(arr,ref=>{
         vm.ReGetTime=ref.WithdrawRemainTimes
+        vm.UserBalance=ref.UserBalance
+        vm.UserAvail=ref.UserWithdrawAvail
       })
     }
   }
