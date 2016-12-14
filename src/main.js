@@ -280,6 +280,13 @@ window.RootApp = new Vue({
 			    state.AgentRebate||router.push("/notfount")
 			  }
 			}
+			if (meta.verify) {
+				var fy = state[meta.verify]
+				if (fy&&(!state.UserVerify||meta.from.search(state.UserVerify)==-1)) {
+					console.log("条件不足");
+					router.push("/notfount")
+				}
+			}
 		},
 	},
 	render: h => h(App),
@@ -384,7 +391,7 @@ document.addEventListener('copy', function(e){
 	var el = e.target
 	var btn = [].filter.call(el.parentNode.children, child=>(child !== el))[0]
 	if(btn.className.indexOf('copy') > -1){
-		layer.msgWarn('已将内容复制到剪切板')
+		layer.msg('已将内容复制到剪切板')
 	}
 })
 
@@ -400,7 +407,6 @@ function _fetch(data){
 		}
 		str.push(i+'='+k);
 	}
-	data = str.join('&');
 	return new Promise(function(resolve, reject){
 		fetch('/tools/ssc_ajax.ashx', {
 			credentials:'same-origin',
@@ -408,7 +414,7 @@ function _fetch(data){
 		  headers: {
 		    "Content-Type": "application/x-www-form-urlencoded"
 		  },
-		  body: data
+		  body: str.join('&')
 		}).then((res)=>{
 			res.json().then(json=>{
 				if (json.Code==0) {
@@ -422,6 +428,9 @@ function _fetch(data){
 							}
 						})
 					}
+				}
+				if (data.Action.search('Verify')===0) {
+					state.UserVerify=data.Action.replace('Verify','')
 				}
 				resolve(json)
 			})

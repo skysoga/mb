@@ -13,8 +13,9 @@ module.exports = {
     // Surge or Netlify already gzip all static assets for you.
     // Before setting to `true`, make sure to:
     // npm install --save-dev compression-webpack-plugin
-    productionGzip: false,        // 是否开启 gzip
-    productionGzipExtensions: ['js', 'css']  // 需要使用 gzip 压缩的文件扩展名
+    
+    productionGzip: true,
+   
   },
   dev: { // dev 环境
     env: require('./dev.env'),   // 使用 config/dev.env.js 中定义的编译环境
