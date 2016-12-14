@@ -13,7 +13,7 @@
 
       <div class="betCart" >
         <a @click.stop = "showBasket">
-          <i class="iconfont">&#xe75a;<em>{{betAmount}}</em></i>
+          <i class="iconfont">&#xe75a;<em v-show = "betAmount">{{betAmount}}</em></i>
           号码篮</a>
       </div>
     </div>
@@ -98,9 +98,9 @@ export default {
     },
     showBasket(){
      //如果号码篮没有注单， 就没有反应
-      if(this.betAmount <= 0){
-        return
-      }
+      // if(this.betAmount <= 0){
+      //   return
+      // }
       store.commit('lt_changeBox', 'basket')
     }
   }

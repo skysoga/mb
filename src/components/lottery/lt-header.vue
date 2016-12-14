@@ -1,6 +1,7 @@
 <template>
 	<header class="sscHeader fix">
-    <router-link to="/index" class="iconfont back"></router-link>
+    <a @click = "back2index" class="iconfont back"></a>
+    <!-- <router-link to="/index" class="iconfont back"></router-link> -->
     <div class="playSort">
       <p>玩
         <br>法</p>
@@ -120,7 +121,11 @@
 				this.$store.state.lt.box === 'typeSelect' ?
 					 this.$store.commit('lt_changeBox', '') :
 						 this.$store.commit('lt_changeBox', 'typeSelect')
-			}
+			},
+      back2index(){
+        store.commit('lt_leaveLottery')
+        this.$router.push('/index')
+      }
 		},
 		computed: mapState({
 			mode:state=>state.lt.mode,
