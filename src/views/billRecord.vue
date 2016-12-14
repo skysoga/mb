@@ -15,7 +15,7 @@
             </template>
             <template v-else>
               <template v-if="x==1">
-                <div class="" v-for="item in temp_ajax[newDay][x-1].res_data">
+                <div class="" v-for="item in temp_ajax[newDay][x-1].res_data" :key="item">
                   <a class="active">
                     <div><p>{{item.TypeName}}</p><span>{{item.AddTime}}</span> </div>
                     <strong :class="check_money(item.InMoney,item.OutMoney)>0?'InMoney':'OutMoney'">{{check_money(item.InMoney,item.OutMoney)}}</strong>

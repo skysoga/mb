@@ -103,9 +103,9 @@ var routes = [{
   component: betRecord
 }, {
   path: "/betDetail",
-  name: "投注详情",
+  name: "注单详情",
   meta: {
-    title: "投注详情",
+    title: "注单详情",
     link: "/betRecord",
     user: 1
   },

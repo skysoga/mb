@@ -3,7 +3,7 @@ export default {
   data() {
     return {
       li_arr_obj1: ["全部", "已中奖", "未中奖", "等待开奖"],
-      li_arr_obj2: ["所有类型","提现记录","交易记录"],
+      li_arr_obj2: ["所有类型","提现记录","充值记录"],
       type:['GetAgentBillRecord','GetAgentWithdrawRecord','GetAgentRechargeRecord'],
       li_state: 0,
       BottomBoxShow:false,

@@ -16,14 +16,15 @@
             <div class='fullPageMsg' ><div class='fullPageIcon iconfont'>&#xe63c;</div><p>暂无记录</p></div>
       </template>
       <template v-else>
-      <tr class="active" :data-id="item.UserId" v-for="item in res_data" @click="look_agent(item.UserName,item.BetNum)">
+      <tr class="active" :data-id="item.UserId" v-for="item in res_data" @click="look_agent(item.UserName,item.BetNum,item.IsAgent)">
         <td><ins style="color:#38f">{{item.UserName}}</ins></td>
         <td>{{item.UserType}}</td>
-        <td>{{item.BetNum}}</td>
-        <td style="color:red">{{item.ProfitMoney}}</td>
+        <td style="color:#e4393c">{{item.BetNum}}</td>
+        <td style="color:#e4393c">{{item.ProfitMoney}}</td>
       </tr>
       <tr>
-        <td class="msg loadingMsg" v-html='msg[cant_scroll]' colspan="4"></td>
+        <td class="msg loadingMsg" v-html='msg[cant_scroll]' colspan="4" v-if="cant_scroll<2"></td>
+        <td class="msg loadingMsg" v-html='msg[cant_scroll][BetweenType]' colspan="4" v-else></td>
       </tr>
       </template>
     </table>
@@ -46,7 +47,7 @@ export default {
       },
       BetweenType:0,//顶部右侧按钮，默认为0，每次点击将会返回值
       res_data: [],
-      msg: [null, layer.icon.load + "正在加载...", "已显示全部数据"],
+      msg: [null, layer.icon.load + "正在加载...", {0:"已显示今天全部数据",1:"已显示昨天全部数据",2:"已显示本月全部数据",3:"已显示上月全部数据"}],
       window_height: 0, //窗口高度
       document_height: 0, //文档高度
       cant_scroll: 0,
@@ -130,15 +131,16 @@ export default {
         this.getData()
       }
     },
-    look_agent: function(UserName, LowerCount) {
+    look_agent: function(UserName, LowerCount,isAgent) {
       this.BottomBoxList = {}
-      if (Number(LowerCount)) {
+      if (Number(LowerCount)&&isAgent) {
         this.$set(this.BottomBoxList, UserName, '查看下级')
       }
       if (this.agent_path_name.length > 1) {
         this.$set(this.BottomBoxList, this.agent_path_name[this.agent_path_name.length - 2] + "  ", '返回上级')
       }
       this.$set(this.BottomBoxList, "1", UserName)
+      this.$set(this.BottomBoxList,"2","查看报表")
       this.BottomBoxShow = true
     },
     bottomBox: function(a, b) {
@@ -146,13 +148,14 @@ export default {
         this.ajaxData.UserName = a
         this.reset()
         this.agent_path_name.push(this.ajaxData.UserName)
-        this.BottomBoxShow = false
       } else if (b === "返回上级") {
         this.ajaxData.UserName = this.agent_path_name[this.agent_path_name.length - 2]
         this.reset()
         this.agent_path_name.pop()
-        this.BottomBoxShow = false
+      }else if(b==="查看报表"){
+        this.$router.push({path:'/agentReport',query:{username:this.BottomBoxList['1']}})
       }
+      this.BottomBoxShow = false
     }
   },
   mounted() {
