@@ -47,6 +47,7 @@
 export default{
   props:['list'],
   created(){
+    var vm=this
     var arr=['DefaultPhotoList']
     this.$root.GetInitData(arr,state=>{
       this.$parent.HeadImgBoxList=state.DefaultPhotoList
@@ -61,6 +62,9 @@ export default{
       this.$parent.DefaultPhoto=url
       this.$parent.DefaultName=name
     }
+  },
+  mounted(){
+    this.$parent.setDefImg()
   }
 }
 </script>

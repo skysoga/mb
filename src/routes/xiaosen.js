@@ -47,6 +47,8 @@ var routes = [{
 	nav:false,
 	link:'/securityCenter',
 	user:false,
+  verify:'UserMail',
+  from:"Mail",
 	agent:false
   },
   component: setMail
@@ -69,7 +71,9 @@ var routes = [{
 	nav:false,
 	link:'/securityCenter',
 	user:false,
-	agent:false
+  agent:false,
+  verify:'UserSafeQuestions',
+  from:"SafeQuestions"
   },
   component: setQuestion
 },{
@@ -91,7 +95,9 @@ var routes = [{
 	nav:false,
 	link:'/securityCenter',
 	user:false,
-	agent:false
+  agent:false,
+  verify:'UserMobile',
+  from:"Mobile"
   },
   component: setMobile
 },{
@@ -113,7 +119,9 @@ var routes = [{
 	nav:false,
 	link:'/securityCenter',
 	user:false,
-	agent:false
+  agent:false,
+  verify:'UserHasSafePwd',
+  from:'SafePwd,Mobile,Mail'
   },
   component: setSafePwd
 },{
@@ -146,7 +154,9 @@ var routes = [{
 	nav:false,
 	link:'/securityCenter',
 	user:false,
-	agent:false
+  agent:false,
+  verify:1,
+  from:'Pwd,SafePwd,Mobile,Mail'
   },
   component: setPwd
 },{
@@ -303,6 +313,7 @@ var routes = [{
   meta:{
 	title:"绑定银行卡",
 	link:'/manageBankcard',
+  verify:'UserFirstCardInfo',
 	user:true
   },
   component: setBankcard
