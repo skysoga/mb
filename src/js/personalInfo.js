@@ -9,9 +9,14 @@ export default {
       HeadImgBoxList:''//以上头像组件关联
     }
   },
-  created(){
+  beforeRouteEnter(to,from,next){
     var arr=['UserName','UserNickName','UserGrade','UserMobile','UserMail','UserPhoto','UserSex','UserQQ','UserBirthDay','UserGradeGrow','GradeList']
-    RootApp.GetInitData(arr)
+    RootApp.GetInitData(arr,state=>{
+      next()
+    })
+  },
+  created(){
+    this.DefaultPhoto=store.state.UserPhoto
   },
   methods:{
     upHeadImg(){
@@ -74,6 +79,17 @@ export default {
             layer.msgWarn(data.StrCode)
           }
       })
+    },
+    setDefImg(){
+      var arr=this.HeadImgBoxList
+      var key=this.DefaultPhoto
+      for(var n in arr){
+        if(arr[n].ImageUrl==key){
+          this.DefaultID=arr[n].ID
+          this.DefaultName=arr[n].ImageName
+          return
+        }
+      }
     }
   },
   components:{
