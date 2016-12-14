@@ -18,7 +18,7 @@ export default {
     _fetch(theArr).then(json=>{
           next(vm=>{
             if(json.Code==1){
-              vm.StateData=json.BackData||0
+              vm.StateData=json.BackData||{}
             }
           })
       })
