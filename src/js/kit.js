@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import {PERBET} from '../JSconfig'
 var bus = new Vue()     //空vue用来做事件管理
 
 //阶乘
@@ -319,5 +320,24 @@ function accumulate(arr, fn){
   return s;
 }
 
+function BaseBet(count, betStr){
+  var lt = state.lt,
+      bet = state.lt.bet,
+      _count = count || bet.betting_count,
+      _betStr = betStr || bet.betting_number
+
+  this.lottery_code = lt.lottery.LotteryCode,                     //彩种
+  this.play_detail_code = lt.lottery.LotteryCode + lt.mode.mode,  //玩法code
+  this.betting_number = _betStr,                       //投注号码
+
+  this.betting_count = _count,                         //这个方案多少注
+  this.betting_money = +(PERBET * _count * bet.betting_model * bet.graduation_count).toFixed(2),  //一注单价 * 投注数量 * 单位 * 倍数
+
+  this.betting_point = lt.award + '-' + lt.Rebate[lt.lottery.LotteryType]  ,          //赔率
+  this.betting_model = bet.betting_model,                   //元角分
+  this.betting_issuseNo = lt.NowIssue,                  //当前期号
+  this.graduation_count = bet.graduation_count                //当前倍率
+}
+
 export {factorial, mul, C, combNoRepeat, unique, normalSum2, normalSum3, accumulate,
-  diff2, diff3, combSum2, combSum3, bus}
+  diff2, diff3, combSum2, combSum3, bus, BaseBet}

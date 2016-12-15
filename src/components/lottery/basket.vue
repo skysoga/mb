@@ -45,7 +45,7 @@
 <script>
 
 import {PERBET} from '../../JSconfig'
-import {normalSum3, normalSum2, diff3, diff2, combSum3, combSum2} from '../../js/kit'
+import {normalSum3, normalSum2, diff3, diff2, combSum3, combSum2, BaseBet} from '../../js/kit'
 function getBetStr(arr){
   arr = arr.map(item=>item.join(' ')).map(item=>{
     if(item===''){
@@ -317,29 +317,32 @@ export default {
     getTag:getTag,
     //机选n注
     random(n){
-      function BaseBet(count){
-        var lt = state.lt,
-            bet = state.lt.bet
 
-        this.lottery_code = lt.lottery.LotteryCode,                     //彩种
-        this.play_detail_code = lt.lottery.LotteryCode + lt.mode.mode,  //玩法code
-        this.betting_number = betStr,                       //投注号码
+      // function BaseBet(count, betStr){
+      //   var lt = state.lt,
+      //       bet = state.lt.bet,
+      //       _count = count || bet.betting_count,
+      //       _betStr = betStr || bet.betting_number
 
-        this.betting_count = count,                         //这个方案多少注
-        this.betting_money = +(PERBET * count * bet.betting_model * bet.graduation_count).toFixed(2),  //一注单价 * 投注数量 * 单位 * 倍数
+      //   this.lottery_code = lt.lottery.LotteryCode,                     //彩种
+      //   this.play_detail_code = lt.lottery.LotteryCode + lt.mode.mode,  //玩法code
+      //   this.betting_number = _betStr,                       //投注号码
 
-        this.betting_point = lt.award + '-' + lt.Rebate[lt.lottery.LotteryType]  ,          //赔率
-        this.betting_model = bet.betting_model,                   //元角分
-        this.betting_issuseNo = lt.NowIssue,                  //当前期号
-        this.graduation_count = bet.graduation_count                //当前倍率
-      }
+      //   this.betting_count = _count,                         //这个方案多少注
+      //   this.betting_money = +(PERBET * _count * bet.betting_model * bet.graduation_count).toFixed(2),  //一注单价 * 投注数量 * 单位 * 倍数
+
+      //   this.betting_point = lt.award + '-' + lt.Rebate[lt.lottery.LotteryType]  ,          //赔率
+      //   this.betting_model = bet.betting_model,                   //元角分
+      //   this.betting_issuseNo = lt.NowIssue,                  //当前期号
+      //   this.graduation_count = bet.graduation_count                //当前倍率
+      // }
 
 
       for(var i = 0;i < n;i++){
         var randomFeed = randomCfg[this.mode]()
         var betStr = noteBetList.indexOf(this.mode) > -1 ? randomFeed : getBetStr(randomFeed)
         var count = specialMode[this.mode] ? specialMode[this.mode](randomFeed) : 1     //有些机选不了一注的。至少n注
-        store.commit('lt_addRandomBet', new BaseBet(count))
+        store.commit('lt_addRandomBet', new BaseBet(count, betStr))
       }
     }
   },

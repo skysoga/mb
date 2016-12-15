@@ -18,13 +18,15 @@
 								<ul class="betFilter fix" ref = "betFilter">
 									<li v-for = "(groupItem,group) in config"
 										  @click.stop = "changeGroup(groupItem)"
-										  :class = "group === mode.group ? 'curr': ''">
+										  :class = "{curr:group === mode.group, lastSelect: group === '大小单双'}">
 										{{group}}
 									</li>
 								</ul>
 
 								<ul class="betFilterAnd" v-dynamic-height>
-									<li class="fix" v-for = "(subGroup, subGroupName) in config[mode.group]">
+									<li class="fix"
+                      v-for = "(subGroup, subGroupName) in config[mode.group]"
+                      :class = "addSubGroupClass(subGroupName)">
 										<span>{{subGroupName}}</span>
 										<div class="fix">
 											<a v-for = "modeItem in subGroup"
@@ -125,6 +127,17 @@
       back2index(){
         store.commit('lt_leaveLottery')
         this.$router.push('/index')
+      },
+      addSubGroupClass(name){
+        var table = {
+          '直选': 'directSelect',
+          '组选': 'groupSelect',
+          '不定位': 'notPosition',
+          '趣味': 'taste',
+          '定位胆': 'otherPosition',
+          '大小单双': 'lastSelect'
+        }
+        return table[name]
       }
 		},
 		computed: mapState({
