@@ -1,4 +1,14 @@
 @import 'scssConfig','mixin';
+.isLotteryLine{
+  position: relative;
+  &:before{
+    content: "";
+    position: absolute;
+    width: 16rem;
+    height: 1px;
+    @include bgImg-linear-gradient('90deg, transparent, transparent 50%, #fff 50%');
+  }
+}
 .openNumber,.waitNumber{
   text-align: center;
   height: 1.8em;
@@ -104,9 +114,7 @@
   }
 }
 .isLottery,.lotteryClose{
-  width: 50%;
   height: 100%;
-  float: left;
   position: relative;
   &:after{
     content: "";

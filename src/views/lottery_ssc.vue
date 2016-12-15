@@ -5,7 +5,7 @@
 	<lt-header></lt-header>
 
   <!-- 开奖号码 以及 投注截止时间  -->
-  <div class="isLotteryCon fix">
+  <div class="isLotteryCon">
     <!-- 开奖结果和历史开奖结果 -->
     <lt-result></lt-result>
     <!-- 倒计时和我的投注 -->
@@ -25,6 +25,12 @@
 </template>
 <style lang = "scss" scoped>
 @import '../scss/newssc.scss';
+.isLotteryCon{
+  > div{
+    float: left;
+    width: 50%;
+  }
+}
 </style>
 <script>
 	import lt_header from '../components/lottery/lt-header'

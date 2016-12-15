@@ -1,5 +1,5 @@
 <template>
-  <div v-if = "$store.state.lt.OldIssue">
+  <div class="isLotteryLine fix" v-if = "$store.state.lt.OldIssue">
     <div class="isLottery" @click.stop = "togglePastOpen">
       <span>{{oldIssue}}期开奖号码<i class="iconfont">&#xe601;</i></span>
       <!-- 开奖号码 -->

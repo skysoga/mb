@@ -315,7 +315,8 @@
       padding: 0;
       width: 2.72rem;
     }
-    .curr{
+    .lastSelect{
+      width: 3.9rem;
     }
 }
 .betFilter .curr{
@@ -338,12 +339,12 @@
         background: white;
       }
     }
-    &:nth-child(2){
-      a{
-        width: 5em;
-        padding: 0;
-        text-align: center;
-      }
+  }
+  .groupSelect{
+    a{
+      width: 5em;
+      padding: 0;
+      text-align: center;
     }
   }
   li+li{
@@ -375,7 +376,7 @@
     }
     &:before{
       left: -1rem;
-      top:1.1em;
+      top:1.25em;
       width: .3em;
       height: .3em;
       border:.2em solid #ddd;
@@ -388,7 +389,7 @@
       height: 10em;
       @include bgImg-linear-gradient('0deg, #d0d0d0, #d0d0d0 50%, transparent 50%');
       left: -.82rem;
-      top:1.1em;
+      top:1.25em;
       z-index: 13;
     }
   }
