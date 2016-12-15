@@ -382,6 +382,7 @@ export default {
 </script>
 
 <style lang = "scss" scoped>
+$bottomHeight : 2.4em;
 .cartTotal{
 position: fixed;
 width: 100%;
@@ -390,7 +391,7 @@ left: 0;
 .change{
   background: #f8f8f8;
   font-size: .7em;
-  padding: .8em 0;
+  padding: .6em 0;
   .stop{
     position: absolute;
     top:-4em;
@@ -437,11 +438,11 @@ left: 0;
   }
 }
 .result{
-  background: #ff8a00;
-  height: 3em;
+  background: #dc3b40;
+  height: $bottomHeight;
   .left{
     float: left;
-    height: 3em;
+    height: $bottomHeight;
     background: #212121;
     padding: .4em;
     line-height: 1em;
@@ -462,12 +463,12 @@ left: 0;
     position: relative;
     text-align: center;
     color:white;
-    height: 3em;
+    height: $bottomHeight;
     i{
       font-size: .8em;
-      line-height: 3.75em;
+      line-height: 3.1em;
       display: block;
-      height: 3.75em;
+      height: 3em;
     }
     &:before{
       content: "";
@@ -475,8 +476,8 @@ left: 0;
       width: 0;
       height: 0;
       border-left:0.6em solid #212121;
-      border-top: 1.5em solid hsla(0, 0%, 0%, 0);
-      border-bottom: 1.5em solid hsla(0, 0%, 0%, 0);
+      border-top: $bottomHeight/2 solid hsla(0, 0%, 0%, 0);
+      border-bottom: $bottomHeight/2 solid hsla(0, 0%, 0%, 0);
       left: 0;
       top: 0;
     }
@@ -514,7 +515,7 @@ li{
   position: relative;
   em{
     display: block;
-    color:#ff8a00;
+    color:#dc3b40;
     font-size: .75em;
     line-height: 1.2em;
     white-space: nowrap;

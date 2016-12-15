@@ -182,6 +182,7 @@ function betSum(order, tmp){
 /*@import '../../scss/newssc.scss';*/
 @import '../../scss/scssConfig','../../scss/mixin';
 .sscMain{
+  min-height: 23em;
   padding-bottom: 4.8em;
   margin-bottom: 0;
 }
