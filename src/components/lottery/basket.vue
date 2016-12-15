@@ -435,6 +435,8 @@ left: 0;
     width: 4em;
     height: 2em;
     margin:0 .4em;
+    border-radius: .2em;
+    padding: 0 .4em;
   }
 }
 .result{
