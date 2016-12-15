@@ -199,7 +199,6 @@ window.RootApp = new Vue({
 			_fetch(ajax).then((json)=>{
 		    if (json.Code===1||json.Code===0) {
 		    	var Data = this.SetFilter(json.BackData);
-		    	console.log(Data);
 		      this.SaveInitData(Data)
 		      fun&&fun(state)
 		    }else{
@@ -275,21 +274,32 @@ window.RootApp = new Vue({
 			var meta = to.matched[0].meta
 			if(meta.user){
 			  if (!state.UserName) {
+			  	state.login2path = to.path
 			    router.push("/login")
 			  }else if(state.agent){
 			    state.AgentRebate||router.push("/notfount")
 			  }
 			}
 			if (meta.verify) {
-				var fy = state[meta.verify]
-				if (fy!==undefined||
-					(fy&&(!state.UserVerify||meta.from.search(state.UserVerify)==-1))
+				var fy = meta.verify===1?1:state[meta.verify]
+				if (fy&&(!state.UserVerify||meta.from.search(state.UserVerify)==-1)
 				) {
 					console.log("条件不足");
 					router.push("/notfount")
 				}
 			}
 		},
+	},
+	created:function(){
+		var len = routes.length
+		var thisp = location.pathname.toLowerCase()
+		console.log(thisp);
+		for (var i = 0; i < len; i++) {
+			if (routes[i].path.toLowerCase()===thisp) {
+				this.beforEnter({matched:[routes[i]]})
+				break
+			}
+		}
 	},
 	render: h => h(App),
 });
@@ -419,21 +429,24 @@ function _fetch(data){
 		  body: str.join('&')
 		}).then((res)=>{
 			res.json().then(json=>{
-				if (json.Code==0) {
-					if(state.UserName){
-						RootApp.Logout()
-						layer.alert("您的登录信息已失效<br>需要重新登录",function(){
-							var meta = RootApp._route.matched[0]
-							meta = meta&&meta.meta
-							if(meta&&meta.user){
-						    router.push("/login")
-							}
-						})
+				console.log(json);
+				;(function(){
+					if (json.Code==0) {
+						if(state.UserName){
+							RootApp.Logout()
+							layer.alert("您的登录信息已失效<br>需要重新登录",function(){
+								var meta = RootApp._route.matched[0]
+								meta = meta&&meta.meta
+								if(meta&&meta.user){
+							    router.push("/login")
+								}
+							})
+						}
 					}
-				}
-				if (data.Action.search('Verify')===0) {
-					state.UserVerify=data.Action.replace('Verify','')
-				}
+					if (data.Action.search('Verify')===0) {
+						state.UserVerify=data.Action.replace('Verify','')
+					}
+				})()
 				resolve(json)
 			})
 		})

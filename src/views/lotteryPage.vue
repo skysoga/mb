@@ -623,7 +623,7 @@
 		      lt_confirmBet:({state, rootState, commit, dispatch})=>{
 
 		      	_fetch({
-		      		'action':'AddBetting',
+		      		'Action':'AddBetting',
 		      		'data': {BettingData:state.basket}
 		      	}).then((json)=>{
 		      		if(json.Code === 1){
