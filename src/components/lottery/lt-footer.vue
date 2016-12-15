@@ -128,7 +128,7 @@ $height:2.4em;
   width: 66.5%;
   float: left;
   height: 100%;
-  background: #212121;
+  background: #252625;
   position: relative;
 }
 .betCart{
@@ -143,7 +143,7 @@ $height:2.4em;
     width: 0;
     height: 0;
     border-top: $height/2 solid transparent;
-    border-left: 0.5em solid #212121;
+    border-left: 0.5em solid #252625;
     border-bottom: $height/2 solid transparent;
     left: 0;
     top: 0;
@@ -163,7 +163,7 @@ $height:2.4em;
       position: relative;
       width: 1em;
       em{
-        background: #ff8a00;
+        background: #dc3b40;
         position: absolute;
         border-radius: 50%;
         left: 0.2em;
@@ -310,14 +310,14 @@ $height:2.4em;
     }
   }
   .curr{
-    background: #ff8a00;
+    background: #dc3b40;
     color:white;
   }
 }
 .sscFooter.active{
   .sscBetInfo{
     .betContent{
-      background: #ff8a00;
+      background: #dc3b40;
       p{
         color:#ffebdd;
       }
@@ -331,7 +331,7 @@ $height:2.4em;
   }
   .betCart{
     &:before{
-      border-left: 0.6em solid #ff8a00;
+      border-left: 0.6em solid #dc3b40;
     }
   }
   .multipleCon{

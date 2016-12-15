@@ -336,13 +336,13 @@
     }
 }
 .betFilter .curr{
-  background: #ff9726;
-  border:1px solid #ff9726;
+  background: #dc3b40;
+  border:1px solid #dc3b40;
   color: white;
 }
 .betFilterAnd .curr{
-  border:1px solid #ff9726;
-  color:#ff9726;
+  border:1px solid #dc3b40;
+  color:#dc3b40;
 }
 .betFilterAnd{
   text-align: left;
