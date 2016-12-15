@@ -298,10 +298,14 @@
   border:1px solid #ddd;
   height: 2em;
 }
-.betFilter .curr,.betFilterAnd .curr{
+.betFilter .curr{
   background: #ff9726;
   border:1px solid #ff9726;
   color: white;
+}
+.betFilterAnd .curr{
+  border:1px solid #ff9726;
+  color:#ff9726;
 }
 .betFilterAnd{
   text-align: left;
@@ -333,6 +337,7 @@
     padding: .2rem 0;
   }
   span{
+    border:1px solid transparent;
     color:#666;
     vertical-align: top;
     width: 3rem;
@@ -340,7 +345,7 @@
     display: block;
     float: left;
     line-height: 2em;
-    font-size: .9em;
+    font-size: .8em;
     position: relative;
     padding: .4rem 0;
     &:before,&:after{
