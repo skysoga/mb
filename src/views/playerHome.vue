@@ -10,7 +10,7 @@
         <h1 v-if="initData.NickName">{{initData.NickName}}</h1>
         <h1 v-else>昵称未设置</h1>
         <h2>账号:{{initData.UserName}}</h2>
-        <span v-if="initData.Sex!='2'">性别:{{initData.Sex==='0'?'男':'女'}}</span><span v-else>保密</span>
+        <span v-if="initData.Sex!='2'">性别:{{initData.Sex==='0'?'男':'女'}}</span><span v-else>性别:保密</span>
         <p>头衔：<em>{{initData.Rank}}</em>累计中奖：<i>{{Math.floor(initData.Award)}}</i></p>
         <ins>{{initData.GroupTitle}}</ins>
     </div>

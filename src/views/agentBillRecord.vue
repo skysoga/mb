@@ -52,7 +52,9 @@
                 <div class="" v-for="item in temp_ajax[newName+'%'+newDay][x-1].res_data">
                   <a class="active">
                     <div><p>{{item.UserName}}</p><span>{{item.AddTime}}</span> </div>
-                    <div class="fr"><div class="fr"><strong class="InMoney">+{{item.InMoney}}</strong><span class="fr">{{item.State}}</span></div> </div>
+                    <div class="fr"><div class="fr"><strong class="InMoney" v-if="Number(item.InMoney)">+{{item.InMoney}}</strong>
+                      <strong class="InMoney" v-else>+{{item.ApplyMoney}}</strong>
+                      <span class="fr">{{item.State}}</span></div> </div>
                   </a>
                   <div class="hr1px"></div>
                 </div>

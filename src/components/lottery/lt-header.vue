@@ -24,7 +24,7 @@
 								</ul>
 
 								<ul class="betFilterAnd" v-dynamic-height>
-									<li v-for = "(subGroup, subGroupName) in config[mode.group]">
+									<li class="fix" v-for = "(subGroup, subGroupName) in config[mode.group]">
 										<span>{{subGroupName}}</span>
 										<div class="fix">
 											<a v-for = "modeItem in subGroup"
@@ -297,10 +297,11 @@
   cursor: pointer;
   text-align: center;
   color: #555;
-  font-size: 0.9em;
-  margin: 0.3em;
+  font-size: 0.8em;
+  margin: 0.2rem;
   float:left;
   border:1px solid #ddd;
+  height: 2em;
 }
 .betFilter .curr,.betFilterAnd .curr{
   background: #ff9726;
@@ -318,25 +319,35 @@
         background: white;
       }
     }
+    &:nth-child(2){
+      a{
+        width: 5em;
+        padding: 0;
+        text-align: center;
+      }
+    }
   }
   li+li{
     border-top:1px dotted #ddd;
   }
   div{
     vertical-align: top;
-    width: 11.5rem;
-    display: inline-block;
-    padding: .3em;
+    width: 10.8rem;
+    display: block;
+    float: left;
+    padding: .2rem 0;
   }
   span{
     color:#666;
     vertical-align: top;
-    width: 2.5rem;
-    display: inline-block;
-    margin-top:.3em;
-    line-height: 2.8em;
+    width: 3rem;
+    height: 2em;
+    display: block;
+    float: left;
+    line-height: 2em;
     font-size: .9em;
     position: relative;
+    padding: .4rem 0;
     &:before,&:after{
       content: "";
       position: absolute;

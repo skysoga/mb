@@ -8,7 +8,7 @@
 							 <img :src="$store.getters.PhotoPath+item.UserPhoto" alt="">
 						 </a>
 						 <div class="right">
-							 <a href="#" style="color:#38f">{{item.UserName?item.UserName:item.Nickname}}</a>
+							 <a href="#" style="color:#38f">{{item.Nickname?item.Nickname:item.UserName}}</a>
 							 <span>在{{item.LotteryName}}<br>喜中</span><em>￥{{item.Bonus}}</em>
 						 </div>
 						 <i class="iconfont right fr"></i>
@@ -21,7 +21,7 @@
 							<img :src="$store.getters.PhotoPath+item.UserPhoto" alt="">
 						</a>
 						<div class="right">
-							<a href="#" style="color:#38f">{{item.UserName?item.UserName:item.Nickname}}</a>
+							<a href="#" style="color:#38f">{{item.Nickname?item.Nickname:item.UserName}}</a>
 							<span>在{{item.LotteryName}}<br>喜中</span><em>￥{{item.Bonus}}</em>
 						</div>
 						<i class="iconfont right fr"></i>
