@@ -194,5 +194,10 @@ function betSum(order, tmp){
   p{
     font-size: 0.65em;
   }
+  &+.selectNumber{
+    &:before{
+      display:none;
+    }
+  }
 }
 </style>

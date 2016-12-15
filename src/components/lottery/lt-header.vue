@@ -277,14 +277,6 @@
     }
   }
 }
-.betFilter{
-    padding: 0.3em;
-    box-shadow: 0 2px 10px rgba(41, 41, 41, 0.08);
-    li{
-    }
-    .curr{
-    }
-}
 .betFilter li,.betFilterAnd a{
   padding:0 0.8em;
   line-height: 2em;
@@ -297,6 +289,16 @@
   float:left;
   border:1px solid #ddd;
   height: 2em;
+}
+.betFilter{
+    padding: 0.2rem;
+    box-shadow: 0 2px 10px rgba(41, 41, 41, 0.08);
+    li{
+      padding: 0;
+      width: 2.72rem;
+    }
+    .curr{
+    }
 }
 .betFilter .curr{
   background: #ff9726;
@@ -340,7 +342,7 @@
     border:1px solid transparent;
     color:#666;
     vertical-align: top;
-    width: 3rem;
+    width: 4.3em;
     height: 2em;
     display: block;
     float: left;
