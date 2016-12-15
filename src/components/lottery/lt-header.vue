@@ -2,7 +2,7 @@
 	<header class="sscHeader fix">
     <a @click = "back2index" class="iconfont back"></a>
     <!-- <router-link to="/index" class="iconfont back"></router-link> -->
-    <div class="playSort">
+    <div class="playSort" :class = "{active:ifShowModeSelect}">
       <p>玩
         <br>法</p>
 
@@ -45,7 +45,7 @@
 	      </span>
 	  </div>
 
-    <div class="lotterySort" ref = "lotterySort">
+    <div class="lotterySort" ref = "lotterySort" :class = "{active:ifShowTypeSelect}">
 	    <div @click.stop = "toggleTypeSelect">
 		    <em>{{lotteryName}}</em><i class="iconfont">&#xe61e;</i>
 	    </div>
