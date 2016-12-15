@@ -356,6 +356,7 @@ function BaseBet(count, betStr){
 function ChaseAjax(){
   var conf = state.lt.chaseConf,
       lt = state.lt
+
   this.before_issueNo = conf.before_issueNo;
   this.before_eamings_cash = conf.before_eamings_cash;
   this.after_eamings_cash = conf.after_eamings_cash;
@@ -365,12 +366,28 @@ function ChaseAjax(){
 
   this.start_issueNo = lt.NowIssue;       //开始的期号
   this.lottery_code = lt.lottery.LotteryCode;           //玩法类型
-  this.chase_money = chase.statistics()[1] * 1;       //总共多少钱
-  this.buy_count = chase.scheme.length;               //追多少期
 
-  this.betting = getCompPlan(chase.plans)     //有压缩
+  this.chase_money = 12;                         //总共多少钱
+  this.buy_count = conf.buy_count;               //追多少期
+
+  this.betting = deleteCompress(lt.basket)     //有压缩
   // this.betting = chase.plans;              //木有压缩
-  this.shceme = chase.scheme;
+  this.shceme = lt.scheme;
+}
+
+function Scheme(issueStr, power, money){
+
+}
+
+function deleteCompress(basket){
+  return basket.map(function(item){
+              var cloneItem = easyClone(item);
+              if(cloneItem.compress){
+                cloneItem.betting_number = cloneItem.compress;
+              }
+              delete cloneItem.compress;
+              return cloneItem;
+          })
 }
 
 function compress(source){
@@ -452,4 +469,4 @@ var throttle = function(delay){
 
 
 export {factorial, mul, C, combNoRepeat, unique, normalSum2, normalSum3, accumulate,
-  diff2, diff3, combSum2, combSum3, bus, BaseBet, compress, throttle, easyClone, ChaseAjax}
+  diff2, diff3, combSum2, combSum3, bus, BaseBet, compress, throttle, easyClone, ChaseAjax, deleteCompress}

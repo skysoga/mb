@@ -11,7 +11,7 @@
 	import Vue from 'vue'
 	import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 	import {DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../JSconfig'
-	import {bus, BaseBet, ChaseAjax, easyClone} from '../js/kit'
+	import {bus, BaseBet, ChaseAjax, easyClone, deleteCompress} from '../js/kit'
 
 	export default{
 		beforeRouteEnter(to, from, next){
@@ -189,7 +189,7 @@
 	      		after_earnings_rate: -1,
 	      		isstop_afterwinning: true,
 	      		buy_count: 1,                 //追多少期
-	      		power:1
+	      		power:1												//每期多少倍(普通追号)
 	      	},
 	      	scheme:[],
 		      mode:{
@@ -229,7 +229,6 @@
 
 		    },
 		    getters: {
-
 		    },
 		    mutations:{
 		      //变更弹出框
@@ -411,7 +410,8 @@
 	      	lt_setBetCompress:(state, str)=>{state.bet.compress = str},
 	      	lt_isStopAfterWin:(state, bool)=>{state.chaseConf.isstop_afterwinning = bool},
 	      	lt_setChaseIssue:(state, chaseIssue)=>{state.chaseConf.buy_count = chaseIssue},
-	      	lt_setChasePower:(state, chasePower)=>{state.chaseConf.power = chasePower}
+	      	lt_setChasePower:(state, chasePower)=>{state.chaseConf.power = chasePower},
+
 		    },
 
 		    actions: {
@@ -685,7 +685,10 @@
 		      			layer.msgWarn(json.StrCode)
 		      		}
 		      	})
-		      }
+		      },
+	      	lt_ordinaryChase:(state)=>{
+	      		console.log('jkj')
+	      	}
 		    }
 		  }
 
@@ -783,14 +786,5 @@
   	}
   }
 
-  function deleteCompress(basket){
-  	return basket.map(function(item){
-								var cloneItem = easyClone(item);
-								if(cloneItem.compress){
-									cloneItem.betting_number = cloneItem.compress;
-								}
-								delete cloneItem.compress;
-								return cloneItem;
-						})
-  }
+
 </script>

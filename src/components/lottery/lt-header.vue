@@ -23,7 +23,7 @@
 									</li>
 								</ul>
 
-								<ul class="betFilterAnd" v-dynamic-height>
+								<ul class="betFilterAnd">
 									<li class="fix"
                       v-for = "(subGroup, subGroupName) in config[mode.group]"
                       :class = "addSubGroupClass(subGroupName)">

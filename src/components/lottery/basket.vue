@@ -303,18 +303,28 @@ export default {
     },
     //确认投注
     confirmBet(){
-      var betDetail = []
-      this.basket.forEach(bet=>{
-        betDetail.push(`${this.getTag(bet.play_detail_code.slice(-3),this.config)[1]} ${bet.betting_number}`)
-      })
+      if(this.chasePower == 1 && this.chaseIssue == 1){
+        //如果追号倍数和期号都为1,则为普通投注
+        var betDetail = []
+        this.basket.forEach(bet=>{
+          betDetail.push(`${this.getTag(bet.play_detail_code.slice(-3),this.config)[1]} ${bet.betting_number}`)
+        })
 
-      var msg = `${this.lottery}: 第${this.NowIssue}期<br>投注金额: ${this.basketTotal}元<br>投注内容:<br>${betDetail.join('<br>')}`
+        var msg = `${this.lottery}: 第${this.NowIssue}期<br>投注金额: ${this.basketTotal}元<br>投注内容:<br>${betDetail.join('<br>')}`
 
-      if(this.basket.length){
-        layer.confirm(msg,()=>{
-          store.dispatch('lt_confirmBet')
-        },()=>{})
+        if(this.basket.length){
+          layer.confirm(msg,()=>{
+            store.dispatch('lt_confirmBet')
+          },()=>{})
+        }
+      }else{
+        //如果追号倍数和期号任一大于1,则为普通追号
+        store.commit('lt_ordinaryChase')
+        console.log('普通追号')
       }
+
+
+
     },
     deleteBet(index){
       store.commit('lt_deleteBet', index)

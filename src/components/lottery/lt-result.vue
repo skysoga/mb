@@ -45,7 +45,6 @@ export default {
       arr = arr.map(circle)
       this.wait4Results = arr
     },40)
-    console.log(state.lt.OldIssue)
   },
   data(){
     return {
