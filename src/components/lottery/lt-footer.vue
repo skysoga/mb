@@ -13,7 +13,7 @@
 
       <div class="betCart" >
         <a @click.stop = "showBasket">
-          <i class="iconfont">&#xe75a;<em>{{betAmount}}</em></i>
+          <i class="iconfont">&#xe75a;<em v-show = "betAmount">{{betAmount}}</em></i>
           号码篮</a>
       </div>
     </div>
@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import {bus} from '../../js/kit'
 import {Max_Rate} from '../../JSconfig'
 export default {
   created(){
@@ -79,7 +80,6 @@ export default {
   methods:{
     reduce(){
       this.power > 1 && this.power--      //倍数必须大于1
-      console.log(this.canReduce)
     },
     add(){
       this.power < Max_Rate && this.power ++   //倍数小于最大倍数限制
@@ -93,13 +93,14 @@ export default {
       if(this.betCount <= 0){
         return
       }
+      bus.$emit('clearNoteStr')   //清空文本框文字
       store.commit('lt_addBet')
     },
     showBasket(){
      //如果号码篮没有注单， 就没有反应
-      if(this.betAmount <= 0){
-        return
-      }
+      // if(this.betAmount <= 0){
+      //   return
+      // }
       store.commit('lt_changeBox', 'basket')
     }
   }
@@ -108,9 +109,12 @@ export default {
 
 <style lang = "scss" scoped>
 @import '../../scss/scssConfig','../../scss/mixin';
-  .sscBetInfo{
+
+$height:2.4em;
+
+.sscBetInfo{
   position: fixed;
-  height: 3em;
+  height: $height;
   left: 0;
   bottom:0;
   background: #575858;
@@ -123,28 +127,29 @@ export default {
   height: 100%;
   background: #212121;
   position: relative;
-  &:after{
-    content: "";
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-top: 1.5em solid transparent;
-    border-left: 0.6em solid #212121;
-    border-bottom: 1.5em solid transparent;
-    right: -0.59em;
-    top: 0;
-  }
 }
 .betCart{
   float: left;
   width: 33.5%;
   height: 100%;
   color:white;
+  position: relative;
+  &:before{
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-top: $height/2 solid transparent;
+    border-left: 0.5em solid #212121;
+    border-bottom: $height/2 solid transparent;
+    left: 0;
+    top: 0;
+  }
   a{
     display: block;
     width: 100%;
     height: 100%;
-    line-height: 3.75em;
+    line-height: 3em;
     font-size:0.8em;
     text-align: center;
     padding-left: 0.6em;
@@ -173,8 +178,8 @@ export default {
 .betContent{
   color:white;
   div{
-    height: 3em;
-    padding:.4em 0.6em;
+    height: $height;
+    padding:.2em 0.6em;
   }
   h3{
     font-size: 0.8em;
@@ -186,7 +191,7 @@ export default {
     padding-top: 0.4em;
     white-space:nowrap;
     overflow:hidden;
-    text-overflow:ellipsis; 
+    text-overflow:ellipsis;
   }
   em{
     position: absolute;
@@ -194,7 +199,7 @@ export default {
     left:0;
     top:0;
     font-size:1.4em;
-    line-height:2.1428em;
+    line-height:1.5em;
     width:1.4em;
     text-align:center;
     display: none;
@@ -203,10 +208,10 @@ export default {
 .multipleCon{
   position: fixed;
   left: 0;
-  bottom:3em;
+  bottom:$height;
   background: #f8f8f8;
   width: 100%;
-  height: 3em;
+  height: $height;
   display: none;
   z-index: 499;
   span{
@@ -217,8 +222,8 @@ export default {
 }
 .multipleConLine{
   position: relative;
-  height: 3em;
-  padding: 0.6em;
+  height: $height;
+  padding: 0.4em;
   &:before,&:after{
     content:"";
     position: absolute;
@@ -238,28 +243,32 @@ export default {
 }
 .multiple{
   border:1px solid #d2d2d2;
-  height: 1.8em;
+  height: 1.6em;
   display: inline-block;
   vertical-align: middle;
   border-radius: 0.15em;
   background: white;
   input{
     border:none;
-    width: 4em;
-    height: calc(1.8em - 2px);
-    height: 97%;
+    width: 3em;
+    height: 100%;
     text-align: center;
     font-size: 0.75em;
     color:#666;
+    display: block;
+    float: left;
+    vertical-align: top;
+    line-height: 2.13333em;
   }
   em{
-    display: inline-block;
+    display: block;
     vertical-align: top;
     width: 1.6em;
     height: 100%;
     color:#a3a3a3;
     text-align: center;
-    line-height: 1.6em;
+    line-height: 1.4em;
+    float: left;
     &:first-child{
       border-right: 1px solid #d2d2d2;
     }
@@ -282,13 +291,13 @@ export default {
   float: right;
   border:1px solid #d2d2d2;
   border-radius: 0.15em;
-  height: 1.8em;
+  height: 1.6em;
   background: white;
   overflow: hidden;
   a{
     display: inline-block;
     vertical-align: top;
-    font-size: 0.8em;
+    font-size: 0.7em;
     height: 100%;
     width: 2.25em;
     line-height: 2.15em;
@@ -309,15 +318,17 @@ export default {
       p{
         color:#ffebdd;
       }
-      &:after{
-        border-left: 0.6em solid #ff8a00;
-      }
       div{
         padding-left: 2em;
       }
       em{
         display: block;
       }
+    }
+  }
+  .betCart{
+    &:before{
+      border-left: 0.6em solid #ff8a00;
     }
   }
   .multipleCon{
