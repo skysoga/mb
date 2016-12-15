@@ -31,6 +31,7 @@
     width: 50%;
   }
 }
+
 </style>
 <script>
 	import lt_header from '../components/lottery/lt-header'
