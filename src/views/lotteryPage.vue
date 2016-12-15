@@ -11,7 +11,7 @@
 	import Vue from 'vue'
 	import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 	import {DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../JSconfig'
-	import {bus, BaseBet, easyClone} from '../js/kit'
+	import {bus, BaseBet, ChaseAjax, easyClone} from '../js/kit'
 
 	export default{
 		beforeRouteEnter(to, from, next){
@@ -180,7 +180,18 @@
 		      	'notebet':[]
 		      },        //即时的投注号码情况
 		      basket:[],      //号码篮
-		      scheme:{},      //追号相关
+		      //追号配置
+		      chaseConf:{
+	      		before_issueNo: -1,
+	      		before_eamings_cash: -1,
+	      		after_eamings_cash: -1,
+	      		before_earnings_rate: -1,
+	      		after_earnings_rate: -1,
+	      		isstop_afterwinning: true,
+	      		buy_count: 1,                 //追多少期
+	      		power:1
+	      	},
+	      	scheme:[],
 		      mode:{
 		        name: '',     //直选复式
 		        mode: '',     //H11
@@ -397,9 +408,10 @@
 	      		store.commit('lt_clearBet')
 	      		state.bet.betting_model = 1
 	      	},
-	      	lt_setBetCompress:(state, str)=>{
-	      		state.bet.compress = str
-	      	}
+	      	lt_setBetCompress:(state, str)=>{state.bet.compress = str},
+	      	lt_isStopAfterWin:(state, bool)=>{state.chaseConf.isstop_afterwinning = bool},
+	      	lt_setChaseIssue:(state, chaseIssue)=>{state.chaseConf.buy_count = chaseIssue},
+	      	lt_setChasePower:(state, chasePower)=>{state.chaseConf.power = chasePower}
 		    },
 
 		    actions: {
@@ -648,14 +660,7 @@
 		      },
 		      //投注
 		      lt_confirmBet:({state, rootState, commit, dispatch})=>{
-		      	var _basket = state.basket.map(function(item){
-								var cloneItem = easyClone(item);
-								if(cloneItem.compress){
-									cloneItem.betting_number = cloneItem.compress;
-								}
-								delete cloneItem.compress;
-								return cloneItem;
-						})
+		      	var _basket = deleteCompress(state.basket)
 
 		      	_fetch({
 		      		'Action':'AddBetting',
@@ -776,5 +781,16 @@
   			}
   		}
   	}
+  }
+
+  function deleteCompress(basket){
+  	return basket.map(function(item){
+								var cloneItem = easyClone(item);
+								if(cloneItem.compress){
+									cloneItem.betting_number = cloneItem.compress;
+								}
+								delete cloneItem.compress;
+								return cloneItem;
+						})
   }
 </script>

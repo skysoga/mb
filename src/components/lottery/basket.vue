@@ -24,10 +24,11 @@
   </div>
   <div class="cartTotal">
     <div class="change" ref = "change">
-      <label>投<input type="tel">倍</label>
-      <label>追<input type="tel">期
-        <div class="stop" v-show = "false">
-          <input type="checkbox" id="stop"><label for="stop">中奖后停止追号</label>
+      <label>投<input type="tel" v-model = "chasePower" @change = "powerChange">倍</label>
+      <label>追<input type="tel" v-model = "chaseIssue" @change = "issueChange">期
+        <div class="stop" v-show = "showBubble">
+          <input type="checkbox" id="stop" v-model = "isStopAfterWin" @change = "isStopAfterWinChange">
+          <label for="stop">中奖后停止追号</label>
         </div>
       </label>
     </div>
@@ -268,7 +269,10 @@ var specialMode = {
 export default {
   data(){
     return {
-      PERBET:PERBET
+      PERBET:PERBET,
+      chasePower:1,
+      chaseIssue:1,
+      isStopAfterWin: true
     }
   },
   computed:{
@@ -287,7 +291,10 @@ export default {
       return +(total).toFixed(2)
     },
     lottery:()=>state.lt.lottery.LotteryName,
-    NowIssue:()=>state.lt.NowIssue
+    NowIssue:()=>state.lt.NowIssue,
+    showBubble(){
+      return this.chaseIssue > 1
+    }
   },
   methods:{
     //返回投注页
@@ -318,33 +325,33 @@ export default {
     getTag:getTag,
     //机选n注
     random(n){
-
-      // function BaseBet(count, betStr){
-      //   var lt = state.lt,
-      //       bet = state.lt.bet,
-      //       _count = count || bet.betting_count,
-      //       _betStr = betStr || bet.betting_number
-
-      //   this.lottery_code = lt.lottery.LotteryCode,                     //彩种
-      //   this.play_detail_code = lt.lottery.LotteryCode + lt.mode.mode,  //玩法code
-      //   this.betting_number = _betStr,                       //投注号码
-
-      //   this.betting_count = _count,                         //这个方案多少注
-      //   this.betting_money = +(PERBET * _count * bet.betting_model * bet.graduation_count).toFixed(2),  //一注单价 * 投注数量 * 单位 * 倍数
-
-      //   this.betting_point = lt.award + '-' + lt.Rebate[lt.lottery.LotteryType]  ,          //赔率
-      //   this.betting_model = bet.betting_model,                   //元角分
-      //   this.betting_issuseNo = lt.NowIssue,                  //当前期号
-      //   this.graduation_count = bet.graduation_count                //当前倍率
-      // }
-
-
       for(var i = 0;i < n;i++){
         var randomFeed = randomCfg[this.mode]()
         var betStr = noteBetList.indexOf(this.mode) > -1 ? randomFeed : getBetStr(randomFeed)
-        var count = specialMode[this.mode] ? specialMode[this.mode](randomFeed) : 1     //有些机选不了一注的。至少n注
+        //有些机选不了一注的。至少n注
+        var count = specialMode[this.mode] ? specialMode[this.mode](randomFeed) : 1
         store.commit('lt_addRandomBet', new BaseBet(count, betStr))
       }
+    },
+    //改变普通追号倍数
+    powerChange(){
+      if(this.chasePower.search(/[^\d]+/) > -1 || this.chasePower <= 0){
+        this.chasePower = 1
+      }else{
+        store.commit('lt_setChasePower', +this.chasePower)
+      }
+    },
+    //改变普通追号期数
+    issueChange(){
+      if(this.chaseIssue.search(/[^\d]+/) > -1 || this.chaseIssue <= 0){
+        this.chaseIssue = 1
+      }else{
+        store.commit('lt_setChaseIssue', +this.chaseIssue)
+      }
+    },
+    //改变中奖后是否停止追号的标志位
+    isStopAfterWinChange(){
+      store.commit('lt_isStopAfterWin', this.isStopAfterWin)
     }
   },
   directives:{

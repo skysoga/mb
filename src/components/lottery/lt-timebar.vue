@@ -23,12 +23,9 @@
         <td>
           {{item.normal_money}}
         </td>
-        <td>{{item.openState}}</td>
+        <td :class = "{award: !isNaN(+item.openState)}">{{item.openState}}</td>
       </tr>
 
-      <tr v-for = "i in 5">
-        <td v-for = "j in 3"></td>
-      </tr>
     </table>
 
   </div>
@@ -44,10 +41,10 @@ export default{
     TimeBar:()=>state.lt.TimeBar,
     BetRecord(){
       var Record = state.lt.BetRecord
-      // if(!Record || Record.length === 0){
-      //   var emptyObj = {issueNo:'xxxx', normal_money:'', openState:''}
-      //   Record = [0,0,0,0,0].map(item=>emptyObj)
-      // }
+      if(!Record || Record.length === 0){
+        var emptyObj = {issueNo:'xxxx', normal_money:'', openState:''}
+        Record = [0,0,0,0,0].map(item=>emptyObj)
+      }
       return Record
     },
     ifShowBetRecord(){

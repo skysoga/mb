@@ -23,7 +23,7 @@
         <div class="multiple">
           <!-- 倍率 -->
           <em :class="canReduce ? '':'noMore'" @click = "reduce">-</em>
-          <input type="tel"  v-model.lazy = "power">
+          <input type="tel"  v-model.lazy = "power" @change = "powerChange">
           <em :class="canAdd ? '':'noMore'"  @click = "add">+</em>
         </div>
         <span>倍</span>
@@ -47,8 +47,6 @@
 import {bus} from '../../js/kit'
 import {Max_Rate} from '../../JSconfig'
 export default {
-  created(){
-  },
   data(){
     return {
       unitArr:[
@@ -95,6 +93,11 @@ export default {
       }
       bus.$emit('clearNoteStr')   //清空文本框文字
       store.commit('lt_addBet')
+    },
+    powerChange(){
+      if(this.power.search(/[^\d]+/) > -1 || this.power <= 0){
+        this.power = 1
+      }
     },
     showBasket(){
      //如果号码篮没有注单， 就没有反应
