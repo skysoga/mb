@@ -188,7 +188,7 @@ function betSum(order, tmp){
 
 .sscTips{
   margin:0 0.6em;
-  padding-top:5.9em;
+  padding-top:5.7em;
   color:#333;
   p{
     font-size: 0.65em;
