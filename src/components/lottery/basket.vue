@@ -389,9 +389,21 @@ width: 100%;
 bottom: 0;
 left: 0;
 .change{
-  background: #f8f8f8;
+  background: white;
   font-size: .7em;
   padding: .6em 0;
+  &:before{
+    content:"";
+    position: absolute;
+    width: 32rem;
+    border-top:1px solid #ddd;
+    top:0;
+    left: 0;
+    webkit-transform:scaleY(.5);
+    webkit-transform-origin:0 0;
+    transform:scaleY(.5);
+    transform-origin:0 0;
+  }
   .stop{
     position: absolute;
     top:-4em;
@@ -490,6 +502,7 @@ left: 0;
   box-shadow: 0 0 .5em #ccc;
   margin:0 .6em;
   overflow: scroll;
+  background: white;
 }
 .clear{
 background-color: white;
@@ -533,6 +546,7 @@ li{
     display: block;
   }
   a{
+    font-size: .9em;
     display: block;
     position: absolute;
     right: 0;
@@ -569,7 +583,7 @@ header{
 .cartMain{
 padding-top: 2.3em;
 height: 100%;
-background: #efeef4;
+background: #f9f8f0;
 }
 .someBtn{
 text-align: center;
@@ -577,7 +591,7 @@ padding: .6em;
 box-shadow: 0 0 .5em #b9b9b9;
 position: relative;
 z-index: 99;
-background: white;
+background: #f9f8f0;
 a{
   display: inline-block;
   color:#333;
@@ -588,6 +602,7 @@ a{
   height: 2.4em;
   line-height: 2.4em;
   margin-left: .8em;
+  background: white;
   &:first-child{
     margin-left:0;
   }
@@ -600,9 +615,9 @@ a{
     line-height: 1em;
   }
   &:active{
-    background: #ff8a00;
+    background: #dc3b40;
     color:white;
-    border:1px solid #ff8a00;
+    border:1px solid #dc3b40;
     &:before{
       color:white;
     }
