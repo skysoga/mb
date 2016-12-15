@@ -7,6 +7,7 @@
 </template>
 <script>
 	import lt_ssc from '../json/lt_ssc.json'
+	import lt_k3 from '../json/lt_k3.json'
 	import Vue from 'vue'
 	import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 	import {DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../JSconfig'
@@ -132,10 +133,12 @@
 
 			var pageConfig = {
 				'SSC': lt_ssc,
-				'11X5': lt_11x5
+				'11X5': lt_11x5,
+				'K3': lt_k3,
 			}
 			var awardSetter = {
-  			'SSC':getSSCRebate
+  			'SSC':getSSCRebate,
+  			'K3': getK3Rebate
   		}
 
 			var timer1, timer2, timer3
@@ -641,7 +644,7 @@
 		      //投注
 		      lt_confirmBet:({state, rootState, commit, dispatch})=>{
 		      	_fetch({
-		      		'action':'AddBetting',
+		      		'Action':'AddBetting',
 		      		'data': {BettingData:state.basket}
 		      	}).then((json)=>{
 		      		if(json.Code === 1){
@@ -668,26 +671,19 @@
 		  }
 
 
-		  var ltype, lcode, _mode, _group, _subGroup
-		  //各彩种默认玩法
-		  var defaultMode = {
-				'SSC':['五星', '直选'],
-				'11X5':['选一', '前三一码不定位']
-			};
-		  ;[,ltype, lcode] = this.$route.fullPath.slice(1).split('/')
-		  _group = defaultMode[ltype][0]			//默认的玩法群
-		  _subGroup = defaultMode[ltype][1]		//默认的玩法组
+		  //从url上获取彩种type和彩种code
+		  ;[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
 
 			//注册彩种模块 --lt
 			state.lt || store.registerModule('lt', lt)
 			//生成昨天今天明天字符串
 			store.commit('lt_updateDate')
 			//切换彩种
-			store.dispatch('lt_updateLottery', lcode)
+			store.dispatch('lt_updateLottery', this.lcode)
 			//设置页面配置-SSC、K3
 		  store.commit('lt_initConfig')
 		  //设置默认的玩法
-			store.commit('lt_changeMode', state.lt.config[_group][_subGroup][0])
+		  this.setDefaultMode()
 			//获取我的投注
 			store.dispatch('lt_updateBetRecord')
 			//获取返点
@@ -698,10 +694,30 @@
 			},1000)
 
 		},
+		data(){
+			return {
+				ltype:'',  //SSC、K3、11X5
+				lcode:'',  //彩种code
+			}
+		},
 		methods:{
 			//点击页面其他部分关闭所有盒子
 			closeBox(){
 				store.commit('lt_changeBox', '')
+			},
+			setDefaultMode(){
+			  var defaultMode = {
+					'SSC':['五星', '直选'],
+					'11X5':['选一', '前三一码不定位']
+				};
+				if(this.ltype !== 'K3'){
+					var _group, _subGroup
+				  _group = defaultMode[this.ltype][0]			//默认的玩法群
+				  _subGroup = defaultMode[this.ltype][1]		//默认的玩法组
+	  			store.commit('lt_changeMode', state.lt.config[_group][_subGroup][0])
+				}else{
+					store.commit('lt_changeMode', state.lt.config['和值'])
+				}
 			}
 		},
 		beforeDestroy(){
@@ -749,5 +765,18 @@
         return rebateSSC[i].Bonus;
       }
     }
+  }
+
+  function getK3Rebate(mode, Odds){
+  	console.log(mode, Odds)
+  	for(var i = 0;i < Odds.length;i++){
+  		if(Odds[i].PlayCode === mode){
+  			if(Odds[i].Bonus.indexOf(',') > -1){
+  				return Odds[i].Bonus.split(',')
+  			}else{
+  				return Odds[i].Bonus
+  			}
+  		}
+  	}
   }
 </script>

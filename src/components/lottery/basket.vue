@@ -13,7 +13,7 @@
       <ul class="numberbox">
         <li v-for = "(bet,index) in basket">
           <em>{{bet.betting_number}}</em>
-          <span>{{getTag(bet.play_detail_code.slice(-3), config)}} {{bet.betting_count}}注×{{PERBET * bet.betting_model}}元×{{bet.graduation_count}}倍  = {{bet.betting_money}}元</span>
+          <span>{{getTag(bet.play_detail_code.slice(-3), config)[0]}} {{bet.betting_count}}注×{{PERBET * bet.betting_model}}元×{{bet.graduation_count}}倍  = {{bet.betting_money}}元</span>
           <a @click = "deleteBet(index)"></a>
         </li>
  <!--        <li><em>8,8,8,8,8</em><span>五星直选 1注×2.0元 = 2.00元</span><a></a></li>
@@ -32,7 +32,7 @@
     <div class="result fix" ref = "result">
       <div class="left">
         <span>{{basketTotal}}元</span>
-        <em>可用余额 88.80元</em>
+        <!-- <em>可用余额 88.80元</em> -->
       </div>
       <div class="right" @click = "confirmBet">
         <i>立即投注</i>
@@ -98,6 +98,7 @@ function oneStar(){
    return res
 }
 
+//获取tag和 [五星, 复式， 直选这种]
 function getTag(code, config){
   for(var group in config){
     var groupItem = config[group]
@@ -105,12 +106,15 @@ function getTag(code, config){
       var subGroupItem = groupItem[subGroup]
       for(var i = 0;i < subGroupItem.length;i++){
         if(subGroupItem[i].mode === code){
-          return subGroupItem[i].tag
+          var str = `[${subGroupItem[i].group},${subGroupItem[i].subGroup},${subGroupItem[i].name}]`
+          console.log(subGroupItem[i].tag)
+          return [subGroupItem[i].tag, str]
         }
       }
     }
   }
 }
+
 
 var noteBetList = ['H12','G12','F12','F24','F26','F27','E12','E24','E26','E27','D12','D24','D26','D27','C12','C22','B12','B22']
 //如果是文本框的形式，返回字符串即可
@@ -280,16 +284,28 @@ export default {
         total += this.basket[i].betting_money
       }
       return +(total).toFixed(2)
-    }
+    },
+    lottery:()=>state.lt.lottery.LotteryName,
+    NowIssue:()=>state.lt.NowIssue
   },
   methods:{
     //返回投注页
     back(){
       store.commit('lt_changeBox', '')
     },
+    //确认投注
     confirmBet(){
+      var betDetail = []
+      this.basket.forEach(bet=>{
+        betDetail.push(`${this.getTag(bet.play_detail_code.slice(-3),this.config)[1]} ${bet.betting_number}`)
+      })
+
+      var msg = `${this.lottery}: 第${this.NowIssue}期<br>投注金额: ${this.basketTotal}元<br>投注内容:<br>${betDetail.join('<br>')}`
+
       if(this.basket.length){
-        store.dispatch('lt_confirmBet')
+        layer.confirm(msg,()=>{
+          store.dispatch('lt_confirmBet')
+        },()=>{})
       }
     },
     deleteBet(index){
@@ -325,7 +341,6 @@ export default {
         var count = specialMode[this.mode] ? specialMode[this.mode](randomFeed) : 1     //有些机选不了一注的。至少n注
         store.commit('lt_addRandomBet', new BaseBet(count))
       }
-
     }
   },
   directives:{
