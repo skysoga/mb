@@ -138,7 +138,7 @@ export default {
   },
   created() {
     this.isBetRecord=this.$route.fullPath.search("betRecord")>0
-    console.log(this.isBetRecord)
+   console.log(this.isBetRecord)
     this.search()
   }
 }
