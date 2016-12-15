@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import {unique, bus} from '../../js/kit'
+import {unique, bus, compress, throttle} from '../../js/kit'
 function getLegalStr(str){
   str = str.replace(/^\s+/g, '');
   str = str.replace(/[^\d,，;；\s]/g, '');
@@ -76,39 +76,44 @@ export default {
   },
   methods:{
     whenInput(){
-      var len = +this.len
-      this.betStr = getLegalStr(this.betStr)
-      var realtext = this.betStr.replace(/[;\s]/g, ',')
-      var betArr = unique(realtext.split(',').filter(item=>item.length === len))
+      throttle(()=>{
+        var len = +this.len
+        this.betStr = getLegalStr(this.betStr)
+        var realtext = this.betStr.replace(/[;\s]/g, ',')
+        var betArr = unique(realtext.split(',').filter(item=>item.length === len))
 
-      switch(this.mode){
-        case 'F24':
-        case 'D24':
-        case 'E24':
-          betArr = combNote([2,3], betArr); //混合组选
-          break
-        case 'F26':
-        case 'E26':
-        case 'D26':
-          betArr = combNote(2, betArr);     //组三单式
-          break
-        case 'F27':
-        case 'E27':
-        case 'D27':
-          betArr = combNote(3, betArr);     //组六单式
-          break
-        case 'C22':
-        case 'B22':
-          betArr = combNote(2, betArr);     //组选单式
-          break
-      }
+        switch(this.mode){
+          case 'F24':
+          case 'D24':
+          case 'E24':
+            betArr = combNote([2,3], betArr); //混合组选
+            break
+          case 'F26':
+          case 'E26':
+          case 'D26':
+            betArr = combNote(2, betArr);     //组三单式
+            break
+          case 'F27':
+          case 'E27':
+          case 'D27':
+            betArr = combNote(3, betArr);     //组六单式
+            break
+          case 'C22':
+          case 'B22':
+            betArr = combNote(2, betArr);     //组选单式
+            break
+        }
 
-      store.commit('lt_setBetCount', betArr.length)
-      store.commit('lt_setBetStr', betArr.join(','))
-      store.commit({
-        type:'lt_updateTmp',
-        alias: 'notebet',
-        arr: betArr
+        var compressMode = ['H12', 'G12']
+        var comp = compressMode.indexOf(this.mode) > -1 ? compress(betArr) : ''
+        store.commit('lt_setBetCount', betArr.length)
+        store.commit('lt_setBetStr', betArr.join(','))
+        store.commit('lt_setBetCompress', comp)
+        store.commit({
+          type:'lt_updateTmp',
+          alias: 'notebet',
+          arr: betArr
+        })
       })
     }
   },

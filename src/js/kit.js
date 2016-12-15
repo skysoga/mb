@@ -320,6 +320,18 @@ function accumulate(arr, fn){
   return s;
 }
 
+//复制对象，仅复制字符串
+function easyClone(obj){
+  var newObj = {};
+  for(var item in obj){
+    if(typeof item === 'string'){
+      newObj[item] = obj[item];
+    }
+  }
+
+  return newObj;
+}
+
 function BaseBet(count, betStr){
   var lt = state.lt,
       bet = state.lt.bet,
@@ -337,7 +349,86 @@ function BaseBet(count, betStr){
   this.betting_model = bet.betting_model,                   //元角分
   this.betting_issuseNo = lt.NowIssue,                  //当前期号
   this.graduation_count = bet.graduation_count                //当前倍率
+  this.compress = bet.compress                            //压缩字符串
 }
 
+function compress(source){
+  source = unique(source.map(function(item){return +item})).sort(function(a,b){return a-b})
+  //如果只有一注，直接返回
+  if(source.length < 2){
+    return source.toString();
+  }
+  var baseNum = source[0]
+  var diff = [];
+  for(var i = 1;i < source.length;i++){
+    diff.push(source[i] - source[i-1]);
+  }
+  var diffC = diffConti(diff);
+  diffC.unshift(baseNum);
+  return diffC.join(',');
+
+  function diffConti(arr){
+    var res = []
+    var start
+    var count = 0
+    var last = arr.length - 1
+    for(var i = 0;i < arr.length;i++){
+      if(!start){
+        if(arr[i] !== 1){
+          start = arr[i]
+          if(count){
+            var item = 'K' + count
+            res.push(item)
+            count = 0
+          }
+
+          if(i === last){
+            res.push(arr[i] + '')
+          }
+        }else{
+          count++
+          if(i ===  last){
+            var item = 'K' + count
+            res.push(item)
+          }
+        }
+      }else{
+        if(arr[i] !==1){
+          var item = count ? (start + 'K' + count) : start + '' ;
+          res.push(item);
+          if(i === last){
+            res.push(arr[i] + '')
+          }
+          start = arr[i];
+          count = 0;
+        }else{
+          count++;
+          if(i === last){
+            var item = start ? (start + 'K' + count) : 'K' + count;
+            res.push(item)
+          }
+        }
+      }
+    }
+    return res;
+  }
+}
+
+var throttle = function(delay){
+  var timer = null;
+  var count = 0;
+  return function(fn){
+    if(!timer){
+      timer = setTimeout(function(){
+        fn();
+        count++;
+        clearTimeout(timer);
+        timer = null;
+      }, delay);
+    }
+  }
+}(400)
+
+
 export {factorial, mul, C, combNoRepeat, unique, normalSum2, normalSum3, accumulate,
-  diff2, diff3, combSum2, combSum3, bus, BaseBet}
+  diff2, diff3, combSum2, combSum3, bus, BaseBet, compress, throttle, easyClone}

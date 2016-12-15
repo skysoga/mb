@@ -11,7 +11,7 @@
 	import Vue from 'vue'
 	import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 	import {DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../JSconfig'
-	import {bus} from '../js/kit'
+	import {bus, BaseBet, easyClone} from '../js/kit'
 
 	export default{
 		beforeRouteEnter(to, from, next){
@@ -154,6 +154,7 @@
 					  betting_money: 0,			//投注金额
 					  betting_model: 1,			//单位(1,0.1,0.01)
 					  graduation_count:1,		//倍数
+					  compress: ''					//压缩后的字符串
 		      },
 		      tmp: {
 		      	'10000':[],
@@ -383,6 +384,7 @@
 	      		state.bet.betting_count = 0
 	      		state.bet.betting_money = 0
 	      		state.bet.graduation_count = 1
+	      		state.bet.compress = ''
       			for(var item in state.tmp){
 		      		state.tmp[item] = []
 		      	}
@@ -394,6 +396,9 @@
 	      		store.commit('lt_clearBasket')
 	      		store.commit('lt_clearBet')
 	      		state.bet.betting_model = 1
+	      	},
+	      	lt_setBetCompress:(state, str)=>{
+	      		state.bet.compress = str
 	      	}
 		    },
 
@@ -643,9 +648,18 @@
 		      },
 		      //投注
 		      lt_confirmBet:({state, rootState, commit, dispatch})=>{
+		      	var _basket = state.basket.map(function(item){
+								var cloneItem = easyClone(item);
+								if(cloneItem.compress){
+									cloneItem.betting_number = cloneItem.compress;
+								}
+								delete cloneItem.compress;
+								return cloneItem;
+						})
+
 		      	_fetch({
 		      		'Action':'AddBetting',
-		      		'data': {BettingData:state.basket}
+		      		'data': {BettingData:_basket}
 		      	}).then((json)=>{
 		      		if(json.Code === 1){
 		      			layer.msg(json.StrCode)
@@ -726,22 +740,6 @@
 			clearInterval(this.baseLoop)
 		}
 
-	}
-
-	function BaseBet(){
-		var lt = state.lt,
-				bet = state.lt.bet
-
-		this.lottery_code = lt.lottery.LotteryCode,											//彩种
-		this.play_detail_code = lt.lottery.LotteryCode + lt.mode.mode,	//玩法code
-		this.betting_number = bet.betting_number,   										//投注号码
-		this.betting_count = bet.betting_count,													//这个方案多少注
-		this.betting_money = bet.betting_money,						//一注单价 * 投注数量 * 单位 * 倍数
-
-		this.betting_point = lt.award + '-' + lt.Rebate[lt.lottery.LotteryType]  ,					//赔率
-		this.betting_model = bet.betting_model,										//元角分
-		this.betting_issuseNo = lt.NowIssue,									//当前期号
-		this.graduation_count = bet.graduation_count								//当前倍率
 	}
 
 	function getSSCRebate(mode, Odds){

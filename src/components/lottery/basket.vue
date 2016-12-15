@@ -25,9 +25,11 @@
   <div class="cartTotal">
     <div class="change" ref = "change">
       <label>投<input type="tel">倍</label>
-      <label>追<input type="tel">期<div class="stop">
-        <input type="checkbox" id="stop"><label for="stop">中奖后停止追号</label>
-      </div></label>
+      <label>追<input type="tel">期
+        <div class="stop" v-show = "false">
+          <input type="checkbox" id="stop"><label for="stop">中奖后停止追号</label>
+        </div>
+      </label>
     </div>
     <div class="result fix" ref = "result">
       <div class="left">
@@ -107,7 +109,6 @@ function getTag(code, config){
       for(var i = 0;i < subGroupItem.length;i++){
         if(subGroupItem[i].mode === code){
           var str = `[${subGroupItem[i].group},${subGroupItem[i].subGroup},${subGroupItem[i].name}]`
-          console.log(subGroupItem[i].tag)
           return [subGroupItem[i].tag, str]
         }
       }
