@@ -5,7 +5,7 @@
 	<lt-header></lt-header>
 
   <!-- 开奖号码 以及 投注截止时间  -->
-  <div class="isLotteryCon fix">
+  <div class="isLotteryCon">
     <!-- 开奖结果和历史开奖结果 -->
     <lt-result></lt-result>
     <!-- 倒计时和我的投注 -->
@@ -21,40 +21,16 @@
 
 <basket @click.native.stop></basket>
 
-<!-- <div class="cart" v-show = "true">
-  <header class="top sscHeader fix" ><a href="/index" class="iconfont back"></a><div class="playSort">号码蓝</div></header>
-  <div class="cartMain">
-    <div class="someBtn"><a>机选1注</a><a>机选5注</a><a>继续选号</a></div>
-    <div class="cartContent">
-      <ul class="numberbox">
-        <li><em>8,8,8,8,8</em><span>五星直选 1注×2.0元 = 2.00元</span><a></a></li>
-        <li><em>8,8,8,8,8</em><span>五星直选 1注×2.0元 = 2.00元</span><a></a></li>
-      </ul>
-      <div class="clear">清空</div>
-  </div>
-  </div>
-  <div class="cartTotal">
-    <div class="change">
-      <label>投<input type="tel">倍</label>
-      <label>追<input type="tel">期<div class="stop">
-        <input type="checkbox" id="stop"><label for="stop">中奖后停止追号</label>
-      </div></label>
-    </div>
-    <div class="result fix">
-      <div class="left">
-        <span>2注×1=4.00元</span>
-        <em>可用余额 88.80元</em>
-      </div>
-      <div class="right">
-        <i>立即投注</i>
-      </div>
-    </div>
-  </div>
-</div> -->
 </div>
 </template>
 <style lang = "scss" scoped>
 @import '../scss/newssc.scss';
+.isLotteryCon{
+  > div{
+    float: left;
+    width: 50%;
+  }
+}
 </style>
 <script>
 	import lt_header from '../components/lottery/lt-header'

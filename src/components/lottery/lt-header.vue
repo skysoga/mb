@@ -1,7 +1,8 @@
 <template>
 	<header class="sscHeader fix">
-    <router-link to="/index" class="iconfont back"></router-link>
-    <div class="playSort">
+    <a @click = "back2index" class="iconfont back"></a>
+    <!-- <router-link to="/index" class="iconfont back"></router-link> -->
+    <div class="playSort" :class = "{active:ifShowModeSelect}">
       <p>玩
         <br>法</p>
 
@@ -17,13 +18,15 @@
 								<ul class="betFilter fix" ref = "betFilter">
 									<li v-for = "(groupItem,group) in config"
 										  @click.stop = "changeGroup(groupItem)"
-										  :class = "group === mode.group ? 'curr': ''">
+										  :class = "{curr:group === mode.group, lastSelect: group === '大小单双'}">
 										{{group}}
 									</li>
 								</ul>
 
 								<ul class="betFilterAnd" v-dynamic-height>
-									<li v-for = "(subGroup, subGroupName) in config[mode.group]">
+									<li class="fix"
+                      v-for = "(subGroup, subGroupName) in config[mode.group]"
+                      :class = "addSubGroupClass(subGroupName)">
 										<span>{{subGroupName}}</span>
 										<div class="fix">
 											<a v-for = "modeItem in subGroup"
@@ -42,7 +45,7 @@
 	      </span>
 	  </div>
 
-    <div class="lotterySort" ref = "lotterySort">
+    <div class="lotterySort" ref = "lotterySort" :class = "{active:ifShowTypeSelect}">
 	    <div @click.stop = "toggleTypeSelect">
 		    <em>{{lotteryName}}</em><i class="iconfont">&#xe61e;</i>
 	    </div>
@@ -120,7 +123,22 @@
 				this.$store.state.lt.box === 'typeSelect' ?
 					 this.$store.commit('lt_changeBox', '') :
 						 this.$store.commit('lt_changeBox', 'typeSelect')
-			}
+			},
+      back2index(){
+        store.commit('lt_leaveLottery')
+        this.$router.push('/index')
+      },
+      addSubGroupClass(name){
+        var table = {
+          '直选': 'directSelect',
+          '组选': 'groupSelect',
+          '不定位': 'notPosition',
+          '趣味': 'taste',
+          '定位胆': 'otherPosition',
+          '大小单双': 'lastSelect'
+        }
+        return table[name]
+      }
 		},
 		computed: mapState({
 			mode:state=>state.lt.mode,
@@ -277,14 +295,6 @@
     }
   }
 }
-.betFilter{
-    padding: 0.3em;
-    box-shadow: 0 2px 10px rgba(41, 41, 41, 0.08);
-    li{
-    }
-    .curr{
-    }
-}
 .betFilter li,.betFilterAnd a{
   padding:0 0.8em;
   line-height: 2em;
@@ -292,15 +302,31 @@
   cursor: pointer;
   text-align: center;
   color: #555;
-  font-size: 0.9em;
-  margin: 0.3em;
+  font-size: 0.8em;
+  margin: 0.2rem;
   float:left;
   border:1px solid #ddd;
+  height: 2em;
 }
-.betFilter .curr,.betFilterAnd .curr{
+.betFilter{
+    padding: 0.2rem;
+    box-shadow: 0 2px 10px rgba(41, 41, 41, 0.08);
+    li{
+      padding: 0;
+      width: 2.72rem;
+    }
+    .lastSelect{
+      width: 3.9rem;
+    }
+}
+.betFilter .curr{
   background: #ff9726;
   border:1px solid #ff9726;
   color: white;
+}
+.betFilterAnd .curr{
+  border:1px solid #ff9726;
+  color:#ff9726;
 }
 .betFilterAnd{
   text-align: left;
@@ -314,24 +340,35 @@
       }
     }
   }
+  .groupSelect{
+    a{
+      width: 5em;
+      padding: 0;
+      text-align: center;
+    }
+  }
   li+li{
     border-top:1px dotted #ddd;
   }
   div{
     vertical-align: top;
-    width: 11.5rem;
-    display: inline-block;
-    padding: .3em;
+    width: 10.8rem;
+    display: block;
+    float: left;
+    padding: .2rem 0;
   }
   span{
+    border:1px solid transparent;
     color:#666;
     vertical-align: top;
-    width: 2.5rem;
-    display: inline-block;
-    margin-top:.3em;
-    line-height: 2.8em;
-    font-size: .9em;
+    width: 4.3em;
+    height: 2em;
+    display: block;
+    float: left;
+    line-height: 2em;
+    font-size: .8em;
     position: relative;
+    padding: .4rem 0;
     &:before,&:after{
       content: "";
       position: absolute;
@@ -339,7 +376,7 @@
     }
     &:before{
       left: -1rem;
-      top:1.1em;
+      top:1.25em;
       width: .3em;
       height: .3em;
       border:.2em solid #ddd;
@@ -352,7 +389,7 @@
       height: 10em;
       @include bgImg-linear-gradient('0deg, #d0d0d0, #d0d0d0 50%, transparent 50%');
       left: -.82rem;
-      top:1.1em;
+      top:1.25em;
       z-index: 13;
     }
   }

@@ -1,6 +1,6 @@
 <template>
-  <div v-if = "$store.state.lt.OldIssue">
-    <div class="isLottery" @click.stop = "togglePastOpen">
+  <div class="isLotteryLine fix" v-if = "$store.state.lt.OldIssue">
+    <div class="isLottery" @click.stop = "togglePastOpen" :class = "{active:ifShowPastOpen}">
       <span>{{oldIssue}}期开奖号码<i class="iconfont">&#xe601;</i></span>
       <!-- 开奖号码 -->
       <div class="openNumber">
@@ -9,7 +9,7 @@
     </div>
 
     <template v-if = "$store.state.lt.LotteryResults[lcode]">
-      <table class="pastOpen" v-show = "ifShowPastOpen">
+      <table class="pastOpen" v-show = "ifShowPastOpen" >
         <tr>
           <th>期号</th>
           <th>开奖号码</th>

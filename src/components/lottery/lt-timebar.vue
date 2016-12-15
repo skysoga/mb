@@ -1,7 +1,9 @@
 <template>
-  <div v-if = "$store.state.lt.OldIssue">
+  <div class="fix" v-if = "$store.state.lt.OldIssue">
     <!-- 倒计时 -->
-    <div class="lotteryClose" @click.stop = "toggleBetRecord">
+    <div class="lotteryClose"
+         @click.stop = "toggleBetRecord"
+         :class = "{active:ifShowBetRecord}">
       <span>{{nowIssue}}期投注截止</span>
       <div class="waitNumber">
         <em>{{TimeBar}}</em>

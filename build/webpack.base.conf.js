@@ -1,28 +1,33 @@
-var path = require('path')
-var config = require('../config')
-var utils = require('./utils')
-var projectRoot = path.resolve(__dirname, '../')
+var path = require('path')  // 使用 NodeJS 自带的文件路径插件
+var config = require('../config')   // 引入 config/index.js
+var utils = require('./utils')   // 引入一些小工具
+var projectRoot = path.resolve(__dirname, '../')  // 拼接我们的工作区路径为一个绝对路径
 
-var env = process.env.NODE_ENV
+var env = process.env.NODE_ENV //将 NodeJS 环境作为我们的编译环境
 // check env & config/index.js to decide weither to enable CSS Sourcemaps for the
 // various preprocessor loaders added to vue-loader at the end of this file
+
+/* 是否在 dev 环境下开启 cssSourceMap ，在 config/index.js 中可配置 */
 var cssSourceMapDev = (env === 'development' && config.dev.cssSourceMap)
+/* 是否在 production 环境下开启 cssSourceMap ，在 config/index.js 中可配置 */
 var cssSourceMapProd = (env === 'production' && config.build.productionSourceMap)
+/* 最终是否使用 cssSourceMap */
 var useCssSourceMap = cssSourceMapDev || cssSourceMapProd
 
 module.exports = {
   entry: {
-    app: './src/main.js'
+    app: './src/main.js'   // 编译文件入口
   },
   output: {
-    path: config.build.assetsRoot,
+    path: config.build.assetsRoot,        // 编译输出的静态资源根路径
     publicPath: process.env.NODE_ENV === 'production' ? config.build.assetsPublicPath : config.dev.assetsPublicPath,
-    filename: '[name].js'
+    filename: '[name].js'                 // 编译输出的文件名
   },
   resolve: {
-    extensions: ['', '.js', '.vue'],
-    fallback: [path.join(__dirname, '../node_modules')],
+    extensions: ['', '.js', '.vue'],           // 自动补全的扩展名
+    fallback: [path.join(__dirname, '../node_modules')],  // 不进行自动补全或处理的文件或者文件夹
     alias: {
+      // 默认路径代理，例如 import Vue from 'vue'，会自动到 'vue/dist/vue.common.js'中寻找
       'vue$': 'vue/dist/vue',
       'src': path.resolve(__dirname, '../src'),
       'assets': path.resolve(__dirname, '../src/assets'),
@@ -67,6 +72,7 @@ module.exports = {
     ]
   },
   vue: {
+     // .vue 文件配置 loader 及工具 (autoprefixer)
     loaders: utils.cssLoaders({ sourceMap: useCssSourceMap }),
     postcss: [
       require('autoprefixer')({
