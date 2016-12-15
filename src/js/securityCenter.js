@@ -20,7 +20,6 @@ export default {
     if(!sessLogin){
         arr.push('UserLastLoginInfo')
     }
-      console.log(arr)
       RootApp.GetInitData(arr, state=>{
         next(vm=>{
           vm.StarNum=1;

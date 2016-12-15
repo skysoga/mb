@@ -1,81 +1,9 @@
-<template>
-<div class="main">
-    <div class="textMore dataType" @click="BottomBoxShow=!BottomBoxShow"><em>{{top_text}}</em> <i class="iconfont"></i></div>
-  <div class="searchBtn">
-    <div class="searchCon">
-      <input class="proxySearch" type="text" placeholder="下级交易查询" v-model.lazy="temp_name">
-    </div>
-    <a id="submitBtn">
-      <div class="submitTouch" @click="search(li_state)"><i class="iconfont"></i></div>
-    </a>
-  </div>
-  <div class="" id="leftTabBox">
-    <div class="hd">
-      <ul>
-        <li v-for="(x,index) in li_arr_obj" :class="li_state==index?'on':null" @click="search(index)">{{x}}</li>
-      </ul>
-    </div>
-    <div class="bd dontSelect">
-      <div class="scrollBox" v-for="x in 3">
-        <div class="touchScroll" @touchend="scroll(x-1)" v-if="li_state==x-1" ref="div">
-          <template v-if="temp_ajax[newName+'%'+newDay][x-1].DataCount===0">
-          <div class='fullPageMsg'>
-            <div class='fullPageIcon iconfont'>&#xe63c;</div>
-            <p>暂无记录</p>
-          </div>
-          </template>
-              <template v-else>
-                  <template v-if="x==1">
-                  <div class="" v-for="item in temp_ajax[newName+'%'+newDay][x-1].res_data">
-                    <a class="active">
-                      <div><p>{{item.UserName}}</p><span>{{item.AddTime}}</span> </div>
-                      <div class="fr">
-                        <strong :class="check_money(item.InMoney,item.OutMoney)>0?'InMoney':'OutMoney'">{{check_money(item.InMoney,item.OutMoney)}}</strong>
-                        <span class="fr">{{item.TypeName}}</span>
-                      </div>
-                    </a>
-                    <div class="hr1px"></div>
-                  </div>
-                </template>
-                <template v-if="x==2">
-                <div class="" v-for="item in temp_ajax[newName+'%'+newDay][x-1].res_data">
-                  <a class="active">
-                    <div>
-                      <p>{{item.UserName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span></div>
-                    <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
-                    <strong class="" v-else>{{item.State}}</strong>
-                  </a>
-                  <div class="hr1px"></div>
-                </div>
-                </template>
-                <template v-if="x==3">
-                <div class="" v-for="item in temp_ajax[newName+'%'+newDay][x-1].res_data">
-                  <a class="active">
-                    <div><p>{{item.UserName}}</p><span>{{item.AddTime}}</span> </div>
-                    <div class="fr"><div class="fr"><strong class="InMoney" v-if="Number(item.InMoney)">+{{item.InMoney}}</strong>
-                      <strong class="InMoney" v-else>+{{item.ApplyMoney}}</strong>
-                      <span class="fr">{{item.State}}</span></div> </div>
-                  </a>
-                  <div class="hr1px"></div>
-                </div>
-                </template>
-                <div class="msg noMore" v-html="msg[temp_ajax[newName+'%'+newDay][x-1].cant_scroll]" v-if="temp_ajax[newName+'%'+newDay][x-1].cant_scroll<2"></div>
-                  <div class="msg noMore" v-else v-html="msg[temp_ajax[newName+'%'+newDay][x-1].cant_scroll][newDay]"></div>
-              </template>
-            </div>
-          </div>
-        </div>
-    </div>
-    <bottom-box v-show = "BottomBoxShow" :list = "BottomBoxList"></bottom-box>
-  </div>
-</template>
-
-<script>
 import bottombox from '../components/bottom-box'
 export default {
   data() {
     return {
-      li_arr_obj: ["所有类型","提现记录","充值记录"],
+      li_arr_obj1: ["全部", "已中奖", "未中奖", "等待开奖"],
+      li_arr_obj2: ["所有类型","提现记录","充值记录"],
       type:['GetAgentBillRecord','GetAgentWithdrawRecord','GetAgentRechargeRecord'],
       li_state: 0,
       BottomBoxShow:false,
@@ -89,8 +17,7 @@ export default {
         BetweenDays: 0,
         Index: 0,
         UserName: 0,
-        DataNum: 10,
-        Type:-1
+        DataNum: 10
       },
       msg: [null, layer.icon.load + "正在加载...", {0:"已显示今天全部记录",1:"已显示昨天全部记录",7:"已显示七天全部记录"}],
       temp_ajax: {},
@@ -102,7 +29,8 @@ export default {
       newDay:0,
       oldDay:0,
       document_height:0,
-      window_height:0
+      window_height:0,
+      isAgentBetRecord:false
     }
   },
   components: {
@@ -188,7 +116,14 @@ export default {
         Index: this.temp_ajax[newUser][i].Index,
         //BetweenDays: this.temp_ajax[newUser][i].BetweenDays
       })
-      this.ajaxData.Action=this.type[i]
+      if(this.isAgentBetRecord){
+        this.ajaxData.State=i+1
+        this.ajaxData.Action="GetAgentBetData"
+        this.ajaxData.LotteryCode=-1
+      }else{
+        this.ajaxData.Action=this.type[i]
+        this.ajaxData.Type=-1
+      }
       this.ajaxData.BetweenDays=this.newDay
       let temp_data=this.ajaxData
       _fetch(this.ajaxData).then((data) => {
@@ -216,13 +151,13 @@ export default {
           layer.msgWarn(data.StrCode)
         }
       })
+    },
+    jump:function(id,userid){
+      this.$router.push({path:'betDetail',query:{ID:id,UID:userid}})
     }
   },
   created() {
+    this.isAgentBetRecord=this.$route.fullPath.search("agentBetRecord")>0
     this.search()
   }
 }
-
-</script>
-
-<style lang="scss" scoped>@import '../scss/detailList.scss';</style>

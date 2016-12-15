@@ -1,10 +1,56 @@
 @import 'scssConfig','mixin';
+
+
+.isLotteryLine,.lotteryCloseItem{
+  height: 2.8em;
+  &:after{
+    content:"";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1px;
+    width: 16rem;
+    z-index: 3;
+    @include bgImg-linear-gradient('90deg, #d0d0d0, #d0d0d0 50%, transparent 50%');
+  }
+  .iconfont{
+    transition:.6s;
+    display: inline-block;
+  }
+  &.active{
+    .iconfont{
+      transform:rotate(180deg)
+    }
+    &:after{
+      @include bgImg-linear-gradient('90deg, #fff, #fff 50%, transparent 50%');
+      z-index: 5;
+    }
+  }
+}
+.lotteryCloseItem.active{
+  &:after{
+    left: initial;
+    right: 0;
+  }
+}
+.isLotteryLine{
+  position: relative;
+  &:before{
+    content: "";
+    position: absolute;
+    width: 16rem;
+    height: 1px;
+    @include bgImg-linear-gradient('90deg, transparent, transparent 50%, #fff 50%');
+  }
+}
 .openNumber,.waitNumber{
   text-align: center;
-  height: 1.8em;
+  height: 1.12em;
+  margin-top:.2em;
+  margin-bottom:.4em;
   em{
     display: inline-block;
-    vertical-align: middle;
+    vertical-align: top;
     background: #dc3b40;
     color:white;
     width: 1.4em;
@@ -26,13 +72,12 @@
 }
 .pastOpen{
   position: absolute;
-  top:3em;
   left: 0;
   width: 16rem;
   background: white;
   color:#666;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(41, 41, 41, 0.08);
+  box-shadow: 0 10px 10px rgba(41, 41, 41, 0.08);
   background: #f9f8f0;
   // display: none;
   z-index: 4;
@@ -48,7 +93,7 @@
       width: 16rem;
       left: 0;
       top: 1.9em;
-      @include bgImg-linear-gradient('90deg, transparent, transparent 50%, #d0d0d0 50%');
+      @include bgImg-linear-gradient('90deg, transparent, transparent 50%, #cac6b2 50%');
     }
   }
   th,td{
@@ -58,36 +103,34 @@
   }
   td{
     vertical-align: middle;
-    // position: relative;
-    // &:nth-child(2):before{
-    //   content: "";
-    //   position: absolute;
-    //   left: -.36em;
-    //   top: .7em;
-    //   width: 1em;
-    //   height: 1px;
-    //   @include bgImg-linear-gradient('90deg, transparent, transparent 50%, #999 50%');
-    // }
-    // &:nth-child(2):after{
-    //   content: "";
-    //   position: absolute;
-    //   left: 0.1em;
-    //   top: 0;
-    //   width: 1px;
-    //   height: 2em;
-    //   @include bgImg-linear-gradient('0deg, #d0d0d0, #d0d0d0 50%, transparent 50%');
-    // }
+    position: relative;
+    line-height: 1.6em;
+    &:nth-child(2):before{
+      content: "";
+      position: absolute;
+      left: -.21em;
+      top: .8em;
+      width: .7em;
+      height: 1px;
+      @include bgImg-linear-gradient('90deg, transparent, transparent 50%, #999 50%');
+    }
+    &:nth-child(2):after{
+      content: "";
+      position: absolute;
+      left: 0.1em;
+      top: 0;
+      width: 1px;
+      height: 20em;
+      @include bgImg-linear-gradient('0deg, #d0d0d0, #d0d0d0 50%, transparent 50%');
+    }
   }
   a{
     display: inline-block;
     span{
       display: inline-block;
       min-width: .6em;
-      // height: 1.7em;
-      line-height: 1.6em;
       text-align: center;
       color: #dc3b40;
-      margin: 0.1em;
       vertical-align: top;
     }
   }
@@ -103,24 +146,9 @@
     padding-top: .3em;
   }
 }
-.isLottery,.lotteryClose{
-  width: 50%;
-  height: 100%;
-  float: left;
+.lotteryCloseItem{
   position: relative;
-  &:after{
-    content: "";
-    position: absolute;
-    bottom:0;
-    left: 0;
-    height: 1px;
-    width: 200%;
-    @include bgImg-linear-gradient('90deg, #d0d0d0, #d0d0d0 50%, transparent 50%');
-  }
-}
-.lotteryClose{
-  position: relative;
-  &:after{
+  &:before{
     content:"";
     position: absolute;
     left: 0;
@@ -128,5 +156,11 @@
     height: 100%;
     width: 1px;
     @include bgImg-linear-gradient('0deg, #d0d0d0, #d0d0d0 50%, transparent 50%');
+  }
+  &.active{
+    .pastOpen{
+      left: initial;
+      right: 0;
+    }
   }
 }

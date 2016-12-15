@@ -50,9 +50,9 @@ export default {
         this.FiveUnlok=true
       }else{
         Tips='您已绑定' +List.length+ '张银行卡，一共可以绑定5张银行卡。为了您的资金安全，成功提现的银行卡会自动锁定，无法删除和修改。'
-        this.oneCarLok=List[0].IsUnlok?true:false
+        this.oneCarLok=List[0].isLock?true:false
         this.FiveUnlok=false
-        if(List[0].IsUnlok){
+        if(List[0].isLock){
           Tips='<p>您的银行卡已经锁定，不能进行银行卡信息的增加和删除</p><route-link class="alink" to="/service">联系客服</route-link>'
           this.FiveUnlok=true
         }

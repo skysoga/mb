@@ -77,7 +77,6 @@
     <bottom-box v-show = "BottomBoxShow" :list = "BottomBoxList"></bottom-box>
   </div>
 </template>
-
 <script>
 import bottombox from '../components/bottom-box'
 export default {
@@ -143,9 +142,11 @@ export default {
         this.getData(this.page_index)
       } else {
         if (this.temp_ajax[newName+"%"+newDay][this.page_index].DataCount === null) { //说明只是生成占位，并没有请求过数据
-          this.ajaxData.UserName = newName
-          this.getData(this.page_index)
-          console.log("占位缓存")
+          if (!this.temp_ajax[newName+"%"+newDay][this.page_index].cant_scroll) {
+            this.ajaxData.UserName = newName
+            this.getData(this.page_index)
+            console.log("占位缓存")
+          }
         } else {
           console.log("缓存") //说明数据真的有缓存,不需要任何操作，因为vue会根据变化自动渲染
         }
@@ -222,5 +223,4 @@ export default {
   }
 }
 </script>
-
 <style lang="scss" scoped>@import '../scss/detailList.scss';</style>

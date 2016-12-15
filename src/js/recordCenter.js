@@ -3,7 +3,7 @@ export default {
   data() {
     return {
       li_arr_obj1: ["全部", "已中奖", "未中奖", "等待开奖"],
-      li_arr_obj2: ["所有类型","提现记录","交易记录"],
+      li_arr_obj2: ["所有类型","提现记录","充值记录"],
       type:['GetBillRecord','GetWithdrawRecord','GetRechargeRecord'],
       li_state: 0,
       BottomBoxShow:false,
@@ -21,7 +21,6 @@ export default {
       },
       msg: [null, layer.icon.load + "正在加载...", {0:"已显示今天全部记录",1:"已显示昨天全部记录",7:"已显示七天全部记录"}],
       temp_ajax: {},
-      UnFindUser: {},
       page_index:0,
       newDay:0,
       oldDay:0,
@@ -73,8 +72,10 @@ export default {
         this.getData(this.page_index)
       } else {
         if (this.temp_ajax[newDay][this.page_index].DataCount === null) { //说明只是生成占位，并没有请求过数据
-          this.getData(this.page_index)
-          console.log("占位缓存")
+          if(!this.temp_ajax[newDay][this.page_index].cant_scroll){
+            this.getData(this.page_index)
+            console.log("占位缓存")
+          }
         } else {
           console.log("缓存") //说明数据真的有缓存,不需要任何操作，因为vue会根据变化自动渲染
         }
@@ -137,7 +138,7 @@ export default {
   },
   created() {
     this.isBetRecord=this.$route.fullPath.search("betRecord")>0
-    console.log(this.isBetRecord)
+   console.log(this.isBetRecord)
     this.search()
   }
 }

@@ -403,7 +403,7 @@ document.addEventListener('copy', function(e){
 	var el = e.target
 	var btn = [].filter.call(el.parentNode.children, child=>(child !== el))[0]
 	if(btn.className.indexOf('copy') > -1){
-		layer.msg('已将内容复制到剪切板')
+		layer.msgWarn('已将内容复制到剪切板')
 	}
 })
 
@@ -419,6 +419,7 @@ function _fetch(data){
 		}
 		str.push(i+'='+k);
 	}
+	data = str.join('&');
 	return new Promise(function(resolve, reject){
 		fetch('/tools/ssc_ajax.ashx', {
 			credentials:'same-origin',

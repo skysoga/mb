@@ -2,34 +2,40 @@
   <div class="cart" v-show = "ifShowBasket">
   <header class="top sscHeader fix" >
     <a class="iconfont back" @click.stop = "back"></a>
-    <div class="playSort">号码篮</div>
+    <div class="playSort" ref = "playSort">号码篮</div>
   </header>
 
   <div class="cartMain">
-    <div class="someBtn"><a>机选1注</a><a>机选5注</a><a>继续选号</a></div>
-    <div class="cartContent">
+    <div class="someBtn" ref = "someBtn"><a @click.stop = "random(1)">机选1注</a><a @click.stop = "random(5)">机选5注</a><a @click.stop = "back">继续选号</a>
+    </div>
+
+    <div class="cartContent" v-dynamic-height>
       <ul class="numberbox">
-        <li v-for = "bet in basket">
+        <li v-for = "(bet,index) in basket">
           <em>{{bet.betting_number}}</em>
-          <span>五星直选 {{bet.betting_count}}注×{{PERBET * bet.betting_model}}元×{{bet.graduation_count}}倍  = {{bet.betting_money}}元</span><a></a>
+          <span>{{getTag(bet.play_detail_code.slice(-3), config)[0]}} {{bet.betting_count}}注×{{PERBET * bet.betting_model}}元×{{bet.graduation_count}}倍  = {{bet.betting_money}}元</span>
+          <a @click = "deleteBet(index)"></a>
         </li>
  <!--        <li><em>8,8,8,8,8</em><span>五星直选 1注×2.0元 = 2.00元</span><a></a></li>
         <li><em>8,8,8,8,8</em><span>五星直选 1注×2.0元 = 2.00元</span><a></a></li> -->
       </ul>
-      <div class="clear">清空</div>
+      <div class="clear" v-show = "ifShowClearAll" @click = "clearBasket">清空</div>
   </div>
   </div>
   <div class="cartTotal">
-    <div class="change">
-      <label>投<input type="tel">倍</label>
-      <label>追<input type="tel">期<div class="stop">
-        <input type="checkbox" id="stop"><label for="stop">中奖后停止追号</label>
-      </div></label>
+    <div class="change" ref = "change">
+      <label>投<input type="tel" v-model = "chasePower" @change = "powerChange">倍</label>
+      <label>追<input type="tel" v-model = "chaseIssue" @change = "issueChange">期
+        <div class="stop" v-show = "showBubble">
+          <input type="checkbox" id="stop" v-model = "isStopAfterWin" @change = "isStopAfterWinChange">
+          <label for="stop">中奖后停止追号</label>
+        </div>
+      </label>
     </div>
-    <div class="result fix">
+    <div class="result fix" ref = "result">
       <div class="left">
-        <span>2注×1=4.00元</span>
-        <em>可用余额 88.80元</em>
+        <span>{{basketTotal}}元</span>
+        <!-- <em>可用余额 88.80元</em> -->
       </div>
       <div class="right" @click = "confirmBet">
         <i>立即投注</i>
@@ -40,20 +46,254 @@
 </template>
 
 <script>
+
 import {PERBET} from '../../JSconfig'
+import {normalSum3, normalSum2, diff3, diff2, combSum3, combSum2, BaseBet} from '../../js/kit'
+function getBetStr(arr){
+  arr = arr.map(item=>item.join(' ')).map(item=>{
+    if(item===''){
+      return '-'
+    }else{
+      return item
+    }
+  })
+
+  return arr.join(',')
+}
+var _0to9 = [0,1,2,3,4,5,6,7,8,9],
+    _dsds = ['大', '小', '单', '双'],
+    filters = ['全', '大', '小', '奇', '偶', '清'],
+    _0to27 = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27],
+    _1to26 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26],
+    _0to18 = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
+    _1to17 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]
+
+var oneRandom = ()=>Math.floor(Math.random() * 10)
+
+//获得机选数组
+function _random(cfgArr, canRepeat, baseArr){
+  var len = cfgArr.length, res = [], feeds = baseArr.slice(0)
+
+  for(var i = 0;i < len;i++){
+    var lineLen = cfgArr[i], lineRes = [],
+        _feeds = canRepeat ? feeds.slice(0) : feeds
+
+    for(var j = 0;j < cfgArr[i];j++){
+      var feed = Math.floor(Math.random() * _feeds.length)
+      lineRes.push(_feeds[feed])
+      _feeds.splice(feed, 1)
+    }
+    res.push(lineRes.sort((a,b)=>a-b))
+  }
+  return res
+}
+
+function oneStar(){
+   var line =  Math.floor(Math.random() * 5)
+   var res = []
+   for(var i = 0;i < 5;i++){
+    var lineRes = []
+    if(line === i){
+      lineRes.push(Math.floor(Math.random() * 10))
+    }
+    res.push(lineRes)
+   }
+   return res
+}
+
+//获取tag和 [五星, 复式， 直选这种]
+function getTag(code, config){
+  for(var group in config){
+    var groupItem = config[group]
+    for(var subGroup in groupItem){
+      var subGroupItem = groupItem[subGroup]
+      for(var i = 0;i < subGroupItem.length;i++){
+        if(subGroupItem[i].mode === code){
+          var str = `[${subGroupItem[i].group},${subGroupItem[i].subGroup},${subGroupItem[i].name}]`
+          return [subGroupItem[i].tag, str]
+        }
+      }
+    }
+  }
+}
+
+
+var noteBetList = ['H12','G12','F12','F24','F26','F27','E12','E24','E26','E27','D12','D24','D26','D27','C12','C22','B12','B22']
+//如果是文本框的形式，返回字符串即可
+var randomCfg = {
+  //五星
+  H11:()=>_random([1,1,1,1,1], true, _0to9),  //五星复式
+  H12:()=>[0,0,0,0,0].map(item=>oneRandom()).join(''),    //五星单式
+  H21:()=>_random([5], false, _0to9),         //组选120
+  H22:()=>_random([1,3], false, _0to9),       //组选60
+  H23:()=>_random([2,1], false, _0to9),       //组选30
+  H24:()=>_random([1,2], false, _0to9),       //组选20
+  H25:()=>_random([1,1], false, _0to9),       //组选10
+  H26:()=>_random([1,1], false, _0to9),       //组选5
+  H31:()=>_random([1], false, _0to9),         //一码不定位
+  H32:()=>_random([2], false, _0to9),         //二码不定位
+  H33:()=>_random([3], false, _0to9),         //三码不定位
+  H41:()=>_random([1], false, _0to9),         //一帆风顺
+  H42:()=>_random([1], false, _0to9),         //好事成双
+  H43:()=>_random([1], false, _0to9),         //三星报喜
+  H44:()=>_random([1], false, _0to9),         //四季发财
+  //四星
+  G11:()=>_random([1,1,1,1], true, _0to9),    //四星复式
+  G12:()=>[0,0,0,0].map(item=>oneRandom()).join(''),  //四星单式
+  G21:()=>_random([4], false, _0to9),         //四星组选24
+  G22:()=>_random([1,2], false, _0to9),       //四星组选12
+  G23:()=>_random([2], false, _0to9),         //四星组选6
+  G24:()=>_random([1,1], false, _0to9),       //四星组选4
+  G31:()=>_random([1], false, _0to9),         //一码不定位
+  G32:()=>_random([2], false, _0to9),         //二码不定位
+  //前三
+  F11:()=>_random([1,1,1], true, _0to9),     //直选复式
+  F12:()=>[0,0,0].map(item=>oneRandom()).join(''),  //单式
+  F13:()=>_random([1], false, _0to27),        //直选和值
+  F14:()=>_random([1], false, _0to9),         //跨度
+  F21:()=>_random([1], false, _1to26),        //组选和值
+  F22:()=>_random([2], false, _0to9),         //组三
+  F23:()=>_random([3], false, _0to9),         //组六
+  F24:()=>_random([3], false, _0to9)[0].join(''),   //混合组选单式
+  F25:()=>_random([1], false, _0to9),         //组选包胆
+  F26:()=>{
+    var feeds = [0,1,2,3,4,5,6,7,8,9]
+        ,_f = Math.floor(Math.random() * feeds.length)
+        ,sin = feeds[_f]
+        ,dou = 0
+    feeds.splice(_f,1)
+    dou = feeds[Math.floor(Math.random() * feeds.length)]
+    return [[sin,dou,dou],[dou,sin,dou],[dou,dou,sin]][Math.floor(Math.random() * 3)].join('')
+  },                                          //组三单式
+  F27:()=>_random([3], false, _0to9)[0].join(''),         //组六单式
+  F31:()=>_random([1], false, _0to9),         //一码不定位
+  F32:()=>_random([2], false, _0to9),         //二码不定位
+  //中三
+  E11:()=>_random([1,1,1], true, _0to9),     //直选复式
+  E12:()=>[0,0,0].map(item=>oneRandom()).join(''),  //单式
+  E13:()=>_random([1], false, _0to27),        //直选和值
+  E14:()=>_random([1], false, _0to9),         //跨度
+  E21:()=>_random([1], false, _1to26),        //组选和值
+  E22:()=>_random([2], false, _0to9),         //组三
+  E23:()=>_random([3], false, _0to9),         //组六
+  E24:()=>_random([3], false, _0to9)[0].join(''),   //混合组选单式
+  E25:()=>_random([1], false, _0to9),         //组选包胆
+  E26:()=>{
+    var feeds = [0,1,2,3,4,5,6,7,8,9]
+        ,_f = Math.floor(Math.random() * feeds.length)
+        ,sin = feeds[_f]
+        ,dou = 0
+    feeds.splice(_f,1)
+    dou = feeds[Math.floor(Math.random() * feeds.length)]
+    return [[sin,dou,dou],[dou,sin,dou],[dou,dou,sin]][Math.floor(Math.random() * 3)].join('')
+  },                                          //组三单式
+  E27:()=>_random([3], false, _0to9)[0].join(''),         //组六单式
+  E31:()=>_random([1], false, _0to9),         //一码不定位
+  E32:()=>_random([2], false, _0to9),         //二码不定位
+  //后三
+  D11:()=>_random([1,1,1], true, _0to9),     //直选复式
+  D12:()=>[0,0,0].map(item=>oneRandom()).join(''),  //单式
+  D13:()=>_random([1], false, _0to27),        //直选和值
+  D14:()=>_random([1], false, _0to9),         //跨度
+  D21:()=>_random([1], false, _1to26),        //组选和值
+  D22:()=>_random([2], false, _0to9),         //组三
+  D23:()=>_random([3], false, _0to9),         //组六
+  D24:()=>_random([3], false, _0to9)[0].join(''),   //混合组选单式
+  D25:()=>_random([1], false, _0to9),         //组选包胆
+  D26:()=>{
+    var feeds = [0,1,2,3,4,5,6,7,8,9]
+        ,_f = Math.floor(Math.random() * feeds.length)
+        ,sin = feeds[_f]
+        ,dou = 0
+    feeds.splice(_f,1)
+    dou = feeds[Math.floor(Math.random() * feeds.length)]
+    return [[sin,dou,dou],[dou,sin,dou],[dou,dou,sin]][Math.floor(Math.random() * 3)].join('')
+  },                                          //组三单式
+  D27:()=>_random([3], false, _0to9)[0].join(''),         //组六单式
+  D31:()=>_random([1], false, _0to9),         //一码不定位
+  D32:()=>_random([2], false, _0to9),         //二码不定位
+  //前二
+  C11:()=>_random([1,1], true, _0to9),       //直选复式
+  C12:()=>[0,0].map(item=>oneRandom()).join(''),  //直选单式
+  C13:()=>_random([1], false, _0to18),        //直选和值
+  C14:()=>_random([1], false, _0to9),         //跨度
+  C21:()=>_random([2], false, _0to9),         //组选复式
+  C22:()=>_random([2], false, _0to9)[0].join(''), //组选单式
+  C23:()=>_random([1], false, _1to17),        //组选和值
+  C24:()=>_random([1], false, _0to9),         //组选包胆
+  //后二
+  B11:()=>_random([1,1], true, _0to9),       //直选复式
+  B12:()=>[0,0].map(item=>oneRandom()).join(''),  //直选单式
+  B13:()=>_random([1], false, _0to18),        //直选和值
+  B14:()=>_random([1], false, _0to9),         //跨度
+  B21:()=>_random([2], false, _0to9),         //组选复式
+  B22:()=>_random([2], false, _0to9)[0].join(''), //组选单式
+  B23:()=>_random([1], false, _1to17),        //组选和值
+  B24:()=>_random([1], false, _0to9),         //组选包胆
+  //一星
+  A11:()=>oneStar(),                          //一星
+  //大小单双
+  I91:()=>_random([1,1], true, _dsds),         //前二大小单双
+  I92:()=>_random([1,1], true, _dsds),         //后二大小单双
+  I93:()=>_random([1,1,1], true, _dsds),         //前三大小单双
+  I95:()=>_random([1,1,1], true, _dsds),         //后三大小单双
+}
+
+//哪种机选注数不是一注的，在这里特殊处理
+var specialMode = {
+  F13:(feed)=>normalSum3(feed[0][0]),
+  F14:(feed)=>diff3(feed[0][0]),
+  F21:(feed)=>combSum3(feed[0][0]),
+  F22:(feed)=>2,
+  F25:(feed)=>54,
+  E13:(feed)=>normalSum3(feed[0][0]),
+  E14:(feed)=>diff3(feed[0][0]),
+  E21:(feed)=>combSum3(feed[0][0]),
+  E22:(feed)=>2,
+  E25:(feed)=>54,
+  D13:(feed)=>normalSum3(feed[0][0]),
+  D14:(feed)=>diff3(feed[0][0]),
+  D21:(feed)=>combSum3(feed[0][0]),
+  D22:(feed)=>2,
+  D25:(feed)=>54,
+  C13:(feed)=>normalSum2(feed[0][0]),
+  C14:(feed)=>diff2(feed[0][0]),
+  C23:(feed)=>combSum2(feed[0][0]),
+  C24:(feed)=>9,
+  B13:(feed)=>normalSum2(feed[0][0]),
+  B14:(feed)=>diff2(feed[0][0]),
+  B23:(feed)=>combSum2(feed[0][0]),
+  B24:(feed)=>9,
+}
+
 export default {
-  created(){
-    console.log(this.basket)
-  },
   data(){
     return {
-      PERBET:PERBET
+      PERBET:PERBET,
+      chasePower:1,
+      chaseIssue:1,
+      isStopAfterWin: true
     }
   },
   computed:{
     basket:()=>state.lt.basket,
     ifShowBasket(){
       return this.$store.state.lt.box === 'basket'
+    },
+    ifShowClearAll:()=>!!state.lt.basket.length,
+    mode:()=>state.lt.mode.mode,
+    config:()=>state.lt.config,
+    basketTotal(){
+      var total = 0
+      for(var i = 0;i < this.basket.length;i++){
+        total += this.basket[i].betting_money
+      }
+      return +(total).toFixed(2)
+    },
+    lottery:()=>state.lt.lottery.LotteryName,
+    NowIssue:()=>state.lt.NowIssue,
+    showBubble(){
+      return this.chaseIssue > 1
     }
   },
   methods:{
@@ -61,8 +301,81 @@ export default {
     back(){
       store.commit('lt_changeBox', '')
     },
+    //确认投注
     confirmBet(){
-      store.dispatch('lt_confirmBet')
+      if(this.chasePower == 1 && this.chaseIssue == 1){
+        //如果追号倍数和期号都为1,则为普通投注
+        var betDetail = []
+        this.basket.forEach(bet=>{
+          betDetail.push(`${this.getTag(bet.play_detail_code.slice(-3),this.config)[1]} ${bet.betting_number}`)
+        })
+
+        var msg = `${this.lottery}: 第${this.NowIssue}期<br>投注金额: ${this.basketTotal}元<br>投注内容:<br>${betDetail.join('<br>')}`
+
+        if(this.basket.length){
+          layer.confirm(msg,()=>{
+            store.dispatch('lt_confirmBet')
+          },()=>{})
+        }
+      }else{
+        //如果追号倍数和期号任一大于1,则为普通追号
+        store.commit('lt_ordinaryChase')
+        console.log('普通追号')
+      }
+
+
+
+    },
+    deleteBet(index){
+      store.commit('lt_deleteBet', index)
+    },
+    clearBasket(){
+      store.commit('lt_clearBasket')
+    },
+    getTag:getTag,
+    //机选n注
+    random(n){
+      for(var i = 0;i < n;i++){
+        var randomFeed = randomCfg[this.mode]()
+        var betStr = noteBetList.indexOf(this.mode) > -1 ? randomFeed : getBetStr(randomFeed)
+        //有些机选不了一注的。至少n注
+        var count = specialMode[this.mode] ? specialMode[this.mode](randomFeed) : 1
+        store.commit('lt_addRandomBet', new BaseBet(count, betStr))
+      }
+    },
+    //改变普通追号倍数
+    powerChange(){
+      if(this.chasePower.search(/[^\d]+/) > -1 || this.chasePower <= 0){
+        this.chasePower = 1
+      }else{
+        store.commit('lt_setChasePower', +this.chasePower)
+      }
+    },
+    //改变普通追号期数
+    issueChange(){
+      if(this.chaseIssue.search(/[^\d]+/) > -1 || this.chaseIssue <= 0){
+        this.chaseIssue = 1
+      }else{
+        store.commit('lt_setChaseIssue', +this.chaseIssue)
+      }
+    },
+    //改变中奖后是否停止追号的标志位
+    isStopAfterWinChange(){
+      store.commit('lt_isStopAfterWin', this.isStopAfterWin)
+    }
+  },
+  directives:{
+    'dynamic-height':{
+      'componentUpdated'(el, binding, vnode){
+        var vm = vnode.context,
+            bodyHeight = window.screen.height,
+            h1 = vm.$refs.playSort.offsetHeight,
+            h2 = vm.$refs.someBtn.offsetHeight,
+            h3 = vm.$refs.change.offsetHeight,
+            h4 = vm.$refs.result.offsetHeight
+
+        el.style.height = bodyHeight - h1 - h2 - h3 - h4 + 'px'
+      }
     }
   }
 }

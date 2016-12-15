@@ -1,3 +1,7 @@
+import Vue from 'vue'
+import {PERBET} from '../JSconfig'
+var bus = new Vue()     //空vue用来做事件管理
+
 //阶乘
 var factorial = (function(){
   var cache = {};
@@ -316,5 +320,153 @@ function accumulate(arr, fn){
   return s;
 }
 
+//复制对象，仅复制字符串
+function easyClone(obj){
+  var newObj = {};
+  for(var item in obj){
+    if(typeof item === 'string'){
+      newObj[item] = obj[item];
+    }
+  }
+
+  return newObj;
+}
+
+function BaseBet(count, betStr){
+  var lt = state.lt,
+      bet = state.lt.bet,
+      _count = count || bet.betting_count,
+      _betStr = betStr || bet.betting_number
+
+  this.lottery_code = lt.lottery.LotteryCode,                     //彩种
+  this.play_detail_code = lt.lottery.LotteryCode + lt.mode.mode,  //玩法code
+  this.betting_number = _betStr,                       //投注号码
+
+  this.betting_count = _count,                         //这个方案多少注
+  this.betting_money = +(PERBET * _count * bet.betting_model * bet.graduation_count).toFixed(2),  //一注单价 * 投注数量 * 单位 * 倍数
+
+  this.betting_point = lt.award + '-' + lt.Rebate[lt.lottery.LotteryType]  ,          //赔率
+  this.betting_model = bet.betting_model,                   //元角分
+  this.betting_issuseNo = lt.NowIssue,                  //当前期号
+  this.graduation_count = bet.graduation_count                //当前倍率
+  this.compress = bet.compress                            //压缩字符串
+}
+
+//生成追号的ajax
+function ChaseAjax(){
+  var conf = state.lt.chaseConf,
+      lt = state.lt
+
+  this.before_issueNo = conf.before_issueNo;
+  this.before_eamings_cash = conf.before_eamings_cash;
+  this.after_eamings_cash = conf.after_eamings_cash;
+  this.before_earnings_rate = conf.before_earnings_rate;
+  this.after_earnings_rate = conf.after_earnings_rate;
+  this.isstop_afterwinning = conf.isstop_afterwinning;
+
+  this.start_issueNo = lt.NowIssue;       //开始的期号
+  this.lottery_code = lt.lottery.LotteryCode;           //玩法类型
+
+  this.chase_money = 12;                         //总共多少钱
+  this.buy_count = conf.buy_count;               //追多少期
+
+  this.betting = deleteCompress(lt.basket)     //有压缩
+  // this.betting = chase.plans;              //木有压缩
+  this.shceme = lt.scheme;
+}
+
+function Scheme(issueStr, power, money){
+
+}
+
+function deleteCompress(basket){
+  return basket.map(function(item){
+              var cloneItem = easyClone(item);
+              if(cloneItem.compress){
+                cloneItem.betting_number = cloneItem.compress;
+              }
+              delete cloneItem.compress;
+              return cloneItem;
+          })
+}
+
+function compress(source){
+  source = unique(source.map(function(item){return +item})).sort(function(a,b){return a-b})
+  //如果只有一注，直接返回
+  if(source.length < 2){
+    return source.toString();
+  }
+  var baseNum = source[0]
+  var diff = [];
+  for(var i = 1;i < source.length;i++){
+    diff.push(source[i] - source[i-1]);
+  }
+  var diffC = diffConti(diff);
+  diffC.unshift(baseNum);
+  return diffC.join(',');
+
+  function diffConti(arr){
+    var res = []
+    var start
+    var count = 0
+    var last = arr.length - 1
+    for(var i = 0;i < arr.length;i++){
+      if(!start){
+        if(arr[i] !== 1){
+          start = arr[i]
+          if(count){
+            var item = 'K' + count
+            res.push(item)
+            count = 0
+          }
+
+          if(i === last){
+            res.push(arr[i] + '')
+          }
+        }else{
+          count++
+          if(i ===  last){
+            var item = 'K' + count
+            res.push(item)
+          }
+        }
+      }else{
+        if(arr[i] !==1){
+          var item = count ? (start + 'K' + count) : start + '' ;
+          res.push(item);
+          if(i === last){
+            res.push(arr[i] + '')
+          }
+          start = arr[i];
+          count = 0;
+        }else{
+          count++;
+          if(i === last){
+            var item = start ? (start + 'K' + count) : 'K' + count;
+            res.push(item)
+          }
+        }
+      }
+    }
+    return res;
+  }
+}
+
+var throttle = function(delay){
+  var timer = null;
+  var count = 0;
+  return function(fn){
+    if(!timer){
+      timer = setTimeout(function(){
+        fn();
+        count++;
+        clearTimeout(timer);
+        timer = null;
+      }, delay);
+    }
+  }
+}(400)
+
+
 export {factorial, mul, C, combNoRepeat, unique, normalSum2, normalSum3, accumulate,
-  diff2, diff3, combSum2, combSum3}
+  diff2, diff3, combSum2, combSum3, bus, BaseBet, compress, throttle, easyClone, ChaseAjax, deleteCompress}
