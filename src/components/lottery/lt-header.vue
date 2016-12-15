@@ -295,14 +295,6 @@
     }
   }
 }
-.betFilter{
-    padding: 0.3em;
-    box-shadow: 0 2px 10px rgba(41, 41, 41, 0.08);
-    li{
-    }
-    .curr{
-    }
-}
 .betFilter li,.betFilterAnd a{
   padding:0 0.8em;
   line-height: 2em;
@@ -315,6 +307,17 @@
   float:left;
   border:1px solid #ddd;
   height: 2em;
+}
+.betFilter{
+    padding: 0.2rem;
+    box-shadow: 0 2px 10px rgba(41, 41, 41, 0.08);
+    li{
+      padding: 0;
+      width: 2.72rem;
+    }
+    .lastSelect{
+      width: 3.9rem;
+    }
 }
 .betFilter .curr{
   background: #ff9726;
@@ -336,12 +339,12 @@
         background: white;
       }
     }
-    &:nth-child(2){
-      a{
-        width: 5em;
-        padding: 0;
-        text-align: center;
-      }
+  }
+  .groupSelect{
+    a{
+      width: 5em;
+      padding: 0;
+      text-align: center;
     }
   }
   li+li{
@@ -358,7 +361,7 @@
     border:1px solid transparent;
     color:#666;
     vertical-align: top;
-    width: 3rem;
+    width: 4.3em;
     height: 2em;
     display: block;
     float: left;
@@ -373,7 +376,7 @@
     }
     &:before{
       left: -1rem;
-      top:1.1em;
+      top:1.25em;
       width: .3em;
       height: .3em;
       border:.2em solid #ddd;
@@ -386,7 +389,7 @@
       height: 10em;
       @include bgImg-linear-gradient('0deg, #d0d0d0, #d0d0d0 50%, transparent 50%');
       left: -.82rem;
-      top:1.1em;
+      top:1.25em;
       z-index: 13;
     }
   }

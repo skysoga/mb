@@ -179,29 +179,30 @@ export default {
 <style lang = "scss" scoped>
 @import '../../scss/scssConfig','../../scss/mixin';
 .selectNumber{
-  margin:0.6em;
+  padding:.3rem 0.5rem;
+  padding-right: 0;
   display: table;
   position: relative;
   &:before{
     content:"";
     position: absolute;
-    top:-.3em;
+    top:0;
     left: 0;
-    width: 100%;
+    width: 16rem;
     height: 1px;
     @include bgImg-linear-gradient('90deg, #d0d0d0, #d0d0d0 50%, transparent 50%');
   }
   .title{
     height: 1.85em;
-    width: 3rem;
+    width: 2.6rem;
     display: table-cell;
     em{
-      font-size: 0.75em;
+      font-size: 0.6em;
       height: 1.7em;
       width:2.6em;
       display: block;
       text-align: center;
-      line-height: 1.6em;
+      line-height: 1.7em;
       color:#bbb39c;
       background: #f4f1e2;
       border:1px solid #ece7d9;
@@ -274,26 +275,26 @@ export default {
   }
 }
 .numberContent{
-  padding: 0.6em 0;
-  width: 13rem;
+  padding: 0;
+  width: 12.4rem;
   display: table-cell;
   a{
-    width: calc((16rem - 2.4em) / 6);
-    width: -webkit-calc((16rem - 2.4em) / 6);
+    width: calc(12.4rem / 5);
+    width: -webkit-calc(12.4rem / 5);
     display: inline-block;
     text-align: center;
   }
   span{
     display: inline-block;
-    width: 1.7em;
-    height: 1.7em;
-    line-height: 1.6em;
+    width: 1.9em;
+    height: 1.9em;
+    line-height: 1.9em;
     text-align: center;
     color:#dc3b40;
     background: white;
     border-radius: 50%;
     border: 1px solid #bfbfbf;
-    font-size: 1em;
+    font-size: .8em;
     margin:0.3em;
   }
   .curr{
