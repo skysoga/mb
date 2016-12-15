@@ -11,7 +11,7 @@
 	import Vue from 'vue'
 	import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 	import {DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../JSconfig'
-	import {bus, BaseBet, ChaseAjax, easyClone, deleteCompress} from '../js/kit'
+	import {bus, BaseBet, ChaseAjax, easyClone, deleteCompress, Scheme, getBasketAmount, computeIssue, getSSCRebate, getK3Rebate} from '../js/kit'
 
 	export default{
 		beforeRouteEnter(to, from, next){
@@ -141,8 +141,7 @@
   			'K3': getK3Rebate
   		}
 
-			var timer1, timer2, timer3
-					,wait4Results = 0
+			var wait4Results = 0
 					,wait4BetRecord = false
 
 
@@ -294,47 +293,13 @@
 	      	},
 	      	//更新期号时
 	      	lt_updateIssue:(state)=>{
-	      		//根据传入的code,和彩种index来返回 期号字符串
-	      		function computeIssue(code, index){
-	      			var days 		//和当前期差几天
-	      					,_index  //那一天的第几期
-	      					,dateStr		//日期字符串
-
-	      			days = Math.floor(index/state.PlanLen)
-	      			_index = index - days * state.PlanLen;
-	      			//这里挂各特殊彩种的处理函数
-	      			var handler = {
-	      				'1001':function(){
-	      					(_index > 84) && days--
-	      				},
-	      			}
-
-	      			//计算期号字符串
-	      			var handleResult
-	      			handler[code] && (handleResult = handler[code]())		//特殊彩种的特殊处理
-
-	      			if(handleResult){
-	      				return handleResult
-	      			}else{
-	      				if(days){
-		      				var todayTime = new Date(state.Todaystr.replace(/(\d{4})(\d{2})(\d{2})/,"$1/$2/$3")).getTime();
-						      dateStr = new Date(todayTime + days * DAY_TIME).format('yyyyMMdd');
-	      				}else{
-									dateStr = state.Todaystr;
-	      				}
-	      				return dateStr + state.LotteryPlan[_index].IssueNo
-	      			}
-	      		}
-
-	      		var code = state.lottery.Lotterycode 	//当前彩种号
+	      		var code = state.lottery.LotteryCode 	//当前彩种号
   		      Vue.set(state, 'NowIssue', computeIssue(code, state.IssueNo))				//当前期 (可以下注的这一期)
 			      Vue.set(state, 'OldIssue', computeIssue(code, state.IssueNo - 1)) 	//上一期
 			      state.displayResults = false	//进入等待开奖动画
 			      state.basket.forEach(bet=>{
 			      	bet.betting_issuseNo = computeIssue(code, state.IssueNo)
 			      })
-
-
 	      	},
 	      	lt_setLotteryResult:(state, {code, results})=>{							//设置某一彩种的开奖结果
 	      		Vue.set(state.LotteryResults, code, results)
@@ -411,7 +376,8 @@
 	      	lt_isStopAfterWin:(state, bool)=>{state.chaseConf.isstop_afterwinning = bool},
 	      	lt_setChaseIssue:(state, chaseIssue)=>{state.chaseConf.buy_count = chaseIssue},
 	      	lt_setChasePower:(state, chasePower)=>{state.chaseConf.power = chasePower},
-
+	      	lt_setScheme:(state, scheme)=>{state.scheme = scheme},
+	      	lt_basketPowerTo1:(state)=>{state.basket.forEach(bet=>bet.graduation_count = 1)}
 		    },
 
 		    actions: {
@@ -429,8 +395,8 @@
 		      	dispatch('lt_getResults', code)		//获得开奖结果
 		      	wait4Results = 0
 		      	wait4BetRecord = false
-		      	clearTimeout(timer1)
-		      	clearTimeout(timer2)
+		      	clearTimeout(this.timer1)
+		      	clearTimeout(this.timer2)
 
 		      	dispatch('lt_updatePlan', code)		//更新计划
 		      },
@@ -645,14 +611,12 @@
 								LotteryType: type
 							}).then((json)=>{
 								if(json.Code === 1){
-									console.log(json)
 									sessionStorage.setItem('Rebate' + type, JSON.stringify(json.BackData))
 									commit({
 				      			type:'lt_setRebate',
 				      			rebate: json.BackData,
 				      			LotteryType: type
 				      		})
-
 								}
 							})
 
@@ -686,8 +650,49 @@
 		      		}
 		      	})
 		      },
-	      	lt_ordinaryChase:(state)=>{
-	      		console.log('jkj')
+		      //普通追号
+	      	lt_ordinaryChase:({state, rootState, commit, dispatch})=>{
+	      		var basketTotal = getBasketAmount()[1],
+	      				scheme = [],
+	      				code = state.lottery.Lotterycode,
+	      				issueStr, power, money, issueNo
+
+	      		for(var i = 0, len = state.chaseConf.buy_count; i < len;i++){
+	      			issueNo = state.IssueNo + i
+							issueStr = computeIssue(code, issueNo)
+							power = state.chaseConf.power
+							money = (basketTotal * state.chaseConf.power * state.basket[0].betting_model).toFixed(4) * 1
+							scheme.push(new Scheme(issueStr, power, money))
+	      		}
+						commit('lt_setScheme', scheme)
+						dispatch('lt_chase')			//追号投注
+	      	},
+	      	lt_chase:({state, rootState, commit, dispatch})=>{
+	      		_fetch({
+	      			action: 'AddChaseBetting',
+							data: new ChaseAjax()
+	      		}).then((json)=>{
+	      			if(json.Code === 1){
+								layer.msg(json.StrCode);
+								commit('lt_clearBet')
+		      			commit('lt_clearBasket')
+		      			commit('lt_changeBox', '')
+
+								//隔3s获取我的投注
+		      			this.timer4 = setTimeout(()=>{
+		      				dispatch('lt_updateBetRecord')
+		      			}, 3000)
+
+							}else if(json.Code === -9){
+		      			//清除rebate
+		      			layer.alert(json.StrCode)
+				      	var type = state.lottery.LotteryType
+				      	sessionStorage.removeItem('Rebate' + type)
+				      	store.dispatch('lt_getRebate')
+							}else{
+								layer.msgWarn(json.StrCode);
+							}
+	      		})
 	      	}
 		    }
 		  }
@@ -720,6 +725,11 @@
 			return {
 				ltype:'',  //SSC、K3、11X5
 				lcode:'',  //彩种code
+				timer1:null,
+				timer2:null,
+				timer3:null,
+				timer4:null,
+				baseloop:null
 			}
 		},
 		methods:{
@@ -745,46 +755,10 @@
 		beforeDestroy(){
 			clearTimeout(this.timer1)
 			clearTimeout(this.timer2)
+			clearTimeout(this.timer3)
+			clearTimeout(this.timer4)
 			clearInterval(this.baseLoop)
 		}
 
 	}
-
-	function getSSCRebate(mode, Odds){
-    //前三中三后三一样，前二后二一样
-    switch(mode[0]){
-      case 'E':
-      case 'D':
-        mode = 'F' + mode.slice(1);
-        break;
-      case 'B':
-        mode = 'C' + mode.slice(1);
-        break;
-      case 'I':
-        if(mode === 'I92')mode = 'I91';
-        if(mode === 'I94' || mode === 'I95')mode = 'I93';
-        break;
-    }
-    var rebateSSC = Odds
-    for(var i = 0;i < rebateSSC.length;i++){
-      if(rebateSSC[i].PlayCode === mode){
-        return rebateSSC[i].Bonus;
-      }
-    }
-  }
-
-  function getK3Rebate(mode, Odds){
-  	console.log(mode, Odds)
-  	for(var i = 0;i < Odds.length;i++){
-  		if(Odds[i].PlayCode === mode){
-  			if(Odds[i].Bonus.indexOf(',') > -1){
-  				return Odds[i].Bonus.split(',')
-  			}else{
-  				return Odds[i].Bonus
-  			}
-  		}
-  	}
-  }
-
-
 </script>

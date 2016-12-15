@@ -47,7 +47,7 @@
 
 <script>
 
-import {PERBET} from '../../JSconfig'
+import {PERBET,Max_Rate,Max_Chase_Issue} from '../../JSconfig'
 import {normalSum3, normalSum2, diff3, diff2, combSum3, combSum2, BaseBet} from '../../js/kit'
 function getBetStr(arr){
   arr = arr.map(item=>item.join(' ')).map(item=>{
@@ -319,12 +319,8 @@ export default {
         }
       }else{
         //如果追号倍数和期号任一大于1,则为普通追号
-        store.commit('lt_ordinaryChase')
-        console.log('普通追号')
+        store.dispatch('lt_ordinaryChase')
       }
-
-
-
     },
     deleteBet(index){
       store.commit('lt_deleteBet', index)
@@ -345,9 +341,18 @@ export default {
     },
     //改变普通追号倍数
     powerChange(){
+      console.log(this.chasePower)
       if(this.chasePower.search(/[^\d]+/) > -1 || this.chasePower <= 0){
         this.chasePower = 1
       }else{
+        if(this.chasePower > 1){
+          store.commit('lt_basketPowerTo1')
+        }
+
+        if(this.chasePower > Max_Rate){
+          this.chasePower = Max_Rate
+          layer.msgWarn(`最多${Max_Rate}倍`)
+        }
         store.commit('lt_setChasePower', +this.chasePower)
       }
     },
@@ -356,6 +361,13 @@ export default {
       if(this.chaseIssue.search(/[^\d]+/) > -1 || this.chaseIssue <= 0){
         this.chaseIssue = 1
       }else{
+        if(this.chaseIssue > 1){
+          store.commit('lt_basketPowerTo1')
+        }
+        if(this.chaseIssue > Max_Chase_Issue){
+          this.chaseIssue = Max_Chase_Issue
+          layer.msgWarn(`最多${Max_Chase_Issue}期`)
+        }
         store.commit('lt_setChaseIssue', +this.chaseIssue)
       }
     },
