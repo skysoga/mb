@@ -200,6 +200,15 @@
     display: inline-block;
     height: 2.3em;
     line-height: 2.3em;
+    .iconfont{
+      transition: .6s;
+      display: inline-block;
+    }
+    &.active{
+      .iconfont{
+        transform: rotate(180deg);
+      }
+    }
     p{
       font-size: 0.6em;
       display: inline-block;
@@ -245,9 +254,16 @@
       padding-left:0.2em;
       font-size: 0.9em;
     }
+    .iconfont{
+      transition: .6s;
+      display: inline-block;
+    }
     &.active{
       .lotteryList{
         display: block;
+      }
+      .iconfont{
+        transform: rotate(180deg);
       }
     }
   }

@@ -1,15 +1,13 @@
 <template>
-  <div class="fix" v-if = "$store.state.lt.OldIssue">
+  <div class="lotteryCloseItem fix" v-if = "$store.state.lt.OldIssue" :class = "{active:ifShowBetRecord}">
     <!-- 倒计时 -->
     <div class="lotteryClose"
-         @click.stop = "toggleBetRecord"
-         :class = "{active:ifShowBetRecord}">
-      <span>{{nowIssue}}期投注截止</span>
+         @click.stop = "toggleBetRecord">
+      <span>{{nowIssue}}期投注截止<i class="iconfont">&#xe601;</i></span>
       <div class="waitNumber">
         <em>{{TimeBar}}</em>
       </div>
     </div>
-
     <!-- 我的投注 -->
     <table class="pastOpen" v-show = "ifShowBetRecord">
       <tr>
