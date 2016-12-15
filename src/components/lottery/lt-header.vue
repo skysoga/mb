@@ -1,6 +1,7 @@
 <template>
 	<header class="sscHeader fix">
-    <router-link to="/index" class="iconfont back"></router-link>
+    <a @click = "back2index" class="iconfont back"></a>
+    <!-- <router-link to="/index" class="iconfont back"></router-link> -->
     <div class="playSort">
       <p>玩
         <br>法</p>
@@ -17,13 +18,15 @@
 								<ul class="betFilter fix" ref = "betFilter">
 									<li v-for = "(groupItem,group) in config"
 										  @click.stop = "changeGroup(groupItem)"
-										  :class = "group === mode.group ? 'curr': ''">
+										  :class = "{curr:group === mode.group, lastSelect: group === '大小单双'}">
 										{{group}}
 									</li>
 								</ul>
 
 								<ul class="betFilterAnd" v-dynamic-height>
-									<li class="fix" v-for = "(subGroup, subGroupName) in config[mode.group]">
+									<li class="fix"
+                      v-for = "(subGroup, subGroupName) in config[mode.group]"
+                      :class = "addSubGroupClass(subGroupName)">
 										<span>{{subGroupName}}</span>
 										<div class="fix">
 											<a v-for = "modeItem in subGroup"
@@ -120,7 +123,22 @@
 				this.$store.state.lt.box === 'typeSelect' ?
 					 this.$store.commit('lt_changeBox', '') :
 						 this.$store.commit('lt_changeBox', 'typeSelect')
-			}
+			},
+      back2index(){
+        store.commit('lt_leaveLottery')
+        this.$router.push('/index')
+      },
+      addSubGroupClass(name){
+        var table = {
+          '直选': 'directSelect',
+          '组选': 'groupSelect',
+          '不定位': 'notPosition',
+          '趣味': 'taste',
+          '定位胆': 'otherPosition',
+          '大小单双': 'lastSelect'
+        }
+        return table[name]
+      }
 		},
 		computed: mapState({
 			mode:state=>state.lt.mode,

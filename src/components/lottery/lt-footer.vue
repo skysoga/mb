@@ -13,7 +13,7 @@
 
       <div class="betCart" >
         <a @click.stop = "showBasket">
-          <i class="iconfont">&#xe75a;<em>{{betAmount}}</em></i>
+          <i class="iconfont">&#xe75a;<em v-show = "betAmount">{{betAmount}}</em></i>
           号码篮</a>
       </div>
     </div>
@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import {bus} from '../../js/kit'
 import {Max_Rate} from '../../JSconfig'
 export default {
   created(){
@@ -79,7 +80,6 @@ export default {
   methods:{
     reduce(){
       this.power > 1 && this.power--      //倍数必须大于1
-      console.log(this.canReduce)
     },
     add(){
       this.power < Max_Rate && this.power ++   //倍数小于最大倍数限制
@@ -93,13 +93,14 @@ export default {
       if(this.betCount <= 0){
         return
       }
+      bus.$emit('clearNoteStr')   //清空文本框文字
       store.commit('lt_addBet')
     },
     showBasket(){
      //如果号码篮没有注单， 就没有反应
-      if(this.betAmount <= 0){
-        return
-      }
+      // if(this.betAmount <= 0){
+      //   return
+      // }
       store.commit('lt_changeBox', 'basket')
     }
   }
@@ -186,7 +187,7 @@ export default {
     padding-top: 0.4em;
     white-space:nowrap;
     overflow:hidden;
-    text-overflow:ellipsis; 
+    text-overflow:ellipsis;
   }
   em{
     position: absolute;
