@@ -293,6 +293,7 @@ window.RootApp = new Vue({
 	created:function(){
 		var len = routes.length
 		var thisp = location.pathname.toLowerCase()
+		if (thisp==="/") {return}
 		console.log(thisp);
 		for (var i = 0; i < len; i++) {
 			if (routes[i].path.toLowerCase()===thisp) {
@@ -419,7 +420,6 @@ function _fetch(data){
 		}
 		str.push(i+'='+k);
 	}
-	data = str.join('&');
 	return new Promise(function(resolve, reject){
 		fetch('/tools/ssc_ajax.ashx', {
 			credentials:'same-origin',
