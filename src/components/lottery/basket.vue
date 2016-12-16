@@ -9,7 +9,7 @@
     <div class="someBtn" ref = "someBtn"><a @click.stop = "random(1)">机选1注</a><a @click.stop = "random(5)">机选5注</a><a @click.stop = "back">继续选号</a>
     </div>
 
-    <div class="cartContent" v-dynamic-height>
+    <div class="cartContent">
       <ul class="numberbox">
         <li v-for = "(bet,index) in basket">
           <em>{{bet.betting_number}}</em>
