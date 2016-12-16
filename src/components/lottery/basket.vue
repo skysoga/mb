@@ -588,6 +588,7 @@ header{
 .cartMain{
 padding-top: 5.16em;
 padding-bottom: 5em;
+min-height: 20em;
 background: #f9f8f0;
 }
 .someBtn{
