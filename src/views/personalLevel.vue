@@ -12,9 +12,9 @@
           <p class="levelTips" v-if="Number(UserGrade)">距离下一级需要{{upGrow}}分 每充值1元加1分</p>
           <div class="levelBar fix">
               <div class="left">VIP{{UserGrade}}</div>
-              <p class="u-progress"><span class="pgbar" id="progress" :style="{'width':perVal}"></span></p>
+              <p class="u-progress"><span class="pgbar" id="progress" :style="{'width':perVal+'%'}"></span></p>
               <div class="right">VIP{{UserGrade<9?Number(UserGrade)+1:'9'}}</div>
-              <p>{{perVal}}</p>
+              <p>{{perVal+'%'}}</p>
           </div>
       </div>
       <div class="levelRule">
