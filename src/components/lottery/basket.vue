@@ -581,19 +581,12 @@ li{
 }
 .cart{
 background: white;
-position: fixed;
-top:0;
-left: 0;
-height: 100%;
-width: 100%;
-z-index: 1000;
 header{
   height: 2.55556em;
 }
 }
 .cartMain{
 padding-top: 2.3em;
-height: 100%;
 background: #f9f8f0;
 }
 .someBtn{
