@@ -586,16 +586,20 @@ header{
 }
 }
 .cartMain{
-padding-top: 2.3em;
+padding-top: 5.16em;
+padding-bottom: 5em;
 background: #f9f8f0;
 }
 .someBtn{
 text-align: center;
 padding: .6em;
 box-shadow: 0 0 .5em #b9b9b9;
-position: relative;
+position: fixed;
 z-index: 99;
 background: #f9f8f0;
+top:2.3em;
+left: 0;
+width: 100%;
 a{
   display: inline-block;
   color:#333;
