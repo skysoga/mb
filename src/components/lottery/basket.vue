@@ -586,28 +586,26 @@ li{
 }
 .cart{
 background: white;
-position: fixed;
-top:0;
-left: 0;
-height: 100%;
-width: 100%;
-z-index: 1000;
 header{
   height: 2.55556em;
 }
 }
 .cartMain{
-padding-top: 2.3em;
-height: 100%;
+padding-top: 5.16em;
+padding-bottom: 5.1em;
+min-height: 20em;
 background: #f9f8f0;
 }
 .someBtn{
 text-align: center;
 padding: .6em;
 box-shadow: 0 0 .5em #b9b9b9;
-position: relative;
+position: fixed;
 z-index: 99;
 background: #f9f8f0;
+top:2.3em;
+left: 0;
+width: 100%;
 a{
   display: inline-block;
   color:#333;
