@@ -9,7 +9,7 @@
     <div class="someBtn" ref = "someBtn"><a @click.stop = "random(1)">机选1注</a><a @click.stop = "random(5)">机选5注</a><a @click.stop = "back">继续选号</a>
     </div>
 
-    <div class="cartContent" v-dynamic-height>
+    <div class="cartContent">
       <ul class="numberbox">
         <li v-for = "(bet,index) in basket">
           <em>{{bet.betting_number}}</em>
@@ -47,7 +47,7 @@
 
 <script>
 
-import {PERBET} from '../../JSconfig'
+import {PERBET,Max_Rate,Max_Chase_Issue} from '../../JSconfig'
 import {normalSum3, normalSum2, diff3, diff2, combSum3, combSum2, BaseBet} from '../../js/kit'
 function getBetStr(arr){
   arr = arr.map(item=>item.join(' ')).map(item=>{
@@ -319,12 +319,8 @@ export default {
         }
       }else{
         //如果追号倍数和期号任一大于1,则为普通追号
-        store.commit('lt_ordinaryChase')
-        console.log('普通追号')
+        store.dispatch('lt_ordinaryChase')
       }
-
-
-
     },
     deleteBet(index){
       store.commit('lt_deleteBet', index)
@@ -345,9 +341,18 @@ export default {
     },
     //改变普通追号倍数
     powerChange(){
+      console.log(this.chasePower)
       if(this.chasePower.search(/[^\d]+/) > -1 || this.chasePower <= 0){
         this.chasePower = 1
       }else{
+        if(this.chasePower > 1){
+          store.commit('lt_basketPowerTo1')
+        }
+
+        if(this.chasePower > Max_Rate){
+          this.chasePower = Max_Rate
+          layer.msgWarn(`最多${Max_Rate}倍`)
+        }
         store.commit('lt_setChasePower', +this.chasePower)
       }
     },
@@ -356,6 +361,13 @@ export default {
       if(this.chaseIssue.search(/[^\d]+/) > -1 || this.chaseIssue <= 0){
         this.chaseIssue = 1
       }else{
+        if(this.chaseIssue > 1){
+          store.commit('lt_basketPowerTo1')
+        }
+        if(this.chaseIssue > Max_Chase_Issue){
+          this.chaseIssue = Max_Chase_Issue
+          layer.msgWarn(`最多${Max_Chase_Issue}期`)
+        }
         store.commit('lt_setChaseIssue', +this.chaseIssue)
       }
     },
@@ -501,7 +513,6 @@ left: 0;
 .cartContent{
   box-shadow: 0 0 .5em #ccc;
   margin:0 .6em;
-  overflow: scroll;
   background: white;
 }
 .clear{
@@ -570,28 +581,26 @@ li{
 }
 .cart{
 background: white;
-position: fixed;
-top:0;
-left: 0;
-height: 100%;
-width: 100%;
-z-index: 1000;
 header{
   height: 2.55556em;
 }
 }
 .cartMain{
-padding-top: 2.3em;
-height: 100%;
+padding-top: 5.16em;
+padding-bottom: 5.1em;
+min-height: 20em;
 background: #f9f8f0;
 }
 .someBtn{
 text-align: center;
 padding: .6em;
 box-shadow: 0 0 .5em #b9b9b9;
-position: relative;
+position: fixed;
 z-index: 99;
 background: #f9f8f0;
+top:2.3em;
+left: 0;
+width: 100%;
 a{
   display: inline-block;
   color:#333;
