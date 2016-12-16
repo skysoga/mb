@@ -1,5 +1,5 @@
 <template>
- <div>
+ <div class="k3">
 <header class="top">
     <div>
       <p>玩法</p><span id="MethodStr">和值<i class="iconfont xiala"></i></span>
