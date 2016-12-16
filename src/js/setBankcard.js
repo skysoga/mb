@@ -37,6 +37,7 @@ export default {
       router.push('/login')
     }
     var Qort=to.query.Q
+    console.log(Qort)
     var nextto=Qort=='withdraw'?'/withdraw':'/manageBankcard'
     var cid=Qort=='withdraw'?'add':(Qort||'add')
     var Trr={Action:"GetCardDetail",BankCardID:cid}
