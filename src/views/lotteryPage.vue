@@ -349,17 +349,21 @@
 	      		var baseBet = new BaseBet()
 	      		state.basket.push(baseBet)
 	      		store.commit('lt_clearBet')
+	      		store.dispatch('lt_ordinaryChase')
 	      	},
 	      	lt_addRandomBet:(state, arr)=>{
 	      		state.basket.push(arr)
+	      		store.dispatch('lt_ordinaryChase')
 	      	},
 	      	//清空bet
 	      	lt_clearBet:(state)=>{
 	      		state.bet.betting_number = ''
 	      		state.bet.betting_count = 0
 	      		state.bet.betting_money = 0
-	      		state.bet.graduation_count = 1
+	      		// state.bet.graduation_count = 1
+	      		//这里倍数不清1，看看后面需不需要
 	      		state.bet.compress = ''
+
       			for(var item in state.tmp){
 		      		state.tmp[item] = []
 		      	}
@@ -377,7 +381,12 @@
 	      	lt_setChaseIssue:(state, chaseIssue)=>{state.chaseConf.buy_count = chaseIssue},
 	      	lt_setChasePower:(state, chasePower)=>{state.chaseConf.power = chasePower},
 	      	lt_setScheme:(state, scheme)=>{state.scheme = scheme},
-	      	lt_basketPowerTo1:(state)=>{state.basket.forEach(bet=>bet.graduation_count = 1)}
+	      	lt_basketPowerTo1:(state)=>{
+	      		state.basket.forEach(bet=>{
+	      			bet.graduation_count = 1
+	      			bet.betting_money = +(PERBET * bet.betting_count * bet.graduation_count * bet.betting_model).toFixed(2)
+	      		})
+	      	}
 		    },
 
 		    actions: {
@@ -661,11 +670,11 @@
 	      			issueNo = state.IssueNo + i
 							issueStr = computeIssue(code, issueNo)
 							power = state.chaseConf.power
-							money = (basketTotal * state.chaseConf.power * state.basket[0].betting_model).toFixed(4) * 1
+							money = (basketTotal * state.chaseConf.power).toFixed(4) * 1
 							scheme.push(new Scheme(issueStr, power, money))
 	      		}
+
 						commit('lt_setScheme', scheme)
-						dispatch('lt_chase')			//追号投注
 	      	},
 	      	lt_chase:({state, rootState, commit, dispatch})=>{
 	      		_fetch({
@@ -673,16 +682,17 @@
 							data: new ChaseAjax()
 	      		}).then((json)=>{
 	      			if(json.Code === 1){
-								layer.msg(json.StrCode);
+								layer.msg(json.StrCode)
 								commit('lt_clearBet')
 		      			commit('lt_clearBasket')
 		      			commit('lt_changeBox', '')
+		      			commit('lt_setScheme', [])
+		      			bus.$emit('clearChase')
 
 								//隔3s获取我的投注
 		      			this.timer4 = setTimeout(()=>{
 		      				dispatch('lt_updateBetRecord')
 		      			}, 3000)
-
 							}else if(json.Code === -9){
 		      			//清除rebate
 		      			layer.alert(json.StrCode)
@@ -696,7 +706,6 @@
 	      	}
 		    }
 		  }
-
 
 		  //从url上获取彩种type和彩种code
 		  ;[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')

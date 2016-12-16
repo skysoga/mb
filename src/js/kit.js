@@ -384,9 +384,9 @@ function Scheme(issueStr, power, money){
 function getBasketAmount(){
   var totalNum = 0, totalMoney = 0, basket = state.lt.basket
   for(var i = 0, len = basket.length; i < len;i++){
-    var el = basket[i];
-    totalNum += el.betting_count;
-    totalMoney += el.betting_money;
+    var el = basket[i]
+    totalNum += el.betting_count
+    totalMoney += el.betting_money
   }
   return [totalNum, totalMoney];
 }

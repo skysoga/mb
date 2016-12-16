@@ -34,7 +34,7 @@
     </div>
     <div class="result fix" ref = "result">
       <div class="left">
-        <span>{{basketTotal}}元</span>
+        <span>{{(chasePower===1 && chaseIssue===1)?basketTotal:schemeTotal}}元</span>
         <!-- <em>可用余额 88.80元</em> -->
       </div>
       <div class="right" @click = "confirmBet">
@@ -48,7 +48,7 @@
 <script>
 
 import {PERBET,Max_Rate,Max_Chase_Issue} from '../../JSconfig'
-import {normalSum3, normalSum2, diff3, diff2, combSum3, combSum2, BaseBet} from '../../js/kit'
+import {normalSum3, normalSum2, diff3, diff2, combSum3, combSum2, BaseBet,bus} from '../../js/kit'
 function getBetStr(arr){
   arr = arr.map(item=>item.join(' ')).map(item=>{
     if(item===''){
@@ -116,7 +116,6 @@ function getTag(code, config){
     }
   }
 }
-
 
 var noteBetList = ['H12','G12','F12','F24','F26','F27','E12','E24','E26','E27','D12','D24','D26','D27','C12','C22','B12','B22']
 //如果是文本框的形式，返回字符串即可
@@ -267,6 +266,12 @@ var specialMode = {
 }
 
 export default {
+  created(){
+    bus.$on('clearChase', ()=>{
+      this.chasePower = 1
+      this.chaseIssue = 1
+    })
+  },
   data(){
     return {
       PERBET:PERBET,
@@ -277,6 +282,7 @@ export default {
   },
   computed:{
     basket:()=>state.lt.basket,
+    scheme:()=>state.lt.scheme,
     ifShowBasket(){
       return this.$store.state.lt.box === 'basket'
     },
@@ -287,6 +293,13 @@ export default {
       var total = 0
       for(var i = 0;i < this.basket.length;i++){
         total += this.basket[i].betting_money
+      }
+      return +(total).toFixed(2)
+    },
+    schemeTotal(){
+      var total = 0
+      for(var i = 0;i < this.scheme.length;i++){
+        total += this.scheme[i].money
       }
       return +(total).toFixed(2)
     },
@@ -319,7 +332,7 @@ export default {
         }
       }else{
         //如果追号倍数和期号任一大于1,则为普通追号
-        store.dispatch('lt_ordinaryChase')
+        store.dispatch('lt_chase')      //追号投注
       }
     },
     deleteBet(index){
@@ -341,19 +354,20 @@ export default {
     },
     //改变普通追号倍数
     powerChange(){
-      console.log(this.chasePower)
       if(this.chasePower.search(/[^\d]+/) > -1 || this.chasePower <= 0){
         this.chasePower = 1
       }else{
         if(this.chasePower > 1){
           store.commit('lt_basketPowerTo1')
+          store.commit('lt_setChasePower', +this.chasePower)
+          store.dispatch('lt_ordinaryChase')
         }
 
         if(this.chasePower > Max_Rate){
           this.chasePower = Max_Rate
+          store.commit('lt_setChasePower', +this.chasePower)
           layer.msgWarn(`最多${Max_Rate}倍`)
         }
-        store.commit('lt_setChasePower', +this.chasePower)
       }
     },
     //改变普通追号期数
@@ -363,12 +377,14 @@ export default {
       }else{
         if(this.chaseIssue > 1){
           store.commit('lt_basketPowerTo1')
+          store.commit('lt_setChaseIssue', +this.chaseIssue)
+          store.dispatch('lt_ordinaryChase')
         }
         if(this.chaseIssue > Max_Chase_Issue){
           this.chaseIssue = Max_Chase_Issue
+          store.commit('lt_setChaseIssue', +this.chaseIssue)
           layer.msgWarn(`最多${Max_Chase_Issue}期`)
         }
-        store.commit('lt_setChaseIssue', +this.chaseIssue)
       }
     },
     //改变中奖后是否停止追号的标志位
