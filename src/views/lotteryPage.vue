@@ -349,9 +349,11 @@
 	      		var baseBet = new BaseBet()
 	      		state.basket.push(baseBet)
 	      		store.commit('lt_clearBet')
+	      		store.dispatch('lt_ordinaryChase')
 	      	},
 	      	lt_addRandomBet:(state, arr)=>{
 	      		state.basket.push(arr)
+	      		store.dispatch('lt_ordinaryChase')
 	      	},
 	      	//清空bet
 	      	lt_clearBet:(state)=>{
@@ -673,7 +675,6 @@
 	      		}
 
 						commit('lt_setScheme', scheme)
-						dispatch('lt_chase')			//追号投注
 	      	},
 	      	lt_chase:({state, rootState, commit, dispatch})=>{
 	      		_fetch({
@@ -681,17 +682,17 @@
 							data: new ChaseAjax()
 	      		}).then((json)=>{
 	      			if(json.Code === 1){
-								layer.msg(json.StrCode);
+								layer.msg(json.StrCode)
 								commit('lt_clearBet')
 		      			commit('lt_clearBasket')
 		      			commit('lt_changeBox', '')
+		      			commit('lt_setScheme', [])
 		      			bus.$emit('clearChase')
 
 								//隔3s获取我的投注
 		      			this.timer4 = setTimeout(()=>{
 		      				dispatch('lt_updateBetRecord')
 		      			}, 3000)
-
 							}else if(json.Code === -9){
 		      			//清除rebate
 		      			layer.alert(json.StrCode)
