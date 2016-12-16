@@ -162,6 +162,10 @@
 
 <style lang = "scss" scoped>
 	/*@import '../../scss/newssc.scss';*/
+  
+.active:active{
+  background: initial !important;
+}
 @import '../../scss/scssConfig','../../scss/mixin';
 	.sscHeader{
   background: #dc3b40;
@@ -261,7 +265,7 @@
   right: 0;
   top:2.9em;
   background: white;
-  width: 11em;
+  width: 5.5em;
   box-shadow: 0 2px 10px rgba(41, 41, 41, 0.08);
   a{
     color:#333;

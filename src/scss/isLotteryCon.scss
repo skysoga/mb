@@ -73,12 +73,13 @@
 .pastOpen{
   position: absolute;
   left: 0;
+  top:2.8em;
   width: 16rem;
   background: white;
   color:#666;
   overflow: hidden;
   box-shadow: 0 10px 10px rgba(41, 41, 41, 0.08);
-  background: #f9f8f0;
+  background: #f4f1e2;
   // display: none;
   z-index: 4;
   th{
