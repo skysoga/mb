@@ -2,11 +2,39 @@
  <div class="k3">
 <header class="top">
     <div>
-      <p>玩法</p><span id="MethodStr">和值<i class="iconfont xiala"></i></span>
+      <p>玩法</p>
+      <span id="MethodStr" @click.stop = "toggleModeSelect">
+        和值<i class="iconfont xiala"></i>
+      </span>
     </div>
-    <div class="fr" id="lotteryChoice">江苏<i class="iconfont xiala"></i><div class="fix" style="display: none;"><a class="active" href="/lottery_k3.html?lottery=1401">江苏快3</a><a class="active" href="/lottery_k3.html?lottery=1402">安徽快3</a><a class="active" href="/lottery_k3.html?lottery=1403">广西快3</a><a class="active" href="/lottery_k3.html?lottery=1404">吉林快3</a><a class="active" href="/lottery_k3.html?lottery=1405">湖北快3</a><a class="active" href="/lottery_k3.html?lottery=1406">北京快3</a><a class="active" href="/lottery_k3.html?lottery=1407">大发快3</a><a class="active" href="/lottery_k3.html?lottery=1408">河北快3</a><a class="active" href="/lottery_k3.html?lottery=1409">贵州快3</a><a class="active" href="/lottery_k3.html?lottery=1410">上海快3</a><a class="active" href="/lottery_k3.html?lottery=1411">甘肃快3</a></div></div>
-    <a class="iconfont" href="/index.html"></a>
-  <ul class="betTopDetail" style="display: none;"><li class="checked">
+
+    <div class="fr" id="lotteryChoice">
+      <label @click.stop= "toggleTypeSelect">{{LotteryName}}</label>
+      <i @click.stop= "toggleTypeSelect" class="iconfont xiala"></i>
+      <!-- 快三彩种切换 -->
+      <div class="fix" style ="display:block" v-show = "ifShowTypeSelect">
+        <a v-for = "lottery in LotteryList"
+           @click = "changeLottery(lottery.LotteryCode)">
+          {{lottery.LotteryName}}
+        </a>
+
+      </div>
+    </div>
+    <a class="iconfont" @click = "back2index"></a>
+
+  <ul class="betTopDetail" v-show = "ifShowModeSelect">
+    <li v-for = "mode in config">
+      <p class="p0">{{mode.name}}</p>
+      <p class="p1">{{renderRebate(mode.mode)}}</p>
+      <p class="p2">
+        <span class="Dice" :class = "`Dice${mode.eg[0]}`"></span>
+        <span class="Dice" :class = "`Dice${mode.eg[1]}`"></span>
+        <span class="Dice" :class = "`Dice${mode.eg[2]}`"></span>
+      </p>
+    </li>
+    <li></li>
+
+<!--       <li class="checked">
         <p class="p0">和值</p>
         <p class="p1">1.946-188.56倍</p>
         <p class="p2">
@@ -70,7 +98,10 @@
           <span class="Dice Dice4"></span>
           <span class="Dice Dice4"></span>
         </p>
-      </li><li></li></ul></header>
+      </li>
+      <li></li> -->
+    </ul>
+  </header>
 
 <section class="State">
     <div>
@@ -222,13 +253,74 @@
 <script>
 export default {
   created (){
-    console.log(this.$route)
+    [,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
+
+    //处理得各彩种的List
+    var LotteryConfig = this.$store.state.LotteryConfig
+    LotteryConfig.forEach(item=>{
+      if(item.LotteryClassID.indexOf(this.lcode.slice(0,2)) > -1){
+        this.LotteryList = item.LotteryList.map(code=>{
+          var el = state.LotteryList[code]
+          return el
+        })
+      }
+    })
+  },
+  data(){
+    return {
+      LotteryList: [],//彩种list
+      ltype: '',      //彩种类型
+      lcode: ''       //彩种code
+    }
+  },
+  computed:{
+    ifShowTypeSelect (){
+      return state.lt.box === 'typeSelect'
+    },
+    ifShowModeSelect (){
+      return this.$store.state.lt.box === 'modeSelect'
+    },
+    LotteryName: ()=>state.lt.lottery.LotteryName,
+    config:()=>state.lt.config,
+    award:()=>state.lt.award,
+    odds:()=>state.lt.Odds['K3']
   },
   methods:{
     back2index(){
       store.commit('lt_leaveLottery')
       this.$router.push('/index')
     },
+    //彩种选择框，切换
+    toggleTypeSelect(){
+      this.$store.state.lt.box === 'typeSelect' ?
+         this.$store.commit('lt_changeBox', '') :
+           this.$store.commit('lt_changeBox', 'typeSelect')
+    },
+    //玩法选择框，切换
+    toggleModeSelect(){
+      this.$store.state.lt.box === 'modeSelect' ?
+         this.$store.commit('lt_changeBox', '') :
+           this.$store.commit('lt_changeBox', 'modeSelect')
+    },
+    //更改彩种
+    changeLottery(code){
+      this.$store.dispatch('lt_updateLottery', code)
+    },
+    renderRebate(mode){
+      var rebate
+      this.odds.forEach(item=>{
+        if(mode === item.PlayCode){
+          rebate = item.Bonus
+        }
+      })
+
+      if(rebate.indexOf(',') > -1){
+        var rebateArr = rebate.split(',')
+        return `${rebateArr[rebateArr.length -1]}-${rebateArr[0]}倍`
+      }else{
+        return `赔率${rebate}倍`
+      }
+    }
   }
 }
 </script>

@@ -347,12 +347,20 @@
 	      	//添加bet到plan中
 	      	lt_addBet:(state)=>{
 	      		var baseBet = new BaseBet()
+	      		var {power,buy_count} = state.chaseConf
+	      		if(power > 1 || buy_count > 1){
+	      			baseBet.power2one()
+	      		}
 	      		state.basket.push(baseBet)
 	      		store.commit('lt_clearBet')
 	      		store.dispatch('lt_ordinaryChase')
 	      	},
-	      	lt_addRandomBet:(state, arr)=>{
-	      		state.basket.push(arr)
+	      	lt_addRandomBet:(state, randomBet)=>{
+	      		var {power,buy_count} = state.chaseConf
+	      		if(power > 1 || buy_count > 1){
+	      			randomBet.power2one()
+	      		}
+	      		state.basket.push(randomBet)
 	      		store.dispatch('lt_ordinaryChase')
 	      	},
 	      	//清空bet
@@ -367,11 +375,19 @@
       			for(var item in state.tmp){
 		      		state.tmp[item] = []
 		      	}
+		      	store.dispatch('lt_ordinaryChase')
 	      	},
-	      	lt_clearBasket:(state)=>{state.basket = []},
-	      	lt_deleteBet:(state, index)=>{state.basket.splice(index,1)},
+	      	lt_clearBasket:(state)=>{
+	      		state.basket = [];
+	      		store.commit('lt_setScheme', [])
+	      	},
+	      	lt_deleteBet:(state, index)=>{
+	      		state.basket.splice(index,1)
+	      		store.dispatch('lt_ordinaryChase')
+	      	},
 	      	//离开彩种页
 	      	lt_leaveLottery:(state)=>{
+	      		store.commit('lt_changeBox', '')			//将所有弹出框收起
 	      		store.commit('lt_clearBasket')
 	      		store.commit('lt_clearBet')
 	      		state.bet.betting_model = 1
@@ -683,10 +699,12 @@
 	      		}).then((json)=>{
 	      			if(json.Code === 1){
 								layer.msg(json.StrCode)
-								commit('lt_clearBet')
-		      			commit('lt_clearBasket')
-		      			commit('lt_changeBox', '')
-		      			commit('lt_setScheme', [])
+								commit('lt_clearBet')						//清空bet
+		      			commit('lt_clearBasket')				//清空basket
+		      			commit('lt_changeBox', '')			//将所有弹出框关闭
+		      			commit('lt_setScheme', [])			//清空scheme
+		      			commit('lt_setChasePower', 1)		//清空追号配置
+					      commit('lt_setChaseIssue', 1)
 		      			bus.$emit('clearChase')
 
 								//隔3s获取我的投注
@@ -750,14 +768,15 @@
 			  var defaultMode = {
 					'SSC':['五星', '直选'],
 					'11X5':['选一', '前三一码不定位']
-				};
+				}
+
 				if(this.ltype !== 'K3'){
 					var _group, _subGroup
 				  _group = defaultMode[this.ltype][0]			//默认的玩法群
 				  _subGroup = defaultMode[this.ltype][1]		//默认的玩法组
 	  			store.commit('lt_changeMode', state.lt.config[_group][_subGroup][0])
 				}else{
-					store.commit('lt_changeMode', state.lt.config['和值'])
+					store.commit('lt_changeMode', state.lt.config[0])
 				}
 			}
 		},

@@ -352,6 +352,11 @@ function BaseBet(count, betStr){
   this.compress = bet.compress                            //压缩字符串
 }
 
+BaseBet.prototype.power2one = function(){
+  this.graduation_count = 1
+  this.betting_money = +(PERBET * this.betting_count * this.betting_model * this.graduation_count).toFixed(2)
+}
+
 //生成追号的ajax
 function ChaseAjax(){
   var conf = state.lt.chaseConf,
