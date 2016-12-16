@@ -513,7 +513,6 @@ left: 0;
 .cartContent{
   box-shadow: 0 0 .5em #ccc;
   margin:0 .6em;
-  overflow: scroll;
   background: white;
 }
 .clear{
