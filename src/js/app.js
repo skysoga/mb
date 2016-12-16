@@ -13,7 +13,7 @@ export default {
   },
   watch:{
     $route(to,from){
-      RootApp.beforEnter(to)
+      //RootApp.beforEnter(to)
       if (state.needVerify>5) {
         console.log("强制踩点功能");
         RootApp.AjaxGetInitData(["CloudUrl"])

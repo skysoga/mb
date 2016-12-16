@@ -50,9 +50,9 @@
 			}
 		},
 		methods: {
-			getData: function(action, datanum, cb) {
+			getData: function(Action, datanum, cb) {
 				_fetch({
-					action,
+					Action,
 					datanum
 				}).then((data) => {
 					if (data.Code === 1) {

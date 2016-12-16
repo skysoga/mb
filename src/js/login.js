@@ -33,7 +33,7 @@ export default {
       _fetch(ajax).then((json)=>{
         if (json.Code===1) {
           this.$root.Login(this.UserName,function(){
-            $root.$router.push("/index")
+            $root.$router.push(state.login2path||"/index")
           })
         }else{
           layer.msgWarn(json.StrCode)

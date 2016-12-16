@@ -11,7 +11,7 @@
 </template>
 
 <script src="./js/app.js"></script>
-<style>
+<style lang='scss'>
 @font-face {
   font-family: 'iconfont';  /* project id 107431 */
   src: url('//at.alicdn.com/t/font_ina5jtbuld5wb3xr.eot');
@@ -35,6 +35,7 @@
       height: 40px;
       line-height: 40px;
       position: relative;
+      border-bottom: none;
   }
   .layermchild h3:after{
     content:"";
@@ -45,10 +46,33 @@
     border-bottom:1px solid #d8d8d8;
     -webkit-transform:scaleY(.5);
     -webkit-transform-origin:0 0;
+    transform:scaleY(.5);
+    transform-origin:0 0;
   }
   .layermbtn {
-      border-top: none;
-      color:#007bf4;
+    border-top: none;
+    color:#007bf4;
+    position: relative;
+    &:after{
+      content:"";
+      position: absolute;
+      top:0;
+      left:0px;
+      right:0px;
+      border-top:1px solid #d8d8d8;
+      -webkit-transform:scaleY(.5);
+      -webkit-transform-origin:0 0;
+      transform:scaleY(.5);
+      transform-origin:0 0;
+    }
+    span {
+        width: 100%;
+        font-size: 16px;
+        border-radius: 0 3px 0 3px;
+      &:first-child{
+        background:initial;
+      }
+    }
   }
   .layermbtn:before{
     content:"";
@@ -59,11 +83,8 @@
     border-bottom:1px solid #d8d8d8;
     -webkit-transform:scaleY(.5);
     -webkit-transform-origin:0 0;
-  }
-  .layermbtn span {
-      width: 100%;
-      font-size: 16px;
-      border-radius: 0 3px 0 3px;
+    transform:scaleY(.5);
+    transform-origin:0 0;
   }
   .layermbtn span:nth-last-of-type(2) {
       width: 49%;
