@@ -48,7 +48,7 @@
 <script>
 
 import {PERBET,Max_Rate,Max_Chase_Issue} from '../../JSconfig'
-import {normalSum3, normalSum2, diff3, diff2, combSum3, combSum2, BaseBet} from '../../js/kit'
+import {normalSum3, normalSum2, diff3, diff2, combSum3, combSum2, BaseBet,bus} from '../../js/kit'
 function getBetStr(arr){
   arr = arr.map(item=>item.join(' ')).map(item=>{
     if(item===''){
@@ -116,7 +116,6 @@ function getTag(code, config){
     }
   }
 }
-
 
 var noteBetList = ['H12','G12','F12','F24','F26','F27','E12','E24','E26','E27','D12','D24','D26','D27','C12','C22','B12','B22']
 //如果是文本框的形式，返回字符串即可
@@ -267,6 +266,12 @@ var specialMode = {
 }
 
 export default {
+  created(){
+    bus.$on('clearChase', ()=>{
+      this.chasePower = 1
+      this.chaseIssue = 1
+    })
+  },
   data(){
     return {
       PERBET:PERBET,
