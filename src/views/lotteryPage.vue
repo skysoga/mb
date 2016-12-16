@@ -636,7 +636,7 @@
 		      			commit('lt_clearBasket')
 		      			commit('lt_changeBox', '')
 		      			//隔3s获取我的投注
-		      			timer3 = setTimeout(()=>{
+		      			this.timer3 = setTimeout(()=>{
 		      				dispatch('lt_updateBetRecord')
 		      			}, 3000)
 		      		}else if(json.Code === -9){
@@ -669,7 +669,7 @@
 	      	},
 	      	lt_chase:({state, rootState, commit, dispatch})=>{
 	      		_fetch({
-	      			action: 'AddChaseBetting',
+	      			Action: 'AddChaseBetting',
 							data: new ChaseAjax()
 	      		}).then((json)=>{
 	      			if(json.Code === 1){
