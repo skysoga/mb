@@ -188,52 +188,65 @@ $qingse:#caebda;
       // line-height:1.5em;
     }
   }
-  table{
-    // $qingse:#80c0a5;
-    display:none;
-    border-top:1px solid rgba(255,255,255,.3);
-    background-color:#22563f;
-    width:16rem;
-    font-size:.7em;
-    color:$qingse;
-    text-align: center;
-    tr{
-      height:2em;
-      &:nth-of-type(1){
-        border-bottom:1px solid #212121;
-        td:nth-of-type(1){
-          border-right:0 none;
-          // text-align: center;
-        }
+}
+.openPast,.myBet{
+  // $qingse:#80c0a5;
+  display:none;
+  border-top:1px solid rgba(255,255,255,.3);
+  background-color:#22563f;
+  width:16rem;
+  font-size:.7em;
+  color:$qingse;
+  text-align: center;
+  clear: both;
+  tr{
+    height:2em;
+    &:nth-of-type(1){
+      border-bottom:1px solid #212121;
+      td:nth-of-type(1){
+        border-right:0 none;
+        // text-align: center;
       }
     }
-    td:nth-of-type(1){
-      width:4.5rem;
-      border-right:1px solid #212121;
-      // text-indent:3em;
-      // text-align: right;
-      i{
-        display:block;
-        color:#212121;
-        float:right;
-        transform:translate(55%,0);
-      }
+  }
+  td:nth-of-type(1){
+    width:4.5rem;
+    border-right:1px solid #212121;
+    // text-indent:3em;
+    // text-align: right;
+    i{
+      display:block;
+      color:#212121;
+      float:right;
+      transform:translate(55%,0);
     }
-    td:nth-of-type(2){
-      width:4.5rem;
-      .Dice{
-        width:1.42em;height:1.42em;
-      }
+  }
+  td:nth-of-type(2){
+    width:4.5rem;
+    .Dice{
+      width:1.42em;height:1.42em;
     }
-    td:nth-of-type(3){
-      width:2rem;
-    }
-    td:nth-of-type(4){
-      width:2rem;
-    }
-    td:nth-of-type(5){
-      width:2rem;
-    }
+  }
+  td:nth-of-type(3){
+    width:2.33333rem;
+  }
+  td:nth-of-type(4){
+    width:2.33333rem;
+  }
+  td:nth-of-type(5){
+    width:2.33334rem;
+  }
+}
+.myBet{
+  td:nth-of-type(1){
+    width:5.33333rem;
+    border-right: none;
+  }
+  td:nth-of-type(2){
+    width:5.33333rem;
+  }
+  td:nth-of-type(3){
+    width:5.33334rem;
   }
 }
 footer.bottom{
