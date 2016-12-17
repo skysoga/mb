@@ -124,7 +124,7 @@
 						 this.$store.commit('lt_changeBox', 'typeSelect')
 			},
       back2index(){
-        store.commit('lt_leaveLottery')
+        // store.commit('lt_leaveLottery')
         this.$router.push('/index')
       },
       addSubGroupClass(name){
@@ -162,7 +162,7 @@
 
 <style lang = "scss" scoped>
 	/*@import '../../scss/newssc.scss';*/
-  
+
 .active:active{
   background: initial !important;
 }

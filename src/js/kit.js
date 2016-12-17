@@ -357,6 +357,11 @@ BaseBet.prototype.power2one = function(){
   this.betting_money = +(PERBET * this.betting_count * this.betting_model * this.graduation_count).toFixed(2)
 }
 
+BaseBet.prototype.setRebate = function(rebate){
+  var lt = state.lt
+  this.betting_point = rebate + '-' + lt.Rebate[lt.lottery.LotteryType]
+}
+
 //生成追号的ajax
 function ChaseAjax(){
   var conf = state.lt.chaseConf,
@@ -515,7 +520,7 @@ function computeIssue(code, index){
       ,_index  //那一天的第几期
       ,dateStr    //日期字符串
 
-  // console.log(state.PlanLen)
+  if(!state.lt.PlanLen)return
   days = Math.floor(index/state.lt.PlanLen)
   _index = index - days * state.lt.PlanLen;
   //这里挂各特殊彩种的处理函数

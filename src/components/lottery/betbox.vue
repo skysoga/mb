@@ -13,21 +13,11 @@
       </div>
 
       <div class="numberContent">
-        <a v-for = "(item, index) in itemArr"
+        <a v-for = "item in itemArr"
            @click = "choose(item)"
            :class = "chosen.indexOf(item) > -1 ? 'curr': ''">
            <span>{{item}}</span>
         </a>
-   <!--      <a class="curr"><span>0</span></a>
-        <a><span>1</span></a>
-        <a><span>2</span></a>
-        <a><span>3</span></a>
-        <a><span>4</span></a>
-        <a><span>5</span></a>
-        <a><span>6</span></a>
-        <a><span>7</span></a>
-        <a><span>8</span></a>
-        <a><span>9</span></a> -->
       </div>
     </div>
 </template>
@@ -83,11 +73,6 @@ export default {
   props:['alias'],
   created(){
     this.config = cfg[this.alias]
-    store.commit({
-      type:'lt_updateTmp',
-      alias: this.alias,
-      arr: []
-    })
   },
   data(){
     return {
