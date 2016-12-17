@@ -34,7 +34,7 @@
     </div>
     <div class="result fix" ref = "result">
       <div class="left">
-        <span>{{(chasePower===1 && chaseIssue===1)?basketTotal:schemeTotal}}元</span>
+        <span>{{total}}元</span>
         <!-- <em>可用余额 88.80元</em> -->
       </div>
       <div class="right" @click = "confirmBet">
@@ -303,6 +303,9 @@ export default {
       }
       return +(total).toFixed(2)
     },
+    total(){
+      return (this.chasePower > 1 || this.chaseIssue > 1) ? this.schemeTotal : this.basketTotal
+    },
     lottery:()=>state.lt.lottery.LotteryName,
     NowIssue:()=>state.lt.NowIssue,
     showBubble(){
@@ -331,8 +334,10 @@ export default {
           },()=>{})
         }
       }else{
-        //如果追号倍数和期号任一大于1,则为普通追号
-        store.dispatch('lt_chase')      //追号投注
+        if(this.basket.length){
+          //如果追号倍数和期号任一大于1,则为普通追号
+          store.dispatch('lt_chase')      //追号投注
+        }
       }
     },
     deleteBet(index){
@@ -357,9 +362,9 @@ export default {
       if(this.chasePower.search(/[^\d]+/) > -1 || this.chasePower <= 0){
         this.chasePower = 1
       }else{
-        if(this.chasePower > 1){
-          store.commit('lt_basketPowerTo1')
-          store.commit('lt_setChasePower', +this.chasePower)
+        store.commit('lt_basketPowerTo1')
+        store.commit('lt_setChasePower', +this.chasePower)
+        if(this.chasePower > 1 || this.chaseIssue > 1){
           store.dispatch('lt_ordinaryChase')
         }
 
@@ -369,15 +374,16 @@ export default {
           layer.msgWarn(`最多${Max_Rate}倍`)
         }
       }
+
     },
     //改变普通追号期数
     issueChange(){
       if(this.chaseIssue.search(/[^\d]+/) > -1 || this.chaseIssue <= 0){
         this.chaseIssue = 1
       }else{
-        if(this.chaseIssue > 1){
-          store.commit('lt_basketPowerTo1')
-          store.commit('lt_setChaseIssue', +this.chaseIssue)
+        store.commit('lt_basketPowerTo1')
+        store.commit('lt_setChaseIssue', +this.chaseIssue)
+        if(this.chaseIssue > 1 || this.chasePower > 1){
           store.dispatch('lt_ordinaryChase')
         }
         if(this.chaseIssue > Max_Chase_Issue){
@@ -392,20 +398,6 @@ export default {
       store.commit('lt_isStopAfterWin', this.isStopAfterWin)
     }
   },
-  directives:{
-    'dynamic-height':{
-      'componentUpdated'(el, binding, vnode){
-        var vm = vnode.context,
-            bodyHeight = window.screen.height,
-            h1 = vm.$refs.playSort.offsetHeight,
-            h2 = vm.$refs.someBtn.offsetHeight,
-            h3 = vm.$refs.change.offsetHeight,
-            h4 = vm.$refs.result.offsetHeight
-
-        el.style.height = bodyHeight - h1 - h2 - h3 - h4 + 'px'
-      }
-    }
-  }
 }
 </script>
 

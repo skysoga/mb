@@ -80,8 +80,7 @@
 		},
 		data () {
 			return {
-				LotteryList: [],
-				LotteryName: '',
+				LotteryList: [],//彩种list
 				ltype: '',			//彩种类型
 				lcode: ''				//彩种code
 			}
@@ -158,18 +157,6 @@
 				return this.LotteryName.replace(removeName[this.ltype], '')
 			}
 		}),
-    directives:{
-      'dynamic-height':{
-        'componentUpdated'(el, binding, vnode){
-          var vm = vnode.context,
-              bodyHeight = window.screen.height,
-              h1 = vm.$refs.lotterySort.offsetHeight,
-              h2 = vm.$refs.betFilter.offsetHeight
-
-          el.style.height = bodyHeight - h1 - h2 + 'px'
-        }
-      }
-    }
 	}
 </script>
 
