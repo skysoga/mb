@@ -131,7 +131,7 @@ import BottomBox from '../components/bottom-box';
               if(iMo=='三星'||iMo=='二星'||iMo=='/双'){
                   set=true;
               }
-              var Num=this.SetOdd(isMode[i].Odd[0],isMode[i].Odd[1],set);//完整数组this.setArrData(isMode[i].Odd,set);
+              var Num=this.SetOdd(isMode[i].Odd[0],isMode[i].Odd[1],set);
               isArr.Data.push(Num);
           }
           return isArr
