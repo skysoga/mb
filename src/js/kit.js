@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import {PERBET} from '../JSconfig'
+import {PERBET, DAY_TIME} from '../JSconfig'
 var bus = new Vue()     //空vue用来做事件管理
 
 //阶乘
@@ -566,7 +566,6 @@ function getSSCRebate(mode, Odds){
 }
 
 function getK3Rebate(mode, Odds){
-  console.log(mode, Odds)
   for(var i = 0;i < Odds.length;i++){
     if(Odds[i].PlayCode === mode){
       if(Odds[i].Bonus.indexOf(',') > -1){
