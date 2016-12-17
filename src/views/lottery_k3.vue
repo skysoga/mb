@@ -54,7 +54,7 @@
     </div>
 
     <!-- 往期开奖结果 -->
-    <table style="display: block" v-show = "ifShowPastOpen">
+    <table class="openPast" style="display: block" v-show = "ifShowPastOpen">
       <tr><td>期号</td> <td>开奖号码</td> <td>和值</td> <td>大小</td> <td>单双</td></tr>
       <tr v-for = "item in pastOpen">
         <td>&nbsp;&nbsp;&nbsp;{{item.IssueNo}}<i>—</i></td>
@@ -68,7 +68,7 @@
     </table>
 
     <!-- 我的投注 -->
-    <table style="display: block" v-show = "ifShowBetRecord">
+    <table class="myBet" style="display: block" v-show = "ifShowBetRecord">
       <tr><td>期号</td> <td>投注金额</td><td>奖金</td></tr>
       <tr v-for = "item in BetRecord">
         <td>{{item.issueNo.slice(4)}}</td>
