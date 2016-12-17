@@ -1,6 +1,6 @@
 <template>
-  <div class="isLotteryLine fix" v-if = "$store.state.lt.OldIssue">
-    <div class="isLottery" @click.stop = "togglePastOpen" :class = "{active:ifShowPastOpen}">
+  <div class="isLotteryLine fix" v-if = "$store.state.lt.OldIssue" :class = "{active:ifShowPastOpen}">
+    <div class="isLottery" @click.stop = "togglePastOpen">
       <span>{{oldIssue}}期开奖号码<i class="iconfont">&#xe601;</i></span>
       <!-- 开奖号码 -->
       <div class="openNumber">
@@ -45,7 +45,6 @@ export default {
       arr = arr.map(circle)
       this.wait4Results = arr
     },40)
-    console.log(state.lt.OldIssue)
   },
   data(){
     return {

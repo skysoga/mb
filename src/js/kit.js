@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import {PERBET} from '../JSconfig'
+import {PERBET, DAY_TIME} from '../JSconfig'
 var bus = new Vue()     //空vue用来做事件管理
 
 //阶乘
@@ -352,6 +352,86 @@ function BaseBet(count, betStr){
   this.compress = bet.compress                            //压缩字符串
 }
 
+BaseBet.prototype.power2one = function(){
+  this.graduation_count = 1
+  this.betting_money = +(PERBET * this.betting_count * this.betting_model * this.graduation_count).toFixed(2)
+}
+
+//生成追号的ajax
+function ChaseAjax(){
+  var conf = state.lt.chaseConf,
+      lt = state.lt
+
+  this.before_issueNo = conf.before_issueNo;
+  this.before_eamings_cash = conf.before_eamings_cash;
+  this.after_eamings_cash = conf.after_eamings_cash;
+  this.before_earnings_rate = conf.before_earnings_rate;
+  this.after_earnings_rate = conf.after_earnings_rate;
+  this.isstop_afterwinning = +conf.isstop_afterwinning;
+
+  this.start_issueNo = lt.NowIssue;       //开始的期号
+  this.lottery_code = lt.lottery.LotteryCode;           //玩法类型
+
+  this.chase_money = statistics()[1] * 1;     //总共多少钱
+  this.buy_count = conf.buy_count;            //追多少期
+
+  this.betting = deleteCompress(lt.basket, true)    //有压缩
+  this.shceme = lt.scheme;
+}
+
+function Scheme(issueStr, power, money){
+  this.issueNo = issueStr
+  this.graduation_count = power
+  this.money = money
+}
+
+//获得方案列表中的总注数
+function getBasketAmount(){
+  var totalNum = 0, totalMoney = 0, basket = state.lt.basket
+  for(var i = 0, len = basket.length; i < len;i++){
+    var el = basket[i]
+    totalNum += el.betting_count
+    totalMoney += el.betting_money
+  }
+  return [totalNum, totalMoney];
+}
+
+//统计总的注数和金额--根据当前的scheme去计算
+function statistics(){
+  var lt = state.lt,
+      basket = lt.basket,
+      scheme = lt.scheme,
+      len = scheme.length
+
+  var totalBet = len *  getBasketAmount(basket)[0];  //总的注数 = 期数 *  每期注数
+  var totalMoney = 0;     //总的金额  = 每期金额累加
+  for(var i = 0; i < len; i++){
+    totalMoney += scheme[i].money;
+  }
+
+  totalMoney = totalMoney.toFixed(2);
+  return [totalBet, totalMoney];
+}
+
+
+function deleteCompress(basket, ifChase){
+  return basket.map(function(item){
+              var cloneItem = easyClone(item);
+              if(cloneItem.compress){
+                cloneItem.betting_number = cloneItem.compress;
+              }
+
+              if(ifChase){
+                delete cloneItem.betting_issuseNo
+                delete cloneItem.graduation_count
+              }
+
+
+              delete cloneItem.compress;
+              return cloneItem;
+          })
+}
+
 function compress(source){
   source = unique(source.map(function(item){return +item})).sort(function(a,b){return a-b})
   //如果只有一注，直接返回
@@ -429,6 +509,76 @@ var throttle = function(delay){
   }
 }(400)
 
+//根据传入的code,和彩种index来返回 期号字符串
+function computeIssue(code, index){
+  var days    //和当前期差几天
+      ,_index  //那一天的第几期
+      ,dateStr    //日期字符串
 
-export {factorial, mul, C, combNoRepeat, unique, normalSum2, normalSum3, accumulate,
-  diff2, diff3, combSum2, combSum3, bus, BaseBet, compress, throttle, easyClone}
+  // console.log(state.PlanLen)
+  days = Math.floor(index/state.lt.PlanLen)
+  _index = index - days * state.lt.PlanLen;
+  //这里挂各特殊彩种的处理函数
+  var handler = {
+    '1001':function(){
+      (_index > 84) && days--
+    },
+  }
+
+  //计算期号字符串
+  var handleResult
+  handler[code] && (handleResult = handler[code]())   //特殊彩种的特殊处理
+
+  if(handleResult){
+    return handleResult
+  }else{
+    if(days){
+      var todayTime = new Date(state.lt.Todaystr.replace(/(\d{4})(\d{2})(\d{2})/,"$1/$2/$3")).getTime();
+      dateStr = new Date(todayTime + days * DAY_TIME).format('yyyyMMdd');
+    }else{
+      dateStr = state.lt.Todaystr;
+    }
+    return dateStr + state.lt.LotteryPlan[_index].IssueNo
+  }
+}
+
+function getSSCRebate(mode, Odds){
+  //前三中三后三一样，前二后二一样
+  switch(mode[0]){
+    case 'E':
+    case 'D':
+      mode = 'F' + mode.slice(1);
+      break;
+    case 'B':
+      mode = 'C' + mode.slice(1);
+      break;
+    case 'I':
+      if(mode === 'I92')mode = 'I91';
+      if(mode === 'I94' || mode === 'I95')mode = 'I93';
+      break;
+  }
+  var rebateSSC = Odds
+  for(var i = 0;i < rebateSSC.length;i++){
+    if(rebateSSC[i].PlayCode === mode){
+      return rebateSSC[i].Bonus;
+    }
+  }
+}
+
+function getK3Rebate(mode, Odds){
+  for(var i = 0;i < Odds.length;i++){
+    if(Odds[i].PlayCode === mode){
+      if(Odds[i].Bonus.indexOf(',') > -1){
+        return Odds[i].Bonus.split(',')
+      }else{
+        return Odds[i].Bonus
+      }
+    }
+  }
+}
+
+export {factorial, mul, C, combNoRepeat, unique, normalSum2,
+  normalSum3, accumulate,diff2, diff3, combSum2, combSum3,
+   bus, BaseBet, compress, throttle, easyClone, ChaseAjax,
+    deleteCompress, Scheme, getBasketAmount,computeIssue,
+    getSSCRebate,getK3Rebate}

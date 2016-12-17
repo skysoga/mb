@@ -23,7 +23,7 @@
 									</li>
 								</ul>
 
-								<ul class="betFilterAnd" v-dynamic-height>
+								<ul class="betFilterAnd">
 									<li class="fix"
                       v-for = "(subGroup, subGroupName) in config[mode.group]"
                       :class = "addSubGroupClass(subGroupName)">
@@ -80,8 +80,7 @@
 		},
 		data () {
 			return {
-				LotteryList: [],
-				LotteryName: '',
+				LotteryList: [],//彩种list
 				ltype: '',			//彩种类型
 				lcode: ''				//彩种code
 			}
@@ -158,23 +157,15 @@
 				return this.LotteryName.replace(removeName[this.ltype], '')
 			}
 		}),
-    directives:{
-      'dynamic-height':{
-        'componentUpdated'(el, binding, vnode){
-          var vm = vnode.context,
-              bodyHeight = window.screen.height,
-              h1 = vm.$refs.lotterySort.offsetHeight,
-              h2 = vm.$refs.betFilter.offsetHeight
-
-          el.style.height = bodyHeight - h1 - h2 + 'px'
-        }
-      }
-    }
 	}
 </script>
 
 <style lang = "scss" scoped>
 	/*@import '../../scss/newssc.scss';*/
+  
+.active:active{
+  background: initial !important;
+}
 @import '../../scss/scssConfig','../../scss/mixin';
 	.sscHeader{
   background: #dc3b40;
@@ -200,6 +191,15 @@
     display: inline-block;
     height: 2.3em;
     line-height: 2.3em;
+    .iconfont{
+      transition: .6s;
+      display: inline-block;
+    }
+    &.active{
+      .iconfont{
+        transform: rotate(180deg);
+      }
+    }
     p{
       font-size: 0.6em;
       display: inline-block;
@@ -245,9 +245,16 @@
       padding-left:0.2em;
       font-size: 0.9em;
     }
+    .iconfont{
+      transition: .6s;
+      display: inline-block;
+    }
     &.active{
       .lotteryList{
         display: block;
+      }
+      .iconfont{
+        transform: rotate(180deg);
       }
     }
   }
@@ -258,7 +265,7 @@
   right: 0;
   top:2.9em;
   background: white;
-  width: 11em;
+  width: 5.5em;
   box-shadow: 0 2px 10px rgba(41, 41, 41, 0.08);
   a{
     color:#333;
@@ -320,13 +327,13 @@
     }
 }
 .betFilter .curr{
-  background: #ff9726;
-  border:1px solid #ff9726;
+  background: #dc3b40;
+  border:1px solid #dc3b40;
   color: white;
 }
 .betFilterAnd .curr{
-  border:1px solid #ff9726;
-  color:#ff9726;
+  border:1px solid #dc3b40;
+  color:#dc3b40;
 }
 .betFilterAnd{
   text-align: left;

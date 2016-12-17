@@ -313,7 +313,6 @@ var routes = [{
   meta:{
 	title:"绑定银行卡",
 	link:'/manageBankcard',
-  verify:'UserFirstCardInfo',
 	user:true
   },
   component: setBankcard

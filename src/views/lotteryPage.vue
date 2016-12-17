@@ -11,7 +11,7 @@
 	import Vue from 'vue'
 	import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 	import {DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../JSconfig'
-	import {bus, BaseBet, easyClone} from '../js/kit'
+	import {bus, BaseBet, ChaseAjax, easyClone, deleteCompress, Scheme, getBasketAmount, computeIssue, getSSCRebate, getK3Rebate} from '../js/kit'
 
 	export default{
 		beforeRouteEnter(to, from, next){
@@ -141,8 +141,7 @@
   			'K3': getK3Rebate
   		}
 
-			var timer1, timer2, timer3
-					,wait4Results = 0
+			var wait4Results = 0
 					,wait4BetRecord = false
 
 
@@ -180,7 +179,18 @@
 		      	'notebet':[]
 		      },        //即时的投注号码情况
 		      basket:[],      //号码篮
-		      scheme:{},      //追号相关
+		      //追号配置
+		      chaseConf:{
+	      		before_issueNo: -1,
+	      		before_eamings_cash: -1,
+	      		after_eamings_cash: -1,
+	      		before_earnings_rate: -1,
+	      		after_earnings_rate: -1,
+	      		isstop_afterwinning: true,
+	      		buy_count: 1,                 //追多少期
+	      		power:1												//每期多少倍(普通追号)
+	      	},
+	      	scheme:[],
 		      mode:{
 		        name: '',     //直选复式
 		        mode: '',     //H11
@@ -218,7 +228,6 @@
 
 		    },
 		    getters: {
-
 		    },
 		    mutations:{
 		      //变更弹出框
@@ -284,47 +293,13 @@
 	      	},
 	      	//更新期号时
 	      	lt_updateIssue:(state)=>{
-	      		//根据传入的code,和彩种index来返回 期号字符串
-	      		function computeIssue(code, index){
-	      			var days 		//和当前期差几天
-	      					,_index  //那一天的第几期
-	      					,dateStr		//日期字符串
-
-	      			days = Math.floor(index/state.PlanLen)
-	      			_index = index - days * state.PlanLen;
-	      			//这里挂各特殊彩种的处理函数
-	      			var handler = {
-	      				'1001':function(){
-	      					(_index > 84) && days--
-	      				},
-	      			}
-
-	      			//计算期号字符串
-	      			var handleResult
-	      			handler[code] && (handleResult = handler[code]())		//特殊彩种的特殊处理
-
-	      			if(handleResult){
-	      				return handleResult
-	      			}else{
-	      				if(days){
-		      				var todayTime = new Date(state.Todaystr.replace(/(\d{4})(\d{2})(\d{2})/,"$1/$2/$3")).getTime();
-						      dateStr = new Date(todayTime + days * DAY_TIME).format('yyyyMMdd');
-	      				}else{
-									dateStr = state.Todaystr;
-	      				}
-	      				return dateStr + state.LotteryPlan[_index].IssueNo
-	      			}
-	      		}
-
-	      		var code = state.lottery.Lotterycode 	//当前彩种号
+	      		var code = state.lottery.LotteryCode 	//当前彩种号
   		      Vue.set(state, 'NowIssue', computeIssue(code, state.IssueNo))				//当前期 (可以下注的这一期)
 			      Vue.set(state, 'OldIssue', computeIssue(code, state.IssueNo - 1)) 	//上一期
 			      state.displayResults = false	//进入等待开奖动画
 			      state.basket.forEach(bet=>{
 			      	bet.betting_issuseNo = computeIssue(code, state.IssueNo)
 			      })
-
-
 	      	},
 	      	lt_setLotteryResult:(state, {code, results})=>{							//设置某一彩种的开奖结果
 	      		Vue.set(state.LotteryResults, code, results)
@@ -372,33 +347,61 @@
 	      	//添加bet到plan中
 	      	lt_addBet:(state)=>{
 	      		var baseBet = new BaseBet()
+	      		var {power,buy_count} = state.chaseConf
+	      		if(power > 1 || buy_count > 1){
+	      			baseBet.power2one()
+	      		}
 	      		state.basket.push(baseBet)
 	      		store.commit('lt_clearBet')
+	      		store.dispatch('lt_ordinaryChase')
 	      	},
-	      	lt_addRandomBet:(state, arr)=>{
-	      		state.basket.push(arr)
+	      	lt_addRandomBet:(state, randomBet)=>{
+	      		var {power,buy_count} = state.chaseConf
+	      		if(power > 1 || buy_count > 1){
+	      			randomBet.power2one()
+	      		}
+	      		state.basket.push(randomBet)
+	      		store.dispatch('lt_ordinaryChase')
 	      	},
 	      	//清空bet
 	      	lt_clearBet:(state)=>{
 	      		state.bet.betting_number = ''
 	      		state.bet.betting_count = 0
 	      		state.bet.betting_money = 0
-	      		state.bet.graduation_count = 1
+	      		// state.bet.graduation_count = 1
+	      		//这里倍数不清1，看看后面需不需要
 	      		state.bet.compress = ''
+
       			for(var item in state.tmp){
 		      		state.tmp[item] = []
 		      	}
+		      	store.dispatch('lt_ordinaryChase')
 	      	},
-	      	lt_clearBasket:(state)=>{state.basket = []},
-	      	lt_deleteBet:(state, index)=>{state.basket.splice(index,1)},
+	      	lt_clearBasket:(state)=>{
+	      		state.basket = [];
+	      		store.commit('lt_setScheme', [])
+	      	},
+	      	lt_deleteBet:(state, index)=>{
+	      		state.basket.splice(index,1)
+	      		store.dispatch('lt_ordinaryChase')
+	      	},
 	      	//离开彩种页
 	      	lt_leaveLottery:(state)=>{
+	      		store.commit('lt_changeBox', '')			//将所有弹出框收起
 	      		store.commit('lt_clearBasket')
 	      		store.commit('lt_clearBet')
 	      		state.bet.betting_model = 1
 	      	},
-	      	lt_setBetCompress:(state, str)=>{
-	      		state.bet.compress = str
+	      	lt_setBetCompress:(state, str)=>{state.bet.compress = str},
+	      	lt_isStopAfterWin:(state, bool)=>{state.chaseConf.isstop_afterwinning = bool},
+	      	lt_setChaseIssue:(state, chaseIssue)=>{state.chaseConf.buy_count = chaseIssue},
+	      	lt_setChasePower:(state, chasePower)=>{state.chaseConf.power = chasePower},
+	      	lt_setScheme:(state, scheme)=>{state.scheme = scheme},
+	      	lt_basketPowerTo1:(state)=>{
+	      		state.basket.forEach(bet=>{
+	      			bet.graduation_count = 1
+	      			bet.betting_money = +(PERBET * bet.betting_count * bet.graduation_count * bet.betting_model).toFixed(2)
+	      		})
 	      	}
 		    },
 
@@ -417,8 +420,8 @@
 		      	dispatch('lt_getResults', code)		//获得开奖结果
 		      	wait4Results = 0
 		      	wait4BetRecord = false
-		      	clearTimeout(timer1)
-		      	clearTimeout(timer2)
+		      	clearTimeout(this.timer1)
+		      	clearTimeout(this.timer2)
 
 		      	dispatch('lt_updatePlan', code)		//更新计划
 		      },
@@ -633,14 +636,12 @@
 								LotteryType: type
 							}).then((json)=>{
 								if(json.Code === 1){
-									console.log(json)
 									sessionStorage.setItem('Rebate' + type, JSON.stringify(json.BackData))
 									commit({
 				      			type:'lt_setRebate',
 				      			rebate: json.BackData,
 				      			LotteryType: type
 				      		})
-
 								}
 							})
 
@@ -648,14 +649,7 @@
 		      },
 		      //投注
 		      lt_confirmBet:({state, rootState, commit, dispatch})=>{
-		      	var _basket = state.basket.map(function(item){
-								var cloneItem = easyClone(item);
-								if(cloneItem.compress){
-									cloneItem.betting_number = cloneItem.compress;
-								}
-								delete cloneItem.compress;
-								return cloneItem;
-						})
+		      	var _basket = deleteCompress(state.basket)
 
 		      	_fetch({
 		      		'Action':'AddBetting',
@@ -667,7 +661,7 @@
 		      			commit('lt_clearBasket')
 		      			commit('lt_changeBox', '')
 		      			//隔3s获取我的投注
-		      			timer3 = setTimeout(()=>{
+		      			this.timer3 = setTimeout(()=>{
 		      				dispatch('lt_updateBetRecord')
 		      			}, 3000)
 		      		}else if(json.Code === -9){
@@ -680,10 +674,56 @@
 		      			layer.msgWarn(json.StrCode)
 		      		}
 		      	})
-		      }
+		      },
+		      //普通追号
+	      	lt_ordinaryChase:({state, rootState, commit, dispatch})=>{
+	      		var basketTotal = getBasketAmount()[1],
+	      				scheme = [],
+	      				code = state.lottery.Lotterycode,
+	      				issueStr, power, money, issueNo
+
+	      		for(var i = 0, len = state.chaseConf.buy_count; i < len;i++){
+	      			issueNo = state.IssueNo + i
+							issueStr = computeIssue(code, issueNo)
+							power = state.chaseConf.power
+							money = (basketTotal * state.chaseConf.power).toFixed(4) * 1
+							scheme.push(new Scheme(issueStr, power, money))
+	      		}
+
+						commit('lt_setScheme', scheme)
+	      	},
+	      	lt_chase:({state, rootState, commit, dispatch})=>{
+	      		_fetch({
+	      			Action: 'AddChaseBetting',
+							data: new ChaseAjax()
+	      		}).then((json)=>{
+	      			if(json.Code === 1){
+								layer.msg(json.StrCode)
+								commit('lt_clearBet')						//清空bet
+		      			commit('lt_clearBasket')				//清空basket
+		      			commit('lt_changeBox', '')			//将所有弹出框关闭
+		      			commit('lt_setScheme', [])			//清空scheme
+		      			commit('lt_setChasePower', 1)		//清空追号配置
+					      commit('lt_setChaseIssue', 1)
+		      			bus.$emit('clearChase')
+
+								//隔3s获取我的投注
+		      			this.timer4 = setTimeout(()=>{
+		      				dispatch('lt_updateBetRecord')
+		      			}, 3000)
+							}else if(json.Code === -9){
+		      			//清除rebate
+		      			layer.alert(json.StrCode)
+				      	var type = state.lottery.LotteryType
+				      	sessionStorage.removeItem('Rebate' + type)
+				      	store.dispatch('lt_getRebate')
+							}else{
+								layer.msgWarn(json.StrCode);
+							}
+	      		})
+	      	}
 		    }
 		  }
-
 
 		  //从url上获取彩种type和彩种code
 		  ;[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
@@ -712,6 +752,11 @@
 			return {
 				ltype:'',  //SSC、K3、11X5
 				lcode:'',  //彩种code
+				timer1:null,
+				timer2:null,
+				timer3:null,
+				timer4:null,
+				baseloop:null
 			}
 		},
 		methods:{
@@ -723,58 +768,25 @@
 			  var defaultMode = {
 					'SSC':['五星', '直选'],
 					'11X5':['选一', '前三一码不定位']
-				};
+				}
+
 				if(this.ltype !== 'K3'){
 					var _group, _subGroup
 				  _group = defaultMode[this.ltype][0]			//默认的玩法群
 				  _subGroup = defaultMode[this.ltype][1]		//默认的玩法组
 	  			store.commit('lt_changeMode', state.lt.config[_group][_subGroup][0])
 				}else{
-					store.commit('lt_changeMode', state.lt.config['和值'])
+					store.commit('lt_changeMode', state.lt.config[0])
 				}
 			}
 		},
 		beforeDestroy(){
 			clearTimeout(this.timer1)
 			clearTimeout(this.timer2)
+			clearTimeout(this.timer3)
+			clearTimeout(this.timer4)
 			clearInterval(this.baseLoop)
 		}
 
 	}
-
-	function getSSCRebate(mode, Odds){
-    //前三中三后三一样，前二后二一样
-    switch(mode[0]){
-      case 'E':
-      case 'D':
-        mode = 'F' + mode.slice(1);
-        break;
-      case 'B':
-        mode = 'C' + mode.slice(1);
-        break;
-      case 'I':
-        if(mode === 'I92')mode = 'I91';
-        if(mode === 'I94' || mode === 'I95')mode = 'I93';
-        break;
-    }
-    var rebateSSC = Odds
-    for(var i = 0;i < rebateSSC.length;i++){
-      if(rebateSSC[i].PlayCode === mode){
-        return rebateSSC[i].Bonus;
-      }
-    }
-  }
-
-  function getK3Rebate(mode, Odds){
-  	console.log(mode, Odds)
-  	for(var i = 0;i < Odds.length;i++){
-  		if(Odds[i].PlayCode === mode){
-  			if(Odds[i].Bonus.indexOf(',') > -1){
-  				return Odds[i].Bonus.split(',')
-  			}else{
-  				return Odds[i].Bonus
-  			}
-  		}
-  	}
-  }
 </script>

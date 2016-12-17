@@ -119,14 +119,14 @@ export default {
     getBandId(name){
       for(var n in this.Banklist){
         if(this.Banklist[n]==name)return n
-    }
+      }
     },
     getCardlist(){
       var arr=['UserBankCardList']
       RootApp.GetInitData(arr,state=>{
         if(state.UserBankCardList){
           var CardLeng=state.UserBankCardList.length||0
-          if(CardLeng>=5){
+          if(CardLeng&&CardLeng>=5){
             layer.url("不能超过五张银行卡！","/manageBankcard")
           }
         }

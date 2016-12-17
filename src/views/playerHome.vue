@@ -55,7 +55,7 @@
       }
     },
     beforeRouteEnter(to,from,next){
-      console.log(from.path)
+      to.meta.link=from.path
       _fetch({Action:"GetCard",UserId:to.query.ID}).then((data)=>{
         next(vm=>{
           if(data.Code===1){
@@ -66,7 +66,6 @@
             }
           }else {
             layer.url(data.StrCode,from.path)
-            //layer.msgWarn(data.StrCode)
           }
         })
       })

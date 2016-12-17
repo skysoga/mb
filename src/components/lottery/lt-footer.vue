@@ -23,7 +23,7 @@
         <div class="multiple">
           <!-- 倍率 -->
           <em :class="canReduce ? '':'noMore'" @click = "reduce">-</em>
-          <input type="tel"  v-model.lazy = "power">
+          <input type="tel"  v-model.lazy = "power" @change = "powerChange">
           <em :class="canAdd ? '':'noMore'"  @click = "add">+</em>
         </div>
         <span>倍</span>
@@ -47,8 +47,6 @@
 import {bus} from '../../js/kit'
 import {Max_Rate} from '../../JSconfig'
 export default {
-  created(){
-  },
   data(){
     return {
       unitArr:[
@@ -96,6 +94,11 @@ export default {
       bus.$emit('clearNoteStr')   //清空文本框文字
       store.commit('lt_addBet')
     },
+    powerChange(){
+      if(this.power.search(/[^\d]+/) > -1 || this.power <= 0){
+        this.power = 1
+      }
+    },
     showBasket(){
      //如果号码篮没有注单， 就没有反应
       // if(this.betAmount <= 0){
@@ -125,7 +128,7 @@ $height:2.4em;
   width: 66.5%;
   float: left;
   height: 100%;
-  background: #212121;
+  background: #252625;
   position: relative;
 }
 .betCart{
@@ -140,7 +143,7 @@ $height:2.4em;
     width: 0;
     height: 0;
     border-top: $height/2 solid transparent;
-    border-left: 0.5em solid #212121;
+    border-left: 0.5em solid #252625;
     border-bottom: $height/2 solid transparent;
     left: 0;
     top: 0;
@@ -160,7 +163,7 @@ $height:2.4em;
       position: relative;
       width: 1em;
       em{
-        background: #ff8a00;
+        background: #dc3b40;
         position: absolute;
         border-radius: 50%;
         left: 0.2em;
@@ -307,14 +310,14 @@ $height:2.4em;
     }
   }
   .curr{
-    background: #ff8a00;
+    background: #dc3b40;
     color:white;
   }
 }
 .sscFooter.active{
   .sscBetInfo{
     .betContent{
-      background: #ff8a00;
+      background: #dc3b40;
       p{
         color:#ffebdd;
       }
@@ -328,7 +331,7 @@ $height:2.4em;
   }
   .betCart{
     &:before{
-      border-left: 0.6em solid #ff8a00;
+      border-left: 0.6em solid #dc3b40;
     }
   }
   .multipleCon{

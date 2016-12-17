@@ -9,7 +9,7 @@
     <div class="someBtn" ref = "someBtn"><a @click.stop = "random(1)">机选1注</a><a @click.stop = "random(5)">机选5注</a><a @click.stop = "back">继续选号</a>
     </div>
 
-    <div class="cartContent" v-dynamic-height>
+    <div class="cartContent">
       <ul class="numberbox">
         <li v-for = "(bet,index) in basket">
           <em>{{bet.betting_number}}</em>
@@ -24,16 +24,17 @@
   </div>
   <div class="cartTotal">
     <div class="change" ref = "change">
-      <label>投<input type="tel">倍</label>
-      <label>追<input type="tel">期
-        <div class="stop" v-show = "false">
-          <input type="checkbox" id="stop"><label for="stop">中奖后停止追号</label>
+      <label>投<input type="tel" v-model = "chasePower" @change = "powerChange">倍</label>
+      <label>追<input type="tel" v-model = "chaseIssue" @change = "issueChange">期
+        <div class="stop" v-show = "showBubble">
+          <input type="checkbox" id="stop" v-model = "isStopAfterWin" @change = "isStopAfterWinChange">
+          <label for="stop">中奖后停止追号</label>
         </div>
       </label>
     </div>
     <div class="result fix" ref = "result">
       <div class="left">
-        <span>{{basketTotal}}元</span>
+        <span>{{total}}元</span>
         <!-- <em>可用余额 88.80元</em> -->
       </div>
       <div class="right" @click = "confirmBet">
@@ -46,8 +47,8 @@
 
 <script>
 
-import {PERBET} from '../../JSconfig'
-import {normalSum3, normalSum2, diff3, diff2, combSum3, combSum2, BaseBet} from '../../js/kit'
+import {PERBET,Max_Rate,Max_Chase_Issue} from '../../JSconfig'
+import {normalSum3, normalSum2, diff3, diff2, combSum3, combSum2, BaseBet,bus} from '../../js/kit'
 function getBetStr(arr){
   arr = arr.map(item=>item.join(' ')).map(item=>{
     if(item===''){
@@ -115,7 +116,6 @@ function getTag(code, config){
     }
   }
 }
-
 
 var noteBetList = ['H12','G12','F12','F24','F26','F27','E12','E24','E26','E27','D12','D24','D26','D27','C12','C22','B12','B22']
 //如果是文本框的形式，返回字符串即可
@@ -266,13 +266,23 @@ var specialMode = {
 }
 
 export default {
+  created(){
+    bus.$on('clearChase', ()=>{
+      this.chasePower = 1
+      this.chaseIssue = 1
+    })
+  },
   data(){
     return {
-      PERBET:PERBET
+      PERBET:PERBET,
+      chasePower:1,
+      chaseIssue:1,
+      isStopAfterWin: true
     }
   },
   computed:{
     basket:()=>state.lt.basket,
+    scheme:()=>state.lt.scheme,
     ifShowBasket(){
       return this.$store.state.lt.box === 'basket'
     },
@@ -286,8 +296,21 @@ export default {
       }
       return +(total).toFixed(2)
     },
+    schemeTotal(){
+      var total = 0
+      for(var i = 0;i < this.scheme.length;i++){
+        total += this.scheme[i].money
+      }
+      return +(total).toFixed(2)
+    },
+    total(){
+      return (this.chasePower > 1 || this.chaseIssue > 1) ? this.schemeTotal : this.basketTotal
+    },
     lottery:()=>state.lt.lottery.LotteryName,
-    NowIssue:()=>state.lt.NowIssue
+    NowIssue:()=>state.lt.NowIssue,
+    showBubble(){
+      return this.chaseIssue > 1
+    }
   },
   methods:{
     //返回投注页
@@ -296,17 +319,25 @@ export default {
     },
     //确认投注
     confirmBet(){
-      var betDetail = []
-      this.basket.forEach(bet=>{
-        betDetail.push(`${this.getTag(bet.play_detail_code.slice(-3),this.config)[1]} ${bet.betting_number}`)
-      })
+      if(this.chasePower == 1 && this.chaseIssue == 1){
+        //如果追号倍数和期号都为1,则为普通投注
+        var betDetail = []
+        this.basket.forEach(bet=>{
+          betDetail.push(`${this.getTag(bet.play_detail_code.slice(-3),this.config)[1]} ${bet.betting_number}`)
+        })
 
-      var msg = `${this.lottery}: 第${this.NowIssue}期<br>投注金额: ${this.basketTotal}元<br>投注内容:<br>${betDetail.join('<br>')}`
+        var msg = `${this.lottery}: 第${this.NowIssue}期<br>投注金额: ${this.basketTotal}元<br>投注内容:<br>${betDetail.join('<br>')}`
 
-      if(this.basket.length){
-        layer.confirm(msg,()=>{
-          store.dispatch('lt_confirmBet')
-        },()=>{})
+        if(this.basket.length){
+          layer.confirm(msg,()=>{
+            store.dispatch('lt_confirmBet')
+          },()=>{})
+        }
+      }else{
+        if(this.basket.length){
+          //如果追号倍数和期号任一大于1,则为普通追号
+          store.dispatch('lt_chase')      //追号投注
+        }
       }
     },
     deleteBet(index){
@@ -318,62 +349,81 @@ export default {
     getTag:getTag,
     //机选n注
     random(n){
-
-      // function BaseBet(count, betStr){
-      //   var lt = state.lt,
-      //       bet = state.lt.bet,
-      //       _count = count || bet.betting_count,
-      //       _betStr = betStr || bet.betting_number
-
-      //   this.lottery_code = lt.lottery.LotteryCode,                     //彩种
-      //   this.play_detail_code = lt.lottery.LotteryCode + lt.mode.mode,  //玩法code
-      //   this.betting_number = _betStr,                       //投注号码
-
-      //   this.betting_count = _count,                         //这个方案多少注
-      //   this.betting_money = +(PERBET * _count * bet.betting_model * bet.graduation_count).toFixed(2),  //一注单价 * 投注数量 * 单位 * 倍数
-
-      //   this.betting_point = lt.award + '-' + lt.Rebate[lt.lottery.LotteryType]  ,          //赔率
-      //   this.betting_model = bet.betting_model,                   //元角分
-      //   this.betting_issuseNo = lt.NowIssue,                  //当前期号
-      //   this.graduation_count = bet.graduation_count                //当前倍率
-      // }
-
-
       for(var i = 0;i < n;i++){
         var randomFeed = randomCfg[this.mode]()
         var betStr = noteBetList.indexOf(this.mode) > -1 ? randomFeed : getBetStr(randomFeed)
-        var count = specialMode[this.mode] ? specialMode[this.mode](randomFeed) : 1     //有些机选不了一注的。至少n注
+        //有些机选不了一注的。至少n注
+        var count = specialMode[this.mode] ? specialMode[this.mode](randomFeed) : 1
         store.commit('lt_addRandomBet', new BaseBet(count, betStr))
       }
+    },
+    //改变普通追号倍数
+    powerChange(){
+      if(this.chasePower.search(/[^\d]+/) > -1 || this.chasePower <= 0){
+        this.chasePower = 1
+      }else{
+        store.commit('lt_basketPowerTo1')
+        store.commit('lt_setChasePower', +this.chasePower)
+        if(this.chasePower > 1 || this.chaseIssue > 1){
+          store.dispatch('lt_ordinaryChase')
+        }
+
+        if(this.chasePower > Max_Rate){
+          this.chasePower = Max_Rate
+          store.commit('lt_setChasePower', +this.chasePower)
+          layer.msgWarn(`最多${Max_Rate}倍`)
+        }
+      }
+
+    },
+    //改变普通追号期数
+    issueChange(){
+      if(this.chaseIssue.search(/[^\d]+/) > -1 || this.chaseIssue <= 0){
+        this.chaseIssue = 1
+      }else{
+        store.commit('lt_basketPowerTo1')
+        store.commit('lt_setChaseIssue', +this.chaseIssue)
+        if(this.chaseIssue > 1 || this.chasePower > 1){
+          store.dispatch('lt_ordinaryChase')
+        }
+        if(this.chaseIssue > Max_Chase_Issue){
+          this.chaseIssue = Max_Chase_Issue
+          store.commit('lt_setChaseIssue', +this.chaseIssue)
+          layer.msgWarn(`最多${Max_Chase_Issue}期`)
+        }
+      }
+    },
+    //改变中奖后是否停止追号的标志位
+    isStopAfterWinChange(){
+      store.commit('lt_isStopAfterWin', this.isStopAfterWin)
     }
   },
-  directives:{
-    'dynamic-height':{
-      'componentUpdated'(el, binding, vnode){
-        var vm = vnode.context,
-            bodyHeight = window.screen.height,
-            h1 = vm.$refs.playSort.offsetHeight,
-            h2 = vm.$refs.someBtn.offsetHeight,
-            h3 = vm.$refs.change.offsetHeight,
-            h4 = vm.$refs.result.offsetHeight
-
-        el.style.height = bodyHeight - h1 - h2 - h3 - h4 + 'px'
-      }
-    }
-  }
 }
 </script>
 
 <style lang = "scss" scoped>
+$bottomHeight : 2.4em;
 .cartTotal{
 position: fixed;
 width: 100%;
 bottom: 0;
 left: 0;
 .change{
-  background: #f8f8f8;
+  background: white;
   font-size: .7em;
-  padding: .8em 0;
+  padding: .6em 0;
+  &:before{
+    content:"";
+    position: absolute;
+    width: 32rem;
+    border-top:1px solid #ddd;
+    top:0;
+    left: 0;
+    webkit-transform:scaleY(.5);
+    webkit-transform-origin:0 0;
+    transform:scaleY(.5);
+    transform-origin:0 0;
+  }
   .stop{
     position: absolute;
     top:-4em;
@@ -417,14 +467,16 @@ left: 0;
     width: 4em;
     height: 2em;
     margin:0 .4em;
+    border-radius: .2em;
+    padding: 0 .4em;
   }
 }
 .result{
-  background: #ff8a00;
-  height: 3em;
+  background: #dc3b40;
+  height: $bottomHeight;
   .left{
     float: left;
-    height: 3em;
+    height: $bottomHeight;
     background: #212121;
     padding: .4em;
     line-height: 1em;
@@ -445,12 +497,12 @@ left: 0;
     position: relative;
     text-align: center;
     color:white;
-    height: 3em;
+    height: $bottomHeight;
     i{
       font-size: .8em;
-      line-height: 3.75em;
+      line-height: 3.1em;
       display: block;
-      height: 3.75em;
+      height: 3em;
     }
     &:before{
       content: "";
@@ -458,8 +510,8 @@ left: 0;
       width: 0;
       height: 0;
       border-left:0.6em solid #212121;
-      border-top: 1.5em solid hsla(0, 0%, 0%, 0);
-      border-bottom: 1.5em solid hsla(0, 0%, 0%, 0);
+      border-top: $bottomHeight/2 solid hsla(0, 0%, 0%, 0);
+      border-bottom: $bottomHeight/2 solid hsla(0, 0%, 0%, 0);
       left: 0;
       top: 0;
     }
@@ -469,7 +521,7 @@ left: 0;
 .cartContent{
   box-shadow: 0 0 .5em #ccc;
   margin:0 .6em;
-  overflow: scroll;
+  background: white;
 }
 .clear{
 background-color: white;
@@ -497,7 +549,7 @@ li{
   position: relative;
   em{
     display: block;
-    color:#ff8a00;
+    color:#dc3b40;
     font-size: .75em;
     line-height: 1.2em;
     white-space: nowrap;
@@ -513,6 +565,7 @@ li{
     display: block;
   }
   a{
+    font-size: .9em;
     display: block;
     position: absolute;
     right: 0;
@@ -536,28 +589,26 @@ li{
 }
 .cart{
 background: white;
-position: fixed;
-top:0;
-left: 0;
-height: 100%;
-width: 100%;
-z-index: 1000;
 header{
   height: 2.55556em;
 }
 }
 .cartMain{
-padding-top: 2.3em;
-height: 100%;
-background: #efeef4;
+padding-top: 5.16em;
+padding-bottom: 5.1em;
+min-height: 20em;
+background: #f9f8f0;
 }
 .someBtn{
 text-align: center;
 padding: .6em;
 box-shadow: 0 0 .5em #b9b9b9;
-position: relative;
+position: fixed;
 z-index: 99;
-background: white;
+background: #f9f8f0;
+top:2.3em;
+left: 0;
+width: 100%;
 a{
   display: inline-block;
   color:#333;
@@ -568,6 +619,7 @@ a{
   height: 2.4em;
   line-height: 2.4em;
   margin-left: .8em;
+  background: white;
   &:first-child{
     margin-left:0;
   }
@@ -580,9 +632,9 @@ a{
     line-height: 1em;
   }
   &:active{
-    background: #ff8a00;
+    background: #dc3b40;
     color:white;
-    border:1px solid #ff8a00;
+    border:1px solid #dc3b40;
     &:before{
       color:white;
     }
