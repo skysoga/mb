@@ -113,7 +113,7 @@
             <input type="tel" maxlength="7"
                    v-model = "showPrice"
                    @input = "changeShowPrice"/>
-            <!-- <div id="maxReturn"></div> -->
+            <div v-html = "maxAward"></div>
           </td>
         </tr>
       </tbody>
@@ -241,8 +241,12 @@ export default {
     nowModeName:()=>state.lt.mode.name,
     nowModeIndex:()=>cfg[state.lt.mode.mode].index,
     //开奖结果部分
-    oldIssue:()=>state.lt.OldIssue.slice(4),
-    nowIssue:()=>state.lt.NowIssue.slice(4),
+    oldIssue(){
+      return state.lt.lottery.LotteryCode === '1406' ? state.lt.OldIssue : state.lt.OldIssue.slice(4)
+    },
+    nowIssue(){
+      return state.lt.lottery.LotteryCode === '1406' ? state.lt.NowIssue : state.lt.NowIssue.slice(4)
+    },
     TimeBar:()=>state.lt.TimeBar,
     results(){
       var _results = state.lt.LotteryResults[this.lcode]
@@ -299,7 +303,21 @@ export default {
     betMoneyStr(){
       return this.showPrice ? `，${state.lt.bet.betting_money}元` : ''
     },
-    basket:()=>state.lt.basket
+    basket:()=>state.lt.basket,
+    //最高可中奖金
+    maxAward(){
+      if(!this.showPrice){
+        return '请输入要投注的金额'
+      }else{
+        if(this.mode === 'A10'){
+          var maxAward = this.getMaxAwardA10()
+          return `最高可中${maxAward}元`
+        }else{
+          var maxAward = +this.showPrice * this.award
+          return `最高可中${maxAward}元`
+        }
+      }
+    }
   },
   methods:{
     back2index(){
@@ -399,7 +417,6 @@ export default {
           }
         }
       }
-
       store.commit({
         type:'lt_updateTmp',
         alias: 'K3',
@@ -451,7 +468,7 @@ export default {
         layer.confirm(msg,()=>{
           var basebet = new BaseBet()
           if(this.mode === 'A10'){
-
+            basebet.setRebate('180')
           }
           var basket = deleteCompress([basebet])
           _fetch({
@@ -478,7 +495,39 @@ export default {
             }
           })
         },()=>{})
+      }
+    },
+    getMaxAwardA10(){
+      var maxAwardFromNum
+      var dsdsRebate = this.award[8]  //大小单双的返点在和值的最后一个
+      //大小单双选择情况
+      var dsds = [
+        this.chosen.indexOf('大') > -1,
+        this.chosen.indexOf('小') > -1,
+        this.chosen.indexOf('单') > -1,
+        this.chosen.indexOf('双') > -1
+      ]
 
+      var numPart = [], numMax = 0
+      this.chosen.forEach(item=>{
+        if(['大','小','单','双'].indexOf(item)===-1){
+          var award1 = item > 11 ? this.award[18-item] : this.award[item - 3]
+          var award2 = ((item > 11 && dsds[0]) || (item < 11 && dsds[1])) ? dsdsRebate : 0
+          var award3 = (((item % 2 ===1) && dsds[2]) || ((item % 2 ===0) && dsds[3])) ? dsdsRebate : 0
+          var award = ((+award1) + (+award2) + (+award3)).toFixed(2)
+          numPart.push(award)
+        }
+      })
+
+      //如果选择的数组中含有数字
+      //未考虑完全没有选择任何一个按钮的选项，因为不选不会进入这个程序
+      if(this.chosen.some(item=>typeof item === 'number')){
+        numMax = Math.max.apply({}, numPart)
+        return numMax
+      }else if((dsds[0] || dsds[1]) && (dsds[2] || dsds[3])){
+        return 2 * dsdsRebate
+      }else{
+        return dsdsRebate
       }
     }
   }
