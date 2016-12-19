@@ -254,17 +254,24 @@ window.RootApp = new Vue({
     getServerTime: (function(){
       var cantGetTime = 0
       return function(fun){
+        var timeBegin = new Date()
         _fetch({Action: "GetServerTimeMillisecond"}).then((json)=>{
-          if(json.Code === 1) {
-            var SerTime = json.Data
-            store.commit('setDifftime', SerTime)
-            fun && fun()
+          if(cantGetTime > 4){
+            layer.msgWarn("因无法同步服务器时间,您将无法投注,请检查网络情况")
           }else{
-            cantGetTime++;
-            if(cantGetTime > 4) {
-              layer.msgWarn("因无法同步服务器时间,您将无法投注,请检查网络情况")
+            var interval = new Date() - timeBegin
+            if(interval > 1000){
+              cantGetTime++
+              this.getServerTime()
             }else{
-              getServerTime();
+              if(json.Code === 1) {
+                var SerTime = json.Data
+                store.commit('setDifftime', SerTime)
+                fun && fun()
+              }else{
+                cantGetTime++;
+                this.getServerTime();
+              }
             }
           }
         })
