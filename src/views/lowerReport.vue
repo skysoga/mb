@@ -139,8 +139,8 @@ export default {
       if (this.agent_path_name.length > 1) {
         this.$set(this.BottomBoxList, this.agent_path_name[this.agent_path_name.length - 2] + "  ", '返回上级')
       }
-      this.$set(this.BottomBoxList, "1", UserName)
-      this.$set(this.BottomBoxList,"2","查看报表")
+      this.$set(this.BottomBoxList, "11",'<i class="iconfont"></i><ins>'+UserName+'</ins>' )
+      this.$set(this.BottomBoxList,"22","查看报表")
       this.BottomBoxShow = true
     },
     bottomBox: function(a, b) {
@@ -153,7 +153,7 @@ export default {
         this.reset()
         this.agent_path_name.pop()
       }else if(b==="查看报表"){
-        this.$router.push({path:'/agentReport',query:{username:this.BottomBoxList['1']}})
+        this.$router.push({path:'/agentReport',query:{username:this.BottomBoxList['11']}})
       }
       this.BottomBoxShow = false
     }
