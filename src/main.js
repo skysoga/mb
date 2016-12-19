@@ -33,6 +33,10 @@ window.router = new VueRouter({
 	// exact: true
 });
 
+function SetIndexTitle(s){
+	routes[1].meta.title=`<img src="${state.constant.ImgHost+s.MobileLogo}" alt="" />`;
+}
+
 var UserArr = [
 	'UserHasSafePwd', //返回是否已经设置安全密码,1为有,0为没有设置
 	'UserSafeQuestions', //返回设置的密保问题,如果没设置可以返回0或者空数组
@@ -71,11 +75,14 @@ var SiteArr=[ //需要校验更新版本的列表
 var CacheArr = SiteArr.concat(UserArr)
 window.state = require('./JSconfig.js')
 ;(function(){
-	function getLocalDate(s){
-		s = localStorage.getItem(CacheArr[i]);
+	function getLocalDate(str){
+		var s = localStorage.getItem(str);
 		try{
 			s = JSON.parse(s);
 		}catch(e){}
+		if (str=="SiteConfig") {
+			SetIndexTitle(s)
+		}
 		return s;
 	}
   for (var i = CacheArr.length - 1; i >= 0; i--) {
@@ -132,12 +139,6 @@ window.RootApp = new Vue({
 	el: '#app',
 	store,
 	router,
-	watch: {
-		$route(to,from){
-			// console.log("监听路由已经变化");
-			// console.log(this.$route);
-		}
-	},
 	methods:{
     Logout:function(){
       store.commit('ClearInitData', UserArr)
@@ -149,6 +150,11 @@ window.RootApp = new Vue({
 			fun()
 		},
 		SetFilter:function(data){
+			;(function(s){
+				if (s) {
+					SetIndexTitle(s)
+				}
+			})(data.SiteConfig)
 			;(function(LotteryList){
 			  if(LotteryList&&LotteryList.length){
 			    data.LotteryList={};
@@ -285,7 +291,7 @@ window.RootApp = new Vue({
 				if (fy&&(!state.UserVerify||meta.from.search(state.UserVerify)==-1)
 				) {
 					console.log("条件不足");
-					router.push("/notfount")
+					router.go(-1)
 				}
 			}
 		},
