@@ -11,6 +11,7 @@ export default {
     if(!!user){
       router.push("/securityCenter")
     }else{
+      sessionStorage.removeItem("isFind")
       var Sarr=["UserHasSafePwd","UserMail","UserMobile","UserSafeQuestions"]
       for(let i of Sarr){
         localStorage.removeItem(i)
