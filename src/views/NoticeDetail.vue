@@ -22,9 +22,9 @@
         ID: this.$route.query.ID
       }).then((data) => {
         if (data.Code === 1) {
-          this.initData = data.BackData[0];
+          this.initData = data.BackData[0]
         } else {
-          layer.msgWarn("return error");
+          layer.msgWarn(data.StrCode)
         }
       })
     }

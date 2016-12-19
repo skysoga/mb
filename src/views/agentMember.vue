@@ -170,7 +170,7 @@ export default {
       if (this.agent_path_id.length > 1) {
         this.$set(this.BottomBoxList, this.agent_path_id[this.agent_path_id.length - 2] + "  ", '返回上级')
       }
-      this.$set(this.BottomBoxList, "1", UserName)
+      this.$set(this.BottomBoxList, "11", '<i class="iconfont"></i><ins>'+UserName+'</ins>' )
       this.BottomBoxShow = true
     },
     bottomBox: function(a, b) {
