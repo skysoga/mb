@@ -311,10 +311,10 @@ export default {
       }else{
         if(this.mode === 'A10'){
           var maxAward = this.getMaxAwardA10()
-          return `最高可中${maxAward}元`
+          return `最高可中<span>${maxAward}</span>元`
         }else{
           var maxAward = +this.showPrice * this.award
-          return `最高可中${maxAward}元`
+          return `最高可中<span>${maxAward}</span>元`
         }
       }
     }
