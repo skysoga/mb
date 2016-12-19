@@ -6,13 +6,11 @@ export default {
       imgSrc:''
     }
   },
-  beforeRouteEnter:(to,from,next)=>{
-    to.meta.link='/login'
-    next()
-  },
   created(){
-    sessionStorage.clear()
-    localStorage.clear("UserHasSafePwd","UserMail","UserMobile","UserSafeQuestions")
+    var user=localStorage.getItem("UserName")
+    if(!!user){
+      router.push("/securityCenter")
+    }
     this.imgUrl()
   },
   methods:{

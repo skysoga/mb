@@ -200,7 +200,7 @@ var routes = [{
   name: '忘记密码',
   meta:{
 	title:"忘记密码",
-	link:"/index",
+	link:"/login",
 	nav:0,
   },
   component: forgetPwd
