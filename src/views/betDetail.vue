@@ -93,7 +93,7 @@ export default {
     }
   },
   beforeRouteEnter(to,from,next){
-    console.log(from.path)
+    to.meta.link=from.path
     _fetch({Action:"GetBetDetail",UserId:to.query.UID||0,ID:to.query.ID}).then((data)=>{
       next(vm=>{
         if(data.Code===1){

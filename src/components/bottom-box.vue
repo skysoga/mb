@@ -36,7 +36,7 @@
     <div class="moreLayer">
       <ul>
         <li v-for = "(value,key) in list" @click = "$parent.bottomBox(key,value)">
-          <a>{{value}}</a>
+          <a v-html="value" :class="addUserLogo(key)"></a>
         </li>
       </ul>
       <ul>
@@ -53,6 +53,11 @@ export default{
   methods:{
     close:function () {
       this.$parent.BottomBoxShow = false
+    },
+    addUserLogo:function(key){
+      if(key==="11"){
+        return 'noActive currentUser'
+      }
     }
   }
 }

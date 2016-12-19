@@ -20,127 +20,134 @@
   url('//at.alicdn.com/t/font_ina5jtbuld5wb3xr.ttf') format('truetype'),
   url('//at.alicdn.com/t/font_ina5jtbuld5wb3xr.svg#iconfont') format('svg');
 }
-  .laymshade {
-    background-color: rgba(0, 0, 0, .3);
-  }
-  .layermchild {
-      background-color: #f8f8f8;
-      border-radius: 4px;
-  }
-  .layermbox0 .layermchild {
-      min-width: initial;
-  }
-  .layermchild h3 {
-      font-weight: blod;
-      height: 40px;
-      line-height: 40px;
-      position: relative;
-      border-bottom: none;
-  }
-  .layermchild h3:after{
-    content:"";
-    position: absolute;
-    bottom:0px;
-    left:0px;
-    right:0px;
-    border-bottom:1px solid #d8d8d8;
-    -webkit-transform:scaleY(.5);
-    -webkit-transform-origin:0 0;
-    transform:scaleY(.5);
-    transform-origin:0 0;
-  }
-  .layermbtn {
-    border-top: none;
-    color:#007bf4;
+html{
+  height: 100%;
+}
+body{
+  min-height: 100%;
+}
+#app{
+  height: 100%;
+}
+.laymshade {
+  background-color: rgba(0, 0, 0, .3);
+}
+.layermchild {
+    background-color: #f8f8f8;
+    border-radius: 4px;
+}
+.layermbox0 .layermchild {
+    min-width: initial;
+}
+.layermchild h3 {
+    font-weight: blod;
+    height: 40px;
+    line-height: 40px;
     position: relative;
-    &:after{
-      content:"";
-      position: absolute;
-      top:0;
-      left:0px;
-      right:0px;
-      border-top:1px solid #d8d8d8;
-      -webkit-transform:scaleY(.5);
-      -webkit-transform-origin:0 0;
-      transform:scaleY(.5);
-      transform-origin:0 0;
-    }
-    span {
-        width: 100%;
-        font-size: 16px;
-        border-radius: 0 3px 0 3px;
-      &:first-child{
-        background:initial;
-      }
-    }
-  }
-  .layermbtn:before{
+    border-bottom: none;
+}
+.layermchild h3:after{
+  content:"";
+  position: absolute;
+  bottom:0px;
+  left:0px;
+  right:0px;
+  border-bottom:1px solid #d8d8d8;
+  -webkit-transform:scaleY(.5);
+  -webkit-transform-origin:0 0;
+  transform:scaleY(.5);
+  transform-origin:0 0;
+}
+.layermbtn {
+  border-top: none;
+  color:#007bf4;
+  position: relative;
+  &:after{
     content:"";
     position: absolute;
-    top:0px;
+    top:0;
     left:0px;
     right:0px;
-    border-bottom:1px solid #d8d8d8;
+    border-top:1px solid #d8d8d8;
     -webkit-transform:scaleY(.5);
     -webkit-transform-origin:0 0;
     transform:scaleY(.5);
     transform-origin:0 0;
   }
-  .layermbtn span:nth-last-of-type(2) {
-      width: 49%;
-      height: 39px;
-      border-radius: 0 0 0 3px;
-      border-right:1px solid #d8d8d8;
+  span {
+      width: 100%;
+      font-size: 16px;
+      border-radius: 0 3px 0 3px;
+    &:first-child{
+      background:initial;
+    }
   }
-  .layermbtn span:nth-of-type(2) {
-      font-weight: bold;
-      width: 49%;
-      height: 39px;
-      border-radius: 0 3px 0 0
-  }
-  .layermbtn:before{
-    display: none;
-  }
-  .layermsg .layermcont .iconfont {
-      display: inline-block;
-      font-size: 24px;
-      margin: 0px 6px;
-      transform: translateY(1px);
-  }
-  .layermsg .layermcont .svgLoad {
-      vertical-align: middle;
-      margin-top: -5px;
-      width: 22px;
-      height: 22px;
-      fill: #000;
-  }
+}
+.layermbtn:before{
+  content:"";
+  position: absolute;
+  top:0px;
+  left:0px;
+  right:0px;
+  border-bottom:1px solid #d8d8d8;
+  -webkit-transform:scaleY(.5);
+  -webkit-transform-origin:0 0;
+  transform:scaleY(.5);
+  transform-origin:0 0;
+}
+.layermbtn span:nth-last-of-type(2) {
+    width: 49%;
+    height: 39px;
+    border-radius: 0 0 0 3px;
+    border-right:1px solid #d8d8d8;
+}
+.layermbtn span:nth-of-type(2) {
+    font-weight: bold;
+    width: 49%;
+    height: 39px;
+    border-radius: 0 3px 0 0
+}
+.layermbtn:before{
+  display: none;
+}
+.layermsg .layermcont .iconfont {
+    display: inline-block;
+    font-size: 24px;
+    margin: 0px 6px;
+    transform: translateY(1px);
+}
+.layermsg .layermcont .svgLoad {
+    vertical-align: middle;
+    margin-top: -5px;
+    width: 22px;
+    height: 22px;
+    fill: #000;
+}
 
 
-  /* 几种常用样式定制 */
-  .layerConfirm.layermchild{
-    width:18em;
-    font-size:.7em;
-  }
-  .layermchild  h3{text-align: center}
-  .layermchild h3{
-    padding:0;
-  }
-  .layermend{
-    display:none;
-  }
-  .layermcont{
-    padding:10px;
-  }
-  .tal .layermcont{
-    /*text-indent:3em;*/
-    text-align:left;
-    padding-left:2em;
-    padding-right:2em;
-  }
-  .layermchild h3{
-    height:40px;
-    line-height:40px;
-  }
-</style>
-<style lang="scss">
+/* 几种常用样式定制 */
+.layerConfirm.layermchild{
+  width:18em;
+  font-size:.7em;
+}
+.layermchild  h3{text-align: center}
+.layermchild h3{
+  padding:0;
+}
+.layermend{
+  display:none;
+}
+.layermcont{
+  padding:10px;
+}
+.tal .layermcont{
+  /*text-indent:3em;*/
+  text-align:left;
+  padding-left:2em;
+  padding-right:2em;
+}
+.layermchild h3{
+  height:40px;
+  line-height:40px;
+}
 </style>
