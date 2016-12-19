@@ -15,9 +15,9 @@ export default {
     $vaSubmit(){
       var $root=this.$root
       var ajax = {
+        Action:"verifyPass",
         Password: this.Password
       }
-      ajax.Action="verifyPass";
       var F=sessionStorage.getItem('isFind')
       if(F){
         ajax.Action=ajax.Action+'Forget';

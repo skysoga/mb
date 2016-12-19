@@ -15,7 +15,7 @@
                  v-va:EXTEND
                  type="number"
                  :name="n.LotteryType"
-                 :tag="caiName[n.LotteryType]"
+                 :tag="caiName[n.LotteryType]+'返点'"
                  :placeholder="'自身返点'+n.Point+'，可设置返点'+n.MinPoint+'-'+n.Point"
                  :min="n.MinPoint"
                  value=""

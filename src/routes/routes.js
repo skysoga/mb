@@ -30,7 +30,7 @@ var routes = [{
   path: '/index',
   name: '主页',
   meta:{
-    title:'购彩大厅',
+    title:'未登录',
     nav:true,
     link:false,
     user:false,

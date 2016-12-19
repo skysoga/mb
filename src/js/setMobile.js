@@ -16,6 +16,9 @@ export default {
     }
     next()
   },
+  created(){
+    layer.alert("暂不支持14,17开头的手机号码绑定")
+  },
   methods:{
     $vaSubmit(){
       var ajax = {
@@ -31,10 +34,9 @@ export default {
       layer.msgWait("正在提交")
       _fetch(ajax).then((json)=>{
           if(json.Code===1) {
-            layer.msgWarn(json.StrCode);
-            RootApp.AjaxGetInitData(["UserMobile"],function(){
-              router.push('/securityCenter')
-            })
+            var Mob=this.Mobile
+            RootApp.SaveInitData({UserMobile:Mob.substr(0,2)+"******"+Mob.substr(-2,2)})
+            layer.url(json.StrCode,'/securityCenter')
           }else{
             layer.msgWarn(json.StrCode);
           }
