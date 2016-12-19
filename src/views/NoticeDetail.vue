@@ -33,8 +33,9 @@
 
 <style lang="scss" scoped>
   @import '../scss/public.scss';
-  body {
-    background: #fff
+  .main {
+    background: #fff;
+    height: 100%;
   }
 
   article {
