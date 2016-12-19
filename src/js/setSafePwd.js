@@ -63,7 +63,8 @@ export default {
       })
     },
     upPwd(fun){
-      RootApp.AjaxGetInitData(["UserHasSafePwd"],fun())
+      RootApp.SaveInitData({UserHasSafePwd:1})
+      fun()
     }
   }
 }
