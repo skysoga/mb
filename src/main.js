@@ -336,6 +336,7 @@ window.RootApp = new Vue({
   layer.url=function(msg,s) {
     return layer.open({
       className: "layerConfirm",
+      title:'温馨提示',
       content: msg,
       btn: ["确定"],
       end:function(){
@@ -350,6 +351,7 @@ window.RootApp = new Vue({
   layer.alert=function(msg,fun){
     return layer.open({
       className: "layerConfirm",
+      title:'温馨提示',
       shadeClose: false,
       content: msg,
       btn: ["确定"],
@@ -454,8 +456,9 @@ function _fetch(data){
 							})
 						}
 					}
-					if (data.Action.search('Verify')===0) {
+					if (data.Action.search('erify')===1) {
 						state.UserVerify=data.Action.replace('Verify','')
+						state.UserVerify=data.Action.replace('verify','')
 					}
 				})()
 				resolve(json)
