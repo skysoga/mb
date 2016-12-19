@@ -73,7 +73,7 @@ var routes = [{
     title: "交易记录",
     link: "/userCenter"
   },
-  component: billRecord
+  component: betRecord
 }, {
   path: "/agentMember",
   name: "会员管理",
@@ -118,7 +118,7 @@ var routes = [{
     link: "/agentCenter",
     user: 1
   },
-  component: agentBetRecord
+  component: betRecord
 },{
   path: "/agentBillRecord",
   name: "交易明细",
@@ -127,7 +127,7 @@ var routes = [{
     link: "/agentCenter",
     user: 1
   },
-  component: agentBillRecord
+  component: betRecord
 },/**{
   path: "/found",
   name: "发现",

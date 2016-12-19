@@ -176,7 +176,7 @@ export default {
           layer.msgWarn(data.StrCode)
         }
       })
-    },
+    }
   },
   created() {
     this.search()
