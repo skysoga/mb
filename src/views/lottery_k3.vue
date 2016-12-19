@@ -71,7 +71,7 @@
     <table class="myBet" style="display: block" v-show = "ifShowBetRecord">
       <tr><td>期号</td> <td>投注金额</td><td>奖金</td></tr>
       <tr v-for = "item in BetRecord">
-        <td>{{item.issueNo.slice(4)}}</td>
+        <td>{{lcode === '1406' ? item.issueNo : item.issueNo.slice(4)}}</td>
         <td>
           {{item.normal_money}}
         </td>
@@ -113,7 +113,9 @@
             <input type="tel" maxlength="7"
                    v-model = "showPrice"
                    @input = "changeShowPrice"/>
-            <div v-html = "maxAward"></div>
+            <!-- <div v-html = "maxAward"></div> -->
+            <div v-show = "!showPrice">请输入要投注的金额</div>
+            <div v-show = "showPrice">最高可中<span>{{mode === 'A10' ? getMaxAwardA10() : (+this.showPrice * this.award).toFixed(2)}}</span>元</div>
           </td>
         </tr>
       </tbody>
@@ -301,27 +303,26 @@ export default {
     betStr:()=>state.lt.bet.betting_number,
     betCountStr:()=>state.lt.bet.betting_number ? `共${state.lt.bet.betting_count}注`:'',
     betMoneyStr(){
-      return this.showPrice ? `，${state.lt.bet.betting_money}元` : ''
+      return state.lt.bet.betting_money  ? `，${state.lt.bet.betting_money}元` : ''
     },
     basket:()=>state.lt.basket,
-    //最高可中奖金
-    maxAward(){
-      if(!this.showPrice){
-        return '请输入要投注的金额'
-      }else{
-        if(this.mode === 'A10'){
-          var maxAward = this.getMaxAwardA10()
-          return `最高可中<span>${maxAward}</span>元`
-        }else{
-          var maxAward = +this.showPrice * this.award
-          return `最高可中<span>${maxAward}</span>元`
-        }
-      }
-    }
+    // //最高可中奖金
+    // maxAward(){
+    //   if(!this.showPrice){
+    //     return '请输入要投注的金额'
+    //   }else{
+    //     if(this.mode === 'A10'){
+    //       var maxAward = this.getMaxAwardA10()
+    //       return `最高可中<span>${maxAward}</span>元`
+    //     }else{
+    //       var maxAward = +this.showPrice * this.award
+    //       return `最高可中<span>${maxAward}</span>元`
+    //     }
+    //   }
+    // }
   },
   methods:{
     back2index(){
-      // store.commit('lt_leaveLottery')
       this.$router.push('/index')
     },
     //彩种选择框，切换
@@ -498,7 +499,7 @@ export default {
       }
     },
     getMaxAwardA10(){
-      var maxAwardFromNum
+      var maxAward
       var dsdsRebate = this.award[8]  //大小单双的返点在和值的最后一个
       //大小单双选择情况
       var dsds = [
@@ -523,12 +524,13 @@ export default {
       //未考虑完全没有选择任何一个按钮的选项，因为不选不会进入这个程序
       if(this.chosen.some(item=>typeof item === 'number')){
         numMax = Math.max.apply({}, numPart)
-        return numMax
+        maxAward = numMax
       }else if((dsds[0] || dsds[1]) && (dsds[2] || dsds[3])){
-        return 2 * dsdsRebate
+        maxAward = 2 * dsdsRebate
       }else{
-        return dsdsRebate
+        maxAward = dsdsRebate
       }
+      return +this.showPrice * maxAward
     }
   }
 }
