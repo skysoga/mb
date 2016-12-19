@@ -72,5 +72,6 @@ module.exports = {
   Max_Rate:10000,   //最大倍数
   Max_Chase_Issue: 50 , //追号最大期数
   Max_Expect_Rate: 20000, //追号最大预期盈利率限制
+  BASE_ISSUE_1406: 52596+1, //北京快三基准期
   needVerify:sessionStorage.getItem("needVerify")||0
 }

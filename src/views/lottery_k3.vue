@@ -38,7 +38,7 @@
 
   <section class="State">
     <!-- 上期开奖结果 -->
-    <div @click.stop = "togglePastOpen">
+    <div v-if = "$store.state.lt.OldIssue" @click.stop = "togglePastOpen" >
       <p>{{oldIssue}}期开奖号码</p>
       <div style="display: block;">
         <div class = "Dice"
@@ -48,7 +48,7 @@
       </div>
     </div>
 
-    <div @click.stop = "toggleBetRecord">
+    <div v-if = "$store.state.lt.NowIssue" @click.stop = "toggleBetRecord">
       <p>{{nowIssue}}期投注截止</p>
       <div>{{TimeBar}}</div>
     </div>
@@ -80,41 +80,118 @@
     </table>
   </section>
 
-<div class="main">
+  <!-- 玩法区 -->
+  <div class="main">
     <div class="MethodWrap">
-      <div class="Method Method0"><p class="MethodMsg">猜3个开奖号相加的和，3-10为小，11-18为大。</p><ul><li>大<p>赔率1.946</p></li><li>小<p>赔率1.946</p></li><li>单<p>赔率1.946</p></li><li>双<p>赔率1.946</p></li><li>3<p>赔188.56</p></li><li>4<p>赔62.85</p></li><li>5<p>赔31.42</p></li><li>6<p>赔18.85</p></li><li>7<p>赔12.57</p></li><li>8<p>赔8.97</p></li><li>9<p>赔7.54</p></li><li>10<p>赔6.98</p></li><li>11<p>赔6.98</p></li><li>12<p>赔7.54</p></li><li>13<p>赔8.97</p></li><li>14<p>赔12.57</p></li><li>15<p>赔18.85</p></li><li>16<p>赔31.42</p></li><li>17<p>赔62.85</p></li><li>18<p>赔188.56</p></li></ul></div>
+
+      <div class="Method" :class = "'Method' + nowModeIndex">
+        <p class="MethodMsg">{{tip}}{{tipRebate}}</p>
+        <ul>
+          <li v-for = "(item,index) in itemArr"
+              @click = "choose(item)"
+              :class = "{checked: chosen.indexOf(item) > -1}">
+            {{item}}
+            <p v-if = "mode === 'A10' && award">赔率{{getSumRebate(index)}}</p>
+          </li>
+        </ul>
+      </div>
+
     </div>
   </div>
 
   <footer class="bottom">
-    <table>
+
+    <table v-show = "betStr">
       <tbody>
         <tr>
           <td>当前选号</td>
-          <td><span id="choice"></span></td>
+          <td><span id="choice">{{betStr}}</span></td>
         </tr>
         <tr>
           <td>每注金额</td>
           <td>
-            <input type="tel" name="unit" maxlength="7" />
-            <div id="maxReturn"></div>
+            <input type="tel" maxlength="7"
+                   v-model = "showPrice"
+                   @input = "changeShowPrice"/>
+            <div v-html = "maxAward"></div>
           </td>
         </tr>
       </tbody>
     </table>
+
     <div class="ft0">
-      <div class="fl" id="clear">清空</div>
-      <p class="fl" id="total"></p>
-      <div class="fr" id="bet">马上投注</div>
+      <div class="fl" @click = "clear">清空</div>
+      <p class="fl"> {{betCountStr}}{{betMoneyStr}}</p>
+      <div class="fr" @click = "confirmBet">马上投注</div>
     </div>
   </footer>
  </div>
 </template>
 
 <script>
+import {unique,C,mul,BaseBet,deleteCompress} from '../js/kit'
+import {PERBET} from '../JSconfig'
+var eachLen = data=>data.map(arr=>arr.length)
+var getBetStr = data=>data.map(arr=>arr.join(' ')).filter(str=>str).join(',')
+var cfg = {
+  'A10':{
+    itemArr:['大','小','单','双',3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
+    line:[['大','小','单','双'],[3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]],
+    index:0,
+    alg:data=>eachLen(data).reduce((p,c)=>p+c)
+  },
+  'B10':{
+    itemArr:['三同号通选'],
+    index:1,
+    line:[['三同号通选']],
+    alg:data=>data[0].length
+  },
+  'C10':{
+    itemArr:[111,222,333,444,555,666],
+    index:2,
+    line:[[111],[222],[333],[444],[555],[666]],
+    alg:data=>eachLen(data).reduce((p,c)=>p+c)
+  },
+  'D10':{
+    itemArr:[1,2,3,4,5,6],
+    index:3,
+    line:[[1,2,3,4,5,6]],
+    alg:data=>C(data[0].length, 3)
+  },
+  'E10':{
+    itemArr:['三连号通选'],
+    index:4,
+    line:[['三连号通选']],
+    alg:data=>data[0].length
+  },
+  'F10':{
+    itemArr:[11,22,33,44,55,66],
+    index:5,
+    line:[[11,22,33,44,55,66]],
+    alg:data=>data[0].length
+  },
+  'G10':{
+    itemArr:[11,22,33,44,55,66,1,2,3,4,5,6],
+    index:6,
+    line:[[11,22,33,44,55,66],[1,2,3,4,5,6]],
+    alg:data=>mul(2,eachLen(data))
+  },
+  'H10':{
+    itemArr:[1,2,3,4,5,6],
+    index:7,
+    line:[[1,2,3,4,5,6]],
+    alg:data=>C(data[0].length, 2)
+  },
+}
+
 export default {
   created (){
-    [,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
+    store.commit({
+      type:'lt_updateTmp',
+      alias: 'K3',
+      arr: []
+    })
+    ;[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
     //处理得各彩种的List
     var LotteryConfig = this.$store.state.LotteryConfig
     LotteryConfig.forEach(item=>{
@@ -145,7 +222,8 @@ export default {
       LotteryList: [], //彩种list
       ltype: '',       //彩种类型
       lcode: '',       //彩种code
-      wait4Results:[1,2,3]    //等待开奖的默认状态
+      wait4Results:[1,2,3],    //等待开奖的默认状态
+      showPrice:'',            //每注投多少，展示
     }
   },
   computed:{
@@ -161,9 +239,14 @@ export default {
     award:()=>state.lt.award,
     odds:()=>state.lt.Odds['K3'],
     nowModeName:()=>state.lt.mode.name,
+    nowModeIndex:()=>cfg[state.lt.mode.mode].index,
     //开奖结果部分
-    oldIssue:()=>state.lt.OldIssue.slice(4),
-    nowIssue:()=>state.lt.NowIssue.slice(4),
+    oldIssue(){
+      return state.lt.lottery.LotteryCode === '1406' ? state.lt.OldIssue : state.lt.OldIssue.slice(4)
+    },
+    nowIssue(){
+      return state.lt.lottery.LotteryCode === '1406' ? state.lt.NowIssue : state.lt.NowIssue.slice(4)
+    },
     TimeBar:()=>state.lt.TimeBar,
     results(){
       var _results = state.lt.LotteryResults[this.lcode]
@@ -205,10 +288,40 @@ export default {
       }
       return Record
     },
+    tip:()=>state.lt.mode.tip,
+    //玩法区
+    itemArr:()=>cfg[state.lt.mode.mode].itemArr,
+    mode:()=>state.lt.mode.mode,
+    award:()=>state.lt.award,
+    tipRebate(){
+      return typeof this.award === 'string' ? `${this.award}倍。` : ''
+    },
+    chosen:()=>state.lt.tmp['K3'],
+    bet:()=>state.lt.bet,
+    betStr:()=>state.lt.bet.betting_number,
+    betCountStr:()=>state.lt.bet.betting_number ? `共${state.lt.bet.betting_count}注`:'',
+    betMoneyStr(){
+      return this.showPrice ? `，${state.lt.bet.betting_money}元` : ''
+    },
+    basket:()=>state.lt.basket,
+    //最高可中奖金
+    maxAward(){
+      if(!this.showPrice){
+        return '请输入要投注的金额'
+      }else{
+        if(this.mode === 'A10'){
+          var maxAward = this.getMaxAwardA10()
+          return `最高可中<span>${maxAward}</span>元`
+        }else{
+          var maxAward = +this.showPrice * this.award
+          return `最高可中<span>${maxAward}</span>元`
+        }
+      }
+    }
   },
   methods:{
     back2index(){
-      store.commit('lt_leaveLottery')
+      // store.commit('lt_leaveLottery')
       this.$router.push('/index')
     },
     //彩种选择框，切换
@@ -235,11 +348,15 @@ export default {
     },
     renderRebate(mode){
       var rebate
-      this.odds.forEach(item=>{
-        if(mode === item.PlayCode){
-          rebate = item.Bonus
-        }
-      })
+      if(this.odds){
+        this.odds.forEach(item=>{
+          if(mode === item.PlayCode){
+            rebate = item.Bonus
+          }
+        })
+      }else{
+        rebate = ''
+      }
 
       if(rebate.indexOf(',') > -1){
         var rebateArr = rebate.split(',')
@@ -256,6 +373,163 @@ export default {
          this.$store.commit('lt_changeBox', '') :
            this.$store.commit('lt_changeBox', 'pastOpen')
     },
+    getSumRebate(index){
+      if(index <= 3){
+        return this.award[8]
+      }else if(index >= 4 && index <=11){
+        return this.award[index - 4]
+      }else{
+        return this.award[19 - index]
+      }
+    },
+    //玩法
+    choose(item){
+      var _pos = this.chosen.indexOf(item),
+          _chosen = this.chosen.slice(0)
+
+      //如果已经存在，就删除该项
+      if(_pos > -1){
+        _chosen.splice(_pos, 1)
+        var tmp = _chosen
+      }else{
+        if(this.mode === 'G10'){
+          //如果是二同号单选
+          var firstChar = item.toString()[0]
+              ,_x = _chosen.indexOf(+firstChar)
+              ,_xx = _chosen.indexOf(+(firstChar + firstChar))
+              ,removeArr = [_x, _xx]
+
+          removeArr.forEach(pos=>{
+            if(pos > -1){
+              _chosen.splice(pos,1)
+            }
+          })
+        }
+
+        //不存在添加该项
+        _chosen.push(item)
+        //去重加排序
+        _chosen = unique(_chosen)
+        var tmp = []
+        for(var i = 0;i < this.itemArr.length;i++){
+          if(_chosen.indexOf(this.itemArr[i]) > -1){
+            tmp.push(this.itemArr[i])
+          }
+        }
+      }
+      store.commit({
+        type:'lt_updateTmp',
+        alias: 'K3',
+        arr: tmp
+      })
+
+      //分行
+      var line = cfg[this.mode].line,
+          _data = []
+
+      line.forEach(lineArr=>{
+        var _l = []
+        for(var i = 0;i < lineArr.length;i++){
+          if(_chosen.indexOf(lineArr[i]) > -1){
+            _l.push(lineArr[i])
+          }
+        }
+        _data.push(_l)
+      })
+
+      var betCount = cfg[this.mode].alg(_data)
+
+      store.commit('lt_setBetCount', betCount)
+      store.commit('lt_setBetStr', getBetStr(_data))
+    },
+    changeShowPrice(){
+      if(!/^\d+$/.test(this.showPrice)){
+        this.showPrice = ''
+      }
+
+      if(this.showPrice){
+        store.commit('lt_setPerbet', +this.showPrice)
+        store.commit('lt_setMoney')
+      }
+    },
+    clear(){
+      this.showPrice = ''
+      store.commit('lt_clearBet')
+    },
+    confirmBet(){
+      if(!this.bet.betting_count){
+        layer.alert('请至少选择一注号码投注')
+      }else if(!this.showPrice){
+        layer.alert('请填写您要投注的金额')
+      }else{
+        //如果追号倍数和期号都为1,则为普通投注
+        var msg = `${this.LotteryName}: 第${this.nowIssue}期<br>投注金额: ${this.bet.betting_money}元<br>投注内容:${this.bet.betting_number}`
+
+        layer.confirm(msg,()=>{
+          var basebet = new BaseBet()
+          if(this.mode === 'A10'){
+            basebet.setRebate('180')
+          }
+          var basket = deleteCompress([basebet])
+          _fetch({
+            'Action':'AddBetting',
+            'data': {BettingData:basket}
+          }).then((json)=>{
+            if(json.Code === 1){
+              this.showPrice = ''
+              layer.msg(json.StrCode)
+              store.commit('lt_clearBet')
+              store.commit('lt_changeBox', '')
+              //隔3s获取我的投注
+              this.timer3 = setTimeout(()=>{
+                store.dispatch('lt_updateBetRecord')
+              }, 3000)
+            }else if(json.Code === -9){
+              //清除rebate
+              layer.alert(json.StrCode)
+              var type = state.lottery.LotteryType
+              sessionStorage.removeItem('Rebate' + type)
+              store.dispatch('lt_getRebate')
+            }else{
+              layer.msgWarn(json.StrCode)
+            }
+          })
+        },()=>{})
+      }
+    },
+    getMaxAwardA10(){
+      var maxAwardFromNum
+      var dsdsRebate = this.award[8]  //大小单双的返点在和值的最后一个
+      //大小单双选择情况
+      var dsds = [
+        this.chosen.indexOf('大') > -1,
+        this.chosen.indexOf('小') > -1,
+        this.chosen.indexOf('单') > -1,
+        this.chosen.indexOf('双') > -1
+      ]
+
+      var numPart = [], numMax = 0
+      this.chosen.forEach(item=>{
+        if(['大','小','单','双'].indexOf(item)===-1){
+          var award1 = item > 11 ? this.award[18-item] : this.award[item - 3]
+          var award2 = ((item > 11 && dsds[0]) || (item < 11 && dsds[1])) ? dsdsRebate : 0
+          var award3 = (((item % 2 ===1) && dsds[2]) || ((item % 2 ===0) && dsds[3])) ? dsdsRebate : 0
+          var award = ((+award1) + (+award2) + (+award3)).toFixed(2)
+          numPart.push(award)
+        }
+      })
+
+      //如果选择的数组中含有数字
+      //未考虑完全没有选择任何一个按钮的选项，因为不选不会进入这个程序
+      if(this.chosen.some(item=>typeof item === 'number')){
+        numMax = Math.max.apply({}, numPart)
+        return numMax
+      }else if((dsds[0] || dsds[1]) && (dsds[2] || dsds[3])){
+        return 2 * dsdsRebate
+      }else{
+        return dsdsRebate
+      }
+    }
   }
 }
 </script>

@@ -128,6 +128,20 @@ export default {
     'betbox': betbox,
     'notebet': notebet
   },
+  created(){
+    //初始化各个alias的tmp
+    for(var item in ltCfg){
+      if(ltCfg[item].render){
+        ltCfg[item].render.forEach(alias=>{
+          store.commit({
+            type:'lt_updateTmp',
+            alias: alias,
+            arr: []
+          })
+        })
+      }
+    }
+  },
   data(){
     return {
       ltCfg: ltCfg
@@ -143,7 +157,6 @@ export default {
           ,tmp = state.lt.tmp                     //即时投注号码
           ,result = this.ltCfg[this.mode].alg(order, tmp)  //当前投注注数
 
-      console.log(result)
       store.commit('lt_setBetStr', getBetStr(order, tmp))
       store.commit('lt_setBetCount', result)
     }

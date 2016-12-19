@@ -1,10 +1,15 @@
 <template>
-	<div @click = "closeBox">
+	<div @click = "closeBox" class="lotteryOutCon">
 		<keep-alive>
 			<router-view></router-view>
 		</keep-alive>
 	</div>
 </template>
+<style lang='scss' scoped>
+	.lotteryOutCon{
+		height: 100%;
+	}
+</style>
 <script>
 	import lt_ssc from '../json/lt_ssc.json'
 	import lt_k3 from '../json/lt_k3.json'
@@ -155,29 +160,7 @@
 					  graduation_count:1,		//倍数
 					  compress: ''					//压缩后的字符串
 		      },
-		      tmp: {
-		      	'10000':[],
-		      	'1000':[],
-		      	'100':[],
-		      	'10':[],
-		      	'1':[],
-		      	'xxxx':[],
-		      	'xxx':[],
-		      	'xx':[],
-		      	'x':[],
-		      	'i10000':[],
-		      	'i1000':[],
-		      	'i100':[],
-		      	'i10':[],
-		      	'i1':[],
-		      	'psum27':[],
-		      	'csum26':[],
-		      	'psum18':[],
-		      	'csum17':[],
-		      	'baodan':[],
-		      	'whole':[],
-		      	'notebet':[]
-		      },        //即时的投注号码情况
+		      tmp: {},        //即时的投注号码情况
 		      basket:[],      //号码篮
 		      //追号配置
 		      chaseConf:{
@@ -225,11 +208,13 @@
 		      TimeBar:'00:00:00',      //倒计时内容
 		      //counter或flag
 		      displayResults: false,	//false显示等待开奖的动画， true显示开奖结果
+		      perbet: PERBET
 
 		    },
 		    getters: {
 		    },
 		    mutations:{
+		    	lt_setPerbet:(state, price)=>{state.perbet = price},
 		      //变更弹出框
 		      lt_changeBox:(state, boxName)=>{state.box = boxName},
 		      //变更玩法
@@ -237,9 +222,10 @@
 		      	var type = state.lottery.LotteryType   //彩种类型 SSC、K3
 		      			,Odds = state.Odds[type] || []
 
-		      	state.mode = mode
-		      	store.commit('lt_clearBet')
 		      	bus.$emit('clearNoteStr')   //清空文本框文字
+		      	store.commit('lt_clearBet')
+		      	state.mode = mode
+		      	// console.log(mode)
 		      	//更改玩法时，对应玩法的奖金也跟着变
 		      	state.award = awardSetter[type](mode.mode, Odds)
 		      	//更换玩法，bet清空
@@ -342,7 +328,7 @@
 	      		store.commit('lt_setMoney')
 	      	},
 	      	lt_setMoney:(state)=>{
-						state.bet.betting_money = +(PERBET * state.bet.betting_count * state.bet.graduation_count * state.bet.betting_model).toFixed(2)
+						state.bet.betting_money = +(state.perbet * state.bet.betting_count * state.bet.graduation_count * state.bet.betting_model).toFixed(2)
 	      	},
 	      	//添加bet到plan中
 	      	lt_addBet:(state)=>{
@@ -385,13 +371,13 @@
 	      		state.basket.splice(index,1)
 	      		store.dispatch('lt_ordinaryChase')
 	      	},
-	      	//离开彩种页
-	      	lt_leaveLottery:(state)=>{
-	      		store.commit('lt_changeBox', '')			//将所有弹出框收起
-	      		store.commit('lt_clearBasket')
-	      		store.commit('lt_clearBet')
-	      		state.bet.betting_model = 1
-	      	},
+	      	// //离开彩种页
+	      	// lt_leaveLottery:(state)=>{
+	      	// 	store.commit('lt_changeBox', '')			//将所有弹出框收起
+	      	// 	store.commit('lt_clearBasket')
+	      	// 	store.commit('lt_clearBet')
+	      	// 	state.bet.betting_model = 1
+	      	// },
 	      	lt_setBetCompress:(state, str)=>{state.bet.compress = str},
 	      	lt_isStopAfterWin:(state, bool)=>{state.chaseConf.isstop_afterwinning = bool},
 	      	lt_setChaseIssue:(state, chaseIssue)=>{state.chaseConf.buy_count = chaseIssue},
@@ -400,7 +386,7 @@
 	      	lt_basketPowerTo1:(state)=>{
 	      		state.basket.forEach(bet=>{
 	      			bet.graduation_count = 1
-	      			bet.betting_money = +(PERBET * bet.betting_count * bet.graduation_count * bet.betting_model).toFixed(2)
+	      			bet.betting_money = +(state.perbet * bet.betting_count * bet.graduation_count * bet.betting_model).toFixed(2)
 	      		})
 	      	}
 		    },
@@ -746,7 +732,6 @@
 			this.baseLoop = setInterval(()=>{
 				store.dispatch('lt_refresh')
 			},1000)
-
 		},
 		data(){
 			return {
@@ -756,7 +741,7 @@
 				timer2:null,
 				timer3:null,
 				timer4:null,
-				baseloop:null
+				baseLoop:null
 			}
 		},
 		methods:{
@@ -786,7 +771,17 @@
 			clearTimeout(this.timer3)
 			clearTimeout(this.timer4)
 			clearInterval(this.baseLoop)
-		}
+		},
+	  beforeRouteLeave:(to, from, next)=>{
+	    //离开页面前将每注金额重设为 PERBET (2元)
+	    store.commit('lt_setPerbet', PERBET)
+	    store.commit('lt_clearBet')
+	    store.commit('lt_clearBasket')
+	    store.commit('lt_setScheme', [])
+	    store.commit('lt_setChasePower', 1)		//清空追号配置
+			store.commit('lt_setChaseIssue', 1)
+	    next()
+	  },
 
 	}
 </script>

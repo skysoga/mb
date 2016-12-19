@@ -6,7 +6,7 @@
       </template>
       <template v-else>
         <div class="" v-for="item in renderData">
-          <a class="active" :data-id="item.ID" @click="jump(item.ID)">
+          <a class="active"  @click="$router.push({path:'NoticeDetail',query:{ID:item.ID}})">
             <div>
               <p>{{item.Title}}</p>
               <span>{{item.Add_Time}}</span>
@@ -32,14 +32,10 @@
         msg:[null,layer.icon.load + "正在加载...","已显示全部公告"],
         renderData: [],
         data_length: 0,
-        data_count: null,
-        doc_height: 0,
+        data_count: null
       }
     },
     methods: {
-      jump:function(id){
-        this.$router.push({path:"NoticeDetail",query:{ID:id}})
-      },
       getAjaxData: function() {
         this.cant_scroll = 1
         _fetch(this.ajaxData).then((json) => {

@@ -80,7 +80,7 @@ window.state = require('./JSconfig.js')
 		try{
 			s = JSON.parse(s);
 		}catch(e){}
-		if (str=="SiteConfig") {
+		if (str=="SiteConfig"&&s) {
 			SetIndexTitle(s)
 		}
 		return s;
@@ -89,6 +89,8 @@ window.state = require('./JSconfig.js')
   	state[CacheArr[i]]=getLocalDate(CacheArr[i])
   }
 })()
+var CacheData=localStorage.getItem("CacheData")
+CacheData = CacheData?JSON.parse(CacheData):{}
 window.store = new Vuex.Store({
   state,
   getters:{
@@ -199,13 +201,15 @@ window.RootApp = new Vue({
     	state.needVerify=0
     	sessionStorage.setItem("needVerify",state.needVerify)
 			var ajax = {
-				Action:"GetInitData"
+				Action:"GetInitData",
+				Requirement:arr,
+				CacheData
 			}
-			ajax.Requirement=arr;
 			_fetch(ajax).then((json)=>{
 		    if (json.Code===1||json.Code===0) {
 		    	var Data = this.SetFilter(json.BackData);
 		      this.SaveInitData(Data)
+		      localStorage.setItem('CacheData',JSON.stringify(Object.assign(CacheData,json.CacheData)))
 		      fun&&fun(state)
 		    }else{
 		      layer.msgWarn(json.StrCode);

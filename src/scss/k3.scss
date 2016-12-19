@@ -4,6 +4,7 @@ $qingse:#caebda;
 
 .k3{
   background:#317455;
+  height: 100%;
 }
 .bottom{
   background:#000;
@@ -28,22 +29,61 @@ $qingse:#caebda;
   }
   #lotteryChoice{
     $fz:.8;
-    position:absolute;
-    top:0;
-    right:.6em;
-    width:5.5em;
     height:map-get($l,top)/$fz;
     font-size:$fz+em;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 5.5em;
+    font-size: 0.8em;
     text-align: right;
     >div{
       display:none;
-      // background-color:rgba(33,33,33,0.85);
-      background-color:rgba(255,255,255,0.95);
+      background-color: rgba(255, 255, 255, 0.96);
       text-align: center;
+      margin-top: 0.1em;
+      position: relative;
+      width: 11em;
+      margin-left: -5.5em;
     }
     a{
       color:#333;
       display:block;
+      width: 5.5em;
+      float: left;
+      &:first-child:before {
+        position: absolute;
+        content: "";
+        display: block;
+        width: 0;
+        height: 0;
+        border-bottom: 1em solid rgba(255, 255, 255, 0.96);
+        border-left: 1em solid rgba(0, 0, 0, 0);
+        right: 0;
+        top: -0.96em;
+      }
+      &:nth-child(2):after {
+        content: "";
+        display: block;
+        background-image: -ms-linear-gradient(0deg, #d0d0d0, #d0d0d0 50%, transparent 50%);
+        background-image: -moz-linear-gradient(0deg, #d0d0d0, #d0d0d0 50%, transparent 50%);
+        background-image: -webkit-linear-gradient(0deg, #d0d0d0, #d0d0d0 50%, rgba(0, 0, 0, 0) 50%);
+        height: 100%;
+        width: 1px;
+        position: absolute;
+        top: 0;
+        left: 50%;
+      }
+      &:nth-child(odd):after {
+        content: "";
+        display: block;
+        background-image: -ms-linear-gradient(90deg, transparent 50%, #d0d0d0, #d0d0d0 50%);
+        background-image: -moz-linear-gradient(90deg, transparent 50%, #d0d0d0, #d0d0d0 50%);
+        background-image: -webkit-linear-gradient(90deg, rgba(0, 0, 0, 0) 50%, #d0d0d0, #d0d0d0 50%);
+        height: 1px;
+        width: 100%;
+        position: absolute;
+      }
     }
     .hr1px{
       margin-left:10%;
