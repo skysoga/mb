@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import {PERBET, DAY_TIME} from '../JSconfig'
+import {PERBET, DAY_TIME, BASE_ISSUE_1406} from '../JSconfig'
 var bus = new Vue()     //空vue用来做事件管理
 
 //阶乘
@@ -357,6 +357,11 @@ BaseBet.prototype.power2one = function(){
   this.betting_money = +(PERBET * this.betting_count * this.betting_model * this.graduation_count).toFixed(2)
 }
 
+BaseBet.prototype.setRebate = function(rebate){
+  var lt = state.lt
+  this.betting_point = rebate + '-' + lt.Rebate[lt.lottery.LotteryType]
+}
+
 //生成追号的ajax
 function ChaseAjax(){
   var conf = state.lt.chaseConf,
@@ -515,14 +520,18 @@ function computeIssue(code, index){
       ,_index  //那一天的第几期
       ,dateStr    //日期字符串
 
-  // console.log(state.PlanLen)
+  if(!state.lt.PlanLen)return
   days = Math.floor(index/state.lt.PlanLen)
   _index = index - days * state.lt.PlanLen;
-  //这里挂各特殊彩种的处理函数
+  //这里挂各特殊彩种的处理函数--有返回的直接出返回结果。不参与下一步
   var handler = {
     '1001':function(){
       (_index > 84) && days--
     },
+    '1406':()=>{
+      var data = state.lt.Todaystr.replace(/^(\d{4})(\d{2})(\d{2})$/,'$1/$2/$3');
+      return '0'+(Math.floor((Date.parse(data)-Date.parse("2016/8/1"))/DAY_TIME)*89+ BASE_ISSUE_1406 + index);
+    }
   }
 
   //计算期号字符串
