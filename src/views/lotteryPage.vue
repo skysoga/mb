@@ -1,10 +1,15 @@
 <template>
-	<div @click = "closeBox">
+	<div @click = "closeBox" class="lotteryOutCon">
 		<keep-alive>
 			<router-view></router-view>
 		</keep-alive>
 	</div>
 </template>
+<style lang='scss' scoped>
+	.lotteryOutCon{
+		height: 100%;
+	}
+</style>
 <script>
 	import lt_ssc from '../json/lt_ssc.json'
 	import lt_k3 from '../json/lt_k3.json'
