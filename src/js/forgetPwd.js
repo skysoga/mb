@@ -10,6 +10,11 @@ export default {
     var user=localStorage.getItem("UserName")
     if(!!user){
       router.push("/securityCenter")
+    }else{
+      var Sarr=["UserHasSafePwd","UserMail","UserMobile","UserSafeQuestions"]
+      for(let i of Sarr){
+        localStorage.removeItem(i)
+      }
     }
     this.imgUrl()
   },
