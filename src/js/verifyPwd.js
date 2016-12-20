@@ -13,14 +13,13 @@ export default {
   },
   methods:{
     $vaSubmit(){
-      var $root=this.$root
       var ajax = {
+        Action:"VerifyPwd",
         Password: this.Password
       }
-      ajax.Action="verifyPass";
       var F=sessionStorage.getItem('isFind')
       if(F){
-        ajax.Action=ajax.Action+'Forget';
+        ajax.Action='verifyPassForget';
       }
       layer.msgWait("正在提交")
       _fetch(ajax).then((json)=>{

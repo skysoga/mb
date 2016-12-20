@@ -13,21 +13,11 @@
       </div>
 
       <div class="numberContent">
-        <a v-for = "(item, index) in itemArr"
+        <a v-for = "item in itemArr"
            @click = "choose(item)"
            :class = "chosen.indexOf(item) > -1 ? 'curr': ''">
            <span>{{item}}</span>
         </a>
-   <!--      <a class="curr"><span>0</span></a>
-        <a><span>1</span></a>
-        <a><span>2</span></a>
-        <a><span>3</span></a>
-        <a><span>4</span></a>
-        <a><span>5</span></a>
-        <a><span>6</span></a>
-        <a><span>7</span></a>
-        <a><span>8</span></a>
-        <a><span>9</span></a> -->
       </div>
     </div>
 </template>
@@ -83,11 +73,6 @@ export default {
   props:['alias'],
   created(){
     this.config = cfg[this.alias]
-    store.commit({
-      type:'lt_updateTmp',
-      alias: this.alias,
-      arr: []
-    })
   },
   data(){
     return {
@@ -197,22 +182,20 @@ export default {
     width: 2.6rem;
     display: table-cell;
     em{
-      font-size: 0.6em;
+      font-size: 0.65em;
       height: 1.7em;
-      width:2.6em;
+      width:3.2em;
       display: block;
       text-align: center;
       line-height: 1.7em;
       color:#bbb39c;
       background: #f4f1e2;
       border:1px solid #ece7d9;
-      border-bottom-left-radius: .3em;
-      border-top-left-radius: .3em;
-      border-right: none;
+      border-radius: .3em;
       position: relative;
       z-index: 3;
       margin-top: .8em;
-      &:before,&:after{
+      /*&:before,&:after{
         content:"";
         position: absolute;
         // display: none;
@@ -237,7 +220,7 @@ export default {
         border-left: .6em solid #ece7d9;
         border-bottom: .79em solid transparent;
         z-index: 1;
-      }
+      }*/
     }
   }
 }
@@ -280,7 +263,7 @@ export default {
   display: table-cell;
   a{
     width: calc(12.4rem / 5);
-    width: -webkit-calc(12.4rem / 5);
+    width: -webkit-calc(12.32rem / 5);
     display: inline-block;
     text-align: center;
   }
@@ -291,7 +274,7 @@ export default {
     line-height: 1.9em;
     text-align: center;
     color:#dc3b40;
-    background: white;
+    background: #faf9f6;
     border-radius: 50%;
     border: 1px solid #bfbfbf;
     font-size: .8em;

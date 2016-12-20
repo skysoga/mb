@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import {PERBET, DAY_TIME} from '../JSconfig'
+import {PERBET, DAY_TIME, BASE_ISSUE_1406} from '../JSconfig'
 var bus = new Vue()     //空vue用来做事件管理
 
 //阶乘
@@ -338,16 +338,20 @@ function BaseBet(count, betStr){
       _count = count || bet.betting_count,
       _betStr = betStr || bet.betting_number
 
-  this.lottery_code = lt.lottery.LotteryCode,                     //彩种
-  this.play_detail_code = lt.lottery.LotteryCode + lt.mode.mode,  //玩法code
-  this.betting_number = _betStr,                       //投注号码
+  this.lottery_code = lt.lottery.LotteryCode                     //彩种
+  this.play_detail_code = lt.lottery.LotteryCode + lt.mode.mode  //玩法code
+  this.betting_number = _betStr                       //投注号码
 
-  this.betting_count = _count,                         //这个方案多少注
-  this.betting_money = +(PERBET * _count * bet.betting_model * bet.graduation_count).toFixed(2),  //一注单价 * 投注数量 * 单位 * 倍数
+  this.betting_count = _count                         //这个方案多少注
+  if(lt.lottery.LotteryCode.indexOf('14') > -1 && lt.mode.mode === 'A10'){
+    this.betting_money = +(lt.perbet * bet.betting_model * bet.graduation_count).toFixed(2)
+  }else{
+    this.betting_money = +(lt.perbet * _count * bet.betting_model * bet.graduation_count).toFixed(2)
+  }
 
-  this.betting_point = lt.award + '-' + lt.Rebate[lt.lottery.LotteryType]  ,          //赔率
-  this.betting_model = bet.betting_model,                   //元角分
-  this.betting_issuseNo = lt.NowIssue,                  //当前期号
+  this.betting_point = lt.award + '-' + lt.Rebate[lt.lottery.LotteryType]            //赔率
+  this.betting_model = bet.betting_model                   //元角分
+  this.betting_issuseNo = lt.NowIssue                  //当前期号
   this.graduation_count = bet.graduation_count                //当前倍率
   this.compress = bet.compress                            //压缩字符串
 }
@@ -355,6 +359,11 @@ function BaseBet(count, betStr){
 BaseBet.prototype.power2one = function(){
   this.graduation_count = 1
   this.betting_money = +(PERBET * this.betting_count * this.betting_model * this.graduation_count).toFixed(2)
+}
+
+BaseBet.prototype.setRebate = function(rebate){
+  var lt = state.lt
+  this.betting_point = rebate + '-' + lt.Rebate[lt.lottery.LotteryType]
 }
 
 //生成追号的ajax
@@ -515,14 +524,18 @@ function computeIssue(code, index){
       ,_index  //那一天的第几期
       ,dateStr    //日期字符串
 
-  // console.log(state.PlanLen)
+  if(!state.lt.PlanLen)return
   days = Math.floor(index/state.lt.PlanLen)
   _index = index - days * state.lt.PlanLen;
-  //这里挂各特殊彩种的处理函数
+  //这里挂各特殊彩种的处理函数--有返回的直接出返回结果。不参与下一步
   var handler = {
     '1001':function(){
       (_index > 84) && days--
     },
+    '1406':()=>{
+      var data = state.lt.Todaystr.replace(/^(\d{4})(\d{2})(\d{2})$/,'$1/$2/$3');
+      return '0'+(Math.floor((Date.parse(data)-Date.parse("2016/8/1"))/DAY_TIME)*89+ BASE_ISSUE_1406 + index);
+    }
   }
 
   //计算期号字符串

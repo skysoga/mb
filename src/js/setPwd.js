@@ -15,11 +15,10 @@ export default {
   },
   methods:{
     $vaSubmit(){
-      var ajax = {Password: this.Password}
-      ajax.Action="SetPass"
+      var ajax = {Action:"SetPwd",Password: this.Password}
       var F=sessionStorage.getItem('isFind')
       if(F){
-        ajax.Action=ajax.Action+'Forget';
+        ajax.Action='SetPassForget';
       }
       layer.msgWait("正在提交")
       _fetch(ajax).then((json)=>{
@@ -27,11 +26,11 @@ export default {
             //验证密码
             layer.msgWarn(json.StrCode);
             if(F){
-                router.push('/login')
-                sessionStorage.clear('isFind')
-                return
-              }
-            router.push('/securityCenter')
+              router.push('/login')
+              sessionStorage.clear('isFind')
+              return
+            }
+            layer.url(json.StrCode,'/securityCenter')
           }else{
             layer.msgWarn(json.StrCode);
           }

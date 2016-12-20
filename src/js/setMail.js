@@ -18,26 +18,26 @@ export default {
   },
   methods:{
     $vaSubmit(){
-      var $root=this.$root
       var ajax = {
+        Action:"VerifyMail",
         Mail: this.Mail,
         MailCode:this.MailCode
       }
-      ajax.Action="VerifyMail"
       var F=sessionStorage.getItem('isFind')
       if(F){
-        ajax.Action=ajax.Action+'Forget';
+        ajax.Action='VerifyMailForget';
       }
       ajax.Qort="Set"
       layer.msgWait("正在提交")
       _fetch(ajax).then((json)=>{
           if(json.Code===1) {
-            layer.msgWarn(json.StrCode);
-            RootApp.AjaxGetInitData(["UserMail"],function(){
-              router.push('/securityCenter')
-            })
+            var Mail=(this.Mail).split("@")
+            var Mat=Mail[0]
+            var Str=Mat.substr(0,2)+"******"+Mat.substr(-4,4)
+            RootApp.SaveInitData({UserMail:Str+"@"+Mail[1]})
+            layer.url(json.StrCode,'/securityCenter')
           }else{
-            layer.msgWarn(json.StrCode);
+            layer.msgWarn(json.StrCode)
           }
       })
     },
@@ -45,9 +45,9 @@ export default {
       let vm=this
       if(!vm.toMsg){return};
       let ajax={
+        Action:"SendMailCode",
         Mail:vm.Mail,
       }
-      ajax.Action="SendMailCode"
       this.toMsg=false
       this.noDo=false
       layer.msgWait("正在发送")

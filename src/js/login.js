@@ -15,25 +15,18 @@ export default {
     }
   },
   methods:{
-    login:function(e){
-      var vm = this,
-        $root = this.$root;
-
+    $vaSubmit:function(e){
+      var vm = this
       var ajax = {
         UserName:this.UserName,
         Password:this.Password
-      };
-      var err = this.$root.format(ajax, ['Password', 'UserName']);
-      if (err) {
-        layer.msgWarn(err[1])
-        return;
       }
       ajax.Action="Login";
       layer.msgWait("正在登录")
       _fetch(ajax).then((json)=>{
         if (json.Code===1) {
-          this.$root.Login(this.UserName,function(){
-            $root.$router.push(state.login2path||"/index")
+          RootApp.Login(this.UserName,function(){
+            router.push(state.login2path||"/index")
           })
         }else{
           layer.msgWarn(json.StrCode)
@@ -42,7 +35,7 @@ export default {
     },
     bottomBox(key,val){
       if(key=='forgetPwd'){
-        RootApp.$router.push("/forgetPwd")
+        router.push("/forgetPwd")
       }else if(key=='pc'){
         location.href="http://"+location.host.replace('m.','www.')+"/index.html?CanPc";
       }

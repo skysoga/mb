@@ -20,12 +20,12 @@ export default {
     $vaSubmit(){
       var vm=this
       var ajax = {
+        Action:"SetSafePass",
         Password: this.Password
       }
-      ajax.Action="SetSafePass"
       var F=sessionStorage.getItem('isFind')
       if(F){
-        ajax.Action=ajax.Action+'Forget';
+        ajax.Action='SetSafePassForget';
       }
       layer.msgWait("正在提交")
       _fetch(ajax).then((json)=>{
@@ -53,7 +53,7 @@ export default {
               break;
               default:
                 vm.upPwd(function(){
-                  router.push('/securityCenter')
+                  layer.url(json.StrCode,'/securityCenter')
                 })
               break;
             }
@@ -63,7 +63,8 @@ export default {
       })
     },
     upPwd(fun){
-      RootApp.AjaxGetInitData(["UserHasSafePwd"],fun())
+      RootApp.SaveInitData({UserHasSafePwd:1})
+      fun()
     }
   }
 }

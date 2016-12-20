@@ -24,12 +24,12 @@ export default {
     $vaSubmit(){
       var vm=this
       var ajax = {
+        Action:"VerifySafePwd",
         Password: this.Password
       }
-      ajax.Action="VerifySafePwd";
       var F=sessionStorage.getItem('isFind')
       if(F){
-        ajax.Action=ajax.Action+'Forget';
+        ajax.Action='VerifySafePwdForget'
       }
       layer.msgWait("正在提交")
       _fetch(ajax).then((json)=>{
@@ -38,7 +38,7 @@ export default {
             url=url?'/'+url:'/setSafePwd'
             router.push(url)
           }else{
-            layer.msgWarn(json.StrCode);
+            layer.msgWarn(json.StrCode)
           }
       })
     }

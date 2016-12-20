@@ -46,7 +46,7 @@ var routes = [{
 	title:'设置密保邮箱',
 	nav:false,
 	link:'/securityCenter',
-	user:false,
+	user:true,
   verify:'UserMail',
   from:"Mail",
 	agent:false
@@ -70,10 +70,10 @@ var routes = [{
 	title:'设置密保问题',
 	nav:false,
 	link:'/securityCenter',
-	user:false,
+	user:true,
   agent:false,
   verify:'UserSafeQuestions',
-  from:"SafeQuestions"
+  from:"Question"
   },
   component: setQuestion
 },{
@@ -94,7 +94,7 @@ var routes = [{
 	title:'设置密保手机',
 	nav:false,
 	link:'/securityCenter',
-	user:false,
+	user:true,
   agent:false,
   verify:'UserMobile',
   from:"Mobile"
@@ -118,7 +118,7 @@ var routes = [{
 	title:'设置安全密码',
 	nav:false,
 	link:'/securityCenter',
-	user:false,
+	user:true,
   agent:false,
   verify:'UserHasSafePwd',
   from:'SafePwd,Mobile,Mail'
@@ -155,7 +155,7 @@ var routes = [{
 	link:'/securityCenter',
 	user:false,
   agent:false,
-  verify:"verifyPwd",
+  verify:"VerifyPwd",
   from:'Pwd,SafePwd,Mobile,Mail'
   },
   component: setPwd
@@ -192,6 +192,7 @@ var routes = [{
   meta:{
 	title:"找回密码",
 	link:"/securityCenter",
+  user:false,
 	nav:0,
   },
   component: resetWay
@@ -201,6 +202,7 @@ var routes = [{
   meta:{
 	title:"忘记密码",
 	link:"/login",
+  user:false,
 	nav:0,
   },
   component: forgetPwd

@@ -16,11 +16,9 @@ document.write("<style>html{font-size:"+rem+"px;}body{font-size:"+em+"px;}</styl
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
-import { mapState } from 'vuex'
 import App from './App'
 import routes from './routes/routes'
 import Va from './plugins/va'
-import {GMT_DIF} from './JSconfig'
 Vue.use(Va)
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -32,6 +30,10 @@ window.router = new VueRouter({
 	linkActiveClass:"on",
 	// exact: true
 });
+
+function SetIndexTitle(s){
+	routes[1].meta.title=`<img src="${state.constant.ImgHost+s.MobileLogo}" alt="" />`;
+}
 
 var UserArr = [
 	'UserHasSafePwd', //返回是否已经设置安全密码,1为有,0为没有设置
@@ -71,17 +73,22 @@ var SiteArr=[ //需要校验更新版本的列表
 var CacheArr = SiteArr.concat(UserArr)
 window.state = require('./JSconfig.js')
 ;(function(){
-	function getLocalDate(s){
-		s = localStorage.getItem(CacheArr[i]);
+	function getLocalDate(str){
+		var s = localStorage.getItem(str);
 		try{
 			s = JSON.parse(s);
 		}catch(e){}
+		if (str=="SiteConfig"&&s) {
+			SetIndexTitle(s)
+		}
 		return s;
 	}
   for (var i = CacheArr.length - 1; i >= 0; i--) {
   	state[CacheArr[i]]=getLocalDate(CacheArr[i])
   }
 })()
+var CacheData=localStorage.getItem("CacheData")
+CacheData = CacheData?JSON.parse(CacheData):{}
 window.store = new Vuex.Store({
   state,
   getters:{
@@ -132,12 +139,6 @@ window.RootApp = new Vue({
 	el: '#app',
 	store,
 	router,
-	watch: {
-		$route(to,from){
-			// console.log("监听路由已经变化");
-			// console.log(this.$route);
-		}
-	},
 	methods:{
     Logout:function(){
       store.commit('ClearInitData', UserArr)
@@ -149,6 +150,11 @@ window.RootApp = new Vue({
 			fun()
 		},
 		SetFilter:function(data){
+			;(function(s){
+				if (s) {
+					SetIndexTitle(s)
+				}
+			})(data.SiteConfig)
 			;(function(LotteryList){
 			  if(LotteryList&&LotteryList.length){
 			    data.LotteryList={};
@@ -193,13 +199,15 @@ window.RootApp = new Vue({
     	state.needVerify=0
     	sessionStorage.setItem("needVerify",state.needVerify)
 			var ajax = {
-				Action:"GetInitData"
+				Action:"GetInitData",
+				Requirement:arr,
+				CacheData
 			}
-			ajax.Requirement=arr;
 			_fetch(ajax).then((json)=>{
 		    if (json.Code===1||json.Code===0) {
 		    	var Data = this.SetFilter(json.BackData);
 		      this.SaveInitData(Data)
+		      localStorage.setItem('CacheData',JSON.stringify(Object.assign(CacheData,json.CacheData)))
 		      fun&&fun(state)
 		    }else{
 		      layer.msgWarn(json.StrCode);
@@ -254,17 +262,24 @@ window.RootApp = new Vue({
     getServerTime: (function(){
       var cantGetTime = 0
       return function(fun){
+        var timeBegin = new Date()
         _fetch({Action: "GetServerTimeMillisecond"}).then((json)=>{
-          if(json.Code === 1) {
-            var SerTime = json.Data
-            store.commit('setDifftime', SerTime)
-            fun && fun()
+          if(cantGetTime > 4){
+            layer.msgWarn("因无法同步服务器时间,您将无法投注,请检查网络情况")
           }else{
-            cantGetTime++;
-            if(cantGetTime > 4) {
-              layer.msgWarn("因无法同步服务器时间,您将无法投注,请检查网络情况")
+            var interval = new Date() - timeBegin
+            if(interval > 1000){
+              cantGetTime++
+              this.getServerTime()
             }else{
-              getServerTime();
+              if(json.Code === 1) {
+                var SerTime = json.Data
+                store.commit('setDifftime', SerTime)
+                fun && fun()
+              }else{
+                cantGetTime++;
+                this.getServerTime();
+              }
             }
           }
         })
@@ -285,7 +300,7 @@ window.RootApp = new Vue({
 				if (fy&&(!state.UserVerify||meta.from.search(state.UserVerify)==-1)
 				) {
 					console.log("条件不足");
-					router.push("/notfount")
+					router.go(-1)
 				}
 			}
 		},
@@ -326,6 +341,7 @@ window.RootApp = new Vue({
   layer.url=function(msg,s) {
     return layer.open({
       className: "layerConfirm",
+      title:'温馨提示',
       content: msg,
       btn: ["确定"],
       end:function(){
@@ -340,6 +356,7 @@ window.RootApp = new Vue({
   layer.alert=function(msg,fun){
     return layer.open({
       className: "layerConfirm",
+      title:'温馨提示',
       shadeClose: false,
       content: msg,
       btn: ["确定"],
@@ -444,7 +461,7 @@ function _fetch(data){
 							})
 						}
 					}
-					if (data.Action.search('Verify')===0) {
+					if (data.Action.search('Verify')===0&&json.Code>-1) {
 						state.UserVerify=data.Action.replace('Verify','')
 					}
 				})()

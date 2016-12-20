@@ -19,36 +19,35 @@ export default {
   methods:{
     $vaSubmit(){
       var ajax = {
+        Action:"VerifyMobile",
         Mobile: this.Mobile,
         SmsCode:this.SmsCode
       }
-      ajax.Action="VerifyMobile"
       var F=sessionStorage.getItem('isFind')
       if(F){
-        ajax.Action=ajax.Action+'Forget';
+        ajax.Action='VerifyMobileForget';
       }
       ajax.Qort="Set"
       layer.msgWait("正在提交")
       _fetch(ajax).then((json)=>{
           if(json.Code===1) {
-            layer.msgWarn(json.StrCode);
-            RootApp.AjaxGetInitData(["UserMobile"],function(){
-              router.push('/securityCenter')
-            })
+            var Mob=this.Mobile
+            RootApp.SaveInitData({UserMobile:Mob.substr(0,2)+"******"+Mob.substr(-2,2)})
+            layer.url(json.StrCode,'/securityCenter')
           }else{
-            layer.msgWarn(json.StrCode);
+            layer.msgWarn(json.StrCode)
           }
       })
     },
     postMsg(){
       let vm=this
       let ajax={
+        Action:"SendMobileCode",
         Mobile:this.Mobile,
       }
       if(!vm.toMsg){return};
       this.toMsg=false
       this.noDo=false
-      ajax.Action="SendMobileCode"
       layer.msgWait("正在发送")
       _fetch(ajax).then((json)=>{
           if(json.Code===1) {
