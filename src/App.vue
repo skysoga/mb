@@ -150,4 +150,7 @@ body{
   height:40px;
   line-height:40px;
 }
+.layerCenter{
+  text-align: center;
+}
 </style>
