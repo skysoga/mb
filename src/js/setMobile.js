@@ -16,9 +16,6 @@ export default {
     }
     next()
   },
-  created(){
-    layer.alert("暂不支持14,17开头的手机号码绑定")
-  },
   methods:{
     $vaSubmit(){
       var ajax = {
