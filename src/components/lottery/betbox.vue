@@ -265,7 +265,7 @@ export default {
   display: table-cell;
   a{
     width: calc(12.4rem / 5);
-    width: -webkit-calc(12.4rem / 5);
+    width: -webkit-calc(12.32rem / 5);
     display: inline-block;
     text-align: center;
   }
@@ -276,7 +276,7 @@ export default {
     line-height: 1.9em;
     text-align: center;
     color:#dc3b40;
-    background: white;
+    background: #faf9f6;
     border-radius: 50%;
     border: 1px solid #bfbfbf;
     font-size: .8em;
