@@ -446,7 +446,7 @@ export default {
       store.commit('lt_setBetStr', getBetStr(_data, this.mode))
     },
     changeShowPrice(){
-      if(!/^\d+$/.test(this.showPrice)){
+      if(!/^\d+$/.test(this.showPrice)|| !(+this.showPrice)){
         this.showPrice = ''
       }
 
