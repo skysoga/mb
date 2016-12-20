@@ -120,7 +120,7 @@ var routes = [{
 	link:'/securityCenter',
 	user:true,
   agent:false,
-  verify:'VerifySafePwd',
+  verify:'UserHasSafePwd',
   from:'SafePwd,Mobile,Mail'
   },
   component: setSafePwd

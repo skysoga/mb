@@ -465,7 +465,6 @@ function _fetch(data){
 					}
 					if (data.Action.search('erify')===1) {
 						state.UserVerify=data.Action.replace('Verify','')
-						state.UserVerify=data.Action.replace('verify','')
 					}
 				})()
 				resolve(json)
