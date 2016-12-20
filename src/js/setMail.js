@@ -25,7 +25,7 @@ export default {
       ajax.Action="VerifyMail"
       var F=sessionStorage.getItem('isFind')
       if(F){
-        ajax.Action=ajax.Action+'Forget';
+        ajax.Action='VerifyMailForget';
       }
       ajax.Qort="Set"
       layer.msgWait("正在提交")
@@ -37,7 +37,7 @@ export default {
             RootApp.SaveInitData({UserMail:Str+"@"+Mail[1]})
             layer.url(json.StrCode,'/securityCenter')
           }else{
-            layer.msgWarn(json.StrCode);
+            layer.msgWarn(json.StrCode)
           }
       })
     },

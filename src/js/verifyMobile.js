@@ -39,7 +39,7 @@ export default {
       ajax.Action="VerifyMobile"
       var F=sessionStorage.getItem('isFind')
       if(F){
-        ajax.Action=ajax.Action+'Forget';
+        ajax.Action='VerifyMobileForget';
       }
       ajax.Qort="Verify"
       layer.msgWait("正在提交")

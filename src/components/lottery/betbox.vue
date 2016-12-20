@@ -265,7 +265,7 @@ export default {
   display: table-cell;
   a{
     width: calc(12.4rem / 5);
-    width: -webkit-calc(12.4rem / 5);
+    width: -webkit-calc(12.32rem / 5);
     display: inline-block;
     text-align: center;
   }

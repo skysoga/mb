@@ -338,16 +338,20 @@ function BaseBet(count, betStr){
       _count = count || bet.betting_count,
       _betStr = betStr || bet.betting_number
 
-  this.lottery_code = lt.lottery.LotteryCode,                     //彩种
-  this.play_detail_code = lt.lottery.LotteryCode + lt.mode.mode,  //玩法code
-  this.betting_number = _betStr,                       //投注号码
+  this.lottery_code = lt.lottery.LotteryCode                     //彩种
+  this.play_detail_code = lt.lottery.LotteryCode + lt.mode.mode  //玩法code
+  this.betting_number = _betStr                       //投注号码
 
-  this.betting_count = _count,                         //这个方案多少注
-  this.betting_money = +(PERBET * _count * bet.betting_model * bet.graduation_count).toFixed(2),  //一注单价 * 投注数量 * 单位 * 倍数
+  this.betting_count = _count                         //这个方案多少注
+  if(lt.lottery.LotteryCode.indexOf('14') > -1){
+    this.betting_money = +(lt.perbet * bet.betting_model * bet.graduation_count).toFixed(2)
+  }else{
+    this.betting_money = +(lt.perbet * _count * bet.betting_model * bet.graduation_count).toFixed(2)
+  }
 
-  this.betting_point = lt.award + '-' + lt.Rebate[lt.lottery.LotteryType]  ,          //赔率
-  this.betting_model = bet.betting_model,                   //元角分
-  this.betting_issuseNo = lt.NowIssue,                  //当前期号
+  this.betting_point = lt.award + '-' + lt.Rebate[lt.lottery.LotteryType]            //赔率
+  this.betting_model = bet.betting_model                   //元角分
+  this.betting_issuseNo = lt.NowIssue                  //当前期号
   this.graduation_count = bet.graduation_count                //当前倍率
   this.compress = bet.compress                            //压缩字符串
 }

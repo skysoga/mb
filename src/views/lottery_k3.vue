@@ -1,6 +1,6 @@
 <template>
- <div class="k3">
-<header class="top">
+<div class="k3">
+  <header class="top">
     <div>
       <p>玩法</p>
       <span id="MethodStr" @click.stop = "toggleModeSelect">
@@ -9,7 +9,7 @@
     </div>
 
     <div class="fr" id="lotteryChoice">
-      <label @click.stop= "toggleTypeSelect">{{LotteryName}}</label>
+      <label @click.stop= "toggleTypeSelect">{{LotteryName.slice(0,2)}}</label>
       <i @click.stop= "toggleTypeSelect" class="iconfont xiala"></i>
       <!-- 快三彩种切换 -->
       <div class="fix" style ="display:block" v-show = "ifShowTypeSelect">
@@ -33,7 +33,7 @@
         </p>
       </li>
       <li></li>
-    </ul>
+      </ul>
   </header>
 
   <section class="State">
@@ -71,7 +71,7 @@
     <table class="myBet" style="display: block" v-show = "ifShowBetRecord">
       <tr><td>期号</td> <td>投注金额</td><td>奖金</td></tr>
       <tr v-for = "item in BetRecord">
-        <td>{{item.issueNo.slice(4)}}</td>
+        <td>{{item.issueNo.length < 7 ? item.issueNo : item.issueNo.slice(4)}}</td>
         <td>
           {{item.normal_money}}
         </td>
@@ -91,7 +91,7 @@
               @click = "choose(item)"
               :class = "{checked: chosen.indexOf(item) > -1}">
             {{item}}
-            <p v-if = "mode === 'A10' && award">赔率{{getSumRebate(index)}}</p>
+            <p v-if = "mode === 'A10' && award">{{index < 4 ? '赔率': '赔'}}{{getSumRebate(index)}}</p>
           </li>
         </ul>
       </div>
@@ -105,7 +105,7 @@
       <tbody>
         <tr>
           <td>当前选号</td>
-          <td><span id="choice">{{betStr}}</span></td>
+          <td><span id="choice">{{this.chosen.join(' ')}}</span></td>
         </tr>
         <tr>
           <td>每注金额</td>
@@ -113,7 +113,9 @@
             <input type="tel" maxlength="7"
                    v-model = "showPrice"
                    @input = "changeShowPrice"/>
-            <div v-html = "maxAward"></div>
+            <!-- <div v-html = "maxAward"></div> -->
+            <div v-show = "!showPrice">请输入要投注的金额</div>
+            <div v-show = "showPrice">最高可中<span>{{mode === 'A10' ? getMaxAwardA10() : (+this.showPrice * this.award).toFixed(2)}}</span>元</div>
           </td>
         </tr>
       </tbody>
@@ -132,7 +134,7 @@
 import {unique,C,mul,BaseBet,deleteCompress} from '../js/kit'
 import {PERBET} from '../JSconfig'
 var eachLen = data=>data.map(arr=>arr.length)
-var getBetStr = data=>data.map(arr=>arr.join(' ')).filter(str=>str).join(',')
+var getBetStr = data=>data.map(arr=>arr.join(' ')).join(',')
 var cfg = {
   'A10':{
     itemArr:['大','小','单','双',3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
@@ -226,6 +228,12 @@ export default {
       showPrice:'',            //每注投多少，展示
     }
   },
+  watch:{
+    $route(){
+      [,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
+      this.clear()
+    }
+  },
   computed:{
     //header部分
     ifShowTypeSelect (){
@@ -269,9 +277,9 @@ export default {
       return this.$store.state.lt.box === 'BetRecord'
     },
     pastOpen(){
-      return state.lt.LotteryResults[this.lcode].map(item=>{
+      var pastOpen = state.lt.LotteryResults[this.lcode].map(item=>{
         var el = {}
-        el.IssueNo = item.IssueNo.slice(4)        //把年份砍掉
+        el.IssueNo = item.IssueNo.length < 7 ? item.IssueNo :item.IssueNo.slice(4)        //把年份砍掉
         var results = item.LotteryOpen.split(',')
         el.LotteryOpen = results
         el.sum = results.reduce((a,b)=>(+a)+(+b))
@@ -279,6 +287,7 @@ export default {
         el.singleOrDouble = el.sum % 2 === 1 ? '单' : '双'
         return el
       })
+      return pastOpen
     },
     BetRecord(){
       var Record = state.lt.BetRecord
@@ -301,27 +310,12 @@ export default {
     betStr:()=>state.lt.bet.betting_number,
     betCountStr:()=>state.lt.bet.betting_number ? `共${state.lt.bet.betting_count}注`:'',
     betMoneyStr(){
-      return this.showPrice ? `，${state.lt.bet.betting_money}元` : ''
+      return (state.lt.bet.betting_money && this.showPrice)  ? `，${state.lt.bet.betting_money}元` : ''
     },
     basket:()=>state.lt.basket,
-    //最高可中奖金
-    maxAward(){
-      if(!this.showPrice){
-        return '请输入要投注的金额'
-      }else{
-        if(this.mode === 'A10'){
-          var maxAward = this.getMaxAwardA10()
-          return `最高可中<span>${maxAward}</span>元`
-        }else{
-          var maxAward = +this.showPrice * this.award
-          return `最高可中<span>${maxAward}</span>元`
-        }
-      }
-    }
   },
   methods:{
     back2index(){
-      // store.commit('lt_leaveLottery')
       this.$router.push('/index')
     },
     //彩种选择框，切换
@@ -374,6 +368,10 @@ export default {
            this.$store.commit('lt_changeBox', 'pastOpen')
     },
     getSumRebate(index){
+      if(!this.award || !this.award.length){
+        return ''
+      }
+
       if(index <= 3){
         return this.award[8]
       }else if(index >= 4 && index <=11){
@@ -463,7 +461,9 @@ export default {
         layer.alert('请填写您要投注的金额')
       }else{
         //如果追号倍数和期号都为1,则为普通投注
-        var msg = `${this.LotteryName}: 第${this.nowIssue}期<br>投注金额: ${this.bet.betting_money}元<br>投注内容:${this.bet.betting_number}`
+        var msg = `${this.LotteryName}: 第${this.nowIssue}期<br>
+                    投注金额: ${this.bet.betting_money}元<br>
+                    投注内容:${this.chosen.join(' ')}`
 
         layer.confirm(msg,()=>{
           var basebet = new BaseBet()
@@ -497,8 +497,9 @@ export default {
         },()=>{})
       }
     },
+    //获得和值的最大获奖
     getMaxAwardA10(){
-      var maxAwardFromNum
+      var maxAward
       var dsdsRebate = this.award[8]  //大小单双的返点在和值的最后一个
       //大小单双选择情况
       var dsds = [
@@ -523,13 +524,14 @@ export default {
       //未考虑完全没有选择任何一个按钮的选项，因为不选不会进入这个程序
       if(this.chosen.some(item=>typeof item === 'number')){
         numMax = Math.max.apply({}, numPart)
-        return numMax
+        maxAward = numMax
       }else if((dsds[0] || dsds[1]) && (dsds[2] || dsds[3])){
-        return 2 * dsdsRebate
+        maxAward = 2 * dsdsRebate
       }else{
-        return dsdsRebate
+        maxAward = dsdsRebate
       }
-    }
+      return (+this.showPrice * maxAward).toFixed(2)
+    },
   }
 }
 </script>

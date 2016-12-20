@@ -1,5 +1,5 @@
 <template>
-  <div class="cart" v-show = "ifShowBasket">
+  <div class="cart" v-show = "ifShowBasket" >
   <header class="top sscHeader fix" >
     <a class="iconfont back" @click.stop = "back"></a>
     <div class="playSort" ref = "playSort">号码篮</div>
@@ -16,8 +16,6 @@
           <span>{{getTag(bet.play_detail_code.slice(-3), config)[0]}} {{bet.betting_count}}注×{{PERBET * bet.betting_model}}元×{{bet.graduation_count}}倍  = {{bet.betting_money}}元</span>
           <a @click = "deleteBet(index)"></a>
         </li>
- <!--        <li><em>8,8,8,8,8</em><span>五星直选 1注×2.0元 = 2.00元</span><a></a></li>
-        <li><em>8,8,8,8,8</em><span>五星直选 1注×2.0元 = 2.00元</span><a></a></li> -->
       </ul>
       <div class="clear" v-show = "ifShowClearAll" @click = "clearBasket">清空</div>
   </div>

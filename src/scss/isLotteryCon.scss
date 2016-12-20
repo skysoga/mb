@@ -3,6 +3,8 @@
 
 .isLotteryLine,.lotteryCloseItem{
   height: 2.8em;
+  float: left;
+  width: 50%;
   &:after{
     content:"";
     position: absolute;
@@ -11,7 +13,7 @@
     height: 1px;
     width: 16rem;
     z-index: 3;
-    @include bgImg-linear-gradient('90deg, #d0d0d0, #d0d0d0 50%, transparent 50%');
+    // @include bgImg-linear-gradient('90deg, #d0d0d0, #d0d0d0 50%, transparent 50%');
   }
   .iconfont{
     transition:.6s;

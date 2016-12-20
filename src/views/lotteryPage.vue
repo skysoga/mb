@@ -20,9 +20,10 @@
 
 	export default{
 		beforeRouteEnter(to, from, next){
-			//校验LotteryList， 和LotteryConfig-- 不阻塞，仅发起
+			//校验LotteryList， 和LotteryConfig-- 要阻塞，这个地方要改
 			RootApp.GetInitData(['LotteryList','LotteryConfig'], state=>{})
 			var Difftime = localStorage.getItem('Difftime')
+			next()
 			if(Difftime === null){
 				RootApp.getServerTime(next)//没获取Difftime就再获取一次
 			}else{
@@ -603,6 +604,7 @@
 		      		if(json.Code === 1){
 		      			var betting = json.Data.BettingOrders
 		      			commit('lt_setBetRecord', betting)
+		      			console.log(betting)
 		      		}
 		      	})
 		      },
