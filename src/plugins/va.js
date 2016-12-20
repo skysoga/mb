@@ -187,7 +187,7 @@ va.install = function(Vue, options){
 					if(_result){
 						//如果返回的是字符串，则为自定义报错； 如果是数组，则使用showErr 报错
 						typeof _result === 'string' ? layer.msgWarn(_result) : showErr(conditions[0].tag, _result)
-						el.value = vm.vaVal[name] = ''
+						el.value = vm.vaVal[name] = vm.$vanowFail()
 						return
 					}
 					vm.vaVal[name] = value
@@ -261,7 +261,6 @@ va.install = function(Vue, options){
 				//校验通过的回调
 				vm.$vaSubmit()
 				// layer.msgWarn('全部校验成功')
-				console.log(vm.vaVal)
 			})
 
 		}
