@@ -39,14 +39,14 @@ export default {
   methods:{
     $vaSubmit(){
       var ajax = {
+        Action:"SetQuestion",
         Answer1:this.answer1,
         Answer2:this.answer2,
         Answer3:this.answer3
       }
-      ajax.Action="SetQuestion"
       var F=sessionStorage.getItem('isFind')
       if(F){
-        ajax.Action='SetQuestionForget';
+        ajax.Action='SetQuestionForget'
       }
       ajax.QuestionID1=this.question1
       ajax.QuestionID2=this.question2

@@ -20,9 +20,9 @@ export default {
     $vaSubmit(){
       var vm=this
       var ajax = {
+        Action:"SetSafePass",
         Password: this.Password
       }
-      ajax.Action="SetSafePass"
       var F=sessionStorage.getItem('isFind')
       if(F){
         ajax.Action='SetSafePassForget';

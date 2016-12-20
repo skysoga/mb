@@ -19,10 +19,10 @@ export default {
   methods:{
     $vaSubmit(){
       var ajax = {
+        Action:"VerifyMail",
         Mail: this.Mail,
         MailCode:this.MailCode
       }
-      ajax.Action="VerifyMail"
       var F=sessionStorage.getItem('isFind')
       if(F){
         ajax.Action='VerifyMailForget';
@@ -45,9 +45,9 @@ export default {
       let vm=this
       if(!vm.toMsg){return};
       let ajax={
+        Action:"SendMailCode",
         Mail:vm.Mail,
       }
-      ajax.Action="SendMailCode"
       this.toMsg=false
       this.noDo=false
       layer.msgWait("正在发送")

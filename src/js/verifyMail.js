@@ -34,10 +34,10 @@ export default {
     $vaSubmit(){
       var vm=this
       var ajax = {
+        Action:"VerifyMail",
         Mail: 0,
         MailCode:this.MailCode
       }
-      ajax.Action="VerifyMail"
       var F=sessionStorage.getItem('isFind')
       if(F){
         ajax.Action='VerifyMailForget';

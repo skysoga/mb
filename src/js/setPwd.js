@@ -15,8 +15,7 @@ export default {
   },
   methods:{
     $vaSubmit(){
-      var ajax = {Password: this.Password}
-      ajax.Action="SetPwd"
+      var ajax = {Action:"SetPwd",Password: this.Password}
       var F=sessionStorage.getItem('isFind')
       if(F){
         ajax.Action='SetPassForget';
