@@ -46,7 +46,7 @@ var routes = [{
 	title:'设置密保邮箱',
 	nav:false,
 	link:'/securityCenter',
-	user:false,
+	user:true,
   verify:'UserMail',
   from:"Mail",
 	agent:false
@@ -70,10 +70,10 @@ var routes = [{
 	title:'设置密保问题',
 	nav:false,
 	link:'/securityCenter',
-	user:false,
+	user:true,
   agent:false,
   verify:'UserSafeQuestions',
-  from:"SafeQuestions"
+  from:"Question"
   },
   component: setQuestion
 },{
@@ -94,7 +94,7 @@ var routes = [{
 	title:'设置密保手机',
 	nav:false,
 	link:'/securityCenter',
-	user:false,
+	user:true,
   agent:false,
   verify:'UserMobile',
   from:"Mobile"
@@ -118,7 +118,7 @@ var routes = [{
 	title:'设置安全密码',
 	nav:false,
 	link:'/securityCenter',
-	user:false,
+	user:true,
   agent:false,
   verify:'UserHasSafePwd',
   from:'SafePwd,Mobile,Mail'

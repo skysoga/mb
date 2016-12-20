@@ -28,7 +28,7 @@ export default {
       ajax.Action="VerifyMobile"
       var F=sessionStorage.getItem('isFind')
       if(F){
-        ajax.Action=ajax.Action+'Forget';
+        ajax.Action='VerifyMobileForget';
       }
       ajax.Qort="Set"
       layer.msgWait("正在提交")
@@ -38,7 +38,7 @@ export default {
             RootApp.SaveInitData({UserMobile:Mob.substr(0,2)+"******"+Mob.substr(-2,2)})
             layer.url(json.StrCode,'/securityCenter')
           }else{
-            layer.msgWarn(json.StrCode);
+            layer.msgWarn(json.StrCode)
           }
       })
     },

@@ -18,6 +18,7 @@ export default {
     if(F){
       to.meta.link="/resetWay?Q=ResetPwd"
     }
+    console.log(store.state)
     next()
   },
   created(){
@@ -53,19 +54,19 @@ export default {
       ajax.Action="VerifyQuestion"
       var F=sessionStorage.getItem('isFind')
       if(F){
-        ajax.Action=ajax.Action+'Forget';
+        ajax.Action='VerifyQuestionForget';
       }
       ajax.QuestionID1=this.question1
       ajax.QuestionID2=this.question2
       layer.msgWait("正在提交")
       _fetch(ajax).then((json)=>{
           if(json.Code===1) {
-            layer.msgWarn(json.StrCode);
-            var url=vm.nextUrl
-            url=url?'/'+url:'/setQuestion'
+            var x=vm.nextUrl
+            var url=x?('/'+x):'/setQuestion'
+            console.log(url)
             router.push(url)
           }else{
-            layer.msgWarn(json.StrCode);
+            layer.msgWarn(json.StrCode)
           }
       })
     },

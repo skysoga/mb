@@ -25,4 +25,8 @@
 <script src="../js/setMobile.js"></script>
 <style lang="scss" scoped>
   @import '../scss/SecurityCenter.scss';
+  .layermcont {
+    text-align: center;
+    padding: 10px 0;
+  }
 </style>
