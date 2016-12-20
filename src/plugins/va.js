@@ -294,11 +294,6 @@ va.install = function(Vue, options){
 			})
 		}
 	})
-
-
-	/**
-   **  在实例的monuted周期使用 api设置自定义配置
-	 */
 	Vue.prototype.VaConfig = VaConfig
 }
 
