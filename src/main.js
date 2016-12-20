@@ -19,7 +19,6 @@ import Vuex from 'vuex'
 import App from './App'
 import routes from './routes/routes'
 import Va from './plugins/va'
-import {GMT_DIF} from './JSconfig'
 Vue.use(Va)
 Vue.use(VueRouter)
 Vue.use(Vuex)
