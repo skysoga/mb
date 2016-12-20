@@ -24,9 +24,9 @@ export default {
     $vaSubmit(){
       var vm=this
       var ajax = {
+        Action:"VerifySafePwd",
         Password: this.Password
       }
-      ajax.Action="VerifySafePwd"
       var F=sessionStorage.getItem('isFind')
       if(F){
         ajax.Action='VerifySafePwdForget'

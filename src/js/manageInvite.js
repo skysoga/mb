@@ -24,10 +24,12 @@ export default {
       var inputObj=this.vaVal
       var vm=this
       var Objrr='';var i=-1;for(var n in inputObj){++i;if(i>0){Objrr+='@'}Objrr+=n+'#'+inputObj[n];}
-      var Arr={Action:"SetInviteUrl"}
-          Arr.PointJson=Objrr
-          Arr.UserType=this.UserType
-          Arr.Remark="未设置"
+      var Arr={
+        Action:"SetInviteUrl",
+        PointJson:Objrr,
+        UserType:this.UserType,
+        Remark:"未设置"
+      }
       _fetch(Arr).then(json=>{
           if(json.Code==1){
             layer.open({
@@ -39,7 +41,7 @@ export default {
               yes:function(index){
                 layer.close(index)
                 var msg=Arr.UserType==1?'AgentCode':'memberCode'
-                vm.$root.$router.push('/manageIcode/'+msg)
+                router.push('/manageIcode/'+msg)
               },
               no:function(index){
                 layer.close(index)

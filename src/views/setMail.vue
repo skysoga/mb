@@ -18,7 +18,7 @@
         <tr></tr>
       </tbody>
     </table>
-    <div class="loginBtn BTN "><a v-va-check>绑定</a></div>
+    <div class="loginBtn BTN "><a v-va-check>确定</a></div>
   </div>
 </template>
 <script src="../js/setMail.js"></script>

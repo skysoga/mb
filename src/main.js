@@ -19,7 +19,6 @@ import Vuex from 'vuex'
 import App from './App'
 import routes from './routes/routes'
 import Va from './plugins/va'
-import {GMT_DIF} from './JSconfig'
 Vue.use(Va)
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -462,7 +461,7 @@ function _fetch(data){
 							})
 						}
 					}
-					if (data.Action.search('Verify')===0) {
+					if (data.Action.search('Verify')===0&&json.Code>-1) {
 						state.UserVerify=data.Action.replace('Verify','')
 					}
 				})()

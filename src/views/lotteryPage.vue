@@ -22,19 +22,26 @@
 		beforeRouteEnter(to, from, next){
 			//校验LotteryList， 和LotteryConfig-- 要阻塞，这个地方要改
 			RootApp.GetInitData(['LotteryList','LotteryConfig'], state=>{
-				// var table = {
-				// 	'SSC': '时时彩',
-				// 	'K3': '快3'
-				// }
-				// var ltype, lcode
-				// [,ltype, lcode] = to.fullPath.slice(1).split('/')
-				// state.LotteryConfig.map(item=>{
-				// 	if(item.LotteryClassName === table[ltype]){
-				// 		if(item.LotteryList.indexOf(lcode) === -1){
-				// 			layer.url('彩种木有', '/index')
-				// 		}
-				// 	}
-				// })
+				var ltype, lcode
+			  //从url上获取彩种type和彩种code
+			  ;[,ltype, lcode] = to.fullPath.slice(1).split('/')
+			  //校验下这个彩种存不存在，不存在就送回购彩大厅
+		 		var table = {
+					'SSC': '时时彩',
+					'K3': '快3'
+				}
+				var lotteryTypeList
+				state.LotteryConfig.map(item=>{
+					if(item.LotteryClassName === table[ltype]){
+						lotteryTypeList = item.LotteryList
+					}
+				})
+
+				if(lotteryTypeList.indexOf(lcode) === -1){
+					layer.url('您所访问的彩种不存在，即将返回购彩大厅', '/index')
+					return
+				}
+
 				var Difftime = localStorage.getItem('Difftime')
 				if(Difftime === null){
 					RootApp.getServerTime(next)//没获取Difftime就再获取一次
@@ -44,7 +51,11 @@
 			})
 
 		},
+
 		created(){
+		  //从url上获取彩种type和彩种code
+		  ;[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
+
 			//这里获取一次服务器时间，用以校正
 			RootApp.getServerTime()
 			//留着11选5测试数据
@@ -586,31 +597,29 @@
 				            interval=30
 				        }
 				        if (wait4Results>5 && wait4Results%interval===0) {
-				        	// console.log('获取开奖结果')
 				        	dispatch('lt_getResults', state.lottery.LotteryCode)		//获取开奖结果
 				        }
 				      }else if(Results[0].IssueNo*1 > state.OldIssue*1){
 				      	commit('lt_updateTimeBar', '暂停销售')		//暂停销售
 				      }else{
 				      	//开奖
-				      	// console.log('开奖')
-				      	commit('lt_displayResults', true)
-				      	wait4BetRecord = true
-    	          this.timer1 = setTimeout(()=>{
-    	          	// console.log('6s')
-    	          	dispatch('lt_updateBetRecord')			//获取我的投注
-    	          }, 6000)
+				      	if(wait4Results){
+					      	commit('lt_displayResults', true)
+					      	wait4BetRecord = true
+	    	          this.timer1 = setTimeout(()=>{
+	    	          	// console.log('6s')
+	    	          	dispatch('lt_updateBetRecord')			//获取我的投注
+	    	          }, 6000)
 
-    	          this.timer2 = setTimeout(()=>{
-    	          	// console.log('12s')
-    	          	dispatch('lt_updateBetRecord')			//获取我的投注
-    	          	wait4Results = 0
-    	          	wait4BetRecord = false
-    	          }, 12000)
+	    	          this.timer2 = setTimeout(()=>{
+	    	          	// console.log('12s')
+	    	          	dispatch('lt_updateBetRecord')			//获取我的投注
+	    	          	wait4Results = 0
+	    	          	wait4BetRecord = false
+	    	          }, 12000)
+				      	}
 				      }
-
 			      }
-
 		      },
 	      	//获取我的投注
 		      lt_updateBetRecord:({state, rootState, commit, dispatch})=>{
@@ -618,7 +627,6 @@
 		      		if(json.Code === 1){
 		      			var betting = json.Data.BettingOrders
 		      			commit('lt_setBetRecord', betting)
-		      			console.log(betting)
 		      		}
 		      	})
 		      },
@@ -646,7 +654,6 @@
 				      		})
 								}
 							})
-
 						}
 		      },
 		      //投注
@@ -727,8 +734,6 @@
 		    }
 		  }
 
-		  //从url上获取彩种type和彩种code
-		  ;[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
 
 			//注册彩种模块 --lt
 			state.lt || store.registerModule('lt', lt)

@@ -31,8 +31,7 @@
           <span class="Dice" :class = "`Dice${mode.eg[1]}`"></span>
           <span class="Dice" :class = "`Dice${mode.eg[2]}`"></span>
         </p>
-      </li>
-      <li></li>
+      </li><li></li>
       </ul>
   </header>
 
@@ -48,7 +47,7 @@
       </div>
     </div>
 
-    <div v-if = "$store.state.lt.NowIssue" @click.stop = "toggleBetRecord">
+    <div v-if = "$store.state.lt.NowIssue" @click.stop = "togglePastOpen">
       <p>{{nowIssue}}期投注截止</p>
       <div>{{TimeBar}}</div>
     </div>
@@ -100,8 +99,7 @@
   </div>
 
   <footer class="bottom">
-
-    <table v-show = "betStr">
+    <table v-show = "chosen.length">
       <tbody>
         <tr>
           <td>当前选号</td>
@@ -113,7 +111,6 @@
             <input type="tel" maxlength="7"
                    v-model = "showPrice"
                    @input = "changeShowPrice"/>
-            <!-- <div v-html = "maxAward"></div> -->
             <div v-show = "!showPrice">请输入要投注的金额</div>
             <div v-show = "showPrice">最高可中<span>{{mode === 'A10' ? getMaxAwardA10() : (+this.showPrice * this.award).toFixed(2)}}</span>元</div>
           </td>
@@ -134,7 +131,15 @@
 import {unique,C,mul,BaseBet,deleteCompress} from '../js/kit'
 import {PERBET} from '../JSconfig'
 var eachLen = data=>data.map(arr=>arr.length)
-var getBetStr = data=>data.map(arr=>arr.join(' ')).join(',')
+var getBetStr = (data, mode)=>{
+  var line =  data.map(arr=>arr.join(' '))
+  if(mode === 'C10'){
+    return line.filter(str=>str).join(',')
+  }else{
+    return line.join(',')
+  }
+}
+
 var cfg = {
   'A10':{
     itemArr:['大','小','单','双',3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
@@ -303,7 +308,7 @@ export default {
     mode:()=>state.lt.mode.mode,
     award:()=>state.lt.award,
     tipRebate(){
-      return typeof this.award === 'string' ? `${this.award}倍。` : ''
+      return typeof this.award === 'string' ? `赔率${this.award}倍。` : ''
     },
     chosen:()=>state.lt.tmp['K3'],
     bet:()=>state.lt.bet,
@@ -438,10 +443,10 @@ export default {
       var betCount = cfg[this.mode].alg(_data)
 
       store.commit('lt_setBetCount', betCount)
-      store.commit('lt_setBetStr', getBetStr(_data))
+      store.commit('lt_setBetStr', getBetStr(_data, this.mode))
     },
     changeShowPrice(){
-      if(!/^\d+$/.test(this.showPrice)){
+      if(!/^\d+$/.test(this.showPrice)|| !(+this.showPrice)){
         this.showPrice = ''
       }
 
@@ -477,13 +482,16 @@ export default {
           }).then((json)=>{
             if(json.Code === 1){
               this.showPrice = ''
-              layer.msg(json.StrCode)
+              // layer.msg(json.StrCode)
               store.commit('lt_clearBet')
               store.commit('lt_changeBox', '')
               //隔3s获取我的投注
               this.timer3 = setTimeout(()=>{
                 store.dispatch('lt_updateBetRecord')
               }, 3000)
+
+              layer.confirm(`投注成功，您可以在我的账户查看注单详情`,['继续投注','查看注单'], ()=>{},()=>{this.$router.push('/userCenter')})
+
             }else if(json.Code === -9){
               //清除rebate
               layer.alert(json.StrCode)
