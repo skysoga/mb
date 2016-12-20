@@ -10,9 +10,9 @@
 	}
 })()
 document.cookie = "Site="+location.hostname.replace('.com','')
-window.rem = document.body.clientWidth/16;
-window.em = Math.sqrt((rem-20)*.9)+20;
-document.write("<style>html{font-size:"+rem+"px;}body{font-size:"+em+"px;}</style>");
+window.rem = document.body.clientWidth/16
+window.em = Math.sqrt((rem-20)*.9)+20
+document.write("<style>html{font-size:"+rem+"px;}body{font-size:"+em+"px;}</style>")
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
@@ -33,7 +33,7 @@ window.router = new VueRouter({
 });
 
 function SetIndexTitle(s){
-	routes[1].meta.title=`<img src="${state.constant.ImgHost+s.MobileLogo}" alt="" />`;
+	routes[1].meta.title=`<img src="${state.constant.ImgHost+s.MobileLogo}" alt="" />`
 }
 
 var UserArr = [
@@ -113,7 +113,7 @@ window.store = new Vuex.Store({
 				state[k] = Data[k]
   			if(CacheArr.indexOf(k)+1){
   				if (Data[k]===null) {
-				    Data[k]=''
+				    state[k]=Data[k]=''
   				}else if (typeof(Data[k])=='object') {
 				    Data[k]=JSON.stringify(Data[k]);
   				}
