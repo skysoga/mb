@@ -373,7 +373,7 @@ export default {
       }
 
       if(index <= 3){
-        return this.award[8]
+        return this.award ? this.award[8] : ''
       }else if(index >= 4 && index <=11){
         return this.award[index - 4]
       }else{
@@ -500,7 +500,7 @@ export default {
     //获得和值的最大获奖
     getMaxAwardA10(){
       var maxAward
-      var dsdsRebate = this.award[8]  //大小单双的返点在和值的最后一个
+      var dsdsRebate = this.award ? this.award[8] : ''  //大小单双的返点在和值的最后一个
       //大小单双选择情况
       var dsds = [
         this.chosen.indexOf('大') > -1,
