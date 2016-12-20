@@ -21,14 +21,28 @@
 	export default{
 		beforeRouteEnter(to, from, next){
 			//校验LotteryList， 和LotteryConfig-- 要阻塞，这个地方要改
-			RootApp.GetInitData(['LotteryList','LotteryConfig'], state=>{})
-			var Difftime = localStorage.getItem('Difftime')
-			next()
-			if(Difftime === null){
-				RootApp.getServerTime(next)//没获取Difftime就再获取一次
-			}else{
-				next()										//有就直接进页面
-			}
+			RootApp.GetInitData(['LotteryList','LotteryConfig'], state=>{
+				// var table = {
+				// 	'SSC': '时时彩',
+				// 	'K3': '快3'
+				// }
+				// var ltype, lcode
+				// [,ltype, lcode] = to.fullPath.slice(1).split('/')
+				// state.LotteryConfig.map(item=>{
+				// 	if(item.LotteryClassName === table[ltype]){
+				// 		if(item.LotteryList.indexOf(lcode) === -1){
+				// 			layer.url('彩种木有', '/index')
+				// 		}
+				// 	}
+				// })
+				var Difftime = localStorage.getItem('Difftime')
+				if(Difftime === null){
+					RootApp.getServerTime(next)//没获取Difftime就再获取一次
+				}else{
+					next()										//有就直接进页面
+				}
+			})
+
 		},
 		created(){
 			//这里获取一次服务器时间，用以校正
@@ -532,7 +546,7 @@
 		          var _year = new Date(new Date().getTime()- store.state.Difftime - GMT_DIF).getFullYear()	//本年
 		          layer.open({
 		            shadeClose: false,
-		            className: "layerConfirm",
+		            className: "layerConfirm layerCenter",
 		            content: `${state.OldIssue.replace(_year,"")}期已截止</br>当前期号<span style="color:red">${state.NowIssue.replace(_year,"")}</span></br>投注时请注意期号`,
 		            title: "温馨提示",
 		            btn: ["确定"]

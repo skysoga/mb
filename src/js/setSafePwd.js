@@ -53,7 +53,7 @@ export default {
               break;
               default:
                 vm.upPwd(function(){
-                  router.push('/securityCenter')
+                  layer.url(json.StrCode,'/securityCenter')
                 })
               break;
             }

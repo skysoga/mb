@@ -182,22 +182,20 @@ export default {
     width: 2.6rem;
     display: table-cell;
     em{
-      font-size: 0.6em;
+      font-size: 0.65em;
       height: 1.7em;
-      width:2.6em;
+      width:3.2em;
       display: block;
       text-align: center;
       line-height: 1.7em;
       color:#bbb39c;
       background: #f4f1e2;
       border:1px solid #ece7d9;
-      border-bottom-left-radius: .3em;
-      border-top-left-radius: .3em;
-      border-right: none;
+      border-radius: .3em;
       position: relative;
       z-index: 3;
       margin-top: .8em;
-      &:before,&:after{
+      /*&:before,&:after{
         content:"";
         position: absolute;
         // display: none;
@@ -222,7 +220,7 @@ export default {
         border-left: .6em solid #ece7d9;
         border-bottom: .79em solid transparent;
         z-index: 1;
-      }
+      }*/
     }
   }
 }
@@ -276,7 +274,7 @@ export default {
     line-height: 1.9em;
     text-align: center;
     color:#dc3b40;
-    background: white;
+    background: #faf9f6;
     border-radius: 50%;
     border: 1px solid #bfbfbf;
     font-size: .8em;
