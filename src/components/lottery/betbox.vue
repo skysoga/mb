@@ -276,7 +276,7 @@ export default {
     line-height: 1.9em;
     text-align: center;
     color:#dc3b40;
-    background: white;
+    background: #faf9f6;
     border-radius: 50%;
     border: 1px solid #bfbfbf;
     font-size: .8em;
