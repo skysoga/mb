@@ -18,7 +18,6 @@ export default {
     if(F){
       to.meta.link="/resetWay?Q=ResetPwd"
     }
-    console.log(store.state)
     next()
   },
   created(){
@@ -48,13 +47,13 @@ export default {
     $vaSubmit(){
       var vm=this
       var ajax = {
+        Action:"VerifyQuestion",
         Answer1:this.answer1,
         Answer2:this.answer2
       }
-      ajax.Action="VerifyQuestion"
       var F=sessionStorage.getItem('isFind')
       if(F){
-        ajax.Action='VerifyQuestionForget';
+        ajax.Action='VerifyQuestionForget'
       }
       ajax.QuestionID1=this.question1
       ajax.QuestionID2=this.question2

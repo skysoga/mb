@@ -86,19 +86,20 @@ export default {
   methods:{
     $vaSubmit(){
       var vm=this
-      var arr={Action:"SetBankCard"}
-      arr.Address_P=this.Address_P
-      arr.Address_C=this.Address_C
-      arr.RealName=this.RealName
-      arr.BankID=this.BankID
-      arr.BankNum=this.BankNum
-      arr.SafePassword=this.SafePassword
-      arr.Qort=this.Qort
+      var arr={
+        Action:"SetBankCard",
+        Address_P:this.Address_P,
+        Address_C:this.Address_C,
+        RealName:this.RealName,
+        BankID:this.BankID,
+        BankNum:this.BankNum,
+        SafePassword:this.SafePassword,
+        Qort:this.Qort
+      }
       _fetch(arr).then(json=>{
           if(json.Code==1){
-            RootApp.AjaxGetInitData(['UserBankCardList','UserFirstCardInfo'],state=>{
-              layer.url(json.StrCode,vm.nextUrl)
-            })
+            RootApp.AjaxGetInitData(['UserBankCardList','UserFirstCardInfo'])
+            layer.url(json.StrCode,vm.nextUrl)
           }else{
             layer.open({
                 shadeClose: false,

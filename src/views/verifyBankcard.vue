@@ -25,7 +25,7 @@
         <tr></tr>
       </tbody>
     </table>
-    <div class="loginBtn BTN" v-va-check><a>提交</a></div>
+    <div class="loginBtn BTN" v-va-check><a>确定</a></div>
     <div class="tips">
       为确定是本人操作，再次添加银行卡时需要验证首张银行卡信息。
     </div>

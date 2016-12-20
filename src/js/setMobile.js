@@ -19,10 +19,10 @@ export default {
   methods:{
     $vaSubmit(){
       var ajax = {
+        Action:"VerifyMobile",
         Mobile: this.Mobile,
         SmsCode:this.SmsCode
       }
-      ajax.Action="VerifyMobile"
       var F=sessionStorage.getItem('isFind')
       if(F){
         ajax.Action='VerifyMobileForget';
@@ -42,12 +42,12 @@ export default {
     postMsg(){
       let vm=this
       let ajax={
+        Action:"SendMobileCode",
         Mobile:this.Mobile,
       }
       if(!vm.toMsg){return};
       this.toMsg=false
       this.noDo=false
-      ajax.Action="SendMobileCode"
       layer.msgWait("正在发送")
       _fetch(ajax).then((json)=>{
           if(json.Code===1) {

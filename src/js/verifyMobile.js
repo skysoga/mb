@@ -33,10 +33,10 @@ export default {
     $vaSubmit(){
       var vm=this
       var ajax = {
+        Action:"VerifyMobile",
         Mobile: 0,
         SmsCode:this.SmsCode
       }
-      ajax.Action="VerifyMobile"
       var F=sessionStorage.getItem('isFind')
       if(F){
         ajax.Action='VerifyMobileForget';

@@ -16,11 +16,9 @@ document.write("<style>html{font-size:"+rem+"px;}body{font-size:"+em+"px;}</styl
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
-import { mapState } from 'vuex'
 import App from './App'
 import routes from './routes/routes'
 import Va from './plugins/va'
-import {GMT_DIF} from './JSconfig'
 Vue.use(Va)
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -463,9 +461,8 @@ function _fetch(data){
 							})
 						}
 					}
-					if (data.Action.search('erify')===1) {
+					if (data.Action.search('Verify')===0&&json.Code>-1) {
 						state.UserVerify=data.Action.replace('Verify','')
-						state.UserVerify=data.Action.replace('verify','')
 					}
 				})()
 				resolve(json)
