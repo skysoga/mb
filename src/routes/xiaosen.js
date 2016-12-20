@@ -192,6 +192,7 @@ var routes = [{
   meta:{
 	title:"找回密码",
 	link:"/securityCenter",
+  user:false,
 	nav:0,
   },
   component: resetWay
@@ -201,6 +202,7 @@ var routes = [{
   meta:{
 	title:"忘记密码",
 	link:"/login",
+  user:false,
 	nav:0,
   },
   component: forgetPwd
