@@ -13,7 +13,6 @@ export default {
   },
   methods:{
     $vaSubmit(){
-      var $root=this.$root
       var ajax = {
         Action:"VerifyPwd",
         Password: this.Password
