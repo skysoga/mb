@@ -13,7 +13,7 @@
         <tr></tr>
       </tbody>
     </table>
-    <div class="loginBtn BTN"><a v-va-check>提交</a></div>
+    <div class="loginBtn BTN"><a v-va-check>确定</a></div>
     <div class="tips">
       安全密码用于提现、绑定银行卡等操作，可保障资金安全。
     </div>

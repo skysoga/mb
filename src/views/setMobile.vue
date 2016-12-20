@@ -19,7 +19,7 @@
         <tr></tr>
       </tbody>
     </table>
-    <div class="loginBtn BTN"><a v-va-check>绑定</a></div>
+    <div class="loginBtn BTN"><a v-va-check>确定</a></div>
     <div class="tips talign">暂不支持14,17开头的手机号码绑定</div>
   </div>
 </template>

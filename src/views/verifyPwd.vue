@@ -10,7 +10,7 @@
       </tbody>
     </table>
     <router-link class='forget fr' :to="{path:'resetWay',query:{Q:'ResetPwd'}}">找回密码?</router-link>
-    <div class="loginBtn BTN"><a v-va-check>提交</a></div>
+    <div class="loginBtn BTN"><a v-va-check>确定</a></div>
 </div>
 </template>
 <script src="../js/verifyPwd.js"></script>
