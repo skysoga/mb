@@ -40,7 +40,7 @@ export default {
       ajax.Action="VerifyMail"
       var F=sessionStorage.getItem('isFind')
       if(F){
-        ajax.Action=ajax.Action+'Forget';
+        ajax.Action='VerifyMailForget';
       }
       ajax.Qort="Verify"
       layer.msgWait("正在提交")

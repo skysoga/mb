@@ -25,7 +25,7 @@ export default {
       ajax.Action="SetSafePass"
       var F=sessionStorage.getItem('isFind')
       if(F){
-        ajax.Action=ajax.Action+'Forget';
+        ajax.Action='SetSafePassForget';
       }
       layer.msgWait("正在提交")
       _fetch(ajax).then((json)=>{

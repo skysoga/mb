@@ -46,7 +46,7 @@ export default {
       ajax.Action="SetQuestion"
       var F=sessionStorage.getItem('isFind')
       if(F){
-        ajax.Action=ajax.Action+'Forget';
+        ajax.Action='SetQuestionForget';
       }
       ajax.QuestionID1=this.question1
       ajax.QuestionID2=this.question2
@@ -57,9 +57,8 @@ export default {
       layer.msgWait("正在提交")
       _fetch(ajax).then((json)=>{
           if(json.Code===1) {
-            layer.msgWarn(json.StrCode)
             RootApp.AjaxGetInitData(["UserSafeQuestions"],function(){
-              router.push('/securityCenter')
+              layer.url(json.StrCode,'/securityCenter')
             })
           }else{
             layer.msgWarn(json.StrCode)
@@ -70,10 +69,10 @@ export default {
       let Qs=[]
       let Arr=[]
       let i=0
-          Qs.push(this.question1,this.question2,this.question3)
-          for(;i<Qs.length;i++){
-            if(Arr.indexOf(Qs[i])==-1)Arr.push(Qs[i])
-          }
+        Qs.push(this.question1,this.question2,this.question3)
+        for(;i<Qs.length;i++){
+          if(Arr.indexOf(Qs[i])==-1)Arr.push(Qs[i])
+        }
         return Arr.length
     },
     getTitle(id){

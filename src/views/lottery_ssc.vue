@@ -25,12 +25,6 @@
 </template>
 <style lang = "scss" scoped>
 @import '../scss/newssc.scss';
-.isLotteryCon{
-  > div{
-    float: left;
-    width: 50%;
-  }
-}
 </style>
 <script>
 	import lt_header from '../components/lottery/lt-header'
