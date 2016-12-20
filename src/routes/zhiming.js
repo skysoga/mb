@@ -10,8 +10,11 @@ const competition = resolve => require(['../views/competition'], resolve)
 const billRecord = resolve => require(['../views/billRecord'], resolve)
 const agentMember = resolve => require(['../views/agentMember'], resolve)
 const lowerReport = resolve => require(['../views/lowerReport'], resolve)
+const betCenter = resolve => require(['../views/betCenter'], resolve)
 const betRecord = resolve => require(['../views/betRecord'], resolve)
 const betDetail = resolve => require(['../views/betDetail'], resolve)
+const seekDetail = resolve => require(['../views/seekDetail'], resolve)
+const seekOrder = resolve => require(['../views/seekOrder'], resolve)
 const agentBetRecord = resolve => require(['../views/agentBetRecord'], resolve)
 const agentBillRecord = resolve => require(['../views/agentBillRecord'], resolve)
 var routes = [{
@@ -128,39 +131,40 @@ var routes = [{
     user: 1
   },
   component: betRecord
-},/**{
-  path: "/found",
-  name: "发现",
-  meta: {
-    titleList: [{
-      title: "中奖信息",
-      to: "/newWinners"
-    }, {
-      title: "昨日奖金榜",
-      to: "/competition"
+},{
+  path: '/betCenter',
+  name: '投注中心',
+  meta:{
+    titleList:[{
+      title:"投注记录",
+      to:"/betCenter/betRecord",
+
+    },{
+      title:"追号记录",
+      to:"/betCenter/seekOrder",
     }],
-    nav:1
+    link:"/userCenter"
   },
-  component: found,
+  component: betCenter,
   children:[{
-      path: '',
-      meta:{
-        nav:1
-      },
-      component: newWinners
-    },{
-      path:"/competition",
-      meta:{
-        nav:1
-      },
-      component:competition
-    },{
-      path:"/newWinners",
-      meta:{
-        nav:1
-      },
-      component:newWinners
-    }]
-}**/]
+    path:"",
+    redirect:"/betCenter/betRecord"
+  },{
+    path:"betRecord",
+    component:betRecord
+  },{
+    path:"seekOrder",
+    component:seekOrder
+  }]
+}, {
+  path: "/seekDetail",
+  name: "追号详情",
+  meta: {
+    title: "追号详情",
+    link: "/betCenter/seekOrder",
+    user: 1
+  },
+  component: seekDetail
+}]
 
 module.exports = routes;
