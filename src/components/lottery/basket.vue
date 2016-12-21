@@ -22,8 +22,8 @@
   </div>
   <div class="cartTotal">
     <div class="change" ref = "change">
-      <label>投<input type="tel" v-model = "chasePower" @change = "powerChange">倍</label>
-      <label>追<input type="tel" v-model = "chaseIssue" @change = "issueChange">期
+      <label>投<input type="tel" v-model.lazy = "chasePower">倍</label>
+      <label>追<input type="tel" v-model.lazy = "chaseIssue">期
         <div class="stop" v-show = "showBubble">
           <input type="checkbox" id="stop" v-model = "isStopAfterWin" @change = "isStopAfterWinChange">
           <label for="stop">中奖后停止追号</label>
@@ -265,20 +265,61 @@ var specialMode = {
 
 export default {
   created(){
-    bus.$on('clearChase', ()=>{
-      this.chasePower = 1
-      this.chaseIssue = 1
-    })
+    // bus.$on('clearChase', ()=>{
+    //   this.chasePower = 1
+    //   this.chaseIssue = 1
+    // })
   },
   data(){
     return {
       PERBET:PERBET,
-      chasePower:1,
-      chaseIssue:1,
+      // chasePower:1,
+      // chaseIssue:1,
       isStopAfterWin: true
     }
   },
   computed:{
+    chasePower:{
+      get(){
+        return state.lt.chaseConf.power
+      },
+      set(power){
+        store.commit('lt_setChasePower', +power)
+        if(power.search(/[^\d]+/) > -1 || power <= 0){
+          store.commit('lt_setChasePower', 1)
+        }else if(power > Max_Rate){
+          store.commit('lt_setChasePower', Max_Rate)
+          layer.msgWarn(`最多${Max_Rate}倍`)
+        }else{
+          if(power > 1 || this.chaseIssue > 1){
+            store.commit('lt_basketPowerTo1')
+            store.dispatch('lt_ordinaryChase')
+          }
+        }
+      }
+    },
+    chaseIssue:{
+      get(){
+        return state.lt.chaseConf.buy_count
+      },
+      set(issue){
+        store.commit('lt_setChaseIssue', +issue)
+        if(issue.search(/[^\d]+/) > -1 || issue <= 0){
+          store.commit('lt_setChaseIssue', 1)
+          store.dispatch('lt_ordinaryChase')
+        }else if(issue > Max_Chase_Issue){
+          issue = Max_Chase_Issue
+          store.commit('lt_setChaseIssue', +issue)
+          store.dispatch('lt_ordinaryChase')
+          layer.msgWarn(`最多${Max_Chase_Issue}期`)
+        }else{
+          if(issue > 1 || this.chasePower > 1){
+            store.commit('lt_basketPowerTo1')
+            store.dispatch('lt_ordinaryChase')
+          }
+        }
+      }
+    },
     basket:()=>state.lt.basket,
     scheme:()=>state.lt.scheme,
     ifShowBasket(){
@@ -334,7 +375,18 @@ export default {
       }else{
         if(this.basket.length){
           //如果追号倍数和期号任一大于1,则为普通追号
-          store.dispatch('lt_chase')      //追号投注
+          var betDetail = []
+          this.basket.forEach(bet=>{
+            betDetail.push(`${this.getTag(bet.play_detail_code.slice(-3),this.config)[1]} ${bet.betting_number}`)
+          })
+
+          var scheme = state.lt.scheme, last = scheme.length - 1
+          var msg = `${this.lottery}: 第${scheme[0].issueNo}期至第${scheme[last].issueNo}期,共${scheme.length}期<br>投注金额: ${this.schemeTotal}元<br>投注内容:<br>${betDetail.join('<br>')}`
+
+          layer.confirm(msg, ()=>{
+            store.dispatch('lt_chase')      //追号投注
+          },()=>{})
+
         }
       }
     },
@@ -357,36 +409,36 @@ export default {
     },
     //改变普通追号倍数
     powerChange(){
-      if(this.chasePower.search(/[^\d]+/) > -1 || this.chasePower <= 0){
-        this.chasePower = 1
-      }else if(this.chasePower > Max_Rate){
-        this.chasePower = Max_Rate
-        store.commit('lt_setChasePower', +this.chasePower)
-        layer.msgWarn(`最多${Max_Rate}倍`)
-      }else{
-        if(this.chasePower > 1 || this.chaseIssue > 1){
-          store.commit('lt_basketPowerTo1')
-          store.commit('lt_setChasePower', +this.chasePower)
-          store.dispatch('lt_ordinaryChase')
-        }
-      }
+      // if(this.chasePower.search(/[^\d]+/) > -1 || this.chasePower <= 0){
+      //   this.chasePower = 1
+      // }else if(this.chasePower > Max_Rate){
+      //   this.chasePower = Max_Rate
+      //   store.commit('lt_setChasePower', +this.chasePower)
+      //   layer.msgWarn(`最多${Max_Rate}倍`)
+      // }else{
+      //   if(this.chasePower > 1 || this.chaseIssue > 1){
+      //     store.commit('lt_basketPowerTo1')
+      //     store.commit('lt_setChasePower', +this.chasePower)
+      //     store.dispatch('lt_ordinaryChase')
+      //   }
+      // }
 
     },
     //改变普通追号期数
     issueChange(){
-      if(this.chaseIssue.search(/[^\d]+/) > -1 || this.chaseIssue <= 0){
-        this.chaseIssue = 1
-      }else if(this.chaseIssue > Max_Chase_Issue){
-        this.chaseIssue = Max_Chase_Issue
-        store.commit('lt_setChaseIssue', +this.chaseIssue)
-        layer.msgWarn(`最多${Max_Chase_Issue}期`)
-      }else{
-        if(this.chaseIssue > 1 || this.chasePower > 1){
-          store.commit('lt_basketPowerTo1')
-          store.commit('lt_setChaseIssue', +this.chaseIssue)
-          store.dispatch('lt_ordinaryChase')
-        }
-      }
+      // if(this.chaseIssue.search(/[^\d]+/) > -1 || this.chaseIssue <= 0){
+      //   this.chaseIssue = 1
+      // }else if(this.chaseIssue > Max_Chase_Issue){
+      //   this.chaseIssue = Max_Chase_Issue
+      //   store.commit('lt_setChaseIssue', +this.chaseIssue)
+      //   layer.msgWarn(`最多${Max_Chase_Issue}期`)
+      // }else{
+      //   if(this.chaseIssue > 1 || this.chasePower > 1){
+      //     store.commit('lt_basketPowerTo1')
+      //     store.commit('lt_setChaseIssue', +this.chaseIssue)
+      //     store.dispatch('lt_ordinaryChase')
+      //   }
+      // }
     },
     //改变中奖后是否停止追号的标志位
     isStopAfterWinChange(){

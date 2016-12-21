@@ -377,29 +377,31 @@
 	      	},
 	      	//将注单push到basket里
 	      	lt_addToBasket:(state, bet)=>{
-	      		// //去掉重复的，合并加倍
-	      		// var equalIndex, isEqual = false
-	      		// state.basket.forEach((_bet, index)=>{
-	      		// 	var allPropEqual = true
-	      		// 	equalIndex = index
-	      		// 	for(var prop in _bet){
-	      		// 		if(typeof _bet[prop] === 'string' || typeof _bet[prop] === 'number'){
-		      	// 			if(_bet[prop] !== bet[prop]){
-		      	// 				allPropEqual = false
-		      	// 			}
-	      		// 		}
-	      		// 	}
-	      		// 	if(allPropEqual){
-	      		// 		isEqual = true
-	      		// 		return
-	      		// 	}
-	      		// })
+	      		//去掉重复的，合并加倍
+	      		var equalIndex, isEqual = false
+	      		state.basket.forEach((_bet, index)=>{
+	      			var allPropEqual = true
+	      			for(var prop in _bet){
+	      				if(typeof _bet[prop] === 'string' || typeof _bet[prop] === 'number'){
+		      				if(_bet[prop] !== bet[prop]){
+		      					allPropEqual = false
+		      				}
+	      				}
+	      			}
+	      			if(allPropEqual){
+	      				isEqual = true
+		      			equalIndex = index
+	      				return
+	      			}
+	      		})
 
-	      		// if(state.basket.length && isEqual){
-	      		// 	console.log(equalIndex)
-	      		// }
+	      		if(state.basket.length && isEqual){
+	      			var prevPower = state.basket[equalIndex].graduation_count
+	      			state.basket[equalIndex].setPower(prevPower * 2)
+	      		}else{
+		      		state.basket.push(bet)
+	      		}
 
-	      		state.basket.push(bet)
 	      	},
 	      	//清空bet
 	      	lt_clearBet:(state)=>{
@@ -734,7 +736,6 @@
 		      			commit('lt_setScheme', [])			//清空scheme
 		      			commit('lt_setChasePower', 1)		//清空追号配置
 					      commit('lt_setChaseIssue', 1)
-		      			bus.$emit('clearChase')
 
 								//隔3s获取我的投注
 		      			this.timer4 = setTimeout(()=>{
