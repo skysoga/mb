@@ -358,12 +358,17 @@ function BaseBet(count, betStr){
 
 BaseBet.prototype.power2one = function(){
   this.graduation_count = 1
-  this.betting_money = +(PERBET * this.betting_count * this.betting_model * this.graduation_count).toFixed(2)
+  this.betting_money = +(state.lt.perbet * this.betting_count * this.betting_model * this.graduation_count).toFixed(2)
 }
 
 BaseBet.prototype.setRebate = function(rebate){
   var lt = state.lt
   this.betting_point = rebate + '-' + lt.Rebate[lt.lottery.LotteryType]
+}
+
+BaseBet.prototype.setPower = function(power){
+  this.graduation_count = power
+  this.betting_money = +(state.lt.perbet * this.betting_count * this.betting_model * this.graduation_count).toFixed(2)
 }
 
 //生成追号的ajax

@@ -360,8 +360,10 @@ export default {
       if(rebate.indexOf(',') > -1){
         var rebateArr = rebate.split(',')
         return `${rebateArr[rebateArr.length -1]}-${rebateArr[0]}倍`
-      }else{
+      }else if(rebate){
         return `赔率${rebate}倍`
+      }else{
+        return ''
       }
     },
     changeMode(mode){
@@ -462,7 +464,7 @@ export default {
     confirmBet(){
       if(!this.bet.betting_count){
         layer.alert('请至少选择一注号码投注')
-      }else if(!this.showPrice){
+      }else if(!(+this.showPrice)){
         layer.alert('请填写您要投注的金额')
       }else{
         //如果追号倍数和期号都为1,则为普通投注
