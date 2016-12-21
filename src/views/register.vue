@@ -87,6 +87,7 @@ export default {
 		},
 		$vaSubmit() {
 			var ajax = {
+        Action:"Register",
 				InvitationCode: this.InvitationCode,
 				UserName: this.UserName,
 				Password: this.Password,
@@ -107,7 +108,6 @@ export default {
    //      return;
    //    }
    //    delete ajax.checkPassword;
-      ajax.Action="Register";
       var that = this
       _fetch(ajax).then((json)=>{
       	console.log(json)
