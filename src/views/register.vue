@@ -93,21 +93,6 @@ export default {
 				Password: this.Password,
 				ImgCode: this.ImgCode,
 			}
-
-			// var selfCheck = {
-			// 	InvitationCode:{
-			// 		Name: '邀请码',
-			// 		Reg: /^[a-zA-Z0-9]{8}$/,
-			// 		ErrMsg:"您输入的邀请码错误或者已过期！",
-			// 	},
-			// }
-
-			// var err = this.$root.format(ajax, ['InvitationCode', 'UserName', 'Password', 'checkPassword', 'ImgCode'], selfCheck);
-   //    if (err) {
-   //      layer.msgWarn(err[1]);
-   //      return;
-   //    }
-   //    delete ajax.checkPassword;
       var that = this
       _fetch(ajax).then((json)=>{
       	console.log(json)
