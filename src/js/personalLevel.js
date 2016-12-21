@@ -9,7 +9,7 @@ export default {
     }
   },
   beforeRouteEnter(to,from,next){
-    var arr=['UserName','UserNickName','UserGrade','UserPhoto','UserGradeGrow','GradeList']
+    var arr=['UserName','UserGrade','UserPhoto','UserGradeGrow','GradeList']
     RootApp.GetInitData(arr,stage=>{
       next(vm=>{
         vm.UserGrade=stage.UserGrade

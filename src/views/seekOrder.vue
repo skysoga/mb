@@ -19,8 +19,7 @@
                   <div class="" v-for="item in temp_ajax[newDay][x-1].res_data">
                     <a class="active" @click="$router.push({path:'/seekDetail',query:{ID:item.ID}})">
                       <div><p>{{item.LotteryName}}<span>￥{{item.CompleteMoney.toString().split('/')[1]}}</span></p><span>{{item.AddTime}}</span></div>
-                      <!-- <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div> -->
-                      <strong>{{item.State}}</strong>
+                      <strong :class="Number(item.State)?'InMoney':''">{{Number(item.State)?'+'+item.State:item.State}}</strong>
                     </a>
                     <div class="hr1px"></div>
                   </div>
@@ -30,8 +29,7 @@
                   <a class="active" @click="$router.push({path:'/seekDetail',query:{ID:item.ID}})">
                     <div>
                       <p>{{item.LotteryName}}<span>￥{{item.CompleteMoney.toString().split('/')[1]}}</span></p><span>{{item.AddTime}}</span></div>
-                    <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
-                    <strong class="" v-else>{{item.State}}</strong>
+                      <strong>{{item.State}}</strong>
                   </a>
                   <div class="hr1px"></div>
                 </div>
@@ -41,7 +39,7 @@
                   <a class="active" @click="$router.push({path:'/seekDetail',query:{ID:item.ID}})">
                     <div>
                       <p>{{item.LotteryName}}<span>￥{{item.CompleteMoney.toString().split('/')[1]}}</span></p><span>{{item.AddTime}}</span></div>
-                    <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
+                    <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">进行中</span></div>
                     <strong class="" v-else>{{item.State}}</strong>
                   </a>
                   <div class="hr1px"></div>
@@ -50,9 +48,9 @@
                 <template v-if="x==4">
                 <div class="" v-for="item in temp_ajax[newDay][x-1].res_data">
                   <a class="active" @click="$router.push({path:'/seekDetail',query:{ID:item.ID}})">
-                    <div>
-                      <p>{{item.LotteryName}}<span>￥{{item.CompleteMoney.toString().split('/')[1]}}</span></p><span>{{item.AddTime}}</span></div>
-                     <strong class="OutMoney">{{item.State}}</strong>
+                    <div>  <p>{{item.LotteryName}}<span>￥{{item.CompleteMoney.toString().split('/')[1]}}</span></p><span>{{item.AddTime}}</span></div>
+                    <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已结束</span></div>
+                    <strong class="" v-else>{{item.State}}</strong>
                   </a>
                   <div class="hr1px"></div>
                 </div>
