@@ -2,7 +2,7 @@
   <div class="lotteryCloseItem fix" v-if = "$store.state.lt.OldIssue" :class = "{active:ifShowBetRecord}">
     <!-- 倒计时 -->
     <div class="lotteryClose"
-         @click.stop = "toggleBetRecord">
+         @click.stop = "togglePastOpen">
       <span>{{nowIssue}}期投注截止<i class="iconfont">&#xe601;</i></span>
       <div class="waitNumber">
         <em>{{TimeBar}}</em>
@@ -17,15 +17,31 @@
       </tr>
 
       <tr v-for = "item in BetRecord">
-        <td>{{item.issueNo.slice(4)}}</td>
+        <td>{{item.issueNo.length < 7 ? item.issueNo : item.issueNo.slice(4)}}</td>
         <td>
           {{item.normal_money}}
         </td>
         <td :class = "{award: !isNaN(+item.openState)}">{{item.openState}}</td>
       </tr>
-
     </table>
 
+    <template v-if = "$store.state.lt.LotteryResults[lcode]">
+      <table class="pastOpen" v-show = "ifShowPastOpen" >
+        <tr>
+          <th>期号</th>
+          <th>开奖号码</th>
+          <th>开奖时间</th>
+        </tr>
+        <!-- 历史开奖的列表 -->
+        <tr v-for = "item in pastOpen">
+          <td>{{item.IssueNo}}</td>
+          <td>
+            <a v-for = "num in item.LotteryOpen"><span>{{num}}</span></a>
+          </td>
+          <td>{{item.OpenTime}}</td>
+        </tr>
+      </table>
+    </template>
   </div>
 
 </template>
@@ -47,6 +63,9 @@ export default{
     },
     ifShowBetRecord(){
       return this.$store.state.lt.box === 'BetRecord'
+    },
+    ifShowPastOpen(){
+      return this.$store.state.lt.box === 'pastOpen'
     }
   },
   methods:{
@@ -55,7 +74,12 @@ export default{
       this.$store.state.lt.box === 'BetRecord' ?
          this.$store.commit('lt_changeBox', '') :
            this.$store.commit('lt_changeBox', 'BetRecord')
-    }
+    },
+    togglePastOpen(){
+      this.$store.state.lt.box === 'pastOpen' ?
+         this.$store.commit('lt_changeBox', '') :
+           this.$store.commit('lt_changeBox', 'pastOpen')
+    },
   }
 
 }

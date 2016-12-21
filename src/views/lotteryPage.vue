@@ -363,7 +363,7 @@
 	      		if(power > 1 || buy_count > 1){
 	      			baseBet.power2one()
 	      		}
-	      		state.basket.push(baseBet)
+	      		store.commit('lt_addToBasket', baseBet)
 	      		store.commit('lt_clearBet')
 	      		store.dispatch('lt_ordinaryChase')
 	      	},
@@ -372,8 +372,34 @@
 	      		if(power > 1 || buy_count > 1){
 	      			randomBet.power2one()
 	      		}
-	      		state.basket.push(randomBet)
+	      		store.commit('lt_addToBasket', randomBet)
 	      		store.dispatch('lt_ordinaryChase')
+	      	},
+	      	//将注单push到basket里
+	      	lt_addToBasket:(state, bet)=>{
+	      		// //去掉重复的，合并加倍
+	      		// var equalIndex, isEqual = false
+	      		// state.basket.forEach((_bet, index)=>{
+	      		// 	var allPropEqual = true
+	      		// 	equalIndex = index
+	      		// 	for(var prop in _bet){
+	      		// 		if(typeof _bet[prop] === 'string' || typeof _bet[prop] === 'number'){
+		      	// 			if(_bet[prop] !== bet[prop]){
+		      	// 				allPropEqual = false
+		      	// 			}
+	      		// 		}
+	      		// 	}
+	      		// 	if(allPropEqual){
+	      		// 		isEqual = true
+	      		// 		return
+	      		// 	}
+	      		// })
+
+	      		// if(state.basket.length && isEqual){
+	      		// 	console.log(equalIndex)
+	      		// }
+
+	      		state.basket.push(bet)
 	      	},
 	      	//清空bet
 	      	lt_clearBet:(state)=>{
@@ -397,13 +423,6 @@
 	      		state.basket.splice(index,1)
 	      		store.dispatch('lt_ordinaryChase')
 	      	},
-	      	// //离开彩种页
-	      	// lt_leaveLottery:(state)=>{
-	      	// 	store.commit('lt_changeBox', '')			//将所有弹出框收起
-	      	// 	store.commit('lt_clearBasket')
-	      	// 	store.commit('lt_clearBet')
-	      	// 	state.bet.betting_model = 1
-	      	// },
 	      	lt_setBetCompress:(state, str)=>{state.bet.compress = str},
 	      	lt_isStopAfterWin:(state, bool)=>{state.chaseConf.isstop_afterwinning = bool},
 	      	lt_setChaseIssue:(state, chaseIssue)=>{state.chaseConf.buy_count = chaseIssue},
@@ -414,7 +433,7 @@
 	      			bet.graduation_count = 1
 	      			bet.betting_money = +(state.perbet * bet.betting_count * bet.graduation_count * bet.betting_model).toFixed(2)
 	      		})
-	      	}
+	      	},
 		    },
 
 		    actions: {
@@ -535,7 +554,6 @@
 			        return;
 			      }
 
-
 			      if(!state.LotteryPlan.length) return
 		        var Countdown = state.LotteryPlan[state.IssueNo % state.PlanLen].End
 			                        +(state.IssueNo>=state.PlanLen) * DAY_TIME
@@ -602,9 +620,9 @@
 				      }else if(Results[0].IssueNo*1 > state.OldIssue*1){
 				      	commit('lt_updateTimeBar', '暂停销售')		//暂停销售
 				      }else{
+				      	commit('lt_displayResults', true)
 				      	//开奖
 				      	if(wait4Results){
-					      	commit('lt_displayResults', true)
 					      	wait4BetRecord = true
 	    	          this.timer1 = setTimeout(()=>{
 	    	          	// console.log('6s')
@@ -673,6 +691,8 @@
 		      			this.timer3 = setTimeout(()=>{
 		      				dispatch('lt_updateBetRecord')
 		      			}, 3000)
+
+	              layer.confirm(`投注成功，您可以在我的账户查看注单详情`,['继续投注','查看注单'], ()=>{},()=>{this.$router.push('/userCenter')})
 		      		}else if(json.Code === -9){
 		      			//清除rebate
 		      			layer.alert(json.StrCode)
@@ -720,6 +740,7 @@
 		      			this.timer4 = setTimeout(()=>{
 		      				dispatch('lt_updateBetRecord')
 		      			}, 3000)
+	              layer.confirm(`投注成功，您可以在我的账户查看注单详情`,['继续投注','查看注单'], ()=>{},()=>{this.$router.push('/userCenter')})
 							}else if(json.Code === -9){
 		      			//清除rebate
 		      			layer.alert(json.StrCode)
@@ -795,6 +816,7 @@
 		},
 	  beforeRouteLeave:(to, from, next)=>{
 	    //离开页面前将每注金额重设为 PERBET (2元)
+	    store.commit('lt_setPower', 1)
 	    store.commit('lt_setPerbet', PERBET)
 	    store.commit('lt_clearBet')
 	    store.commit('lt_clearBasket')

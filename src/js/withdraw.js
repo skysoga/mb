@@ -54,6 +54,7 @@ export default{
   methods:{
     $vaSubmit(){
       var vm=this
+      layer.msgWait("正在提交")
       _fetch(this.ArrData).then(json=>{
         if(json.Code==1){
           layer.open({
@@ -68,7 +69,8 @@ export default{
             no:function(){
               vm.upTime()
               layer.closeAll()
-              //location.reload()
+              vm.ArrData.Money=""
+              vm.ArrData.SafePassword=""
             }
           })
         }else{

@@ -33,9 +33,6 @@
              :class = "unit === obj.unit ? 'curr' : '' ">
             {{obj.word}}
           </a>
-         <!--  <a class="curr">元</a>
-          <a>角</a>
-          <a>分</a> -->
         </div>
       </div>
     </div>
@@ -55,7 +52,7 @@ export default {
         {unit: 0.01, word: '分'},
       ],
       power: 1,
-      unit: 1
+      // unit: 1
     }
   },
   computed:{
@@ -69,6 +66,7 @@ export default {
     canAdd(){
       return this.power < Max_Rate
     },
+    unit:()=>state.lt.bet.betting_model
   },
   watch:{
     power(val){
@@ -98,12 +96,12 @@ export default {
       if(this.power.search(/[^\d]+/) > -1 || this.power <= 0){
         this.power = 1
       }
+      if(this.power > Max_Rate){
+        this.power= Max_Rate
+        layer.msgWarn(`最多${Max_Rate}倍`)
+      }
     },
     showBasket(){
-     //如果号码篮没有注单， 就没有反应
-      // if(this.betAmount <= 0){
-      //   return
-      // }
       store.commit('lt_changeBox', 'basket')
     }
   }

@@ -18,13 +18,14 @@ export default {
     $vaSubmit:function(e){
       var vm = this
       var ajax = {
+        Action:"Login",
         UserName:this.UserName,
         Password:this.Password
       }
-      ajax.Action="Login";
       layer.msgWait("正在登录")
       _fetch(ajax).then((json)=>{
         if (json.Code===1) {
+          RootApp.Logout()
           RootApp.Login(this.UserName,function(){
             router.push(state.login2path||"/index")
           })
