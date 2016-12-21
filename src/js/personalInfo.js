@@ -6,6 +6,10 @@ export default {
       DefaultPhoto:'',
       DefaultID:'',
       DefaultName:'',
+      UserNickName:'',
+      UserQQ:'',
+      UserBirthDay:'',
+      UserSex:'',
       HeadImgBoxList:''//以上头像组件关联
     }
   },
@@ -16,7 +20,11 @@ export default {
     })
   },
   created(){
-    this.DefaultPhoto=store.state.UserPhoto
+    this.DefaultPhoto=state.UserPhoto
+    this.UserNickName=state.UserNickName
+    this.UserQQ=state.UserQQ
+    this.UserSex=state.UserSex
+    this.UserBirthDay=state.UserBirthDay
   },
   methods:{
     upHeadImg(){
@@ -68,7 +76,9 @@ export default {
               RootApp.SaveInitData(data.BackData)
             })
           }else{
+            var skey="User"+key
             layer.msgWarn(data.StrCode)
+            vm[skey]=state[skey]
           }
       })
     },
