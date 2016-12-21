@@ -14,7 +14,7 @@ export default {
     }
   },
   beforeRouteEnter(to,from,next){
-    var arr=['UserName','UserNickName','UserGrade','UserMobile','UserMail','UserPhoto','UserSex','UserQQ','UserBirthDay','UserGradeGrow','GradeList']
+    var arr=['UserName','UserNickName','UserMobile','UserMail','UserPhoto','UserSex','UserQQ','UserBirthDay']
     RootApp.GetInitData(arr,state=>{
       next()
     })
