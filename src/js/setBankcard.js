@@ -96,6 +96,7 @@ export default {
         SafePassword:this.SafePassword,
         Qort:this.Qort
       }
+      layer.msgWait("正在提交")
       _fetch(arr).then(json=>{
           if(json.Code==1){
             RootApp.AjaxGetInitData(['UserBankCardList','UserFirstCardInfo'])

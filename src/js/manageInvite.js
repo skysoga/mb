@@ -30,6 +30,7 @@ export default {
         UserType:this.UserType,
         Remark:"未设置"
       }
+      layer.msgWait("正在提交")
       _fetch(Arr).then(json=>{
           if(json.Code==1){
             layer.open({

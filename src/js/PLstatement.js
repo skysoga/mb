@@ -6,7 +6,6 @@ export default {
   },
   beforeRouteEnter(to,from,next){
       let dataArr={Action:"GetProfitLoss",BetweenDays:0}
-      // layer.msgWait("正在加载")
       _fetch(dataArr).then(json=>{
           next(vm=>{
             var datas=json.BackData

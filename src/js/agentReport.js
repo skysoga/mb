@@ -31,6 +31,7 @@ export default {
     },
     renderData(Type,Name){
         let RenData={Action:"GetAgencyHender",BetweenType:Type,UserName:Name}
+        layer.msgWait("正在加载")
         _fetch(RenData).then(json=>{
             var xarr=json.BackData
             if(json.Code==1){
