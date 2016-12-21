@@ -322,7 +322,6 @@ export default {
       }
     }
     this.search()
-    console.log(this.isAgent,this.isBetPage)
   }
 }
 </script>

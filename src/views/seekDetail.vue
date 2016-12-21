@@ -70,7 +70,7 @@ export default {
     }
   },
   beforeRouteEnter(to,from,next){
-    to.meta.link=from.path
+    to.meta.link=from.fullPath
     _fetch({Action:"GetChaseDetail",ID:to.query.ID}).then((data)=>{
       next(vm=>{
         if(data.Code===1){
