@@ -109,7 +109,7 @@ var routes = [{
   name: "注单详情",
   meta: {
     title: "注单详情",
-    link: "/betRecord",
+    back:-1,
     user: 1
   },
   component: betDetail
@@ -161,7 +161,7 @@ var routes = [{
   name: "追号详情",
   meta: {
     title: "追号详情",
-    link: "/betCenter/seekOrder",
+    back:-1,
     user: 1
   },
   component: seekDetail
