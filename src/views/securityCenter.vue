@@ -15,7 +15,7 @@
 
         <p class="hr1px"></p>
 
-        <router-link  to="verifySafePwd" class="active" v-if="!!$store.state.UserHasSafePwd">
+        <router-link  to="verifySafePwd" class="active" v-if="HasSafePwd">
           <span>已设置安全密码</span>
           <i class="fr">修改<span class="iconfont right"></span></i>
         </router-link>

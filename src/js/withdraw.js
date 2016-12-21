@@ -69,7 +69,8 @@ export default{
             no:function(){
               vm.upTime()
               layer.closeAll()
-              location.reload()
+              vm.ArrData.Money=""
+              vm.ArrData.SafePassword=""
             }
           })
         }else{
