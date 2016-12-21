@@ -22,18 +22,18 @@ export default {
       RootApp.GetInitData(arr, state=>{
         next(vm=>{
           vm.StarNum=1;
-          vm.StarNum+=!!Number(state.UserHasSafePwd)?1:0
-          vm.StarNum+=!!state.UserSafeQuestions?1:0
-          vm.StarNum+=!!state.UserMobile?1:0
-          vm.StarNum+=!!state.UserMail?1:0
-          vm.HasSafePwd=!!Number(state.UserHasSafePwd)?1:0
+          vm.StarNum+=state.UserHasSafePwd*1
+          vm.StarNum+=state.UserSafeQuestions?1:0
+          vm.StarNum+=state.UserMobile?1:0
+          vm.StarNum+=state.UserMail?1:0
+          vm.HasSafePwd=state.UserHasSafePwd*1
           if(sessLogin){
             vm.LastLogin=sessLogin
           }else{
             sessionStorage.setItem("UserLastLoginInfo",JSON.stringify(state.UserLastLoginInfo[0]))
             vm.LastLogin=state.UserLastLoginInfo[0]
           }
-          vm.FirstCard=!!state.UserFirstCardInfo?1:0
+          vm.FirstCard=state.UserFirstCardInfo?1:0
           vm.LevelText=vm.StarNum==5?"极高":vm.StarNum==4?"高":vm.StarNum==3?"中":vm.StarNum==2?"低":"极低"
         });
     })
