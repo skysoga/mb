@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="lottery_sscCon">
     <div class="lottery_ssc" v-show = "!ifShowBasket">
       <div class="DontSelect sscActive">
       	<!-- 头部： 玩法选择， 同类彩种选择-->
