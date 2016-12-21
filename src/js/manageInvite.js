@@ -38,15 +38,11 @@ export default {
               className: "layerConfirm",
               content: json.StrCode + '，是否查看?',
               title: "温馨提示",
-              btn: ["确定", '取消'],
+              btn: ["确定"],
               yes:function(index){
                 layer.close(index)
                 var msg=Arr.UserType==1?'AgentCode':'memberCode'
                 router.push('/manageIcode/'+msg)
-              },
-              no:function(index){
-                layer.close(index)
-                location.reload()
               }
             })
           }else{
