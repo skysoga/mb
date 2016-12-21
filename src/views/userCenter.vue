@@ -22,7 +22,7 @@
               <span>交易记录</span>
           </router-link>
 
-          <router-link class="active" to="betRecord">
+          <router-link class="active" to="betCenter">
               <i class="iconfont m3">&#xe632;</i>
               <span>投注记录</span>
           </router-link>

@@ -597,31 +597,29 @@
 				            interval=30
 				        }
 				        if (wait4Results>5 && wait4Results%interval===0) {
-				        	// console.log('获取开奖结果')
 				        	dispatch('lt_getResults', state.lottery.LotteryCode)		//获取开奖结果
 				        }
 				      }else if(Results[0].IssueNo*1 > state.OldIssue*1){
 				      	commit('lt_updateTimeBar', '暂停销售')		//暂停销售
 				      }else{
 				      	//开奖
-				      	// console.log('开奖')
-				      	commit('lt_displayResults', true)
-				      	wait4BetRecord = true
-    	          this.timer1 = setTimeout(()=>{
-    	          	// console.log('6s')
-    	          	dispatch('lt_updateBetRecord')			//获取我的投注
-    	          }, 6000)
+				      	if(wait4Results){
+					      	commit('lt_displayResults', true)
+					      	wait4BetRecord = true
+	    	          this.timer1 = setTimeout(()=>{
+	    	          	// console.log('6s')
+	    	          	dispatch('lt_updateBetRecord')			//获取我的投注
+	    	          }, 6000)
 
-    	          this.timer2 = setTimeout(()=>{
-    	          	// console.log('12s')
-    	          	dispatch('lt_updateBetRecord')			//获取我的投注
-    	          	wait4Results = 0
-    	          	wait4BetRecord = false
-    	          }, 12000)
+	    	          this.timer2 = setTimeout(()=>{
+	    	          	// console.log('12s')
+	    	          	dispatch('lt_updateBetRecord')			//获取我的投注
+	    	          	wait4Results = 0
+	    	          	wait4BetRecord = false
+	    	          }, 12000)
+				      	}
 				      }
-
 			      }
-
 		      },
 	      	//获取我的投注
 		      lt_updateBetRecord:({state, rootState, commit, dispatch})=>{
@@ -656,7 +654,6 @@
 				      		})
 								}
 							})
-
 						}
 		      },
 		      //投注
@@ -736,8 +733,6 @@
 	      	}
 		    }
 		  }
-
-
 
 
 			//注册彩种模块 --lt

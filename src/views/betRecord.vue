@@ -30,7 +30,7 @@
               <template v-else>
                 <template v-if="x==1">
                   <div class="" v-for="item in temp_ajax[newName+'%'+newDay][x-1].res_data">
-                    <a class="active" @click="$router.push({path:'betDetail',query:{ID:item.ID,UID:item.UserId||0}})">
+                    <a class="active" @click="$router.push({path:'/betDetail',query:{ID:item.ID,UID:item.UserId||0}})">
                       <div><p>{{isAgent?item.UserName:item.LotteryName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span></div>
                       <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
                       <strong :class="item.State==='等待开奖'?'OutMoney':''" v-else>{{item.State}}</strong>
@@ -40,7 +40,7 @@
                 </template>
                 <template v-if="x==2">
                 <div class="" v-for="item in temp_ajax[newName+'%'+newDay][x-1].res_data">
-                  <a class="active" @click="$router.push({path:'betDetail',query:{ID:item.ID,UID:item.UserId||0}})">
+                  <a class="active" @click="$router.push({path:'/betDetail',query:{ID:item.ID,UID:item.UserId||0}})">
                     <div>
                       <p>{{isAgent?item.UserName:item.LotteryName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span></div>
                     <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
@@ -51,7 +51,7 @@
                 </template>
                 <template v-if="x==3">
                 <div class="" v-for="item in temp_ajax[newName+'%'+newDay][x-1].res_data">
-                  <a class="active" @click="$router.push({path:'betDetail',query:{ID:item.ID,UID:item.UserId||0}})">
+                  <a class="active" @click="$router.push({path:'/betDetail',query:{ID:item.ID,UID:item.UserId||0}})">
                     <div>
                       <p>{{isAgent?item.UserName:item.LotteryName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span></div>
                     <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
@@ -62,7 +62,7 @@
                 </template>
                 <template v-if="x==4">
                 <div class="" v-for="item in temp_ajax[newName+'%'+newDay][x-1].res_data">
-                  <a class="active" @click="$router.push({path:'betDetail',query:{ID:item.ID,UID:item.UserId||0}})">
+                  <a class="active" @click="$router.push({path:'/betDetail',query:{ID:item.ID,UID:item.UserId||0}})">
                     <div>
                       <p>{{isAgent?item.UserName:item.LotteryName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span></div>
                      <strong class="OutMoney">{{item.State}}</strong>
