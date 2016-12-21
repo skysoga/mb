@@ -1,5 +1,5 @@
 <template>
-  <div class="cart" v-show = "ifShowBasket" >
+<div class="cart" v-show = "ifShowBasket">
   <header class="top sscHeader fix" >
     <a class="iconfont back" @click.stop = "back"></a>
     <div class="playSort" ref = "playSort">号码篮</div>
@@ -359,17 +359,15 @@ export default {
     powerChange(){
       if(this.chasePower.search(/[^\d]+/) > -1 || this.chasePower <= 0){
         this.chasePower = 1
-      }else{
-        store.commit('lt_basketPowerTo1')
+      }else if(this.chasePower > Max_Rate){
+        this.chasePower = Max_Rate
         store.commit('lt_setChasePower', +this.chasePower)
+        layer.msgWarn(`最多${Max_Rate}倍`)
+      }else{
         if(this.chasePower > 1 || this.chaseIssue > 1){
-          store.dispatch('lt_ordinaryChase')
-        }
-
-        if(this.chasePower > Max_Rate){
-          this.chasePower = Max_Rate
+          store.commit('lt_basketPowerTo1')
           store.commit('lt_setChasePower', +this.chasePower)
-          layer.msgWarn(`最多${Max_Rate}倍`)
+          store.dispatch('lt_ordinaryChase')
         }
       }
 
@@ -378,16 +376,15 @@ export default {
     issueChange(){
       if(this.chaseIssue.search(/[^\d]+/) > -1 || this.chaseIssue <= 0){
         this.chaseIssue = 1
-      }else{
-        store.commit('lt_basketPowerTo1')
+      }else if(this.chaseIssue > Max_Chase_Issue){
+        this.chaseIssue = Max_Chase_Issue
         store.commit('lt_setChaseIssue', +this.chaseIssue)
+        layer.msgWarn(`最多${Max_Chase_Issue}期`)
+      }else{
         if(this.chaseIssue > 1 || this.chasePower > 1){
-          store.dispatch('lt_ordinaryChase')
-        }
-        if(this.chaseIssue > Max_Chase_Issue){
-          this.chaseIssue = Max_Chase_Issue
+          store.commit('lt_basketPowerTo1')
           store.commit('lt_setChaseIssue', +this.chaseIssue)
-          layer.msgWarn(`最多${Max_Chase_Issue}期`)
+          store.dispatch('lt_ordinaryChase')
         }
       }
     },
