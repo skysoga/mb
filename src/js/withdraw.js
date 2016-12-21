@@ -68,7 +68,7 @@ export default{
             no:function(){
               vm.upTime()
               layer.closeAll()
-              //location.reload()
+              location.reload()
             }
           })
         }else{
