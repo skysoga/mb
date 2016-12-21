@@ -22,6 +22,7 @@ export default {
         Password:this.Password
       }
       ajax.Action="Login";
+      RootApp.Logout()
       layer.msgWait("正在登录")
       _fetch(ajax).then((json)=>{
         if (json.Code===1) {
