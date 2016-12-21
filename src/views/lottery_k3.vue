@@ -308,7 +308,7 @@ export default {
     mode:()=>state.lt.mode.mode,
     award:()=>state.lt.award,
     tipRebate(){
-      return typeof this.award === 'string' ? `${this.award}倍。` : ''
+      return typeof this.award === 'string' ? `赔率${this.award}倍。` : ''
     },
     chosen:()=>state.lt.tmp['K3'],
     bet:()=>state.lt.bet,
@@ -446,7 +446,7 @@ export default {
       store.commit('lt_setBetStr', getBetStr(_data, this.mode))
     },
     changeShowPrice(){
-      if(!/^\d+$/.test(this.showPrice)){
+      if(!/^\d+$/.test(this.showPrice)|| !(+this.showPrice)){
         this.showPrice = ''
       }
 

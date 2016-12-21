@@ -587,6 +587,7 @@ li{
 }
 .cart{
 background: white;
+height: 100%;
 header{
   height: 2.55556em;
 }
@@ -596,6 +597,7 @@ padding-top: 5.16em;
 padding-bottom: 5.1em;
 min-height: 20em;
 background: #f9f8f0;
+min-height: 100%;
 }
 .someBtn{
 text-align: center;

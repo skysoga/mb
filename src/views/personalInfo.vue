@@ -12,16 +12,16 @@
           <div>
             <span>昵称</span>
             <i class="iconfont right"></i>
-            <em v-if="!$store.state.UserNickName">
+            <em v-if="!UserNickName">
               <input va-para="NickName"
                       v-va:NickName.vanow.canNull="[{reg:/^[\u4e00-\u9fa5]{0,5}$/}]"
                       regMsg="请使用五位以内的汉字"
                       tag="昵称"
-                      :value="$store.state.UserNickName"
+                      v-model="UserNickName"
                       type="text"
                       placeholder="请设置昵称">
             </em>
-            <em v-else>{{$store.state.UserNickName}}</em>
+            <em v-else>{{UserNickName}}</em>
           </div>
         </li>
         <li><div><span>账号</span><em>{{$store.state.UserName}}</em></div></li>
@@ -37,17 +37,17 @@
             <input v-va:QQ.vanow.canNull="[{reg:/^\d{5,12}$/}]"
                   regMsg="QQ号为5-12位数字"
                   va-para="QQ"
-                  :value="$store.state.UserQQ"
+                  v-model="UserQQ"
                   tag="QQ号码" type="tel"
                   maxlength="12">
           </em>
         </div>
         </li>
         <li><div><span>性别</span><i class="iconfont right"></i><em>
-            <select tag="性别" va-para="Sex" v-model="$store.state.UserSex" v-va:Sex.vanow>
+            <select tag="性别" va-para="Sex" v-model="UserSex" v-va:Sex.vanow>
                 <option value="2">保密</option>
-                <option value="0">男</option>
-                <option value="1">女</option>
+                <option value="1">男</option>
+                <option value="0">女</option>
             </select>
         </em></div></li>
         <li>
@@ -55,7 +55,7 @@
             <span>生日</span>
             <i class="iconfont right"></i>
             <em>
-            <input :value="$store.state.UserBirthDay"
+            <input v-model="UserBirthDay"
                   tag="生日"
                   va-para="BirthDay"
                   type="date"
