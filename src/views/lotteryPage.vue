@@ -653,7 +653,31 @@
 		      //获得返点
 		      lt_getRebate:({state, rootState, commit, dispatch})=>{
 		      	var type = state.lottery.LotteryType
-		      	var _rebate = sessionStorage.getItem('Rebate' + type)
+		      	var _rebate = rootState['Rebate' + type]
+		      	if(!_rebate){
+			      	_fetch({
+								Action: 'GetBetRebate',
+								LotteryType: type
+							}).then((json)=>{
+								if(json.Code === 1){
+									commit('SaveInitData', {['Rebate' + type]:json.BackData})
+									commit({
+				      			type:'lt_setRebate',
+				      			rebate: json.BackData,
+				      			LotteryType: type
+				      		})
+								}
+							})
+						}else{
+							commit({
+		      			type:'lt_setRebate',
+		      			rebate: _rebate,
+		      			LotteryType: type
+		      		})
+						}
+
+
+		      	/*var _rebate = sessionStorage.getItem('Rebate' + type)
 		      	if(_rebate){
 		      		commit({
 		      			type:'lt_setRebate',
@@ -674,7 +698,7 @@
 				      		})
 								}
 							})
-						}
+						}*/
 		      },
 		      //投注
 		      lt_confirmBet:({state, rootState, commit, dispatch})=>{
@@ -699,7 +723,7 @@
 		      			//清除rebate
 		      			layer.alert(json.StrCode)
 				      	var type = state.lottery.LotteryType
-				      	sessionStorage.removeItem('Rebate' + type)
+				      	// localStorage.removeItem('Rebate' + type)
 				      	store.dispatch('lt_getRebate')
 		      		}else{
 		      			layer.msgWarn(json.StrCode)
@@ -746,7 +770,7 @@
 		      			//清除rebate
 		      			layer.alert(json.StrCode)
 				      	var type = state.lottery.LotteryType
-				      	sessionStorage.removeItem('Rebate' + type)
+				      	// localStorage.removeItem('Rebate' + type)
 				      	store.dispatch('lt_getRebate')
 							}else{
 								layer.msgWarn(json.StrCode);
@@ -819,6 +843,7 @@
 	    //离开页面前将每注金额重设为 PERBET (2元)
 	    store.commit('lt_setPower', 1)
 	    store.commit('lt_setPerbet', PERBET)
+	    store.commit('lt_setUnit', 1)
 	    store.commit('lt_clearBet')
 	    store.commit('lt_clearBasket')
 	    store.commit('lt_setScheme', [])

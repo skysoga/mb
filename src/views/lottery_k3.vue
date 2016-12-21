@@ -389,6 +389,7 @@ export default {
     },
     //玩法
     choose(item){
+      if(!this.award)return
       var _pos = this.chosen.indexOf(item),
           _chosen = this.chosen.slice(0)
 
@@ -498,7 +499,7 @@ export default {
               //清除rebate
               layer.alert(json.StrCode)
               var type = state.lottery.LotteryType
-              sessionStorage.removeItem('Rebate' + type)
+              // localStorage.removeItem('Rebate' + type)
               store.dispatch('lt_getRebate')
             }else{
               layer.msgWarn(json.StrCode)
