@@ -66,7 +66,7 @@ var routes = [{
   name: "玩家详情",
   meta: {
     title: "玩家信息",
-    link: "/center"
+    back: -1
   },
   component: playerHome
 },{
