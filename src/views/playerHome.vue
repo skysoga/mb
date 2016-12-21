@@ -55,7 +55,8 @@
       }
     },
     beforeRouteEnter(to,from,next){
-      to.meta.link=from.path
+      // to.meta.link=from.path
+      console.log(to);
       _fetch({Action:"GetCard",UserId:to.query.ID}).then((data)=>{
         next(vm=>{
           if(data.Code===1){

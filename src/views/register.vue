@@ -15,7 +15,7 @@
 
       <tr>
         <td>账号</td>
-        <td  colspan="2"><input class="input fl mL15" type="url" v-va:UserName tag="帐号" v-model.lazy="UserName " placeholder="请输入账号" /></td>
+        <td  colspan="2"><input class="input fl mL15" type="url" v-va:UserName tag="帐号" v-model.lazy="UserName" placeholder="请输入账号" /></td>
       </tr>
 
       <tr>
@@ -59,7 +59,6 @@ export default {
 			Password: '',
 			checkPassword: '',
 			ImgCode: '',
-
 			YzmSrc: '', 				//邀请码图片地址
 			YqmReadOnly: false	//邀请码框是否只读
 		}
@@ -88,28 +87,12 @@ export default {
 		},
 		$vaSubmit() {
 			var ajax = {
+        Action:"Register",
 				InvitationCode: this.InvitationCode,
 				UserName: this.UserName,
 				Password: this.Password,
 				ImgCode: this.ImgCode,
 			}
-
-			// var selfCheck = {
-			// 	InvitationCode:{
-			// 		Name: '邀请码',
-			// 		Reg: /^[a-zA-Z0-9]{8}$/,
-			// 		ErrMsg:"您输入的邀请码错误或者已过期！",
-			// 	},
-			// }
-
-			// var err = this.$root.format(ajax, ['InvitationCode', 'UserName', 'Password', 'checkPassword', 'ImgCode'], selfCheck);
-   //    if (err) {
-   //      layer.msgWarn(err[1]);
-   //      return;
-   //    }
-   //    delete ajax.checkPassword;
-      ajax.Action="Register";
-
       var that = this
       _fetch(ajax).then((json)=>{
       	console.log(json)
@@ -121,15 +104,15 @@ export default {
             title: "温馨提示",
             btn: ["登录", '取消'],
             yes: function yes(index) {
+              // sessionStorage.clear();
+              RootApp.Logout()
               layer.close(index);
               var ajax1 = ajax;
               ajax1.Action="Login";
               _fetch(ajax1).then((json)=>{
-            		if(json.Code === 1){
-                  sessionStorage.clear();
-                  RootApp.Logout()
-                  RootApp.Login(this.UserName,function(){
-                    RootApp.$router.push("/index");
+                if(json.Code === 1){
+                  RootApp.Login(that.UserName,function(){
+                    router.push("/index");
                   })
             		}else{
             			layer.msgWarn(json.StrCode);

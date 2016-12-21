@@ -33,21 +33,12 @@ export default {
       layer.msgWait("正在提交")
       _fetch(Arr).then(json=>{
           if(json.Code==1){
-            layer.open({
-              shadeClose: false,
-              className: "layerConfirm",
-              content: json.StrCode + '，是否查看?',
-              title: "温馨提示",
-              btn: ["确定", '取消'],
-              yes:function(index){
-                layer.close(index)
-                var msg=Arr.UserType==1?'AgentCode':'memberCode'
-                router.push('/manageIcode/'+msg)
-              },
-              no:function(index){
-                layer.close(index)
-                location.reload()
-              }
+            layer.confirm(json.StrCode+'，是否查看?',()=>{
+              var msg=Arr.UserType==1?'AgentCode':'memberCode'
+              router.push('/manageIcode/'+msg)
+            },()=>{
+              vm.caiList=""
+              vm.caiList=state.AgentRebate
             })
           }else{
             layer.msgWarn(json.StrCode)

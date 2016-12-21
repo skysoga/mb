@@ -15,7 +15,7 @@
 
         <p class="hr1px"></p>
 
-        <router-link  to="verifySafePwd" class="active" v-if="!!$store.state.UserHasSafePwd">
+        <router-link  to="verifySafePwd" class="active" v-if="HasSafePwd">
           <span>已设置安全密码</span>
           <i class="fr">修改<span class="iconfont right"></span></i>
         </router-link>
@@ -27,7 +27,7 @@
 
         <p class="hr1px"></p>
 
-        <router-link to="verifyMobile" class="active" v-if="!!$store.state.UserMobile">
+        <router-link to="verifyMobile" class="active" v-if="$store.state.UserMobile">
           <span>已设置密保手机</span>
           <i class="fr">修改<span class="iconfont right"></span></i>
         </router-link>
@@ -38,7 +38,7 @@
 
         <p class="hr1px"></p>
 
-        <router-link to="verifyQuestion" class="active" v-if="!!$store.state.UserSafeQuestions">
+        <router-link to="verifyQuestion" class="active" v-if="$store.state.UserSafeQuestions">
           <span>已设置密保问题</span>
           <i class="fr">修改<span class="iconfont right"></span></i>
         </router-link>
@@ -49,7 +49,7 @@
 
         <p class="hr1px"></p>
 
-        <router-link to="verifyMail" class="active" v-if="!!$store.state.UserMail">
+        <router-link to="verifyMail" class="active" v-if="$store.state.UserMail">
           <span>已设置密保邮箱</span>
           <i class="fr">修改<span class="iconfont right"></span></i>
         </router-link>

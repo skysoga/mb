@@ -8,6 +8,7 @@
         <router-link tag="li" v-for="i in meta.titleList" :to="i.to||''"><a>{{i.title}}</a><router-link>
       </ul>
     </template>
+    <div v-show="meta.back" class="iconfont back" v-on:click="$router.go(meta.back)"></div>
     <router-link v-show="meta.link" :to="meta.link||''" class="iconfont back"></router-link>
     <router-link  v-show="meta.service" class="right" to="/service">客服</router-link>
   </header>
