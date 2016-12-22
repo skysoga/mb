@@ -94,7 +94,6 @@ export default {
   },
   beforeRouteEnter(to,from,next){
     console.log(from,to)
-    to.meta.link=from.fullPath
     _fetch({Action:"GetBetDetail",UserId:to.query.UID||0,ID:to.query.ID}).then((data)=>{
       next(vm=>{
         if(data.Code===1){
