@@ -286,9 +286,13 @@ export default {
       set(power){
         store.commit('lt_setChasePower', +power)
         if(power.search(/[^\d]+/) > -1 || power <= 0){
+          store.commit('lt_basketPowerTo1')
           store.commit('lt_setChasePower', 1)
+          store.dispatch('lt_ordinaryChase')
         }else if(power > Max_Rate){
+          store.commit('lt_basketPowerTo1')
           store.commit('lt_setChasePower', Max_Rate)
+          store.dispatch('lt_ordinaryChase')
           layer.msgWarn(`最多${Max_Rate}倍`)
         }else{
           if(power > 1 || this.chaseIssue > 1){
@@ -306,10 +310,12 @@ export default {
         store.commit('lt_setChaseIssue', +issue)
         if(issue.search(/[^\d]+/) > -1 || issue <= 0){
           store.commit('lt_setChaseIssue', 1)
+          store.commit('lt_basketPowerTo1')
           store.dispatch('lt_ordinaryChase')
         }else if(issue > Max_Chase_Issue){
           issue = Max_Chase_Issue
           store.commit('lt_setChaseIssue', +issue)
+          store.commit('lt_basketPowerTo1')
           store.dispatch('lt_ordinaryChase')
           layer.msgWarn(`最多${Max_Chase_Issue}期`)
         }else{

@@ -49,9 +49,7 @@
 					next()										//有就直接进页面
 				}
 			})
-
 		},
-
 		created(){
 		  //从url上获取彩种type和彩种code
 		  ;[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
@@ -249,7 +247,7 @@
 		      			,Odds = state.Odds[type] || []
 
 		      	bus.$emit('clearNoteStr')   //清空文本框文字
-		      	store.commit('lt_clearBet')
+		      	this.$store.commit('lt_clearBet')
 		      	state.mode = mode
 		      	// console.log(mode)
 		      	//更改玩法时，对应玩法的奖金也跟着变
@@ -258,13 +256,13 @@
 		      },
 		      //变更彩种
 		      lt_changeLottery:(state, code)=>{
-		        state.lottery = store.state.LotteryList[code]
+		        state.lottery = this.$store.state.LotteryList[code]
 		        RootApp.$router.push(code)		//更改路由
 		      },
 		      //变更配置（进入各具体彩种页时，设置）
-		      lt_initConfig:(state, config)=>{state.config = pageConfig[state.lottery.LotteryType]},
-		      lt_updateDate:function(state){
-		        var nowSerTime = new Date().getTime()-store.state.Difftime;   //当前的服务器时间
+		      lt_initConfig:(state)=>{state.config = pageConfig[state.lottery.LotteryType]},
+		      lt_updateDate:(state)=>{
+		        var nowSerTime = new Date().getTime()-this.$store.state.Difftime;   //当前的服务器时间
 		        state.Todaystr = new Date(nowSerTime).format("yyyyMMdd");     //今天
 		        state.Tomorrowstr = new Date(nowSerTime+DAY_TIME).format("yyyyMMdd"); //明天
 		        state.Yestodaystr = new Date(nowSerTime-DAY_TIME).format("yyyyMMdd"); //昨天
@@ -280,7 +278,7 @@
 				        , _SerTime		//除去日期的服务器时间
 
 		        //除去日期的服务器时间
-		        _SerTime = (new Date().getTime()- store.state.Difftime - GMT_DIF) % DAY_TIME
+		        _SerTime = (new Date().getTime()- this.$store.state.Difftime - GMT_DIF) % DAY_TIME
 		        for (var planLen = LotteryPlan.length, i = LotteryPlan.length - 1; i >= 0; i--) {
 		          _timeE = LotteryPlan[i].EndTime.split(':');
 		          EndTime = _timeE[0]*3600000 + _timeE[1]*60000 + _timeE[2]*1000;			//某期结束时间
@@ -301,7 +299,7 @@
 		          }
 		        }
 
-		        store.commit('lt_updateIssue')
+		        this.$store.commit('lt_updateIssue')
 	      	},
 	      	//更新期号时
 	      	lt_updateIssue:(state)=>{
@@ -341,17 +339,17 @@
 	      	//设置投注数，还有计算单注金额
 	      	lt_setBetCount:(state, betCount)=>{
 	      		state.bet.betting_count = betCount
-	      		store.commit('lt_setMoney')
+	      		this.$store.commit('lt_setMoney')
 	      	},
 	      	//设置倍数
 	      	lt_setPower:(state, power)=>{
 	      		state.bet.graduation_count = power
-	      		store.commit('lt_setMoney')
+	      		this.$store.commit('lt_setMoney')
 	      	},
 	      	//设置元角分
 	      	lt_setUnit:(state, unit)=>{
 	      		state.bet.betting_model = unit
-	      		store.commit('lt_setMoney')
+	      		this.$store.commit('lt_setMoney')
 	      	},
 	      	lt_setMoney:(state)=>{
 						state.bet.betting_money = +(state.perbet * state.bet.betting_count * state.bet.graduation_count * state.bet.betting_model).toFixed(2)
@@ -363,20 +361,23 @@
 	      		if(power > 1 || buy_count > 1){
 	      			baseBet.power2one()
 	      		}
-	      		store.commit('lt_addToBasket', baseBet)
-	      		store.commit('lt_clearBet')
-	      		store.dispatch('lt_ordinaryChase')
+	      		this.$store.commit('lt_addToBasket', baseBet)
+	      		this.$store.commit('lt_clearBet')
+	      		this.$store.dispatch('lt_ordinaryChase')
 	      	},
 	      	lt_addRandomBet:(state, randomBet)=>{
 	      		var {power,buy_count} = state.chaseConf
 	      		if(power > 1 || buy_count > 1){
 	      			randomBet.power2one()
 	      		}
-	      		store.commit('lt_addToBasket', randomBet)
-	      		store.dispatch('lt_ordinaryChase')
+	      		this.$store.commit('lt_addToBasket', randomBet)
+	      		this.$store.dispatch('lt_ordinaryChase')
 	      	},
 	      	//将注单push到basket里
 	      	lt_addToBasket:(state, bet)=>{
+	      		state.chaseConf.buy_count = 1
+	      		state.chaseConf.power = 1
+
 	      		//去掉重复的，合并加倍
 	      		var equalIndex, isEqual = false
 	      		state.basket.forEach((_bet, index)=>{
@@ -415,15 +416,15 @@
       			for(var item in state.tmp){
 		      		state.tmp[item] = []
 		      	}
-		      	store.dispatch('lt_ordinaryChase')
+		      	this.$store.dispatch('lt_ordinaryChase')
 	      	},
 	      	lt_clearBasket:(state)=>{
 	      		state.basket = [];
-	      		store.commit('lt_setScheme', [])
+	      		this.$store.commit('lt_setScheme', [])
 	      	},
 	      	lt_deleteBet:(state, index)=>{
 	      		state.basket.splice(index,1)
-	      		store.dispatch('lt_ordinaryChase')
+	      		this.$store.dispatch('lt_ordinaryChase')
 	      	},
 	      	lt_setBetCompress:(state, str)=>{state.bet.compress = str},
 	      	lt_isStopAfterWin:(state, bool)=>{state.chaseConf.isstop_afterwinning = bool},
@@ -547,7 +548,7 @@
 		      },
 		      //refresh
 		      lt_refresh:({state, rootState, commit, dispatch})=>{
-		      	var _SerTime = (new Date().getTime()- store.state.Difftime - GMT_DIF) % DAY_TIME
+		      	var _SerTime = (new Date().getTime()- this.$store.state.Difftime - GMT_DIF) % DAY_TIME
 		      			,IssueNo = state.IssueNo
 		      	if (_SerTime<1000) {
 			        console.log("新的一天");
@@ -574,7 +575,7 @@
 
 		          //期号更新
 		          commit('lt_updateIssue')
-		          var _year = new Date(new Date().getTime()- store.state.Difftime - GMT_DIF).getFullYear()	//本年
+		          var _year = new Date(new Date().getTime()- this.$store.state.Difftime - GMT_DIF).getFullYear()	//本年
 		          layer.open({
 		            shadeClose: false,
 		            className: "layerConfirm layerCenter",
@@ -724,7 +725,7 @@
 		      			layer.alert(json.StrCode)
 				      	var type = state.lottery.LotteryType
 				      	// localStorage.removeItem('Rebate' + type)
-				      	store.dispatch('lt_getRebate')
+				      	this.$store.dispatch('lt_getRebate')
 		      		}else{
 		      			layer.msgWarn(json.StrCode)
 		      		}
@@ -771,7 +772,7 @@
 		      			layer.alert(json.StrCode)
 				      	var type = state.lottery.LotteryType
 				      	// localStorage.removeItem('Rebate' + type)
-				      	store.dispatch('lt_getRebate')
+				      	this.$store.dispatch('lt_getRebate')
 							}else{
 								layer.msgWarn(json.StrCode);
 							}
@@ -780,23 +781,24 @@
 		    }
 		  }
 
+		  console.log(this.$store.state.lt)
 			//注册彩种模块 --lt
-			state.lt || store.registerModule('lt', lt)
+			this.$store.state.lt || this.$store.registerModule('lt', lt)
 			//生成昨天今天明天字符串
-			store.commit('lt_updateDate')
+			this.$store.commit('lt_updateDate')
 			//切换彩种
-			store.dispatch('lt_updateLottery', this.lcode)
+			this.$store.dispatch('lt_updateLottery', this.lcode)
 			//设置页面配置-SSC、K3
-		  store.commit('lt_initConfig')
+		  this.$store.commit('lt_initConfig')
 		  //设置默认的玩法
 		  this.setDefaultMode()
 			//获取我的投注
-			store.dispatch('lt_updateBetRecord')
+			this.$store.dispatch('lt_updateBetRecord')
 			//获取返点
-			store.dispatch('lt_getRebate')
+			this.$store.dispatch('lt_getRebate')
 			//每隔1s调用一次refresh
 			this.baseLoop = setInterval(()=>{
-				store.dispatch('lt_refresh')
+				this.$store.dispatch('lt_refresh')
 			},1000)
 		},
 		data(){
@@ -831,13 +833,6 @@
 				}
 			}
 		},
-		beforeDestroy(){
-			clearTimeout(this.timer1)
-			clearTimeout(this.timer2)
-			clearTimeout(this.timer3)
-			clearTimeout(this.timer4)
-			clearInterval(this.baseLoop)
-		},
 	  beforeRouteLeave:(to, from, next)=>{
 	    //离开页面前将每注金额重设为 PERBET (2元)
 	    store.commit('lt_setPower', 1)
@@ -850,6 +845,13 @@
 			store.commit('lt_setChaseIssue', 1)
 	    next()
 	  },
+		beforeDestroy(){
+			clearTimeout(this.timer1)
+			clearTimeout(this.timer2)
+			clearTimeout(this.timer3)
+			clearTimeout(this.timer4)
+			clearInterval(this.baseLoop)
+		},
 
 	}
 </script>
