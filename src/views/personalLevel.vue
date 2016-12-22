@@ -6,7 +6,7 @@
               <div class="rightInfo">
                   <h1><ins>{{$store.state.UserName}}</ins><i class="vip"></i><span v-if="Number(UserGrade)">VIP{{UserGrade}}</span><span v-else>{{UserGrade}}</span></h1>
                   <i>头衔：{{GradeName}}</i>
-                  <em>成长值：{{UserGradeGrow}}分</em>
+                  <em>成长值{{UserGradeGrow}}分</em>
               </div>
           </div>
           <p class="levelTips" >距离下一级需要{{Number(UserGrade)?upGrow:'0'}}分 每充值1元加1分</p>

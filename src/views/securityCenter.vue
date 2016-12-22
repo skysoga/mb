@@ -3,7 +3,7 @@
     <div class="safeTop">
       <h5><span></span><em id="Slevel">您的账号安全级别为{{LevelText}}</em><span></span></h5>
       <div class="star">
-        <i class="iconfont" v-for="n in 5" :class="{curr:n<=StarNum}">&#xe63d;</i>
+        <i class="iconfont icon" v-for="n in 5" :class="{curr:n<=StarNum}">&#xe63d;</i>
       </div>
       <p id="LoginInfo">上次登录：{{LastLogin.LoginTime}}<br>{{LastLogin.LoginAddr}} | <router-link to="/verifyPwd">不是我登录?</router-link></p>
     </div>
@@ -75,4 +75,7 @@
 <script src="../js/securityCenter.js"></script>
 <style lang="scss" scoped>
   @import '../scss/personalinfo.scss';
+  .icon{
+    margin: 0 5px;
+  }
 </style>
