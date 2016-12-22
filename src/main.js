@@ -89,8 +89,9 @@ window.state = require('./JSconfig.js')
   	state[CacheArr[i]]=getLocalDate(CacheArr[i])
   }
 })()
-var CacheData=localStorage.getItem("CacheData")
+window.CacheData=localStorage.getItem("CacheData")
 CacheData = CacheData?JSON.parse(CacheData):{}
+
 window.store = new Vuex.Store({
   state,
   getters:{
@@ -530,3 +531,5 @@ Date.prototype.format = function(format) {
   }
   return format;
 }
+
+export {RootApp}

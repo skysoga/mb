@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 import {unique, bus, compress, throttle} from '../../js/kit'
 function getLegalStr(str){
   str = str.replace(/^\s+/g, '');
@@ -71,9 +72,9 @@ export default {
       betStr:'',
     }
   },
-  computed:{
+  computed:mapState({
     mode:()=>state.lt.mode.mode
-  },
+  }),
   methods:{
     whenInput(){
       throttle(()=>{
@@ -106,10 +107,10 @@ export default {
 
         var compressMode = ['H12', 'G12']
         var comp = compressMode.indexOf(this.mode) > -1 ? compress(betArr) : ''
-        store.commit('lt_setBetCount', betArr.length)
-        store.commit('lt_setBetStr', betArr.join(','))
-        store.commit('lt_setBetCompress', comp)
-        store.commit({
+        this.$store.commit('lt_setBetCount', betArr.length)
+        this.$store.commit('lt_setBetStr', betArr.join(','))
+        this.$store.commit('lt_setBetCompress', comp)
+        this.$store.commit({
           type:'lt_updateTmp',
           alias: 'notebet',
           arr: betArr

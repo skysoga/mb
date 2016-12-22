@@ -14,9 +14,9 @@
 	import lt_ssc from '../json/lt_ssc.json'
 	import lt_k3 from '../json/lt_k3.json'
 	import Vue from 'vue'
+	import {RootApp} from '../main'
 	import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
-	import {DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../JSconfig'
-	import {bus, BaseBet, ChaseAjax, easyClone, deleteCompress, Scheme, getBasketAmount, computeIssue, getSSCRebate, getK3Rebate} from '../js/kit'
+	import {bus, BaseBet, ChaseAjax, easyClone, deleteCompress, Scheme, getBasketAmount, computeIssue, getSSCRebate, getK3Rebate,DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../js/kit'
 
 	export default{
 		beforeRouteEnter(to, from, next){
@@ -356,10 +356,10 @@
 	      	},
 	      	//添加bet到plan中
 	      	lt_addBet:(state)=>{
-	      		var baseBet = new BaseBet()
+	      		var baseBet = new BaseBet(this.$store.state)
 	      		var {power,buy_count} = state.chaseConf
 	      		if(power > 1 || buy_count > 1){
-	      			baseBet.power2one()
+	      			baseBet.power2one(this.$store.state)
 	      		}
 	      		this.$store.commit('lt_addToBasket', baseBet)
 	      		this.$store.commit('lt_clearBet')
@@ -368,7 +368,7 @@
 	      	lt_addRandomBet:(state, randomBet)=>{
 	      		var {power,buy_count} = state.chaseConf
 	      		if(power > 1 || buy_count > 1){
-	      			randomBet.power2one()
+	      			randomBet.power2one(this.$store.state)
 	      		}
 	      		this.$store.commit('lt_addToBasket', randomBet)
 	      		this.$store.dispatch('lt_ordinaryChase')
@@ -398,7 +398,7 @@
 
 	      		if(state.basket.length && isEqual){
 	      			var prevPower = state.basket[equalIndex].graduation_count
-	      			state.basket[equalIndex].setPower(prevPower + bet.graduation_count)
+	      			state.basket[equalIndex].setPower(prevPower + bet.graduation_count, this.$store.state)
 	      		}else{
 		      		state.basket.push(bet)
 	      		}
@@ -751,7 +751,7 @@
 	      	lt_chase:({state, rootState, commit, dispatch})=>{
 	      		_fetch({
 	      			Action: 'AddChaseBetting',
-							data: new ChaseAjax()
+							data: new ChaseAjax(rootState)
 	      		}).then((json)=>{
 	      			if(json.Code === 1){
 								layer.msg(json.StrCode)
@@ -781,7 +781,6 @@
 		    }
 		  }
 
-		  console.log(this.$store.state.lt)
 			//注册彩种模块 --lt
 			this.$store.state.lt || this.$store.registerModule('lt', lt)
 			//生成昨天今天明天字符串

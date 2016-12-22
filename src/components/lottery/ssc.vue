@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 import betbox from './betbox'
 import notebet from './notebet'
 import {factorial, mul, C, combNoRepeat, unique, normalSum2, normalSum3, accumulate,
@@ -67,7 +68,7 @@ var ltCfg = {
   F31:{render:['whole'],alg:countSingle},
   F32:{render:['whole'],alg:(order,tmp)=>C(tmp['whole'].length,2)},
   /**中三**/
-  E11:{render:['10000','1000','100'],alg:(order, tmp)=>mul(3, betSum(order, tmp))},
+  E11:{render:['1000','100','10'],alg:(order, tmp)=>mul(3, betSum(order, tmp))},
   E12:3,
   E13:{render:['psum27'],alg:(order,tmp)=>accumulate(tmp['psum27'], normalSum3)},
   E14:{render:['whole'],alg:(order,tmp)=>accumulate(tmp['whole'],diff3)},
@@ -81,7 +82,7 @@ var ltCfg = {
   E31:{render:['whole'],alg:countSingle},
   E32:{render:['whole'],alg:(order,tmp)=>C(tmp['whole'].length,2)},
   /**后三**/
-  D11:{render:['10000','1000','100'],alg:(order, tmp)=>mul(3, betSum(order, tmp))},
+  D11:{render:['100','10','1'],alg:(order, tmp)=>mul(3, betSum(order, tmp))},
   D12:3,
   D13:{render:['psum27'],alg:(order,tmp)=>accumulate(tmp['psum27'], normalSum3)},
   D14:{render:['whole'],alg:(order,tmp)=>accumulate(tmp['whole'],diff3)},
@@ -104,7 +105,7 @@ var ltCfg = {
   C23:{render:['csum17'],alg:(order,tmp)=>accumulate(tmp['csum17'].map(item=>item),combSum2)},
   C24:{render:['baodan'],alg:(order,tmp)=>9},
   /**后二**/
-  B11:{render:['10000','1000'],alg:(order,tmp)=>mul(2,betSum(order,tmp))},
+  B11:{render:['10','1'],alg:(order,tmp)=>mul(2,betSum(order,tmp))},
   B12:2,
   B13:{render:['psum18'],alg:(order,tmp)=>accumulate(tmp['psum18'],normalSum2)},
   B14:{render:['whole'],alg:(order,tmp)=>accumulate(tmp['whole'],diff2)},
@@ -133,7 +134,7 @@ export default {
     for(var item in ltCfg){
       if(ltCfg[item].render){
         ltCfg[item].render.forEach(alias=>{
-          store.commit({
+          this.$store.commit({
             type:'lt_updateTmp',
             alias: alias,
             arr: []
@@ -147,18 +148,18 @@ export default {
       ltCfg: ltCfg
     }
   },
-  computed:{
+  computed:mapState({
     tip:()=>state.lt.mode.tip,      //提示
     award:()=>state.lt.award        //奖金
-  },
+  }),
   methods:{
     whenChoose(){
       var order = this.ltCfg[this.mode].render  //按渲染数组的顺序
           ,tmp = state.lt.tmp                     //即时投注号码
           ,result = this.ltCfg[this.mode].alg(order, tmp)  //当前投注注数
 
-      store.commit('lt_setBetStr', getBetStr(order, tmp))
-      store.commit('lt_setBetCount', result)
+      this.$store.commit('lt_setBetStr', getBetStr(order, tmp))
+      this.$store.commit('lt_setBetCount', result)
     }
   }
 }

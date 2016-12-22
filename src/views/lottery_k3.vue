@@ -474,9 +474,9 @@ export default {
                     投注内容:${this.chosen.join(' ')}`
 
         layer.confirm(msg,()=>{
-          var basebet = new BaseBet()
+          var basebet = new BaseBet(this.$store.state)
           if(this.mode === 'A10'){
-            basebet.setRebate('180')
+            basebet.setRebate('180', this.$store.state)
           }
           var basket = deleteCompress([basebet])
           _fetch({
