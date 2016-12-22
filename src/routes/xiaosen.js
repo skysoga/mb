@@ -30,9 +30,9 @@ const rebateDes =resolve => require(['../views/rebateDes'],resolve)//返点赔�
 const tool =resolve => require(['../views/tool'],resolve)//清缓存工具
 var routes = [{
   path: '/manageBankcard',
-  name: '我的银行卡',
+  name: '银行卡管理',
   meta:{
-	title:'我的银行卡',
+	title:'银行卡管理',
 	nav:false,
 	link:'/securityCenter',
 	user:true,

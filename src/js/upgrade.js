@@ -25,7 +25,7 @@ export default {
     if(this.isBouns){
       thState=this.isBouns.State||-1
     }
-    this.UnClick=thState!=0?true:false
+    this.UnClick=thState==0?false:true
     this.ClickMsg=thState==0?'立即领取':thState==1?'已领取':'不可领取'
     for(var i=0;i<dataArr.length;i++){
       if(dataArr[i].Name==decodeURIComponent(xname)){
