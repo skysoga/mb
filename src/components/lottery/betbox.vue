@@ -1,7 +1,7 @@
 <template>
    <div class="selectNumber fix">
       <div class="title fix">
-        <em>{{tag}}</em>
+        <em><p>{{tag}}</p></em>
         <!-- 全大小奇偶清 -->
         <!-- <div class="filterNumber">
           <a v-for = "item in filters"
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 import {unique} from '../../js/kit'
 
 function isArrayEqual(a, b){
@@ -79,7 +80,7 @@ export default {
       config:{},
     }
   },
-  computed:{
+  computed:mapState({
     chosen(){
       return state.lt.tmp[this.alias]
     },
@@ -96,15 +97,14 @@ export default {
     filters(){
       return cfg[this.alias].filters
     },
-  },
+  }),
   methods:{
     choose(item){
       var _pos = this.chosen.indexOf(item),
           _chosen = this.chosen.slice(0)
-          // console.log(_chosen,_pos)
 
       if(this.alias === 'baodan'){
-        store.commit({
+        this.$store.commit({
           type:'lt_updateTmp',
           alias: this.alias,
           arr: [item]
@@ -130,7 +130,7 @@ export default {
         }
       }
 
-      store.commit({
+      this.$store.commit({
         type:'lt_updateTmp',
         alias: this.alias,
         arr: tmp
@@ -139,7 +139,7 @@ export default {
       this.$emit('choose')
     },
     filter(item){
-      store.commit({
+      this.$store.commit({
         type:'lt_updateTmp',
         alias: this.alias,
         arr: refer[item].slice(0)
@@ -175,7 +175,7 @@ export default {
     left: 0;
     width: 16rem;
     height: 1px;
-    @include bgImg-linear-gradient('90deg, #d0d0d0, #d0d0d0 50%, transparent 50%');
+    @include bgImg-linear-gradient('90deg, #dfdfda, #dfdfda 50%, transparent 50%');
   }
   .title{
     height: 1.85em;
@@ -183,18 +183,18 @@ export default {
     display: table-cell;
     em{
       font-size: 0.65em;
-      height: 1.7em;
       width:3.2em;
       display: block;
-      text-align: center;
-      line-height: 1.7em;
+      text-align: left;
+      line-height: 1.3em;
       color:#bbb39c;
-      background: #f4f1e2;
-      border:1px solid #ece7d9;
+      background: #eeebda;
+      border:1px solid #e3decf;
       border-radius: .3em;
       position: relative;
       z-index: 3;
       margin-top: .8em;
+      padding:.2em .5em;
       /*&:before,&:after{
         content:"";
         position: absolute;

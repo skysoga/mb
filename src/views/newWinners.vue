@@ -46,7 +46,8 @@
 					cache: [] //整个模块公用
 				},
 				newOneData: "",
-				li_arr:[]
+				li_arr:[],
+				timeID:0
 			}
 		},
 		methods: {
@@ -95,7 +96,7 @@
 			}(),
 			//每隔time(毫秒)，获取数据，并通过回调传出
 			getCache: function(time, fn) {
-				setInterval(() => {
+				this.timeID=setInterval(() => {
 					this.getData('GetNewestBonusList', this.config.dataNum, (d) => {
 						let list = d.BackData.NewestBonusList;
 						if (list) {
@@ -108,6 +109,10 @@
         let router=this.$router
         router.push({ path: '/playerHome',query:{ID:id}})
       }
+		},
+		beforeRouteLeave(to,from,next){
+			clearInterval(this.timeID)
+			next()
 		},
 		created() {
 			this.config.timePull = this.config.dataNum * this.config.timeInsert; //每次拉取数据到cache的间隔

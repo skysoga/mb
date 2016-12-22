@@ -1,9 +1,9 @@
 <template>
 	<div class="main">
     <div class="innerWrap">
-        <div v-for="vlue in $store.state.ActivityConfig" class="surperise active ">
+        <div v-for="(vlue,index) in $store.state.ActivityConfig" class="surperise active ">
             <router-link class="wrap line" :to="getHtml(vlue.Name)">
-                <div class="number"><i>{{vlue.Type}}</i></div>
+                <div class="number"><i>{{index+1}}</i></div>
                 <div class="text">
                     <strong>{{vlue.Name}}</strong>
                     <p>{{vlue.Intro}}</p>
@@ -44,4 +44,33 @@
     .innerWrap .surperise:nth-child(6n+3) .number{
         background: #2ed57b;
     }
+
+
+//活动中心的隔行序号背景变色
+.main{
+  .surperise:nth-child(8n+1) .number{
+    background:#fe8580;
+  }
+  .surperise:nth-child(8n+2) .number{
+    background:#2ed57b;
+  }
+  .surperise:nth-child(8n+3) .number{
+    background:#2ec3d5 !important;
+  }
+  .surperise:nth-child(8n+4) .number{
+    background:#2e85d5 !important;
+  }
+  .surperise:nth-child(8n+5) .number{
+    background:#d52ebe !important;
+  }
+  .surperise:nth-child(8n+6) .number{
+    background:#d52e88 !important;
+  }
+  .surperise:nth-child(8n+7) .number{
+    background:#d52e4a !important;
+  }
+  .surperise:nth-child(8n+8) .number{
+    background:#64d52e !important;
+  }
+}
 </style>

@@ -1,5 +1,6 @@
 import Navbar from '../components/navbar';
 import TitleInfo from '../components/title-info';
+import {RootApp} from '../main'
 import '../scss/public.scss'
 
 export default {
@@ -14,7 +15,7 @@ export default {
   watch:{
     $route(to,from){
       //RootApp.beforEnter(to)
-      if (state.needVerify>5) {
+      if (this.$store.state.needVerify>5) {
         console.log("强制踩点功能");
         RootApp.AjaxGetInitData(["CloudUrl"])
       }

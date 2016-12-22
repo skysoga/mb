@@ -1,7 +1,6 @@
 <template>
 	<header class="sscHeader fix">
-    <a @click = "back2index" class="iconfont back"></a>
-    <!-- <router-link to="/index" class="iconfont back"></router-link> -->
+    <router-link to="/index" class="iconfont back"></router-link>
     <div class="playSort" :class = "{active:ifShowModeSelect}">
       <p>玩
         <br>法</p>
@@ -121,10 +120,6 @@
 					 this.$store.commit('lt_changeBox', '') :
 						 this.$store.commit('lt_changeBox', 'typeSelect')
 			},
-      back2index(){
-        // store.commit('lt_leaveLottery')
-        this.$router.push('/index')
-      },
       addSubGroupClass(name){
         var table = {
           '直选': 'directSelect',
@@ -142,10 +137,10 @@
 			config: state=>state.lt.config,
 			LotteryName: state=>state.lt.lottery.LotteryName,
 			ifShowModeSelect (){
-				return this.$store.state.lt.box === 'modeSelect'
+				return state.lt.box === 'modeSelect'
 			},
 			ifShowTypeSelect (){
-				return this.$store.state.lt.box === 'typeSelect'
+				return state.lt.box === 'typeSelect'
 			},
 			lotteryName(){
 				var removeName = {
@@ -166,7 +161,7 @@
 }
 @import '../../scss/scssConfig','../../scss/mixin';
 	.sscHeader{
-  background: #dc3b40;
+  background: #000;
   color:white;
   text-align: center;
   height: 2.3em;

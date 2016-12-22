@@ -42,18 +42,20 @@
     position: absolute;
     width: 16rem;
     height: 1px;
-    @include bgImg-linear-gradient('90deg, transparent, transparent 50%, #fff 50%');
+    border-top:1px solid white;
   }
 }
 .openNumber,.waitNumber{
   text-align: center;
   height: 1.12em;
-  margin-top:.2em;
+  margin-top:.15em;
   margin-bottom:.4em;
   em{
     display: inline-block;
     vertical-align: top;
     background: #dc3b40;
+    @include bg-linear-gradient('top, #f86469 0%,#bf1f24 75%')
+    box-shadow: 0px 3px 1px #bbb59c;
     color:white;
     width: 1.4em;
     height: 1.4em;
@@ -70,6 +72,7 @@
     color:#333;
     width: inherit;
     font-size: .9em;
+    box-shadow: none;
   }
 }
 .pastOpen{
@@ -107,7 +110,7 @@
   td{
     vertical-align: middle;
     position: relative;
-    line-height: 1.6em;
+    line-height: 2em;
     &:nth-child(2):before{
       content: "";
       position: absolute;
@@ -158,7 +161,7 @@
     top:0;
     height: 100%;
     width: 1px;
-    @include bgImg-linear-gradient('0deg, #d0d0d0, #d0d0d0 50%, transparent 50%');
+    @include bgImg-linear-gradient('0deg, #bdb48b, #bdb48b 50%, transparent 50%');
   }
   &.active{
     .pastOpen{

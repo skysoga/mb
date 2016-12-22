@@ -5,7 +5,7 @@
         <div class="rewardStatus">
             <em class="e1">昨日投注：<i v-if="StateData.YesterdayBet">{{StateData.YesterdayBet}}</i><i v-else>0</i></em>
             <em class="e2">当前等级：<i v-if="StateData.UserGrade">VIP{{StateData.UserGrade}}</i><i v-else>未登录</i></em>
-            <em class="e3">加奖比例：<i v-if="StateData.BonusRate">{{StateData.BonusRate}}</i><i v-else>0</i></em>
+            <em class="e3">加奖比例：<i v-if="StateData.BonusRate">{{+StateData.BonusRate}}%</i><i v-else>0</i></em>
             <em class="e4">可得加奖：<i v-if="StateData.Bonus">{{StateData.Bonus}}</i><i v-else>0</i></em>
         </div>
         <div class="BTN" :class="{unClick:UnClick}"><a @click="getBtn">{{ClickMsg}}</a></div>
@@ -14,7 +14,7 @@
     <table>
         <tr>
             <th>等级/投注额</th>
-            <th v-for="v in RewardData[0].Title">{{v}}</th>
+            <th v-for="v in Arrtitle">{{v}}</th>
         </tr>
         <tr v-for="n in RewardData">
             <td>{{n.Grade}}</td>

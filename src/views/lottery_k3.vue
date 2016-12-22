@@ -19,7 +19,7 @@
         </a>
       </div>
     </div>
-    <a class="iconfont" @click = "back2index"></a>
+    <router-link to="/index" class="iconfont back"></router-link>
 
     <!-- 玩法下拉框 -->
     <ul class="betTopDetail" v-show = "ifShowModeSelect">
@@ -128,8 +128,8 @@
 </template>
 
 <script>
-import {unique,C,mul,BaseBet,deleteCompress} from '../js/kit'
-import {PERBET} from '../JSconfig'
+import {mapState} from 'vuex'
+import {unique,C,mul,BaseBet,deleteCompress,PERBET} from '../js/kit'
 var eachLen = data=>data.map(arr=>arr.length)
 var getBetStr = (data, mode)=>{
   var line =  data.map(arr=>arr.join(' '))
@@ -193,7 +193,7 @@ var cfg = {
 
 export default {
   created (){
-    store.commit({
+    this.$store.commit({
       type:'lt_updateTmp',
       alias: 'K3',
       arr: []
@@ -204,7 +204,7 @@ export default {
     LotteryConfig.forEach(item=>{
       if(item.LotteryClassID.indexOf(this.lcode.slice(0,2)) > -1){
         this.LotteryList = item.LotteryList.map(code=>{
-          var el = state.LotteryList[code]
+          var el = this.$store.state.LotteryList[code]
           return el
         })
       }
@@ -239,10 +239,10 @@ export default {
       this.clear()
     }
   },
-  computed:{
+  computed:mapState({
     //header部分
     ifShowTypeSelect (){
-      return state.lt.box === 'typeSelect'
+      return this.$store.state.lt.box === 'typeSelect'
     },
     ifShowModeSelect (){
       return this.$store.state.lt.box === 'modeSelect'
@@ -318,11 +318,8 @@ export default {
       return (state.lt.bet.betting_money && this.showPrice)  ? `，${state.lt.bet.betting_money}元` : ''
     },
     basket:()=>state.lt.basket,
-  },
+  }),
   methods:{
-    back2index(){
-      this.$router.push('/index')
-    },
     //彩种选择框，切换
     toggleTypeSelect(){
       this.$store.state.lt.box === 'typeSelect' ?
@@ -367,7 +364,7 @@ export default {
       }
     },
     changeMode(mode){
-      store.commit('lt_changeMode', mode)
+      this.$store.commit('lt_changeMode', mode)
     },
     togglePastOpen(){
       this.$store.state.lt.box === 'pastOpen' ?
@@ -423,7 +420,7 @@ export default {
           }
         }
       }
-      store.commit({
+      this.$store.commit({
         type:'lt_updateTmp',
         alias: 'K3',
         arr: tmp
@@ -445,8 +442,8 @@ export default {
 
       var betCount = cfg[this.mode].alg(_data)
 
-      store.commit('lt_setBetCount', betCount)
-      store.commit('lt_setBetStr', getBetStr(_data, this.mode))
+      this.$store.commit('lt_setBetCount', betCount)
+      this.$store.commit('lt_setBetStr', getBetStr(_data, this.mode))
     },
     changeShowPrice(){
       if(!/^\d+$/.test(this.showPrice)|| !(+this.showPrice)){
@@ -454,13 +451,13 @@ export default {
       }
 
       if(this.showPrice){
-        store.commit('lt_setPerbet', +this.showPrice)
-        store.commit('lt_setMoney')
+        this.$store.commit('lt_setPerbet', +this.showPrice)
+        this.$store.commit('lt_setMoney')
       }
     },
     clear(){
       this.showPrice = ''
-      store.commit('lt_clearBet')
+      this.$store.commit('lt_clearBet')
     },
     confirmBet(){
       if(!this.bet.betting_count){
@@ -474,9 +471,9 @@ export default {
                     投注内容:${this.chosen.join(' ')}`
 
         layer.confirm(msg,()=>{
-          var basebet = new BaseBet()
+          var basebet = new BaseBet(this.$store.state)
           if(this.mode === 'A10'){
-            basebet.setRebate('180')
+            basebet.setRebate('180', this.$store.state)
           }
           var basket = deleteCompress([basebet])
           _fetch({
@@ -486,11 +483,11 @@ export default {
             if(json.Code === 1){
               this.showPrice = ''
               // layer.msg(json.StrCode)
-              store.commit('lt_clearBet')
-              store.commit('lt_changeBox', '')
+              this.$store.commit('lt_clearBet')
+              this.$store.commit('lt_changeBox', '')
               //隔3s获取我的投注
               this.timer3 = setTimeout(()=>{
-                store.dispatch('lt_updateBetRecord')
+                this.$store.dispatch('lt_updateBetRecord')
               }, 3000)
 
               layer.confirm(`投注成功，您可以在我的账户查看注单详情`,['继续投注','查看注单'], ()=>{},()=>{this.$router.push('/userCenter')})
@@ -498,9 +495,9 @@ export default {
             }else if(json.Code === -9){
               //清除rebate
               layer.alert(json.StrCode)
-              var type = state.lottery.LotteryType
+              var type = this.$store.state.lottery.LotteryType
               // localStorage.removeItem('Rebate' + type)
-              store.dispatch('lt_getRebate')
+              this.$store.dispatch('lt_getRebate')
             }else{
               layer.msgWarn(json.StrCode)
             }

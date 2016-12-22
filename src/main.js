@@ -89,8 +89,9 @@ window.state = require('./JSconfig.js')
   	state[CacheArr[i]]=getLocalDate(CacheArr[i])
   }
 })()
-var CacheData=localStorage.getItem("CacheData")
+window.CacheData=localStorage.getItem("CacheData")
 CacheData = CacheData?JSON.parse(CacheData):{}
+
 window.store = new Vuex.Store({
   state,
   getters:{
@@ -299,6 +300,7 @@ window.RootApp = new Vue({
 			}
 			if (meta.verify) {
 				var fy = meta.verify===1?1:state[meta.verify]
+        if (to.path==="/setSafePwd") {fy*=1}
 				if (fy&&(!state.UserVerify||meta.from.search(state.UserVerify)==-1)
 				) {
 					console.log("条件不足");
@@ -405,6 +407,7 @@ router.afterEach((to, from) => {
 
 //全局过滤器
 Vue.filter('num', v=>+v) // 转成数字类型
+Vue.filter('filNum',v=>String(Math.floor(v)).length>7?Math.floor(v):v)//数字整数长度大于7位去掉小数点部分
 
 //全局指令
 Vue.directive('copyBtn', {
@@ -530,3 +533,5 @@ Date.prototype.format = function(format) {
   }
   return format;
 }
+
+export {RootApp}

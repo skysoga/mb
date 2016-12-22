@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   created(){
     [,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
@@ -58,7 +59,7 @@ export default {
       [,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
     }
   },
-  computed:{
+  computed:mapState({
     oldIssue:()=>state.lt.OldIssue.slice(4),
     results(){
       var _results = state.lt.LotteryResults[this.lcode]
@@ -83,7 +84,7 @@ export default {
     ifShowPastOpen(){
       return this.$store.state.lt.box === 'pastOpen'
     }
-  },
+  }),
   methods:{
     togglePastOpen(){
       this.$store.state.lt.box === 'pastOpen' ?

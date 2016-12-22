@@ -3,7 +3,7 @@
       <div class="topInfo">
           <router-link to="/personalInfo"><img v-bind:src="$store.getters.PhotoPath+$store.state.UserPhoto||$store.state.constant.DefPhoto"></router-link>
           <p>账&nbsp;号：<ins id="UserName">{{$store.state.UserName}}</ins></p>
-          <span>余&nbsp;额：<ins id="UserBalance" v-text="$store.state.UserBalance"></ins>元</span>
+          <span>余&nbsp;额：<ins id="UserBalance" v-text="UserBalance"></ins>元</span>
           <div v-on:click="refresh" :class="refreshClass"><i class="iconfont">&#xe62f;</i></div>
       </div>
 
@@ -13,10 +13,10 @@
               <span>我要充值</span>
           </router-link>
 
-          <a class="active" data-pwd="True" data-card="True" @click="setUrl">
+          <router-link class="active" data-pwd="True" data-card="True" to="/withdraw">
               <i class="iconfont m1">&#xe631;</i>
               <span>我要提现</span>
-          </a>
+          </router-link>
           <router-link class="active" to="billRecord">
               <i class="iconfont m2">&#xe630;</i>
               <span>交易记录</span>

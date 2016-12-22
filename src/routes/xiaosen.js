@@ -41,9 +41,9 @@ var routes = [{
   component: manageBankcard
 },{
   path: '/setMail',
-  name: '设置密保邮箱',
+  name: '绑定密保邮箱',
   meta:{
-	title:'设置密保邮箱',
+	title:'绑定密保邮箱',
 	nav:false,
 	link:'/securityCenter',
 	user:true,
@@ -89,9 +89,9 @@ var routes = [{
   component: verifyQuestion
 },{
   path: '/setMobile',
-  name: '设置密保手机',
+  name: '绑定密保手机',
   meta:{
-	title:'设置密保手机',
+	title:'绑定密保手机',
 	nav:false,
 	link:'/securityCenter',
 	user:true,
@@ -272,10 +272,10 @@ var routes = [{
 	}]
 },{
   path: '/personalInfo',
-  name: '个人信息',
+  name: '个人资料',
   meta:{
 	titleList:[{
-		title:"个人信息",
+		title:"个人资料",
 		to:"/personalInfo"
 	  },{
 		title:"等级头衔",
@@ -290,7 +290,7 @@ var routes = [{
   name: '等级头衔',
   meta:{
 	titleList:[{
-		title:"个人信息",
+		title:"个人资料",
 		to:"/personalInfo"
 	  },{
 		title:"等级头衔",
@@ -331,7 +331,7 @@ var routes = [{
   path:'/withdraw',
   name:'提现',
   meta:{
-	title:"我要提现",
+	title:"提现",
 	link:'/userCenter',
 	user:true
   },

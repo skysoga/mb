@@ -55,6 +55,16 @@ export default {
         UserType: -1,
         DataNum: 13
       },
+      caiName:{
+    		SSC:"时时彩",
+    		XYNC:"幸运农场",
+    		PK10:"北京PK10",
+    		KL8:"北京快乐8",
+    		PL35:"排列3/5",
+    		FC3D:"福彩3D",
+    		SYX5:"11选5",
+    		K3:"快3"
+    	},
       BetweenType: 0,
       res_data: [],
       msg: [null, layer.icon.load + "正在加载...", "已显示全部数据"],
@@ -138,7 +148,7 @@ export default {
           for (var i = 0; i < code_arr.length; i++) {
             let temp_obj = code_arr[i].split("#")
             this.code_obj[i] = {
-              lotteryname: temp_obj[0],
+              lotteryname: this.caiName[temp_obj[0]],
               value: temp_obj[1]
             }
           }

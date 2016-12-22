@@ -1,6 +1,15 @@
 import Vue from 'vue'
-import {PERBET, DAY_TIME, BASE_ISSUE_1406} from '../JSconfig'
 var bus = new Vue()     //空vue用来做事件管理
+var DAY_TIME = 24 * 60 * 60 * 1000
+var HOUR_TIME = 60 * 60 * 1000
+var MINUTE_TIME = 60 * 1000
+var SECOND_TIME = 1000
+var GMT_DIF =new Date().getTimezoneOffset()*60*1000
+var PERBET = 2    //每注2元
+var Max_Rate =10000   //最大倍数
+var Max_Chase_Issue = 50  //追号最大期数
+var Max_Expect_Rate = 20000 //追号最大预期盈利率限制
+var BASE_ISSUE_1406 = 52596+1 //北京快三基准期
 
 //阶乘
 var factorial = (function(){
@@ -332,7 +341,7 @@ function easyClone(obj){
   return newObj;
 }
 
-function BaseBet(count, betStr){
+function BaseBet(state,count, betStr){
   var lt = state.lt,
       bet = state.lt.bet,
       _count = count || bet.betting_count,
@@ -356,23 +365,23 @@ function BaseBet(count, betStr){
   this.compress = bet.compress                            //压缩字符串
 }
 
-BaseBet.prototype.power2one = function(){
+BaseBet.prototype.power2one = function(state){
   this.graduation_count = 1
   this.betting_money = +(state.lt.perbet * this.betting_count * this.betting_model * this.graduation_count).toFixed(2)
 }
 
-BaseBet.prototype.setRebate = function(rebate){
+BaseBet.prototype.setRebate = function(rebate, state){
   var lt = state.lt
   this.betting_point = rebate + '-' + lt.Rebate[lt.lottery.LotteryType]
 }
 
-BaseBet.prototype.setPower = function(power){
+BaseBet.prototype.setPower = function(power, state){
   this.graduation_count = power
   this.betting_money = +(state.lt.perbet * this.betting_count * this.betting_model * this.graduation_count).toFixed(2)
 }
 
 //生成追号的ajax
-function ChaseAjax(){
+function ChaseAjax(state){
   var conf = state.lt.chaseConf,
       lt = state.lt
 
@@ -599,4 +608,5 @@ export {factorial, mul, C, combNoRepeat, unique, normalSum2,
   normalSum3, accumulate,diff2, diff3, combSum2, combSum3,
    bus, BaseBet, compress, throttle, easyClone, ChaseAjax,
     deleteCompress, Scheme, getBasketAmount,computeIssue,
-    getSSCRebate,getK3Rebate}
+    getSSCRebate,getK3Rebate, DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME,
+  GMT_DIF, PERBET,Max_Rate, Max_Chase_Issue, Max_Expect_Rate, BASE_ISSUE_1406}
