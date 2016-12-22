@@ -111,9 +111,8 @@
       }
 		},
 		beforeRouteLeave(to,from,next){
-			next(vm=>{
-				clearInterval(this.timeID)
-			})
+			clearInterval(this.timeID)
+			next()
 		},
 		created() {
 			this.config.timePull = this.config.dataNum * this.config.timeInsert; //每次拉取数据到cache的间隔
