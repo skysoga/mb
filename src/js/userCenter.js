@@ -1,3 +1,4 @@
+import {RootApp} from '../main'
 export default {
   data:()=>{
     return{
@@ -13,7 +14,7 @@ export default {
     })
   },
   created(){
-    this.UserBalance=state.UserBalance
+    this.UserBalance=this.$store.state.UserBalance
   },
   methods:{
     refresh:function(e){

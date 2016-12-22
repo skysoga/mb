@@ -4,7 +4,7 @@
       <tbody>
         <tr>
           <td>已绑定手机</td>
-          <td><input class="input" type="tel" name="Phone" readonly="readonly" :placeholder="Phone"/></td>
+          <td><input class="input" type="tel" name="Phone" readonly="readonly" :placeholder="Mobile"/></td>
         </tr>
         <tr>
           <td>输入验证码</td>

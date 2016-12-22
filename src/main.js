@@ -89,8 +89,9 @@ window.state = require('./JSconfig.js')
   	state[CacheArr[i]]=getLocalDate(CacheArr[i])
   }
 })()
-var CacheData=localStorage.getItem("CacheData")
+window.CacheData=localStorage.getItem("CacheData")
 CacheData = CacheData?JSON.parse(CacheData):{}
+
 window.store = new Vuex.Store({
   state,
   getters:{
@@ -299,6 +300,7 @@ window.RootApp = new Vue({
 			}
 			if (meta.verify) {
 				var fy = meta.verify===1?1:state[meta.verify]
+        if (to.path==="/setSafePwd") {fy*=1}
 				if (fy&&(!state.UserVerify||meta.from.search(state.UserVerify)==-1)
 				) {
 					console.log("条件不足");
@@ -531,3 +533,5 @@ Date.prototype.format = function(format) {
   }
   return format;
 }
+
+export {RootApp}

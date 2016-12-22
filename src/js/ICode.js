@@ -21,7 +21,7 @@ export default{
       doc_height:0,
       cant_scroll:0,
       BottomBoxShow:false,
-      BottomBoxList:["查看返点详情","删除邀请码"],
+      BottomBoxList:["查看返点","删除邀请码"],
       DetailShow:false,
       DetailList:[],
       caiName:{SSC:"时时彩",XYNC:"幸运农场",PK10:"北京PK10",KL8:"北京快乐8",PL35:"排列3/5",FC3D:"福彩3D",SYX5:"11选5",K3:"快3"}

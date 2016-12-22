@@ -23,7 +23,7 @@
         <div class="multiple">
           <!-- 倍率 -->
           <em :class="canReduce ? '':'noMore'" @click = "reduce">-</em>
-          <input type="tel"  v-model.lazy = "power" @change = "powerChange">
+          <input type="tel"  v-model.lazy = "power">
           <em :class="canAdd ? '':'noMore'"  @click = "add">+</em>
         </div>
         <span>倍</span>
@@ -41,8 +41,8 @@
 </template>
 
 <script>
-import {bus} from '../../js/kit'
-import {Max_Rate} from '../../JSconfig'
+import {mapState} from 'vuex'
+import {bus, Max_Rate} from '../../js/kit'
 export default {
   data(){
     return {
@@ -51,56 +51,50 @@ export default {
         {unit: 0.1, word: '角'},
         {unit: 0.01, word: '分'},
       ],
-      // power: 1,
-      // unit: 1
     }
   },
   computed:{
-    betCount:()=>state.lt.bet.betting_count,
-    betMoney:()=>state.lt.bet.betting_money.toFixed(2),
-    betStr:()=>state.lt.bet.betting_number,
-    betAmount:()=>state.lt.basket.length,
+    betCount(){
+      return this.$store.state.lt.bet.betting_count
+    },
+    betMoney(){return this.$store.state.lt.bet.betting_money.toFixed(2)},
+    betStr(){return this.$store.state.lt.bet.betting_number},
+    betAmount(){return this.$store.state.lt.basket.length},
     canReduce(){
       return this.power > 1
     },
     canAdd(){
       return this.power < Max_Rate
     },
-    unit:()=>state.lt.bet.betting_model,
+    unit(){return this.$store.state.lt.bet.betting_model},
     power:{
       get(){
-        return state.lt.bet.graduation_count
+        return this.$store.state.lt.bet.graduation_count
       },
       set(power){
-        store.commit('lt_setPower', +power)
+        this.$store.commit('lt_setPower', +power)
         if(power.toString().search(/[^\d]+/) > -1 || power <= 0){
-          store.commit('lt_setPower', 1)
+          this.$store.commit('lt_setPower', 1)
         }
         if(power > Max_Rate){
-          store.commit('lt_setPower', Max_Rate)
+          this.$store.commit('lt_setPower', Max_Rate)
           layer.msgWarn(`最多${Max_Rate}倍`)
         }
-
       }
     }
-  },
-  watch:{
-    // power(val){
-    //   store.commit('lt_setPower', +val)
-    // }
   },
   methods:{
     reduce(){
       //倍数必须大于1
-      this.power > 1 && store.commit('lt_setPower', this.power-1)
+      this.power > 1 && this.$store.commit('lt_setPower', this.power-1)
     },
     add(){
       //倍数小于最大倍数限制
-      this.power < Max_Rate && store.commit('lt_setPower', this.power+1)
+      this.power < Max_Rate && this.$store.commit('lt_setPower', this.power+1)
     },
     changeUnit(unit){
       this.unit = unit
-      store.commit('lt_setUnit', unit)
+      this.$store.commit('lt_setUnit', unit)
     },
     addBet(){
       //如果没有选择一注， 就没有反应
@@ -108,16 +102,7 @@ export default {
         return
       }
       bus.$emit('clearNoteStr')   //清空文本框文字
-      store.commit('lt_addBet')
-    },
-    powerChange(){
-      // if(this.power.search(/[^\d]+/) > -1 || this.power <= 0){
-      //   this.power = 1
-      // }
-      // if(this.power > Max_Rate){
-      //   this.power= Max_Rate
-      //   layer.msgWarn(`最多${Max_Rate}倍`)
-      // }
+      this.$store.commit('lt_addBet')
     },
     showBasket(){
       store.commit('lt_changeBox', 'basket')

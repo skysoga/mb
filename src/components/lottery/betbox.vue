@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 import {unique} from '../../js/kit'
 
 function isArrayEqual(a, b){
@@ -79,7 +80,7 @@ export default {
       config:{},
     }
   },
-  computed:{
+  computed:mapState({
     chosen(){
       return state.lt.tmp[this.alias]
     },
@@ -96,15 +97,14 @@ export default {
     filters(){
       return cfg[this.alias].filters
     },
-  },
+  }),
   methods:{
     choose(item){
       var _pos = this.chosen.indexOf(item),
           _chosen = this.chosen.slice(0)
-          // console.log(_chosen,_pos)
 
       if(this.alias === 'baodan'){
-        store.commit({
+        this.$store.commit({
           type:'lt_updateTmp',
           alias: this.alias,
           arr: [item]
@@ -130,7 +130,7 @@ export default {
         }
       }
 
-      store.commit({
+      this.$store.commit({
         type:'lt_updateTmp',
         alias: this.alias,
         arr: tmp
@@ -139,7 +139,7 @@ export default {
       this.$emit('choose')
     },
     filter(item){
-      store.commit({
+      this.$store.commit({
         type:'lt_updateTmp',
         alias: this.alias,
         arr: refer[item].slice(0)

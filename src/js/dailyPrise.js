@@ -7,6 +7,7 @@ export default {
       UnClick:true,
       ClickMsg:'',
       Login:'',
+      Arrtitle:'',
       Img:'',
       noimg:false
     }
@@ -14,33 +15,32 @@ export default {
   beforeRouteEnter(to,from,next){
     var arr = ["ActivityConfig","RewardData"]
     RootApp.GetInitData(arr)
-     var theArr={Action:'GetActivityStateData',Qort:'每日加奖'}
+    var theArr={Action:'GetActivityStateData',Qort:'每日加奖'}
     _fetch(theArr).then(json=>{
-          next(vm=>{
-            if(json.Code==1){
-              vm.StateData=json.BackData||{}
+        next(vm=>{
+          if(json.Code==1){
+            vm.StateData=json.BackData
+          }
+          var xname='每日加奖'
+          var dataArr=store.state.ActivityConfig
+          vm.RewardData=store.state.RewardData
+          vm.Arrtitle=store.state.RewardData[0].Title
+          var thState=-1
+          if(vm.StateData){
+            thState=vm.StateData.State
+          }
+          vm.UnClick=thState=='0'?false:true
+          vm.ClickMsg=thState=='0'?'立即领取':(thState=='1'?'已领取':'不可领取')
+          for(var i=0;i<dataArr.length;i++){
+            if(dataArr[i].Name==xname){
+              vm.Content=dataArr[i].Content
+              vm.Img=dataArr[i].Img
+              vm.noimg=vm.Img||true
+              return
             }
-          })
+          }
+        })
       })
-  },
-  created:function(){
-    var xname='每日加奖'
-    var dataArr=store.state.ActivityConfig
-    this.RewardData=store.state.RewardData
-    var thState=-1
-    if(this.StateData){
-      thState=this.StateData.State||'不可领取'
-    }
-    this.UnClick=thState!=0?true:false
-    this.ClickMsg=thState==0?'立即领取':thState=='1'?'已领取':'不可领取'
-    for(var i=0;i<dataArr.length;i++){
-      if(dataArr[i].Name==decodeURIComponent(xname)){
-        this.Content=dataArr[i].Content
-        this.Img=dataArr[i].Img
-        this.noimg=this.Img||true
-        return
-      }
-    }
   },
   methods:{
     getBtn(){
