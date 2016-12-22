@@ -865,3 +865,56 @@ input[type="radio"]:checked + label:before {
       }
   }
 }
+
+/**
+ = AgentIntro.html
+ */
+.agentIntroDes{
+    color:#333;
+    padding:1em .6em;
+    line-height: 1.8;
+    font-size: .7em;
+    em{
+
+    }
+    h3{
+      color:#dc3b40;
+      i{
+        margin-right:.3em;
+        font-size: 1.1em;
+        line-height: 1.1em;
+      }
+    }
+    p{
+      padding-left: 1.7em;
+      position: relative;
+      &:before{
+        content:"";
+        position: absolute;
+        width: .3em;
+        height: .3em;
+        background: #b9bcc2;
+        border-radius: 50%;
+        border:2px solid white;
+        box-shadow: 0 0 0 1px #b9bcc2;
+        left: .3em;
+        top:.6em;
+        z-index: 1;
+      }
+      &:after{
+        content:"";
+        position: absolute;
+        height: 86%;
+        height: calc(100% - 1em);
+        border-left: 1px dotted #b9bcc2;
+        left: .54em;
+        top:1.4em;
+      }
+      &:last-child:after{
+        display: none;
+      }
+    }
+}
+.rebateIframe{
+  overflow: scroll;
+}

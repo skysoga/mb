@@ -15,6 +15,7 @@ const betRecord = resolve => require(['../views/betRecord'], resolve)
 const betDetail = resolve => require(['../views/betDetail'], resolve)
 const seekDetail = resolve => require(['../views/seekDetail'], resolve)
 const seekOrder = resolve => require(['../views/seekOrder'], resolve)
+const agentIntro = resolve => require(['../views/agentIntro'], resolve)
 const agentBetRecord = resolve => require(['../views/agentBetRecord'], resolve)
 const agentBillRecord = resolve => require(['../views/agentBillRecord'], resolve)
 var routes = [{
@@ -165,6 +166,15 @@ var routes = [{
     user: 1
   },
   component: seekDetail
+},{
+  path: "/agentIntro",
+  name: "代理说明",
+  meta: {
+    title: "代理说明",
+    link:"/agentCenter",
+    user: 1
+  },
+  component: agentIntro
 }]
 
 module.exports = routes;
