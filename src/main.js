@@ -56,7 +56,9 @@ var UserArr = [
 	'UserHasSafePwd',
 	'UserBalance',
 	'UserFirstCardInfo',
-	'UserLastLoginInfo'
+	'UserLastLoginInfo',
+  'RebateK3',
+  'RebateSSC'
 ]
 var SiteArr=[ //需要校验更新版本的列表
   'LotteryConfig', //所有彩种列表

@@ -21,10 +21,10 @@ var routes = [{
   path: '/Notice',
   meta: {
     titleList: [{
-      title: "网站公告",
+      title: "公告",
       to: "/Notice"
     }, {
-      title: "站内信",
+      title: "私信",
       to: "/letter"
     }],
     link: "/userCenter"
@@ -34,10 +34,10 @@ var routes = [{
   path: '/letter',
   meta: {
     titleList: [{
-      title: "网站公告",
+      title: "公告",
       to: "/Notice"
     }, {
-      title: "站内信",
+      title: "私信",
       to: "/letter"
     }],
     link: "/userCenter"
@@ -54,9 +54,9 @@ var routes = [{
   component: NoticeDetail
 },{
   path: "/letterDetail",
-  name: "站内信",
+  name: "私信",
   meta: {
-    title: "站内信",
+    title: "私信",
     user: 1,
     link: "/letter"
   },

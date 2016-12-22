@@ -158,6 +158,7 @@ va.install = function(Vue, options){
 	  	el.className = 'va' + vm._uid
 	  	el.name = name
 
+	  	console.log(binding)
 	  	vm.vaConfig || (vm.vaConfig = {})
 	  	var NON_VOID = eazyNew('nonvoid', true)
 
@@ -186,7 +187,7 @@ va.install = function(Vue, options){
 					if(_result){
 						//如果返回的是字符串，则为自定义报错； 如果是数组，则使用showErr 报错
 						typeof _result === 'string' ? layer.msgWarn(_result) : showErr(conditions[0].tag, _result)
-						el.value = vm.vaVal[name] = vm.$vanowFail()
+						el.value = vm.vaVal[name] = ''
 						return
 					}
 					vm.vaVal[name] = value

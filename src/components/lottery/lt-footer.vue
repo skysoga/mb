@@ -6,7 +6,7 @@
       <div class="betContent" @click = "addBet">
         <em>+</em>
         <div>
-          <h3>已选{{betCount}}注，{{betMoney}}元</h3>
+          <h3>共{{betCount}}注，{{betMoney}}元</h3>
           <p>{{betCount ? betStr: ''}}</p>
         </div>
       </div>
@@ -51,7 +51,7 @@ export default {
         {unit: 0.1, word: '角'},
         {unit: 0.01, word: '分'},
       ],
-      power: 1,
+      // power: 1,
       // unit: 1
     }
   },
@@ -66,19 +66,37 @@ export default {
     canAdd(){
       return this.power < Max_Rate
     },
-    unit:()=>state.lt.bet.betting_model
+    unit:()=>state.lt.bet.betting_model,
+    power:{
+      get(){
+        return state.lt.bet.graduation_count
+      },
+      set(power){
+        store.commit('lt_setPower', +power)
+        if(power.toString().search(/[^\d]+/) > -1 || power <= 0){
+          store.commit('lt_setPower', 1)
+        }
+        if(power > Max_Rate){
+          store.commit('lt_setPower', Max_Rate)
+          layer.msgWarn(`最多${Max_Rate}倍`)
+        }
+
+      }
+    }
   },
   watch:{
-    power(val){
-      store.commit('lt_setPower', +val)
-    }
+    // power(val){
+    //   store.commit('lt_setPower', +val)
+    // }
   },
   methods:{
     reduce(){
-      this.power > 1 && this.power--      //倍数必须大于1
+      //倍数必须大于1
+      this.power > 1 && store.commit('lt_setPower', this.power-1)
     },
     add(){
-      this.power < Max_Rate && this.power ++   //倍数小于最大倍数限制
+      //倍数小于最大倍数限制
+      this.power < Max_Rate && store.commit('lt_setPower', this.power+1)
     },
     changeUnit(unit){
       this.unit = unit
@@ -93,13 +111,13 @@ export default {
       store.commit('lt_addBet')
     },
     powerChange(){
-      if(this.power.search(/[^\d]+/) > -1 || this.power <= 0){
-        this.power = 1
-      }
-      if(this.power > Max_Rate){
-        this.power= Max_Rate
-        layer.msgWarn(`最多${Max_Rate}倍`)
-      }
+      // if(this.power.search(/[^\d]+/) > -1 || this.power <= 0){
+      //   this.power = 1
+      // }
+      // if(this.power > Max_Rate){
+      //   this.power= Max_Rate
+      //   layer.msgWarn(`最多${Max_Rate}倍`)
+      // }
     },
     showBasket(){
       store.commit('lt_changeBox', 'basket')

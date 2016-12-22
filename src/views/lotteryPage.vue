@@ -377,29 +377,31 @@
 	      	},
 	      	//将注单push到basket里
 	      	lt_addToBasket:(state, bet)=>{
-	      		// //去掉重复的，合并加倍
-	      		// var equalIndex, isEqual = false
-	      		// state.basket.forEach((_bet, index)=>{
-	      		// 	var allPropEqual = true
-	      		// 	equalIndex = index
-	      		// 	for(var prop in _bet){
-	      		// 		if(typeof _bet[prop] === 'string' || typeof _bet[prop] === 'number'){
-		      	// 			if(_bet[prop] !== bet[prop]){
-		      	// 				allPropEqual = false
-		      	// 			}
-	      		// 		}
-	      		// 	}
-	      		// 	if(allPropEqual){
-	      		// 		isEqual = true
-	      		// 		return
-	      		// 	}
-	      		// })
+	      		//去掉重复的，合并加倍
+	      		var equalIndex, isEqual = false
+	      		state.basket.forEach((_bet, index)=>{
+	      			var allPropEqual = true
+	      			for(var prop in _bet){
+	      				if(typeof _bet[prop] === 'string' || typeof _bet[prop] === 'number'  && prop !== 'graduation_count' && prop !== 'betting_money'){
+		      				if(_bet[prop] !== bet[prop]){
+		      					allPropEqual = false
+		      				}
+	      				}
+	      			}
+	      			if(allPropEqual){
+	      				isEqual = true
+		      			equalIndex = index
+	      				return
+	      			}
+	      		})
 
-	      		// if(state.basket.length && isEqual){
-	      		// 	console.log(equalIndex)
-	      		// }
+	      		if(state.basket.length && isEqual){
+	      			var prevPower = state.basket[equalIndex].graduation_count
+	      			state.basket[equalIndex].setPower(prevPower + bet.graduation_count)
+	      		}else{
+		      		state.basket.push(bet)
+	      		}
 
-	      		state.basket.push(bet)
 	      	},
 	      	//清空bet
 	      	lt_clearBet:(state)=>{
@@ -651,7 +653,31 @@
 		      //获得返点
 		      lt_getRebate:({state, rootState, commit, dispatch})=>{
 		      	var type = state.lottery.LotteryType
-		      	var _rebate = sessionStorage.getItem('Rebate' + type)
+		      	var _rebate = rootState['Rebate' + type]
+		      	if(!_rebate){
+			      	_fetch({
+								Action: 'GetBetRebate',
+								LotteryType: type
+							}).then((json)=>{
+								if(json.Code === 1){
+									commit('SaveInitData', {['Rebate' + type]:json.BackData})
+									commit({
+				      			type:'lt_setRebate',
+				      			rebate: json.BackData,
+				      			LotteryType: type
+				      		})
+								}
+							})
+						}else{
+							commit({
+		      			type:'lt_setRebate',
+		      			rebate: _rebate,
+		      			LotteryType: type
+		      		})
+						}
+
+
+		      	/*var _rebate = sessionStorage.getItem('Rebate' + type)
 		      	if(_rebate){
 		      		commit({
 		      			type:'lt_setRebate',
@@ -672,7 +698,7 @@
 				      		})
 								}
 							})
-						}
+						}*/
 		      },
 		      //投注
 		      lt_confirmBet:({state, rootState, commit, dispatch})=>{
@@ -697,7 +723,7 @@
 		      			//清除rebate
 		      			layer.alert(json.StrCode)
 				      	var type = state.lottery.LotteryType
-				      	sessionStorage.removeItem('Rebate' + type)
+				      	// localStorage.removeItem('Rebate' + type)
 				      	store.dispatch('lt_getRebate')
 		      		}else{
 		      			layer.msgWarn(json.StrCode)
@@ -734,7 +760,6 @@
 		      			commit('lt_setScheme', [])			//清空scheme
 		      			commit('lt_setChasePower', 1)		//清空追号配置
 					      commit('lt_setChaseIssue', 1)
-		      			bus.$emit('clearChase')
 
 								//隔3s获取我的投注
 		      			this.timer4 = setTimeout(()=>{
@@ -745,7 +770,7 @@
 		      			//清除rebate
 		      			layer.alert(json.StrCode)
 				      	var type = state.lottery.LotteryType
-				      	sessionStorage.removeItem('Rebate' + type)
+				      	// localStorage.removeItem('Rebate' + type)
 				      	store.dispatch('lt_getRebate')
 							}else{
 								layer.msgWarn(json.StrCode);
@@ -754,7 +779,6 @@
 	      	}
 		    }
 		  }
-
 
 			//注册彩种模块 --lt
 			state.lt || store.registerModule('lt', lt)
@@ -818,6 +842,7 @@
 	    //离开页面前将每注金额重设为 PERBET (2元)
 	    store.commit('lt_setPower', 1)
 	    store.commit('lt_setPerbet', PERBET)
+	    store.commit('lt_setUnit', 1)
 	    store.commit('lt_clearBet')
 	    store.commit('lt_clearBasket')
 	    store.commit('lt_setScheme', [])
