@@ -62,9 +62,6 @@ export default {
         obj[n]&&Num.push(obj[n])
       }
      this.listNum=3-parseInt(Num.length%3)
-    },
-    setNum(Num){
-      return String(Math.floor(Num)).length>7?Math.floor(Num):Num
     }
   },
   components:{
