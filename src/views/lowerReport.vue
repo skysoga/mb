@@ -57,6 +57,7 @@ export default {
       BottomBoxList: {},
       agent_path_name: [0],
       data_storage: {}, //缓存数据
+      see_name:''
     }
   },
   components: {
@@ -133,6 +134,7 @@ export default {
     },
     look_agent: function(UserName, LowerCount,isAgent) {
       this.BottomBoxList = {}
+      this.see_name=UserName
       if (Number(LowerCount)&&isAgent) {
         this.$set(this.BottomBoxList, UserName, '查看下级')
       }
@@ -153,7 +155,7 @@ export default {
         this.reset()
         this.agent_path_name.pop()
       }else if(b==="查看报表"){
-        this.$router.push({path:'/agentReport',query:{username:this.BottomBoxList['11']}})
+        this.$router.push({path:'/agentReport',query:{username:this.see_name}})
       }
       this.BottomBoxShow = false
     }
