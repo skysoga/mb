@@ -1,7 +1,7 @@
 <template>
    <div class="selectNumber fix">
       <div class="title fix">
-        <em>{{tag}}</em>
+        <em><p>{{tag}}</p></em>
         <!-- 全大小奇偶清 -->
         <!-- <div class="filterNumber">
           <a v-for = "item in filters"
@@ -175,7 +175,7 @@ export default {
     left: 0;
     width: 16rem;
     height: 1px;
-    @include bgImg-linear-gradient('90deg, #d0d0d0, #d0d0d0 50%, transparent 50%');
+    @include bgImg-linear-gradient('90deg, #dfdfda, #dfdfda 50%, transparent 50%');
   }
   .title{
     height: 1.85em;
@@ -183,14 +183,13 @@ export default {
     display: table-cell;
     em{
       font-size: 0.65em;
-      height: 1.7em;
       width:3.2em;
       display: block;
       text-align: center;
       line-height: 1.7em;
       color:#bbb39c;
-      background: #f4f1e2;
-      border:1px solid #ece7d9;
+      background: #eeebda;
+      border:1px solid #e3decf;
       border-radius: .3em;
       position: relative;
       z-index: 3;

@@ -139,6 +139,9 @@ body{
 }
 .layermcont{
   padding:10px;
+  max-height: 50vh;
+  overflow: scroll;
+  word-wrap:break-word;
 }
 .tal .layermcont{
   /*text-indent:3em;*/
