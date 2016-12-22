@@ -405,6 +405,7 @@ router.afterEach((to, from) => {
 
 //全局过滤器
 Vue.filter('num', v=>+v) // 转成数字类型
+Vue.filter('filNum',v=>String(Math.floor(v)).length>7?Math.floor(v):v)//数字整数长度大于7位去掉小数点部分
 
 //全局指令
 Vue.directive('copyBtn', {
