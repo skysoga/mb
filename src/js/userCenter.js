@@ -1,14 +1,19 @@
 export default {
   data:()=>{
     return{
-      refreshClass:"refresh"
+      refreshClass:"refresh",
+      UserBalance:""
     }
   },
   beforeRouteEnter:(to, from, next) => {
+    RootApp.AjaxGetInitData(['UserBalance'])
     var arr = ["UserBalance","AgentRebate","UserPhoto"];
     RootApp.GetInitData(arr, state=>{
       next()
     })
+  },
+  created(){
+    this.UserBalance=state.UserBalance
   },
   methods:{
     refresh:function(e){

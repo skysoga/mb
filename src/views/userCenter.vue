@@ -3,7 +3,7 @@
       <div class="topInfo">
           <router-link to="/personalInfo"><img v-bind:src="$store.getters.PhotoPath+$store.state.UserPhoto||$store.state.constant.DefPhoto"></router-link>
           <p>账&nbsp;号：<ins id="UserName">{{$store.state.UserName}}</ins></p>
-          <span>余&nbsp;额：<ins id="UserBalance" v-text="$store.state.UserBalance"></ins>元</span>
+          <span>余&nbsp;额：<ins id="UserBalance" v-text="UserBalance"></ins>元</span>
           <div v-on:click="refresh" :class="refreshClass"><i class="iconfont">&#xe62f;</i></div>
       </div>
 
