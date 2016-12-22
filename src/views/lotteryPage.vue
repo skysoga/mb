@@ -382,7 +382,7 @@
 	      		state.basket.forEach((_bet, index)=>{
 	      			var allPropEqual = true
 	      			for(var prop in _bet){
-	      				if(typeof _bet[prop] === 'string' || typeof _bet[prop] === 'number'){
+	      				if(typeof _bet[prop] === 'string' || typeof _bet[prop] === 'number'  && prop !== 'graduation_count' && prop !== 'betting_money'){
 		      				if(_bet[prop] !== bet[prop]){
 		      					allPropEqual = false
 		      				}
@@ -397,7 +397,7 @@
 
 	      		if(state.basket.length && isEqual){
 	      			var prevPower = state.basket[equalIndex].graduation_count
-	      			state.basket[equalIndex].setPower(prevPower * 2)
+	      			state.basket[equalIndex].setPower(prevPower + bet.graduation_count)
 	      		}else{
 		      		state.basket.push(bet)
 	      		}
@@ -779,7 +779,6 @@
 	      	}
 		    }
 		  }
-
 
 			//注册彩种模块 --lt
 			state.lt || store.registerModule('lt', lt)

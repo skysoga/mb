@@ -111,7 +111,6 @@ export default {
       store.commit('lt_addBet')
     },
     powerChange(){
-      console.log('jkjk')
       // if(this.power.search(/[^\d]+/) > -1 || this.power <= 0){
       //   this.power = 1
       // }
