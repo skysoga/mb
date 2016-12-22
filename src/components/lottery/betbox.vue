@@ -185,8 +185,8 @@ export default {
       font-size: 0.65em;
       width:3.2em;
       display: block;
-      text-align: center;
-      line-height: 1.7em;
+      text-align: left;
+      line-height: 1.3em;
       color:#bbb39c;
       background: #eeebda;
       border:1px solid #e3decf;
@@ -194,6 +194,7 @@ export default {
       position: relative;
       z-index: 3;
       margin-top: .8em;
+      padding:.2em .5em;
       /*&:before,&:after{
         content:"";
         position: absolute;
