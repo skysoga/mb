@@ -264,26 +264,19 @@ var specialMode = {
 }
 
 export default {
-  created(){
-    // bus.$on('clearChase', ()=>{
-    //   this.chasePower = 1
-    //   this.chaseIssue = 1
-    // })
-  },
   data(){
     return {
       PERBET:PERBET,
-      // chasePower:1,
-      // chaseIssue:1,
       isStopAfterWin: true
     }
   },
   computed:{
     chasePower:{
       get(){
-        return state.lt.chaseConf.power
+        return this.$store.state.lt.chaseConf.power
       },
       set(power){
+        var store = this.$store
         store.commit('lt_setChasePower', +power)
         if(power.search(/[^\d]+/) > -1 || power <= 0){
           store.commit('lt_basketPowerTo1')
@@ -304,9 +297,10 @@ export default {
     },
     chaseIssue:{
       get(){
-        return state.lt.chaseConf.buy_count
+        return this.$store.state.lt.chaseConf.buy_count
       },
       set(issue){
+        var store = this.$store
         store.commit('lt_setChaseIssue', +issue)
         if(issue.search(/[^\d]+/) > -1 || issue <= 0){
           store.commit('lt_setChaseIssue', 1)
@@ -326,14 +320,14 @@ export default {
         }
       }
     },
-    basket:()=>state.lt.basket,
-    scheme:()=>state.lt.scheme,
+    basket(){return this.$store.state.lt.basket},
+    scheme(){return this.$store.state.lt.scheme},
     ifShowBasket(){
       return this.$store.state.lt.box === 'basket'
     },
-    ifShowClearAll:()=>!!state.lt.basket.length,
-    mode:()=>state.lt.mode.mode,
-    config:()=>state.lt.config,
+    ifShowClearAll(){return !!state.lt.basket.length},
+    mode(){return state.lt.mode.mode},
+    config(){return state.lt.config},
     basketTotal(){
       var total = 0
       for(var i = 0;i < this.basket.length;i++){
@@ -351,8 +345,8 @@ export default {
     total(){
       return (this.chasePower > 1 || this.chaseIssue > 1) ? this.schemeTotal : this.basketTotal
     },
-    lottery:()=>state.lt.lottery.LotteryName,
-    NowIssue:()=>state.lt.NowIssue,
+    lottery(){return state.lt.lottery.LotteryName},
+    NowIssue(){return state.lt.NowIssue},
     showBubble(){
       return this.chaseIssue > 1
     }
@@ -360,7 +354,7 @@ export default {
   methods:{
     //返回投注页
     back(){
-      store.commit('lt_changeBox', '')
+      this.$store.commit('lt_changeBox', '')
     },
     //确认投注
     confirmBet(){
@@ -375,7 +369,7 @@ export default {
 
         if(this.basket.length){
           layer.confirm(msg,()=>{
-            store.dispatch('lt_confirmBet')
+            this.$store.dispatch('lt_confirmBet')
           },()=>{})
         }
       }else{
@@ -390,17 +384,17 @@ export default {
           var msg = `${this.lottery}: 第${scheme[0].issueNo}期至第${scheme[last].issueNo}期,共${scheme.length}期<br>投注金额: ${this.schemeTotal}元<br>投注内容:<br>${betDetail.join('<br>')}`
 
           layer.confirm(msg, ()=>{
-            store.dispatch('lt_chase')      //追号投注
+            this.$store.dispatch('lt_chase')      //追号投注
           },()=>{})
 
         }
       }
     },
     deleteBet(index){
-      store.commit('lt_deleteBet', index)
+      this.$store.commit('lt_deleteBet', index)
     },
     clearBasket(){
-      store.commit('lt_clearBasket')
+      this.$store.commit('lt_clearBasket')
     },
     getTag:getTag,
     //机选n注
@@ -410,45 +404,12 @@ export default {
         var betStr = noteBetList.indexOf(this.mode) > -1 ? randomFeed : getBetStr(randomFeed)
         //有些机选不了一注的。至少n注
         var count = specialMode[this.mode] ? specialMode[this.mode](randomFeed) : 1
-        store.commit('lt_addRandomBet', new BaseBet(count, betStr))
+        this.$store.commit('lt_addRandomBet', new BaseBet(this.$store.state,count, betStr))
       }
-    },
-    //改变普通追号倍数
-    powerChange(){
-      // if(this.chasePower.search(/[^\d]+/) > -1 || this.chasePower <= 0){
-      //   this.chasePower = 1
-      // }else if(this.chasePower > Max_Rate){
-      //   this.chasePower = Max_Rate
-      //   store.commit('lt_setChasePower', +this.chasePower)
-      //   layer.msgWarn(`最多${Max_Rate}倍`)
-      // }else{
-      //   if(this.chasePower > 1 || this.chaseIssue > 1){
-      //     store.commit('lt_basketPowerTo1')
-      //     store.commit('lt_setChasePower', +this.chasePower)
-      //     store.dispatch('lt_ordinaryChase')
-      //   }
-      // }
-
-    },
-    //改变普通追号期数
-    issueChange(){
-      // if(this.chaseIssue.search(/[^\d]+/) > -1 || this.chaseIssue <= 0){
-      //   this.chaseIssue = 1
-      // }else if(this.chaseIssue > Max_Chase_Issue){
-      //   this.chaseIssue = Max_Chase_Issue
-      //   store.commit('lt_setChaseIssue', +this.chaseIssue)
-      //   layer.msgWarn(`最多${Max_Chase_Issue}期`)
-      // }else{
-      //   if(this.chaseIssue > 1 || this.chasePower > 1){
-      //     store.commit('lt_basketPowerTo1')
-      //     store.commit('lt_setChaseIssue', +this.chaseIssue)
-      //     store.dispatch('lt_ordinaryChase')
-      //   }
-      // }
     },
     //改变中奖后是否停止追号的标志位
     isStopAfterWinChange(){
-      store.commit('lt_isStopAfterWin', this.isStopAfterWin)
+      this.$store.commit('lt_isStopAfterWin', this.isStopAfterWin)
     }
   },
 }

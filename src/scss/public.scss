@@ -436,7 +436,7 @@ content:"\e62c";
         height: 1px;
         @include scaleY(0.5);
         @include origin( 0 0);
-        z-index:999;
+        z-index:3;
       }
     ul{
       display:table;

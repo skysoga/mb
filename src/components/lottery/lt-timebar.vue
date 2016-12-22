@@ -43,14 +43,12 @@
       </table>
     </template>
   </div>
-
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default{
-  created(){
-  },
-  computed:{
+  computed:mapState({
     nowIssue:()=>state.lt.NowIssue.slice(4),
     TimeBar:()=>state.lt.TimeBar,
     BetRecord(){
@@ -62,12 +60,12 @@ export default{
       return Record
     },
     ifShowBetRecord(){
-      return this.$store.state.lt.box === 'BetRecord'
+      return state.lt.box === 'BetRecord'
     },
     ifShowPastOpen(){
-      return this.$store.state.lt.box === 'pastOpen'
+      return state.lt.box === 'pastOpen'
     }
-  },
+  }),
   methods:{
     //彩种选择框，切换
     toggleBetRecord(){

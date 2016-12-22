@@ -10,7 +10,7 @@
           <!-- 开奖结果和历史开奖结果 -->
           <lt-result></lt-result>
           <!-- 倒计时和我的投注 -->
-          <lt-timebar></lt-timebar>
+        <lt-timebar></lt-timebar>
         </div>
 
         <!-- 投注区，各彩种不同 -->
@@ -36,9 +36,6 @@
   import {DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME} from '../JSconfig'
 
 	export default {
-    beforeRouteEnter(to, from, next){
-      next()
-    },
 		components:{
 			'lt-header': lt_header,
       'lt-result': lt_result,
@@ -63,8 +60,5 @@
         return this.$store.state.lt.box === 'basket'
       },
     },
-    methods:{
-    }
-
 	}
 </script>
