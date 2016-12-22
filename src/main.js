@@ -300,6 +300,7 @@ window.RootApp = new Vue({
 			}
 			if (meta.verify) {
 				var fy = meta.verify===1?1:state[meta.verify]
+        if (to.path==="/setSafePwd") {fy*=1}
 				if (fy&&(!state.UserVerify||meta.from.search(state.UserVerify)==-1)
 				) {
 					console.log("条件不足");
