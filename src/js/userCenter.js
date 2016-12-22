@@ -1,14 +1,19 @@
 export default {
   data:()=>{
     return{
-      refreshClass:"refresh"
+      refreshClass:"refresh",
+      UserBalance:""
     }
   },
   beforeRouteEnter:(to, from, next) => {
-    var arr = ["UserBalance","UserHasSafePwd","UserFirstCardInfo","AgentRebate","UserPhoto"];
+    RootApp.AjaxGetInitData(['UserBalance'])
+    var arr = ["UserBalance","AgentRebate","UserPhoto"];
     RootApp.GetInitData(arr, state=>{
       next()
     })
+  },
+  created(){
+    this.UserBalance=state.UserBalance
   },
   methods:{
     refresh:function(e){
@@ -21,37 +26,6 @@ export default {
     },
     getBalance:function(){
       RootApp.AjaxGetInitData(['UserBalance'])
-    },
-    setUrl(){
-        var safaPwd=store.state.UserHasSafePwd,
-            FistCard=store.state.UserFirstCardInfo;
-        if(safaPwd){
-          if(FistCard&&FistCard[0]){
-            router.push("/withdraw")
-          }else{
-            layer.open({
-              shadeClose: false,
-              className: "layerConfirm",
-              content: "您还没绑定银行卡，无法提现，</br>是否先去绑定银行卡?",
-              title: "温馨提示",
-              btn: ["是","否"],
-              yes:function(){
-                router.push("/setBankcard?Q=withdraw")
-              }
-            })
-          }
-        }else{
-          layer.open({
-            shadeClose: false,
-            className: "layerConfirm",
-            content: "您还未设置安全密码和绑定银行卡，无法提现，是否先去设置安全密码?",
-            title: "温馨提示",
-            btn: ["是","否"],
-            yes:function(){
-              router.push("/setSafePwd?Q=withdraw")
-            }
-          })
-        }
     }
   }
 }
