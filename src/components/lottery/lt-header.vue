@@ -161,7 +161,7 @@
 }
 @import '../../scss/scssConfig','../../scss/mixin';
 	.sscHeader{
-  background: #dc3b40;
+  background: #000;
   color:white;
   text-align: center;
   height: 2.3em;

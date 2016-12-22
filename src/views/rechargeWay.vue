@@ -34,7 +34,7 @@
         <router-link class = "wrap" :to = "aliType === '一般' ? 'normalPay?method=Alipay' : 'quickPay?method=Alipay'">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/alipay.png'">
           <div class="text">
-            <strong>支付宝</strong>
+            <strong>支付宝支付</strong>
             <p v-if="!aliMsg">
               单笔最低<ins>{{aliType === '一般' ? payLimit['支付宝'][0]: payLimit['支付宝快捷'][0] | num}}</ins>元，
               最高<ins>{{aliType === '一般' ? payLimit['支付宝'][1]: payLimit['支付宝快捷'][1] | num}}</ins>元。

@@ -19,7 +19,7 @@
     </div>
     <div class="proxy3colCon" id="proxy3colCon" v-show="!isDataNot">
       <ul class="PLSdetail fix">
-          <li v-for="(key,value) in Datalist" v-if="key"><span>{{key}}</span>{{NameFun(value)}}</li>
+          <li v-for="key in Datalist" v-if="key"><span>{{key[0]|filNum}}</span>{{key[1]}}</li>
           <li v-for="n in listNum"></li>
       </ul>
     </div>

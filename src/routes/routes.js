@@ -80,7 +80,7 @@ var routes = [{
   path: '/activity',
   name: '活动',
   meta:{
-    title:"活动",
+    title:"活动中心",
     nav:1,
   },
   component: activity
