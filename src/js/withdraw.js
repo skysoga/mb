@@ -36,19 +36,57 @@ export default{
     }
   },
   beforeRouteEnter(to,from,next){
-    var arr=['UserBalance', 'UserWithdrawAvail','UserBankCardList','WithdrawRemainTimes','PayLimit']
-    RootApp.GetInitData(arr,state=>{
-      next(vm=>{
-        vm.UserBankList=state.UserBankCardList
-        vm.UserBalance=state.UserBalance
-        vm.UserAvail=state.UserWithdrawAvail
-        vm.PayLimit=state.PayLimit
-        vm.ArrData.BankCardID=vm.UserBankList[0].BankCardID
-        var Arr=vm.getMoney()
-        vm.MinMoney=Arr[0]
-        vm.MaxMoney=Arr[1]
-        vm.ReGetTime=state.WithdrawRemainTimes
-      })
+    var bArr=["UserHasSafePwd","UserFirstCardInfo"]
+    RootApp.GetInitData(bArr,ref=>{
+      var safaPwd=state.UserHasSafePwd*1,
+        FistCard=state.UserFirstCardInfo;
+        if(safaPwd){
+          if(FistCard&&FistCard[0]){
+            var arr=['UserBalance', 'UserWithdrawAvail','UserBankCardList','WithdrawRemainTimes','PayLimit']
+            RootApp.GetInitData(arr,state=>{
+              next(vm=>{
+                vm.UserBankList=state.UserBankCardList
+                vm.UserBalance=state.UserBalance
+                vm.UserAvail=state.UserWithdrawAvail
+                vm.PayLimit=state.PayLimit
+                vm.ArrData.BankCardID=vm.UserBankList[0].BankCardID
+                var Arr=vm.getMoney()
+                vm.MinMoney=Arr[0]
+                vm.MaxMoney=Arr[1]
+                vm.ReGetTime=state.WithdrawRemainTimes
+              })
+            })
+          }else{
+            layer.open({
+              shadeClose: false,
+              className: "layerConfirm",
+              content: "您还没绑定银行卡，无法提现，</br>是否先去绑定银行卡?",
+              title: "温馨提示",
+              btn: ["是","否"],
+              yes:function(){
+                router.push("/setBankcard?Q=withdraw")
+              },
+              no(){
+                router.go(0)
+                // router.push("/userCenter")
+              }
+            })
+          }
+        }else{
+          layer.open({
+            shadeClose: false,
+            className: "layerConfirm",
+            content: "您还未设置安全密码和绑定银行卡，无法提现，是否先去设置安全密码?",
+            title: "温馨提示",
+            btn: ["是","否"],
+            yes:function(){
+              router.push("/setSafePwd?Q=withdraw")
+            },
+            no(){
+              router.go(0)
+            }
+          })
+        }
     })
   },
   methods:{
