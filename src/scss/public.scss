@@ -114,7 +114,13 @@ input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{
 //.iconfont.0004:after { content: "\e606"; }
 .iconfont.huodong:after { content: "\e607"; }
 .iconfont.tishi:after { content: "\e608"; }
-.iconfont.gonggao:after { content: "\e618"; }
+.iconfont.gonggao:after {
+  content: "\e649";
+  color:#dc3b40;
+  transform: translate(0,.1em);
+  display: inline-block;
+  font-size: 1.2em;
+}
 .iconfont.gongyongzanwushuju:after { content: "\e60d"; }
 .iconfont.xiala:after { content: "\e61e"; }
 .iconfont.copy:after { content: "\e61f"; }

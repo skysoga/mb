@@ -7,12 +7,11 @@
         </swiper-slide>
       </swiper>
     </div>
-    <div class="hr1px" style="position:absolute;z-index:2;width:100%;"></div>
     <div id="notice">
       <router-link v-for="i in $store.state.NoticeData" class="active" :to="'/NoticeDetail?ID='+i.ID"><i class="iconfont gonggao fl"></i><span>{{i.Title}}</span> <i class="iconfont right fr"></i></router-link>
     </div>
     <div class="hr1px"></div>
-    <div id="HotLottery" v-if="len" v-bind:style="{height:Math.ceil(len/3)*3+'em'}">
+    <div id="HotLottery" v-if="len" v-bind:style="{height:Math.ceil(len/3)*5+'em'}">
       <ul>
         <li v-for="l in LList">
           <router-link :class="'active L_'+$store.state.LotteryList[l].LotteryType" :to="'/lottery/'+$store.state.LotteryList[l].LotteryType+'/'+l">
