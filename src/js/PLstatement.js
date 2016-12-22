@@ -16,5 +16,10 @@ export default {
             }
           })
       })
+  },
+  methods:{
+    setNum(Num){
+      return String(Math.floor(Num)).length>7?Math.floor(Num):Num
+    }
   }
 }
