@@ -10,12 +10,12 @@
     </div>
     <div class="PLSdetailCon">
     <ul class="PLSdetail fix">
-        <li><span>{{ArrObj.Betting}}</span>投注金额</li>
-        <li><span>{{ArrObj.BonusMoney}}</span>中奖金额</li>
-        <li><span>{{ArrObj.Activity}}</span>活动礼金</li>
-        <li><span>{{ArrObj.Rebate}}</span>返点金额</li>
-        <li><span>{{ArrObj.Recharge}}</span>充值金额</li>
-        <li><span>{{ArrObj.Withdraw}}</span>提现金额</li>
+        <li><span>{{setNum(ArrObj.Betting)}}</span>投注金额</li>
+        <li><span>{{setNum(ArrObj.BonusMoney)}}</span>中奖金额</li>
+        <li><span>{{setNum(ArrObj.Activity)}}</span>活动礼金</li>
+        <li><span>{{setNum(ArrObj.Rebate)}}</span>返点金额</li>
+        <li><span>{{setNum(ArrObj.Recharge)}}</span>充值金额</li>
+        <li><span>{{setNum(ArrObj.Withdraw)}}</span>提现金额</li>
     </ul>
     </div>
 </div>
