@@ -1,23 +1,27 @@
 <template>
 <div class="k3">
   <header class="top">
+    <!-- 玩法下拉框开关 -->
     <div>
       <p>玩法</p>
-      <span id="MethodStr" @click.stop = "toggleModeSelect" :class = "{on: ifShowModeSelect}">
+      <span id="MethodStr"
+            @click.stop = "toggleModeSelect"
+            :class = "{on: ifShowModeSelect}">
         {{nowModeName}}<i class="iconfont xiala"></i>
       </span>
     </div>
 
     <div class="fr" id="lotteryChoice" :class = "{on: ifShowTypeSelect}">
+      <!-- 彩种选择下拉框开关 -->
       <label @click.stop= "toggleTypeSelect">{{LotteryName.slice(0,2)}}</label>
       <i @click.stop= "toggleTypeSelect" class="iconfont xiala"></i>
       <!-- 快三彩种切换 -->
-      <div class="fix" style ="display:block" v-show = "ifShowTypeSelect">
-        <a v-for = "lottery in LotteryList"
-           @click = "changeLottery(lottery.LotteryCode)">
-          {{lottery.LotteryName}}
-        </a>
-      </div>
+        <div class="fix" style ="display:block" v-show = "ifShowTypeSelect">
+          <a v-for = "lottery in LotteryList"
+             @click = "changeLottery(lottery.LotteryCode)">
+            {{lottery.LotteryName}}
+          </a>
+        </div>
     </div>
     <router-link to="/index" class="iconfont back"></router-link>
 
@@ -32,7 +36,7 @@
           <span class="Dice" :class = "`Dice${mode.eg[2]}`"></span>
         </p>
       </li><li></li>
-      </ul>
+    </ul>
   </header>
 
   <section class="State" :class = "{on: ifShowPastOpen}">
@@ -47,6 +51,7 @@
       </div>
     </div>
 
+    <!-- timebar -->
     <div v-if = "$store.state.lt.NowIssue" @click.stop = "togglePastOpen">
       <p>{{nowIssue}}期投注截止</p>
       <div>{{TimeBar}}</div>
@@ -82,7 +87,6 @@
   <!-- 玩法区 -->
   <div class="main">
     <div class="MethodWrap">
-
       <div class="Method" :class = "'Method' + nowModeIndex">
         <p class="MethodMsg">{{tip}}{{tipRebate}}</p>
         <ul>
@@ -92,7 +96,6 @@
           </li>
         </ul>
       </div>
-
     </div>
   </div>
 
