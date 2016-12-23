@@ -56,6 +56,7 @@ var UserArr = [
 	'UserHasSafePwd',
 	'UserBalance',
 	'UserFirstCardInfo',
+  'UserBankCardList',
 	'UserLastLoginInfo',
   'RebateK3',
   'RebateSSC'

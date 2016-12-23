@@ -36,7 +36,7 @@ export default{
     }
   },
   beforeRouteEnter(to,from,next){
-    RootApp.AjaxGetInitData(['UserBalance','UserBankCardList'])
+    RootApp.AjaxGetInitData(['UserBalance'])
     var bArr=["UserHasSafePwd","UserFirstCardInfo"]
     RootApp.GetInitData(bArr,ref=>{
       var safaPwd=state.UserHasSafePwd*1,
