@@ -12,7 +12,6 @@
             <input class="input" type="email" v-va:SmsCode v-model.trim="SmsCode" tag="验证码" placeholder="输入验证码" />
             <div class="tableBTN">
               <span class="sendCode" v-va-test:Mobile.postMsg>{{reTime}}</span>
-              <!-- @click="postMsg" -->
             </div>
           </td>
         </tr>
