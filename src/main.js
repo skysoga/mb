@@ -456,8 +456,8 @@ function _fetch(data){
 				;(function(){
 					if (json.Code==0) {
 						if(state.UserName){
-							RootApp.Logout()
 							layer.alert("您的登录信息已失效<br>需要重新登录",function(){
+								RootApp.Logout()
 								var meta = RootApp._route.matched[0]
 								meta = meta&&meta.meta
 								if(meta&&meta.user){

@@ -1,4 +1,3 @@
-import {RootApp} from '../main'
 export default {
   data:()=>{
     return{

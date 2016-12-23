@@ -1,6 +1,5 @@
 import Navbar from '../components/navbar';
 import TitleInfo from '../components/title-info';
-import {RootApp} from '../main'
 import '../scss/public.scss'
 
 export default {
