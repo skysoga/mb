@@ -9,7 +9,7 @@
 	  sessionStorage={setItem:function(d){},getItem:function(d){}};
 	}
 })()
-document.cookie = "Site="+location.hostname.replace('.com','')
+// document.cookie = "Site="+location.hostname.replace('.com','')
 window.rem = document.body.clientWidth/16
 window.em = Math.sqrt((rem-20)*.9)+20
 document.write("<style>html{font-size:"+rem+"px;}body{font-size:"+em+"px;}</style>")
@@ -56,6 +56,7 @@ var UserArr = [
 	'UserHasSafePwd',
 	'UserBalance',
 	'UserFirstCardInfo',
+  'UserBankCardList',
 	'UserLastLoginInfo',
   'RebateK3',
   'RebateSSC'

@@ -703,7 +703,7 @@
 		      //投注
 		      lt_confirmBet:({state, rootState, commit, dispatch})=>{
 		      	var _basket = deleteCompress(state.basket)
-
+		      	layer.msgWait('正在投注')
 		      	_fetch({
 		      		'Action':'AddBetting',
 		      		'data': {BettingData:_basket}
@@ -748,6 +748,7 @@
 						commit('lt_setScheme', scheme)
 	      	},
 	      	lt_chase:({state, rootState, commit, dispatch})=>{
+	      		layer.msgWait('正在投注')
 	      		_fetch({
 	      			Action: 'AddChaseBetting',
 							data: new ChaseAjax(rootState)
