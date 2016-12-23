@@ -3,7 +3,9 @@
     <!-- 倒计时 -->
     <div class="lotteryClose"
          @click.stop = "togglePastOpen">
-      <span>{{nowIssue}}期投注截止<i class="iconfont">&#xe601;</i></span>
+      <span>{{nowIssue}}期投注截止
+        <!-- <i class="iconfont">&#xe601;</i> -->
+      </span>
       <div class="waitNumber">
         <em>{{TimeBar}}</em>
       </div>

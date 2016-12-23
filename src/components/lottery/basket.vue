@@ -365,10 +365,11 @@ export default {
           betDetail.push(`${this.getTag(bet.play_detail_code.slice(-3),this.config)[1]} ${bet.betting_number}`)
         })
 
-        var msg = `${this.lottery}: 第${this.NowIssue}期<br>投注金额: ${this.basketTotal}元<br>投注内容:<br>${betDetail.join('<br>')}`
+        var msg = `${this.lottery}: 第${this.NowIssue}期<br>投注金额: <span style = "color:red">${this.basketTotal}元</span><br>投注内容:<br>${betDetail.join('<br>')}`
 
         if(this.basket.length){
           layer.confirm(msg,()=>{
+
             this.$store.dispatch('lt_confirmBet')
           },()=>{})
         }
@@ -381,7 +382,7 @@ export default {
           })
 
           var scheme = state.lt.scheme, last = scheme.length - 1
-          var msg = `${this.lottery}: 第${scheme[0].issueNo}期至第${scheme[last].issueNo}期,共${scheme.length}期<br>投注金额: ${this.schemeTotal}元<br>投注内容:<br>${betDetail.join('<br>')}`
+          var msg = `${this.lottery}: 第${scheme[0].issueNo}期至第${scheme[last].issueNo}期,共${scheme.length}期<br>投注金额: <span style = "color:red">${this.schemeTotal}元</span><br>投注内容:<br>${betDetail.join('<br>')}`
 
           layer.confirm(msg, ()=>{
             this.$store.dispatch('lt_chase')      //追号投注
