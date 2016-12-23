@@ -15,7 +15,7 @@
         </tr>
         <tr></tr>
       </table>
-      <div class="loginBtn BTN"><a v-va-check>提交</a></div>
+      <div class="loginBtn BTN"><a v-va-check>确定</a></div>
       <div class="tips">
         1、扫一扫弹出的二维码进行充值。
         <br> 2、可以使用其他手机扫二维码进行充值，也可以将二维码保存到相册再使用微信识别相册中的二维码进行充值，该二维码仅当次有效，每次充值前务必重新保存最新的二维码。

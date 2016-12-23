@@ -43,7 +43,7 @@
 	        <td><input type="text" tag = "银行账户"  v-va:PayUser.RealName  v-model = 'PayUser'   placeholder="请输入您的银行账户"></td>
 	      </tr>
 	    </table>
-	    <div class="loginBtn BTN"><a v-va-check>提交</a></div>
+	    <div class="loginBtn BTN"><a v-va-check>确定</a></div>
 	    <div class="tips">
 	      1、请转账到以上银行账户。<br>
 	      2、请正确填写您的户名和充值金额。<br>
@@ -71,7 +71,7 @@
 	      </tr>
 	      <tr></tr>
 	    </table>
-	    <div class="loginBtn BTN"><a v-va-check>提交</a></div>
+	    <div class="loginBtn BTN"><a v-va-check>确定</a></div>
 	    <div class="tips">
 	      1、扫一扫以上二维码进行充值。<br>
 	      2、请正确填写您的昵称和充值金额。<br>
@@ -111,7 +111,7 @@
 	      </tr>
 	      <tr></tr>
 	    </table>
-	    <div class="loginBtn BTN" v-va-check><a>提交</a></div>
+	    <div class="loginBtn BTN" v-va-check><a>确定</a></div>
 	    <div class="tips">
 	      1、请转账到以上支付宝或扫码支付。<br>
 	      2、请正确填写您的姓名和充值金额。<br>
