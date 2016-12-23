@@ -39,7 +39,7 @@
 				config: {
 					firstPageNum: 10, //首屏渲染的数据量,直接渲染
 					firstPageExt: 40, //首屏额外获取的数据量,存入cache
-					timeInsert: 3000, //每隔timeInsert（毫秒）向上插入一条数据
+					timeInsert: 2000, //每隔timeInsert（毫秒）向上插入一条数据
 					dataNum: 40, //每次拉取数据量
 					height: 0, //每个li的高度，第一次渲染后获取
 					listMax: 20, //渲染li的最大数量

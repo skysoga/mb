@@ -269,7 +269,7 @@
     width: 6em;
     font-size: .9em;
     text-align: center;
-    &:nth-child(odd):after {
+    &:after {
       content: "";
       display: block;
       background-image: -ms-linear-gradient(90deg, transparent 50%, #d0d0d0, #d0d0d0 50%);
@@ -279,7 +279,7 @@
       width: 100%;
       position: absolute;
     }
-    &:nth-last-of-type(1):after,&:nth-last-of-type(2):after{
+    &:nth-last-of-type(1):after{
       display: none;
     }
     &:active{
