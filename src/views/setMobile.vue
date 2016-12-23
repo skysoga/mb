@@ -12,7 +12,6 @@
             <input class="input" type="email" v-va:SmsCode v-model.trim="SmsCode" tag="验证码" placeholder="输入验证码" />
             <div class="tableBTN">
               <span class="sendCode" v-va-test:Mobile.postMsg>{{reTime}}</span>
-              <!-- @click="postMsg" -->
             </div>
           </td>
         </tr>
@@ -20,13 +19,9 @@
       </tbody>
     </table>
     <div class="loginBtn BTN"><a v-va-check>确定</a></div>
-    <div class="tips talign">暂不支持14,17开头的手机号码绑定</div>
   </div>
 </template>
 <script src="../js/setMobile.js"></script>
 <style lang="scss" scoped>
   @import '../scss/SecurityCenter.scss';
-  .talign {
-    text-align: center;
-  }
 </style>

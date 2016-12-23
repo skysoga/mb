@@ -3,12 +3,12 @@
   <header class="top">
     <div>
       <p>玩法</p>
-      <span id="MethodStr" @click.stop = "toggleModeSelect">
+      <span id="MethodStr" @click.stop = "toggleModeSelect" :class = "{on: ifShowModeSelect}">
         {{nowModeName}}<i class="iconfont xiala"></i>
       </span>
     </div>
 
-    <div class="fr" id="lotteryChoice">
+    <div class="fr" id="lotteryChoice" :class = "{on: ifShowTypeSelect}">
       <label @click.stop= "toggleTypeSelect">{{LotteryName.slice(0,2)}}</label>
       <i @click.stop= "toggleTypeSelect" class="iconfont xiala"></i>
       <!-- 快三彩种切换 -->
@@ -35,7 +35,7 @@
       </ul>
   </header>
 
-  <section class="State">
+  <section class="State" :class = "{on: ifShowPastOpen}">
     <!-- 上期开奖结果 -->
     <div v-if = "$store.state.lt.OldIssue" @click.stop = "togglePastOpen" >
       <p>{{oldIssue}}期开奖号码</p>
@@ -88,9 +88,7 @@
         <ul>
           <li v-for = "(item,index) in itemArr"
               @click = "choose(item)"
-              :class = "{checked: chosen.indexOf(item) > -1}">
-            {{item}}
-            <p v-if = "mode === 'A10' && award">{{index < 4 ? '赔率': '赔'}}{{getSumRebate(index)}}</p>
+              :class = "{checked: chosen.indexOf(item) > -1}">{{item}}<p v-if = "mode === 'A10' && award">{{index < 4 ? '赔率': '赔'}}{{getSumRebate(index)}}</p>
           </li>
         </ul>
       </div>
@@ -467,7 +465,7 @@ export default {
       }else{
         //如果追号倍数和期号都为1,则为普通投注
         var msg = `${this.LotteryName}: 第${this.nowIssue}期<br>
-                    投注金额: ${this.bet.betting_money}元<br>
+                    投注金额: <span style = "color:red">${this.bet.betting_money}元</span><br>
                     投注内容:${this.chosen.join(' ')}`
 
         layer.confirm(msg,()=>{
@@ -476,6 +474,7 @@ export default {
             basebet.setRebate('180', this.$store.state)
           }
           var basket = deleteCompress([basebet])
+          layer.msgWait('正在投注')
           _fetch({
             'Action':'AddBetting',
             'data': {BettingData:basket}

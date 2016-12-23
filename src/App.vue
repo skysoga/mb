@@ -28,6 +28,7 @@ body{
 }
 #app{
   height: 100%;
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 .laymshade {
   background-color: rgba(0, 0, 0, .3);
@@ -38,6 +39,7 @@ body{
 }
 .layermbox0 .layermchild {
     min-width: initial;
+    max-width: 18em;
 }
 .layermchild h3 {
     font-weight: blod;
@@ -138,7 +140,7 @@ body{
   display:none;
 }
 .layermcont{
-  padding:10px;
+  padding:10px 30px;
   max-height: 50vh;
   overflow: scroll;
   word-wrap:break-word;

@@ -187,14 +187,18 @@
     .iconfont{
       transition: .6s;
       display: inline-block;
+      color:#f0c930;
     }
     &.active{
+      &:active{
+        background:none;
+      }
       .iconfont{
         transform: rotate(180deg);
       }
     }
     p{
-      font-size: 0.6em;
+      font-size: 0.54em;
       display: inline-block;
       line-height: 1.2em;
       height: 2.4em;
@@ -202,20 +206,19 @@
       margin-left:-1.4em;
       text-align: left;
       position: absolute;
-      margin-top: 0.8em;
+      margin-top: 1em;
     }
     > span{
       display: inline-block;
       font-size: 0.8em;
       border-radius: 0.2em;
-      border:1px solid #fff;
+      border:1px solid rgba(255,255,255,.5);
       vertical-align: top;
       height: 2em;
       margin:0.45em 0;
       line-height: 1.9em;
-      padding: 0 0.6em;
+      padding: 0 0.4em;
       i{
-        padding-left:0.2em;
         font-size: 0.9em;
       }
     }
@@ -266,7 +269,7 @@
     width: 6em;
     font-size: .9em;
     text-align: center;
-    &:nth-child(odd):after {
+    &:after {
       content: "";
       display: block;
       background-image: -ms-linear-gradient(90deg, transparent 50%, #d0d0d0, #d0d0d0 50%);
@@ -276,7 +279,7 @@
       width: 100%;
       position: absolute;
     }
-    &:nth-last-of-type(1):after,&:nth-last-of-type(2):after{
+    &:nth-last-of-type(1):after{
       display: none;
     }
     &:active{
@@ -332,7 +335,7 @@
   text-align: left;
   padding:.2rem .4rem;
   padding-left: 1.6rem;
-  overflow: scroll;
+  overflow: hidden;
   li{
     &:last-child{
       span:after{
