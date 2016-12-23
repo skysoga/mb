@@ -110,8 +110,8 @@ var routes = [{
   name: "注单详情",
   meta: {
     title: "注单详情",
-    back:-1,
-    user: 1
+    user: 1,
+    back:-1
   },
   component: betDetail
 }, {

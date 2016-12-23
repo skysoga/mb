@@ -28,6 +28,9 @@ export default {
   beforeRouteEnter(to,from,next){
     var arr = ["UserBankCardList"];
      RootApp.GetInitData(arr,state=>{
+      if(!state.UserBankCardList){
+        router.go(-1)
+      }
       next(vm=>{
         vm.CardList=state.UserBankCardList
         vm.setTip()

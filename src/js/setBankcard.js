@@ -40,7 +40,7 @@ export default {
     var nextto=Qort=='withdraw'?'/withdraw':'/manageBankcard'
     var cid=Qort=='withdraw'?'add':(Qort||'add')
     var Trr={Action:"GetCardDetail",BankCardID:cid}
-    if(cid!=='add'){
+    if(cid!=='add'&&Qort!='bindCard'){
       to.meta.title="修改银行卡"
       to.meta.link='/manageBankcard'
       _fetch(Trr).then(json=>{
