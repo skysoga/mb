@@ -28,6 +28,13 @@ window.router = new VueRouter({
 	routes,
 	mode:'history',
 	linkActiveClass:"on",
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  }
 	// exact: true
 });
 

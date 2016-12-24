@@ -2,7 +2,7 @@
 
 
 .isLotteryLine,.lotteryCloseItem{
-  height: 2.8em;
+  height: 3em;
   float: left;
   width: 50%;
   &:after{
@@ -48,7 +48,7 @@
 .openNumber,.waitNumber{
   text-align: center;
   height: 1.12em;
-  margin-top:.15em;
+  margin-top:.2em;
   margin-bottom:.4em;
   em{
     display: inline-block;
@@ -78,13 +78,12 @@
 .pastOpen{
   position: absolute;
   left: 0;
-  top:2.8em;
+  top:3em;
   width: 16rem;
-  background: white;
   color:#666;
   overflow: hidden;
   box-shadow: 0 10px 10px rgba(41, 41, 41, 0.08);
-  background: #f4f1e2;
+  background: #e1d9bb;
   // display: none;
   z-index: 4;
   th{
@@ -99,7 +98,7 @@
       width: 16rem;
       left: 0;
       top: 1.9em;
-      @include bgImg-linear-gradient('90deg, transparent, transparent 50%, #cac6b2 50%');
+      @include bgImg-linear-gradient('90deg, transparent, transparent 50%, #a7a182 50%');
     }
   }
   th,td{
@@ -118,7 +117,7 @@
       top: .8em;
       width: .7em;
       height: 1px;
-      @include bgImg-linear-gradient('90deg, transparent, transparent 50%, #999 50%');
+      @include bgImg-linear-gradient('90deg, transparent, transparent 50%, #a7a182 50%');
     }
     &:nth-child(2):after{
       content: "";
@@ -127,14 +126,14 @@
       top: 0;
       width: 1px;
       height: 20em;
-      @include bgImg-linear-gradient('0deg, #d0d0d0, #d0d0d0 50%, transparent 50%');
+      @include bgImg-linear-gradient('0deg, #a7a182, #a7a182 50%, transparent 50%');
     }
   }
   a{
     display: inline-block;
     span{
       display: inline-block;
-      min-width: .6em;
+      min-width: 1em;
       text-align: center;
       color: #dc3b40;
       vertical-align: top;

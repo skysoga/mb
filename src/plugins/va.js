@@ -132,7 +132,7 @@ var regList = {
 	MailCode: /^\d{4}$/,
 	UserName: /^[\w|\d]{4,16}$/,
 	Password: /^[\w!@#$%^&*.]{6,16}$/,
-	Mobile: /^1[3|5|8]\d{9}$/,
+	Mobile: /^1[3|4|5|7|8]\d{9}$/,
 	RealName: /^[\u4e00-\u9fa5 ]{2,10}$/,
 	BankNum: /^\d{10,19}$/,
 	Money: /^([1-9]\d*|0)$/,
