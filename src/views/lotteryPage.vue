@@ -313,6 +313,11 @@
 	      	lt_setLotteryResult:(state, {code, results})=>{							//设置某一彩种的开奖结果
 	      		Vue.set(state.LotteryResults, code, results)
 	      	},
+	      	lt_stopSell:(state)=>{
+	      		this.$store.commit('lt_updateTimeBar', '暂停销售')		//暂停销售
+	      		Vue.set(state, 'NowIssue', '00000000000')
+	      		Vue.set(state, 'OldIssue', '00000000000')
+	      	},
 	      	lt_setIssueNo:(state, IssueNo)=>{state.IssueNo = IssueNo},	//设置当前期号
 	      	lt_displayResults:(state, bool)=>{													//展示开奖结果或开奖动画
 	      		state.displayResults = bool
@@ -547,6 +552,12 @@
 		      },
 		      //refresh
 		      lt_refresh:({state, rootState, commit, dispatch})=>{
+		      	var isStop = rootState.LotteryList[this.lcode].IsStop
+		      	if(isStop === '1'){
+		      		commit('lt_stopSell')		//暂停销售
+		      		return
+		      	}
+
 		      	var _SerTime = (new Date().getTime()- this.$store.state.Difftime - GMT_DIF) % DAY_TIME
 		      			,IssueNo = state.IssueNo
 		      	if (_SerTime<1000) {
@@ -620,7 +631,7 @@
 				        	dispatch('lt_getResults', state.lottery.LotteryCode)		//获取开奖结果
 				        }
 				      }else if(Results[0].IssueNo*1 > state.OldIssue*1){
-				      	commit('lt_updateTimeBar', '暂停销售')		//暂停销售
+				      	commit('lt_stopSell')		//暂停销售
 				      }else{
 				      	commit('lt_displayResults', true)
 				      	//开奖
@@ -830,6 +841,11 @@
 				}else{
 					store.commit('lt_changeMode', state.lt.config[0])
 				}
+			}
+		},
+		watch:{
+			$route(val){
+			  ;[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
 			}
 		},
 	  beforeRouteLeave:(to, from, next)=>{
