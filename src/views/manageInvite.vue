@@ -18,7 +18,7 @@
                  :tag="caiName[n.LotteryType]+'返点'"
                  :placeholder="'自身返点'+n.Point+'，可设置返点'+n.MinPoint+'-'+n.Point"
                  :min="n.MinPoint"
-                 :value="!caiList&&''"
+                 :value="dval=''"
                  :max="n.Point"></li>
       </ul>
       <a class="BTN submitBtn" v-va-check>生成邀请码</a>
