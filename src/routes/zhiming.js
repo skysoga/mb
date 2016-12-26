@@ -58,7 +58,7 @@ var routes = [{
   path: "/letterDetail",
   name: "私信",
   meta: {
-    title: "私信",
+    title: "站内信",
     user: 1,
     link: "/letter"
   },

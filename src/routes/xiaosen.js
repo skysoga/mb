@@ -121,7 +121,7 @@ var routes = [{
 	user:true,
   agent:false,
   verify:'UserHasSafePwd',
-  from:'SafePwd,Mobile,Mail'
+  from:'SafePwd,Mobile,Question,Mail'
   },
   component: setSafePwd
 },{
@@ -155,8 +155,8 @@ var routes = [{
 	link:'/securityCenter',
 	user:false,
   agent:false,
-  verify:"VerifyPwd",
-  from:'Pwd,SafePwd,Mobile,Mail'
+  verify:1,
+  from:'Pwd,SafePwd,Mobile,Question,Mail'
   },
   component: setPwd
 },{

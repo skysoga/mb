@@ -22,7 +22,7 @@ export default {
   },
   created(){
     var Q=this.$route.query.Q
-    if(Q){this.nextUrl=Q.substr(2)}
+    if(Q){this.nextUrl=Q.substr(2)+'?Q='+Q}
     var arr = ["UserSafeQuestions"];
     var vm=this
      RootApp.GetInitData(arr,State=>{
@@ -61,9 +61,8 @@ export default {
       _fetch(ajax).then((json)=>{
           if(json.Code===1) {
             var x=vm.nextUrl
-            var url=x?('/'+x):'/setQuestion'
-            console.log(url)
-            router.push(url)
+            var xurl=x?('/'+x):'/setQuestion'
+            layer.url(json.StrCode,xurl)
           }else{
             layer.msgWarn(json.StrCode)
           }

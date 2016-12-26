@@ -22,7 +22,7 @@ export default {
   },
   created(){
     var Q=this.$route.query.Q
-    if(Q){this.nextUrl=Q.substr(2)}
+    if(Q){this.nextUrl=Q.substr(2)+'?Q='+Q}
     var vm=this
     var arr = ["UserMobile"];
      RootApp.GetInitData(arr,state=>{
@@ -45,10 +45,9 @@ export default {
       layer.msgWait("正在提交")
       _fetch(ajax).then((json)=>{
           if(json.Code===1) {
-            layer.msgWarn(json.StrCode);
-            var url=vm.nextUrl
-            url=url?'/'+url:'/setMobile'
-            router.push(url)
+            var x=vm.nextUrl
+            var xurl=x?('/'+x):'/setMobile'
+            layer.url(json.StrCode,xurl)
           }else{
             layer.msgWarn(json.StrCode);
           }
@@ -61,7 +60,7 @@ export default {
       this.noDo=false
       let ajax={
         Action:"SendMobileCode",
-        Mobile:this.Mobile,
+        Mobile:0,
       }
       layer.msgWait("正在发送")
       _fetch(ajax).then((json)=>{

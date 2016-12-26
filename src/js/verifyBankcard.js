@@ -15,8 +15,7 @@ export default {
         layer.msgWait("正在提交")
         _fetch(arr).then(json=>{
             if(json.Code==1){
-              layer.msgWarn(json.StrCode)
-              router.push('/setBankcard')
+              layer.url(json.StrCode,'/setBankcard')
             }else{
               layer.msgWarn(json.StrCode)
             }

@@ -25,7 +25,7 @@ export default {
       _fetch(ajax).then((json)=>{
           if(json.Code===1) {
             //验证密码
-            router.push('/setPwd?Q=ResetPwd')
+            layer.url(json.StrCode,'/setPwd?Q=ResetPwd')
           }else{
             layer.msgWarn(json.StrCode);
           }
