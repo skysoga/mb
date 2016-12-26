@@ -18,7 +18,7 @@ export default {
   },
   created(){
     var Q=this.$route.query.Q
-    if(Q){this.nextUrl=Q.substr(2)}
+    if(Q){this.nextUrl=Q.substr(2)+'?Q='+Q}
   },
   methods:{
     $vaSubmit(){
@@ -34,9 +34,9 @@ export default {
       layer.msgWait("正在提交")
       _fetch(ajax).then((json)=>{
           if(json.Code===1) {
-            var url=vm.nextUrl
-            url=url?'/'+url:'/setSafePwd'
-            router.push(url)
+            var x=vm.nextUrl
+            var xurl=x?('/'+x):'/setSafePwd'
+            layer.url(json.StrCode,xurl)
           }else{
             layer.msgWarn(json.StrCode)
           }

@@ -22,7 +22,7 @@ export default {
   },
   created(){
     var Q=this.$route.query.Q
-    if(Q){this.nextUrl=Q.substr(2)}
+    if(Q){this.nextUrl=Q.substr(2)+'?Q='+Q}
     var arr = ["UserSafeQuestions"];
     var vm=this
      RootApp.GetInitData(arr,State=>{

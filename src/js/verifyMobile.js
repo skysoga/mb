@@ -22,7 +22,7 @@ export default {
   },
   created(){
     var Q=this.$route.query.Q
-    if(Q){this.nextUrl=Q.substr(2)}
+    if(Q){this.nextUrl=Q.substr(2)+'?Q='+Q}
     var vm=this
     var arr = ["UserMobile"];
      RootApp.GetInitData(arr,state=>{
@@ -45,7 +45,6 @@ export default {
       layer.msgWait("正在提交")
       _fetch(ajax).then((json)=>{
           if(json.Code===1) {
-            layer.msgWarn(json.StrCode);
             var x=vm.nextUrl
             var xurl=x?('/'+x):'/setMobile'
             layer.url(json.StrCode,xurl)
