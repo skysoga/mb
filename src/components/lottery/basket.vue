@@ -31,10 +31,12 @@
       </label>
     </div>
     <div class="result fix" ref = "result">
-      <div class="left">
-        <span>{{total}}元</span>
-        <!-- <em>可用余额 88.80元</em> -->
+      <div class="left" v-show = "true">
+          <span>方案{{basketNums}}注,{{total}}元</span>
+          <em>普通投注</em>
+          <!-- <em>追X期，投X注</em> -->
       </div>
+
       <div class="right" @click = "confirmBet">
         <i>立即投注</i>
       </div>
@@ -321,6 +323,13 @@ export default {
       }
     },
     basket(){return this.$store.state.lt.basket},
+    basketNums(){
+      var s = 0
+      for(var i = 0;i < this.basket.length;i++){
+        s += this.basket[i].betting_count
+      }
+      return s
+    },
     scheme(){return this.$store.state.lt.scheme},
     ifShowBasket(){
       return this.$store.state.lt.box === 'basket'
