@@ -39,15 +39,17 @@
 				config: {
 					firstPageNum: 10, //首屏渲染的数据量,直接渲染
 					firstPageExt: 40, //首屏额外获取的数据量,存入cache
-					timeInsert: 2000, //每隔timeInsert（毫秒）向上插入一条数据
+					timeInsert: 3000, //每隔timeInsert（毫秒）向上插入一条数据
 					dataNum: 40, //每次拉取数据量
 					height: 0, //每个li的高度，第一次渲染后获取
 					listMax: 20, //渲染li的最大数量
-					cache: [] //整个模块公用
+					cache: [], //整个模块公用
+					isFirst:true, //用来控制进入页面首次渲染的速度
+					firstSpeed:1500 //进入页面拉取第一条的数据
 				},
 				newOneData: "",
 				li_arr:[],
-				timeID:0
+				timeID:[]
 			}
 		},
 		methods: {
@@ -65,14 +67,15 @@
 			},
 			//每隔time（毫秒），从cache中取第一条数据渲染至页面顶部。fn为渲染函数。
 			renderInterval: function(time, fn) {
-				setInterval(() => {
+				this.timeID.push(setInterval(() => {
 					//缓存的数据为空，返回
 					if (!this.config.cache.length) {
 						return;
 					}
-					let item = this.config.cache.shift(); //把数据最前面的一条数据渲染推出来
+					let item = this.config.cache.shift() //把数据最前面的一条数据渲染推出来
 					fn(item)
-				}, time)
+					console.log(time)
+				}, time))
 			},
 			 transitionShow : function(){
 				let s = 0;                      // 用来记录高度
@@ -86,7 +89,7 @@
 							s = 0;
 							return;
 						} else {
-							s = s + perH;
+							s = s + perH
 							//ulBody.css('top', s + 'px')
 							this.$el.childNodes[0].top=s+"px"
 							this.transitionShow(h, t, n, item)
@@ -96,14 +99,14 @@
 			}(),
 			//每隔time(毫秒)，获取数据，并通过回调传出
 			getCache: function(time, fn) {
-				this.timeID=setInterval(() => {
+				this.timeID.push(setInterval(() => {
 					this.getData('GetNewestBonusList', this.config.dataNum, (d) => {
 						let list = d.BackData.NewestBonusList;
 						if (list) {
 							fn(list);
 						}
 					})
-				}, time)
+				}, time))
 			},
 			jump:function(id){
         let router=this.$router
@@ -111,7 +114,9 @@
       }
 		},
 		beforeRouteLeave(to,from,next){
-			clearInterval(this.timeID)
+			for(var i=0;i<this.timeID.length;i++){
+				clearInterval(this.timeID[i])
+			}
 			next()
 		},
 		created() {
@@ -123,9 +128,14 @@
 				this.bonu_list_data = list.splice(0, this.config.firstPageNum); //首屏用,将10条数据压入进去,然后渲染
 				this.config.cache = list; //缓存用
 				//首屏渲染完毕，开始启动定时渲染函数
-				this.renderInterval(this.config.timeInsert, (item) => {
+
+				setTimeout(()=>{
+					this.bonu_list_data2.unshift(this.config.cache.shift())
+					this.renderInterval(this.config.timeInsert, (item) => {
 						this.transitionShow(this.config.height, 200, 60, item)
 					})
+				},this.config.firstSpeed)
+
 					//启动定时获取数据函数
 				this.getCache(this.config.timePull, (list) => {
 					if (this.config.cache.length > this.config.cacheMax) {
