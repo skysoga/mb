@@ -1,8 +1,8 @@
 <template>
-  <div class="fullLoading" id="PageLoading" v-show="isDataNot">
+  <div class="fullLoading" id="PageLoading">
     <div class="loadingCell">
       <div class="iconLoadingCon">
-        <img class="loadingImg" src="http://imagess-google.com/system/mobile/lottery/loadingMobile.gif" alt="">
+        <img class="loadingImg" :src="$store.state.constant.ImgHost+'/system/mobile/lottery/loadingMobile.gif'" alt="">
       </div>
     </div>
   </div>

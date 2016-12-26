@@ -9,7 +9,7 @@
       <div class="submitTouch"><i class="iconfont">&#xe60e;</i></div>
     </a>
     </div>
-    <loading></loading>
+    <loading v-show="isDataNot"></loading>
     <div class="proxy3colCon" id="proxy3colCon" v-show="!isDataNot">
       <ul class="PLSdetail fix">
           <li v-for="key in Datalist" v-if="key"><span>{{key[0]|filNum}}</span>{{key[1]}}</li>
