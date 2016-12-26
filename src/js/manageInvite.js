@@ -22,6 +22,7 @@ export default {
    methods:{
     $vaSubmit(){
       var inputObj=this.vaVal
+      console.log(inputObj)
       var vm=this
       var Objrr='';var i=-1;for(var n in inputObj){++i;if(i>0){Objrr+='@'}Objrr+=n+'#'+inputObj[n];}
       var Arr={
