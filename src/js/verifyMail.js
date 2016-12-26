@@ -47,9 +47,9 @@ export default {
       _fetch(ajax).then((json)=>{
           if(json.Code===1) {
             layer.msgWarn(json.StrCode);
-            var url=vm.nextUrl
-            url=url?'/'+url:'/setMail'
-            router.push(url)
+            var x=vm.nextUrl
+            var xurl=x?('/'+x):'/setMail'
+            layer.url(json.StrCode,xurl)
           }else{
             layer.msgWarn(json.StrCode);
           }

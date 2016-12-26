@@ -121,7 +121,7 @@ var routes = [{
 	user:true,
   agent:false,
   verify:'UserHasSafePwd',
-  from:'SafePwd,Mobile,Mail'
+  from:'SafePwd,Mobile,Question,Mail'
   },
   component: setSafePwd
 },{
@@ -156,7 +156,7 @@ var routes = [{
 	user:false,
   agent:false,
   verify:"VerifyPwd",
-  from:'Pwd,SafePwd,Mobile,Mail'
+  from:'Pwd,SafePwd,Mobile,Question,Mail'
   },
   component: setPwd
 },{
