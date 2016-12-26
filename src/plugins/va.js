@@ -158,7 +158,6 @@ va.install = function(Vue, options){
 	  	el.className = 'va' + vm._uid
 	  	el.name = name
 
-	  	console.log(binding)
 	  	vm.vaConfig || (vm.vaConfig = {})
 	  	var NON_VOID = eazyNew('nonvoid', true)
 
@@ -249,6 +248,7 @@ va.install = function(Vue, options){
 							value = dom.value,
 							conditions = vm.vaConfig[name]
 
+					console.log(conditions)
 					var _result = check(value, conditions)
 					//如果返回不为0,则有报错
 					if(_result){
@@ -256,11 +256,14 @@ va.install = function(Vue, options){
 						typeof _result === 'string' ? layer.msgWarn(_result) : showErr(conditions[0].tag, _result)
 						return
 					}
+					//如果判别类型中，存在limit类型，那么将经过数据转换的结果赋给DOM
+					if(conditions.some(item=>item.type === 'limit')){
+						dom.value = +value
+					}
 					vm.vaVal[name] = value
 				}
 				//校验通过的回调
 				vm.$vaSubmit()
-				// layer.msgWarn('全部校验成功')
 			})
 
 		}
@@ -280,7 +283,6 @@ va.install = function(Vue, options){
 
 				var _result = check(value, conditions)
 				//如果返回不为0，则有报错
-        console.log(_result)
 				if(_result){
 					//如果返回的是字符串，则为自定义报错； 如果是数组，则使用showErr 报错
 					typeof _result === 'string' ? layer.msgWarn(_result) : showErr(conditions[0].tag, _result)

@@ -24,10 +24,9 @@ export default {
       _fetch(ajax).then((json)=>{
           if(json.Code===1) {
             //验证密码
-            layer.msgWarn(json.StrCode);
             if(F){
-              router.push('/login')
               sessionStorage.clear('isFind')
+              layer.url(json.StrCode,'/login')
               return
             }
             layer.url(json.StrCode,'/securityCenter')

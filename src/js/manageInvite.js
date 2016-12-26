@@ -3,7 +3,8 @@ export default {
     return{
       caiName:{SSC:"时时彩",XYNC:"幸运农场",PK10:"北京PK10",KL8:"北京快乐8",PL35:"排列3/5",FC3D:"福彩3D",SYX5:"11选5",K3:"快3"},
       UserType:1,
-      caiList:''
+      caiList:'',
+      dval:''
     }
   },
   created(){
@@ -22,6 +23,7 @@ export default {
    methods:{
     $vaSubmit(){
       var inputObj=this.vaVal
+      console.log(inputObj)
       var vm=this
       var Objrr='';var i=-1;for(var n in inputObj){++i;if(i>0){Objrr+='@'}Objrr+=n+'#'+inputObj[n];}
       var Arr={
