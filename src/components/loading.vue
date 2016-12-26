@@ -9,7 +9,7 @@
 </template>
 <style lang='scss' scoped>
   .loadingImg{
-    height: 3em;
+    height: 5em;
   }
   .iconLoadingCon{
     text-align: center;
