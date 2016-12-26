@@ -527,7 +527,8 @@
 		      	_fetch({
 		          Action: "GetLotteryOpen",
 		          LotteryCode: code,
-		          IssueNo: IssueNo,
+		          IssueNo: 0,
+		          // IssueNo: IssueNo,
 		          DataNum: 10
 		        }).then((json)=>{
 		        	if(json.Code === 1) {
