@@ -156,7 +156,7 @@ var routes = [{
 	user:false,
   agent:false,
   verify:1,
-  from:'Pwd,SafePwd,Mobile,Question,Mail'
+  from:'Pwd,SafePwdForget,MobileForget,QuestionForget,MailForget'
   },
   component: setPwd
 },{

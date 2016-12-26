@@ -15,7 +15,7 @@
       <ul>
         <li v-for="l in LList">
           <router-link :class="'active L_'+$store.state.LotteryList[l].LotteryType" :to="'/lottery/'+$store.state.LotteryList[l].LotteryType+'/'+l">
-            <p :style="$store.state.LotteryList[l].LotteryType=='SSC'?'font-size: 1.2em':null">{{$store.state.LotteryList[l].LotteryName}}</p>
+            <p>{{$store.state.LotteryList[l].LotteryName}}</p>
             <span>{{$store.state.LotteryList[l].LotteryIntro}}</span>
           </router-link>
         </li>

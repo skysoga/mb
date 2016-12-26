@@ -61,7 +61,7 @@ var UserArr = [
 	'UserGradeGrow',
 	'UserSex',
 	'UserHasSafePwd',
-	'UserBalance',
+	// 'UserBalance',
 	'UserFirstCardInfo',
   'UserBankCardList',
 	'UserLastLoginInfo',
@@ -464,7 +464,7 @@ function _fetch(data){
 				;(function(){
 					if (json.Code==0) {
 						if(state.UserName){
-							layer.alert("您的登录信息已失效<br>需要重新登录",function(){
+							layer.alert("由于您长时间未操作，已自动退出，请重新登录",function(){
 								RootApp.Logout()
 								var meta = RootApp._route.matched[0]
 								meta = meta&&meta.meta
