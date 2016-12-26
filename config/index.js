@@ -29,7 +29,7 @@ module.exports = {
         '/tools/ssc_ajax.ashx': {
           target: Usercfg.APIhost||'http://192.168.3.253:99',
           changeOrigin: true,
-          headers:{Origin:"http://m.dafatest.com"},
+          headers:{Origin:Usercfg.APIhost.replace('//','//m.')},
           // localAddress:"http://css.dafatest.com",
           secure: false
         }
