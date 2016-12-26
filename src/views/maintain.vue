@@ -1,8 +1,8 @@
 <template>
   <div class="maintainCon">
-    <header class="top">
+    <!-- <header class="top">
       <span><img :src="$store.getters.PhotoPath+'logo/mobile_logo.png'"></span>
-    </header>
+    </header> -->
     <div class="errorContent fix">
       <div class="maintain">
         <div class="left">

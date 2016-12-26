@@ -29,7 +29,9 @@ module.exports = {
         '/tools/ssc_ajax.ashx': {
           target: Usercfg.APIhost||'http://192.168.3.253:99',
           changeOrigin: true,
-          secure: true
+          headers:{Origin:"http://m.dafatest.com"},
+          // localAddress:"http://css.dafatest.com",
+          secure: false
         }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"

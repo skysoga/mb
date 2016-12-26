@@ -180,7 +180,7 @@ var routes = [{
   path: "/maintain",
   name: "维护中...",
   meta: {
-    title: "维护中..."
+    title: "系统维护"
   },
   component: maintain
 }]
