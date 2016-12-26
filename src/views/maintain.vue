@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="maintainCon">
     <header class="top">
       <span><img :src="$store.getters.PhotoPath+'logo/mobile_logo.png'"></span>
     </header>
