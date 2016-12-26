@@ -60,7 +60,7 @@ export default {
       this.noDo=false
       let ajax={
         Action:"SendMobileCode",
-        Mobile:this.Mobile,
+        Mobile:0,
       }
       layer.msgWait("正在发送")
       _fetch(ajax).then((json)=>{
