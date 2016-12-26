@@ -1,8 +1,5 @@
 <template>
   <div class="">
-    <header class="top">
-      <span><img :src="$store.getters.PhotoPath+'logo/mobile_logo.png'"></span>
-    </header>
     <div class="errorContent fix">
       <div class="maintain">
         <div class="left">
