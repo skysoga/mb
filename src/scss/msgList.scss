@@ -2,11 +2,14 @@
 html,body{
   height:auto;
 }
+.main{
+  min-height: 100%;
+  background: white;
+}
 .touchScroll{
   padding:0;
   position:static;
   background-color:#fff;
-  // height:auto;
 }
 .noRead{
   color:red;
