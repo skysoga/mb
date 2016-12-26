@@ -546,6 +546,7 @@ function computeIssue(code, index){
     '1001':function(){
       (_index > 84) && days--
     },
+    //北京快三，以某一期作为基准
     '1406':()=>{
       var data = state.lt.Todaystr.replace(/^(\d{4})(\d{2})(\d{2})$/,'$1/$2/$3');
       return '0'+(Math.floor((Date.parse(data)-Date.parse("2016/8/1"))/DAY_TIME)*89+ BASE_ISSUE_1406 + index);
