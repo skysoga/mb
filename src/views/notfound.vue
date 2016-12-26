@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="notFoundCon">
 		<div class="notFound">
 			<img src="http://images.dafa176.com/system/pc/error/404.png" alt="" width="280" height="188">
 			<h1>抱歉，无法访问此页面！</h1>
