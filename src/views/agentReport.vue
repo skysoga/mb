@@ -9,14 +9,7 @@
       <div class="submitTouch"><i class="iconfont">&#xe60e;</i></div>
     </a>
     </div>
-    <div class="fullLoading" id="PageLoading" v-show="isDataNot">
-      <div class="loadingCell">
-        <div class="iconLoadingCon">
-          <span class="iconLoadingText">&#xe647;</span>
-          <div class="iconLoadingMove"></div>
-        </div>
-      </div>
-    </div>
+    <loading></loading>
     <div class="proxy3colCon" id="proxy3colCon" v-show="!isDataNot">
       <ul class="PLSdetail fix">
           <li v-for="key in Datalist" v-if="key"><span>{{key[0]|filNum}}</span>{{key[1]}}</li>
@@ -27,5 +20,5 @@
 </template>
 <script src="../js/agentReport.js"></script>
 <style lang="scss" scoped>
-  @import '../scss/personalinfo.scss'
+  @import '../scss/personalinfo.scss';
 </style>
