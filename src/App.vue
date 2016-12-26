@@ -125,12 +125,18 @@ body{
     height: 22px;
     fill: #000;
 }
+.layermsg .layermcont {
+  padding: 10px 10px;
+  line-height: 21px;
+  text-align: center;
+}
 
 
 /* 几种常用样式定制 */
 .layerConfirm.layermchild{
   width:18em;
   font-size:.7em;
+  text-align: center;
 }
 .layermchild  h3{text-align: center}
 .layermchild h3{
