@@ -1,5 +1,4 @@
 import { swiper, swiperSlide, swiperPlugins } from 'vue-awesome-swiper'
-import {RootApp} from '../main'
 export default {
   data:()=>{
     return{

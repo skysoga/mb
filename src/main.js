@@ -9,7 +9,7 @@
 	  sessionStorage={setItem:function(d){},getItem:function(d){}};
 	}
 })()
-document.cookie = "Site="+location.hostname.replace('.com','')
+// document.cookie = "Site="+location.hostname.replace('.com','')
 window.rem = document.body.clientWidth/16
 window.em = Math.sqrt((rem-20)*.9)+20
 document.write("<style>html{font-size:"+rem+"px;}body{font-size:"+em+"px;}</style>")
@@ -464,8 +464,8 @@ function _fetch(data){
 				;(function(){
 					if (json.Code==0) {
 						if(state.UserName){
-							RootApp.Logout()
 							layer.alert("您的登录信息已失效<br>需要重新登录",function(){
+								RootApp.Logout()
 								var meta = RootApp._route.matched[0]
 								meta = meta&&meta.meta
 								if(meta&&meta.user){

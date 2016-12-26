@@ -14,7 +14,6 @@
 	import lt_ssc from '../json/lt_ssc.json'
 	import lt_k3 from '../json/lt_k3.json'
 	import Vue from 'vue'
-	import {RootApp} from '../main'
 	import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 	import {bus, BaseBet, ChaseAjax, easyClone, deleteCompress, Scheme, getBasketAmount, computeIssue, getSSCRebate, getK3Rebate,DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../js/kit'
 
