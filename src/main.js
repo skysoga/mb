@@ -176,6 +176,20 @@ window.RootApp = new Vue({
 			fun()
 		},
 		SetFilter:function(data){
+			;(function(Bonus){
+			  if (!Bonus||Bonus.State) {return}
+			  layer.open({
+			    shadeClose: false,
+			    title: "恭喜",
+			    content: '恭喜您成功晋级，当前等级为VIP'+Bonus.Grade+'，<br/>赶紧到活动中心领取奖励吧。',
+			    className: "layerConfirm",
+			    btn: ["领取奖励", "留在本页"],
+			    yes: function(Lindex) {
+			      layer.close(Lindex);
+			      router.push("/upgrade")
+			    }
+			  })
+			})(data.UserUpGradeBonus)
 			;(function(s){
 				if (s) {
 					SetIndexTitle(s)
@@ -243,8 +257,17 @@ window.RootApp = new Vue({
 		GetInitData(arr,fun){
 			var newArr=[];
 			for (var i = arr.length - 1; i >= 0; i--) {
-				if(state[arr[i]]==null){
-					newArr.push(arr[i])
+				switch(arr[i]){
+					case "UserBalance":
+					case "UserWithdrawAvail":
+					case "PayLimit":
+					case "WithdrawRemainTimes":
+						newArr.push(arr[i])
+					break
+					default:
+						if(state[arr[i]]==null){
+							newArr.push(arr[i])
+						}
 				}
 			}
 			if (!newArr.length) {

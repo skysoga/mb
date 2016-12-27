@@ -4,7 +4,7 @@
       <tbody>
         <tr>
           <td>账户余额</td>
-          <td><input class="cGold" type="text" readonly="readonly" :value="UserBalance"></td>
+          <td><input class="cGold" type="text" readonly="readonly" :value="$store.state.UserBalance"></td>
         </tr>
         <tr>
           <td>可提金额</td>
