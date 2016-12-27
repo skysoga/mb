@@ -181,7 +181,7 @@ window.RootApp = new Vue({
 			  layer.open({
 			    shadeClose: false,
 			    title: "恭喜",
-			    content: '恭喜您成功晋级，当前等级为VIP'+Bonus.Grade+'，<br/>赶紧到活动中心领取奖励吧。',
+			    content: '恭喜您成功晋级，当前等级为VIP'+Bonus.Grade+'，赶紧到活动中心领取奖励吧。',
 			    className: "layerConfirm",
 			    btn: ["领取奖励", "留在本页"],
 			    yes: function(Lindex) {
@@ -255,6 +255,8 @@ window.RootApp = new Vue({
 			})
 		},
 		GetInitData(arr,fun){
+			state.UserName&&arr.push("UserUpGradeBonus")
+			console.log(arr);
 			var newArr=[];
 			for (var i = arr.length - 1; i >= 0; i--) {
 				switch(arr[i]){
@@ -500,37 +502,40 @@ function _fetch(data){
 			try{
 				res.json().then(json=>{
 					console.log(json);
+					var notRes
 					;(function(){
-					})()
-					resolve(json)
-					switch(json.Code){
-						case 0://未登录
-							if(state.UserName){
-								layer.alert("由于您长时间未操作，已自动退出，请重新登录",function(){
+						switch(json.Code){
+							case 0://未登录
+								if(state.UserName){
+									layer.alert("由于您长时间未操作，已自动退出，请重新登录",function(){
+										RootApp.Logout()
+										var meta = RootApp._route.matched[0]
+										meta = meta&&meta.meta
+										if(meta&&meta.user){
+									    router.push("/login")
+										}
+									})
+									notRes=true
+								}
+							break;
+							case -7://系统维护
+								router.push("/maintain")
+							break;
+							case -8://账号冻结
+								layer.alert("您的账号已被冻结，详情请咨询客服。",function(){
 									RootApp.Logout()
 									var meta = RootApp._route.matched[0]
 									meta = meta&&meta.meta
-									if(meta&&meta.user){
-								    router.push("/login")
-									}
+							    router.push("/login")
 								})
-							}
-						break;
-						case -7://系统维护
-							router.push("/maintain")
-						break;
-						case -8://账号冻结
-							layer.alert("您的账号已被冻结，详情请咨询客服。",function(){
-								RootApp.Logout()
-								var meta = RootApp._route.matched[0]
-								meta = meta&&meta.meta
-						    router.push("/login")
-							})
-						break;
-					}
-					if (data.Action.search('Verify')===0&&json.Code>-1) {
-						state.UserVerify=data.Action.replace('Verify','')+','
-					}
+								notRes=true
+							break;
+						}
+						if (data.Action.search('Verify')===0&&json.Code>-1) {
+							state.UserVerify=data.Action.replace('Verify','')+','
+						}
+					})()
+					notRes||resolve(json)
 				})
 			}catch(e){
 				resolve({Code:-1,StrCode:"网络错误，请重试"})
