@@ -3,9 +3,9 @@
       <div class="topInfo" @click.stop="getBalance">
           <router-link to="/personalInfo"><img v-bind:src="$store.getters.PhotoPath+$store.state.UserPhoto||$store.state.constant.DefPhoto"></router-link>
           <p>账&nbsp;号：<ins id="UserName">{{$store.state.UserName}}</ins></p>
-          <span v-if="balShow">余&nbsp;额：<ins id="UserBalance" v-text="$store.state.UserBalance"></ins>元 刷新</span>
-          <span v-else>余&nbsp;额：<i>点击显示</i></span>
-          <!-- <div v-on:click="refresh" :class="refreshClass"><i class="iconfont">&#xe62f;</i></div> -->
+          <span v-if="balShow">余&nbsp;额：<ins id="UserBalance" v-text="UserBalance"></ins>元 </span>
+          <span v-else>余&nbsp;额：<i>已隐藏 <ins :style="{color:$store.state.color.red}">显示</ins></i></span>
+          <div v-show="balShow" :class="refreshClass"><i class="iconfont">&#xe62f;</i></div>
       </div>
 
       <div class="topMoney">

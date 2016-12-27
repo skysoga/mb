@@ -2,7 +2,8 @@ export default {
   data:()=>{
     return{
       refreshClass:"refresh",
-      balShow:false
+      balShow:false,
+      UserBalance:""
     }
   },
   beforeRouteEnter:(to, from, next) => {
@@ -12,9 +13,9 @@ export default {
       next()
     })
   },
-  /*created(){
-    this.UserBalance=this.$store.state.UserBalance
-  },*/
+  created(){
+    this.UserBalance=store.state.UserBalance
+  },
   methods:{
     // refresh:function(e){
     //   var t = this,c=this.refreshClass
@@ -26,7 +27,13 @@ export default {
     // },
     getBalance:function(){
       RootApp.AjaxGetInitData(['UserBalance'],ref=>{
+        this.refreshClass+=" refreshMove"
         this.balShow=true
+        this.UserBalance=""
+        setTimeout(()=>{
+          this.refreshClass="refresh"
+          this.UserBalance=store.state.UserBalance
+        },500)
       })
     }
   }
