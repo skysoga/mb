@@ -176,6 +176,20 @@ window.RootApp = new Vue({
 			fun()
 		},
 		SetFilter:function(data){
+			;(function(Bonus){
+			  if (!Bonus||Bonus.State) {return}
+			  layer.open({
+			    shadeClose: false,
+			    title: "恭喜",
+			    content: '恭喜您成功晋级，当前等级为VIP'+Bonus.Grade+'，赶紧到活动中心领取奖励吧。',
+			    className: "layerConfirm",
+			    btn: ["领取奖励", "留在本页"],
+			    yes: function(Lindex) {
+			      layer.close(Lindex);
+			      router.push("/upgrade")
+			    }
+			  })
+			})(data.UserUpGradeBonus)
 			;(function(s){
 				if (s) {
 					SetIndexTitle(s)
@@ -241,10 +255,21 @@ window.RootApp = new Vue({
 			})
 		},
 		GetInitData(arr,fun){
+			state.UserName&&arr.push("UserUpGradeBonus")
+			console.log(arr);
 			var newArr=[];
 			for (var i = arr.length - 1; i >= 0; i--) {
-				if(state[arr[i]]==null){
-					newArr.push(arr[i])
+				switch(arr[i]){
+					case "UserBalance":
+					case "UserWithdrawAvail":
+					case "PayLimit":
+					case "WithdrawRemainTimes":
+						newArr.push(arr[i])
+					break
+					default:
+						if(state[arr[i]]==null){
+							newArr.push(arr[i])
+						}
 				}
 			}
 			if (!newArr.length) {
@@ -477,6 +502,7 @@ function _fetch(data){
 			try{
 				res.json().then(json=>{
 					console.log(json);
+					var notRes
 					;(function(){
 						switch(json.Code){
 							case 0://未登录
@@ -489,6 +515,7 @@ function _fetch(data){
 									    router.push("/login")
 										}
 									})
+									notRes=true
 								}
 							break;
 							case -7://系统维护
@@ -501,13 +528,14 @@ function _fetch(data){
 									meta = meta&&meta.meta
 							    router.push("/login")
 								})
+								notRes=true
 							break;
 						}
 						if (data.Action.search('Verify')===0&&json.Code>-1) {
 							state.UserVerify=data.Action.replace('Verify','')+','
 						}
 					})()
-					resolve(json)
+					notRes||resolve(json)
 				})
 			}catch(e){
 				resolve({Code:-1,StrCode:"网络错误，请重试"})

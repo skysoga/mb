@@ -26,7 +26,7 @@ export default {
     //   },500)
     // },
     getBalance:function(){
-      RootApp.AjaxGetInitData(['UserBalance'],ref=>{
+      RootApp.GetInitData(['UserBalance'],ref=>{
         this.refreshClass+=" refreshMove"
         this.balShow=true
         this.UserBalance=""

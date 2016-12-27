@@ -27,7 +27,8 @@ export default {
   },
   beforeRouteEnter(to,from,next){
     var arr = ["UserBankCardList"];
-     RootApp.GetInitData(arr,state=>{
+    //为了防止已锁定的银行卡更新不及时,这边用ajax方式
+    RootApp.AjaxGetInitData(arr,state=>{
       if(!state.UserBankCardList){
         router.go(-1)
       }
@@ -35,7 +36,7 @@ export default {
         vm.CardList=state.UserBankCardList
         vm.setTip()
       })
-     })
+    })
   },
   methods:{
     setCard(){
