@@ -417,49 +417,21 @@ export default {
           betDetail.push(`${this.getTag(bet.play_detail_code.slice(-3),this.config)[1]} ${bet.betting_number}`)
         })
 
-        var msg = `${this.lottery}: 第${this.NowIssue}期<br>投注金额: <span style = "color:red">${this.basketTotal}元</span><br>投注内容:<br>${betDetail.join('<br>')}`
+        var msg = `${this.lottery}: ${this.NowIssue}期<br>投注金额: <span style = "color:red">${this.basketTotal}元</span><br>投注内容:<br>${betDetail.join('<br>')}`
 
         if(this.basket.length){
-          layer.confirm(msg,()=>{
-
-            this.$store.dispatch('lt_confirmBet')
-          },()=>{})
+          layer.open({
+            title:"温馨提示",
+            shadeClose: false,
+            content: msg,
+            btn: ['确定', '取消'],
+            yes: ()=>{
+              this.$store.dispatch('lt_confirmBet')
+            },
+            no:()=>{}
+          })
         }
       }
-
-
-      // if(this.chasePower == 1 && this.chaseIssue == 1){
-      //   //如果追号倍数和期号都为1,则为普通投注
-      //   var betDetail = []
-      //   this.basket.forEach(bet=>{
-      //     betDetail.push(`${this.getTag(bet.play_detail_code.slice(-3),this.config)[1]} ${bet.betting_number}`)
-      //   })
-
-      //   var msg = `${this.lottery}: 第${this.NowIssue}期<br>投注金额: <span style = "color:red">${this.basketTotal}元</span><br>投注内容:<br>${betDetail.join('<br>')}`
-
-      //   if(this.basket.length){
-      //     layer.confirm(msg,()=>{
-
-      //       this.$store.dispatch('lt_confirmBet')
-      //     },()=>{})
-      //   }
-      // }else{
-      //   if(this.basket.length){
-      //     //如果追号倍数和期号任一大于1,则为普通追号
-      //     var betDetail = []
-      //     this.basket.forEach(bet=>{
-      //       betDetail.push(`${this.getTag(bet.play_detail_code.slice(-3),this.config)[1]} ${bet.betting_number}`)
-      //     })
-
-      //     var scheme = state.lt.scheme, last = scheme.length - 1
-      //     var msg = `${this.lottery}: 第${scheme[0].issueNo}期至第${scheme[last].issueNo}期,共${scheme.length}期<br>投注金额: <span style = "color:red">${this.schemeTotal}元</span><br>投注内容:<br>${betDetail.join('<br>')}`
-
-      //     layer.confirm(msg, ()=>{
-      //       this.$store.dispatch('lt_chase')      //追号投注
-      //     },()=>{})
-
-      //   }
-      // }
     },
     deleteBet(index){
       this.$store.commit('lt_deleteBet', index)
