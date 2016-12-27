@@ -366,7 +366,8 @@ var routes = [{
   name:'线路检测',
   meta:{
 	title:'线路检测',
-	link:'/index'
+	link:'/index',
+  user:true
   },
   component:ping
 }]
