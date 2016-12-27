@@ -504,7 +504,7 @@ function _fetch(data){
 							break;
 						}
 						if (data.Action.search('Verify')===0&&json.Code>-1) {
-							state.UserVerify=data.Action.replace('Verify','')
+							state.UserVerify=data.Action.replace('Verify','')+','
 						}
 					})()
 					resolve(json)
