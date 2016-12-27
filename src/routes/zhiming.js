@@ -48,7 +48,7 @@ var routes = [{
   component: letter
 }, {
   path: "/NoticeDetail",
-  name: "公告",
+  name: "公告详情",
   meta: {
     title: "公告",
     user: 1,
@@ -57,7 +57,7 @@ var routes = [{
   component: NoticeDetail
 },{
   path: "/letterDetail",
-  name: "私信",
+  name: "私信详情",
   meta: {
     title: "站内信",
     user: 1,
