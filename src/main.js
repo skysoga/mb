@@ -501,36 +501,36 @@ function _fetch(data){
 				res.json().then(json=>{
 					console.log(json);
 					;(function(){
-						switch(json.Code){
-							case 0://未登录
-								if(state.UserName){
-									layer.alert("由于您长时间未操作，已自动退出，请重新登录",function(){
-										RootApp.Logout()
-										var meta = RootApp._route.matched[0]
-										meta = meta&&meta.meta
-										if(meta&&meta.user){
-									    router.push("/login")
-										}
-									})
-								}
-							break;
-							case -7://系统维护
-								router.push("/maintain")
-							break;
-							case -8://账号冻结
-								layer.alert("您的账号已被冻结，详情请咨询客服。",function(){
+					})()
+					resolve(json)
+					switch(json.Code){
+						case 0://未登录
+							if(state.UserName){
+								layer.alert("由于您长时间未操作，已自动退出，请重新登录",function(){
 									RootApp.Logout()
 									var meta = RootApp._route.matched[0]
 									meta = meta&&meta.meta
-							    router.push("/login")
+									if(meta&&meta.user){
+								    router.push("/login")
+									}
 								})
-							break;
-						}
-						if (data.Action.search('Verify')===0&&json.Code>-1) {
-							state.UserVerify=data.Action.replace('Verify','')+','
-						}
-					})()
-					resolve(json)
+							}
+						break;
+						case -7://系统维护
+							router.push("/maintain")
+						break;
+						case -8://账号冻结
+							layer.alert("您的账号已被冻结，详情请咨询客服。",function(){
+								RootApp.Logout()
+								var meta = RootApp._route.matched[0]
+								meta = meta&&meta.meta
+						    router.push("/login")
+							})
+						break;
+					}
+					if (data.Action.search('Verify')===0&&json.Code>-1) {
+						state.UserVerify=data.Action.replace('Verify','')+','
+					}
 				})
 			}catch(e){
 				resolve({Code:-1,StrCode:"网络错误，请重试"})
