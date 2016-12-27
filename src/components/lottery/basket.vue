@@ -18,7 +18,10 @@
         </li>
       </ul>
       <div v-show = "ifShowClearAll" class="moreOption fix">
-        <div class="stop">追号</div>
+        <div class="stop">
+          <input type="checkbox" id="stoping">
+          <label for="stoping">追号</label>
+        </div>
         <div class="clear"  @click = "clearBasket">清空</div>
       </div>
   </div>
