@@ -1,0 +1,113 @@
+@import 'scssConfig','FromTable';
+
+.ping{
+  background: white;
+  .main{
+    padding-bottom:0;
+  }
+}
+.pingContent {
+  background: white;
+  padding: .6em 0.6rem;
+  li {
+    margin: .6em 0;
+    &:first-child{
+      margin-top:0;
+    }
+    &:last-child{
+      margin-bottom:0;
+    }
+  }
+  .noActive{
+    a{
+      border:1px solid #ddd;
+      color:#ddd;
+    }
+  }
+  input {
+    border: 1px solid #e7e9e9;
+    height: 3em;
+    padding: 0 .6em;
+    color: #333;
+    font-size: 0.7em;
+    -webkit-appearance:none;
+    border-radius: 0.2em;
+  }
+  input:first-child {
+    width: 4rem;
+  }
+  input:nth-child(3) {
+    width: 6rem;
+    width: calc(16rem - 1.2rem - 4rem - 14px - 0.4em - 3.8rem);
+  }
+  a{
+    display: inline-block;
+    width: 3rem;
+    height: 3em;
+    text-align: center;
+    vertical-align: top;
+    line-height: 3em;
+    color:#0079ff;
+    margin-left: .6rem;
+    border-radius: 6px;
+    border: 1px solid #0079ff;
+    font-size: .7em;
+  }
+}
+
+.cssico-2right{
+  position: relative;
+  color:#666;
+  display: inline-block;
+  width: 14px;
+  height: 8px;
+  margin: 0 .2em;
+  &:before,&:after{
+    content:"";
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-top:1px solid;
+    border-right:1px solid;
+    -ms-transform:rotate(45deg);
+    transform:rotate(45deg);
+    vertical-align: middle;
+  }
+  &:before{
+    
+  }
+  &:after{
+    left: 5px;
+  }
+}
+
+.refresh{
+  background: white;
+  padding-top: .6em;
+  padding-bottom: 1.2em;
+  &>div{
+    margin:0 auto;
+  }
+  a{
+    &:before{
+      content:"重新检测";
+    }
+  }
+  .noActive {
+    background: #ddd;
+    a{
+      &:before{
+        content:"正在检测...";
+        color:#999;
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
