@@ -15,8 +15,6 @@ export default{
         btnMsg:"正在检测",
         btnIf:true,
         islang:"",
-        timeArr:[0],
-        ObjArr:[],
         LineList:""
       }
     },
