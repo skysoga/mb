@@ -46,9 +46,9 @@ var routes = [{
   component: maintain
 },{
   path: '/lottery_k3',
-  name: '快3',
+  name: '快３',
   meta:{
-    title:'快3',
+    title:'快３',
     nav:0,
     link:'index',
     user:1,

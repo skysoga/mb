@@ -296,7 +296,7 @@
 		            state.IssueNo = i;
 		          }else if (i===0 && _SerTime < EndTime) {
 		          	//小于0 而且 服务器时间小于第一期的EndTime
-		            state.IssueNo = 0;
+		            state.IssueNo = state.IssueNo||0;
 		          }
 		        }
 
@@ -584,7 +584,6 @@
 		        var Countdown = state.LotteryPlan[state.IssueNo % state.PlanLen].End
 			                        +(state.IssueNo>=state.PlanLen) * DAY_TIME
 			                        -_SerTime;
-
 		        Countdown %= DAY_TIME;
 		        //如果倒计时小于0，则一直更新到最新期
 		        //用循环是因为有可能长时间不相应，需要一次性校正到位

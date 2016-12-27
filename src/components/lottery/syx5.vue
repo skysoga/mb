@@ -30,8 +30,8 @@ var countSingle = (order,tmp)=>betSum(order,tmp)[0]  //单行计数
 var ltCfg = {
   /**选一**/
   A11:{render:['d'],alg:countSingle},
-  A21:{render:['d1','d2','d3']},
-  A31:{render:['d']},
+  A21:{render:['d1','d2','d3'],alg:(order, tmp)=>betSum(order, tmp).reduce(function(a,b){return a + b})},
+  A31:{render:['d'],alg:countSingle},
   B11:{render:['d1','d2']},
   B21:{render:['qezx']},
   B23:{render:['dm','tm']},
