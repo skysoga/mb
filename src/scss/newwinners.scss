@@ -16,10 +16,10 @@
         -o-transform: translateZ(0);
         transform: translateZ(0);
         /* margin: 1em 0; */;
+        background: white;
         li{
             height: 4em;
             overflow: hidden;
-            background: white;
             &>div{
                 padding: 0.5em 0.8rem;
                 border: none;

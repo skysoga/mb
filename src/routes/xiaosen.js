@@ -49,7 +49,7 @@ var routes = [{
 	link:'/securityCenter',
 	user:true,
   verify:'UserMail',
-  from:"Mail",
+  from:"Mail,",
 	agent:false
   },
   component: setMail
@@ -74,7 +74,7 @@ var routes = [{
 	user:true,
   agent:false,
   verify:'UserSafeQuestions',
-  from:"Question"
+  from:"Question,"
   },
   component: setQuestion
 },{
@@ -98,7 +98,7 @@ var routes = [{
 	user:true,
   agent:false,
   verify:'UserMobile',
-  from:"Mobile"
+  from:"Mobile,"
   },
   component: setMobile
 },{
@@ -122,7 +122,7 @@ var routes = [{
 	user:true,
   agent:false,
   verify:'UserHasSafePwd',
-  from:'SafePwd,Mobile,Question,Mail'
+  from:'SafePwd,Mobile,Question,Mail,'
   },
   component: setSafePwd
 },{
@@ -157,7 +157,7 @@ var routes = [{
 	user:false,
   agent:false,
   verify:1,
-  from:'Pwd,SafePwdForget,MobileForget,QuestionForget,MailForget'
+  from:'Pwd,SafePwdForget,MobileForget,QuestionForget,MailForget,'
   },
   component: setPwd
 },{
@@ -366,7 +366,8 @@ var routes = [{
   name:'线路检测',
   meta:{
 	title:'线路检测',
-	link:'/index'
+	link:'/index',
+  user:true
   },
   component:ping
 }]

@@ -484,6 +484,20 @@ $bottomHeight : 2.4em;
   margin-right: .8em;
   color:#666;
   line-height: 2.16em;
+  input{
+    display: none;
+  }
+  input:checked+label:before{
+    content:"\e84d";
+  }
+  label{
+    &:before{
+      content:"\e64a";
+      display: inline;
+      font-family: "iconfont";
+      margin-right: .2em;
+    }
+  }
 }
 
 .cartTotal{
@@ -531,17 +545,18 @@ left: 0;
     float: left;
     height: $bottomHeight;
     background: #212121;
-    padding: .4em;
+    padding: .3em .4em;
     line-height: 1em;
     width: 66.5%;
     span{
-      font-size: .75em;
+      font-size: .7em;
       color:white;
       display: block;
     }
     em{
       font-size: .65em;
       color:#a9a9a9;
+      display: block;
     }
   }
   .right{
@@ -599,8 +614,20 @@ left: 0;
     content:"\e620";
   }
 }
-
-.stop,.clear{
+.stop{
+  input{
+    display: none;
+  }
+  label{
+    &:before{
+      content:"\e64a";
+    }
+  }
+  input:checked+label:before{
+    content:"\e84d";
+  }
+}
+.stop label,.clear{
   float: left;
   width: 50%;
   padding: 0;
@@ -610,8 +637,9 @@ left: 0;
   color:#666;
   &:before{
     font-family: 'iconfont';
-    color:#c4c5c5;
+    color:#bdbdbd;
     font-size: 1.1em;
+    margin-right: .2em;
   }
 }
 .numberbox{

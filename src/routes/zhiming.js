@@ -16,7 +16,6 @@ const betDetail = resolve => require(['../views/betDetail'], resolve)
 const seekDetail = resolve => require(['../views/seekDetail'], resolve)
 const seekOrder = resolve => require(['../views/seekOrder'], resolve)
 const agentIntro = resolve => require(['../views/agentIntro'], resolve)
-const maintain = resolve => require(['../views/maintain'], resolve)
 const agentBetRecord = resolve => require(['../views/agentBetRecord'], resolve)
 const agentBillRecord = resolve => require(['../views/agentBillRecord'], resolve)
 var routes = [{
@@ -49,7 +48,7 @@ var routes = [{
   component: letter
 }, {
   path: "/NoticeDetail",
-  name: "公告",
+  name: "公告详情",
   meta: {
     title: "公告",
     user: 1,
@@ -58,7 +57,7 @@ var routes = [{
   component: NoticeDetail
 },{
   path: "/letterDetail",
-  name: "私信",
+  name: "私信详情",
   meta: {
     title: "站内信",
     user: 1,
@@ -178,13 +177,6 @@ var routes = [{
     user: 1
   },
   component: agentIntro
-},{
-  path: "/maintain",
-  name: "维护中...",
-  meta: {
-    title: "系统维护"
-  },
-  component: maintain
 }]
 
 module.exports = routes;
