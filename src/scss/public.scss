@@ -158,7 +158,7 @@ body{
   text-align: center;
   color: #fff;
   background:#dc3b40;
-  @include bg-linear-gradient('to bottom, #dc3b40 2%,#dc3b40 50%, #db3b40 51%, #d7363b 100%');
+  @include bg-linear-gradient('bottom, #dc3b40 2%,#dc3b40 50%, #db3b40 51%, #d7363b 100%');
   h2{
     display: inline-block;
     font-size: .9em;
