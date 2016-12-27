@@ -9,6 +9,8 @@
 	  sessionStorage={setItem:function(d){},getItem:function(d){}};
 	}
 })()
+document.body.oncontextmenu=function(){ return false;}//防止右键
+document.addEventListener('touchstart',function(e){},false);//让css的:active生效
 // document.cookie = "Site="+location.hostname.replace('.com','')
 window.rem = document.body.clientWidth/16
 window.em = Math.sqrt((rem-20)*.9)+20
@@ -22,7 +24,8 @@ import Va from './plugins/va'
 Vue.use(Va)
 Vue.use(VueRouter)
 Vue.use(Vuex)
-
+const _App=location.host==="csz8.net"
+console.log(_App);
 const _AJAXUrl = '/tools/ssc_ajax.ashx'
 window.router = new VueRouter({
 	routes,
@@ -39,7 +42,10 @@ window.router = new VueRouter({
 });
 
 function SetIndexTitle(s){
-	routes[1].meta.title=`<img src="${state.constant.ImgHost+s.MobileLogo}" alt="" />`
+	routes[1].meta.title=`<img src="${state.constant.ImgHost+s.MobileLogo}">`
+	if (!_App) {
+		routes[2].meta.title=routes[1].meta.title
+	}
 }
 
 var UserArr = [
@@ -69,17 +75,26 @@ var UserArr = [
   'RebateSSC'
 ]
 var SiteArr=[ //需要校验更新版本的列表
+	'SysActivity',
+	'SysBanner',
   'LotteryConfig', //所有彩种列表
   'LotteryList', //所有彩种信息
-  'ActivityConfig', //活动种类及数据
   'GradeList',//等级体系
   'RewardData',//每日加奖设置
-  'BannerList',
   'DefaultPhotoList',
+]
+var AppArr=[
+  'NoticeData',
+  'ActivityConfig', //活动种类及数据
+  'BannerList',
   'PayLimit',
   'SiteConfig',
-  'NoticeData',
 ]
+if (_App) {
+	UserArr=UserArr.concat(AppArr)
+}else{
+	SiteArr=SiteArr.concat(AppArr)
+}
 var CacheArr = SiteArr.concat(UserArr)
 window.state = require('./JSconfig.js')
 ;(function(){
@@ -463,17 +478,30 @@ function _fetch(data){
 				res.json().then(json=>{
 					console.log(json);
 					;(function(){
-						if (json.Code==0) {
-							if(state.UserName){
-								layer.alert("由于您长时间未操作，已自动退出，请重新登录",function(){
+						switch(json.Code){
+							case 0://未登录
+								if(state.UserName){
+									layer.alert("由于您长时间未操作，已自动退出，请重新登录",function(){
+										RootApp.Logout()
+										var meta = RootApp._route.matched[0]
+										meta = meta&&meta.meta
+										if(meta&&meta.user){
+									    router.push("/login")
+										}
+									})
+								}
+							break;
+							case -7://系统维护
+								router.push("/maintain")
+							break;
+							case -8://账号冻结
+								layer.alert("您的账号已被冻结，详情请咨询客服。",function(){
 									RootApp.Logout()
 									var meta = RootApp._route.matched[0]
 									meta = meta&&meta.meta
-									if(meta&&meta.user){
-								    router.push("/login")
-									}
+							    router.push("/login")
 								})
-							}
+							break;
 						}
 						if (data.Action.search('Verify')===0&&json.Code>-1) {
 							state.UserVerify=data.Action.replace('Verify','')
@@ -545,5 +573,3 @@ Date.prototype.format = function(format) {
   }
   return format;
 }
-
-export {RootApp}

@@ -1,5 +1,5 @@
 <template>
-	<header class="top" v-show="meta">
+	<header class="top" v-show="!meta.hide">
     <span v-show="$store.state.turning"  v-html="$store.state.tpl.load+'加载中...'"></span>
     <template v-if="!$store.state.turning">
       <span v-html="meta.title">

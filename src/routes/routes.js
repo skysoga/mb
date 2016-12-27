@@ -13,7 +13,7 @@ const notfound =resolve => require(['../views/notfound'],resolve)
 const securityCenter =resolve => require(['../views/securityCenter'],resolve)
 const lottery_k3 =resolve => require(['../views/lottery_k3'],resolve)
 const competition =resolve => require(['../views/competition'],resolve)
-
+const maintain = resolve => require(['../views/maintain'], resolve)
 
 
 var publicRoute = [
@@ -38,6 +38,13 @@ var routes = [{
   },
   component: index
 },{
+  path: "/maintain",
+  name: "维护中...",
+  meta: {
+    title: "系统维护"
+  },
+  component: maintain
+},{
   path: '/lottery_k3',
   name: '快3',
   meta:{
@@ -51,6 +58,9 @@ var routes = [{
 }, {
   path: '/notfound',
   name: '404',
+  meta:{
+    hide:1
+  },
   component: notfound
 }, {
   path: '/service',
