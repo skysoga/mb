@@ -11,14 +11,14 @@ export default {
     }
   },
   beforeRouteEnter(to,from,next){
-    var arr = ["ActivityConfig","GradeList","UserUpGradeBonus"];
+    var arr = ["SysActivity","GradeList","UserUpGradeBonus"];
     RootApp.GetInitData(arr,ref=>{
       next()
     })
   },
   created:function(){
     var xname='晋级奖励'
-    var dataArr=store.state.ActivityConfig
+    var dataArr=store.state.SysActivity
     this.GradeList=store.state.GradeList
     this.isBouns=store.state.UserUpGradeBonus
     var thState=-1

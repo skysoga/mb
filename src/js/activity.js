@@ -3,7 +3,7 @@ export default {
     return{}
   },
   beforeRouteEnter(to,from,next){
-     var arr = ["ActivityConfig"];
+     var arr = ["SysActivity","ActivityConfig"];
      RootApp.GetInitData(arr,state=>{
       next()
      })
