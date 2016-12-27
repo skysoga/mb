@@ -185,6 +185,7 @@
 		      },
 		      tmp: {},        //即时的投注号码情况
 		      basket:[],      //号码篮
+		      isChase: false, //是否追号
 		      //追号配置
 		      chaseConf:{
 	      		before_issueNo: -1,
@@ -361,26 +362,27 @@
 	      	//添加bet到plan中
 	      	lt_addBet:(state)=>{
 	      		var baseBet = new BaseBet(this.$store.state)
-	      		var {power,buy_count} = state.chaseConf
-	      		if(power > 1 || buy_count > 1){
-	      			baseBet.power2one(this.$store.state)
-	      		}
+	      		// var {power,buy_count} = state.chaseConf
+	      		// if(power > 1 || buy_count > 1){
+	      		// 	baseBet.power2one(this.$store.state)
+	      		// }
 	      		this.$store.commit('lt_addToBasket', baseBet)
 	      		this.$store.commit('lt_clearBet')
-	      		this.$store.dispatch('lt_ordinaryChase')
+	      		// this.$store.dispatch('lt_ordinaryChase')
 	      	},
 	      	lt_addRandomBet:(state, randomBet)=>{
-	      		var {power,buy_count} = state.chaseConf
-	      		if(power > 1 || buy_count > 1){
-	      			randomBet.power2one(this.$store.state)
-	      		}
+	      		// var {power,buy_count} = state.chaseConf
+	      		// if(power > 1 || buy_count > 1){
+	      		// 	randomBet.power2one(this.$store.state)
+	      		// }
 	      		this.$store.commit('lt_addToBasket', randomBet)
-	      		this.$store.dispatch('lt_ordinaryChase')
+	      		// this.$store.dispatch('lt_ordinaryChase')
 	      	},
 	      	//将注单push到basket里
 	      	lt_addToBasket:(state, bet)=>{
-	      		state.chaseConf.buy_count = 1
-	      		state.chaseConf.power = 1
+	      		//不清追号配置
+	      		// state.chaseConf.buy_count = 1
+	      		// state.chaseConf.power = 1
 
 	      		//去掉重复的，合并加倍
 	      		var equalIndex, isEqual = false
@@ -441,6 +443,15 @@
 	      			bet.betting_money = +(state.perbet * bet.betting_count * bet.graduation_count * bet.betting_model).toFixed(2)
 	      		})
 	      	},
+	      	lt_setIsChase:(state, bool)=>{
+	      		state.isChase = bool
+	      		if(bool){
+	      			//追号了，选号区的倍数就清了
+	      			state.bet.graduation_count = 1
+	      			this.$store.commit('lt_basketPowerTo1')
+	      			this.$store.dispatch('lt_ordinaryChase')
+	      		}
+	      	}
 		    },
 
 		    actions: {

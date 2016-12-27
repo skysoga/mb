@@ -6,7 +6,7 @@
   </header>
 
   <div class="cartMain">
-    <div class="someBtn" ref = "someBtn"><a @click.stop = "random(1)">机选1注</a><a @click.stop = "random(5)">机选5注</a><a @click.stop = "back">继续选号</a>
+    <div class="someBtn" ref = "someBtn"><a @click.stop = "machineSelect(1)">机选1注</a><a @click.stop = "machineSelect(5)">机选5注</a><a @click.stop = "back">继续选号</a>
     </div>
 
     <div class="cartContent">
@@ -19,7 +19,7 @@
       </ul>
       <div v-show = "ifShowClearAll" class="moreOption fix">
         <div class="stop">
-          <input type="checkbox" id="stoping">
+          <input type="checkbox" id="stoping" v-model = "isChase">
           <label for="stoping">追号</label>
         </div>
         <div class="clear"  @click = "clearBasket">清空</div>
@@ -27,24 +27,21 @@
   </div>
   </div>
   <div class="cartTotal">
-    <div class="change" ref = "change">
+    <!-- 追号的配置 -->
+    <div class="change" ref = "change" v-show = "isChase">
       <label>投<input type="tel" v-model.lazy = "chasePower">倍</label>
-      <label>追<input type="tel" v-model.lazy = "chaseIssue">期
-        <div class="stop" v-show = "showBubble">
-          <input type="checkbox" id="stop" v-model = "isStopAfterWin" @change = "isStopAfterWinChange">
-          <label for="stop">中奖后停止追号</label>
-        </div>
-      </label>
+      <label>追<input type="tel" v-model.lazy = "chaseIssue">期</label>
       <div class="stopBtn">
-        <input type="checkbox" id="stopBtn">
+        <input type="checkbox" id="stopBtn" v-model = "isStopAfterWin">
         <label for="stopBtn">中奖即停</label>
       </div>
     </div>
+
     <div class="result fix" ref = "result">
       <div class="left" v-show = "true">
           <span>方案{{basketNums}}注,{{total}}元</span>
-          <em>普通投注</em>
-          <!-- <em>追X期，投X注</em> -->
+          <em v-show = "!isChase">普通投注</em>
+          <em v-show = "isChase">投{{chasePower}}倍，追{{chaseIssue}}期</em>
       </div>
 
       <div class="right" @click = "confirmBet">
@@ -279,7 +276,6 @@ export default {
   data(){
     return {
       PERBET:PERBET,
-      isStopAfterWin: true
     }
   },
   computed:{
@@ -291,17 +287,14 @@ export default {
         var store = this.$store
         store.commit('lt_setChasePower', +power)
         if(power.search(/[^\d]+/) > -1 || power <= 0){
-          store.commit('lt_basketPowerTo1')
           store.commit('lt_setChasePower', 1)
           store.dispatch('lt_ordinaryChase')
         }else if(power > Max_Rate){
-          store.commit('lt_basketPowerTo1')
           store.commit('lt_setChasePower', Max_Rate)
           store.dispatch('lt_ordinaryChase')
           layer.msgWarn(`最多${Max_Rate}倍`)
         }else{
-          if(power > 1 || this.chaseIssue > 1){
-            store.commit('lt_basketPowerTo1')
+          if(this.isChase){
             store.dispatch('lt_ordinaryChase')
           }
         }
@@ -316,17 +309,14 @@ export default {
         store.commit('lt_setChaseIssue', +issue)
         if(issue.search(/[^\d]+/) > -1 || issue <= 0){
           store.commit('lt_setChaseIssue', 1)
-          store.commit('lt_basketPowerTo1')
           store.dispatch('lt_ordinaryChase')
         }else if(issue > Max_Chase_Issue){
           issue = Max_Chase_Issue
           store.commit('lt_setChaseIssue', +issue)
-          store.commit('lt_basketPowerTo1')
           store.dispatch('lt_ordinaryChase')
           layer.msgWarn(`最多${Max_Chase_Issue}期`)
         }else{
-          if(issue > 1 || this.chasePower > 1){
-            store.commit('lt_basketPowerTo1')
+          if(this.isChase){
             store.dispatch('lt_ordinaryChase')
           }
         }
@@ -362,23 +352,66 @@ export default {
       return +(total).toFixed(2)
     },
     total(){
-      return (this.chasePower > 1 || this.chaseIssue > 1) ? this.schemeTotal : this.basketTotal
+      return this.isChase ? this.schemeTotal : this.basketTotal
     },
-    lottery(){return state.lt.lottery.LotteryName},
-    NowIssue(){return state.lt.NowIssue},
+    lottery(){return this.$store.state.lt.lottery.LotteryName},
+    NowIssue(){return this.$store.state.lt.NowIssue},
     showBubble(){
       return this.chaseIssue > 1
+    },
+    isChase:{
+      get(){
+        return this.$store.state.lt.isChase
+      },
+      set(val){
+        this.$store.commit('lt_setIsChase', val)
+      }
+    },
+    isStopAfterWin:{
+      get(){
+        return this.$store.state.lt.chaseConf.isstop_afterwinning
+      },
+      set(val){
+        this.$store.commit('lt_isStopAfterWin', val)
+      }
     }
   },
   methods:{
     //返回投注页
     back(){
-      this.$store.commit('lt_changeBox', '')
+      if(this.isChase){
+        this.leaveChase(()=>{
+          this.$store.commit('lt_changeBox', '')
+        })
+      }else{
+        this.$store.commit('lt_changeBox', '')
+      }
+    },
+    //追号时，如果涉及选号操作，离开追号
+    leaveChase(fn){
+      layer.confirm(`追号时再次选号，将切换回普通投注模式，是否继续？`
+        ,()=>{
+          this.isChase = false
+          if(fn)fn()
+        },()=>{})
     },
     //确认投注
     confirmBet(){
-      if(this.chasePower == 1 && this.chaseIssue == 1){
-        //如果追号倍数和期号都为1,则为普通投注
+      if(this.isChase){
+        //普通追号
+        var betDetail = []
+        this.basket.forEach(bet=>{
+          betDetail.push(`${this.getTag(bet.play_detail_code.slice(-3),this.config)[1]} ${bet.betting_number}`)
+        })
+
+        var scheme = state.lt.scheme, last = scheme.length - 1
+        var msg = `${this.lottery}: 第${scheme[0].issueNo}期至第${scheme[last].issueNo}期,共${scheme.length}期<br>投注金额: <span style = "color:red">${this.schemeTotal}元</span><br>投注内容:<br>${betDetail.join('<br>')}`
+
+        layer.confirm(msg, ()=>{
+          this.$store.dispatch('lt_chase')      //追号投注
+        },()=>{})
+      }else{
+        //普通投注
         var betDetail = []
         this.basket.forEach(bet=>{
           betDetail.push(`${this.getTag(bet.play_detail_code.slice(-3),this.config)[1]} ${bet.betting_number}`)
@@ -392,23 +425,41 @@ export default {
             this.$store.dispatch('lt_confirmBet')
           },()=>{})
         }
-      }else{
-        if(this.basket.length){
-          //如果追号倍数和期号任一大于1,则为普通追号
-          var betDetail = []
-          this.basket.forEach(bet=>{
-            betDetail.push(`${this.getTag(bet.play_detail_code.slice(-3),this.config)[1]} ${bet.betting_number}`)
-          })
-
-          var scheme = state.lt.scheme, last = scheme.length - 1
-          var msg = `${this.lottery}: 第${scheme[0].issueNo}期至第${scheme[last].issueNo}期,共${scheme.length}期<br>投注金额: <span style = "color:red">${this.schemeTotal}元</span><br>投注内容:<br>${betDetail.join('<br>')}`
-
-          layer.confirm(msg, ()=>{
-            this.$store.dispatch('lt_chase')      //追号投注
-          },()=>{})
-
-        }
       }
+
+
+      // if(this.chasePower == 1 && this.chaseIssue == 1){
+      //   //如果追号倍数和期号都为1,则为普通投注
+      //   var betDetail = []
+      //   this.basket.forEach(bet=>{
+      //     betDetail.push(`${this.getTag(bet.play_detail_code.slice(-3),this.config)[1]} ${bet.betting_number}`)
+      //   })
+
+      //   var msg = `${this.lottery}: 第${this.NowIssue}期<br>投注金额: <span style = "color:red">${this.basketTotal}元</span><br>投注内容:<br>${betDetail.join('<br>')}`
+
+      //   if(this.basket.length){
+      //     layer.confirm(msg,()=>{
+
+      //       this.$store.dispatch('lt_confirmBet')
+      //     },()=>{})
+      //   }
+      // }else{
+      //   if(this.basket.length){
+      //     //如果追号倍数和期号任一大于1,则为普通追号
+      //     var betDetail = []
+      //     this.basket.forEach(bet=>{
+      //       betDetail.push(`${this.getTag(bet.play_detail_code.slice(-3),this.config)[1]} ${bet.betting_number}`)
+      //     })
+
+      //     var scheme = state.lt.scheme, last = scheme.length - 1
+      //     var msg = `${this.lottery}: 第${scheme[0].issueNo}期至第${scheme[last].issueNo}期,共${scheme.length}期<br>投注金额: <span style = "color:red">${this.schemeTotal}元</span><br>投注内容:<br>${betDetail.join('<br>')}`
+
+      //     layer.confirm(msg, ()=>{
+      //       this.$store.dispatch('lt_chase')      //追号投注
+      //     },()=>{})
+
+      //   }
+      // }
     },
     deleteBet(index){
       this.$store.commit('lt_deleteBet', index)
@@ -417,6 +468,15 @@ export default {
       this.$store.commit('lt_clearBasket')
     },
     getTag:getTag,
+    machineSelect(n){
+      if(this.isChase){
+        this.leaveChase(()=>{
+          this.random(n)
+        })
+      }else{
+        this.random(n)
+      }
+    },
     //机选n注
     random(n){
       for(var i = 0;i < n;i++){
@@ -427,10 +487,6 @@ export default {
         this.$store.commit('lt_addRandomBet', new BaseBet(this.$store.state,count, betStr))
       }
     },
-    //改变中奖后是否停止追号的标志位
-    isStopAfterWinChange(){
-      this.$store.commit('lt_isStopAfterWin', this.isStopAfterWin)
-    }
   },
 }
 </script>
