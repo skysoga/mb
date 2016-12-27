@@ -604,8 +604,12 @@ function getK3Rebate(mode, Odds){
     }
   }
 }
-function getSYX5Rebate(mode, Odds){
-  return '暂时的'
+function getRebate(mode, Odds){
+  for(var i = 0;i < Odds.length;i++){
+    if(Odds[i].PlayCode === mode){
+      return Odds[i].Bonus
+    }
+  }
 }
 
 
@@ -613,5 +617,5 @@ export {factorial, mul, C, combNoRepeat, unique, normalSum2,
   normalSum3, accumulate,diff2, diff3, combSum2, combSum3,
    bus, BaseBet, compress, throttle, easyClone, ChaseAjax,
     deleteCompress, Scheme, getBasketAmount,computeIssue,
-    getSSCRebate,getK3Rebate,getSYX5Rebate, DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME,
+    getSSCRebate,getK3Rebate,getRebate, DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME,
   GMT_DIF, PERBET,Max_Rate, Max_Chase_Issue, Max_Expect_Rate, BASE_ISSUE_1406}

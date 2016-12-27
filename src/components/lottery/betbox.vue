@@ -40,6 +40,7 @@ var _0to9 = [0,1,2,3,4,5,6,7,8,9],
     _syx5 = ['01','02','03','04','05','06','07','08','09','10','11']
 
 var cfg = {
+  /**时时彩**/
   '10000': {tag: '万位', itemArr: _0to9, filters: filters},
   '1000': {tag: '千位', itemArr: _0to9, filters: filters},
   '100': {tag: '百位', itemArr: _0to9, filters: filters},
@@ -61,7 +62,22 @@ var cfg = {
   'csum26':{itemArr: _1to26, filters:['清']},
   'csum17':{itemArr: _1to17, filters:['清']},
   'baodan':{itemArr: _0to9, filters:['清']},
-
+  /**十一选五**/
+  'd1':{tag:'第一位', itemArr: _syx5, filters:['清']},
+  'd2':{tag:'第二位', itemArr: _syx5, filters:['清']},
+  'd3':{tag:'第二位', itemArr: _syx5, filters:['清']},
+  'd':{itemArr: _syx5, filters:['清']},
+  'dm':{tag:'胆码', itemArr: _syx5, filters:['清']},
+  'tm':{tag:'拖码', itemArr: _syx5, filters:['清']},
+  'qezx':{tag:'前二组选', itemArr: _syx5, filters:['清']},
+  'qszx':{tag:'前三组选', itemArr: _syx5, filters:['清']},
+  'x2z2':{tag:'选二中二', itemArr: _syx5, filters:['清']},
+  'x3z3':{tag:'选三中三', itemArr: _syx5, filters:['清']},
+  'x4z4':{tag:'选四中四', itemArr: _syx5, filters:['清']},
+  'x5z5':{tag:'选五中五', itemArr: _syx5, filters:['清']},
+  'x6z5':{tag:'选六中五', itemArr: _syx5, filters:['清']},
+  'x7z5':{tag:'选七中五', itemArr: _syx5, filters:['清']},
+  'x8z5':{tag:'选八中五', itemArr: _syx5, filters:['清']},
 }
 var refer = {
   '全':[0,1,2,3,4,5,6,7,8,9],
