@@ -28,6 +28,7 @@ const memberCode =resolve => require(['../views/memberCode'],resolve)//邀请码
 const withdraw =resolve => require(['../views/withdraw'],resolve)//提现
 const rebateDes =resolve => require(['../views/rebateDes'],resolve)//返点赔率表
 const tool =resolve => require(['../views/tool'],resolve)//清缓存工具
+const ping =resolve => require(['../views/ping'],resolve)//线路检测
 var routes = [{
   path: '/manageBankcard',
   name: '银行卡管理',
@@ -355,10 +356,18 @@ var routes = [{
   path:'/tool',
   name:'清缓存工具',
   meta:{
-	title:'工具',
-	link:'/index'
+  title:'工具',
+  link:'/index'
   },
   component:tool
-
+},
+{
+  path:'/ping',
+  name:'线路检测',
+  meta:{
+	title:'线路检测',
+	link:'/index'
+  },
+  component:ping
 }]
 module.exports = routes
