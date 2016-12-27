@@ -54,7 +54,7 @@ module.exports = {
   },
   color:{
     blue:'#38f',
-    red:'red'
+    red:'#dc3b40'
   },
   tpl:{
   	noData:["<div class='fullPageMsg'><div class='fullPageIcon iconfont'>&#xe63c;</div><p>','</p></div>"],
