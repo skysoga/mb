@@ -9,6 +9,8 @@
 	  sessionStorage={setItem:function(d){},getItem:function(d){}};
 	}
 })()
+document.body.oncontextmenu=function(){ return false;}//防止右键
+document.addEventListener('touchstart',function(e){},false);//让css的:active生效
 // document.cookie = "Site="+location.hostname.replace('.com','')
 window.rem = document.body.clientWidth/16
 window.em = Math.sqrt((rem-20)*.9)+20
@@ -22,7 +24,8 @@ import Va from './plugins/va'
 Vue.use(Va)
 Vue.use(VueRouter)
 Vue.use(Vuex)
-
+const _App=location.host==="csz8.net"
+console.log(_App);
 const _AJAXUrl = '/tools/ssc_ajax.ashx'
 window.router = new VueRouter({
 	routes,
@@ -39,7 +42,10 @@ window.router = new VueRouter({
 });
 
 function SetIndexTitle(s){
-	routes[1].meta.title=`<img src="${state.constant.ImgHost+s.MobileLogo}" alt="" />`
+	routes[1].meta.title=`<img src="${state.constant.ImgHost+s.MobileLogo}">`
+	if (!_App) {
+		routes[2].meta.title=routes[1].meta.title
+	}
 }
 
 var UserArr = [
@@ -69,17 +75,26 @@ var UserArr = [
   'RebateSSC'
 ]
 var SiteArr=[ //需要校验更新版本的列表
+	'SysActivity',
+	'SysBanner',
   'LotteryConfig', //所有彩种列表
   'LotteryList', //所有彩种信息
-  'ActivityConfig', //活动种类及数据
   'GradeList',//等级体系
   'RewardData',//每日加奖设置
-  'BannerList',
   'DefaultPhotoList',
+]
+var AppArr=[
+  'NoticeData',
+  'ActivityConfig', //活动种类及数据
+  'BannerList',
   'PayLimit',
   'SiteConfig',
-  'NoticeData',
 ]
+if (_App) {
+	UserArr=UserArr.concat(AppArr)
+}else{
+	SiteArr=SiteArr.concat(AppArr)
+}
 var CacheArr = SiteArr.concat(UserArr)
 window.state = require('./JSconfig.js')
 ;(function(){
@@ -545,5 +560,3 @@ Date.prototype.format = function(format) {
   }
   return format;
 }
-
-export {RootApp}
