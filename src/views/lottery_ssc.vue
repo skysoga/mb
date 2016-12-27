@@ -33,7 +33,6 @@
   import lt_footer from '../components/lottery/lt-footer'
   import ssc from '../components/lottery/ssc'
   import basket from '../components/lottery/basket'
-  import {DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME} from '../JSconfig'
 
 	export default {
 		components:{
@@ -45,16 +44,8 @@
       'basket': basket,
 		},
     created(){
-      //从路径上获取彩种
-      [,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
       this.$store.commit('lt_initConfig')
     },
-		data () {
-			return {
-				ltype:'', //彩种类型
-        lcode:'',  //彩种code
-			}
-		},
     computed:{
       ifShowBasket(){
         return this.$store.state.lt.box === 'basket'

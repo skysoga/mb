@@ -3,9 +3,10 @@ const register =resolve => require(['../views/register'],resolve)
 const rechargeWay =resolve => require(['../views/rechargeWay'],resolve)
 const normalPay =resolve => require(['../views/normalPay'],resolve)
 const quickPay =resolve => require(['../views/quickPay'],resolve)
-const lottery_ssc = resolve => require(['../views/lottery_ssc'],resolve)
 const lotteryPage = resolve => require(['../views/lotteryPage'],resolve)
+const lottery_ssc = resolve => require(['../views/lottery_ssc'],resolve)
 const lottery_k3 = resolve => require(['../views/lottery_k3'],resolve)
+const lottery_syx5 = resolve=>require(['../views/lottery_syx5'], resolve)
 
 var routes = [
   {
@@ -64,6 +65,11 @@ var routes = [
         path: 'K3/:code',
         name: '快三',
         component: lottery_k3
+      },
+      {
+        path: 'SYX5/:code',
+        name: '11选5',
+        component: lottery_syx5
       }
     ]
   }

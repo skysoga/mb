@@ -145,7 +145,7 @@
 			lotteryName(){
 				var removeName = {
 					'SSC':'时时彩',
-					'11X5': '11选5'
+					'SYX5': '11选5'
 				}
 				return this.LotteryName.replace(removeName[this.ltype], '')
 			}
