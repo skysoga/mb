@@ -16,7 +16,7 @@
 	import lt_syx5 from '../json/lt_syx5.json'
 	import Vue from 'vue'
 	import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
-	import {bus, BaseBet, ChaseAjax, easyClone, deleteCompress, Scheme, getBasketAmount, computeIssue, getSSCRebate, getK3Rebate,getSYX5Rebate,DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../js/kit'
+	import {bus, BaseBet, ChaseAjax, easyClone, deleteCompress, Scheme, getBasketAmount, computeIssue, getSSCRebate, getK3Rebate,getRebate,DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../js/kit'
 
 	export default{
 		beforeRouteEnter(to, from, next){
@@ -169,7 +169,7 @@
 			var awardSetter = {
   			'SSC':getSSCRebate,
   			'K3': getK3Rebate,
-  			'SYX5': getSYX5Rebate
+  			'SYX5': getRebate
   		}
 
 			var wait4Results = 0, wait4BetRecord = false

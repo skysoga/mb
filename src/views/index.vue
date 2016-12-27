@@ -17,7 +17,7 @@
       <a v-else><i class="iconfont gonggao fl"></i><span>欢迎来到{{$store.state.SiteConfig?$store.state.SiteConfig.Name:'彩神争霸'}}</span></a>
     </div>
     <div class="hr1px"></div>
-    <div id="HotLottery" v-if="store.state.LotteryList" v-bind:style="{height:Math.ceil(len/3)*5+'em'}">
+    <div id="HotLottery" v-if="$store.state.LotteryList" v-bind:style="{height:Math.ceil(len/3)*5+'em'}">
       <ul>
         <li v-for="l in LList">
           <router-link :class="'active L_'+$store.state.LotteryList[l].LotteryType" :to="'/lottery/'+$store.state.LotteryList[l].LotteryType+'/'+l">
