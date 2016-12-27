@@ -407,9 +407,22 @@ export default {
         var scheme = state.lt.scheme, last = scheme.length - 1
         var msg = `${this.lottery}: 第${scheme[0].issueNo}期至第${scheme[last].issueNo}期,共${scheme.length}期<br>投注金额: <span style = "color:red">${this.schemeTotal}元</span><br>投注内容:<br>${betDetail.join('<br>')}`
 
-        layer.confirm(msg, ()=>{
-          this.$store.dispatch('lt_chase')      //追号投注
-        },()=>{})
+        if(this.basket.length){
+          layer.open({
+            title:"投注确认",
+            shadeClose: false,
+            content: msg,
+            btn: ['确定', '取消'],
+            yes: ()=>{
+               this.$store.dispatch('lt_chase')      //追号投注
+            },
+            no:()=>{}
+          })
+        }
+
+        // layer.confirm(msg, ()=>{
+        //   this.$store.dispatch('lt_chase')      //追号投注
+        // },()=>{})
       }else{
         //普通投注
         var betDetail = []
@@ -421,7 +434,7 @@ export default {
 
         if(this.basket.length){
           layer.open({
-            title:"温馨提示",
+            title:"投注确认",
             shadeClose: false,
             content: msg,
             btn: ['确定', '取消'],

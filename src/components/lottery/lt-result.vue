@@ -73,6 +73,27 @@ export default {
       return state.lt.displayResults ? this.results : this.wait4Results
     },
     pastOpen(){
+      // var handler = {
+      //   'SSC':lt=>{
+      //     return lt.LotteryResults[this.lcode].map(item=>{
+      //       var el = {}
+      //       el.IssueNo = item.IssueNo.slice(4)        //把年份砍掉
+      //       el.LotteryOpen = item.LotteryOpen.split(',')
+      //       el.OpenTime = item.OpenTime.split(' ')[1] //开奖时间的时分秒
+      //       return el
+      //     })
+      //   },
+      //   'SYX5':lt=>{
+      //     return lt.LotteryResults[this.lcode].map(item=>{
+      //       var el = {}
+      //       el.IssueNo = item.IssueNo.slice(4)        //把年份砍掉
+      //       el.LotteryOpen = item.LotteryOpen.split(',')
+      //       el.OpenTime = item.OpenTime.split(' ')[1] //开奖时间的时分秒
+      //       return el
+      //     })
+      //   }
+      // }
+      // return handler[this.ltype](this.$store.state.lt)
       return state.lt.LotteryResults[this.lcode].map(item=>{
         var el = {}
         el.IssueNo = item.IssueNo.slice(4)        //把年份砍掉

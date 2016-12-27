@@ -13,9 +13,10 @@
 <script>
 	import lt_ssc from '../json/lt_ssc.json'
 	import lt_k3 from '../json/lt_k3.json'
+	import lt_syx5 from '../json/lt_syx5.json'
 	import Vue from 'vue'
 	import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
-	import {bus, BaseBet, ChaseAjax, easyClone, deleteCompress, Scheme, getBasketAmount, computeIssue, getSSCRebate, getK3Rebate,DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../js/kit'
+	import {bus, BaseBet, ChaseAjax, easyClone, deleteCompress, Scheme, getBasketAmount, computeIssue, getSSCRebate, getK3Rebate,getSYX5Rebate,DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../js/kit'
 
 	export default{
 		beforeRouteEnter(to, from, next){
@@ -27,7 +28,8 @@
 			  //校验下这个彩种存不存在，不存在就送回购彩大厅
 		 		var table = {
 					'SSC': '时时彩',
-					'K3': '快3'
+					'K3': '快3',
+					'SYX5': '11选5'
 				}
 				var lotteryTypeList
 				state.LotteryConfig.map(item=>{
@@ -55,124 +57,122 @@
 
 			//这里获取一次服务器时间，用以校正
 			RootApp.getServerTime()
-			//留着11选5测试数据
-			const lt_11x5 = {
-				'选一':{
-					'前三一码不定位':[
-						{
-							name:'复式',
-							mode:'A11',
-							tag:'前三一码不定位',
-							group:'选一',
-							subGroup:'前三一码不定位'
-						}
-					],
-					'定位胆':[
-						{
-							name:'复式',
-							mode:'A21',
-							tag:'定位胆',
-							group:'选一',
-							subGroup:'定位胆'
-						}
-					],
-					'任选一中一':[
-						{
-							name:'复式',
-							mode:'A31',
-							tag:'任选一中一复式',
-							group:'选一',
-							subGroup:'任选一中一'
-						},
-						{
-							name:'单式',
-							mode:'A32',
-							tag:'任选一中一单式',
-							group:'选一',
-							subGroup:'任选一中一'
-						}
-					]
-				},
-				'选二':{
-					'前二直选':[
-						{
-							name:'复式',
-							mode:'B11',
-							tag:'前二直选复式',
-							group:'选二',
-							subGroup:'前二直选'
-						},
-						{
-							name:'单式',
-							mode:'B12',
-							tag:'前二直选单式',
-							group:'选二',
-							subGroup:'前二直选'
-						}
-					],
-					'前二组选':[
-						{
-							name:'复式',
-							mode:'B21',
-							tag:'前二组选复式',
-							group:'选二',
-							subGroup:'前二组选'
-						},
-						{
-							name:'单式',
-							mode:'B22',
-							tag:'前二组选单式',
-							group:'选二',
-							subGroup:'前二组选'
-						},
-						{
-							name:'胆拖',
-							mode:'B23',
-							tag:'前二组选胆拖',
-							group:'选二',
-							subGroup:'前二组选'
-						}
-					],
-					'任选二中二':[
-						{
-							name:'复式',
-							mode:'B31',
-							tag:'任选二中二复式',
-							group:'选二',
-							subGroup:'任选二中二'
-						},
-						{
-							name:'单式',
-							mode:'B32',
-							tag:'任选二中二单式',
-							group:'选二',
-							subGroup:'任选二中二'
-						},
-						{
-							name:'胆拖',
-							mode:'B33',
-							tag:'任选二中二胆拖',
-							group:'选二',
-							subGroup:'任选二中二'
-						}
-					]
-				}
-			}
+			// // //留着11选5测试数据
+			// const lt_11x5 = {
+			// 	'选一':{
+			// 		'前三一码不定位':[
+			// 			{
+			// 				name:'复式',
+			// 				mode:'A11',
+			// 				tag:'前三一码不定位',
+			// 				group:'选一',
+			// 				subGroup:'前三一码不定位'
+			// 			}
+			// 		],
+			// 		'定位胆':[
+			// 			{
+			// 				name:'复式',
+			// 				mode:'A21',
+			// 				tag:'定位胆',
+			// 				group:'选一',
+			// 				subGroup:'定位胆'
+			// 			}
+			// 		],
+			// 		'任选一中一':[
+			// 			{
+			// 				name:'复式',
+			// 				mode:'A31',
+			// 				tag:'任选一中一复式',
+			// 				group:'选一',
+			// 				subGroup:'任选一中一'
+			// 			},
+			// 			{
+			// 				name:'单式',
+			// 				mode:'A32',
+			// 				tag:'任选一中一单式',
+			// 				group:'选一',
+			// 				subGroup:'任选一中一'
+			// 			}
+			// 		]
+			// 	},
+			// 	'选二':{
+			// 		'前二直选':[
+			// 			{
+			// 				name:'复式',
+			// 				mode:'B11',
+			// 				tag:'前二直选复式',
+			// 				group:'选二',
+			// 				subGroup:'前二直选'
+			// 			},
+			// 			{
+			// 				name:'单式',
+			// 				mode:'B12',
+			// 				tag:'前二直选单式',
+			// 				group:'选二',
+			// 				subGroup:'前二直选'
+			// 			}
+			// 		],
+			// 		'前二组选':[
+			// 			{
+			// 				name:'复式',
+			// 				mode:'B21',
+			// 				tag:'前二组选复式',
+			// 				group:'选二',
+			// 				subGroup:'前二组选'
+			// 			},
+			// 			{
+			// 				name:'单式',
+			// 				mode:'B22',
+			// 				tag:'前二组选单式',
+			// 				group:'选二',
+			// 				subGroup:'前二组选'
+			// 			},
+			// 			{
+			// 				name:'胆拖',
+			// 				mode:'B23',
+			// 				tag:'前二组选胆拖',
+			// 				group:'选二',
+			// 				subGroup:'前二组选'
+			// 			}
+			// 		],
+			// 		'任选二中二':[
+			// 			{
+			// 				name:'复式',
+			// 				mode:'B31',
+			// 				tag:'任选二中二复式',
+			// 				group:'选二',
+			// 				subGroup:'任选二中二'
+			// 			},
+			// 			{
+			// 				name:'单式',
+			// 				mode:'B32',
+			// 				tag:'任选二中二单式',
+			// 				group:'选二',
+			// 				subGroup:'任选二中二'
+			// 			},
+			// 			{
+			// 				name:'胆拖',
+			// 				mode:'B33',
+			// 				tag:'任选二中二胆拖',
+			// 				group:'选二',
+			// 				subGroup:'任选二中二'
+			// 			}
+			// 		]
+			// 	}
+			// }
 
 			var pageConfig = {
 				'SSC': lt_ssc,
-				'11X5': lt_11x5,
+				'SYX5': lt_syx5,
 				'K3': lt_k3,
 			}
 			var awardSetter = {
   			'SSC':getSSCRebate,
-  			'K3': getK3Rebate
+  			'K3': getK3Rebate,
+  			'SYX5': getSYX5Rebate
   		}
 
-			var wait4Results = 0
-					,wait4BetRecord = false
-
-
+			var wait4Results = 0, wait4BetRecord = false
 			const lt = {
 		    state:{
 		      bet: {
@@ -249,6 +249,7 @@
 		      	bus.$emit('clearNoteStr')   //清空文本框文字
 		      	this.$store.commit('lt_clearBet')
 		      	state.mode = mode
+		      	console.log(type)
 		      	// console.log(mode)
 		      	//更改玩法时，对应玩法的奖金也跟着变
 		      	state.award = awardSetter[type](mode.mode, Odds)
@@ -777,13 +778,15 @@
 							data: new ChaseAjax(rootState)
 	      		}).then((json)=>{
 	      			if(json.Code === 1){
+
 								layer.msg(json.StrCode)
 								commit('lt_clearBet')						//清空bet
 		      			commit('lt_clearBasket')				//清空basket
 		      			commit('lt_changeBox', '')			//将所有弹出框关闭
 		      			commit('lt_setScheme', [])			//清空scheme
-		      			commit('lt_setChasePower', 1)		//清空追号配置
-					      commit('lt_setChaseIssue', 1)
+		      			// commit('lt_setChasePower', 1)		//清空追号配置
+					      // commit('lt_setChaseIssue', 1)
+					      commit('lt_setIsChase', false)  //追号成功后，变成普通投注
 
 								//隔3s获取我的投注
 		      			this.timer4 = setTimeout(()=>{
@@ -842,7 +845,7 @@
 			setDefaultMode(){
 			  var defaultMode = {
 					'SSC':['五星', '直选'],
-					'11X5':['选一', '前三一码不定位']
+					'SYX5':['选一', '前三一码不定位']
 				}
 
 				if(this.ltype !== 'K3'){

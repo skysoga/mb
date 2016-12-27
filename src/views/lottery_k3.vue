@@ -472,7 +472,7 @@ export default {
                     投注内容:${this.chosen.join(' ')}`
 
         layer.open({
-          title:"温馨提示",
+          title:"投注确认",
           shadeClose: false,
           content: msg,
           btn: ['确定', '取消'],
@@ -515,44 +515,6 @@ export default {
           },
           no:()=>{}
         })
-
-        // layer.confirm(msg,()=>{
-        //   var basebet = new BaseBet(this.$store.state)
-        //   if(this.mode === 'A10'){
-        //     basebet.setRebate('180', this.$store.state)
-        //   }
-        //   var basket = deleteCompress([basebet])
-        //   layer.msgWait('正在投注')
-        //   _fetch({
-        //     'Action':'AddBetting',
-        //     'data': {BettingData:basket}
-        //   }).then((json)=>{
-        //     if(json.Code === 1){
-        //       this.showPrice = ''
-        //       // layer.msg(json.StrCode)
-        //       this.$store.commit('lt_clearBet')
-        //       this.$store.commit('lt_changeBox', '')
-        //       //隔3s获取我的投注
-        //       this.timer3 = setTimeout(()=>{
-        //         this.$store.dispatch('lt_updateBetRecord')
-        //       }, 3000)
-
-        //       layer.confirm(`<span style = "color:red">投注成功</span>，您可以在我的账户查看注单详情`
-        //         ,['继续投注','查看注单']
-        //         ,()=>{}
-        //         ,()=>{this.$router.push('/userCenter')})
-
-        //     }else if(json.Code === -9){
-        //       //清除rebate
-        //       layer.alert(json.StrCode)
-        //       var type = this.$store.state.lottery.LotteryType
-        //       // localStorage.removeItem('Rebate' + type)
-        //       this.$store.dispatch('lt_getRebate')
-        //     }else{
-        //       layer.msgWarn(json.StrCode)
-        //     }
-        //   })
-        // },()=>{})
       }
     },
     //获得和值的最大获奖
