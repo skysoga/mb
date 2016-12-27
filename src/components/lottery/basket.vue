@@ -17,7 +17,10 @@
           <a @click = "deleteBet(index)"></a>
         </li>
       </ul>
-      <div class="clear" v-show = "ifShowClearAll" @click = "clearBasket">清空</div>
+      <div v-show = "ifShowClearAll" class="moreOption fix">
+        <div class="stop">追号</div>
+        <div class="clear"  @click = "clearBasket">清空</div>
+      </div>
   </div>
   </div>
   <div class="cartTotal">
@@ -29,6 +32,10 @@
           <label for="stop">中奖后停止追号</label>
         </div>
       </label>
+      <div class="stopBtn">
+        <input type="checkbox" id="stopBtn">
+        <label for="stopBtn">中奖即停</label>
+      </div>
     </div>
     <div class="result fix" ref = "result">
       <div class="left" v-show = "true">
@@ -427,6 +434,14 @@ export default {
 
 <style lang = "scss" scoped>
 $bottomHeight : 2.4em;
+
+.stopBtn{
+  float: right;
+  margin-right: .8em;
+  color:#666;
+  line-height: 2.16em;
+}
+
 .cartTotal{
 position: fixed;
 width: 100%;
@@ -448,38 +463,8 @@ left: 0;
     transform:scaleY(.5);
     transform-origin:0 0;
   }
-  .stop{
-    position: absolute;
-    top:-4em;
-    left: -1.5em;
-    width: 10em;
-    background: white;
-    border:1px solid #ddd;
-    border-radius: .2em;
-    padding: 0 .2em;
-    text-align: center;
-    box-shadow: 0 .2em .3em #ccc;
-    height: 2.3em;
-    line-height: 2.3em;
-    font-size: .9em;
-    &:after{
-      content:"";
-      position: absolute;
-      width: 0;
-      height: 0;
-      border-left: .5em solid transparent;
-      border-right: .5em solid transparent;
-      border-top: .5em solid white;
-      margin-left:-4.8em;
-      margin-top:2.1em;
-    }
-    label{
-      margin:0;
-      margin-left: .2em;
-    }
-  }
-  label{
-    margin:0 .8em;
+  >label{
+    margin-left: .8em;
     color:#666;
     position: relative;
   }
@@ -547,22 +532,43 @@ left: 0;
   margin:0 .6em;
   background: white;
 }
-.clear{
-background-color: white;
-padding: 0 .6em;
-text-align: center;
-color:#666;
-font-size: .8em;
-padding: .6em 0;
-background: url('http://virjay.com/cartButtom.png') left bottom white;
-background-repeat: repeat-x;
-background-size: 10px;
-&:before{
-  content:"\e620";
-  font-family: 'iconfont';
-  color:#c4c5c5;
-  font-size: 1.4em;
+.moreOption{
+  background-color: white;
+  background: url('http://virjay.com/cartButtom.png') left bottom white;
+  background-repeat: repeat-x;
+  background-size: 10px;
 }
+.clear{
+  position: relative;
+  &:after{
+    content:"";
+    position: absolute;
+    left:0;
+    top:0;
+    width: 1px;
+    height: 100%;
+      background-image: -webkit-linear-gradient(right, #d0d0d0, #d0d0d0 50%, transparent 50%);
+      background-image: -o-linear-gradient(right, #d0d0d0, #d0d0d0 50%, transparent 50%);
+      background-image: linear-gradient(to left, #d0d0d0, #d0d0d0 50%, transparent 50%);
+  }
+  &:before{
+    content:"\e620";
+  }
+}
+
+.stop,.clear{
+  float: left;
+  width: 50%;
+  padding: 0;
+  text-align: center;
+  font-size: .7em;
+  margin:1em 0;
+  color:#666;
+  &:before{
+    font-family: 'iconfont';
+    color:#c4c5c5;
+    font-size: 1.1em;
+  }
 }
 .numberbox{
 background: white;
