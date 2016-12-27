@@ -21,6 +21,7 @@ const agentBetRecord = resolve => require(['../views/agentBetRecord'], resolve)
 const agentBillRecord = resolve => require(['../views/agentBillRecord'], resolve)
 var routes = [{
   path: '/Notice',
+  name:"公告",
   meta: {
     titleList: [{
       title: "公告",
@@ -34,6 +35,7 @@ var routes = [{
   component: Notice
 }, {
   path: '/letter',
+  name:"私信",
   meta: {
     titleList: [{
       title: "公告",

@@ -6,16 +6,15 @@ export default {
     }
   },
   beforeRouteEnter:(to, from, next) => {
-    RootApp.AjaxGetInitData(['UserBalance'],ref=>{
-      var arr = ["UserBalance","AgentRebate","UserPhoto"];
-      RootApp.GetInitData(arr, state=>{
-        next()
-      })
+    // RootApp.AjaxGetInitData(['UserBalance'])
+    var arr = ["UserBalance","AgentRebate","UserPhoto"];
+    RootApp.GetInitData(arr, state=>{
+      next()
     })
   },
-  created(){
-    this.UserBalance=state.UserBalance
-  },
+  /*created(){
+    this.UserBalance=this.$store.state.UserBalance
+  },*/
   methods:{
     refresh:function(e){
       var t = this,c=this.refreshClass

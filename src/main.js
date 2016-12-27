@@ -61,7 +61,7 @@ var UserArr = [
 	'UserGradeGrow',
 	'UserSex',
 	'UserHasSafePwd',
-	'UserBalance',
+	// 'UserBalance',
 	'UserFirstCardInfo',
   'UserBankCardList',
 	'UserLastLoginInfo',
@@ -459,27 +459,31 @@ function _fetch(data){
 		  },
 		  body: str.join('&')
 		}).then((res)=>{
-			res.json().then(json=>{
-				console.log(json);
-				;(function(){
-					if (json.Code==0) {
-						if(state.UserName){
-							layer.alert("您的登录信息已失效<br>需要重新登录",function(){
-								RootApp.Logout()
-								var meta = RootApp._route.matched[0]
-								meta = meta&&meta.meta
-								if(meta&&meta.user){
-							    router.push("/login")
-								}
-							})
+			try{
+				res.json().then(json=>{
+					console.log(json);
+					;(function(){
+						if (json.Code==0) {
+							if(state.UserName){
+								layer.alert("由于您长时间未操作，已自动退出，请重新登录",function(){
+									RootApp.Logout()
+									var meta = RootApp._route.matched[0]
+									meta = meta&&meta.meta
+									if(meta&&meta.user){
+								    router.push("/login")
+									}
+								})
+							}
 						}
-					}
-					if (data.Action.search('Verify')===0&&json.Code>-1) {
-						state.UserVerify=data.Action.replace('Verify','')
-					}
-				})()
-				resolve(json)
-			})
+						if (data.Action.search('Verify')===0&&json.Code>-1) {
+							state.UserVerify=data.Action.replace('Verify','')
+						}
+					})()
+					resolve(json)
+				})
+			}catch(e){
+				resolve({Code:-1,StrCode:"网络错误，请重试"})
+			}
 		})
 	})
 }
