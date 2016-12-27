@@ -891,3 +891,17 @@ content:"\e62c";
   width:initial !important;
   line-height: 2.9em;
 }
+
+/*
+ * loading
+ */
+.svgLoad{
+  display: inline-block;
+  vertical-align: middle;
+  width: 1.25em;
+  height: 1.25em;
+  margin-top: -4px;
+  margin-right: 2px;
+  fill:#333;
+  transform: translateY(1px);
+}

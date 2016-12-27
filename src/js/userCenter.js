@@ -2,12 +2,12 @@ export default {
   data:()=>{
     return{
       refreshClass:"refresh",
-      UserBalance:""
+      balShow:false
     }
   },
   beforeRouteEnter:(to, from, next) => {
     // RootApp.AjaxGetInitData(['UserBalance'])
-    var arr = ["UserBalance","AgentRebate","UserPhoto"];
+    var arr = ["AgentRebate","UserPhoto"];
     RootApp.GetInitData(arr, state=>{
       next()
     })
@@ -16,16 +16,18 @@ export default {
     this.UserBalance=this.$store.state.UserBalance
   },*/
   methods:{
-    refresh:function(e){
-      var t = this,c=this.refreshClass
-      this.refreshClass+=" refreshMove"
-      this.getBalance()
-      setTimeout(()=>{
-        this.refreshClass="refresh"
-      },500)
-    },
+    // refresh:function(e){
+    //   var t = this,c=this.refreshClass
+    //   this.refreshClass+=" refreshMove"
+    //   this.getBalance()
+    //   setTimeout(()=>{
+    //     this.refreshClass="refresh"
+    //   },500)
+    // },
     getBalance:function(){
-      RootApp.AjaxGetInitData(['UserBalance'])
+      RootApp.AjaxGetInitData(['UserBalance'],ref=>{
+        this.balShow=true
+      })
     }
   }
 }
