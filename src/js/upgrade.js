@@ -2,7 +2,6 @@ export default {
   data:()=>{
     return{
       Content:'',
-      GradeList:'',
       UnClick:true,
       ClickMsg:'',
       isBouns:'',
@@ -18,20 +17,21 @@ export default {
   },
   created:function(){
     var xname='晋级奖励'
-    var dataArr=store.state.SysActivity
-    this.GradeList=store.state.GradeList
-    this.isBouns=store.state.UserUpGradeBonus
+    var dataArr=state.SysActivity
+    this.isBouns=state.UserUpGradeBonus
     var thState=-1
     if(this.isBouns){
-      thState=this.isBouns.State||-1
+      thState=this.isBouns.State
     }
-    this.UnClick=thState==0?false:true
+    this.UnClick=thState
     this.ClickMsg=thState==0?'立即领取':thState==1?'已领取':'不可领取'
     for(var i=0;i<dataArr.length;i++){
       if(dataArr[i].Name==decodeURIComponent(xname)){
         this.Content=dataArr[i].Content
         this.Img=dataArr[i].Img
-        this.noimg=this.Img||true
+        if (typeof(this.Img)==="object") {
+          this.Img=this.Img[0]
+        }
         return
       }
     }

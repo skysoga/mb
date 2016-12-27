@@ -1,7 +1,7 @@
 <template>
 	<div class="activityMian main">
     <div class="activiTop">
-    <img alt="" v-show="noimg" width="100%" :src="$store.state.constant.ImgHost+Img">
+    <img alt="" v-show="Img" width="100%" :src="$store.state.constant.ImgHost+Img">
       <div class="rewardStatus" v-if="isBouns"><em class="e1">当前等级：<i>VIP{{isBouns.Grade}}</i></em>
         <em class="e2">晋级奖励：<i>{{isBouns.GradeBonus}}</i></em></div>
       <div class="rewardStatus" v-else><em class="e1">当前等级：<i>未登录</i></em>
@@ -16,7 +16,7 @@
             <th>晋级奖励</th>
             <th>跳级奖励</th>
         </tr>
-        <tr v-for="n in GradeList">
+        <tr v-for="n in $store.state.GradeList">
             <td>VIP{{n.Grade}}</td>
             <td>{{n.GradeGrow}}</td>
             <td>{{n.Bonus}}</td>

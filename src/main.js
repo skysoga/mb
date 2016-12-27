@@ -178,17 +178,19 @@ window.RootApp = new Vue({
 		SetFilter:function(data){
 			;(function(Bonus){
 			  if (!Bonus||Bonus.State) {return}
-			  layer.open({
-			    shadeClose: false,
-			    title: "恭喜",
-			    content: '恭喜您成功晋级，当前等级为VIP'+Bonus.Grade+'，赶紧到活动中心领取奖励吧。',
-			    className: "layerConfirm",
-			    btn: ["领取奖励", "留在本页"],
-			    yes: function(Lindex) {
-			      layer.close(Lindex);
-			      router.push("/upgrade")
-			    }
-			  })
+				setTimeout(function(){
+				  layer.open({
+				    shadeClose: false,
+				    title: "恭喜",
+				    content: '恭喜您成功晋级，当前等级为VIP'+Bonus.Grade+'，赶紧到活动中心领取奖励吧。',
+				    className: "layerConfirm",
+				    btn: ["领取奖励", "留在本页"],
+				    yes: function(Lindex) {
+				      layer.close(Lindex);
+				      router.push("/upgrade")
+				    }
+				  })
+				},100)
 			})(data.UserUpGradeBonus)
 			;(function(s){
 				if (s) {
