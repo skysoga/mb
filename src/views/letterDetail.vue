@@ -5,7 +5,7 @@
       <time>{{res_data.Time}}</time>
          <span>发件人：{{res_data.Sender}}</span>
          <p class='hr1px'></p>
-         <div>{{res_data.Content}}</div>
+         <div class="wrapExplain" v-html="res_data.Content"></div>
     </article>
   </div>
 </template>
@@ -34,8 +34,51 @@ export default {
 
 <style lang="scss" scoped>
   @import '../scss/public.scss';
-  .main{
+  .main {
     background: #fff;
     min-height: 100%;
+  }
+
+  article {
+    width: 15rem;
+    margin: .5em auto;
+    line-height: 1em
+  }
+
+  article h2 {
+    font-size: .9em;
+    line-height: 1.3
+  }
+
+  article>span,
+  article time {
+    font-size: .7em
+  }
+
+  article .hr1px {
+    margin: .5em auto
+  }
+
+  article>div {
+    font-size: .8em;
+    line-height: 1.25em;
+    font-weight: 400
+  }
+
+  article>div strong {
+    font-style: normal;
+    font-weight: 400
+  }
+
+  .cGold {
+    color: #f46e00
+  }
+
+  .cGray {
+    color: #bababa
+  }
+
+  .cGreen {
+    color: #dc2e2e
   }
 </style>

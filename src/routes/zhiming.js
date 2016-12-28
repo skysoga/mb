@@ -63,7 +63,7 @@ var routes = [{
     user: 1,
     link: "/letter"
   },
-  component: letterDetail
+  component: NoticeDetail
 }, {
   path: "/playerHome",
   name: "玩家详情",
