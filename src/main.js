@@ -72,7 +72,8 @@ var UserArr = [
   'UserBankCardList',
 	'UserLastLoginInfo',
   'RebateK3',
-  'RebateSSC'
+  'RebateSSC',
+  'RebateSYX5'
 ]
 var SiteArr=[ //需要校验更新版本的列表
 	'SysActivity',
