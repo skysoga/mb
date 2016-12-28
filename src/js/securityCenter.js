@@ -33,7 +33,7 @@ export default {
             sessionStorage.setItem("UserLastLoginInfo",JSON.stringify(state.UserLastLoginInfo[0]))
             vm.LastLogin=state.UserLastLoginInfo[0]
           }
-          vm.FirstCard=state.UserFirstCardInfo?1:0
+          vm.FirstCard=state.UserFirstCardInfo
           vm.LevelText=vm.StarNum==5?"极高":vm.StarNum==4?"高":vm.StarNum==3?"中":vm.StarNum==2?"低":"极低"
         });
     })
@@ -54,10 +54,12 @@ export default {
     setNextUrl(){
       if(!this.HasSafePwd){
         router.push("/setSafePwd?Q=bindCard")
-      }else if(!this.FirstCard){
-        router.push("/setBankcard")
       }else{
-        router.push("/manageBankcard")
+        if(!this.FirstCard){
+          router.push("/setBankcard")
+        }else{
+          router.push("/manageBankcard")
+        }
       }
     }
   }

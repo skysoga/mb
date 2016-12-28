@@ -14,17 +14,18 @@ export default {
     }
   },
   beforeRouteEnter(to,from,next){
-    var arr=['UserName','UserNickName','UserMobile','UserMail','UserPhoto','UserSex','UserQQ','UserBirthDay']
+    var arr=['UserName','UserNickName','UserMobile','UserMail','UserPhoto','UserSex','UserQQ','UserBirthDay','DefaultPhotoList']
     RootApp.GetInitData(arr,state=>{
       next()
     })
   },
   created(){
-    this.DefaultPhoto=state.UserPhoto
-    this.UserNickName=state.UserNickName
-    this.UserQQ=state.UserQQ
-    this.UserSex=state.UserSex
-    this.UserBirthDay=state.UserBirthDay
+        this.DefaultPhoto=state.UserPhoto
+        this.UserNickName=state.UserNickName
+        this.UserQQ=state.UserQQ
+        this.UserSex=state.UserSex
+        this.UserBirthDay=state.UserBirthDay
+        this.HeadImgBoxList=state.DefaultPhotoList
   },
   methods:{
     upHeadImg(){
@@ -83,7 +84,7 @@ export default {
       })
     },
     setDefImg(){
-      var arr=this.HeadImgBoxList
+      var arr=state.DefaultPhotoList
       var key=this.DefaultPhoto
       for(var n in arr){
         if(arr[n].ImageUrl==key){

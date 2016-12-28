@@ -1,8 +1,18 @@
 <template>
 	<div class="main">
     <div class="innerWrap">
-        <div v-for="(vlue,index) in $store.state.ActivityConfig" class="surperise active ">
+        <div v-for="(vlue,index) in $store.state.SysActivity" class="surperise active ">
             <router-link class="wrap line" :to="getHtml(vlue.Name)">
+                <div class="number"><i>{{index+1}}</i></div>
+                <div class="text">
+                    <strong>{{vlue.Name}}</strong>
+                    <p>{{vlue.Intro}}</p>
+                </div>
+                <i class="iconfont right fr"></i>
+            </router-link>
+        </div>
+        <div v-for="(vlue,index) in $store.state.ActivityConfig" class="surperise active ">
+            <router-link class="wrap line" :to="{path:'activityInfo',query:{name:encodeURIComponent(vlue.name)}}">
                 <div class="number"><i>{{index+1}}</i></div>
                 <div class="text">
                     <strong>{{vlue.Name}}</strong>
