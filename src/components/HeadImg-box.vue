@@ -20,7 +20,7 @@
         <img id="changePhoto"
               :src="$store.getters.PhotoPath+(this.$parent.DefaultPhoto||List[0].ImageUrl)"
               alt=""
-              :title="this.$parent.DefaultID||List[0].Id">
+              :title="this.$parent.DefaultID||List[0].ID">
         <span>{{this.$parent.DefaultName}}</span>
         <div class="headImgListCon fix">
             <span class="nomore"><i class="iconfont"></i></span>
@@ -30,7 +30,7 @@
                       :data-id="n.ID"
                       :title="n.ImageName"
                       :src="$store.getters.PhotoPath+n.ImageUrl"
-                      @click="getImg(n.Id,n.ImageUrl,n.ImageName)">
+                      @click="getImg(n.ID,n.ImageUrl,n.ImageName)">
                 </div>
             </div>
             <span><i class="iconfont"></i></span>
