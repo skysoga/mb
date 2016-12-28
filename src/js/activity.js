@@ -5,6 +5,7 @@ export default {
   beforeRouteEnter(to,from,next){
      var arr = ["SysActivity","ActivityConfig"];
      RootApp.GetInitData(arr,state=>{
+      console.log(state.SysActivity,state.ActivityConfig)
       next()
      })
    },
@@ -18,11 +19,9 @@ export default {
      		case "晋级奖励":
      		url="/upgrade"
      		break;
-     		default:
-     		url="/activityInfo?name="+encodeURIComponent(name)
-     		break;
      	}
      	return url;
-     }
+     },
+
    }
 }
