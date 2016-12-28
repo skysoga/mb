@@ -65,8 +65,7 @@
         </li>
     </ul>
     <HeadImg-box v-show="HeadImgBoxShow"
-                 :list = "HeadImgBoxList"
-                 ></HeadImg-box>
+                  :List="HeadImgBoxList"></HeadImg-box>
 </div>
 </template>
 <script src="../js/personalInfo.js"></script>

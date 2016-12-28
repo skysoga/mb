@@ -18,16 +18,16 @@
       <div class="content">
         <em>预览</em>
         <img id="changePhoto"
-              :src="$store.getters.PhotoPath+(this.$parent.DefaultPhoto||this.$parent.HeadImgBoxList[0].ImageUrl)"
+              :src="$store.getters.PhotoPath+(this.$parent.DefaultPhoto||List[0].ImageUrl)"
               alt=""
-              :title="this.$parent.DefaultID||this.$parent.HeadImgBoxList[0].Id">
-        <span>{{this.$parent.DefaultName||this.$parent.HeadImgBoxList[0].ImageName}}</span>
+              :title="this.$parent.DefaultID||List[0].Id">
+        <span>{{this.$parent.DefaultName}}</span>
         <div class="headImgListCon fix">
             <span class="nomore"><i class="iconfont"></i></span>
             <div class="headImgList">
                 <div class="fixedHeadImgWidth fix" style="width:75rem">
-                  <img v-for="n in list"
-                      :data-id="n.Id"
+                  <img v-for="n in List"
+                      :data-id="n.ID"
                       :title="n.ImageName"
                       :src="$store.getters.PhotoPath+n.ImageUrl"
                       @click="getImg(n.Id,n.ImageUrl,n.ImageName)">
@@ -45,14 +45,7 @@
 </template>
 <script>
 export default{
-  props:['list'],
-  created(){
-    var vm=this
-    var arr=['DefaultPhotoList']
-    this.$root.GetInitData(arr,state=>{
-      this.$parent.HeadImgBoxList=state.DefaultPhotoList
-    });
-  },
+  props:['List'],
   methods:{
     close(){
       this.$parent.HeadImgBoxShow = false
