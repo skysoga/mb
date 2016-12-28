@@ -62,12 +62,18 @@ export default {
           })
       })
     }else{
+      var arr = ["UserBankCardList"]
       to.meta.title="绑定银行卡"
       to.meta.link='/securityCenter'
-      next(vm=>{
-        vm.getCardlist()
-        vm.Qort='add'
-        vm.nextUrl=nextto
+      RootApp.AjaxGetInitData(arr,ref=>{
+        if(!state.UserBankCardList){
+          router.go(-1)
+        }
+        next(vm=>{
+          vm.getCardlist()
+          vm.Qort='add'
+          vm.nextUrl=nextto
+        })
       })
     }
   },
@@ -124,15 +130,14 @@ export default {
       }
     },
     getCardlist(){
-      var arr=['UserBankCardList']
-      RootApp.GetInitData(arr,state=>{
         if(state.UserBankCardList){
           var CardLeng=state.UserBankCardList.length||0
-          if(CardLeng&&CardLeng>=5){
-            layer.url("不能超过五张银行卡！","/manageBankcard")
+          if(CardLeng>=5){
+            layer.url("您已绑定5张银行卡，无法绑定更多的卡","/manageBankcard")
+          }else if(state.UserBankCardList[0].isLock){
+            router.push('/verifyBankcard')
           }
         }
-      })
     }
   }
 }
