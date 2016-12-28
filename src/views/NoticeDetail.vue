@@ -2,7 +2,8 @@
   <div class="main">
     <article>
       <h2>{{initData.Title}}</h2>
-      <time>{{initData.Add_Time}}</time>
+      <time>{{isNotice?initData.Add_Time:initData.Time}}</time>
+      <span v-if="!isNotice">发件人：{{initData.Sender}}</span>
       <p class="hr1px"></p>
       <div class="wrapExplain" v-html='initData.Content'></div>
     </article>
@@ -13,16 +14,18 @@
   export default {
     data() {
       return {
-        initData: []
+        initData: [],
+        isNotice:false
       }
     },
     created() {
+      this.isNotice=this.$route.path.toLowerCase().search('notice')>0
       _fetch({
-        Action: "GetNoticeContent",
+        Action: this.isNotice?"GetNoticeContent":"GetLetterContent",
         ID: this.$route.query.ID
       }).then((data) => {
         if (data.Code === 1) {
-          this.initData = data.BackData[0]
+          this.initData = this.isNotice?data.BackData[0]:data.BackData
         } else {
           layer.msgWarn(data.StrCode)
         }
