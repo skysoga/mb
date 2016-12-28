@@ -10,9 +10,11 @@ export default {
     }
   },
   beforeRouteEnter(to,from,next){
-    var arr = ["SysActivity","GradeList","UserUpGradeBonus"];
-    RootApp.GetInitData(arr,ref=>{
-      next()
+    RootApp.AjaxGetInitData(['UserUpGradeBonus'],ref=>{
+      var arr = ["SysActivity","GradeList"];
+      RootApp.GetInitData(arr,ref=>{
+        next()
+      })
     })
   },
   created:function(){
@@ -45,6 +47,8 @@ export default {
           if(json.Code==1){
             this.UnClick=true
             this.ClickMsg="已领取"
+            var arr=['UserUpGradeBonus']
+            RootApp.AjaxGetInitData(arr)
             layer.msgWarn(json.StrCode)
           }else{
             layer.msgWarn(json.StrCode)

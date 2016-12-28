@@ -58,7 +58,6 @@ export default {
         this.FiveUnlok=false
         if(List[0].isLock){
           Tips='<p>您的银行卡已经锁定，不能进行银行卡信息的增加和删除</p><route-link class="alink" to="/service">联系客服</route-link>'
-          this.FiveUnlok=true
         }
       }
       this.tipHtml=Tips
