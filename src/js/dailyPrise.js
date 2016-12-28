@@ -32,7 +32,6 @@ export default {
               if (typeof(vm.Img)==="object") {
                 vm.Img=vm.Img[0]
               }
-          console.log(state.RewardData)
               return
             }
           }
