@@ -613,9 +613,22 @@ function getRebate(mode, Odds){
 }
 
 
+function syx5_zx2(line1, line2){
+  var count = 0
+  for(var i = 0;i < line1.length;i++){
+    for(var j = 0;j < line2.length;j++){
+      if(line1[i] !== line2[j]){
+        count++
+      }
+    }
+  }
+  return count
+}
+
+
 export {factorial, mul, C, combNoRepeat, unique, normalSum2,
   normalSum3, accumulate,diff2, diff3, combSum2, combSum3,
    bus, BaseBet, compress, throttle, easyClone, ChaseAjax,
     deleteCompress, Scheme, getBasketAmount,computeIssue,
     getSSCRebate,getK3Rebate,getRebate, DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME,
-  GMT_DIF, PERBET,Max_Rate, Max_Chase_Issue, Max_Expect_Rate, BASE_ISSUE_1406}
+  GMT_DIF, PERBET,Max_Rate, Max_Chase_Issue, Max_Expect_Rate, BASE_ISSUE_1406, syx5_zx2}

@@ -23,7 +23,7 @@ import {mapState} from 'vuex'
 import betbox from './betbox'
 import notebet from './notebet'
 import {factorial, mul, C, combNoRepeat, unique, normalSum2, normalSum3, accumulate,
-  diff2, diff3, combSum2, combSum3} from '../../js/kit'
+  diff2, diff3, combSum2, combSum3, syx5_zx2} from '../../js/kit'
 
 var countSingle = (order,tmp)=>betSum(order,tmp)[0]  //单行计数
 // 单式只要传一个数字
@@ -32,9 +32,9 @@ var ltCfg = {
   A11:{render:['d'],alg:countSingle},
   A21:{render:['d1','d2','d3'],alg:(order, tmp)=>betSum(order, tmp).reduce(function(a,b){return a + b})},
   A31:{render:['d'],alg:countSingle},
-  B11:{render:['d1','d2']},
-  B21:{render:['qezx']},
-  B23:{render:['dm','tm']},
+  B11:{render:['d1','d2'], alg:(order,tmp)=>syx5_zx2(tmp['d1'],tmp['d2'])},
+  B21:{render:['qezx'],alg:(order,tmp)=>C(tmp['qezx'].length,2)},
+  B23:{render:['dm','tm'],alg:(order,tmp)=>syx5_zx2(tmp['dm'],tmp['tm'])},
   B31:{render:['x2z2']},
   B32:{render:['dm','tm']},
   C11:{render:['d1','d2','d3']},
