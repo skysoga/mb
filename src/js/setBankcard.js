@@ -66,9 +66,6 @@ export default {
       to.meta.title="绑定银行卡"
       to.meta.link='/securityCenter'
       RootApp.AjaxGetInitData(arr,ref=>{
-        if(!state.UserBankCardList){
-          router.go(-1)
-        }
         next(vm=>{
           vm.getCardlist()
           vm.Qort='add'
