@@ -30,4 +30,9 @@ export default {
       });
     })
   },
+  methods:{
+    toUrl(){
+      router.push('/ping')
+    }
+  }
 }
