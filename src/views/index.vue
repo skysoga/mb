@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <router-link to="/ping" class='textMore dataType'><em>线路</em><i class='iconfont'>&#xe601;</i></router-link>
+    <router-link tag="div" to="/ping" class='textMore dataType'><em>线路</em><i class='iconfont'>&#xe601;</i></router-link>
     <div id="banner">
       <swiper>
         <swiper-slide v-for="i in $store.state.BannerSys">
