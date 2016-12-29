@@ -12,7 +12,7 @@
             </router-link>
         </div>
         <div v-for="(n,index) in $store.state.ActivityConfig" class="surperise active ">
-            <router-link class="wrap line" :to="{name:'activityInfo',params:{ID:encodeURIComponent(n.Name)}}">
+            <router-link class="wrap line" :to="{name:'activityInfo',params:{ID:decodeURIComponent(n.Name)}}">
                 <div class="number"><i>{{index+1}}</i></div>
                 <div class="text">
                     <strong>{{n.Name}}</strong>

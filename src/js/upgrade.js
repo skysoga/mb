@@ -17,7 +17,9 @@ export default {
   created:function(){
     var xname='晋级奖励'
     var dataArr=state.SysActivity
-    this.UnClick=state.UserUpGradeBonus.State
+    if(state.UserUpGradeBonus){
+      this.UnClick=state.UserUpGradeBonus.State
+    }
     for(var i=0;i<dataArr.length;i++){
       if(dataArr[i].Name==decodeURIComponent(xname)){
         this.Content=dataArr[i].Content
