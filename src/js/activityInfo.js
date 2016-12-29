@@ -8,7 +8,7 @@ export default {
   },
   beforeRouteEnter:(to,from,next)=>{
         var name= to.params.ID
-        to.meta.title=decodeURIComponent(name)
+        to.meta.title=unescape(name)
         next()
   },
   created(){
