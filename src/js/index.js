@@ -29,10 +29,5 @@ export default {
         vm.len = vm.LList.length
       });
     })
-  },
-  methods:{
-    toUrl(){
-      router.push('/ping')
-    }
   }
 }
