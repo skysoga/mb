@@ -8,7 +8,7 @@ export default {
   },
   beforeRouteEnter:(to,from,next)=>{
         var name= to.params.ID
-        to.meta.title=unescape(name)
+        to.meta.title=decodeURIComponent(name)
         next()
   },
   created(){
@@ -17,7 +17,7 @@ export default {
     var xname=this.$route.params.ID
     var dataArr=state.ActivityConfig
     for(var i=0;i<dataArr.length;i++){
-      if(dataArr[i].Name==encodeURIComponent(xname)){
+      if(dataArr[i].Name==decodeURIComponent(xname)){
         this.Content=dataArr[i].Content
         this.Img=dataArr[i].Img
         this.isimg=this.Img||false
