@@ -7,14 +7,14 @@ export default {
     }
   },
   beforeRouteEnter:(to,from,next)=>{
-        var name= to.query.name
-        to.meta.title=name
+        var name= to.params.ID
+        to.meta.title=unescape(name)
         next()
   },
   created(){
     var arr = ["ActivityConfig"];
     this.$root.GetInitData(arr)
-    var xname=this.$route.query.name
+    var xname=this.$route.params.ID
     var dataArr=state.ActivityConfig
     for(var i=0;i<dataArr.length;i++){
       if(dataArr[i].Name==decodeURIComponent(xname)){

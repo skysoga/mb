@@ -8,7 +8,7 @@ export default {
   methods:{
     $vaSubmit(){
       var arr={
-        Action:"FirstCardVerify",
+        Action:"VerifyBankCard",
         BankNum:this.BankNum,
         RealName:this.RealName
       }

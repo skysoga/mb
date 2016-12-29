@@ -9,4 +9,7 @@
 <style lang="scss" scoped>
   @import '../scss/activity.scss';
   @import '../scss/activity_info.scss';
+  .main{
+    min-height: 100%;
+  }
 </style>

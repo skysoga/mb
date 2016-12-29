@@ -126,13 +126,24 @@ export default {
         if(this.Banklist[n]==name)return n
       }
     },
+    isLock(Arr){
+      var isUn=false
+      for(var n of Arr){
+        if(n.isLock){
+          return isUn=true
+        }
+      }
+      return isUn
+    },
     getCardlist(){
         if(state.UserBankCardList){
           var CardLeng=state.UserBankCardList.length||0
           if(CardLeng>=5){
             layer.url("您已绑定5张银行卡，无法绑定更多的卡","/manageBankcard")
-          }else if(state.UserBankCardList[0].isLock){
-            router.push('/verifyBankcard')
+          }else if(this.isLock(state.UserBankCardList)){
+            if(!state.UserVerify||state.UserVerify!=="BankCard,"){
+              router.push('/verifyBankcard')
+            }
           }
         }
     }

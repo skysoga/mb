@@ -11,12 +11,12 @@
                 <i class="iconfont right fr"></i>
             </router-link>
         </div>
-        <div v-for="(vlue,index) in $store.state.ActivityConfig" class="surperise active ">
-            <router-link class="wrap line" :to="{path:'activityInfo',query:{name:encodeURIComponent(vlue.name)}}">
+        <div v-for="(n,index) in $store.state.ActivityConfig" class="surperise active ">
+            <router-link class="wrap line" :to="{name:'activityInfo',params:{ID:encodeURIComponent(n.Name)}}">
                 <div class="number"><i>{{index+1}}</i></div>
                 <div class="text">
-                    <strong>{{vlue.Name}}</strong>
-                    <p>{{vlue.Intro}}</p>
+                    <strong>{{n.Name}}</strong>
+                    <p>{{n.Intro}}</p>
                 </div>
                 <i class="iconfont right fr"></i>
             </router-link>
