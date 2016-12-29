@@ -141,8 +141,7 @@ export default {
           if(CardLeng>=5){
             layer.url("您已绑定5张银行卡，无法绑定更多的卡","/manageBankcard")
           }else if(this.isLock(state.UserBankCardList)){
-            console.log(state.UserVerify)
-            if(state.UserVerify!=="BankCard"){
+            if(state.UserVerify.substr(0,state.UserVerify.length-1)!="BankCard"){
               router.push('/verifyBankcard')
             }
           }
