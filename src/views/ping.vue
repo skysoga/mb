@@ -42,7 +42,7 @@ export default{
           var t = ObjArr.pop()
               t[2]=0
           ObjArr.unshift(t)
-        }
+       }
         var i = 0
         var Inter = setInterval(function() {;
            (function(i) {
