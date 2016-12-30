@@ -1,7 +1,7 @@
 <template>
 	<div class="main">
     <ul class="pingContent">
-      <li v-for="n in evenNumbers(LineList)" :class="{noActive:n[2]==1}"><input type="text" :value="n[2]==0?n[1]+'ms':'连接超时'"><i class="cssico-2right"></i><input type="text" :value="n[0]"><a v-if="n[2]==0" :href="'//'+n[0]">切换</a><a v-else>切换</a></li>
+      <li v-for="n in LineList" :class="{noActive:n[2]==1}"><input type="text" :value="n[2]==0?n[1]+'ms':'连接超时'"><i class="cssico-2right"></i><input type="text" :value="n[0]"><a v-if="n[2]==0" :href="'//'+n[0]">切换</a><a v-else>切换</a></li>
     </ul>
     <div class="refresh">
       <div :class="{BTN:true,noActive:btnIf==false}" @click="upList">{{btnMsg}}</div>
@@ -58,6 +58,7 @@ export default{
                script.src=img.src
                document.body.appendChild(script);
                vm.finder(i,ObjArr)
+               vm.evenNumbers(ObjArr)
                vm.LineList=ObjArr
              }
            })(i)
@@ -81,10 +82,11 @@ export default{
         this.btnIf=false
         this.getData()
       },
-      evenNumbers(Arr){
-        return Arr.sort((a,b)=>{
+      evenNumbers(ObjArr){
+        ObjArr.sort((a,b)=>{
           return a[1]-b[1]
         }).sort((a,b)=>{return a[2]-b[2]})
+        this.LineList=ObjArr
       }
     }
   }
