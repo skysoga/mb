@@ -39,7 +39,7 @@ export default {
           }
         })
       },10000)
-    }
+    })
   },
   beforeRouteLeave:(to,from) =>{
     clearInterval(this.Interval)
