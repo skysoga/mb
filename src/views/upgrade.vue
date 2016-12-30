@@ -6,7 +6,8 @@
         <em class="e2">晋级奖励：<i>{{$store.state.UserUpGradeBonus.GradeBonus}}</i></em></div>
       <div class="rewardStatus" v-else><em class="e1">当前等级：<i>未登录</i></em>
         <em class="e2">晋级奖励：<i>0</i></em></div>
-      <div class="BTN" :class="$store.state.UserUpGradeBonus.State&&'unClick'"><a @click="getBtn">{{$store.state.UserUpGradeBonus.State==0?'立即领取':$store.state.UserUpGradeBonus.State==1?'已领取':'不可领取'}}</a></div>
+      <div class="BTN" v-if="$store.state.UserUpGradeBonus" :class="$store.state.UserUpGradeBonus.State&&'unClick'"><a @click="getBtn">{{$store.state.UserUpGradeBonus.State==0?'立即领取':$store.state.UserUpGradeBonus.State==1?'已领取':'不可领取'}}</a></div>
+      <div class="BTN unClick" v-else>不可领取</div>
     </div>
     <h3>晋级机制</h3>
     <table>
