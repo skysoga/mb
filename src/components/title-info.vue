@@ -23,6 +23,6 @@
     fill:#fff;
     vertical-align: middle;
     width: 1.3em;
-    margin-top: -0.1em;
+    margin-top: -0.25em;
   }
 </style>
