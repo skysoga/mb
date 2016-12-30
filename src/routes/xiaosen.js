@@ -179,8 +179,8 @@ var routes = [{
   },
   component: upgrade
 },{
-  path: '/activityInfo',
-  name: '站长活动',
+  path: '/activityInfo/:ID',
+  name: 'activityInfo',
   meta:{
 	title:"站长活动",
 	link:"/activity",

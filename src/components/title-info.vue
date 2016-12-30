@@ -5,7 +5,7 @@
       <span v-html="meta.title">
       </span>
       <ul v-if="meta.titleList">
-        <li :class="$route.path===i.to?'on':''" v-for="i in meta.titleList" v-on:click="$router.push(i.to)"><a>{{i.title}}</a><li>
+        <li :class="($route.path===i.to||$route.matched[0].path===i.to)?'on':''" v-for="i in meta.titleList" v-on:click="$router.push(i.to)"><a>{{i.title}}</a><li>
       </ul>
     </template>
     <div v-show="meta.back" class="iconfont back" v-on:click="$router.go(meta.back)"></div>
@@ -23,6 +23,6 @@
     fill:#fff;
     vertical-align: middle;
     width: 1.3em;
-    margin-top: -0.1em;
+    margin-top: -0.25em;
   }
 </style>

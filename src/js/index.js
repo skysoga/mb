@@ -29,5 +29,5 @@ export default {
         vm.len = vm.LList.length
       });
     })
-  },
+  }
 }

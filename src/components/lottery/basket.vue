@@ -419,10 +419,6 @@ export default {
             no:()=>{}
           })
         }
-
-        // layer.confirm(msg, ()=>{
-        //   this.$store.dispatch('lt_chase')      //追号投注
-        // },()=>{})
       }else{
         //普通投注
         var betDetail = []

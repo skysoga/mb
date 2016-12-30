@@ -24,7 +24,7 @@ import Va from './plugins/va'
 Vue.use(Va)
 Vue.use(VueRouter)
 Vue.use(Vuex)
-const _App=location.host==="csz8.net"
+const _App=location.host==="csz8.net"//是否APP
 console.log(_App);
 const _AJAXUrl = '/tools/ssc_ajax.ashx'
 window.router = new VueRouter({
@@ -44,7 +44,8 @@ window.router = new VueRouter({
 function SetIndexTitle(s){
 	routes[1].meta.title=`<img src="${state.constant.ImgHost+s.MobileLogo}">`
 	if (!_App) {
-		routes[2].meta.title=routes[1].meta.title
+		document.title=s.Name
+		// routes[2].meta.title=routes[1].meta.title
 	}
 }
 
@@ -72,7 +73,8 @@ var UserArr = [
   'UserBankCardList',
 	'UserLastLoginInfo',
   'RebateK3',
-  'RebateSSC'
+  'RebateSSC',
+  'RebateSYX5'
 ]
 var SiteArr=[ //需要校验更新版本的列表
 	'SysActivity',
@@ -97,6 +99,7 @@ if (_App) {
 }
 var CacheArr = SiteArr.concat(UserArr)
 window.state = require('./JSconfig.js')
+state.constant._App=_App
 ;(function(){
 	function getLocalDate(str){
 		var s = localStorage.getItem(str);
@@ -152,14 +155,45 @@ window.store = new Vuex.Store({
   			state[arr[i]]=null
   		}
   	},
-    setDifftime:(state, SerTime)=>{
-      var Difftime = new Date().getTime()- SerTime
+    setDifftime:(state, timeItemList)=>{
+      console.log(timeItemList)
+      if(!timeItemList || !timeItemList.length){
+        layer.msgWarn("因无法同步服务器时间,您将无法投注,请检查网络情况")
+        return
+      }
+      var _shortest = timeItemList[0].interval,
+          _index = 0
+      timeItemList.forEach((item, index)=>{
+        if(item.interval < _shortest){
+          _shortest = item.interval
+          _index = index
+        }
+      })
+
+      var timeObj = timeItemList[_index],
+          timeBegin = timeObj.timeBegin,
+          timeEnd = timeObj.timeEnd,
+          SerTime = timeObj.SerTime
+      var Difftime = timeBegin + Math.floor((timeEnd - timeBegin)/2) - SerTime
+
+      console.log(timeObj, Difftime)
+      // Difftime = new Date().getTime()- SerTime
       state.Difftime = Difftime
       localStorage.setItem('Difftime',Difftime)
       console.log('获取了时间：'  + Difftime, SerTime)
+    },
+    SetMaintain:(state,d)=>{
+    	state.Maintain=d
     }
   },
 })
+
+function TimeItem(interval, timeBegin, timeEnd, SerTime){
+  this.interval = interval
+  this.timeBegin = timeBegin
+  this.timeEnd = timeEnd
+  this.SerTime = SerTime
+}
 
 window.RootApp = new Vue({
 	el: '#app',
@@ -313,25 +347,38 @@ window.RootApp = new Vue({
 			return false;
 		},
     getServerTime: (function(){
-      var cantGetTime = 0
+      var cantGetTime = 0,
+          timeItemList = []
       return function(fun){
-        var timeBegin = new Date()
+        var timeBegin = new Date().getTime()
         _fetch({Action: "GetServerTimeMillisecond"}).then((json)=>{
+          var timeEnd = new Date().getTime()
+          var interval = timeEnd - timeBegin
+          if(json.Code === 1){
+            timeItemList.push(new TimeItem(interval, timeEnd, timeBegin, json.Data))
+          }
+
           if(cantGetTime > 4){
-            layer.msgWarn("因无法同步服务器时间,您将无法投注,请检查网络情况")
+            // layer.msgWarn("因无法同步服务器时间,您将无法投注,请检查网络情况")
+            store.commit('setDifftime', timeItemList)
+            fun && fun()
+            cantGetTime = 0
+            timeItemList = []
           }else{
-            var interval = new Date() - timeBegin
             if(interval > 1000){
               cantGetTime++
-              this.getServerTime()
+              this.getServerTime(fun)
             }else{
               if(json.Code === 1) {
-                var SerTime = json.Data
-                store.commit('setDifftime', SerTime)
+                // var SerTime = json.Data
+                // store.commit('setDifftime', SerTime)
+                store.commit('setDifftime', timeItemList)
                 fun && fun()
+                cantGetTime = 0
+                timeItemList = []
               }else{
                 cantGetTime++;
-                this.getServerTime();
+                this.getServerTime(fun);
               }
             }
           }
@@ -501,47 +548,46 @@ function _fetch(data){
 		  },
 		  body: str.join('&')
 		}).then((res)=>{
-			try{
-				res.json().then(json=>{
-					console.log(json);
-					var notRes
-					;(function(){
-						switch(json.Code){
-							case 0://未登录
-								if(state.UserName){
-									layer.alert("由于您长时间未操作，已自动退出，请重新登录",function(){
-										RootApp.Logout()
-										var meta = RootApp._route.matched[0]
-										meta = meta&&meta.meta
-										if(meta&&meta.user){
-									    router.push("/login")
-										}
-									})
-									notRes=true
-								}
-							break;
-							case -7://系统维护
-								router.push("/maintain")
-							break;
-							case -8://账号冻结
-								layer.alert("您的账号已被冻结，详情请咨询客服。",function(){
+			res.json().then(json=>{
+				console.log(json);
+				var notRes
+				;(function(){
+					switch(json.Code){
+						case 0://未登录
+							if(state.UserName){
+								layer.alert("由于您长时间未操作，已自动退出，请重新登录",function(){
 									RootApp.Logout()
 									var meta = RootApp._route.matched[0]
 									meta = meta&&meta.meta
-							    router.push("/login")
+									if(meta&&meta.user){
+								    router.push("/login")
+									}
 								})
 								notRes=true
-							break;
-						}
-						if (data.Action.search('Verify')===0&&json.Code>-1) {
-							state.UserVerify=data.Action.replace('Verify','')+','
-						}
-					})()
-					notRes||resolve(json)
-				})
-			}catch(e){
-				resolve({Code:-1,StrCode:"网络错误，请重试"})
-			}
+							}
+						break;
+						case -7://系统维护
+							store.commit('SetMaintain', json.BackData)
+							router.push("/maintain")
+						break;
+						case -8://账号冻结
+							layer.alert("您的账号已被冻结，详情请咨询客服。",function(){
+								RootApp.Logout()
+								var meta = RootApp._route.matched[0]
+								meta = meta&&meta.meta
+						    router.push("/login")
+							})
+							notRes=true
+						break;
+					}
+					if (data.Action.search('Verify')===0&&json.Code>-1) {
+						state.UserVerify=data.Action.replace('Verify','')+','
+					}
+				})()
+				notRes||resolve(json)
+			})
+		}).catch((res)=>{
+			resolve({Code:-1,StrCode:"网络错误，请检查网络状态"})
 		})
 	})
 }
@@ -566,10 +612,7 @@ window._fetchT=function _fetchT(data){
       },
       body: data
     }).then((res)=>{
-
       res.text().then(text=>{
-        if (text.Code==0) {
-        }
         resolve(text)
       })
     })

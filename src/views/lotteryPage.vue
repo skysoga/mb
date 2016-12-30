@@ -57,110 +57,6 @@
 
 			//这里获取一次服务器时间，用以校正
 			RootApp.getServerTime()
-			// // //留着11选5测试数据
-			// const lt_11x5 = {
-			// 	'选一':{
-			// 		'前三一码不定位':[
-			// 			{
-			// 				name:'复式',
-			// 				mode:'A11',
-			// 				tag:'前三一码不定位',
-			// 				group:'选一',
-			// 				subGroup:'前三一码不定位'
-			// 			}
-			// 		],
-			// 		'定位胆':[
-			// 			{
-			// 				name:'复式',
-			// 				mode:'A21',
-			// 				tag:'定位胆',
-			// 				group:'选一',
-			// 				subGroup:'定位胆'
-			// 			}
-			// 		],
-			// 		'任选一中一':[
-			// 			{
-			// 				name:'复式',
-			// 				mode:'A31',
-			// 				tag:'任选一中一复式',
-			// 				group:'选一',
-			// 				subGroup:'任选一中一'
-			// 			},
-			// 			{
-			// 				name:'单式',
-			// 				mode:'A32',
-			// 				tag:'任选一中一单式',
-			// 				group:'选一',
-			// 				subGroup:'任选一中一'
-			// 			}
-			// 		]
-			// 	},
-			// 	'选二':{
-			// 		'前二直选':[
-			// 			{
-			// 				name:'复式',
-			// 				mode:'B11',
-			// 				tag:'前二直选复式',
-			// 				group:'选二',
-			// 				subGroup:'前二直选'
-			// 			},
-			// 			{
-			// 				name:'单式',
-			// 				mode:'B12',
-			// 				tag:'前二直选单式',
-			// 				group:'选二',
-			// 				subGroup:'前二直选'
-			// 			}
-			// 		],
-			// 		'前二组选':[
-			// 			{
-			// 				name:'复式',
-			// 				mode:'B21',
-			// 				tag:'前二组选复式',
-			// 				group:'选二',
-			// 				subGroup:'前二组选'
-			// 			},
-			// 			{
-			// 				name:'单式',
-			// 				mode:'B22',
-			// 				tag:'前二组选单式',
-			// 				group:'选二',
-			// 				subGroup:'前二组选'
-			// 			},
-			// 			{
-			// 				name:'胆拖',
-			// 				mode:'B23',
-			// 				tag:'前二组选胆拖',
-			// 				group:'选二',
-			// 				subGroup:'前二组选'
-			// 			}
-			// 		],
-			// 		'任选二中二':[
-			// 			{
-			// 				name:'复式',
-			// 				mode:'B31',
-			// 				tag:'任选二中二复式',
-			// 				group:'选二',
-			// 				subGroup:'任选二中二'
-			// 			},
-			// 			{
-			// 				name:'单式',
-			// 				mode:'B32',
-			// 				tag:'任选二中二单式',
-			// 				group:'选二',
-			// 				subGroup:'任选二中二'
-			// 			},
-			// 			{
-			// 				name:'胆拖',
-			// 				mode:'B33',
-			// 				tag:'任选二中二胆拖',
-			// 				group:'选二',
-			// 				subGroup:'任选二中二'
-			// 			}
-			// 		]
-			// 	}
-			// }
-
 			var pageConfig = {
 				'SSC': lt_ssc,
 				'SYX5': lt_syx5,
@@ -278,6 +174,8 @@
 				        ,StartTime		//某期StartTime
 				        , _SerTime		//除去日期的服务器时间
 
+
+				    state.IssueNo = 0
 		        //除去日期的服务器时间
 		        _SerTime = (new Date().getTime()- this.$store.state.Difftime - GMT_DIF) % DAY_TIME
 		        for (var planLen = LotteryPlan.length, i = LotteryPlan.length - 1; i >= 0; i--) {
@@ -288,16 +186,17 @@
 		          StartTime = _timeS[0]*3600000 + _timeS[1]*60000 + _timeS[2]*1000; //某期开始时间
 		          Vue.set(LotteryPlan[i],'Start', StartTime)
 
-		          if(i === planLen-1 && _SerTime >= EndTime){
+		          if((i === planLen-1) && (_SerTime >= EndTime)){
 		          	//i 等于最后一期， 而且服务器时间大于最后一期的EndTime
 		            state.IssueNo = planLen;
-		          }else if (_SerTime <= EndTime && _SerTime >= StartTime) {
+		          }else if ((_SerTime <= EndTime) && (_SerTime >= StartTime || (StartTime > EndTime))) {
 		          	//在某期的区间中
 		            state.IssueNo = i;
-		          }else if (i===0 && _SerTime < EndTime) {
-		          	//小于0 而且 服务器时间小于第一期的EndTime
-		            state.IssueNo = state.IssueNo||0;
 		          }
+		          // else if ((i===0) && (_SerTime < EndTime)) {
+		          // 	//小于0 而且 服务器时间小于第一期的EndTime
+		          //   state.IssueNo = state.IssueNo||0;
+		          // }
 		        }
 
 		        this.$store.commit('lt_updateIssue')
@@ -363,21 +262,11 @@
 	      	//添加bet到plan中
 	      	lt_addBet:(state)=>{
 	      		var baseBet = new BaseBet(this.$store.state)
-	      		// var {power,buy_count} = state.chaseConf
-	      		// if(power > 1 || buy_count > 1){
-	      		// 	baseBet.power2one(this.$store.state)
-	      		// }
 	      		this.$store.commit('lt_addToBasket', baseBet)
 	      		this.$store.commit('lt_clearBet')
-	      		// this.$store.dispatch('lt_ordinaryChase')
 	      	},
 	      	lt_addRandomBet:(state, randomBet)=>{
-	      		// var {power,buy_count} = state.chaseConf
-	      		// if(power > 1 || buy_count > 1){
-	      		// 	randomBet.power2one(this.$store.state)
-	      		// }
 	      		this.$store.commit('lt_addToBasket', randomBet)
-	      		// this.$store.dispatch('lt_ordinaryChase')
 	      	},
 	      	//将注单push到basket里
 	      	lt_addToBasket:(state, bet)=>{
@@ -698,30 +587,6 @@
 		      			LotteryType: type
 		      		})
 						}
-
-
-		      	/*var _rebate = sessionStorage.getItem('Rebate' + type)
-		      	if(_rebate){
-		      		commit({
-		      			type:'lt_setRebate',
-		      			rebate: JSON.parse(_rebate),
-		      			LotteryType: type
-		      		})
-						}else{
-			      	_fetch({
-								Action: 'GetBetRebate',
-								LotteryType: type
-							}).then((json)=>{
-								if(json.Code === 1){
-									sessionStorage.setItem('Rebate' + type, JSON.stringify(json.BackData))
-									commit({
-				      			type:'lt_setRebate',
-				      			rebate: json.BackData,
-				      			LotteryType: type
-				      		})
-								}
-							})
-						}*/
 		      },
 		      //投注
 		      lt_confirmBet:({state, rootState, commit, dispatch})=>{
@@ -796,7 +661,6 @@
 		      			//清除rebate
 		      			layer.alert(json.StrCode)
 				      	var type = state.lottery.LotteryType
-				      	// localStorage.removeItem('Rebate' + type)
 				      	this.$store.dispatch('lt_getRebate')
 							}else{
 								layer.msgWarn(json.StrCode);
@@ -860,6 +724,12 @@
 		watch:{
 			$route(val){
 			  ;[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
+		    store.commit('lt_setPerbet', PERBET)
+		    store.commit('lt_clearBet')
+		    store.commit('lt_clearBasket')
+		    store.commit('lt_setScheme', [])
+		    store.commit('lt_setChasePower', 1)		//清空追号配置
+				store.commit('lt_setChaseIssue', 1)
 			}
 		},
 	  beforeRouteLeave:(to, from, next)=>{

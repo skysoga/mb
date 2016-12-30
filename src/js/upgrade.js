@@ -3,10 +3,7 @@ export default {
     return{
       Content:'',
       UnClick:true,
-      ClickMsg:'',
-      isBouns:'',
       Img:'',
-      noimg:false
     }
   },
   beforeRouteEnter(to,from,next){
@@ -20,13 +17,9 @@ export default {
   created:function(){
     var xname='晋级奖励'
     var dataArr=state.SysActivity
-    this.isBouns=state.UserUpGradeBonus
-    var thState=-1
-    if(this.isBouns){
-      thState=this.isBouns.State
+    if(state.UserUpGradeBonus){
+      this.UnClick=state.UserUpGradeBonus.State
     }
-    this.UnClick=thState
-    this.ClickMsg=thState==0?'立即领取':thState==1?'已领取':'不可领取'
     for(var i=0;i<dataArr.length;i++){
       if(dataArr[i].Name==decodeURIComponent(xname)){
         this.Content=dataArr[i].Content
@@ -46,9 +39,7 @@ export default {
       _fetch(dataArr).then(json=>{
           if(json.Code==1){
             this.UnClick=true
-            this.ClickMsg="已领取"
-            var arr=['UserUpGradeBonus']
-            RootApp.AjaxGetInitData(arr)
+            state.UserUpGradeBonus.state=1
             layer.msgWarn(json.StrCode)
           }else{
             layer.msgWarn(json.StrCode)

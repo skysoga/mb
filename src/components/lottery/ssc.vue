@@ -122,7 +122,6 @@ var ltCfg = {
   I94:{render:['i1000','i100','i10'],alg:(order,tmp)=>mul(3,betSum(order,tmp))},
   I95:{render:['i100','i10','i1'],alg:(order,tmp)=>mul(3,betSum(order,tmp))},
 }
-
 export default {
   props:['mode'],
   components:{
