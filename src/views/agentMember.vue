@@ -24,18 +24,6 @@
     <tr>
       <td class="msg loadingMsg" v-html='msg[cant_scroll]' colspan="4"></td>
     </tr>
-    <!-- <tr v-if="cant_scroll===1">
-      <td class="msg loadingMsg" colspan="4">
-        <svg class="svgLoad" width="30px" height="30px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><rect x="0" y="0" width="100" height="100" fill="none" class="bk"></rect><rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(0 50 50) translate(0 -30)">  <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0s" repeatCount="indefinite"></animate></rect><rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(30 50 50) translate(0 -30)">  <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.08333333333333333s" repeatCount="indefinite"></animate></rect><rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(60 50 50) translate(0 -30)">  <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.16666666666666666s" repeatCount="indefinite"></animate></rect><rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(90 50 50) translate(0 -30)">  <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.25s" repeatCount="indefinite"></animate></rect><rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(120 50 50) translate(0 -30)">  <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.3333333333333333s" repeatCount="indefinite"></animate></rect><rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(150 50 50) translate(0 -30)">  <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.4166666666666667s" repeatCount="indefinite"></animate></rect><rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(180 50 50) translate(0 -30)">  <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.5s" repeatCount="indefinite"></animate></rect><rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(210 50 50) translate(0 -30)">  <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.5833333333333334s" repeatCount="indefinite"></animate></rect><rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(240 50 50) translate(0 -30)">  <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.6666666666666666s" repeatCount="indefinite"></animate></rect><rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(270 50 50) translate(0 -30)">  <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.75s" repeatCount="indefinite"></animate></rect><rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(300 50 50) translate(0 -30)">  <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.8333333333333334s" repeatCount="indefinite"></animate></rect><rect x="46.5" y="40" width="7" height="20" rx="5" ry="5" transform="rotate(330 50 50) translate(0 -30)">  <animate attributeName="opacity" from="1" to="0" dur="1s" begin="0.9166666666666666s" repeatCount="indefinite"></animate></rect></svg>
-        正在加载...
-      </td>
-    </tr>
-    <tr v-if="cant_scroll===2">
-      <td class="msg loadingMsg" v-html='msg[cant_scroll]' colspan="4"></td>
-    </tr>
-    <tr v-if="cant_scroll===0">
-      <td class="msg loadingMsg" v-html='msg[cant_scroll]' colspan="4"></td>
-    </tr> -->
     </template>
     </table>
     <bottom-box v-show = "BottomBoxShow" :list = "BottomBoxList"></bottom-box>
@@ -107,10 +95,11 @@ export default {
         }
         this.data_count=result.data_count
         this.cant_scroll=result.cant_scroll
-        this.ajaxData.Index=result.Index
+        this.ajaxData.Index=result.index+1
       } else {
         result = "" //占位
         this.res_data=[] //清空页面
+        this.ajaxData.Index=0
         this.getData()
       }
     },
@@ -171,9 +160,12 @@ export default {
       })
     },
     scroll: function() {
+      this.window_height = document.documentElement.clientHeight || document.body.clientHeight
+      this.document_height = document.documentElement.scrollHeight || document.body.scrollHeight
+      console.log(this.window_height ,this.document_height,document.body.scrollTop)
       if (this.cant_scroll) {
         return
-      } else if (this.$refs.div.scrollTop + 50 > this.document_height - this.window_height) {
+      } else if (document.body.scrollTop +30 > this.document_height - this.window_height) {
         this.getData()
       }
     },
@@ -217,8 +209,6 @@ export default {
   },
   mounted() {
     this.check_data()
-    this.window_height = document.documentElement.clientHeight || document.body.clientHeight
-    this.document_height = document.documentElement.scrollHeight || document.body.scollHeight
   }
 }
 </script>

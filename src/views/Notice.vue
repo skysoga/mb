@@ -62,6 +62,7 @@
         })
       },
       scroll: function() {
+        console.log(this.$refs.div.scrollTop)
         if (this.cant_scroll) {
           return
         }else if (this.$refs.div.scrollTop > (this.renderData.length-6)*(3*em+1)-this.$refs.div.clientHeight) {
