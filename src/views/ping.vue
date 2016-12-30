@@ -42,6 +42,7 @@ export default{
           var t = ObjArr.pop()
               t[2]=0
           ObjArr.unshift(t)
+          vm.evenNumbers(ObjArr)
        }
         var i = 0
         var Inter = setInterval(function() {;
@@ -58,7 +59,6 @@ export default{
                document.body.appendChild(script);
                vm.finder(i,ObjArr)
                vm.LineList=ObjArr
-               vm.evenNumbers(ObjArr)
              }
            })(i)
            ++i == len && clearInterval(Inter)
