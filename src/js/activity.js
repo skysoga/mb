@@ -1,13 +1,17 @@
 export default {
   data(){
-    return{}
+    return{
+      Num:''
+    }
   },
   beforeRouteEnter(to,from,next){
      var arr = ["SysActivity","ActivityConfig"];
      RootApp.GetInitData(arr,state=>{
-      console.log(state.SysActivity,state.ActivityConfig)
       next()
      })
+   },
+   created(){
+    this.Num=(state.SysActivity&&state.SysActivity.length)||0
    },
    methods:{
      getHtml:name=>{
