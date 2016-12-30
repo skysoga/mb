@@ -5,7 +5,7 @@
 			<h1>抱歉，无法访问此页面！</h1>
 			<router-link class="errorService" to="/">返回首页</router-link>
 		</div>
-		<router-link class="errorLogo" href="javascript:;"><img id="Logo1" src="" alt=""></router-link>
+		<router-link class="errorLogo" to="/index"><img id="Logo1" src="" alt=""></router-link>
 	</div>
 </template>
 <script src="../js/notfound.js"></script>

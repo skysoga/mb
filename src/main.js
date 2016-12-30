@@ -24,7 +24,7 @@ import Va from './plugins/va'
 Vue.use(Va)
 Vue.use(VueRouter)
 Vue.use(Vuex)
-const _App=location.host==="csz8.net"
+const _App=location.host==="csz8.net"//是否APP
 console.log(_App);
 const _AJAXUrl = '/tools/ssc_ajax.ashx'
 window.router = new VueRouter({
@@ -44,7 +44,8 @@ window.router = new VueRouter({
 function SetIndexTitle(s){
 	routes[1].meta.title=`<img src="${state.constant.ImgHost+s.MobileLogo}">`
 	if (!_App) {
-		routes[2].meta.title=routes[1].meta.title
+		document.title=s.Name
+		// routes[2].meta.title=routes[1].meta.title
 	}
 }
 
@@ -98,6 +99,7 @@ if (_App) {
 }
 var CacheArr = SiteArr.concat(UserArr)
 window.state = require('./JSconfig.js')
+state.constant._App=_App
 ;(function(){
 	function getLocalDate(str){
 		var s = localStorage.getItem(str);
@@ -179,6 +181,9 @@ window.store = new Vuex.Store({
       state.Difftime = Difftime
       localStorage.setItem('Difftime',Difftime)
       console.log('获取了时间：'  + Difftime, SerTime)
+    },
+    SetMaintain:(state,d)=>{
+    	state.Maintain=d
     }
   },
 })
@@ -543,47 +548,46 @@ function _fetch(data){
 		  },
 		  body: str.join('&')
 		}).then((res)=>{
-			try{
-				res.json().then(json=>{
-					console.log(json);
-					var notRes
-					;(function(){
-						switch(json.Code){
-							case 0://未登录
-								if(state.UserName){
-									layer.alert("由于您长时间未操作，已自动退出，请重新登录",function(){
-										RootApp.Logout()
-										var meta = RootApp._route.matched[0]
-										meta = meta&&meta.meta
-										if(meta&&meta.user){
-									    router.push("/login")
-										}
-									})
-									notRes=true
-								}
-							break;
-							case -7://系统维护
-								router.push("/maintain")
-							break;
-							case -8://账号冻结
-								layer.alert("您的账号已被冻结，详情请咨询客服。",function(){
+			res.json().then(json=>{
+				console.log(json);
+				var notRes
+				;(function(){
+					switch(json.Code){
+						case 0://未登录
+							if(state.UserName){
+								layer.alert("由于您长时间未操作，已自动退出，请重新登录",function(){
 									RootApp.Logout()
 									var meta = RootApp._route.matched[0]
 									meta = meta&&meta.meta
-							    router.push("/login")
+									if(meta&&meta.user){
+								    router.push("/login")
+									}
 								})
 								notRes=true
-							break;
-						}
-						if (data.Action.search('Verify')===0&&json.Code>-1) {
-							state.UserVerify=data.Action.replace('Verify','')+','
-						}
-					})()
-					notRes||resolve(json)
-				})
-			}catch(e){
-				resolve({Code:-1,StrCode:"网络错误，请重试"})
-			}
+							}
+						break;
+						case -7://系统维护
+							store.commit('SetMaintain', json.BackData)
+							router.push("/maintain")
+						break;
+						case -8://账号冻结
+							layer.alert("您的账号已被冻结，详情请咨询客服。",function(){
+								RootApp.Logout()
+								var meta = RootApp._route.matched[0]
+								meta = meta&&meta.meta
+						    router.push("/login")
+							})
+							notRes=true
+						break;
+					}
+					if (data.Action.search('Verify')===0&&json.Code>-1) {
+						state.UserVerify=data.Action.replace('Verify','')+','
+					}
+				})()
+				notRes||resolve(json)
+			})
+		}).catch((res)=>{
+			resolve({Code:-1,StrCode:"网络错误，请检查网络状态"})
 		})
 	})
 }
@@ -608,10 +612,7 @@ window._fetchT=function _fetchT(data){
       },
       body: data
     }).then((res)=>{
-
       res.text().then(text=>{
-        if (text.Code==0) {
-        }
         resolve(text)
       })
     })

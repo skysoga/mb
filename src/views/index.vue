@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <router-link tag="div" to="/ping" class='textMore dataType'><em>线路</em></router-link>
+    <router-link v-if="!$store.state.constant._App" v-show="$store.state.UserUpGradeBonus&&$store.state.UserUpGradeBonus.Grade>2" tag="div" to="/ping" class='textMore dataType'><em>线路</em></router-link>
     <div id="banner">
       <swiper>
         <swiper-slide v-for="i in $store.state.BannerSys">
@@ -34,4 +34,8 @@
 <script src="../js/index.js"></script>
 <style lang="scss" scoped>
 @import '../scss/index.scss';
+#HotLottery ul{
+  -webkit-transform-origin: 0 0;
+  -webkit-transform: scale(0.33333, 0.33333);
+}
 </style>
