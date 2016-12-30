@@ -41,7 +41,6 @@ export default{
         window.callback = function(e){
           var t = ObjArr.pop()
               t[2]=0
-              t[1]=t[1]
           ObjArr.unshift(t)
         }
         var i = 0
