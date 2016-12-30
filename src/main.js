@@ -153,14 +153,42 @@ window.store = new Vuex.Store({
   			state[arr[i]]=null
   		}
   	},
-    setDifftime:(state, SerTime)=>{
-      var Difftime = new Date().getTime()- SerTime
+    setDifftime:(state, timeItemList)=>{
+      console.log(timeItemList)
+      if(!timeItemList || !timeItemList.length){
+        layer.msgWarn("因无法同步服务器时间,您将无法投注,请检查网络情况")
+        return
+      }
+      var _shortest = timeItemList[0].interval,
+          _index = 0
+      timeItemList.forEach((item, index)=>{
+        if(item.interval < _shortest){
+          _shortest = item.interval
+          _index = index
+        }
+      })
+
+      var timeObj = timeItemList[_index],
+          timeBegin = timeObj.timeBegin,
+          timeEnd = timeObj.timeEnd,
+          SerTime = timeObj.SerTime
+      var Difftime = timeBegin + Math.floor((timeEnd - timeBegin)/2) - SerTime
+
+      console.log(timeObj, Difftime)
+      // Difftime = new Date().getTime()- SerTime
       state.Difftime = Difftime
       localStorage.setItem('Difftime',Difftime)
       console.log('获取了时间：'  + Difftime, SerTime)
     }
   },
 })
+
+function TimeItem(interval, timeBegin, timeEnd, SerTime){
+  this.interval = interval
+  this.timeBegin = timeBegin
+  this.timeEnd = timeEnd
+  this.SerTime = SerTime
+}
 
 window.RootApp = new Vue({
 	el: '#app',
@@ -314,25 +342,38 @@ window.RootApp = new Vue({
 			return false;
 		},
     getServerTime: (function(){
-      var cantGetTime = 0
+      var cantGetTime = 0,
+          timeItemList = []
       return function(fun){
-        var timeBegin = new Date()
+        var timeBegin = new Date().getTime()
         _fetch({Action: "GetServerTimeMillisecond"}).then((json)=>{
+          var timeEnd = new Date().getTime()
+          var interval = timeEnd - timeBegin
+          if(json.Code === 1){
+            timeItemList.push(new TimeItem(interval, timeEnd, timeBegin, json.Data))
+          }
+
           if(cantGetTime > 4){
-            layer.msgWarn("因无法同步服务器时间,您将无法投注,请检查网络情况")
+            // layer.msgWarn("因无法同步服务器时间,您将无法投注,请检查网络情况")
+            store.commit('setDifftime', timeItemList)
+            fun && fun()
+            cantGetTime = 0
+            timeItemList = []
           }else{
-            var interval = new Date() - timeBegin
             if(interval > 1000){
               cantGetTime++
-              this.getServerTime()
+              this.getServerTime(fun)
             }else{
               if(json.Code === 1) {
-                var SerTime = json.Data
-                store.commit('setDifftime', SerTime)
+                // var SerTime = json.Data
+                // store.commit('setDifftime', SerTime)
+                store.commit('setDifftime', timeItemList)
                 fun && fun()
+                cantGetTime = 0
+                timeItemList = []
               }else{
                 cantGetTime++;
-                this.getServerTime();
+                this.getServerTime(fun);
               }
             }
           }
