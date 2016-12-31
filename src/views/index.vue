@@ -3,11 +3,11 @@
     <router-link v-if="!$store.state.constant._App" v-show="$store.state.UserUpGradeBonus&&$store.state.UserUpGradeBonus.Grade>2" tag="div" to="/ping" class='textMore dataType'><em>线路</em></router-link>
     <div id="banner">
       <swiper>
-        <swiper-slide v-for="i in $store.state.BannerSys">
-          <router-link :to="i.Url"><img :src="$store.state.constant.ImgHost+i.Image"></router-link>
+        <swiper-slide v-for="i in $store.state.SysBanner">
+          <router-link :to="i.Url.replace('.html','')"><img :src="$store.state.constant.ImgHost+i.Image"></router-link>
         </swiper-slide>
         <swiper-slide v-for="i in $store.state.BannerList">
-          <router-link :to="i.Url"><img :src="$store.state.constant.ImgHost+i.Image"></router-link>
+          <router-link :to="i.Url.replace('.html','')"><img :src="$store.state.constant.ImgHost+i.Image"></router-link>
         </swiper-slide>
       </swiper>
     </div>
