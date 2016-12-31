@@ -544,7 +544,15 @@ function computeIssue(code, index){
   //这里挂各特殊彩种的处理函数--有返回的直接出返回结果。不参与下一步
   var handler = {
     '1001':function(){
-      // (_index > 84) && days--
+      if (_index > 84) {
+        days--
+      }else if (_index===83) {
+        var _SerTime = (new Date().getTime()- this.$store.state.Difftime - GMT_DIF) % DAY_TIME
+            ,IssueNo = state.IssueNo
+        if (_SerTime<600000) {
+          days--
+        }
+      }
     },
     //北京快三，以某一期作为基准
     '1406':()=>{
