@@ -48,7 +48,7 @@
   }
 
   article h2 {
-    font-size: .9em;
+    font-size: .8em;
     line-height: 1.3
   }
 
