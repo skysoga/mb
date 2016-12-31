@@ -549,6 +549,10 @@ function _fetch(data){
 		  },
 		  body: str.join('&')
 		}).then((res)=>{
+			if (res.status!==200) {
+				resolve({Code:-1,StrCode:"网络错误"+res.status})
+				return
+			}
 			res.json().then(json=>{
 				console.log(json);
 				var notRes

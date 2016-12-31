@@ -55,6 +55,7 @@ var routes = [
     meta: {
       user: true,
     },
+    redirect: '/notfound',
     children:[
       {
         path: 'SSC/:code',
