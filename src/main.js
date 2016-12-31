@@ -21,6 +21,7 @@ import Vuex from 'vuex'
 import App from './App'
 import routes from './routes/routes'
 import Va from './plugins/va'
+window.Vue=Vue
 Vue.use(Va)
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -585,6 +586,8 @@ function _fetch(data){
 					}
 				})()
 				notRes||resolve(json)
+			}).catch(r=>{
+				resolve({Code:-1,StrCode:"网络数据错误"})
 			})
 		}).catch((res)=>{
 			resolve({Code:-1,StrCode:"网络错误，请检查网络状态"})
