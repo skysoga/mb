@@ -355,7 +355,7 @@ window.RootApp = new Vue({
         _fetch({Action: "GetServerTimeMillisecond"}).then((json)=>{
           var timeEnd = new Date().getTime()
           var interval = timeEnd - timeBegin
-          if(json.Code === 1){
+          if(json.Code > -1){
             timeItemList.push(new TimeItem(interval, timeEnd, timeBegin, json.Data))
           }
 
