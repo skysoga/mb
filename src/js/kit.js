@@ -544,7 +544,7 @@ function computeIssue(code, index){
   //这里挂各特殊彩种的处理函数--有返回的直接出返回结果。不参与下一步
   var handler = {
     '1001':function(){
-      if (_index > 84) {
+      if (_index > 83) {
         days--
       }else if (_index===83) {
         var _SerTime = (new Date().getTime()- this.$store.state.Difftime - GMT_DIF) % DAY_TIME
