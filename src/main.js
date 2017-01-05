@@ -576,7 +576,9 @@ window._fetch = function (data){
 	}
 	return new Promise(function(resolve, reject){
 		var st = setTimeout(function(){
+			console.log("请求超时");
 			FetchCatch('网络请求超时，请检查网络状态',resolve)
+			reject()
 		},10000)
 		fetch('/tools/ssc_ajax.ashx', {
 			credentials:'same-origin',
