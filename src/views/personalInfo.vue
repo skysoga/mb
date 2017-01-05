@@ -14,10 +14,9 @@
             <i class="iconfont right"></i>
             <em v-if="!UserNickName">
               <input va-para="NickName"
-                      v-va:NickName.vanow.canNull="[{reg:/^[\u4e00-\u9fa5]{0,5}$/}]"
+                      v-va:NickName.vanow.canNull="[{reg:/^[\u4e00-\u9fa5]{1,5}$/}]"
                       regMsg="请使用五位以内的汉字"
                       tag="昵称"
-                      v-model="UserNickName"
                       type="text"
                       placeholder="请设置昵称">
             </em>

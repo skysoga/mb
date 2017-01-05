@@ -159,9 +159,9 @@
 		      lt_initConfig:(state)=>{state.config = pageConfig[state.lottery.LotteryType]},
 		      lt_updateDate:(state)=>{
 		        var nowSerTime = new Date().getTime()-this.$store.state.Difftime;   //当前的服务器时间
-		        state.Todaystr = new Date(nowSerTime).format("yyyyMMdd");     //今天
-		        state.Tomorrowstr = new Date(nowSerTime+DAY_TIME).format("yyyyMMdd"); //明天
-		        state.Yestodaystr = new Date(nowSerTime-DAY_TIME).format("yyyyMMdd"); //昨天
+		        state.Todaystr = new Date(nowSerTime).format("yyyyMMdd");     			//今天
+		        // state.Tomorrowstr = new Date(nowSerTime+DAY_TIME).format("yyyyMMdd"); //明天
+		        // state.Yestodaystr = new Date(nowSerTime-DAY_TIME).format("yyyyMMdd"); //昨天
 		      },
 		      //计算当前期号
 		      lt_computeIssueNo:(state, LotteryPlan)=>{
@@ -181,6 +181,7 @@
 		          _timeE = LotteryPlan[i].EndTime.split(':');
 		          EndTime = _timeE[0]*3600000 + _timeE[1]*60000 + _timeE[2]*1000;			//某期结束时间
 		          Vue.set(LotteryPlan[i],'End', EndTime)
+
 		          _timeS = LotteryPlan[i].StartTime.split(':');
 		          StartTime = _timeS[0]*3600000 + _timeS[1]*60000 + _timeS[2]*1000; //某期开始时间
 		          Vue.set(LotteryPlan[i],'Start', StartTime)
@@ -190,6 +191,7 @@
 		            state.IssueNo = planLen;
 		          }else if ((_SerTime <= EndTime) && (_SerTime >= StartTime || (StartTime > EndTime))) {
 		          	//在某期的区间中
+		          	console.log(_SerTime, StartTime, EndTime,i)
 		            state.IssueNo = i;
 		          }
 		          // else if ((i===0) && (_SerTime < EndTime)) {
@@ -464,23 +466,30 @@
 		      	if (_SerTime<1000) {
 			        console.log("新的一天");
 			        commit('lt_updateDate')
-			        commit('lt_setIssueNo', 0)
-			        return;
+			        commit('lt_setIssueNo', state.IssueNo%state.PlanLen)
+			        //修改1
+			        // return;
 			      }
 
-			      if(!state.LotteryPlan.length) return
+			      if(!state.PlanLen) return
 		        var Countdown = state.LotteryPlan[state.IssueNo % state.PlanLen].End
 			                        +(state.IssueNo>=state.PlanLen) * DAY_TIME
 			                        -_SerTime;
 		        Countdown %= DAY_TIME;
 		        //如果倒计时小于0，则一直更新到最新期
 		        //用循环是因为有可能长时间不相应，需要一次性校正到位
+		        var crossCount = 0
 		        if(Countdown<=0){
 		          while(Countdown<=0){
+		          	crossCount++
 		          	commit('lt_setIssueNo', ++IssueNo)
 		            Countdown = state.LotteryPlan[state.IssueNo % state.PlanLen].End
 					       							 +(state.IssueNo>=state.PlanLen) * DAY_TIME
 					       							 -_SerTime;
+		          }
+		          if(crossCount > 1){
+		          	commit('lt_updateDate')
+				        commit('lt_setIssueNo', state.IssueNo%state.PlanLen)
 		          }
 
 		          //期号更新
@@ -516,8 +525,8 @@
 			      	//如果在获取我的投注/我的追号,则不进入
       	      if(!len || Results[0].IssueNo*1 < state.OldIssue*1) {
       	      	//没有结果 或者 有结果且上一期还没开奖，就以一定频率轮询开奖结果
-      	      	wait4Results++
-
+      	      	// wait4Results++
+      	      	wait4Results = 60 - Countdown%60
 				        var interval
 				        switch(state.lottery.LotteryCode){
 				          case "1407":

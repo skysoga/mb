@@ -57,7 +57,8 @@ export default {
       BottomBoxList: {},
       agent_path_name: [0],
       data_storage: {}, //缓存数据
-      see_name:''
+      see_name:'',
+      oldDay:0
     }
   },
   components: {
@@ -66,16 +67,21 @@ export default {
   },
   methods: {
     doSearch:function(){
+      if(this.BetweenType===this.oldDay){return}
+      this.oldDay=this.BetweenType
       this.ajaxData.BetweenType=this.BetweenType
       this.ajaxData.Index=0
       this.ajaxData.UserName=0
       this.agent_path_name=[0]
       this.res_data=[]
+      this.cant_scroll=0
       this.check_data()
     },
     check_data: function() {
+      console.log("执行check")
       let result = this.data_storage[[this.ajaxData.UserName,this.ajaxData.BetweenType].join("")]
       if (result) {
+        console.log("有缓存")
         // if (result.index === 0) {
         //   this.res_data = result.save_data
         // } else {
@@ -85,10 +91,13 @@ export default {
         this.cant_scroll=result.cant_scroll
         this.ajaxData.Index=result.index+1
       } else {
-        result = "" //占位
-        this.res_data=[] //清空页面
-        this.ajaxData.Index=0
-        this.getData()
+        console.log("无缓存")
+        if(!this.cant_scroll){
+          result = "" //占位
+          this.res_data=[] //清空页面
+          this.ajaxData.Index=0
+          this.getData()
+        }
       }
     },
     save_dataM: function(temp, saveData,count,scroll_state) {
@@ -101,19 +110,29 @@ export default {
     },
     reset: function() {
       this.ajaxData.Index = 0
+      this.cant_scroll=0
       this.res_data = []
       this.check_data()
     },
     getData: function() {
       this.cant_scroll = 1
-      let temp_ajax = {
+      // let temp_ajax = {
+      //   username: this.ajaxData.UserName,
+      //   index: this.ajaxData.Index,
+      //   betweentype:this.ajaxData.BetweenType
+      // }
+      let temp_ajax=Object.assign({},{
         username: this.ajaxData.UserName,
         index: this.ajaxData.Index,
         betweentype:this.ajaxData.BetweenType
-      }
+      })
       console.log(this.ajaxData)
       _fetch(this.ajaxData).then((json) => {
         if (json.Code === 1) {
+          if(temp_ajax.betweentype!=this.BetweenType){
+            console.log("day切换太快")
+            return
+          }
           this.cant_scroll = 0
           if (this.ajaxData.Index === 0) {
             this.data_count = json.DataCount
@@ -124,6 +143,7 @@ export default {
               this.cant_scroll = 2
             }
             json.BackData=this.res_data.concat(json.BackData)
+            console.log("开始检查")
           this.save_dataM(temp_ajax, json.BackData,this.data_count,this.cant_scroll)
           this.check_data()
         } else {
@@ -172,6 +192,7 @@ export default {
   },
   created() {
     this.check_data()
+    //this.getData()
   }
 }
 </script>

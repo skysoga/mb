@@ -72,6 +72,7 @@ export default {
       layer.msgWait("正在提交")
       _fetch(ajaxData).then(data=>{
           if(data.Code===1){
+            this.UserNickName=value
             layer.msgWarn(data.StrCode)
             RootApp.AjaxGetInitData(["User"+key],function(data){
               RootApp.SaveInitData(data.BackData)
