@@ -39,7 +39,8 @@ export default {
       _fetch(dataArr).then(json=>{
           if(json.Code==1){
             this.UnClick=true
-            state.UserUpGradeBonus.state=1
+            RootApp.AjaxGetInitData(['UserUpGradeBonus'])
+            //state.UserUpGradeBonus.state=1
             layer.msgWarn(json.StrCode)
           }else{
             layer.msgWarn(json.StrCode)
