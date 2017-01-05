@@ -118,10 +118,10 @@ export default {
     },
     getData: function() {
       this.cant_scroll = 1
-      let temp_ajax = {
+      let temp_ajax=Object.assign({},{
         userid: this.ajaxData.UserId,
         index: this.ajaxData.Index
-      }
+      })
       _fetch(this.ajaxData).then((json) => {
         if (json.Code === 1) {
           this.cant_scroll = 0
