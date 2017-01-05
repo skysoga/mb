@@ -40,7 +40,7 @@ export default {
           if(json.Code==1){
             this.UnClick=true
             state.UserUpGradeBonus.State=1
-            layer.msgWarn(json.StrCode)
+            layer.msg(json.StrCode)
           }else{
             layer.msgWarn(json.StrCode)
           }

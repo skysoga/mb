@@ -28,7 +28,7 @@ export default {
       }
       ArrData.Action='SetSessionUser'
       _fetch(ArrData).then(json=>{
-          if(json.Code==1){
+          if(json.Code==1||json.Code==0){
             RootApp.SaveInitData(json.BackData)
             sessionStorage.setItem('isFind',true)
            RootApp.$router.push({path:'resetWay',query:{Q:'ResetPwd'}})
