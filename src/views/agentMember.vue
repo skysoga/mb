@@ -118,10 +118,14 @@ export default {
     },
     getData: function() {
       this.cant_scroll = 1
-      let temp_ajax = {
-        userid: this.ajaxData.UserId,
-        index: this.ajaxData.Index
-      }
+      // let temp_ajax = {
+      //   userid: this.ajaxData.UserId,
+      //   index: this.ajaxData.Index
+      // }
+      let temp_ajax=Object.assign({},{
+       userid: this.ajaxData.UserId,
+       index: this.ajaxData.Index
+     })
       _fetch(this.ajaxData).then((json) => {
         if (json.Code === 1) {
           this.cant_scroll = 0
@@ -166,7 +170,7 @@ export default {
       console.log(this.window_height ,this.document_height,document.body.scrollTop)
       if (this.cant_scroll) {
         return
-      } else if (document.body.scrollTop +30 > this.document_height - this.window_height) {
+      } else if (document.body.scrollTop +10 > this.document_height - this.window_height) {
         this.getData()
       }
     },
