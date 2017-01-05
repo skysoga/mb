@@ -14,7 +14,6 @@
 	import lt_ssc from '../json/lt_ssc.json'
 	import lt_k3 from '../json/lt_k3.json'
 	import lt_syx5 from '../json/lt_syx5.json'
-	import Vue from 'vue'
 	import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 	import {bus, BaseBet, ChaseAjax, easyClone, deleteCompress, Scheme, getBasketAmount, computeIssue, getSSCRebate, getK3Rebate,getRebate,DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../js/kit'
 
@@ -216,8 +215,8 @@
 	      	},
 	      	lt_stopSell:(state)=>{
 	      		this.$store.commit('lt_updateTimeBar', '暂停销售')		//暂停销售
-	      		Vue.set(state, 'NowIssue', '00000000000')
-	      		Vue.set(state, 'OldIssue', '00000000000')
+	      		// Vue.set(state, 'NowIssue', '00000000000')
+	      		// Vue.set(state, 'OldIssue', '00000000000')
 	      	},
 	      	lt_setIssueNo:(state, IssueNo)=>{state.IssueNo = IssueNo},	//设置当前期号
 	      	lt_displayResults:(state, bool)=>{													//展示开奖结果或开奖动画
@@ -532,6 +531,7 @@
 				        	dispatch('lt_getResults', state.lottery.LotteryCode)		//获取开奖结果
 				        }
 				      }else if(Results[0].IssueNo*1 > state.OldIssue*1){
+				      	console.log(state.OldIssue);
 				      	commit('lt_stopSell')		//暂停销售
 				      }else{
 				      	commit('lt_displayResults', true)

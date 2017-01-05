@@ -61,7 +61,7 @@
 					if (data.Code === 1) {
 						cb(data);
 					} else {
-						console.log("return error");
+						layer.msgWarn(data.StrCode)
 					}
 				})
 			},

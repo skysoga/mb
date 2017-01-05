@@ -21,6 +21,7 @@ import Vuex from 'vuex'
 import App from './App'
 import routes from './routes/routes'
 import Va from './plugins/va'
+window.Vue=Vue
 Vue.use(Va)
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -548,6 +549,10 @@ function _fetch(data){
 		  },
 		  body: str.join('&')
 		}).then((res)=>{
+			if (res.status!==200) {
+				resolve({Code:-1,StrCode:"网络错误"+res.status})
+				return
+			}
 			res.json().then(json=>{
 				console.log(json);
 				var notRes
@@ -555,7 +560,7 @@ function _fetch(data){
 					switch(json.Code){
 						case 0://未登录
 							if(state.UserName){
-								layer.alert("由于您长时间未操作，已自动退出，请重新登录",function(){
+								layer.alert("由于您长时间未操作，已自动退出，需要重新登录",function(){
 									RootApp.Logout()
 									var meta = RootApp._route.matched[0]
 									meta = meta&&meta.meta
@@ -585,6 +590,8 @@ function _fetch(data){
 					}
 				})()
 				notRes||resolve(json)
+			}).catch(r=>{
+				resolve({Code:-1,StrCode:"网络数据错误"})
 			})
 		}).catch((res)=>{
 			resolve({Code:-1,StrCode:"网络错误，请检查网络状态"})
