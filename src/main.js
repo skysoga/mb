@@ -575,6 +575,9 @@ window._fetch = function (data){
 		str.push(i+'='+k);
 	}
 	return new Promise(function(resolve, reject){
+		var st = setTimeout(function(){
+			FetchCatch('网络请求超时，请检查网络状态',resolve)
+		},10000)
 		fetch('/tools/ssc_ajax.ashx', {
 			credentials:'same-origin',
 		  method: 'POST',
@@ -588,6 +591,7 @@ window._fetch = function (data){
 				return
 			}
 			res.json().then(json=>{
+				clearTimeout(st)
 				console.log(json);
 				var notRes
 				;(function(){
