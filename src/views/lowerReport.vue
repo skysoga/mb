@@ -68,16 +68,19 @@ export default {
     doSearch:function(){
       this.ajaxData.BetweenType=this.BetweenType
       this.ajaxData.Index=0
+      this.ajaxData.UserName=0
+      this.agent_path_name=[0]
+      this.res_data=[]
       this.check_data()
     },
     check_data: function() {
       let result = this.data_storage[[this.ajaxData.UserName,this.ajaxData.BetweenType].join("")]
       if (result) {
-        if (result.index === 0) {
+        // if (result.index === 0) {
+        //   this.res_data = result.save_data
+        // } else {
           this.res_data = result.save_data
-        } else {
-          this.res_data = this.res_data.concat(result.save_data)
-        }
+        // }
         this.data_count=result.data_count
         this.cant_scroll=result.cant_scroll
         this.ajaxData.Index=result.index+1
@@ -120,6 +123,7 @@ export default {
             if (this.ajaxData.Index >= this.data_totalpage) {
               this.cant_scroll = 2
             }
+            json.BackData=this.res_data.concat(json.BackData)
           this.save_dataM(temp_ajax, json.BackData,this.data_count,this.cant_scroll)
           this.check_data()
         } else {

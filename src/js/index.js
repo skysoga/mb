@@ -11,7 +11,7 @@ export default {
     swiperSlide
   },
   beforeRouteEnter:(to, from, next) => {
-    var arr = ["BannerList","NoticeData","LotteryConfig","LotteryList","SiteConfig"];
+    var arr = ["SysBanner","BannerList","NoticeData","LotteryConfig","LotteryList","SiteConfig"];
     RootApp.GetInitData(arr, state=>{
       next(vm=>{
        /* var K3,SSC
