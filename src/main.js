@@ -560,7 +560,7 @@ function _fetch(data){
 					switch(json.Code){
 						case 0://未登录
 							if(state.UserName){
-								layer.alert("由于您长时间未操作，已自动退出，请重新登录",function(){
+								layer.alert("由于您长时间未操作，已自动退出，需要重新登录",function(){
 									RootApp.Logout()
 									var meta = RootApp._route.matched[0]
 									meta = meta&&meta.meta
