@@ -563,6 +563,7 @@ function FetchCatch(msg,resolve){
 	}
 }
 window._fetch = function (data){
+	data.SourceName=_App?"APP":"MB"
 	var str=[],k;
 	for(var i in data){
 		k=data[i];
