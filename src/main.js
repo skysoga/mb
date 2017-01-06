@@ -9,6 +9,34 @@
 	  sessionStorage={setItem:function(d){},getItem:function(d){}};
 	}
 })()
+
+/**
+ * [format 为Date对象追加format方法]
+ * @param  {[string]} format [设置要输出的目标格式 如"yyyy-MM-dd hh:mm:ss" ]
+ * @return {[string]}        [按格式输出的时间字符串]
+ * 示例console.log(new Date().format("yyyyMd hh:mm:ss")) 输出2016816 14:12:17;
+ */
+Date.prototype.format = function(format) {
+  var date = {
+  "M+": this.getMonth() + 1,
+  "d+": this.getDate(),
+  "h+": this.getHours(),
+  "m+": this.getMinutes(),
+  "s+": this.getSeconds(),
+  "q+": Math.floor((this.getMonth() + 3) / 3),
+  "S+": this.getMilliseconds()
+  };
+  if (/(y+)/i.test(format)) {
+  format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
+  }
+  for (var k in date) {
+	  if (new RegExp("(" + k + ")").test(format)) {
+	    format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
+	  }
+  }
+  return format;
+}
+
 document.body.oncontextmenu=function(){ return false;}//防止右键
 document.addEventListener('touchstart',function(e){},false);//让css的:active生效
 // document.cookie = "Site="+location.hostname.replace('.com','')
@@ -282,9 +310,6 @@ window.RootApp = new Vue({
 			}
 			_fetch(ajax).then((json)=>{
 		    if (json.Code===1||json.Code===0) {
-		    	var Data = this.SetFilter(json.BackData);
-		      this.SaveInitData(Data)
-		      localStorage.setItem('CacheData',JSON.stringify(Object.assign(CacheData,json.CacheData)))
 		      fun&&fun(state)
 		    }else{
 		      layer.msgWarn(json.StrCode);
@@ -355,7 +380,7 @@ window.RootApp = new Vue({
         _fetch({Action: "GetServerTimeMillisecond"}).then((json)=>{
           var timeEnd = new Date().getTime()
           var interval = timeEnd - timeBegin
-          if(json.Code === 1){
+          if(json.Code > -1){
             timeItemList.push(new TimeItem(interval, timeEnd, timeBegin, json.Data))
           }
 
@@ -528,10 +553,17 @@ document.addEventListener('copy', function(e){
 	}
 })
 
-
-window._fetch = _fetch
-
-function _fetch(data){
+function FetchCatch(msg,resolve){
+	console.log("FetchCatch");
+	if (state.turning) {
+		layer.msgWarn(msg)
+		state.turning=false
+	}else{
+		resolve({Code:-1,StrCode:msg})
+	}
+}
+window._fetch = function (data){
+	data.SourceName=_App?"APP":"MB"
 	var str=[],k;
 	for(var i in data){
 		k=data[i];
@@ -541,6 +573,11 @@ function _fetch(data){
 		str.push(i+'='+k);
 	}
 	return new Promise(function(resolve, reject){
+		var st = setTimeout(function(){
+			console.log("请求超时");
+			FetchCatch('网络请求超时，请检查网络状态',resolve)
+			reject()
+		},10000)
 		fetch('/tools/ssc_ajax.ashx', {
 			credentials:'same-origin',
 		  method: 'POST',
@@ -550,12 +587,22 @@ function _fetch(data){
 		  body: str.join('&')
 		}).then((res)=>{
 			if (res.status!==200) {
-				resolve({Code:-1,StrCode:"网络错误"+res.status})
+				FetchCatch("网络错误"+res.status,resolve)
 				return
 			}
 			res.json().then(json=>{
+				clearTimeout(st)
 				console.log(json);
 				var notRes
+				if (data.Action==="GetInitData") {
+					if (json.Code===1||json.Code===0) {
+						var Data = RootApp.SetFilter(json.BackData);
+					  RootApp.SaveInitData(Data)
+					  if(JSON.stringify(json.CacheData) !== "{}"){
+					  	localStorage.setItem('CacheData',JSON.stringify(Object.assign(CacheData,json.CacheData)))
+					  }
+					}
+				}
 				;(function(){
 					switch(json.Code){
 						case 0://未登录
@@ -591,10 +638,10 @@ function _fetch(data){
 				})()
 				notRes||resolve(json)
 			}).catch(r=>{
-				resolve({Code:-1,StrCode:"网络数据错误"})
+				FetchCatch("网络数据错误",resolve)
 			})
 		}).catch((res)=>{
-			resolve({Code:-1,StrCode:"网络错误，请检查网络状态"})
+			FetchCatch("网络错误，请检查网络状态",resolve)
 		})
 	})
 }
@@ -624,32 +671,4 @@ window._fetchT=function _fetchT(data){
       })
     })
   })
-}
-
-
-/**
- * [format 为Date对象追加format方法]
- * @param  {[string]} format [设置要输出的目标格式 如"yyyy-MM-dd hh:mm:ss" ]
- * @return {[string]}        [按格式输出的时间字符串]
- * 示例console.log(new Date().format("yyyyMd hh:mm:ss")) 输出2016816 14:12:17;
- */
-Date.prototype.format = function(format) {
-  var date = {
-  "M+": this.getMonth() + 1,
-  "d+": this.getDate(),
-  "h+": this.getHours(),
-  "m+": this.getMinutes(),
-  "s+": this.getSeconds(),
-  "q+": Math.floor((this.getMonth() + 3) / 3),
-  "S+": this.getMilliseconds()
-  };
-  if (/(y+)/i.test(format)) {
-  format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
-  }
-  for (var k in date) {
-	  if (new RegExp("(" + k + ")").test(format)) {
-	    format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
-	  }
-  }
-  return format;
 }

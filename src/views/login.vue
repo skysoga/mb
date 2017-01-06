@@ -10,6 +10,14 @@
           <td>密码</td>
           <td colspan="2"><input v-model.lazy="Password"  class="input" tag="密码" type="password" v-va:Password placeholder="请输入密码" /></td>
         </tr>
+        <tr v-if="IcodeShow">
+          <td>验证码</td>
+          <td><input type="text" v-va:ImgCode tag="验证码" v-model="ImgCode" placeholder="请输入验证码">
+          </td>
+          <td>
+            <img class="yzm" :src="imgSrc" @click="imgUrl">
+          </td>
+        </tr>
         <tr></tr>
       </tbody>
     </table>
