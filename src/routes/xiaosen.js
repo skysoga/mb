@@ -1,34 +1,34 @@
-const dailyPrise =resolve => require(['../views/dailyPrise'],resolve)//每日加奖
-const upgrade =resolve => require(['../views/upgrade'],resolve)//晋级奖励
-const activityInfo =resolve => require(['../views/activityInfo'],resolve)//站长活动
-const setPwd =resolve => require(['../views/setPwd'],resolve)//设置密码
-const verifyPwd =resolve => require(['../views/verifyPwd'],resolve)//修改登录密码
-const verifySafePwd =resolve => require(['../views/verifySafePwd'],resolve)//修改安全密码
-const setSafePwd =resolve => require(['../views/setSafePwd'],resolve)//设置安全密码
-const verifyMobile =resolve => require(['../views/verifyMobile'],resolve)//修改手机
-const setMobile =resolve => require(['../views/setMobile'],resolve)//设置手机
-const verifyQuestion =resolve => require(['../views/verifyQuestion'],resolve)//修改密码问题
-const setQuestion =resolve => require(['../views/setQuestion'],resolve)//设置密保问题
-const verifyMail =resolve => require(['../views/verifyMail'],resolve)//修改邮箱
-const setMail =resolve => require(['../views/setMail'],resolve)//设置邮箱
-const manageBankcard =resolve => require(['../views/manageBankcard'],resolve)//银行卡管理
-const resetWay =resolve => require(['../views/resetWay'],resolve)//找回方式
-const forgetPwd =resolve => require(['../views/forgetPwd'],resolve)//忘记密码
-const agentCenter =resolve => require(['../views/agentCenter'],resolve)//代理中心
-const agentReport =resolve => require(['../views/agentReport'],resolve)//代理报表
-const manageInvite =resolve => require(['../views/manageInvite'],resolve)//下级开户
-const manageIcode =resolve => require(['../views/manageIcode'],resolve)//邀请码
-const personalInfo =resolve => require(['../views/personalInfo'],resolve)//个人信息
-const personalLevel =resolve => require(['../views/personalLevel'],resolve)//等级头衔
-const PLstatement =resolve => require(['../views/PLstatement'],resolve)//今日盈亏
-const setBankcard =resolve => require(['../views/setBankcard'],resolve)//设置银行卡
-const verifyBankcard =resolve => require(['../views/verifyBankcard'],resolve)//验证银行卡
-const AgentCode =resolve => require(['../views/AgentCode'],resolve)//邀请码代理
-const memberCode =resolve => require(['../views/memberCode'],resolve)//邀请码玩家
-const withdraw =resolve => require(['../views/withdraw'],resolve)//提现
-const rebateDes =resolve => require(['../views/rebateDes'],resolve)//返点赔率表
-const tool =resolve => require(['../views/tool'],resolve)//清缓存工具
-const ping =resolve => require(['../views/ping'],resolve)//线路检测
+const dailyPrise =require('../views/dailyPrise')//每日加奖
+const upgrade =require('../views/upgrade')//晋级奖励
+const activityInfo =require('../views/activityInfo')//站长活动
+const setPwd =require('../views/setPwd')//设置密码
+const verifyPwd =require('../views/verifyPwd')//修改登录密码
+const verifySafePwd =require('../views/verifySafePwd')//修改安全密码
+const setSafePwd =require('../views/setSafePwd')//设置安全密码
+const verifyMobile =require('../views/verifyMobile')//修改手机
+const setMobile =require('../views/setMobile')//设置手机
+const verifyQuestion =require('../views/verifyQuestion')//修改密码问题
+const setQuestion =require('../views/setQuestion')//设置密保问题
+const verifyMail =require('../views/verifyMail')//修改邮箱
+const setMail =require('../views/setMail')//设置邮箱
+const manageBankcard =require('../views/manageBankcard')//银行卡管理
+const resetWay =require('../views/resetWay')//找回方式
+const forgetPwd =require('../views/forgetPwd')//忘记密码
+const agentCenter =require('../views/agentCenter')//代理中心
+const agentReport =require('../views/agentReport')//代理报表
+const manageInvite =require('../views/manageInvite')//下级开户
+const manageIcode =require('../views/manageIcode')//邀请码
+const personalInfo =require('../views/personalInfo')//个人信息
+const personalLevel =require('../views/personalLevel')//等级头衔
+const PLstatement =require('../views/PLstatement')//今日盈亏
+const setBankcard =require('../views/setBankcard')//设置银行卡
+const verifyBankcard =require('../views/verifyBankcard')//验证银行卡
+const AgentCode =require('../views/AgentCode')//邀请码代理
+const memberCode =require('../views/memberCode')//邀请码玩家
+const withdraw =require('../views/withdraw')//提现
+const rebateDes =require('../views/rebateDes')//返点赔率表
+const tool =require('../views/tool')//清缓存工具
+const ping =require('../views/ping')//线路检测
 var routes = [{
   path: '/manageBankcard',
   name: '银行卡管理',

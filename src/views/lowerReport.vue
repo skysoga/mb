@@ -157,7 +157,7 @@ export default {
     //  console.log(this.window_height ,this.document_height,document.body.scrollTop)
       if (this.cant_scroll) {
         return
-      } else if (document.body.scrollTop+10 > this.document_height - this.window_height) {
+      } else if ((document.body.scrollTop/(this.document_height - this.window_height))>0.8) {
         console.log(this.$refs.div.scrollTop,this.document_height,this.window_height)
         this.getData()
       }

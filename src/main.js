@@ -310,9 +310,6 @@ window.RootApp = new Vue({
 			}
 			_fetch(ajax).then((json)=>{
 		    if (json.Code===1||json.Code===0) {
-		    	var Data = this.SetFilter(json.BackData);
-		      this.SaveInitData(Data)
-		      localStorage.setItem('CacheData',JSON.stringify(Object.assign(CacheData,json.CacheData)))
 		      fun&&fun(state)
 		    }else{
 		      layer.msgWarn(json.StrCode);
@@ -559,13 +556,14 @@ document.addEventListener('copy', function(e){
 function FetchCatch(msg,resolve){
 	console.log("FetchCatch");
 	if (state.turning) {
-		layer.msgWarn("网络错误，请检查网络状态")
+		layer.msgWarn(msg)
 		state.turning=false
 	}else{
 		resolve({Code:-1,StrCode:msg})
 	}
 }
 window._fetch = function (data){
+	data.SourceName=_App?"APP":"MB"
 	var str=[],k;
 	for(var i in data){
 		k=data[i];
@@ -575,7 +573,7 @@ window._fetch = function (data){
 		str.push(i+'='+k);
 	}
 	return new Promise(function(resolve, reject){
-		var st = setTimeout(function(){
+		var st = state.turning&&setTimeout(function(){
 			console.log("请求超时");
 			FetchCatch('网络请求超时，请检查网络状态',resolve)
 			reject()
@@ -593,9 +591,18 @@ window._fetch = function (data){
 				return
 			}
 			res.json().then(json=>{
-				clearTimeout(st)
+				state.turning&&clearTimeout(st)
 				console.log(json);
 				var notRes
+				if (data.Action==="GetInitData") {
+					if (json.Code===1||json.Code===0) {
+						var Data = RootApp.SetFilter(json.BackData);
+					  RootApp.SaveInitData(Data)
+					  if(JSON.stringify(json.CacheData) !== "{}"){
+					  	localStorage.setItem('CacheData',JSON.stringify(Object.assign(CacheData,json.CacheData)))
+					  }
+					}
+				}
 				;(function(){
 					switch(json.Code){
 						case 0://未登录

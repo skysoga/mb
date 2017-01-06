@@ -59,7 +59,7 @@
       console.log(to);
       _fetch({Action:"GetCard",UserId:to.query.ID}).then((data)=>{
         next(vm=>{
-          if(data.Code===1||data.Code===1){
+          if(data.Code===1||data.Code===0){
             vm.initData=data.BackData
             if (data.BackData.LotteryType) {
               let typeArr=data.BackData.LotteryType.split(",")

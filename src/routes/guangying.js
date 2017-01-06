@@ -1,12 +1,12 @@
 //广营负责页面的路由
-const register =resolve => require(['../views/register'],resolve)
-const rechargeWay =resolve => require(['../views/rechargeWay'],resolve)
-const normalPay =resolve => require(['../views/normalPay'],resolve)
-const quickPay =resolve => require(['../views/quickPay'],resolve)
-const lotteryPage = resolve => require(['../views/lotteryPage'],resolve)
-const lottery_ssc = resolve => require(['../views/lottery_ssc'],resolve)
-const lottery_k3 = resolve => require(['../views/lottery_k3'],resolve)
-const lottery_syx5 = resolve=>require(['../views/lottery_syx5'], resolve)
+const register =require('../views/register')
+const rechargeWay =require('../views/rechargeWay')
+const normalPay =require('../views/normalPay')
+const quickPay =require('../views/quickPay')
+const lotteryPage = require('../views/lotteryPage')
+const lottery_ssc = require('../views/lottery_ssc')
+const lottery_k3 = require('../views/lottery_k3')
+const lottery_syx5 = require('../views/lottery_syx5')
 
 var routes = [
   {
