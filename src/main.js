@@ -310,9 +310,6 @@ window.RootApp = new Vue({
 			}
 			_fetch(ajax).then((json)=>{
 		    if (json.Code===1||json.Code===0) {
-		    	var Data = this.SetFilter(json.BackData);
-		      this.SaveInitData(Data)
-		      localStorage.setItem('CacheData',JSON.stringify(Object.assign(CacheData,json.CacheData)))
 		      fun&&fun(state)
 		    }else{
 		      layer.msgWarn(json.StrCode);
@@ -559,7 +556,7 @@ document.addEventListener('copy', function(e){
 function FetchCatch(msg,resolve){
 	console.log("FetchCatch");
 	if (state.turning) {
-		layer.msgWarn("网络错误，请检查网络状态")
+		layer.msgWarn(msg)
 		state.turning=false
 	}else{
 		resolve({Code:-1,StrCode:msg})
@@ -596,6 +593,15 @@ window._fetch = function (data){
 				clearTimeout(st)
 				console.log(json);
 				var notRes
+				if (data.Action==="GetInitData") {
+					if (json.Code===1||json.Code===0) {
+						var Data = RootApp.SetFilter(json.BackData);
+					  RootApp.SaveInitData(Data)
+					  if(JSON.stringify(json.CacheData) !== "{}"){
+					  	localStorage.setItem('CacheData',JSON.stringify(Object.assign(CacheData,json.CacheData)))
+					  }
+					}
+				}
 				;(function(){
 					switch(json.Code){
 						case 0://未登录
