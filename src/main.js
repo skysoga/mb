@@ -573,7 +573,7 @@ window._fetch = function (data){
 		str.push(i+'='+k);
 	}
 	return new Promise(function(resolve, reject){
-		var st = setTimeout(function(){
+		var st = state.turning&&setTimeout(function(){
 			console.log("请求超时");
 			FetchCatch('网络请求超时，请检查网络状态',resolve)
 			reject()
@@ -591,7 +591,7 @@ window._fetch = function (data){
 				return
 			}
 			res.json().then(json=>{
-				clearTimeout(st)
+				state.turning&&clearTimeout(st)
 				console.log(json);
 				var notRes
 				if (data.Action==="GetInitData") {
