@@ -58,7 +58,7 @@
 					Action,
 					datanum
 				}).then((data) => {
-					if (data.Code === 1) {
+					if (data.Code === 1||data.Code === 0) {
 						cb(data);
 					} else {
 						layer.msgWarn(data.StrCode)

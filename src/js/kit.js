@@ -544,6 +544,7 @@ function computeIssue(code, index){
   //这里挂各特殊彩种的处理函数--有返回的直接出返回结果。不参与下一步
   var handler = {
     '1001':function(){
+      //新疆时时彩跨天那期的处理
       if (_index > 83) {
         days--
       }else if (_index===83) {
