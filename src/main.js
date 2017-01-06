@@ -175,7 +175,11 @@ window.Vue=Vue
 Vue.use(Va)
 Vue.use(VueRouter)
 Vue.use(Vuex)
-const _App=location.host.search("csz8.net")>-1//是否APP
+window._App=location.host.search("csz8.net")>-1//是否APP
+;(function(){
+  var a = localStorage.getItem("isApp")
+  if (a) {_App=a?true:false}
+})()
 console.log(_App);
 const _AJAXUrl = '/tools/ssc_ajax.ashx'
 window.router = new VueRouter({
