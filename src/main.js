@@ -1,3 +1,4 @@
+
 ;(function(){
 	try {
 	  sessionStorage.setItem('TextLocalStorage', 'hello world');
@@ -174,7 +175,7 @@ window.Vue=Vue
 Vue.use(Va)
 Vue.use(VueRouter)
 Vue.use(Vuex)
-const _App=location.host==="csz8.net"//是否APP
+const _App=location.host.search("csz8.net")>-1//是否APP
 console.log(_App);
 const _AJAXUrl = '/tools/ssc_ajax.ashx'
 window.router = new VueRouter({
@@ -675,5 +676,3 @@ document.addEventListener('copy', function(e){
 		layer.msgWarn('已将内容复制到剪切板')
 	}
 })
-
-
