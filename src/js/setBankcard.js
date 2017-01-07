@@ -112,7 +112,7 @@ export default {
                 title: "温馨提示",
                 btn: ["留在本页","返回安全中心"],
                 no(index){
-                  router.push("/securityCenter")
+                  router.push("/manageBankcard")
                 },
                 yes(index){
                   layer.close(index)

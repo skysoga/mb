@@ -126,8 +126,6 @@ export default{
     toggle(){
       if(this.UserBankList.length>1){
         this.isShow=!this.isShow
-      }else{
-        layer.msgWarn("您只绑定了一张银行卡，无法切换。")
       }
     },
     setCard(key,id){
