@@ -33,7 +33,6 @@ export default {
       }
     },
     renderData(Type,Name){
-        var vm=this
         let RenData={Action:"GetAgencyHender",BetweenType:Type,UserName:Name}
         this.isDataNot=true
         _fetch(RenData).then(json=>{
@@ -44,10 +43,10 @@ export default {
               sessionStorage.setItem('agentReport'+Name+Type,JSON.stringify(xarr))
               this.Datalist=this.setArrObj(xarr)
               this.listLong()
-              vm.preNa=vm.UserName
+              this.preNa=this.UserName
             }else{
               this.isDataNot=false
-              vm.UserName=vm.preNa
+              this.UserName=this.preNa
               layer.msgWarn(json.StrCode)
             }
         })
