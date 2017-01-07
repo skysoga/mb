@@ -7,6 +7,7 @@ export default {
       BetweenType:0,
       DateName:"今天",
       UserName:"",
+      preNa:"",
       DateType:"",
       Datalist:"",
       listNum:"",
@@ -32,6 +33,7 @@ export default {
       }
     },
     renderData(Type,Name){
+        var vm=this
         let RenData={Action:"GetAgencyHender",BetweenType:Type,UserName:Name}
         this.isDataNot=true
         _fetch(RenData).then(json=>{
@@ -42,12 +44,11 @@ export default {
               sessionStorage.setItem('agentReport'+Name+Type,JSON.stringify(xarr))
               this.Datalist=this.setArrObj(xarr)
               this.listLong()
+              vm.preNa=vm.UserName
             }else{
+              this.isDataNot=false
+              vm.UserName=vm.preNa
               layer.msgWarn(json.StrCode)
-              this.isDataNot=true
-              this.UserName=""
-              this.DateType=0
-              this.DateName="今天"
             }
         })
     },
