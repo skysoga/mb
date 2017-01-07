@@ -36,13 +36,13 @@ export default {
     if(!U){
       router.push('/login')
     }
+    to.meta.link='/manageBankcard'
     var Qort=to.query.Q
     var nextto=Qort=='withdraw'?'/withdraw':'/manageBankcard'
     var cid=Qort=='withdraw'?'add':(Qort||'add')
     var Trr={Action:"GetCardDetail",BankCardID:cid}
     if(cid!=='add'&&Qort!='bindCard'){
       to.meta.title="修改银行卡"
-      to.meta.link='/manageBankcard'
       _fetch(Trr).then(json=>{
           next(vm=>{
             var son=json.BackData
@@ -64,7 +64,6 @@ export default {
     }else{
       var arr = ["UserBankCardList"]
       to.meta.title="绑定银行卡"
-      to.meta.link='/securityCenter'
       RootApp.AjaxGetInitData(arr,ref=>{
         next(vm=>{
           vm.getCardlist()
@@ -110,7 +109,7 @@ export default {
                 className: "layerConfirm",
                 content: json.StrCode,
                 title: "温馨提示",
-                btn: ["留在本页","返回安全中心"],
+                btn: ["留在本页","返回银行卡管理"],
                 no(index){
                   router.push("/manageBankcard")
                 },
