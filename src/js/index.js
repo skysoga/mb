@@ -11,7 +11,9 @@ export default {
     swiperSlide
   },
   beforeRouteEnter:(to, from, next) => {
-    var arr = ["SysBanner","BannerList","NoticeData","LotteryConfig","LotteryList","SiteConfig"];
+    var arr = ["SysBanner","NoticeData","LotteryConfig","LotteryList"],
+      ar=["BannerList","SiteConfig"];
+    arr = (!_App||state.UserName)?arr.concat(ar):arr
     RootApp.GetInitData(arr, state=>{
       next(vm=>{
        /* var K3,SSC

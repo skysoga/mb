@@ -7,6 +7,7 @@ export default {
       BetweenType:0,
       DateName:"今天",
       UserName:"",
+      preNa:"",
       DateType:"",
       Datalist:"",
       listNum:"",
@@ -42,12 +43,11 @@ export default {
               sessionStorage.setItem('agentReport'+Name+Type,JSON.stringify(xarr))
               this.Datalist=this.setArrObj(xarr)
               this.listLong()
+              this.preNa=this.UserName
             }else{
+              this.isDataNot=false
+              this.UserName=this.preNa
               layer.msgWarn(json.StrCode)
-              this.isDataNot=true
-              this.UserName=""
-              this.DateType=0
-              this.DateName="今天"
             }
         })
     },

@@ -96,7 +96,7 @@ export default {
       var that = this
       _fetch(ajax).then((json)=>{
       	console.log(json)
-        if(json.Code===1) {
+        if(json.Code===1||json.Code===0) {
          layer.open({
             shadeClose: false,
             className: "layerConfirm",

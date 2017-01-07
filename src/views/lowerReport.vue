@@ -157,7 +157,7 @@ export default {
     //  console.log(this.window_height ,this.document_height,document.body.scrollTop)
       if (this.cant_scroll) {
         return
-      } else if (document.body.scrollTop+10 > this.document_height - this.window_height) {
+      } else if ((document.body.scrollTop/(this.document_height - this.window_height))>0.75) {
         console.log(this.$refs.div.scrollTop,this.document_height,this.window_height)
         this.getData()
       }
@@ -197,4 +197,47 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>@import '../scss/personalinfo.scss';</style>
+<style lang="scss" scoped>
+@import '../scss/personalinfo.scss';
+.main{
+    padding-bottom:0;
+  }
+  .col3Table{
+    &:after{
+      content: '';
+      position: absolute;
+      background: #d0d0d0;
+      width: 100%;
+      height: 1px;
+      @include scaleY(0.5);
+      @include origin( 0 0);
+      left:0;
+    }
+    th,td{
+      width:4rem;
+    }
+    th:nth-child(1){
+      width:5rem;
+    }
+    th:nth-child(2){
+      width:3rem;
+    }
+  }
+.main{
+  .col3Table{
+      td:nth-child(1){
+        width:5rem;
+        ins{
+          width:4.5rem;
+          white-space:nowrap;
+          text-overflow:ellipsis;
+          overflow:hidden;
+          display:block;
+        }
+      }
+      td:nth-child(2){
+        width:3rem;
+      }
+  }
+}
+</style>

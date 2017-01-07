@@ -2,18 +2,18 @@ import guangying from './guangying'
 import zhiming from './zhiming'
 import xiaosen from './xiaosen'
 
-const login =resolve => require(['../views/login'],resolve)
-const index =resolve => require(['../views/index'],resolve)
-const activity =resolve => require(['../views/activity'],resolve)
-const newWinners =resolve => require(['../views/newWinners'],resolve)
-const center =resolve => require(['../views/center'],resolve)
-const userCenter =resolve => require(['../views/userCenter'],resolve)
-const service =resolve => require(['../views/service'],resolve)
-const notfound =resolve => require(['../views/notfound'],resolve)
-const securityCenter =resolve => require(['../views/securityCenter'],resolve)
-const lottery_k3 =resolve => require(['../views/lottery_k3'],resolve)
-const competition =resolve => require(['../views/competition'],resolve)
-const maintain = resolve => require(['../views/maintain'], resolve)
+const login =require('../views/login')
+const index =require('../views/index')
+const activity =require('../views/activity')
+const newWinners =require('../views/newWinners')
+const center =require('../views/center')
+const userCenter =require('../views/userCenter')
+const service =require('../views/service')
+const notfound =require('../views/notfound')
+const securityCenter =require('../views/securityCenter')
+const lottery_k3 =require('../views/lottery_k3')
+const competition =require('../views/competition')
+const maintain = require('../views/maintain')
 
 
 var publicRoute = [

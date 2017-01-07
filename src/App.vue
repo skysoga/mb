@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <template v-if="$route&&$route.matched[0]">
-      <title-info :meta="$route.matched[0].meta"></title-info>
+      <title-info :m="$route.matched[0].meta" :s="$store.state"></title-info>
       <navbar v-show="$route.matched[0].meta.nav"></navbar>
     </template>
     <transition name="fade"  mode="out-in">
@@ -148,7 +148,7 @@ body{
 .layermcont{
   padding:10px 30px;
   max-height: 50vh;
-  overflow: scroll;
+  overflow-y: scroll;
   word-wrap:break-word;
 }
 .tal .layermcont{

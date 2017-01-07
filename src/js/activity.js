@@ -5,7 +5,9 @@ export default {
     }
   },
   beforeRouteEnter(to,from,next){
-     var arr = ["SysActivity","ActivityConfig"];
+     var arr = ["SysActivity"],
+      ar = ["ActivityConfig"];
+     arr = (!_App||state.UserName)?arr.concat(ar):arr
      RootApp.GetInitData(arr,state=>{
       next()
      })
