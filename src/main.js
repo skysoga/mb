@@ -98,7 +98,7 @@ window._fetch = function (data){
         ;(function(){
           switch(json.Code){
             case 0://未登录
-              if(state.UserName){
+              if(state.UserName||RootApp.$route.meta.user){
                 layer.alert("由于您长时间未操作，已自动退出，需要重新登录",function(){
                   RootApp.Logout()
                   var meta = RootApp._route.matched[0]
@@ -255,7 +255,7 @@ if (_App) {
 var CacheArr = SiteArr.concat(UserArr)
 window.state = require('./JSconfig.js')
 state.constant._App=_App
-;(function(){
+function setState(key){
 	function getLocalDate(str){
 		var s = localStorage.getItem(str);
 		try{
@@ -266,10 +266,11 @@ state.constant._App=_App
 		}
 		return s;
 	}
-  for (var i = CacheArr.length - 1; i >= 0; i--) {
-  	state[CacheArr[i]]=getLocalDate(CacheArr[i])
+  for (var i = key.length - 1; i >= 0; i--) {
+  	state[key[i]]=getLocalDate(key[i])
   }
-})()
+};
+setState(CacheArr)
 window.CacheData=localStorage.getItem("CacheData")
 CacheData = CacheData?JSON.parse(CacheData):{}
 
@@ -642,8 +643,10 @@ window.RootApp = new Vue({
 })()
 
 router.beforeEach((to, from, next) => {
-  // layer.open({type: 2});
   console.log("beforeEach");
+  if(state.UserName&&state.UserName!==localStorage.getItem('UserName')){
+    setState(UserArr)
+  }
   state.turning=true
   RootApp.beforEnter(to)
 	next();
