@@ -255,7 +255,7 @@ if (_App) {
 var CacheArr = SiteArr.concat(UserArr)
 window.state = require('./JSconfig.js')
 state.constant._App=_App
-;(function(){
+var setState=(key)=>{
 	function getLocalDate(str){
 		var s = localStorage.getItem(str);
 		try{
@@ -266,10 +266,11 @@ state.constant._App=_App
 		}
 		return s;
 	}
-  for (var i = CacheArr.length - 1; i >= 0; i--) {
-  	state[CacheArr[i]]=getLocalDate(CacheArr[i])
+  for (var i = key.length - 1; i >= 0; i--) {
+  	state[key[i]]=getLocalDate(key[i])
   }
-})()
+};
+setState(CacheArr)
 window.CacheData=localStorage.getItem("CacheData")
 CacheData = CacheData?JSON.parse(CacheData):{}
 
@@ -642,8 +643,13 @@ window.RootApp = new Vue({
 })()
 
 router.beforeEach((to, from, next) => {
-  // layer.open({type: 2});
   console.log("beforeEach");
+  var local=localStorage.getItem('UserName')
+  if(state.UserName){
+    if(state.UserName!=local){
+      setState(UserArr)
+    }
+  }
   state.turning=true
   RootApp.beforEnter(to)
 	next();
