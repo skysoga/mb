@@ -1,5 +1,6 @@
 <template>
-	<div class="newWinner" ref="div">
+	<div class="newWinner main" ref="div">
+		<loading v-show="isDataNot"></loading>
     <ul ref="ul">
 			 <transition-group name="list">
 				 <li :data-thisid="item.UserId" class="active" v-for="item in bonu_list_data2"  @click="jump(item.UserId)" :key='item'>
@@ -31,6 +32,7 @@
 </div>
 </template>
 <script>
+	import loading from '../components/loading';
 	export default {
 		data() {
 			return {
@@ -47,11 +49,14 @@
 					isFirst:true, //用来控制进入页面首次渲染的速度
 					firstSpeed:1500 //进入页面拉取第一条的数据
 				},
-				newOneData: "",
 				li_arr:[],
-				timeID:[]
+				timeID:[],
+				isDataNot:true  //加载动画，默认显示
 			}
 		},
+		components:{
+	    'loading': loading
+	  },
 		methods: {
 			getData: function(Action, datanum, cb) {
 				_fetch({
@@ -119,15 +124,15 @@
 			next()
 		},
 		created() {
-			this.config.timePull = this.config.dataNum * this.config.timeInsert; //每次拉取数据到cache的间隔
-			this.config.cacheMax = this.config.dataNum * 2; //缓存容量上限为每次拉取数量 * 2
+			this.config.timePull = this.config.dataNum * this.config.timeInsert //每次拉取数据到cache的间隔
+			this.config.cacheMax = this.config.dataNum * 2 //缓存容量上限为每次拉取数量 * 2
 			//获取第一屏数据，并调用第一屏的渲染程序，以及启动
 			this.getData('GetNewestBonusList', this.config.firstPageNum + this.config.firstPageExt, (data) => {
-				let list = data.BackData.NewestBonusList;
-				this.bonu_list_data = list.splice(0, this.config.firstPageNum); //首屏用,将10条数据压入进去,然后渲染
-				this.config.cache = list; //缓存用
+				let list = data.BackData.NewestBonusList
+				this.bonu_list_data = list.splice(0, this.config.firstPageNum) //首屏用,将10条数据压入进去,然后渲染
+				this.config.cache = list //缓存用
+				this.isDataNot=false //关闭动画
 				//首屏渲染完毕，开始启动定时渲染函数
-
 				setTimeout(()=>{
 					this.bonu_list_data2.unshift(this.config.cache.shift())
 					this.renderInterval(this.config.timeInsert, (item) => {
@@ -138,10 +143,10 @@
 					//启动定时获取数据函数
 				this.getCache(this.config.timePull, (list) => {
 					if (this.config.cache.length > this.config.cacheMax) {
-						return;
+						return
 					}
 					this.config.cache = this.config.cache.concat(list)
-				});
+				})
 			})
 		}
 	}
