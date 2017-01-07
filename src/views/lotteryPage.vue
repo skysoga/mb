@@ -122,8 +122,6 @@
 
 		      //渲染用
 		      Todaystr:'',
-		      Tomorrowstr:'',
-		      Yestodaystr:'',
 		      TimeBar:'00:00:00',      //倒计时内容
 		      //counter或flag
 		      displayResults: false,	//false显示等待开奖的动画， true显示开奖结果
@@ -144,8 +142,6 @@
 		      	bus.$emit('clearNoteStr')   //清空文本框文字
 		      	this.$store.commit('lt_clearBet')
 		      	state.mode = mode
-		      	console.log(type)
-		      	// console.log(mode)
 		      	//更改玩法时，对应玩法的奖金也跟着变
 		      	state.award = awardSetter[type](mode.mode, Odds)
 		      	//更换玩法，bet清空
@@ -160,8 +156,6 @@
 		      lt_updateDate:(state)=>{
 		        var nowSerTime = new Date().getTime()-this.$store.state.Difftime;   //当前的服务器时间
 		        state.Todaystr = new Date(nowSerTime).format("yyyyMMdd");     			//今天
-		        // state.Tomorrowstr = new Date(nowSerTime+DAY_TIME).format("yyyyMMdd"); //明天
-		        // state.Yestodaystr = new Date(nowSerTime-DAY_TIME).format("yyyyMMdd"); //昨天
 		      },
 		      //计算当前期号
 		      lt_computeIssueNo:(state, LotteryPlan)=>{
@@ -173,10 +167,21 @@
 				        ,StartTime		//某期StartTime
 				        , _SerTime		//除去日期的服务器时间
 
-
-				    state.IssueNo = 0
 		        //除去日期的服务器时间
 		        _SerTime = (new Date().getTime()- this.$store.state.Difftime - GMT_DIF) % DAY_TIME
+		        var lastIssue_E = LotteryPlan[LotteryPlan.length - 1].EndTime.split(':')
+		        		,lastIssueEnd = lastIssue_E[0]*3600000 + lastIssue_E[1]*60000 + lastIssue_E[2]*1000
+		        		,firstIssue_E = LotteryPlan[0].EndTime.split(':')
+		        		,firstIssueEnd = firstIssue_E[0]*3600000 + firstIssue_E[1]*60000 + firstIssue_E[2]*1000
+
+		        if((_SerTime > lastIssueEnd)&&(lastIssueEnd > firstIssueEnd)){
+		        	state.IssueNo = LotteryPlan.length
+		        }else{
+		        	state.IssueNo = 0
+		        }
+
+		        console.log(_SerTime, lastIssueEnd, firstIssueEnd)
+
 		        for (var planLen = LotteryPlan.length, i = LotteryPlan.length - 1; i >= 0; i--) {
 		          _timeE = LotteryPlan[i].EndTime.split(':');
 		          EndTime = _timeE[0]*3600000 + _timeE[1]*60000 + _timeE[2]*1000;			//某期结束时间
@@ -186,18 +191,15 @@
 		          StartTime = _timeS[0]*3600000 + _timeS[1]*60000 + _timeS[2]*1000; //某期开始时间
 		          Vue.set(LotteryPlan[i],'Start', StartTime)
 
-		          if((i === planLen-1) && (_SerTime >= EndTime)){
-		          	//i 等于最后一期， 而且服务器时间大于最后一期的EndTime
-		            state.IssueNo = planLen;
-		          }else if ((_SerTime <= EndTime) && (_SerTime >= StartTime || (StartTime > EndTime))) {
+							if ((_SerTime < EndTime) && (_SerTime >= StartTime)) {
 		          	//在某期的区间中
-		          	console.log(_SerTime, StartTime, EndTime,i)
 		            state.IssueNo = i;
+		          }else if(StartTime>EndTime){
+		          	//某期跨天了
+		          	if((_SerTime<EndTime)||(_SerTime>=StartTime)){
+		          		state.IssueNo = i;
+		          	}
 		          }
-		          // else if ((i===0) && (_SerTime < EndTime)) {
-		          // 	//小于0 而且 服务器时间小于第一期的EndTime
-		          //   state.IssueNo = state.IssueNo||0;
-		          // }
 		        }
 
 		        this.$store.commit('lt_updateIssue')
@@ -391,6 +393,10 @@
 		      			el.IssueNo = ('000'+(i+1)).slice(-4),
 		      			el.StartTime = [('0'+Math.floor((i-1)/60)).slice(-2),('0'+Math.floor((i-1)%60)).slice(-2),'59'].join(':'),
 		      			el.EndTime = [('0'+Math.floor(i/60)).slice(-2),('0'+Math.floor(i%60)).slice(-2),'59'].join(':')
+		      			if(i===0){
+		      				//如果是第一期，那么防止其为负
+		      				el.StartTime = '23:59:59'
+		      			}
 		      			LotteryPlan.push(el)
 		      		}
 		      		commit('lt_computeIssueNo', LotteryPlan)
@@ -455,6 +461,19 @@
 		      },
 		      //refresh
 		      lt_refresh:({state, rootState, commit, dispatch})=>{
+		      	function computeCountdown(issueNo, _SerTime){
+		      		var _issue = state.LotteryPlan[state.IssueNo % state.PlanLen]
+		      				,isCrossDay = (_issue.Start > _issue.End) && (_SerTime > _issue.Start)	//本期跨天,且当前时间大于End
+		      				,isOutOfIssue = state.IssueNo === state.PlanLen     									//如果现在不在任何期内
+		      				,needAddOneDay = isCrossDay || isOutOfIssue
+
+		      		var Countdown = state.LotteryPlan[state.IssueNo % state.PlanLen].End
+			                        +needAddOneDay * DAY_TIME
+			                        -_SerTime;
+			        console.log(_issue.StartTime,_issue.EndTime,_SerTime,_issue.Start,_issue.End, issueNo,isCrossDay,isOutOfIssue, needAddOneDay, Countdown)
+			        return Countdown
+		      	}
+
 		      	var isStop = rootState.LotteryList[this.lcode].IsStop
 		      	if(isStop === '1'){
 		      		commit('lt_stopSell')		//暂停销售
@@ -472,9 +491,11 @@
 			      }
 
 			      if(!state.PlanLen) return
-		        var Countdown = state.LotteryPlan[state.IssueNo % state.PlanLen].End
-			                        +(state.IssueNo>=state.PlanLen) * DAY_TIME
-			                        -_SerTime;
+		        // var Countdown = state.LotteryPlan[state.IssueNo % state.PlanLen].End
+			       //                  +(state.IssueNo>=state.PlanLen) * DAY_TIME
+			       //                  -_SerTime;
+			      var Countdown = computeCountdown(state.IssueNo, _SerTime)
+			      // console.log(state.LotteryPlan[state.IssueNo % state.PlanLen].EndTime, _SerTime, state.IssueNo)
 		        Countdown %= DAY_TIME;
 		        //如果倒计时小于0，则一直更新到最新期
 		        //用循环是因为有可能长时间不相应，需要一次性校正到位
@@ -482,10 +503,19 @@
 		        if(Countdown<=0){
 		          while(Countdown<=0){
 		          	crossCount++
-		          	commit('lt_setIssueNo', ++IssueNo)
-		            Countdown = state.LotteryPlan[state.IssueNo % state.PlanLen].End
-					       							 +(state.IssueNo>=state.PlanLen) * DAY_TIME
-					       							 -_SerTime;
+		          	var lastIssueEnd = state.LotteryPlan[state.PlanLen - 1].End
+		          			,firstIssueStart = state.LotteryPlan[0].Start
+		          			,firstIssueEnd = state.LotteryPlan[0].End
+
+		          	//解决跨期彩种处理，和递进成 state.PlanLen的矛盾
+		          	if(firstIssueStart > firstIssueEnd){
+		          		commit('lt_setIssueNo', ++IssueNo%state.PlanLen)
+		          	}else{
+		          		commit('lt_setIssueNo', ++IssueNo)
+		          	}
+
+		          	// commit('lt_setIssueNo', ++IssueNo)
+					      Countdown = computeCountdown(state.IssueNo, _SerTime)
 		          }
 		          if(crossCount > 1){
 		          	commit('lt_updateDate')
@@ -505,6 +535,7 @@
 		        }
 
 		        Countdown = Math.floor(Countdown/1000);   //转成以秒为单位
+		        // console.log(Countdown)
 		        if(Countdown>600){
 			        //如果Countdown大于10分钟，则进入预售
 		        	commit('lt_updateTimeBar', '预售中')
@@ -540,7 +571,7 @@
 				        	dispatch('lt_getResults', state.lottery.LotteryCode)		//获取开奖结果
 				        }
 				      }else if(Results[0].IssueNo*1 > state.OldIssue*1){
-				      	console.log(state.OldIssue);
+				      	// console.log(state.OldIssue);
 				      	commit('lt_stopSell')		//暂停销售
 				      }else{
 				      	commit('lt_displayResults', true)
