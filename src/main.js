@@ -103,7 +103,7 @@ window._fetch = function (data){
                   RootApp.Logout()
                   var meta = RootApp._route.matched[0]
                   meta = meta&&meta.meta
-                  if(meta&&meta.user){
+                  if(state.turning||(meta&&meta.user)){
                     router.push("/login")
                   }
                 })

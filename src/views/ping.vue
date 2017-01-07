@@ -18,6 +18,12 @@ export default{
         LineList:""
       }
     },
+    beforeRouteEnter:(to, from, next) => {
+      if (_App) {
+        router.push("/notfount")
+      }
+      next()
+    },
     created(){
       this.getData()
     },
