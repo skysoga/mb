@@ -148,7 +148,7 @@ body{
 .layermcont{
   padding:10px 30px;
   max-height: 50vh;
-  overflow: scroll;
+  overflow-y: scroll;
   word-wrap:break-word;
 }
 .tal .layermcont{

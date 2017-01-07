@@ -153,7 +153,7 @@
 		      //变更彩种
 		      lt_changeLottery:(state, code)=>{
 		        state.lottery = this.$store.state.LotteryList[code]
-		        RootApp.$router.push(code)		//更改路由
+		        router.push(code)		//更改路由
 		      },
 		      //变更配置（进入各具体彩种页时，设置）
 		      lt_initConfig:(state)=>{state.config = pageConfig[state.lottery.LotteryType]},
