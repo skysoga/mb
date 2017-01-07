@@ -19,10 +19,6 @@
 </template>
 
 <script>
-  var html = document.querySelector('html');
-  const rem = html.clientWidth/16;
-  const em = Math.sqrt((rem-20)*.9)+20;
-  document.write("<style>html{font-size:"+rem+"px;}body{font-size:"+em+"px;}</style>");
 export default {
   data(){
     return{
