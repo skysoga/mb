@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <template v-if="$route&&$route.matched[0]">
-      <title-info :meta="$route.matched[0].meta"></title-info>
+      <title-info :m="$route.matched[0].meta" :s="$store.state"></title-info>
       <navbar v-show="$route.matched[0].meta.nav"></navbar>
     </template>
     <transition name="fade"  mode="out-in">
