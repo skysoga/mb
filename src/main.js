@@ -98,7 +98,7 @@ window._fetch = function (data){
         ;(function(){
           switch(json.Code){
             case 0://未登录
-              if(state.UserName){
+              if(state.UserName||RootApp.$route.meta.user){
                 layer.alert("由于您长时间未操作，已自动退出，需要重新登录",function(){
                   RootApp.Logout()
                   var meta = RootApp._route.matched[0]
