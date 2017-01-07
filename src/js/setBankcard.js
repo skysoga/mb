@@ -36,7 +36,6 @@ export default {
     if(!U){
       router.push('/login')
     }
-    to.meta.link='/manageBankcard'
     var Qort=to.query.Q
     var nextto=Qort=='withdraw'?'/withdraw':'/manageBankcard'
     var cid=Qort=='withdraw'?'add':(Qort||'add')
@@ -102,21 +101,25 @@ export default {
       _fetch(arr).then(json=>{
           if(json.Code==1){
             RootApp.AjaxGetInitData(['UserBankCardList','UserFirstCardInfo'])
-            layer.url(json.StrCode,vm.nextUrl)
+            if(vm.nextUrl=='/withdraw'){
+              layer.open({
+                  shadeClose: false,
+                  className: "layerConfirm",
+                  content: json.StrCode +"<br>是否立即去提现?",
+                  title: "温馨提示",
+                  btn: ["是","否"],
+                  no(index){
+                    router.push("/manageBankcard")
+                  },
+                  yes(index){
+                    router.push(vm.nextUrl)
+                  }
+                })
+            }else{
+              layer.url(json.StrCode,'/manageBankcard')
+            }
           }else{
-            layer.open({
-                shadeClose: false,
-                className: "layerConfirm",
-                content: json.StrCode,
-                title: "温馨提示",
-                btn: ["留在本页","返回银行卡管理"],
-                no(index){
-                  router.push("/manageBankcard")
-                },
-                yes(index){
-                  layer.close(index)
-                }
-              })
+            layer.msgWarn(json.StrCode)
           }
       })
     },
