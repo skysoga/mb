@@ -158,6 +158,7 @@
 
 	.list-enter-active{
   	animation: bounce-in .5s;
+  	-webkit-animation: bounce-in .5s;
 	}
 	@keyframes bounce-in {
 		0% {

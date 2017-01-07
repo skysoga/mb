@@ -81,4 +81,3 @@
 <style lang="scss" scoped>
   @import '../scss/SecurityCenter.scss';
 </style>
-

@@ -1,3 +1,4 @@
+
 ;(function(){
 	try {
 	  sessionStorage.setItem('TextLocalStorage', 'hello world');
@@ -43,6 +44,127 @@ document.addEventListener('touchstart',function(e){},false);//让css的:active�
 window.rem = document.body.clientWidth/16
 window.em = Math.sqrt((rem-20)*.9)+20
 document.write("<style>html{font-size:"+rem+"px;}body{font-size:"+em+"px;}</style>")
+
+function FetchCatch(msg,resolve){
+  console.log("FetchCatch");
+  if (state.turning) {
+    layer.msgWarn(msg)
+    state.turning=false
+  }else{
+    resolve({Code:-1,StrCode:msg})
+  }
+}
+window._fetch = function (data){
+  data.SourceName=_App?"APP":"MB"
+  var str=[],k;
+  for(var i in data){
+    k=data[i];
+    if (typeof(k)==="object") {
+      k= encodeURIComponent(JSON.stringify(k));
+    }
+    str.push(i+'='+k);
+  }
+  return new Promise(function(resolve, reject){
+    var st = state.turning&&setTimeout(function(){
+      console.log("请求超时");
+      FetchCatch('网络请求超时，请检查网络状态',resolve)
+      reject()
+    },10000)
+    fetch('/tools/ssc_ajax.ashx', {
+      credentials:'same-origin',
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: str.join('&')
+    }).then((res)=>{
+      if (res.status!==200) {
+        FetchCatch("网络错误"+res.status,resolve)
+        return
+      }
+      res.json().then(json=>{
+        state.turning&&clearTimeout(st)
+        console.log(json);
+        var notRes
+        if (data.Action==="GetInitData") {
+          if (json.Code===1||json.Code===0) {
+            var Data = RootApp.SetFilter(json.BackData);
+            RootApp.SaveInitData(Data)
+            if(JSON.stringify(json.CacheData) !== "{}"){
+              localStorage.setItem('CacheData',JSON.stringify(Object.assign(CacheData,json.CacheData)))
+            }
+          }
+        }
+        ;(function(){
+          switch(json.Code){
+            case 0://未登录
+              if(state.UserName){
+                layer.alert("由于您长时间未操作，已自动退出，需要重新登录",function(){
+                  RootApp.Logout()
+                  var meta = RootApp._route.matched[0]
+                  meta = meta&&meta.meta
+                  if(meta&&meta.user){
+                    router.push("/login")
+                  }
+                })
+                notRes=true
+              }
+            break;
+            case -7://系统维护
+              store.commit('SetMaintain', json.BackData)
+              router.push("/maintain")
+            break;
+            case -8://账号冻结
+              layer.alert("您的账号已被冻结，详情请咨询客服。",function(){
+                RootApp.Logout()
+                var meta = RootApp._route.matched[0]
+                meta = meta&&meta.meta
+                router.push("/login")
+              })
+              notRes=true
+            break;
+          }
+          if (data.Action.search('Verify')===0&&json.Code>-1) {
+            state.UserVerify=data.Action.replace('Verify','')+','
+          }
+        })()
+        notRes||resolve(json)
+      }).catch(r=>{
+        FetchCatch("网络数据错误",resolve)
+      })
+    }).catch((res)=>{
+      FetchCatch("网络错误，请检查网络状态",resolve)
+    })
+  })
+}
+
+// 获取图形码接口专用
+window._fetchT=function _fetchT(data){
+  var str=[],k;
+  for(var i in data){
+    k=data[i];
+    if (typeof(k)==="object") {
+      k=JSON.stringify(k);
+    }
+    str.push(i+'='+k);
+  }
+  data = str.join('&');
+  return new Promise(function(resolve, reject){
+    fetch('/tools/ssc_ajax.ashx', {
+      credentials:'same-origin',
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: data
+    }).then((res)=>{
+      res.text().then(text=>{
+        resolve(text)
+      })
+    })
+  })
+}
+
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
@@ -53,7 +175,11 @@ window.Vue=Vue
 Vue.use(Va)
 Vue.use(VueRouter)
 Vue.use(Vuex)
-const _App=location.host==="csz8.net"//是否APP
+window._App=location.host.search("csz8.net")>-1//是否APP
+;(function(){
+  var a = localStorage.getItem("isApp")
+  if (a) {_App=a?true:false}
+})()
 console.log(_App);
 const _AJAXUrl = '/tools/ssc_ajax.ashx'
 window.router = new VueRouter({
@@ -224,214 +350,216 @@ function TimeItem(interval, timeBegin, timeEnd, SerTime){
   this.SerTime = SerTime
 }
 
+window.RootApp={
+  Logout:function(){
+    store.commit('ClearInitData', UserArr)
+    sessionStorage.clear()
+  },
+  Login:function(UserName,fun){
+    // this.GetInitData(UserArr,fun)
+    this.SaveInitData({UserName:UserName})
+    fun()
+  },
+  SetFilter:function(data){
+    ;(function(Bonus){
+      if (!Bonus||Bonus.State) {return}
+      setTimeout(function(){
+        layer.open({
+          shadeClose: false,
+          title: "恭喜",
+          content: '恭喜您成功晋级，当前等级为VIP'+Bonus.Grade+'，赶紧到活动中心领取奖励吧。',
+          className: "layerConfirm",
+          btn: ["领取奖励", "留在本页"],
+          yes: function(Lindex) {
+            layer.close(Lindex);
+            router.push("/upgrade")
+          }
+        })
+      },100)
+    })(data.UserUpGradeBonus)
+    ;(function(s){
+      if (s) {
+        SetIndexTitle(s)
+      }
+    })(data.SiteConfig)
+    ;(function(LotteryList){
+      if(LotteryList&&LotteryList.length){
+        data.LotteryList={};
+        var c
+        for (var i = LotteryList.length - 1; i >= 0; i--) {
+          c = LotteryList[i].LotteryCode
+          data.LotteryList[c]= LotteryList[i]
+          // delete data.LotteryList[c].LotteryCode
+        }
+      }
+    })(data.LotteryList)
+
+
+    if (data.NoticeData&&data.NoticeData.length) {
+      if (data.NoticeData.length>2) {
+        data.NoticeData.length=2;
+      }
+    }
+    if (data.GradeList&&data.GradeList.length) {
+        for (var i = data.GradeList.length - 1; i >= 0; i--) {
+            data.GradeList[i].Grade=Number(data.GradeList[i].Grade);
+            data.GradeList[i].GradeGrow=Number(data.GradeList[i].GradeGrow);
+            data.GradeList[i].Bonus=Number(data.GradeList[i].Bonus);
+            data.GradeList[i].JumpBonus=Number(data.GradeList[i].JumpBonus);
+        }
+    }
+
+    ;(function(a){
+      if (!a) {return}
+      for (var i = a.length - 1; i >= 0; i--) {
+        if (typeof(a[i].Img)=="object") {
+          a[i].Img=a[i].Img[0];
+        }
+      }
+    })(data.ActivityConfig)
+    return data;
+  },
+  SaveInitData(d){
+    store.commit('SaveInitData', d)
+  },
+  AjaxGetInitData(arr,fun){
+    state.needVerify=0
+    sessionStorage.setItem("needVerify",state.needVerify)
+    var ajax = {
+      Action:"GetInitData",
+      Requirement:arr,
+      CacheData
+    }
+    _fetch(ajax).then((json)=>{
+      if (json.Code===1||json.Code===0) {
+        fun&&fun(state)
+      }else{
+        layer.msgWarn(json.StrCode);
+      }
+    })
+  },
+  GetInitData(arr,fun){
+    state.UserName&&arr.push("UserUpGradeBonus")
+    console.log(arr);
+    var newArr=[];
+    for (var i = arr.length - 1; i >= 0; i--) {
+      switch(arr[i]){
+        case "UserBalance":
+        case "UserWithdrawAvail":
+        case "PayLimit":
+        case "WithdrawRemainTimes":
+          newArr.push(arr[i])
+        break
+        default:
+          if(state[arr[i]]==null){
+            newArr.push(arr[i])
+          }
+      }
+    }
+    if (!newArr.length) {
+      // console.log("全部都有");
+      fun&&fun(state)
+      return;
+    }
+    this.AjaxGetInitData(newArr,fun)
+  },
+  fetchData(){
+    console.log("gaibian");
+  },
+  //保证校验时按顺序来
+  format:function(obj, order, cfg){
+    cfg = cfg || {}
+    var f,v
+
+    for(var i = 0;i < order.length;i++){
+      var k = order[i];
+      v = obj[k]
+      f=cfg[k]||store.state._FomatConfig[k]
+
+      // 如果是校验重复的
+      if(k.indexOf('check') > -1){
+        var target = k.slice(5), target_f = cfg[target] || store.state._FomatConfig[target]
+        if(obj[k] !== obj[target]){
+          console.log(obj[k], obj[target])
+          return [k, `两次${target_f.Name} 不相同`]
+        }
+      }
+
+      if (f) {
+        if (!f.Reg.test(v)) {
+          return [k,v?f.ErrMsg:(f.Name+"不能为空")];
+        }
+      }
+    }
+
+    return false;
+  },
+  getServerTime: (function(){
+    var cantGetTime = 0,
+        timeItemList = []
+    return function(fun){
+      var timeBegin = new Date().getTime()
+      _fetch({Action: "GetServerTimeMillisecond"}).then((json)=>{
+        var timeEnd = new Date().getTime()
+        var interval = timeEnd - timeBegin
+        if(json.Code > -1){
+          timeItemList.push(new TimeItem(interval, timeEnd, timeBegin, json.Data))
+        }
+
+        if(cantGetTime > 4){
+          // layer.msgWarn("因无法同步服务器时间,您将无法投注,请检查网络情况")
+          store.commit('setDifftime', timeItemList)
+          fun && fun()
+          cantGetTime = 0
+          timeItemList = []
+        }else{
+          if(interval > 1000){
+            cantGetTime++
+            this.getServerTime(fun)
+          }else{
+            if(json.Code === 1) {
+              // var SerTime = json.Data
+              // store.commit('setDifftime', SerTime)
+              store.commit('setDifftime', timeItemList)
+              fun && fun()
+              cantGetTime = 0
+              timeItemList = []
+            }else{
+              cantGetTime++;
+              this.getServerTime(fun);
+            }
+          }
+        }
+      })
+    }
+  })(),
+  beforEnter:function(to){
+    var meta = to.matched[0].meta
+    if(meta.user){
+      if (!state.UserName) {
+        state.login2path = to.path
+        router.push("/login")
+      }else if(state.agent){
+        state.AgentRebate||router.push("/notfount")
+      }
+    }
+    if (meta.verify) {
+      var fy = meta.verify===1?1:state[meta.verify]
+      if (to.path==="/setSafePwd") {fy*=1}
+      if (fy&&(!state.UserVerify||meta.from.search(state.UserVerify)==-1)
+      ) {
+        console.log("条件不足");
+        router.go(-1)
+      }
+    }
+  },
+}
+
 window.RootApp = new Vue({
 	el: '#app',
 	store,
 	router,
-	methods:{
-    Logout:function(){
-      store.commit('ClearInitData', UserArr)
-      sessionStorage.clear()
-    },
-		Login:function(UserName,fun){
-			// this.GetInitData(UserArr,fun)
-			this.SaveInitData({UserName:UserName})
-			fun()
-		},
-		SetFilter:function(data){
-			;(function(Bonus){
-			  if (!Bonus||Bonus.State) {return}
-				setTimeout(function(){
-				  layer.open({
-				    shadeClose: false,
-				    title: "恭喜",
-				    content: '恭喜您成功晋级，当前等级为VIP'+Bonus.Grade+'，赶紧到活动中心领取奖励吧。',
-				    className: "layerConfirm",
-				    btn: ["领取奖励", "留在本页"],
-				    yes: function(Lindex) {
-				      layer.close(Lindex);
-				      router.push("/upgrade")
-				    }
-				  })
-				},100)
-			})(data.UserUpGradeBonus)
-			;(function(s){
-				if (s) {
-					SetIndexTitle(s)
-				}
-			})(data.SiteConfig)
-			;(function(LotteryList){
-			  if(LotteryList&&LotteryList.length){
-			    data.LotteryList={};
-			    var c
-			    for (var i = LotteryList.length - 1; i >= 0; i--) {
-			    	c = LotteryList[i].LotteryCode
-			      data.LotteryList[c]= LotteryList[i]
-			      // delete data.LotteryList[c].LotteryCode
-			    }
-			  }
-			})(data.LotteryList)
-
-
-		  if (data.NoticeData&&data.NoticeData.length) {
-		    if (data.NoticeData.length>2) {
-		      data.NoticeData.length=2;
-		    }
-		  }
-		  if (data.GradeList&&data.GradeList.length) {
-		      for (var i = data.GradeList.length - 1; i >= 0; i--) {
-		          data.GradeList[i].Grade=Number(data.GradeList[i].Grade);
-		          data.GradeList[i].GradeGrow=Number(data.GradeList[i].GradeGrow);
-		          data.GradeList[i].Bonus=Number(data.GradeList[i].Bonus);
-		          data.GradeList[i].JumpBonus=Number(data.GradeList[i].JumpBonus);
-		      }
-		  }
-
-		  ;(function(a){
-		  	if (!a) {return}
-		    for (var i = a.length - 1; i >= 0; i--) {
-		      if (typeof(a[i].Img)=="object") {
-		        a[i].Img=a[i].Img[0];
-		      }
-		    }
-		  })(data.ActivityConfig)
-		  return data;
-		},
-		SaveInitData(d){
-			store.commit('SaveInitData', d)
-		},
-		AjaxGetInitData(arr,fun){
-    	state.needVerify=0
-    	sessionStorage.setItem("needVerify",state.needVerify)
-			var ajax = {
-				Action:"GetInitData",
-				Requirement:arr,
-				CacheData
-			}
-			_fetch(ajax).then((json)=>{
-		    if (json.Code===1||json.Code===0) {
-		      fun&&fun(state)
-		    }else{
-		      layer.msgWarn(json.StrCode);
-		    }
-			})
-		},
-		GetInitData(arr,fun){
-			state.UserName&&arr.push("UserUpGradeBonus")
-			console.log(arr);
-			var newArr=[];
-			for (var i = arr.length - 1; i >= 0; i--) {
-				switch(arr[i]){
-					case "UserBalance":
-					case "UserWithdrawAvail":
-					case "PayLimit":
-					case "WithdrawRemainTimes":
-						newArr.push(arr[i])
-					break
-					default:
-						if(state[arr[i]]==null){
-							newArr.push(arr[i])
-						}
-				}
-			}
-			if (!newArr.length) {
-				// console.log("全部都有");
-				fun&&fun(state)
-				return;
-			}
-			this.AjaxGetInitData(newArr,fun)
-		},
-		fetchData(){
-			console.log("gaibian");
-		},
-		//保证校验时按顺序来
-		format:function(obj, order, cfg){
-			cfg = cfg || {}
-			var f,v
-
-			for(var i = 0;i < order.length;i++){
-				var k = order[i];
-				v = obj[k]
-				f=cfg[k]||store.state._FomatConfig[k]
-
-				// 如果是校验重复的
-				if(k.indexOf('check') > -1){
-					var target = k.slice(5), target_f = cfg[target] || store.state._FomatConfig[target]
-					if(obj[k] !== obj[target]){
-						console.log(obj[k], obj[target])
-						return [k, `两次${target_f.Name} 不相同`]
-					}
-				}
-
-				if (f) {
-					if (!f.Reg.test(v)) {
-						return [k,v?f.ErrMsg:(f.Name+"不能为空")];
-					}
-				}
-			}
-
-			return false;
-		},
-    getServerTime: (function(){
-      var cantGetTime = 0,
-          timeItemList = []
-      return function(fun){
-        var timeBegin = new Date().getTime()
-        _fetch({Action: "GetServerTimeMillisecond"}).then((json)=>{
-          var timeEnd = new Date().getTime()
-          var interval = timeEnd - timeBegin
-          if(json.Code > -1){
-            timeItemList.push(new TimeItem(interval, timeEnd, timeBegin, json.Data))
-          }
-
-          if(cantGetTime > 4){
-            // layer.msgWarn("因无法同步服务器时间,您将无法投注,请检查网络情况")
-            store.commit('setDifftime', timeItemList)
-            fun && fun()
-            cantGetTime = 0
-            timeItemList = []
-          }else{
-            if(interval > 1000){
-              cantGetTime++
-              this.getServerTime(fun)
-            }else{
-              if(json.Code === 1) {
-                // var SerTime = json.Data
-                // store.commit('setDifftime', SerTime)
-                store.commit('setDifftime', timeItemList)
-                fun && fun()
-                cantGetTime = 0
-                timeItemList = []
-              }else{
-                cantGetTime++;
-                this.getServerTime(fun);
-              }
-            }
-          }
-        })
-      }
-    })(),
-		beforEnter:function(to){
-			var meta = to.matched[0].meta
-			if(meta.user){
-			  if (!state.UserName) {
-			  	state.login2path = to.path
-			    router.push("/login")
-			  }else if(state.agent){
-			    state.AgentRebate||router.push("/notfount")
-			  }
-			}
-			if (meta.verify) {
-				var fy = meta.verify===1?1:state[meta.verify]
-        if (to.path==="/setSafePwd") {fy*=1}
-				if (fy&&(!state.UserVerify||meta.from.search(state.UserVerify)==-1)
-				) {
-					console.log("条件不足");
-					router.go(-1)
-				}
-			}
-		},
-	},
+	methods:window.RootApp,
 	created:function(){
 		var len = routes.length
 		var thisp = location.pathname.toLowerCase()
@@ -552,123 +680,3 @@ document.addEventListener('copy', function(e){
 		layer.msgWarn('已将内容复制到剪切板')
 	}
 })
-
-function FetchCatch(msg,resolve){
-	console.log("FetchCatch");
-	if (state.turning) {
-		layer.msgWarn(msg)
-		state.turning=false
-	}else{
-		resolve({Code:-1,StrCode:msg})
-	}
-}
-window._fetch = function (data){
-	data.SourceName=_App?"APP":"MB"
-	var str=[],k;
-	for(var i in data){
-		k=data[i];
-		if (typeof(k)==="object") {
-			k= encodeURIComponent(JSON.stringify(k));
-		}
-		str.push(i+'='+k);
-	}
-	return new Promise(function(resolve, reject){
-		var st = setTimeout(function(){
-			console.log("请求超时");
-			FetchCatch('网络请求超时，请检查网络状态',resolve)
-			reject()
-		},10000)
-		fetch('/tools/ssc_ajax.ashx', {
-			credentials:'same-origin',
-		  method: 'POST',
-		  headers: {
-		    "Content-Type": "application/x-www-form-urlencoded"
-		  },
-		  body: str.join('&')
-		}).then((res)=>{
-			if (res.status!==200) {
-				FetchCatch("网络错误"+res.status,resolve)
-				return
-			}
-			res.json().then(json=>{
-				clearTimeout(st)
-				console.log(json);
-				var notRes
-				if (data.Action==="GetInitData") {
-					if (json.Code===1||json.Code===0) {
-						var Data = RootApp.SetFilter(json.BackData);
-					  RootApp.SaveInitData(Data)
-					  if(JSON.stringify(json.CacheData) !== "{}"){
-					  	localStorage.setItem('CacheData',JSON.stringify(Object.assign(CacheData,json.CacheData)))
-					  }
-					}
-				}
-				;(function(){
-					switch(json.Code){
-						case 0://未登录
-							if(state.UserName){
-								layer.alert("由于您长时间未操作，已自动退出，需要重新登录",function(){
-									RootApp.Logout()
-									var meta = RootApp._route.matched[0]
-									meta = meta&&meta.meta
-									if(meta&&meta.user){
-								    router.push("/login")
-									}
-								})
-								notRes=true
-							}
-						break;
-						case -7://系统维护
-							store.commit('SetMaintain', json.BackData)
-							router.push("/maintain")
-						break;
-						case -8://账号冻结
-							layer.alert("您的账号已被冻结，详情请咨询客服。",function(){
-								RootApp.Logout()
-								var meta = RootApp._route.matched[0]
-								meta = meta&&meta.meta
-						    router.push("/login")
-							})
-							notRes=true
-						break;
-					}
-					if (data.Action.search('Verify')===0&&json.Code>-1) {
-						state.UserVerify=data.Action.replace('Verify','')+','
-					}
-				})()
-				notRes||resolve(json)
-			}).catch(r=>{
-				FetchCatch("网络数据错误",resolve)
-			})
-		}).catch((res)=>{
-			FetchCatch("网络错误，请检查网络状态",resolve)
-		})
-	})
-}
-
-// 获取图形码接口专用
-window._fetchT=function _fetchT(data){
-  var str=[],k;
-  for(var i in data){
-    k=data[i];
-    if (typeof(k)==="object") {
-      k=JSON.stringify(k);
-    }
-    str.push(i+'='+k);
-  }
-  data = str.join('&');
-  return new Promise(function(resolve, reject){
-    fetch('/tools/ssc_ajax.ashx', {
-      credentials:'same-origin',
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: data
-    }).then((res)=>{
-      res.text().then(text=>{
-        resolve(text)
-      })
-    })
-  })
-}

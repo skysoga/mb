@@ -42,7 +42,6 @@ export default {
     var Trr={Action:"GetCardDetail",BankCardID:cid}
     if(cid!=='add'&&Qort!='bindCard'){
       to.meta.title="修改银行卡"
-      to.meta.link='/manageBankcard'
       _fetch(Trr).then(json=>{
           next(vm=>{
             var son=json.BackData
@@ -64,7 +63,6 @@ export default {
     }else{
       var arr = ["UserBankCardList"]
       to.meta.title="绑定银行卡"
-      to.meta.link='/securityCenter'
       RootApp.AjaxGetInitData(arr,ref=>{
         next(vm=>{
           vm.getCardlist()
@@ -103,21 +101,25 @@ export default {
       _fetch(arr).then(json=>{
           if(json.Code==1){
             RootApp.AjaxGetInitData(['UserBankCardList','UserFirstCardInfo'])
-            layer.url(json.StrCode,vm.nextUrl)
+            if(vm.nextUrl=='/withdraw'){
+              layer.open({
+                  shadeClose: false,
+                  className: "layerConfirm",
+                  content: json.StrCode +"<br>是否立即去提现?",
+                  title: "温馨提示",
+                  btn: ["是","否"],
+                  no(index){
+                    router.push("/manageBankcard")
+                  },
+                  yes(index){
+                    router.push(vm.nextUrl)
+                  }
+                })
+            }else{
+              layer.url(json.StrCode,'/manageBankcard')
+            }
           }else{
-            layer.open({
-                shadeClose: false,
-                className: "layerConfirm",
-                content: json.StrCode,
-                title: "温馨提示",
-                btn: ["留在本页","返回安全中心"],
-                no(index){
-                  router.push("/securityCenter")
-                },
-                yes(index){
-                  layer.close(index)
-                }
-              })
+            layer.msgWarn(json.StrCode)
           }
       })
     },

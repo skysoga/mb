@@ -170,7 +170,7 @@ export default {
       console.log(this.window_height ,this.document_height,document.body.scrollTop)
       if (this.cant_scroll) {
         return
-      } else if ((document.body.scrollTop/(this.document_height - this.window_height))>0.8) {
+      } else if ((document.body.scrollTop/(this.document_height - this.window_height))>0.75) {
         this.getData()
       }
     },
