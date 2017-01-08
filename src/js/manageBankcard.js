@@ -29,9 +29,6 @@ export default {
     var arr = ["UserBankCardList"];
     //为了防止已锁定的银行卡更新不及时,这边用ajax方式
     RootApp.AjaxGetInitData(arr,state=>{
-      if(!state.UserBankCardList){
-        router.go(-1)
-      }
       next(vm=>{
         vm.CardList=state.UserBankCardList
         vm.setTip()
