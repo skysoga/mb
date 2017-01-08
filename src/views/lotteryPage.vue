@@ -470,7 +470,8 @@
 		      		var Countdown = state.LotteryPlan[state.IssueNo % state.PlanLen].End
 			                        +needAddOneDay * DAY_TIME
 			                        -_SerTime;
-			        console.log(_issue.StartTime,_issue.EndTime,_SerTime,_issue.Start,_issue.End, issueNo,isCrossDay,isOutOfIssue, needAddOneDay, Countdown)
+
+			        // console.log(_issue.StartTime,_issue.EndTime,_SerTime,_issue.Start,_issue.End, issueNo,isCrossDay,isOutOfIssue, needAddOneDay, Countdown)
 			        return Countdown
 		      	}
 
@@ -483,7 +484,7 @@
 		      	var _SerTime = (new Date().getTime()- this.$store.state.Difftime - GMT_DIF) % DAY_TIME
 		      			,IssueNo = state.IssueNo
 		      	if (_SerTime<1000) {
-			        console.log("新的一天");
+			        // console.log("新的一天");
 			        commit('lt_updateDate')
 			        commit('lt_setIssueNo', state.IssueNo%state.PlanLen)
 			        //修改1
