@@ -103,7 +103,7 @@ window._fetch = function (data){
                   RootApp.Logout()
                   var meta = RootApp._route.matched[0]
                   meta = meta&&meta.meta
-                  if(meta&&meta.user){
+                  if(state.turning||(meta&&meta.user)){
                     router.push("/login")
                   }
                 })
@@ -255,7 +255,7 @@ if (_App) {
 var CacheArr = SiteArr.concat(UserArr)
 window.state = require('./JSconfig.js')
 state.constant._App=_App
-var setState=(key)=>{
+function setState(key){
 	function getLocalDate(str){
 		var s = localStorage.getItem(str);
 		try{
@@ -644,11 +644,8 @@ window.RootApp = new Vue({
 
 router.beforeEach((to, from, next) => {
   console.log("beforeEach");
-  var local=localStorage.getItem('UserName')
-  if(state.UserName){
-    if(state.UserName!=local){
-      setState(UserArr)
-    }
+  if(state.UserName&&state.UserName!==localStorage.getItem('UserName')){
+    setState(UserArr)
   }
   state.turning=true
   RootApp.beforEnter(to)
