@@ -100,7 +100,7 @@ export default{
             btn:["返回我的账户","留在本页"],
             yes:function(){
               vm.upTime()
-              vm.$router.push("/userCenter")
+              router.push("/userCenter")
             },
             no:function(){
               vm.upTime()
