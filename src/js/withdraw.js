@@ -66,8 +66,7 @@ export default{
                 router.push("/setBankcard?Q=withdraw")
               },
               no(){
-                router.go(0)
-                // router.push("/userCenter")
+                state.turning=false
               }
             })
           }
@@ -82,7 +81,7 @@ export default{
               router.push("/setSafePwd?Q=withdraw")
             },
             no(){
-              router.go(0)
+              state.turning=false
             }
           })
         }
