@@ -25,7 +25,7 @@ export default {
           if(json.Code===1) {
             //验证密码
             if(F){
-              sessionStorage.clear('isFind')
+              sessionStorage.removeItem("isFind")
               layer.url(json.StrCode,'/login')
               return
             }
