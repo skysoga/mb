@@ -372,7 +372,7 @@
 		      	//获取开奖计划，这个以后如果组件内部有用，就单独拉一个action
 		      	function getPlan(code){
 							_fetch({Action:'GetLotteryPlan', Qort:code}).then((json)=>{
-								if(json.Code === 1) {
+								if(json.Code === 1){
 									var plan = json.Data
 			            localStorage.setItem("lotteryPlan" + code, JSON.stringify(plan));
 			            //如果code和当前的code不一样，说明在异步获取完后，用户已经切换页面了，就直接结束
@@ -412,7 +412,7 @@
 		      					,_EndTime2 = refer.VerifyEndTime.split(' ')[1]
 
 		      			//因为LotteryList是会变化的，因此用LotteryList和LotteryPlan的比对，来确认需不需要更新
-		      			if (refer && _EndTime1 !== _EndTime2) {
+		      			if(refer && _EndTime1 !== _EndTime2){
 		      				//校验没通过，就删除旧计划，重新拉一遍计划
 		              localStorage.removeItem("lotteryPlan"+code);
 		              getPlan(code)
@@ -483,20 +483,14 @@
 
 		      	var _SerTime = (new Date().getTime()- this.$store.state.Difftime - GMT_DIF) % DAY_TIME
 		      			,IssueNo = state.IssueNo
-		      	if (_SerTime<1000) {
+		      	if(_SerTime<1000) {
 			        // console.log("新的一天");
 			        commit('lt_updateDate')
 			        commit('lt_setIssueNo', state.IssueNo%state.PlanLen)
-			        //修改1
-			        // return;
 			      }
 
 			      if(!state.PlanLen) return
-		        // var Countdown = state.LotteryPlan[state.IssueNo % state.PlanLen].End
-			       //                  +(state.IssueNo>=state.PlanLen) * DAY_TIME
-			       //                  -_SerTime;
 			      var Countdown = computeCountdown(state.IssueNo, _SerTime)
-			      // console.log(state.LotteryPlan[state.IssueNo % state.PlanLen].EndTime, _SerTime, state.IssueNo)
 		        Countdown %= DAY_TIME;
 		        //如果倒计时小于0，则一直更新到最新期
 		        //用循环是因为有可能长时间不相应，需要一次性校正到位
@@ -506,16 +500,14 @@
 		          	crossCount++
 		          	var lastIssueEnd = state.LotteryPlan[state.PlanLen - 1].End
 		          			,firstIssueStart = state.LotteryPlan[0].Start
-		          			,firstIssueEnd = state.LotteryPlan[0].End
 
-		          	//解决跨期彩种处理，和递进成 state.PlanLen的矛盾
-		          	if(firstIssueStart > firstIssueEnd){
+		          	if(firstIssueStart >= lastIssueEnd){
 		          		commit('lt_setIssueNo', ++IssueNo%state.PlanLen)
 		          	}else{
 		          		commit('lt_setIssueNo', ++IssueNo)
 		          	}
 
-		          	// commit('lt_setIssueNo', ++IssueNo)
+		          	//commit('lt_setIssueNo', ++IssueNo)
 					      Countdown = computeCountdown(state.IssueNo, _SerTime)
 		          }
 		          if(crossCount > 1){
