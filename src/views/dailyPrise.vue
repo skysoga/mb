@@ -8,7 +8,7 @@
             <em class="e3">加奖比例：<i v-if="StateData.BonusRate">{{+StateData.BonusRate}}%</i><i v-else>0</i></em>
             <em class="e4">可得加奖：<i v-if="StateData.Bonus">{{StateData.Bonus}}</i><i v-else>0</i></em>
         </div>
-        <div class="BTN" :class="{unClick:UnClick}"><a @click="getBtn">{{ClickMsg}}</a></div>
+        <div class="BTN" :class="UnClick?'unClick':''"><a @click="getBtn">{{ClickMsg}}</a></div>
     </div>
     <h3>加奖比例</h3>
     <table>
