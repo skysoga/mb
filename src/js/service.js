@@ -7,6 +7,6 @@ export default {
     this.$root.GetInitData(arr);
   },
   mounted:function(){
-    this.$el.querySelector("iframe").style.height=window.screen.height+'px';
+    this.$el.querySelector("iframe").style.height=(window.screen.height-40)+'px';
   }
 }
