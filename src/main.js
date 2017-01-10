@@ -1,4 +1,3 @@
-
 ;(function(){
 	try {
 	  sessionStorage.setItem('TextLocalStorage', 'hello world');
@@ -43,7 +42,8 @@ document.addEventListener('touchstart',function(e){},false);//让css的:active�
 // document.cookie = "Site="+location.hostname.replace('.com','')
 window.rem = document.body.clientWidth/16
 window.em = Math.sqrt((rem-20)*.9)+20
-document.write("<style>html{font-size:"+rem+"px;}body{font-size:"+em+"px;}</style>")
+document.querySelector("html").style.fontSize=rem+'px'
+document.body.style.fontSize=em+'px'
 
 function FetchCatch(msg,resolve){
   console.log("FetchCatch");
@@ -181,6 +181,7 @@ window._App=location.host.search("csz8.net")>-1//是否APP
   if (a) {_App=a?true:false}
 })()
 console.log(_App);
+if (_App) {document.title="彩神争霸"}
 const _AJAXUrl = '/tools/ssc_ajax.ashx'
 window.router = new VueRouter({
 	routes,
@@ -344,6 +345,72 @@ window.store = new Vuex.Store({
   },
 })
 
+;(function(){
+  var warn = '<span class="iconfont">&#xe606;</span>',
+    tip='<span class="iconfont">&#xe610;</span>'
+  layer.icon={}
+  layer.icon.load=state.tpl.load
+  layer.load=function(){layer.open({type: 2})}
+  layer.msg=function(msg, time) {
+    return this.open({ content: msg, time: time?time-1:3,style: 'fill:#ececec',className:'layermsg'});
+  }
+  layer.msgWarn=function(msg, time) {
+    return this.msg(warn+msg,time);
+  },
+  layer.msgTip=function(msg, time) {
+    return this.msg(tip+msg,time);
+  },
+  layer.msgWait=function(msg,time) {
+    return this.open({time:  time?time-1:0,content: layer.icon.load+msg+"，请稍候...", shadeClose:0 ,className:'layermsg'});
+  },
+  layer.url=function(msg,s) {
+    return layer.open({
+      className: "layerConfirm",
+      title:'温馨提示',
+      content: msg,
+      btn: ["确定"],
+      end:function(){
+        if (typeof(s)=='string') {
+          router.push(s)
+        }else{
+          router.go(s)
+        }
+      }
+    })
+  },
+  layer.alert=function(msg,fun){
+    return layer.open({
+      className: "layerConfirm",
+      title:'温馨提示',
+      shadeClose: false,
+      content: msg,
+      btn: ["确定"],
+      end:fun
+    })
+  },
+  layer.confirm=function(msg,btn,fun1,fun2,fun3){
+    if (!btn.length) {
+      fun3=fun2
+      fun2=fun1
+      fun1=btn
+      btn=["确定","取消"]
+    }
+    return layer.open({
+      className: "layerConfirm",
+      title:"温馨提示",
+      shadeClose: false,
+      content: msg,
+      btn: btn,
+      yes: function(index) {
+        fun1()
+        layer.close(index)
+      },
+      no:fun2,
+      end:fun3
+    })
+  }
+})()
+
 function TimeItem(interval, timeBegin, timeEnd, SerTime){
   this.interval = interval
   this.timeBegin = timeBegin
@@ -464,9 +531,6 @@ window.RootApp={
     }
     this.AjaxGetInitData(newArr,fun)
   },
-  fetchData(){
-    console.log("gaibian");
-  },
   //保证校验时按顺序来
   format:function(obj, order, cfg){
     cfg = cfg || {}
@@ -575,72 +639,6 @@ window.RootApp = new Vue({
 	},
 	render: h => h(App),
 });
-
-;(function(){
-	var warn = '<span class="iconfont">&#xe606;</span>',
-	  tip='<span class="iconfont">&#xe610;</span>'
-  layer.icon={}
-  layer.icon.load=state.tpl.load
-  layer.load=function(){layer.open({type: 2})}
-	layer.msg=function(msg, time) {
-    return this.open({ content: msg, time: time?time-1:3,style: 'fill:#ececec',className:'layermsg'});
-  }
-  layer.msgWarn=function(msg, time) {
-    return this.msg(warn+msg,time);
-  },
-  layer.msgTip=function(msg, time) {
-    return this.msg(tip+msg,time);
-  },
-  layer.msgWait=function(msg,time) {
-    return this.open({time:  time?time-1:0,content: layer.icon.load+msg+"，请稍候...", shadeClose:0 ,className:'layermsg'});
-  },
-  layer.url=function(msg,s) {
-    return layer.open({
-      className: "layerConfirm",
-      title:'温馨提示',
-      content: msg,
-      btn: ["确定"],
-      end:function(){
-      	if (typeof(s)=='string') {
-      		router.push(s)
-      	}else{
-      		router.go(s)
-      	}
-      }
-    })
-  },
-  layer.alert=function(msg,fun){
-    return layer.open({
-      className: "layerConfirm",
-      title:'温馨提示',
-      shadeClose: false,
-      content: msg,
-      btn: ["确定"],
-      end:fun
-    })
-  },
-  layer.confirm=function(msg,btn,fun1,fun2,fun3){
-  	if (!btn.length) {
-  		fun3=fun2
-  		fun2=fun1
-  		fun1=btn
-  		btn=["确定","取消"]
-  	}
-  	return layer.open({
-  	  className: "layerConfirm",
-  	  title:"温馨提示",
-  	  shadeClose: false,
-  	  content: msg,
-  	  btn: btn,
-  	  yes: function(index) {
-  	  	fun1()
-        layer.close(index)
-      },
-      no:fun2,
-  	  end:fun3
-  	})
-  }
-})()
 
 router.beforeEach((to, from, next) => {
   console.log("beforeEach");
