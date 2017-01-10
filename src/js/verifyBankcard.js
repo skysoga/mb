@@ -5,6 +5,12 @@ export default {
       RealName:''
     }
   },
+  beforeRouteEnter(to,from,next){
+    var Arr=['UserFirstCardInfo'];
+    RootApp.GetInitData(Arr,ref=>{
+      next()
+    })
+  },
   methods:{
     $vaSubmit(){
       var arr={
