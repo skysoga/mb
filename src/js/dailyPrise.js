@@ -23,7 +23,7 @@ export default {
           if(vm.StateData){
             thState=vm.StateData.State
           }
-          vm.UnClick=thState
+          vm.UnClick=thState*1
           vm.ClickMsg=thState=='0'?'立即领取':(thState=='1'?'已领取':'不可领取')
           for(var i=0;i<dataArr.length;i++){
             if(dataArr[i].Name==xname){
