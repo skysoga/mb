@@ -255,7 +255,7 @@ if (_App) {
 }else{
 	SiteArr=SiteArr.concat(AppArr)
 }
-var CacheArr = SiteArr.concat(UserArr)
+var CacheArr = SiteArr.concat(UserArr).concat(['Difftime'])
 window.state = require('./JSconfig.js')
 state.constant._App=_App
 function setState(key){
