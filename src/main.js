@@ -10,6 +10,10 @@
 	}
 })()
 
+if(!localStorage.getItem("console")){
+  console={log:function(){return}}
+}
+
 /**
  * [format 为Date对象追加format方法]
  * @param  {[string]} format [设置要输出的目标格式 如"yyyy-MM-dd hh:mm:ss" ]
