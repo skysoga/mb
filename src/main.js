@@ -253,7 +253,7 @@ if (_App) {
 }else{
 	SiteArr=SiteArr.concat(AppArr)
 }
-var CacheArr = SiteArr.concat(UserArr)
+var CacheArr = SiteArr.concat(UserArr).concat(['Difftime'])
 window.state = require('./JSconfig.js')
 state.constant._App=_App
 function setState(key){
@@ -268,6 +268,7 @@ function setState(key){
 		return s;
 	}
   for (var i = key.length - 1; i >= 0; i--) {
+    console.log(key[i])
   	state[key[i]]=getLocalDate(key[i])
   }
 };
