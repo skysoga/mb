@@ -542,7 +542,7 @@ function computeIssue(code, index){
   if(!state.lt.PlanLen)return
   days = Math.floor(index/state.lt.PlanLen)
   _index = index - days * state.lt.PlanLen;
-  console.log(index, _index, days)
+  // console.log(index, _index, days)
 
   //跨期的处理
   var firstIssue = state.lt.LotteryPlan[0]
