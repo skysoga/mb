@@ -4,9 +4,9 @@ export default {
   },
   created:function(){
     var arr = ["SiteConfig"];
-    this.$root.GetInitData(arr);
+    RootApp.GetInitData(arr);
   },
   mounted:function(){
-    this.$el.querySelector("iframe").style.height=(window.screen.height-40)+'px';
+    this.$el.querySelector("iframe").style.height=document.body.clientHeight+'px';
   }
 }

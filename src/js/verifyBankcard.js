@@ -7,7 +7,7 @@ export default {
   },
   beforeRouteEnter(to,from,next){
     var Arr=['UserFirstCardInfo'];
-    RootApp.GetInitData(Arr,ref=>{
+    RootApp.AjaxGetInitData(Arr,ref=>{
       next()
     })
   },
