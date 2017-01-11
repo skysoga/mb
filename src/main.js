@@ -11,7 +11,7 @@
 })()
 
 if(!localStorage.getItem("console")){
-  console={log:function(){return}}
+  console.log=function(){return}
 }
 
 /**
