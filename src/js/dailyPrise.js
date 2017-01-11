@@ -44,13 +44,13 @@ export default {
       var dataArr={Action:"GetReward",Qort:"每日加奖"}
       layer.msgWait("正在处理")
       _fetch(dataArr).then(json=>{
-          if(json.Code==1){
-            this.UnClick=true
-            this.ClickMsg="已领取"
-            layer.msgWarn(json.StrCode)
-          }else{
-            layer.msgWarn(json.StrCode)
-          }
+        if(json.Code==1){
+          this.UnClick=true
+          this.ClickMsg="已领取"
+          layer.msgWarn(json.StrCode)
+        }else{
+          layer.msgWarn(json.StrCode)
+        }
       })
     }
   }
