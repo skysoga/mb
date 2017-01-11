@@ -398,16 +398,16 @@ export default {
     //确认投注
     confirmBet(){
       if(this.isChase){
-        //普通追号
-        var betDetail = []
-        this.basket.forEach(bet=>{
-          betDetail.push(`${this.getTag(bet.play_detail_code.slice(-3),this.config)[1]} ${bet.betting_number}`)
-        })
-
-        var scheme = state.lt.scheme, last = scheme.length - 1
-        var msg = `${this.lottery}: 第${scheme[0].issueNo}期至第${scheme[last].issueNo}期,共${scheme.length}期<br>投注金额: <span style = "color:red">${this.schemeTotal}元</span><br>投注内容:<br>${betDetail.join('<br>')}`
-
         if(this.basket.length){
+          //普通追号
+          var betDetail = []
+          this.basket.forEach(bet=>{
+            betDetail.push(`${this.getTag(bet.play_detail_code.slice(-3),this.config)[1]} ${bet.betting_number}`)
+          })
+
+          var scheme = state.lt.scheme, last = scheme.length - 1
+          var msg = `${this.lottery}: 第${scheme[0].issueNo}期至第${scheme[last].issueNo}期,共${scheme.length}期<br>投注金额: <span style = "color:red">${this.schemeTotal}元</span><br>投注内容:<br>${betDetail.join('<br>')}`
+
           layer.open({
             title:"投注确认",
             shadeClose: false,

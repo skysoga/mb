@@ -180,7 +180,7 @@
 		        	state.IssueNo = 0
 		        }
 
-		        console.log(_SerTime, lastIssueEnd, firstIssueEnd)
+		        // console.log(_SerTime, lastIssueEnd, firstIssueEnd)
 
 		        for (var planLen = LotteryPlan.length, i = LotteryPlan.length - 1; i >= 0; i--) {
 		          _timeE = LotteryPlan[i].EndTime.split(':');
