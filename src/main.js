@@ -10,6 +10,10 @@
 	}
 })()
 
+if(!localStorage.getItem("console")){
+  console.log=function(){return}
+}
+
 /**
  * [format 为Date对象追加format方法]
  * @param  {[string]} format [设置要输出的目标格式 如"yyyy-MM-dd hh:mm:ss" ]
@@ -98,17 +102,15 @@ window._fetch = function (data){
         ;(function(){
           switch(json.Code){
             case 0://未登录
-              if(state.UserName||RootApp.$route.meta.user){
+              if(state.UserName){
                 layer.alert("由于您长时间未操作，已自动退出，需要重新登录",function(){
                   RootApp.Logout()
-                  var meta = RootApp._route.matched[0]
-                  meta = meta&&meta.meta
-                  if(state.turning||(meta&&meta.user)){
-                    router.push("/login")
-                  }
+                  router.push("/login")
                 })
                 notRes=true
               }
+            break;
+            case -6://IP黑名单
             break;
             case -7://系统维护
               store.commit('SetMaintain', json.BackData)
@@ -253,7 +255,7 @@ if (_App) {
 }else{
 	SiteArr=SiteArr.concat(AppArr)
 }
-var CacheArr = SiteArr.concat(UserArr)
+var CacheArr = SiteArr.concat(UserArr).concat(['Difftime'])
 window.state = require('./JSconfig.js')
 state.constant._App=_App
 function setState(key){

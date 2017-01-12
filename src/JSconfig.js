@@ -48,7 +48,7 @@ var _FomatConfig = {
 
 module.exports = {
   constant:{
-    ImgHost: '//images.dafa176.com',
+    ImgHost: '//imagess-google.com',
     PhotoPath: '/system/common/headimg/',
     DefPhoto: 'defaultHeadImg.png'
   },
@@ -67,7 +67,7 @@ module.exports = {
   MINUTE_TIME: 60 * 1000,
   SECOND_TIME: 1000,
   GMT_DIF:new Date().getTimezoneOffset()*60*1000,
-  Difftime: localStorage.getItem('Difftime') || null,
+  // Difftime: localStorage.getItem('Difftime') || null,
   PERBET: 2,    //每注2元
   Max_Rate:10000,   //最大倍数
   Max_Chase_Issue: 50 , //追号最大期数

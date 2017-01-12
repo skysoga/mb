@@ -542,7 +542,6 @@ function computeIssue(code, index){
   if(!state.lt.PlanLen)return
   days = Math.floor(index/state.lt.PlanLen)
   _index = index - days * state.lt.PlanLen;
-  console.log(index, _index, days)
 
   //跨期的处理
   var firstIssue = state.lt.LotteryPlan[0]
@@ -555,6 +554,7 @@ function computeIssue(code, index){
     '1001':function(){
       //新疆时时彩跨天的处理
       if(_index >= 83 && _SerTime <= state.lt.LotteryPlan[state.lt.PlanLen - 1].End){
+        console.log(_index, _SerTime, state.lt.LotteryPlan[state.lt.PlanLen - 1].End,days)
         days--
       }
     },
