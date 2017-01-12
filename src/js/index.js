@@ -11,8 +11,9 @@ export default {
     swiperSlide
   },
   beforeRouteEnter:(to, from, next) => {
-    var arr = [state.UserName||_App?"BannerList":"SysBanner","NoticeData","LotteryConfig","LotteryList"],
+    var arr = [state.UserName||!_App?"BannerList":"SysBanner","LotteryConfig","LotteryList"],
       ar=["SiteConfig"];
+    state.UserName&&arr.push("NoticeData")
     arr = (!_App||state.UserName)?arr.concat(ar):arr
     RootApp.GetInitData(arr, state=>{
       next(vm=>{
