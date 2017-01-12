@@ -10,9 +10,9 @@
 	}
 })()
 
-// if(!localStorage.getItem("console")){
-//   console={log:function(){return}}
-// }
+if(!localStorage.getItem("console")){
+  console.log=function(){return}
+}
 
 /**
  * [format 为Date对象追加format方法]
