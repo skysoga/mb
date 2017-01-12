@@ -501,15 +501,16 @@
 		          	var lastIssueEnd = state.LotteryPlan[state.PlanLen - 1].End
 		          			,firstIssueStart = state.LotteryPlan[0].Start
 
+		          	//等于： 首尾相接的期号。大于：最后一期在第二天。 余去，则不会进入out of issue
 		          	if(firstIssueStart >= lastIssueEnd){
 		          		commit('lt_setIssueNo', ++IssueNo%state.PlanLen)
 		          	}else{
 		          		commit('lt_setIssueNo', ++IssueNo)
 		          	}
 
-		          	//commit('lt_setIssueNo', ++IssueNo)
 					      Countdown = computeCountdown(state.IssueNo, _SerTime)
 		          }
+
 		          if(crossCount > 1){
 		          	commit('lt_updateDate')
 				        commit('lt_setIssueNo', state.IssueNo%state.PlanLen)

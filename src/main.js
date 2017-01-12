@@ -10,9 +10,9 @@
 	}
 })()
 
-if(!localStorage.getItem("console")){
-  console={log:function(){return}}
-}
+// if(!localStorage.getItem("console")){
+//   console={log:function(){return}}
+// }
 
 /**
  * [format 为Date对象追加format方法]
@@ -270,7 +270,6 @@ function setState(key){
 		return s;
 	}
   for (var i = key.length - 1; i >= 0; i--) {
-    console.log(key[i])
   	state[key[i]]=getLocalDate(key[i])
   }
 };
