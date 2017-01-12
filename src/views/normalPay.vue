@@ -287,12 +287,12 @@ export default{
 			if(this.method === 'Bank'){
 			  nowAjax.BankCode = this.BankCode
 			}
-
+      layer.msgWait("正在提交")
 			_fetch(nowAjax).then((json)=>{
     		this.PayUser = ''
     		this.Money = ''
     		if(json.Code === 1){
-					layer.msgWarn(json.StrCode);
+					layer.msg(json.StrCode);
     		}else{
     			layer.msgWarn(json.StrCode);
     		}
