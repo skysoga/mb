@@ -15,7 +15,12 @@ import BottomBox from '../components/bottom-box';
       }
     },
     created(){
-      this.BetweenType=RootApp.$route.params.id||'K3'
+      var vm=this
+      if(RootApp.$route&&RootApp.$route.params.id){
+        vm.BetweenType=RootApp.$route.params.id
+      }else{
+        this.BetweenType="K3"
+      }
       var isLaw=!this.BottomBoxList[this.BetweenType]
       if(isLaw){
         return router.push('/manageInvite')
@@ -37,6 +42,7 @@ import BottomBox from '../components/bottom-box';
       bottomBox(k,v){
         this.BetweenType=k
         this.BottomBoxShow=false
+        console.log(k)
         router.push('/rebateDes/'+k)
         this.setListDate(k)
       },
