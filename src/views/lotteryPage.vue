@@ -454,7 +454,8 @@
 		              commit({
 		              	type: 'lt_setLotteryResult',
 		              	code,
-		              	results: Results
+		              	// results: Results
+		              	results: json.BackData
 		              })
 		            }
 		          }
