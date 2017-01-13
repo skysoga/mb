@@ -8,6 +8,7 @@
 <style lang='scss' scoped>
 	.lotteryOutCon{
 		height: 100%;
+		width: 100%;
 	}
 </style>
 <script>
