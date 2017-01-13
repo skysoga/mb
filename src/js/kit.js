@@ -537,22 +537,25 @@ function computeIssue(code, index){
   var days    //和当前期差几天
       ,_index  //那一天的第几期
       ,dateStr    //日期字符串
+      ,_SerTime = (new Date().getTime()- state.Difftime - GMT_DIF) % DAY_TIME
 
   if(!state.lt.PlanLen)return
   days = Math.floor(index/state.lt.PlanLen)
   _index = index - days * state.lt.PlanLen;
+
+  //跨期的处理
+  var firstIssue = state.lt.LotteryPlan[0]
+  if((firstIssue.End < firstIssue.Start) && (firstIssue.Start < _SerTime)){
+    days++
+  }
+
   //这里挂各特殊彩种的处理函数--有返回的直接出返回结果。不参与下一步
   var handler = {
     '1001':function(){
-      //新疆时时彩跨天那期的处理
-      if (_index > 83) {
+      //新疆时时彩跨天的处理
+      if(_index >= 83 && _SerTime <= state.lt.LotteryPlan[state.lt.PlanLen - 1].End){
+        console.log(_index, _SerTime, state.lt.LotteryPlan[state.lt.PlanLen - 1].End,days)
         days--
-      }else if (_index===83) {
-        var _SerTime = (new Date().getTime()- this.$store.state.Difftime - GMT_DIF) % DAY_TIME
-            ,IssueNo = state.IssueNo
-        if (_SerTime<600000) {
-          days--
-        }
       }
     },
     //北京快三，以某一期作为基准

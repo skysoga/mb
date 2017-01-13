@@ -66,8 +66,7 @@ export default{
                 router.push("/setBankcard?Q=withdraw")
               },
               no(){
-                router.go(0)
-                // router.push("/userCenter")
+                state.turning=false
               }
             })
           }
@@ -82,7 +81,7 @@ export default{
               router.push("/setSafePwd?Q=withdraw")
             },
             no(){
-              router.go(0)
+              state.turning=false
             }
           })
         }
@@ -101,7 +100,7 @@ export default{
             btn:["返回我的账户","留在本页"],
             yes:function(){
               vm.upTime()
-              vm.$router.push("/userCenter")
+              router.push("/userCenter")
             },
             no:function(){
               vm.upTime()
@@ -126,6 +125,8 @@ export default{
     toggle(){
       if(this.UserBankList.length>1){
         this.isShow=!this.isShow
+      }else{
+        layer.msg("您只绑定了一张银行卡，无法切换。")
       }
     },
     setCard(key,id){

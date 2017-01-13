@@ -1,4 +1,3 @@
-
 ;(function(){
 	try {
 	  sessionStorage.setItem('TextLocalStorage', 'hello world');
@@ -10,6 +9,10 @@
 	  sessionStorage={setItem:function(d){},getItem:function(d){}};
 	}
 })()
+
+if(!localStorage.getItem("console")){
+  console.log=function(){return}
+}
 
 /**
  * [format 为Date对象追加format方法]
@@ -43,7 +46,8 @@ document.addEventListener('touchstart',function(e){},false);//让css的:active�
 // document.cookie = "Site="+location.hostname.replace('.com','')
 window.rem = document.body.clientWidth/16
 window.em = Math.sqrt((rem-20)*.9)+20
-document.write("<style>html{font-size:"+rem+"px;}body{font-size:"+em+"px;}</style>")
+document.querySelector("html").style.fontSize=rem+'px'
+document.body.style.fontSize=em+'px'
 
 function FetchCatch(msg,resolve){
   console.log("FetchCatch");
@@ -101,14 +105,12 @@ window._fetch = function (data){
               if(state.UserName){
                 layer.alert("由于您长时间未操作，已自动退出，需要重新登录",function(){
                   RootApp.Logout()
-                  var meta = RootApp._route.matched[0]
-                  meta = meta&&meta.meta
-                  if(meta&&meta.user){
-                    router.push("/login")
-                  }
+                  router.push("/login")
                 })
                 notRes=true
               }
+            break;
+            case -6://IP黑名单
             break;
             case -7://系统维护
               store.commit('SetMaintain', json.BackData)
@@ -181,6 +183,7 @@ window._App=location.host.search("csz8.net")>-1//是否APP
   if (a) {_App=a?true:false}
 })()
 console.log(_App);
+if (_App) {document.title="彩神争霸"}
 const _AJAXUrl = '/tools/ssc_ajax.ashx'
 window.router = new VueRouter({
 	routes,
@@ -229,11 +232,12 @@ var UserArr = [
 	'UserLastLoginInfo',
   'RebateK3',
   'RebateSSC',
+  'NoticeData',
   'RebateSYX5'
 ]
 var SiteArr=[ //需要校验更新版本的列表
-	'SysActivity',
-	'SysBanner',
+  'SysActivity',
+  'SysBanner',
   'LotteryConfig', //所有彩种列表
   'LotteryList', //所有彩种信息
   'GradeList',//等级体系
@@ -241,21 +245,20 @@ var SiteArr=[ //需要校验更新版本的列表
   'DefaultPhotoList',
 ]
 var AppArr=[
-  'NoticeData',
   'ActivityConfig', //活动种类及数据
   'BannerList',
   'PayLimit',
   'SiteConfig',
 ]
-if (_App) {
-	UserArr=UserArr.concat(AppArr)
-}else{
+// if (_App) {
+// 	UserArr=UserArr.concat(AppArr)
+// }else{
 	SiteArr=SiteArr.concat(AppArr)
-}
-var CacheArr = SiteArr.concat(UserArr)
+// }
+var CacheArr = SiteArr.concat(UserArr).concat(['Difftime'])
 window.state = require('./JSconfig.js')
 state.constant._App=_App
-;(function(){
+function setState(key){
 	function getLocalDate(str){
 		var s = localStorage.getItem(str);
 		try{
@@ -266,10 +269,11 @@ state.constant._App=_App
 		}
 		return s;
 	}
-  for (var i = CacheArr.length - 1; i >= 0; i--) {
-  	state[CacheArr[i]]=getLocalDate(CacheArr[i])
+  for (var i = key.length - 1; i >= 0; i--) {
+  	state[key[i]]=getLocalDate(key[i])
   }
-})()
+};
+setState(CacheArr)
 window.CacheData=localStorage.getItem("CacheData")
 CacheData = CacheData?JSON.parse(CacheData):{}
 
@@ -342,6 +346,72 @@ window.store = new Vuex.Store({
     }
   },
 })
+
+;(function(){
+  var warn = '<span class="iconfont">&#xe606;</span>',
+    tip='<span class="iconfont">&#xe610;</span>'
+  layer.icon={}
+  layer.icon.load=state.tpl.load
+  layer.load=function(){layer.open({type: 2})}
+  layer.msg=function(msg, time) {
+    return this.open({ content: msg, time: time?time-1:3,style: 'fill:#ececec',className:'layermsg'});
+  }
+  layer.msgWarn=function(msg, time) {
+    return this.msg(warn+msg,time);
+  },
+  layer.msgTip=function(msg, time) {
+    return this.msg(tip+msg,time);
+  },
+  layer.msgWait=function(msg,time) {
+    return this.open({time:  time?time-1:0,content: layer.icon.load+msg+"，请稍候...", shadeClose:0 ,className:'layermsg'});
+  },
+  layer.url=function(msg,s) {
+    return layer.open({
+      className: "layerConfirm",
+      title:'温馨提示',
+      content: msg,
+      btn: ["确定"],
+      end:function(){
+        if (typeof(s)=='string') {
+          router.push(s)
+        }else{
+          router.go(s)
+        }
+      }
+    })
+  },
+  layer.alert=function(msg,fun){
+    return layer.open({
+      className: "layerConfirm",
+      title:'温馨提示',
+      shadeClose: false,
+      content: msg,
+      btn: ["确定"],
+      end:fun
+    })
+  },
+  layer.confirm=function(msg,btn,fun1,fun2,fun3){
+    if (!btn.length) {
+      fun3=fun2
+      fun2=fun1
+      fun1=btn
+      btn=["确定","取消"]
+    }
+    return layer.open({
+      className: "layerConfirm",
+      title:"温馨提示",
+      shadeClose: false,
+      content: msg,
+      btn: btn,
+      yes: function(index) {
+        fun1()
+        layer.close(index)
+      },
+      no:fun2,
+      end:fun3
+    })
+  }
+})()
 
 function TimeItem(interval, timeBegin, timeEnd, SerTime){
   this.interval = interval
@@ -427,8 +497,18 @@ window.RootApp={
     sessionStorage.setItem("needVerify",state.needVerify)
     var ajax = {
       Action:"GetInitData",
-      Requirement:arr,
-      CacheData
+      Requirement:arr
+    }
+    if (_App&&!state.UserName) {
+      //app未登录的时候将部分项目移出版本校验
+      ajax.CacheData=Object.assign(CacheData)
+      for (var i = AppArr.length - 1; i >= 0; i--) {
+        delete ajax.CacheData[AppArr[i]]
+      }
+      delete ajax.CacheData.LotteryConfig
+      delete ajax.CacheData.LotteryList
+    }else{
+      ajax.CacheData=CacheData
     }
     _fetch(ajax).then((json)=>{
       if (json.Code===1||json.Code===0) {
@@ -462,9 +542,6 @@ window.RootApp={
       return;
     }
     this.AjaxGetInitData(newArr,fun)
-  },
-  fetchData(){
-    console.log("gaibian");
   },
   //保证校验时按顺序来
   format:function(obj, order, cfg){
@@ -575,75 +652,11 @@ window.RootApp = new Vue({
 	render: h => h(App),
 });
 
-;(function(){
-	var warn = '<span class="iconfont">&#xe606;</span>',
-	  tip='<span class="iconfont">&#xe610;</span>'
-  layer.icon={}
-  layer.icon.load=state.tpl.load
-  layer.load=function(){layer.open({type: 2})}
-	layer.msg=function(msg, time) {
-    return this.open({ content: msg, time: time?time-1:3,style: 'fill:#ececec',className:'layermsg'});
-  }
-  layer.msgWarn=function(msg, time) {
-    return this.msg(warn+msg,time);
-  },
-  layer.msgTip=function(msg, time) {
-    return this.msg(tip+msg,time);
-  },
-  layer.msgWait=function(msg,time) {
-    return this.open({time:  time?time-1:0,content: layer.icon.load+msg+"，请稍候...", shadeClose:0 ,className:'layermsg'});
-  },
-  layer.url=function(msg,s) {
-    return layer.open({
-      className: "layerConfirm",
-      title:'温馨提示',
-      content: msg,
-      btn: ["确定"],
-      end:function(){
-      	if (typeof(s)=='string') {
-      		router.push(s)
-      	}else{
-      		router.go(s)
-      	}
-      }
-    })
-  },
-  layer.alert=function(msg,fun){
-    return layer.open({
-      className: "layerConfirm",
-      title:'温馨提示',
-      shadeClose: false,
-      content: msg,
-      btn: ["确定"],
-      end:fun
-    })
-  },
-  layer.confirm=function(msg,btn,fun1,fun2,fun3){
-  	if (!btn.length) {
-  		fun3=fun2
-  		fun2=fun1
-  		fun1=btn
-  		btn=["确定","取消"]
-  	}
-  	return layer.open({
-  	  className: "layerConfirm",
-  	  title:"温馨提示",
-  	  shadeClose: false,
-  	  content: msg,
-  	  btn: btn,
-  	  yes: function(index) {
-  	  	fun1()
-        layer.close(index)
-      },
-      no:fun2,
-  	  end:fun3
-  	})
-  }
-})()
-
 router.beforeEach((to, from, next) => {
-  // layer.open({type: 2});
   console.log("beforeEach");
+  if(state.UserName&&state.UserName!==localStorage.getItem('UserName')){
+    setState(UserArr)
+  }
   state.turning=true
   RootApp.beforEnter(to)
 	next();

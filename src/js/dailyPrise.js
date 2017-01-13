@@ -23,7 +23,7 @@ export default {
           if(vm.StateData){
             thState=vm.StateData.State
           }
-          vm.UnClick=thState
+          vm.UnClick=thState*1
           vm.ClickMsg=thState=='0'?'立即领取':(thState=='1'?'已领取':'不可领取')
           for(var i=0;i<dataArr.length;i++){
             if(dataArr[i].Name==xname){
@@ -44,13 +44,13 @@ export default {
       var dataArr={Action:"GetReward",Qort:"每日加奖"}
       layer.msgWait("正在处理")
       _fetch(dataArr).then(json=>{
-          if(json.Code==1){
-            this.UnClick=true
-            this.ClickMsg="已领取"
-            layer.msgWarn(json.StrCode)
-          }else{
-            layer.msgWarn(json.StrCode)
-          }
+        if(json.Code==1){
+          this.UnClick=true
+          this.ClickMsg="已领取"
+          layer.msgWarn(json.StrCode)
+        }else{
+          layer.msgWarn(json.StrCode)
+        }
       })
     }
   }

@@ -1,7 +1,6 @@
 export default {
   data:()=>{
     return{
-      refreshClass:"refresh",
       StarNum:0,
       LevelText:0,
       LastLogin:'',

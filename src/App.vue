@@ -5,7 +5,7 @@
       <navbar v-show="$route.matched[0].meta.nav"></navbar>
     </template>
     <transition name="fade"  mode="out-in">
-      <router-view></router-view>
+      <router-view :s="$store.state"></router-view>
     </transition>
   </div>
 </template>
@@ -149,6 +149,7 @@ body{
   padding:10px 30px;
   max-height: 50vh;
   overflow-y: scroll;
+  overflow-x:hidden;
   word-wrap:break-word;
 }
 .tal .layermcont{

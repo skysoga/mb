@@ -27,6 +27,7 @@ export default {
         ImgCode:this.ImgCode
       }
       ArrData.Action='SetSessionUser'
+      layer.msgWait("正在提交")
       _fetch(ArrData).then(json=>{
           if(json.Code==1||json.Code==0){
             RootApp.SaveInitData(json.BackData)

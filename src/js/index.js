@@ -1,5 +1,6 @@
 import { swiper, swiperSlide, swiperPlugins } from 'vue-awesome-swiper'
 export default {
+  props:["s"],
   data:()=>{
     return{
       LList:["1401","1402","1407","1406","1405","1000","1001","1008","1003","1403","1410","1408","1411","1409","1404"],
@@ -11,8 +12,13 @@ export default {
     swiperSlide
   },
   beforeRouteEnter:(to, from, next) => {
-    var arr = ["SysBanner","NoticeData","LotteryConfig","LotteryList"],
-      ar=["BannerList","SiteConfig"];
+    var NologApp = _App&&!state.UserName
+    if (NologApp) {
+      to.meta.title='未登录'
+    }
+    var arr = [!NologApp?"BannerList":"SysBanner","LotteryConfig","LotteryList"],
+      ar=["SiteConfig"];
+    state.UserName&&arr.push("NoticeData")
     arr = (!_App||state.UserName)?arr.concat(ar):arr
     RootApp.GetInitData(arr, state=>{
       next(vm=>{
