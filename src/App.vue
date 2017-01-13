@@ -5,7 +5,7 @@
       <navbar v-show="$route.matched[0].meta.nav"></navbar>
     </template>
     <transition name="fade"  mode="out-in">
-      <router-view></router-view>
+      <router-view :m="$route.matched[0].meta" :s="$store.state"></router-view>
     </transition>
   </div>
 </template>

@@ -429,8 +429,8 @@
 		      },
 		      //action-获得开奖结果
 		      lt_getResults:({state, rootState, commit, dispatch}, code)=>{
-		      	var Results = []
-			      		,IssueNo = Results.length?Results[0].IssueNo:0;
+		      	// var Results = []
+			      // 		,IssueNo = Results.length?Results[0].IssueNo:0;
 
 		      	_fetch({
 		          Action: "GetLotteryOpen",
@@ -440,7 +440,15 @@
 		          DataNum: 10
 		        }).then((json)=>{
 		        	if(json.Code === 1) {
-				        var len = json.BackData.length
+		        		if (10===json.BackData.length) {
+		        			commit({
+		        				type: 'lt_setLotteryResult',
+		        				code,
+		        				results: json.BackData
+		        			})
+		        		}
+
+				        /*var len = json.BackData.length
 				        		,bData = json.BackData
 
 		            if(len){
@@ -456,7 +464,7 @@
 		              	code,
 		              	results: Results
 		              })
-		            }
+		            }*/
 		          }
 		        })
 		      },
