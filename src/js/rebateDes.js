@@ -15,7 +15,11 @@ import BottomBox from '../components/bottom-box';
       }
     },
     created(){
-      this.BetweenType=RootApp.$route.params.id||'K3'
+      if(RootApp.$route&&RootApp.$route.params.id){
+        this.BetweenType=RootApp.$route.params.id
+      }else{
+        this.BetweenType="K3"
+      }
       var isLaw=!this.BottomBoxList[this.BetweenType]
       if(isLaw){
         return router.push('/manageInvite')
