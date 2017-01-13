@@ -1,26 +1,26 @@
 <template>
   <div class="main">
-    <router-link v-if="!$store.state.constant._App" v-show="$store.state.UserUpGradeBonus&&$store.state.UserUpGradeBonus.Grade>2" tag="div" to="/ping" class='textMore dataType'><em>线路</em></router-link>
+    <router-link v-if="!s.constant._App" v-show="s.UserUpGradeBonus&&s.UserUpGradeBonus.Grade>2" tag="div" to="/ping" class='textMore dataType'><em>线路</em></router-link>
     <div id="banner">
       <swiper>
-        <swiper-slide v-for="i in $store.state.BannerList||$store.state.SysBanner">
-          <router-link :to="i.Url.replace('.html','')"><img :src="$store.state.constant.ImgHost+i.Image"></router-link>
+        <swiper-slide v-for="i in s.BannerList||s.SysBanner">
+          <router-link :to="i.Url.replace('.html','')"><img :src="s.constant.ImgHost+i.Image"></router-link>
         </swiper-slide>
       </swiper>
     </div>
-    <div id="notice">
-      <template v-if="$store.state.UserName">
-        <router-link v-for="i in $store.state.NoticeData" class="active" :to="'/NoticeDetail?ID='+i.ID"><i class="iconfont gonggao fl"></i><span>{{i.Title}}</span><i class="iconfont right fr"></i></router-link>
+    <div id="notice" v-if="!s.UserName||(s.NoticeData&&s.NoticeData.length)">
+      <template v-if="s.UserName">
+        <router-link v-for="i in s.NoticeData" class="active" :to="'/NoticeDetail?ID='+i.ID"><i class="iconfont gonggao fl"></i><span>{{i.Title}}</span><i class="iconfont right fr"></i></router-link>
       </template>
-      <a v-else><i class="iconfont gonggao fl"></i><span>欢迎来到{{$store.state.SiteConfig?$store.state.SiteConfig.Name:'彩神争霸'}}</span></a>
+      <a v-else><i class="iconfont gonggao fl"></i><span>欢迎来到{{s.SiteConfig?s.SiteConfig.Name:'彩神争霸'}}</span></a>
     </div>
     <div class="hr1px"></div>
-    <div id="HotLottery" v-if="$store.state.LotteryList" v-bind:style="{height:Math.ceil(len/3)*5+'em'}">
+    <div id="HotLottery" v-if="s.LotteryList" v-bind:style="{height:Math.ceil(len/3)*5+'em'}">
       <ul>
         <li v-for="l in LList">
-          <router-link :class="'active L_'+$store.state.LotteryList[l].LotteryType" :to="'/lottery/'+$store.state.LotteryList[l].LotteryType+'/'+l">
-            <p>{{$store.state.LotteryList[l].LotteryName}}</p>
-            <span>{{$store.state.LotteryList[l].LotteryIntro}}</span>
+          <router-link :class="'active L_'+s.LotteryList[l].LotteryType" :to="'/lottery/'+s.LotteryList[l].LotteryType+'/'+l">
+            <p>{{s.LotteryList[l].LotteryName}}</p>
+            <span>{{s.LotteryList[l].LotteryIntro}}</span>
           </router-link>
         </li>
         <li v-for="l in 3-(len%3||3)"></li>
