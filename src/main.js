@@ -13,7 +13,19 @@
 if(!localStorage.getItem("console")){
   console.log=function(){return}
 }
-
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Vuex from 'vuex'
+import App from './App'
+import routes from './routes/routes'
+import Va from './plugins/va'
+window.Vue=Vue
+Vue.use(Va)
+Vue.use(VueRouter)
+Vue.use(Vuex)
+//全局过滤器
+Vue.filter('num', v=>+v) // 转成数字类型
+Vue.filter('filNum',v=>String(Math.floor(v)).length>7?Math.floor(v):v)//数字整数长度大于7位去掉小数点部分
 /**
  * [format 为Date对象追加format方法]
  * @param  {[string]} format [设置要输出的目标格式 如"yyyy-MM-dd hh:mm:ss" ]
@@ -166,17 +178,6 @@ window._fetchT=function _fetchT(data){
     })
   })
 }
-
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Vuex from 'vuex'
-import App from './App'
-import routes from './routes/routes'
-import Va from './plugins/va'
-window.Vue=Vue
-Vue.use(Va)
-Vue.use(VueRouter)
-Vue.use(Vuex)
 window._App=location.host.search("csz8.net")>-1//是否APP
 ;(function(){
   var a = localStorage.getItem("isApp")
@@ -232,11 +233,12 @@ var UserArr = [
 	'UserLastLoginInfo',
   'RebateK3',
   'RebateSSC',
+  'NoticeData',
   'RebateSYX5'
 ]
 var SiteArr=[ //需要校验更新版本的列表
-	'SysActivity',
-	'SysBanner',
+  'SysActivity',
+  'SysBanner',
   'LotteryConfig', //所有彩种列表
   'LotteryList', //所有彩种信息
   'GradeList',//等级体系
@@ -244,17 +246,16 @@ var SiteArr=[ //需要校验更新版本的列表
   'DefaultPhotoList',
 ]
 var AppArr=[
-  'NoticeData',
   'ActivityConfig', //活动种类及数据
   'BannerList',
   'PayLimit',
   'SiteConfig',
 ]
-if (_App) {
-	UserArr=UserArr.concat(AppArr)
-}else{
+// if (_App) {
+// 	UserArr=UserArr.concat(AppArr)
+// }else{
 	SiteArr=SiteArr.concat(AppArr)
-}
+// }
 var CacheArr = SiteArr.concat(UserArr).concat(['Difftime'])
 window.state = require('./JSconfig.js')
 state.constant._App=_App
@@ -497,8 +498,18 @@ window.RootApp={
     sessionStorage.setItem("needVerify",state.needVerify)
     var ajax = {
       Action:"GetInitData",
-      Requirement:arr,
-      CacheData
+      Requirement:arr
+    }
+    if (_App&&!state.UserName) {
+      //app未登录的时候将部分项目移出版本校验
+      ajax.CacheData=Object.assign(CacheData)
+      for (var i = AppArr.length - 1; i >= 0; i--) {
+        delete ajax.CacheData[AppArr[i]]
+      }
+      delete ajax.CacheData.LotteryConfig
+      delete ajax.CacheData.LotteryList
+    }else{
+      ajax.CacheData=CacheData
     }
     _fetch(ajax).then((json)=>{
       if (json.Code===1||json.Code===0) {
@@ -658,10 +669,6 @@ router.afterEach((to, from) => {
 	state.needVerify++
 	sessionStorage.setItem("needVerify",state.needVerify)
 });
-
-//全局过滤器
-Vue.filter('num', v=>+v) // 转成数字类型
-Vue.filter('filNum',v=>String(Math.floor(v)).length>7?Math.floor(v):v)//数字整数长度大于7位去掉小数点部分
 
 //全局指令
 Vue.directive('copyBtn', {
