@@ -12,7 +12,7 @@
       <template v-if="s.UserName">
         <router-link v-for="i in s.NoticeData" class="active" :to="'/NoticeDetail?ID='+i.ID"><i class="iconfont gonggao fl"></i><span>{{i.Title}}</span><i class="iconfont right fr"></i></router-link>
       </template>
-      <a v-else><i class="iconfont gonggao fl"></i><span>欢迎来到{{s.SiteConfig?s.SiteConfig.Name:'彩神争霸'}}</span></a>
+      <a v-else><i class="iconfont gonggao fl"></i><span>欢迎来到{{s.constant._App?'彩神争霸':s.SiteConfig.Name}}</span></a>
     </div>
     <div class="hr1px"></div>
     <div id="HotLottery" v-if="s.LotteryList" v-bind:style="{height:Math.ceil(len/3)*5+'em'}">
