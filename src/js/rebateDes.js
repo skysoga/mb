@@ -15,9 +15,8 @@ import BottomBox from '../components/bottom-box';
       }
     },
     created(){
-      var vm=this
       if(RootApp.$route&&RootApp.$route.params.id){
-        vm.BetweenType=RootApp.$route.params.id
+        this.BetweenType=RootApp.$route.params.id
       }else{
         this.BetweenType="K3"
       }
