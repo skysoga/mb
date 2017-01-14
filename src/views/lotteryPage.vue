@@ -566,7 +566,7 @@
 				        if (wait4Results>5 && wait4Results%interval===0) {
 				        	dispatch('lt_getResults', state.lottery.LotteryCode)		//获取开奖结果
 				        }
-				      }else if(Results[0].IssueNo*1 > state.OldIssue*1){
+				      }else if(Results[0].IssueNo*1 >= state.NowIssue*1){
 				      	// console.log(state.OldIssue);
 				      	commit('lt_stopSell')		//暂停销售
 				      }else{

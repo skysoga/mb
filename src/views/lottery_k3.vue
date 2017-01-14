@@ -16,7 +16,7 @@
       <label @click.stop= "toggleTypeSelect">{{LotteryName.slice(0,2)}}</label>
       <i @click.stop= "toggleTypeSelect" class="iconfont xiala"></i>
       <!-- 快三彩种切换 -->
-        <div class="fix" style ="display:block" v-show = "ifShowTypeSelect">
+        <div class="fix" style ="display:block" v-show = "ifShowTypeSelect" v-if = "LotteryList.length">
           <a v-for = "lottery in LotteryList"
              @click = "changeLottery(lottery.LotteryCode)">
             {{lottery.LotteryName}}
@@ -202,14 +202,16 @@ export default {
     ;[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
     //处理得各彩种的List
     var LotteryConfig = this.$store.state.LotteryConfig
-    LotteryConfig.forEach(item=>{
-      if(item.LotteryClassID.indexOf(this.lcode.slice(0,2)) > -1){
-        this.LotteryList = item.LotteryList.map(code=>{
-          var el = this.$store.state.LotteryList[code]
-          return el
-        })
-      }
-    })
+    if(LotteryConfig && LotteryConfig.length){
+      LotteryConfig.forEach(item=>{
+        if(item.LotteryClassID.indexOf(this.lcode.slice(0,2)) > -1){
+          this.LotteryList = item.LotteryList.map(code=>{
+            var el = this.$store.state.LotteryList[code]
+            return el
+          })
+        }
+      })
+    }
 
     function circle(num){
       num ++
