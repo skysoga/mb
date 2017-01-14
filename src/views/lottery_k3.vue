@@ -535,7 +535,7 @@ export default {
       var numPart = [], numMax = 0
       this.chosen.forEach(item=>{
         if(['大','小','单','双'].indexOf(item)===-1){
-          var award1 = item > 11 ? this.award[18-item] : this.award[item - 3]
+          var award1 = item >= 11 ? this.award[18-item] : this.award[item - 3]
           var award2 = ((item > 11 && dsds[0]) || (item < 11 && dsds[1])) ? dsdsRebate : 0
           var award3 = (((item % 2 ===1) && dsds[2]) || ((item % 2 ===0) && dsds[3])) ? dsdsRebate : 0
           var award = ((+award1) + (+award2) + (+award3)).toFixed(2)
