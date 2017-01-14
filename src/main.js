@@ -13,7 +13,9 @@
 if(!localStorage.getItem("console")){
   console.log=function(){return}
 }
-
+//全局过滤器
+Vue.filter('num', v=>+v) // 转成数字类型
+Vue.filter('filNum',v=>String(Math.floor(v)).length>7?Math.floor(v):v)//数字整数长度大于7位去掉小数点部分
 /**
  * [format 为Date对象追加format方法]
  * @param  {[string]} format [设置要输出的目标格式 如"yyyy-MM-dd hh:mm:ss" ]
@@ -668,10 +670,6 @@ router.afterEach((to, from) => {
 	state.needVerify++
 	sessionStorage.setItem("needVerify",state.needVerify)
 });
-
-//全局过滤器
-Vue.filter('num', v=>+v) // 转成数字类型
-Vue.filter('filNum',v=>String(Math.floor(v)).length>7?Math.floor(v):v)//数字整数长度大于7位去掉小数点部分
 
 //全局指令
 Vue.directive('copyBtn', {
