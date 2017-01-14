@@ -13,6 +13,16 @@
 if(!localStorage.getItem("console")){
   console.log=function(){return}
 }
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Vuex from 'vuex'
+import App from './App'
+import routes from './routes/routes'
+import Va from './plugins/va'
+window.Vue=Vue
+Vue.use(Va)
+Vue.use(VueRouter)
+Vue.use(Vuex)
 //全局过滤器
 Vue.filter('num', v=>+v) // 转成数字类型
 Vue.filter('filNum',v=>String(Math.floor(v)).length>7?Math.floor(v):v)//数字整数长度大于7位去掉小数点部分
@@ -168,17 +178,6 @@ window._fetchT=function _fetchT(data){
     })
   })
 }
-
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Vuex from 'vuex'
-import App from './App'
-import routes from './routes/routes'
-import Va from './plugins/va'
-window.Vue=Vue
-Vue.use(Va)
-Vue.use(VueRouter)
-Vue.use(Vuex)
 window._App=location.host.search("csz8.net")>-1//是否APP
 ;(function(){
   var a = localStorage.getItem("isApp")
