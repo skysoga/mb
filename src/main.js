@@ -313,7 +313,9 @@ window.store = new Vuex.Store({
   		for (var i = arr.length - 1; i >= 0; i--) {
   			localStorage.removeItem(arr[i])
   			state[arr[i]]=null
+        delete CacheData[arr[i]]
   		}
+      localStorage.setItem('CacheData',JSON.stringify(CacheData))
   	},
     setDifftime:(state, timeItemList)=>{
       console.log(timeItemList)
