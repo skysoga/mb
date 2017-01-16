@@ -522,6 +522,7 @@ export default {
     },
     //获得和值的最大获奖
     getMaxAwardA10(){
+      console.log('1')
       var maxAward
       var dsdsRebate = this.award ? this.award[8] : ''  //大小单双的返点在和值的最后一个
       //大小单双选择情况

@@ -10,9 +10,9 @@
 	}
 })()
 
-if(!localStorage.getItem("console")){
-  console.log=function(){return}
-}
+// if(!localStorage.getItem("console")){
+//   console.log=function(){return}
+// }
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
