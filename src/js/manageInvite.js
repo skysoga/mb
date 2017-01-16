@@ -8,17 +8,18 @@ export default {
     }
   },
   created(){
-    var arr = ["AgentRebate"];
-     RootApp.GetInitData(arr)
-    this.TipShow=false
     var vm=this
-    vm.caiList=state.AgentRebate
-    vm.vaConfig || (vm.vaConfig = {})/*初始化vaConfig对象*/
-    for(var i=0;i<vm.caiList.length;i++){
-      var item = vm.caiList[i]
-      vm.vaConfig[item.LotteryType] || (vm.vaConfig[item.LotteryType] = [])
-      vm.vaConfig[item.LotteryType].push(new vm.VaConfig('limit',[item.MinPoint,item.Point], '', item.LotteryType, vm.caiName[item.LotteryType]))
-    }
+    var arr = ["AgentRebate"];
+     RootApp.GetInitData(arr,state=>{
+      vm.TipShow=false
+      vm.caiList=state.AgentRebate
+      vm.vaConfig || (vm.vaConfig = {})/*初始化vaConfig对象*/
+      for(var i=0;i<vm.caiList.length;i++){
+        var item = vm.caiList[i]
+        vm.vaConfig[item.LotteryType] || (vm.vaConfig[item.LotteryType] = [])
+        vm.vaConfig[item.LotteryType].push(new vm.VaConfig('limit',[item.MinPoint,item.Point], '', item.LotteryType, vm.caiName[item.LotteryType]))
+      }
+     })
    },
    methods:{
     $vaSubmit(){
