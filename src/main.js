@@ -144,10 +144,16 @@ window._fetch = function (data){
         })()
         notRes||resolve(json)
       }).catch(r=>{
+        console.log(r.message)
         FetchCatch("网络数据错误",resolve)
       })
-    }).catch((res)=>{
-      FetchCatch("网络错误，请检查网络状态",resolve)
+    }).catch((r)=>{
+      console.log(r.message);
+      if ("Failed to fetch"===r.message) {
+        FetchCatch("您的设备失去了网络连接",resolve)
+      }else{
+        FetchCatch("网络错误，请检查网络状态",resolve)
+      }
     })
   })
 }
@@ -486,7 +492,7 @@ window.RootApp={
       if (!a) {return}
       for (var i = a.length - 1; i >= 0; i--) {
         if (typeof(a[i].Img)=="object") {
-          a[i].Img=a[i].Img[0];
+          a[i].Img=a[i].Img&&a[i].Img[0];
         }
       }
     })(data.ActivityConfig)
