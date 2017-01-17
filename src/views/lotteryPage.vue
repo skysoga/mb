@@ -316,6 +316,7 @@
       			for(var item in state.tmp){
 		      		state.tmp[item] = []
 		      	}
+		      	bus.$emit('clearNoteStr')
 		      	this.$store.dispatch('lt_ordinaryChase')
 	      	},
 	      	lt_clearBasket:(state)=>{

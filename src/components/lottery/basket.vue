@@ -465,7 +465,9 @@ export default {
         var betStr = noteBetList.indexOf(this.mode) > -1 ? randomFeed : getBetStr(randomFeed)
         //有些机选不了一注的。至少n注
         var count = specialMode[this.mode] ? specialMode[this.mode](randomFeed) : 1
-        this.$store.commit('lt_addRandomBet', new BaseBet(this.$store.state,count, betStr))
+        var randomBet = new BaseBet(this.$store.state,count, betStr)
+        randomBet.clearCompress()
+        this.$store.commit('lt_addRandomBet', randomBet)
       }
     },
   },
