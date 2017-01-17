@@ -183,7 +183,7 @@ window._App=location.host.search("csz8.net")>-1//是否APP
   var a = localStorage.getItem("isApp")
   if (a) {_App=a?true:false}
 })()
-console.log(_App);
+
 if (_App) {document.title="彩神争霸"}
 const _AJAXUrl = '/tools/ssc_ajax.ashx'
 window.router = new VueRouter({

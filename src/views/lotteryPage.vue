@@ -608,9 +608,13 @@
 		      	})
 		      },
 		      //获得返点
-		      lt_getRebate:({state, rootState, commit, dispatch})=>{
+		      lt_getRebate:({state, rootState, commit, dispatch}, notUseLocal)=>{
 		      	var type = state.lottery.LotteryType
 		      	var _rebate = rootState['Rebate' + type]
+		      	if(notUseLocal){
+		      		_rebate = null
+		      	}
+
 		      	if(!_rebate){
 			      	_fetch({
 								Action: 'GetBetRebate',
@@ -657,7 +661,7 @@
 		      			layer.alert(json.StrCode)
 				      	var type = state.lottery.LotteryType
 				      	// localStorage.removeItem('Rebate' + type)
-				      	this.$store.dispatch('lt_getRebate')
+				      	this.$store.dispatch('lt_getRebate', true)
 		      		}else{
 		      			layer.msgWarn(json.StrCode)
 		      		}
@@ -706,7 +710,7 @@
 		      			//清除rebate
 		      			layer.alert(json.StrCode)
 				      	var type = state.lottery.LotteryType
-				      	this.$store.dispatch('lt_getRebate')
+				      	this.$store.dispatch('lt_getRebate', true)
 							}else{
 								layer.msgWarn(json.StrCode);
 							}
