@@ -475,8 +475,8 @@ export default {
 
         layer.open({
           title:"投注确认",
+          style:'width:18em;font-size:.7em',
           shadeClose: false,
-          style:'width:240px',
           content: msg,
           btn: ['确定', '取消'],
           yes: ()=>{

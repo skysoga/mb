@@ -191,7 +191,7 @@ window._App=location.host.search("csz8.net")>-1//是否APP
 })()
 console.log(_App);
 if (_App) {document.title="彩神争霸"}
-const _AJAXUrl = '/tools/ssc_ajax.ashx'
+
 window.router = new VueRouter({
 	routes,
 	mode:'history',
