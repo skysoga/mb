@@ -95,8 +95,8 @@ export default {
           'transform-origin':'center 100px'
         },
         '乐盈':{
-          'margin-top':2.5*em-235+'px',
-          'left':'-230px'
+          'margin-top':2.5*em+'px',
+          'left':'-574px'
         }
       }
 		}

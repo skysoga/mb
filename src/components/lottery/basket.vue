@@ -410,6 +410,7 @@ export default {
 
           layer.open({
             title:"投注确认",
+            style:'width:18em;font-size:.7em',
             shadeClose: false,
             content: msg,
             btn: ['确定', '取消'],
@@ -431,6 +432,7 @@ export default {
         if(this.basket.length){
           layer.open({
             title:"投注确认",
+            style:'width:18em;font-size:.7em',
             shadeClose: false,
             content: msg,
             btn: ['确定', '取消'],
