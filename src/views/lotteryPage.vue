@@ -600,12 +600,12 @@
 		      },
 	      	//获取我的投注
 		      lt_updateBetRecord:({state, rootState, commit, dispatch})=>{
-		      	_fetch({Action: 'GetBetSideBar'}).then((json)=>{
+		      	_fetch({Action: 'GetBetting'}).then((json))=>{
 		      		if(json.Code === 1){
-		      			var betting = json.Data.BettingOrders
+		      			var betting = json.Data
 		      			commit('lt_setBetRecord', betting)
 		      		}
-		      	})
+		      	}
 		      },
 		      //获得返点
 		      lt_getRebate:({state, rootState, commit, dispatch}, notUseLocal)=>{
