@@ -736,9 +736,9 @@ a{
   border:1px solid #d2d2d2;
   border-radius: .3em;
   font-size: .7em;
-  padding: 0 .8em;
+  /*padding: 0 .8em;*/
   height: 2.4em;
-  width: 7em;
+  width: 31%;
   line-height: 2.4em;
   margin-left: .8em;
   background: white;
