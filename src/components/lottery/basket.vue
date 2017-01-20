@@ -6,7 +6,7 @@
   </header>
 
   <div class="cartMain">
-    <div class="someBtn" ref = "someBtn"><a @click.stop = "machineSelect(1)">机选1注</a><a @click.stop = "machineSelect(5)">机选5注</a><a @click.stop = "back">继续选号</a>
+    <div class="someBtn" ref = "someBtn"><div><a @click.stop = "machineSelect(1)">机选1注</a><a @click.stop = "machineSelect(5)">机选5注</a><a @click.stop = "back">继续选号</a></div>
     </div>
 
     <div class="cartContent">
@@ -611,7 +611,7 @@ left: 0;
       background-image: linear-gradient(to left, #d0d0d0, #d0d0d0 50%, transparent 50%);
   }
   &:before{
-    content:"\e620";
+    content:"\e652";
   }
 }
 .stop{
@@ -620,11 +620,11 @@ left: 0;
   }
   label{
     &:before{
-      content:"\e64a";
+      content:"\e654";
     }
   }
   input:checked+label:before{
-    content:"\e84d";
+    content:"\e651";
   }
 }
 .stop label,.clear{
@@ -643,17 +643,17 @@ left: 0;
   }
 }
 .numberbox{
-background: white;
-padding: 0 .6em;
+  background: white;
+  padding: 0 .6em;
 li{
   border-bottom: 1px dashed #ccc;
-  padding: .6em 0;
+  padding: .5em 0;
   position: relative;
   em{
     display: block;
     color:#dc3b40;
     font-size: .75em;
-    line-height: 1.2em;
+    line-height: 1.4em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -662,7 +662,7 @@ li{
   span{
     font-size: .75em;
     color:#666;
-    line-height: 1em;
+    line-height: 1.2em;
     width: 90%;
     display: block;
   }
@@ -697,22 +697,38 @@ header{
 }
 }
 .cartMain{
-padding-top: 5.16em;
+padding-top: 4.56em;
 padding-bottom: 5.1em;
 min-height: 20em;
 background: #f9f8f0;
 min-height: 100%;
 }
 .someBtn{
-text-align: center;
-padding: .6em;
-box-shadow: 0 0 .5em #b9b9b9;
-position: fixed;
-z-index: 99;
-background: #f9f8f0;
-top:2.3em;
-left: 0;
-width: 100%;
+  text-align: center;
+  padding: .3em .6em;
+  box-shadow: 0 0 .5em #b9b9b9;
+  position: fixed;
+  z-index: 99;
+  background: #f9f8f0;
+  top:2.3em;
+  left: 0;
+  width: 100%;
+  >div{
+    position: relative;
+    a{
+      &:nth-child(1){
+        position: absolute;
+        left: 0;
+      }
+      &:nth-child(2){
+        margin:0 auto;
+      }
+      &:nth-child(3){
+        position: absolute;
+        right: 0;
+      }
+    }
+  }
 a{
   display: inline-block;
   color:#333;
@@ -721,17 +737,19 @@ a{
   font-size: .7em;
   padding: 0 .8em;
   height: 2.4em;
+  width: 7em;
   line-height: 2.4em;
   margin-left: .8em;
   background: white;
   &:first-child{
     margin-left:0;
+    left: 0;
   }
   &:before{
-    content:"\e646";
+    content:"\e64e";
     font-family: "iconfont";
     color:#a3a3a3;
-    margin-right: .2em;
+    margin-right: .4em;
     font-size: .8em;
     line-height: 1em;
   }

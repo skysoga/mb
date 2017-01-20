@@ -4,7 +4,7 @@
 
     <div class="sscBetInfo fix">
       <div class="betContent" @click = "addBet">
-        <em>+</em>
+        <em class="iconfont">&#xe64e;</em>
         <div>
           <h3>共{{betCount}}注，{{betMoney}}元</h3>
           <p>{{betCount ? betStr: ''}}</p>
@@ -200,10 +200,9 @@ $height:2.4em;
   em{
     position: absolute;
     height: 100%;
-    left:0;
-    top:0;
-    font-size:1.4em;
-    line-height:1.5em;
+    left:.4em;
+    top:.8em;
+    font-size:.9em;
     width:1.4em;
     text-align:center;
     display: none;
