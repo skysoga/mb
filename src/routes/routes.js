@@ -14,6 +14,7 @@ const securityCenter =require('../views/securityCenter')
 const lottery_k3 =require('../views/lottery_k3')
 const competition =require('../views/competition')
 const maintain = require('../views/maintain')
+const AppDownload = require('../views/AppDownload')
 
 
 var publicRoute = [
@@ -137,6 +138,14 @@ var routes = [{
     user:1,
   },
   component: securityCenter
+},{
+  path: '/AppDownload',
+  name: 'APP',
+  meta:{
+    // title:"APP下载",
+    link:"/index",
+  },
+  component: AppDownload
 }]
 
 routes = routes.concat(guangying).concat(zhiming).concat(xiaosen).concat(publicRoute)
