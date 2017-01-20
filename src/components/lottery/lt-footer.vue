@@ -143,9 +143,9 @@ $height:2.4em;
     position: absolute;
     width: 0;
     height: 0;
-    border-top: $height/2 solid transparent;
+    border-top: $height/1.96 solid transparent;
     border-left: 0.5em solid #252625;
-    border-bottom: $height/2 solid transparent;
+    border-bottom: $height/1.96 solid transparent;
     left: 0;
     top: 0;
   }
