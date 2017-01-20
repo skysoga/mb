@@ -28,9 +28,16 @@
       height: 2.6em;
       line-height: 2.6em;
       margin-bottom: 1.2em;
+      padding-left: 2em;
+      position: relative;
       &:active{
         background:white;
         color:#dc3b40;
+      }
+      i{
+        position: absolute;
+        left: 1.5em;
+        font-size: 1.6em;
       }
     }
   }
