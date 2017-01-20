@@ -17,7 +17,8 @@
 	import lt_syx5 from '../json/lt_syx5.json'
 	import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 	import {bus, BaseBet, ChaseAjax, easyClone, deleteCompress, Scheme, getBasketAmount, computeIssue, getSSCRebate, getK3Rebate,getRebate,DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../js/kit'
-
+	var random=Math.floor(Math.random()*4)
+	console.log(random);
 	export default{
 		beforeRouteEnter(to, from, next){
 			//校验LotteryList， 和LotteryConfig-- 要阻塞，这个地方要改
@@ -572,7 +573,7 @@
 				          default:
 				            interval=30
 				        }
-				        if (wait4Results>5 && wait4Results%interval===0) {
+				        if (wait4Results>(5+random) && wait4Results%interval===random) {
 				        	dispatch('lt_getResults', state.lottery.LotteryCode)		//获取开奖结果
 				        }
 				      }else if(Results[0].IssueNo*1 >= state.NowIssue*1){

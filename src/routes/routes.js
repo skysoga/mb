@@ -142,7 +142,7 @@ var routes = [{
   path: '/AppDownload',
   name: 'APP',
   meta:{
-    // title:"APP下载",
+    title:"APP下载",
     link:"/index",
   },
   component: AppDownload
