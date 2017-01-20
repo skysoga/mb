@@ -13,7 +13,7 @@
 
       <div class="betCart" >
         <a @click.stop = "showBasket">
-          <i class="iconfont">&#xe75a;<em v-show = "betAmount">{{betAmount}}</em></i>
+          <i class="iconfont">&#xe64d;<em v-show = "betAmount">{{betAmount}}</em></i>
           号码篮</a>
       </div>
     </div>

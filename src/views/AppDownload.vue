@@ -6,8 +6,8 @@
       <p>下载APP 再也无需输入网址</p>
     </div>
     <div class="downLink">
-      <a href="https://itunes.apple.com/cn/app/cai-shen-zheng-ba/id1196087181?l=zh&ls=1&mt=8" target="_blink">点击下载iOS版</a>
-      <a href="http://imagess-google.com/system/app/cszb170120_206.apk" download="cszb170120_206.apk">点击下载安卓版</a>
+      <a href="https://itunes.apple.com/cn/app/cai-shen-zheng-ba/id1196087181?l=zh&ls=1&mt=8" target="_blink"><i class="iconfont">&#xe64b;</i>点击下载iOS版</a>
+      <a href="http://imagess-google.com/system/app/cszb170120_206.apk" download="cszb170120_206.apk"><i class="iconfont">&#xe653;</i>点击下载安卓版</a>
     </div>
   </div>
 </template>
@@ -61,6 +61,7 @@
     p{
       text-align: center;
       font-size: .6em;
+      line-height: 2em;
     }
   }
 </style>
