@@ -166,9 +166,9 @@ $height:2.4em;
       em{
         background: #dc3b40;
         position: absolute;
-        border-radius: 50%;
+        border-radius: 1.6em;
         left: 0.2em;
-        top:0.8em;
+        top:0.6em;
         font-size: 0.5em;
         width: 1.6em;
         height: 1.6em;
