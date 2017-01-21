@@ -63,6 +63,12 @@ export default {
 			YqmReadOnly: false	//邀请码框是否只读
 		}
 	},
+  beforeRouteLeave: (to, from,next)=>{
+    console.log(to);
+    console.log(from);
+    delete from.id
+    next()
+  },
 	created (){
 		let id = this.$route.query.id;
 		if(id){
