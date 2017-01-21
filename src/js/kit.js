@@ -380,6 +380,11 @@ BaseBet.prototype.setPower = function(power, state){
   this.betting_money = +(state.lt.perbet * this.betting_count * this.betting_model * this.graduation_count).toFixed(2)
 }
 
+BaseBet.prototype.clearCompress = function(){
+  this.compress = ''
+}
+
+
 //生成追号的ajax
 function ChaseAjax(state){
   var conf = state.lt.chaseConf,

@@ -144,10 +144,16 @@ window._fetch = function (data){
         })()
         notRes||resolve(json)
       }).catch(r=>{
+        console.log(r.message)
         FetchCatch("网络数据错误",resolve)
       })
-    }).catch((res)=>{
-      FetchCatch("网络错误，请检查网络状态",resolve)
+    }).catch((r)=>{
+      console.log(r.message);
+      if ("Failed to fetch"===r.message) {
+        FetchCatch("您的设备失去了网络连接",resolve)
+      }else{
+        FetchCatch("网络错误，请检查网络状态",resolve)
+      }
     })
   })
 }
@@ -182,10 +188,45 @@ window._App=location.host.search("csz8.net")>-1//是否APP
 ;(function(){
   var a = localStorage.getItem("isApp")
   if (a) {_App=a?true:false}
+  var versions = function() {
+    var u = navigator.userAgent,
+      app = navigator.appVersion;
+    return {
+      // trident: u.indexOf('Trident') > -1, //IE内核
+      // presto: u.indexOf('Presto') > -1, //opera内核
+      // webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      // gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      // mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Adr') > -1, //android终端
+      // iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
+      // iPad: u.indexOf('iPad') > -1, //是否iPad
+      // webApp: u.indexOf('Safari') == -1, //是否web应该程序，没有头部与底部
+      // weixin: u.indexOf('MicroMessenger') > -1, //是否微信 （2015-01-22新增）
+      // qq: u.match(/\sQQ/i) == " qq" //是否QQ
+    };
+  }()
+  if (_App&&versions.ios) {
+    //iosApp专用代码
+    var img=document.createElement("img")
+    img.src="http://static.ydbimg.com/API/YdbOnline.js"
+    img.onerror=function(){
+      var script = document.createElement("script");
+      script.src=img.src
+      document.body.appendChild(script);
+      var inter=setInterval(function(){
+        console.log(1);
+        if(YDBOBJ){
+          (new YDBOBJ()).SetHeadBar(0)
+          clearInterval(inter)
+        }
+      },100)
+    }
+  }
 })()
-console.log(_App);
+
 if (_App) {document.title="彩神争霸"}
-const _AJAXUrl = '/tools/ssc_ajax.ashx'
+
 window.router = new VueRouter({
 	routes,
 	mode:'history',
@@ -313,7 +354,9 @@ window.store = new Vuex.Store({
   		for (var i = arr.length - 1; i >= 0; i--) {
   			localStorage.removeItem(arr[i])
   			state[arr[i]]=null
+        delete CacheData[arr[i]]
   		}
+      localStorage.setItem('CacheData',JSON.stringify(CacheData))
   	},
     setDifftime:(state, timeItemList)=>{
       console.log(timeItemList)
@@ -484,7 +527,7 @@ window.RootApp={
       if (!a) {return}
       for (var i = a.length - 1; i >= 0; i--) {
         if (typeof(a[i].Img)=="object") {
-          a[i].Img=a[i].Img[0];
+          a[i].Img=a[i].Img&&a[i].Img[0];
         }
       }
     })(data.ActivityConfig)

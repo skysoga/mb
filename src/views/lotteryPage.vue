@@ -17,7 +17,8 @@
 	import lt_syx5 from '../json/lt_syx5.json'
 	import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 	import {bus, BaseBet, ChaseAjax, easyClone, deleteCompress, Scheme, getBasketAmount, computeIssue, getSSCRebate, getK3Rebate,getRebate,DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../js/kit'
-
+	var random=Math.floor(Math.random()*4)
+	console.log(random);
 	export default{
 		beforeRouteEnter(to, from, next){
 			//校验LotteryList， 和LotteryConfig-- 要阻塞，这个地方要改
@@ -316,6 +317,7 @@
       			for(var item in state.tmp){
 		      		state.tmp[item] = []
 		      	}
+		      	bus.$emit('clearNoteStr')
 		      	this.$store.dispatch('lt_ordinaryChase')
 	      	},
 	      	lt_clearBasket:(state)=>{
@@ -571,7 +573,7 @@
 				          default:
 				            interval=30
 				        }
-				        if (wait4Results>5 && wait4Results%interval===0) {
+				        if (wait4Results>(5+random) && wait4Results%interval===random) {
 				        	dispatch('lt_getResults', state.lottery.LotteryCode)		//获取开奖结果
 				        }
 				      }else if(Results[0].IssueNo*1 >= state.NowIssue*1){
@@ -599,17 +601,21 @@
 		      },
 	      	//获取我的投注
 		      lt_updateBetRecord:({state, rootState, commit, dispatch})=>{
-		      	_fetch({Action: 'GetBetSideBar'}).then((json)=>{
-		      		if(json.Code === 1){
-		      			var betting = json.Data.BettingOrders
-		      			commit('lt_setBetRecord', betting)
-		      		}
-		      	})
+		      	// _fetch({Action: 'GetBetting'}).then((json)=>{
+		      	// 	if(json.Code === 1){
+		      	// 		var betting = json.Data
+		      	// 		commit('lt_setBetRecord', betting)
+		      	// 	}
+		      	// })
 		      },
 		      //获得返点
-		      lt_getRebate:({state, rootState, commit, dispatch})=>{
+		      lt_getRebate:({state, rootState, commit, dispatch}, notUseLocal)=>{
 		      	var type = state.lottery.LotteryType
 		      	var _rebate = rootState['Rebate' + type]
+		      	if(notUseLocal){
+		      		_rebate = null
+		      	}
+
 		      	if(!_rebate){
 			      	_fetch({
 								Action: 'GetBetRebate',
@@ -656,7 +662,7 @@
 		      			layer.alert(json.StrCode)
 				      	var type = state.lottery.LotteryType
 				      	// localStorage.removeItem('Rebate' + type)
-				      	this.$store.dispatch('lt_getRebate')
+				      	this.$store.dispatch('lt_getRebate', true)
 		      		}else{
 		      			layer.msgWarn(json.StrCode)
 		      		}
@@ -705,7 +711,7 @@
 		      			//清除rebate
 		      			layer.alert(json.StrCode)
 				      	var type = state.lottery.LotteryType
-				      	this.$store.dispatch('lt_getRebate')
+				      	this.$store.dispatch('lt_getRebate', true)
 							}else{
 								layer.msgWarn(json.StrCode);
 							}
