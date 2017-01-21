@@ -5,7 +5,7 @@
       <tr>
         <td>邀请码</td>
         <td colspan="2">
-          <input v-va:InvitationCode="[{'reg':/^[a-zA-Z0-9]{8}$/}]" regMsg="您输入的邀请码错误或者已过期" tag="邀请码" class="input fl mL15"
+          <input v-va:InvitationCode="[{'reg':/^\d{8}$/}]" regMsg="您输入的邀请码错误或者已过期" tag="邀请码" class="input fl mL15"
     						 type="url"
     						 placeholder="请输入邀请码"
     						 :readonly  = "YqmReadOnly"
@@ -128,6 +128,7 @@ export default {
           });
         }else{
           if(json.Code === -2){
+            this.InvitationCode=''
             localStorage.removeItem('InvitationCode');
             that.YqmReadOnly = false;
           }
