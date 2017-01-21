@@ -12,6 +12,13 @@ export default {
     swiperSlide
   },
   beforeRouteEnter:(to, from, next) => {
+    var search=location.search
+    if(search&&(search.search(/^\?id=\d{8}$/)===0)){
+      //如果是注册
+      next(vm=>{
+        router.push("/register"+search)
+      })
+    }
     var NologApp = _App&&!state.UserName
     if (NologApp) {
       to.meta.title='未登录'
