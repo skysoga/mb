@@ -129,6 +129,7 @@ export default {
         }else{
           if(json.Code === -2){
             this.InvitationCode=''
+            this.ImgCode=''
             localStorage.removeItem('InvitationCode');
             that.YqmReadOnly = false;
           }
