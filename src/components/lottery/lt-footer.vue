@@ -4,7 +4,7 @@
 
     <div class="sscBetInfo fix">
       <div class="betContent" @click = "addBet">
-        <em>+</em>
+        <em class="iconfont">&#xe64e;</em>
         <div>
           <h3>共{{betCount}}注，{{betMoney}}元</h3>
           <p>{{betCount ? betStr: ''}}</p>
@@ -13,7 +13,7 @@
 
       <div class="betCart" >
         <a @click.stop = "showBasket">
-          <i class="iconfont">&#xe75a;<em v-show = "betAmount">{{betAmount}}</em></i>
+          <i class="iconfont">&#xe64d;<em v-show = "betAmount">{{betAmount}}</em></i>
           号码篮</a>
       </div>
     </div>
@@ -143,9 +143,9 @@ $height:2.4em;
     position: absolute;
     width: 0;
     height: 0;
-    border-top: $height/2 solid transparent;
+    border-top: $height/1.96 solid transparent;
     border-left: 0.5em solid #252625;
-    border-bottom: $height/2 solid transparent;
+    border-bottom: $height/1.96 solid transparent;
     left: 0;
     top: 0;
   }
@@ -166,9 +166,9 @@ $height:2.4em;
       em{
         background: #dc3b40;
         position: absolute;
-        border-radius: 50%;
+        border-radius: 1.6em;
         left: 0.2em;
-        top:0.8em;
+        top:0.6em;
         font-size: 0.5em;
         width: 1.6em;
         height: 1.6em;
@@ -200,10 +200,9 @@ $height:2.4em;
   em{
     position: absolute;
     height: 100%;
-    left:0;
-    top:0;
-    font-size:1.4em;
-    line-height:1.5em;
+    left:.4em;
+    top:.8em;
+    font-size:.9em;
     width:1.4em;
     text-align:center;
     display: none;
