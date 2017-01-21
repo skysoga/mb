@@ -202,7 +202,6 @@
 		          	}
 		          }
 		        }
-
 		        this.$store.commit('lt_updateIssue')
 	      	},
 	      	//更新期号时
@@ -214,6 +213,7 @@
 			      state.basket.forEach(bet=>{
 			      	bet.betting_issuseNo = computeIssue(code, state.IssueNo)
 			      })
+			      this.$store.dispatch('lt_ordinaryChase')
 	      	},
 	      	lt_setLotteryResult:(state, {code, results})=>{							//设置某一彩种的开奖结果
 	      		Vue.set(state.LotteryResults, code, results)
@@ -482,7 +482,6 @@
 			                        +needAddOneDay * DAY_TIME
 			                        -_SerTime;
 
-			        // console.log(_issue.StartTime,_issue.EndTime,_SerTime,_issue.Start,_issue.End, issueNo,isCrossDay,isOutOfIssue, needAddOneDay, Countdown)
 			        return Countdown
 		      	}
 
@@ -511,6 +510,7 @@
 		          	crossCount++
 		          	var lastIssueEnd = state.LotteryPlan[state.PlanLen - 1].End
 		          			,firstIssueStart = state.LotteryPlan[0].Start
+
 
 		          	//等于： 首尾相接的期号。大于：最后一期在第二天。 余去，则不会进入out of issue
 		          	if(firstIssueStart >= lastIssueEnd){
