@@ -9,7 +9,7 @@ var PERBET = 2    //每注2元
 var Max_Rate =10000   //最大倍数
 var Max_Chase_Issue = 50  //追号最大期数
 var Max_Expect_Rate = 20000 //追号最大预期盈利率限制
-var BASE_ISSUE_1406 = 52596+1 //北京快三基准期
+var BASE_ISSUE_1406 = 52596+1-89*7 //北京快三基准期
 
 //阶乘
 var factorial = (function(){
