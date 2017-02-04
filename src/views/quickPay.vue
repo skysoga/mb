@@ -31,48 +31,48 @@
 
 <script>
 export default {
-	beforeRouteEnter(to, from, next){
-		var title = {
+  beforeRouteEnter(to, from, next){
+    var title = {
       Weixin:'微信支付',
       Alipay: '支付宝'
     }
-    var method = to.query.method 			//'Bank', 'Weixin', 'Alipay'
+    var method = to.query.method       //'Bank', 'Weixin', 'Alipay'
     var rechargeWay = 'RechargeWay' + method
 
     to.meta.title = title[method]   //标题
-		//获取数据
-		RootApp.AjaxGetInitData([rechargeWay], state=>{
-			//如果数据不对要跳到普通充值去
-			var PayType = state[rechargeWay]&&state[rechargeWay][0].PayType
-			if(PayType === '一般'){
-				RootApp.$router.push('/normalPay?method=' + method)
-			}
+    //获取数据
+    RootApp.AjaxGetInitData([rechargeWay], state=>{
+      //如果数据不对要跳到普通充值去
+      var PayType = state[rechargeWay]&&state[rechargeWay][0].PayType
+      if(PayType === '一般'){
+        RootApp.$router.push('/normalPay?method=' + method)
+      }
 
-			next(vm=>{
-				//如果没数据进维护页
+      next(vm=>{
+        //如果没数据进维护页
         vm.PayType=PayType
-				if(!state[rechargeWay] || !state[rechargeWay][0]){
-					vm.underMaintain = true
-					return
-				}
+        if(!state[rechargeWay] || !state[rechargeWay][0]){
+          vm.underMaintain = true
+          return
+        }
 
-				vm.underMaintain = false
-				vm.nowRender = state[rechargeWay][0]
-			})
-		})
-	},
-	data () {
-		return {
-			method: '',								//什么充值方式
+        vm.underMaintain = false
+        vm.nowRender = state[rechargeWay][0]
+      })
+    })
+  },
+  data () {
+    return {
+      method: '',                //什么充值方式
       PayType:null,
-			pageName: '',							//维护的名字
-			underMaintain: false,			//是否维护
+      pageName: '',              //维护的名字
+      underMaintain: false,      //是否维护
       QrImg:'',
-			//当前
-			nowRender:{},
-			limit:'',
-			//ajax
-			Money: '',
+      //当前
+      nowRender:{},
+      limit:'',
+      //ajax
+      Money: '',
       css:{
         '通汇卡':{
           'margin-top':2.5*em-100+'px',
@@ -99,86 +99,86 @@ export default {
           'left':'-574px'
         }
       }
-		}
-	},
-	computed:{
-		pageName () {
-			var _name= {
-				Weixin: '微信支付',
-				Alipay: '支付宝充值'
-			}
-			return _name[this.method]
-		}
-	},
-	created (){
-		var method = this.$route.query.method 			//'Bank', 'Weixin', 'Alipay'
-		this.method = method
-		var rechargeWay = 'RechargeWay' + method
-		var limitName = {
-			Weixin: '微信快捷',
-			Alipay: '支付宝快捷'
-		}
+    }
+  },
+  computed:{
+    pageName () {
+      var _name= {
+        Weixin: '微信支付',
+        Alipay: '支付宝充值'
+      }
+      return _name[this.method]
+    }
+  },
+  created (){
+    var method = this.$route.query.method       //'Bank', 'Weixin', 'Alipay'
+    this.method = method
+    var rechargeWay = 'RechargeWay' + method
+    var limitName = {
+      Weixin: '微信快捷',
+      Alipay: '支付宝快捷'
+    }
 
-		//获取数据
-		RootApp.AjaxGetInitData(['PayLimit'], state=>{
-			//设置金额的限制
-			this.vaConfig ||(this.vaConfig = {})
-			this.vaConfig['Money'] || (this.vaConfig['Money'] = [])
-			var limit;
-			state['PayLimit'].forEach(item=>{
-				if(item.PayName === limitName[method]){
-					limit = [item.MinMoney, item.MaxMoney]
-				}
-			})
-			this.vaConfig['Money'].push(new this.VaConfig('limit', limit, '', 'Money', limitName[method]))
-		})
-	},
-	methods:{
-		$vaSubmit () {
-      var vm=this
-			//ajax数据
-			var ajax = {
-				//微信支付
-				Weixin:{
-					Action:'Recharge',
-					Qort:5,
-					PayUser:'',
-					Money:0,
-					ID:1,
-					BankCode:0
-				},
-				//支付宝
-				Alipay:{
-					Action:'Recharge',
-					Qort:6,
-					PayUser:'',
-					Money:0,
-					ID:1,
-					BankCode:0
-				}
-			}
-			var nowAjax = ajax[this.method]
-			nowAjax.Money = this.vaVal.Money
-			nowAjax.ID = this.nowRender.Id
-			nowAjax.BankCode =this.nowRender.PayType
-      layer.msgWait("正在提交")
-			_fetch(nowAjax).then((json)=>{
-    		this.Money = ''
-    		if(json.Code === 1){
-					layer.msg(json.StrCode);
-          this.QrImg=json.BackUrl
-    		}else{
-    			layer.msgWarn(json.StrCode);
-    		}
+    //获取数据
+    RootApp.AjaxGetInitData(['PayLimit'], state=>{
+      //设置金额的限制
+      this.vaConfig ||(this.vaConfig = {})
+      this.vaConfig['Money'] || (this.vaConfig['Money'] = [])
+      var limit;
+      state['PayLimit'].forEach(item=>{
+        if(item.PayName === limitName[method]){
+          limit = [item.MinMoney, item.MaxMoney]
+        }
       })
-		},
+      this.vaConfig['Money'].push(new this.VaConfig('limit', limit, '', 'Money', limitName[method]))
+    })
+  },
+  methods:{
+    $vaSubmit () {
+      var vm=this
+      //ajax数据
+      var ajax = {
+        //微信支付
+        Weixin:{
+          Action:'Recharge',
+          Qort:5,
+          PayUser:'',
+          Money:0,
+          ID:1,
+          BankCode:0
+        },
+        //支付宝
+        Alipay:{
+          Action:'Recharge',
+          Qort:6,
+          PayUser:'',
+          Money:0,
+          ID:1,
+          BankCode:0
+        }
+      }
+      var nowAjax = ajax[this.method]
+      nowAjax.Money = this.vaVal.Money
+      nowAjax.ID = this.nowRender.Id
+      nowAjax.BankCode =this.nowRender.PayType
+      layer.msgWait("正在提交")
+      _fetch(nowAjax).then((json)=>{
+        this.Money = ''
+        if(json.Code === 1){
+          layer.msg(json.StrCode);
+          this.QrImg=json.BackUrl
+        }else{
+          layer.msgWarn(json.StrCode);
+        }
+      })
+    },
 
-	}
+  }
 }
 </script>
 
 <style lang = "scss" scoped>
-	@import '../scss/securityCenter.scss';
+  @import '../scss/securityCenter.scss';
   #iframeWrap{
     position:absolute;
     z-index:5;

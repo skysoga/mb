@@ -1,5 +1,5 @@
 <template>
-	<header class="top" v-show="!m.hide">
+  <header class="top" v-show="!m.hide">
     <span v-show="s.turning"  v-html="s.tpl.load+'加载中...'"></span>
     <template v-if="!s.turning">
       <span v-html="m.title">

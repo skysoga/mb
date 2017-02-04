@@ -1,57 +1,57 @@
 <template>
-	<header class="sscHeader fix">
+  <header class="sscHeader fix">
     <router-link to="/index" class="iconfont back"></router-link>
     <div class="playSort" :class = "{active:ifShowModeSelect}">
       <p>玩
         <br>法</p>
 
         <span>
-        	<div @click.stop = "toggleModeSelect">
-		        <em>{{mode.tag}}</em>
-		        <i class="iconfont">&#xe61e;</i>
-					</div>
-	        <div v-show = "ifShowModeSelect">
-	          <div class="playSortMore">
-	            <div class="playSortMoreCon">
+          <div @click.stop = "toggleModeSelect">
+            <em>{{mode.tag}}</em>
+            <i class="iconfont">&#xe61e;</i>
+          </div>
+          <div v-show = "ifShowModeSelect">
+            <div class="playSortMore">
+              <div class="playSortMoreCon">
 
-								<ul class="betFilter fix" ref = "betFilter">
-									<li v-for = "(groupItem,group) in config"
-										  @click.stop = "changeGroup(groupItem)"
-										  :class = "{curr:group === mode.group, lastSelect: group === '大小单双'}">
-										{{group}}
-									</li>
-								</ul>
+                <ul class="betFilter fix" ref = "betFilter">
+                  <li v-for = "(groupItem,group) in config"
+                      @click.stop = "changeGroup(groupItem)"
+                      :class = "{curr:group === mode.group, lastSelect: group === '大小单双'}">
+                    {{group}}
+                  </li>
+                </ul>
 
-								<ul class="betFilterAnd">
-									<li class="fix"
+                <ul class="betFilterAnd">
+                  <li class="fix"
                       v-for = "(subGroup, subGroupName) in config[mode.group]"
                       :class = "addSubGroupClass(subGroupName)">
-										<span>{{subGroupName}}</span>
-										<div class="fix">
-											<a v-for = "modeItem in subGroup"
-													:class = "modeItem.mode === mode.mode? 'curr': ''"
-													@click = "changeMode(modeItem)">
-												{{modeItem.name}}
-											</a>
-	                  </div>
-	                </li>
-								</ul>
-	            </div>
-	          </div>
-	      	</div>
-	      </span>
-	  </div>
+                    <span>{{subGroupName}}</span>
+                    <div class="fix">
+                      <a v-for = "modeItem in subGroup"
+                          :class = "modeItem.mode === mode.mode? 'curr': ''"
+                          @click = "changeMode(modeItem)">
+                        {{modeItem.name}}
+                      </a>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </span>
+    </div>
 
     <div class="lotterySort" ref = "lotterySort" :class = "{active:ifShowTypeSelect}">
-	    <div @click.stop = "toggleTypeSelect">
-		    <em>{{lotteryName}}</em><i class="iconfont">&#xe61e;</i>
-	    </div>
+      <div @click.stop = "toggleTypeSelect">
+        <em>{{lotteryName}}</em><i class="iconfont">&#xe61e;</i>
+      </div>
 
       <div class="lotteryList fix" v-show = "ifShowTypeSelect">
-      	<a v-for = "item in LotteryList"
-      		 @click = "changeLottery(item.LotteryCode)">
-	      	  {{item.LotteryName}}
-    	  </a>
+        <a v-for = "item in LotteryList"
+           @click = "changeLottery(item.LotteryCode)">
+            {{item.LotteryName}}
+        </a>
       </div>
     </div>
   </header>
@@ -59,67 +59,67 @@
 
 <script>
   import Vue from 'vue'
-	import {mapState} from 'vuex'
-	export default {
-		created(){
-			[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
+  import {mapState} from 'vuex'
+  export default {
+    created(){
+      [,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
 
-			//处理得各彩种的List
-			var LotteryConfig = this.$store.state.LotteryConfig
-			LotteryConfig.forEach(item=>{
-				if(item.LotteryClassID.indexOf(this.lcode.slice(0,2)) > -1){
-					this.LotteryList = item.LotteryList.map(code=>{
-						var el = state.LotteryList[code]
-						return el
-					})
-				}
-			})
-		},
-		data () {
-			return {
-				LotteryList: [],//彩种list
-				ltype: '',			//彩种类型
-				lcode: ''				//彩种code
-			}
-		},
-		methods:{
-			//更改玩法群
-			changeGroup(groupItem){
-				for(var subGroup in groupItem){
-					var subGroupItem = groupItem[subGroup]
-					subGroupItem.forEach(modeItem=>{
-						//切换Group时，subGroup第一个为默认选项
-						if(modeItem.mode.indexOf('11') > -1 || modeItem.mode === 'I91'){
-							this.$store.commit('lt_changeMode', modeItem)
-						}
-					})
-				}
-			},
-			//更改玩法
-			changeMode(modeItem){
-				this.$store.commit('lt_changeMode', modeItem)
-			},
-			//更改彩种
-			changeLottery(code){
-				this.LotteryList.forEach(item=>{
-					if(item.LotteryCode === code){
-						this.LotteryName = item.LotteryName
-					}
-				})
-				this.$store.dispatch('lt_updateLottery', code)
-			},
-			//玩法选择框，切换
-			toggleModeSelect(){
-				this.$store.state.lt.box === 'modeSelect' ?
-					 this.$store.commit('lt_changeBox', '') :
-						 this.$store.commit('lt_changeBox', 'modeSelect')
-			},
-			//彩种选择框，切换
-			toggleTypeSelect(){
-				this.$store.state.lt.box === 'typeSelect' ?
-					 this.$store.commit('lt_changeBox', '') :
-						 this.$store.commit('lt_changeBox', 'typeSelect')
-			},
+      //处理得各彩种的List
+      var LotteryConfig = this.$store.state.LotteryConfig
+      LotteryConfig.forEach(item=>{
+        if(item.LotteryClassID.indexOf(this.lcode.slice(0,2)) > -1){
+          this.LotteryList = item.LotteryList.map(code=>{
+            var el = state.LotteryList[code]
+            return el
+          })
+        }
+      })
+    },
+    data () {
+      return {
+        LotteryList: [],//彩种list
+        ltype: '',      //彩种类型
+        lcode: ''        //彩种code
+      }
+    },
+    methods:{
+      //更改玩法群
+      changeGroup(groupItem){
+        for(var subGroup in groupItem){
+          var subGroupItem = groupItem[subGroup]
+          subGroupItem.forEach(modeItem=>{
+            //切换Group时，subGroup第一个为默认选项
+            if(modeItem.mode.indexOf('11') > -1 || modeItem.mode === 'I91'){
+              this.$store.commit('lt_changeMode', modeItem)
+            }
+          })
+        }
+      },
+      //更改玩法
+      changeMode(modeItem){
+        this.$store.commit('lt_changeMode', modeItem)
+      },
+      //更改彩种
+      changeLottery(code){
+        this.LotteryList.forEach(item=>{
+          if(item.LotteryCode === code){
+            this.LotteryName = item.LotteryName
+          }
+        })
+        this.$store.dispatch('lt_updateLottery', code)
+      },
+      //玩法选择框，切换
+      toggleModeSelect(){
+        this.$store.state.lt.box === 'modeSelect' ?
+           this.$store.commit('lt_changeBox', '') :
+             this.$store.commit('lt_changeBox', 'modeSelect')
+      },
+      //彩种选择框，切换
+      toggleTypeSelect(){
+        this.$store.state.lt.box === 'typeSelect' ?
+           this.$store.commit('lt_changeBox', '') :
+             this.$store.commit('lt_changeBox', 'typeSelect')
+      },
       addSubGroupClass(name){
         var table = {
           '直选': 'directSelect',
@@ -131,36 +131,36 @@
         }
         return table[name]
       }
-		},
-		computed: mapState({
-			mode:state=>state.lt.mode,
-			config: state=>state.lt.config,
-			LotteryName: state=>state.lt.lottery.LotteryName,
-			ifShowModeSelect (){
-				return state.lt.box === 'modeSelect'
-			},
-			ifShowTypeSelect (){
-				return state.lt.box === 'typeSelect'
-			},
-			lotteryName(){
-				var removeName = {
-					'SSC':'时时彩',
-					'SYX5': '11选5'
-				}
-				return this.LotteryName.replace(removeName[this.ltype], '')
-			}
-		}),
-	}
+    },
+    computed: mapState({
+      mode:state=>state.lt.mode,
+      config: state=>state.lt.config,
+      LotteryName: state=>state.lt.lottery.LotteryName,
+      ifShowModeSelect (){
+        return state.lt.box === 'modeSelect'
+      },
+      ifShowTypeSelect (){
+        return state.lt.box === 'typeSelect'
+      },
+      lotteryName(){
+        var removeName = {
+          'SSC':'时时彩',
+          'SYX5': '11选5'
+        }
+        return this.LotteryName.replace(removeName[this.ltype], '')
+      }
+    }),
+  }
 </script>
 
 <style lang = "scss" scoped>
-	/*@import '../../scss/newssc.scss';*/
+  /*@import '../../scss/newssc.scss';*/
 
 .active:active{
   background: initial !important;
 }
 @import '../../scss/scssConfig','../../scss/mixin';
-	.sscHeader{
+  .sscHeader{
   background: #000;
   color:white;
   text-align: center;

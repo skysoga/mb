@@ -1,5 +1,5 @@
 <template>
-	<div class="main userCenter">
+  <div class="main userCenter">
       <div class="topInfo" @click.stop="getBalance">
           <router-link to="/personalInfo"><img v-bind:src="$store.getters.PhotoPath+$store.state.UserPhoto||$store.state.constant.DefPhoto"></router-link>
           <p>账&nbsp;号：<ins id="UserName">{{$store.state.UserName}}</ins></p>

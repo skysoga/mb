@@ -1,5 +1,5 @@
 <template>
-	<div class="activityMian main">
+  <div class="activityMian main">
     <div class="activiTop">
         <img width="100%" v-show="Img" :src="$store.state.constant.ImgHost+Img">
         <div class="rewardStatus">

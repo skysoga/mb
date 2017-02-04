@@ -1,5 +1,5 @@
 <template>
-	<div class="main" style="padding-bottom: 0;">
+  <div class="main" style="padding-bottom: 0;">
   <datatype></datatype>
 <div class="searchBtn">
     <div class="searchCon">
