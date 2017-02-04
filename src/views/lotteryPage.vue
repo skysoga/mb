@@ -18,14 +18,12 @@
 	import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 	import {bus, BaseBet, ChaseAjax, easyClone, deleteCompress, Scheme, getBasketAmount, computeIssue, getSSCRebate, getK3Rebate,getRebate,DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../js/kit'
 	var random=Math.floor(Math.random()*4)
-	console.log(random);
 	export default{
 		beforeRouteEnter(to, from, next){
 			//校验LotteryList， 和LotteryConfig-- 要阻塞，这个地方要改
 			RootApp.GetInitData(['LotteryList','LotteryConfig'], state=>{
-				var ltype, lcode
 			  //从url上获取彩种type和彩种code
-			  ;[,ltype, lcode] = to.fullPath.slice(1).split('/')
+			  var [,ltype, lcode] = to.fullPath.slice(1).split('/')
 			  //校验下这个彩种存不存在，不存在就送回购彩大厅
 		 		var table = {
 					'SSC': '时时彩',
