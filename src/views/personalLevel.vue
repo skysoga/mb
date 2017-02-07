@@ -13,7 +13,7 @@
           <div class="levelBar fix">
               <div class="left">VIP{{Number(UserGrade)||1}}</div>
               <p class="u-progress"><span class="pgbar" id="progress" :style="{'width':perVal+'%'}"></span></p>
-              <div class="right">VIP{{Number(UserGrade)<9?Number(UserGrade)+1:'2'}}</div>
+              <div class="right">VIP{{Number(UserGrade)<9?Number(UserGrade)+1:'9'}}</div>
               <p v-if="Number(UserGrade)">{{perVal+'%'}}</p>
           </div>
       </div>

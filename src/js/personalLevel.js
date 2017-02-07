@@ -21,11 +21,15 @@ export default {
   methods:{
     getPerLong(num){
       var num=Number(num)||0
-      var Obj=num?this.$store.state.GradeList[num].GradeGrow:0
-      var minObj=num?this.$store.state.GradeList[num-1].GradeGrow:0
-      this.perVal=Math.ceil(((this.UserGradeGrow||minObj)-minObj)/(Obj-minObj)*100)||0
-      this.upGrow=Obj-this.UserGradeGrow||0
-      this.GradeName=num?this.$store.state.GradeList[num-1].GradeName:this.UserGrade
+      var maxnum=num<9?num:8
+      var Obj=num?state.GradeList[maxnum].GradeGrow:0
+      var minObj=num?state.GradeList[num-1].GradeGrow:0
+      if(this.UserGradeGrow>Obj){
+        this.UserGradeGrow=5000000
+      }
+      this.perVal=this.UserGradeGrow<Obj&&Math.ceil(((this.UserGradeGrow||minObj)-minObj)/(Obj-minObj)*100)||100
+      this.upGrow=this.UserGradeGrow<Obj&&Obj-this.UserGradeGrow||0
+      this.GradeName=num?state.GradeList[num-1].GradeName:this.UserGrade
     }
   }
 }
