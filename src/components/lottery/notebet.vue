@@ -128,7 +128,6 @@ export default {
   background: white;
   margin: 0.6em;
   padding: 0.6em;
-  height:9.6em;
   textarea{
     font-size: 0.7em;
     width:100%;
@@ -136,6 +135,7 @@ export default {
     margin:0;
     border:none;
     color:#666;
+    display: block;
     &:focus{
       outline: none;
     }
