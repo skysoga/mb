@@ -2,6 +2,12 @@ import BottomBox from '../components/bottom-box';
 
 export default {
   data:()=>{
+    console.log(this);
+    var BottomBoxList={
+      'forgetPwd': '忘记密码',
+      'pc': '电脑版'
+    }
+    if(_App) delete  BottomBoxList.pc
     return{
       UserName:'',
       Password:'',
@@ -9,10 +15,7 @@ export default {
       imgSrc:'',
       IcodeShow:false,
       BottomBoxShow: false,
-      BottomBoxList:{
-        'forgetPwd': '忘记密码',
-        'pc': '电脑版'
-      }
+      BottomBoxList
     }
   },
   methods:{
