@@ -25,7 +25,7 @@ export default {
       var Obj=num?state.GradeList[maxnum].GradeGrow:0
       var minObj=num?state.GradeList[num-1].GradeGrow:0
       if(this.UserGradeGrow>Obj){
-        this.UserGradeGrow=5000000
+        this.UserGradeGrow=state.GradeList[8].GradeGrow
       }
       this.perVal=this.UserGradeGrow<Obj&&Math.ceil(((this.UserGradeGrow||minObj)-minObj)/(Obj-minObj)*100)||100
       this.upGrow=this.UserGradeGrow<Obj&&Obj-this.UserGradeGrow||0
