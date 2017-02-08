@@ -40,7 +40,7 @@
   </div>
 </template>
 <script>
-var qr = require('qr-image');
+// var qr = require('qr-image');
 export default {
   beforeRouteEnter(to, from, next){
     var title = {
@@ -179,7 +179,7 @@ export default {
           layer.msg(json.StrCode);
           this.QrImg=json.BackUrl
           if(this.nowRender.PayType=='银宝'){
-            this.QrSvg=qr.imageSync(this.QrImg, { type: 'svg' })//生成二维码
+            //this.QrSvg=qr.imageSync(this.QrImg, { type: 'svg' })//生成二维码
           }
         }else{
           layer.msgWarn(json.StrCode);
