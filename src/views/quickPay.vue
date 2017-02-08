@@ -23,24 +23,21 @@
       </div>
     </template>
     <div id="iframeWrap" v-show="QrImg">
-      <div v-if="QrSvg" class="QrBox">
+      <div v-show="QrSvg" class="QrBox">
         <div class="qrStyle">
-          <h3>扫一扫支付</h3>
-          <div v-html="QrSvg"></div>
+          <h3>订单金额:¥{{Money}}</h3>
+          <div id="qrcode" ref="qrcode" style="text-align:center"></div>
         </div>
-        <div class="loginBtn BTN" @click="close">
-          <a>关闭</a>
-        </div>
+        <!-- <div class="loginBtn BTN" @click="close"><a>关闭</a></div> -->
         <div class="tips">
-          温馨提示：安全支付，手机扫二维码!
+          温馨提示：支付成功后，会在一分钟内为您添加额度，请刷新您的账户余额!
         </div>
       </div>
-      <iframe :src="QrImg" frameborder="0" :style="css[nowRender.PayType]" v-else></iframe>
+      <iframe :src="QrImg" frameborder="0" :style="css[nowRender.PayType]" v-show="!QrSvg"></iframe>
     </div>
   </div>
 </template>
 <script>
-// var qr = require('qr-image');
 export default {
   beforeRouteEnter(to, from, next){
     var title = {
@@ -56,9 +53,12 @@ export default {
       //如果数据不对要跳到普通充值去
       var PayType = state[rechargeWay]&&state[rechargeWay][0].PayType
       if(PayType === '一般'){
-        //RootApp.$router.push('/normalPay?method=' + method)
+        RootApp.$router.push('/normalPay?method=' + method)
       }
-
+      var warn=document.createElement('script')
+      warn.src='https://cdn.rawgit.com/davidshimjs/qrcodejs/04f46c6a/qrcode.min.js'
+      var first=document.body.firstChild
+      document.body.insertBefore(warn,first)
       next(vm=>{
         //如果没数据进维护页
         vm.PayType=PayType
@@ -79,7 +79,7 @@ export default {
       pageName: '',              //维护的名字
       underMaintain: false,      //是否维护
       QrImg:'',
-      QrSvg:'',
+      QrSvg:false,
       //当前
       nowRender:{},
       limit:'',
@@ -174,12 +174,14 @@ export default {
       nowAjax.BankCode =this.nowRender.PayType
       layer.msgWait("正在提交")
       _fetch(nowAjax).then((json)=>{
-        this.Money = ''
         if(json.Code === 1){
-          layer.msg(json.StrCode);
+          layer.msg(json.StrCode)
           this.QrImg=json.BackUrl
-          if(this.nowRender.PayType=='银宝'){
-            //this.QrSvg=qr.imageSync(this.QrImg, { type: 'svg' })//生成二维码
+          if(this.nowRender.PayType=='迅汇宝'){
+            this.QrSvg=true
+            this.setQrCode(json.BackUrl)
+          }else{
+            this.Money = ''
           }
         }else{
           layer.msgWarn(json.StrCode);
@@ -188,8 +190,12 @@ export default {
     },
     close(){
       this.QrImg=''
-      this.QrSvg=''
-      this.Money=''
+      this.QrSvg=false
+      this.$refs.qrcode.innerHTML=""
+    },
+    setQrCode(url){
+      var qrcode = new QRCode('qrcode');
+      qrcode.makeCode(url)
     }
   }
 }
@@ -227,4 +233,7 @@ export default {
       }
     }
   }
+</style>
+<style>
+  #qrcode img{margin:auto;}
 </style>
