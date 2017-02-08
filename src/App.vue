@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <div id="shadow" v-show="$store.state.turning"></div>
     <template v-if="$route&&$route.matched[0]">
       <title-info :m="$route.matched[0].meta" :s="$store.state"></title-info>
       <navbar v-show="$route.matched[0].meta.nav"></navbar>
@@ -57,6 +58,15 @@ body{
 #app{
   height: 100%;
   -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+#shadow{
+  position: fixed;
+  top: 0;
+  left:0;
+  z-index: 9;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,.2);
 }
 .laymshade {
   background-color: rgba(0, 0, 0, .3);

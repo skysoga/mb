@@ -12,14 +12,16 @@ export default {
   beforeRouteEnter:(to,from,next)=>{
     var F=sessionStorage.getItem('isFind')
     var U=localStorage.getItem('UserName')
-    next(vm=>{
-      if(!(U||F)){
-        router.push('/login')
-      }
-      if(F){
-        to.meta.link="/resetWay?Q=ResetPwd"
-      }
-    })
+    var Q=to.query.Q||''
+    if(Q){
+      to.meta.link="/resetWay?Q="+Q
+    }else{
+      to.meta.link="/securityCenter"
+    }
+    if(!(U||F)){
+      router.push('/login')
+    }
+    next()
   },
   created(){
     var Q=this.$route.query.Q

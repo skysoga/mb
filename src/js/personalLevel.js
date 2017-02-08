@@ -27,7 +27,7 @@ export default {
       if(this.UserGradeGrow>Obj){
         this.UserGradeGrow=state.GradeList[8].GradeGrow
       }
-      this.perVal=this.UserGradeGrow<Obj&&Math.ceil(((this.UserGradeGrow||minObj)-minObj)/(Obj-minObj)*100)||100
+      this.perVal=num<9?(this.UserGradeGrow<Obj&&Math.ceil(((this.UserGradeGrow||minObj)-minObj)/(Obj-minObj)*100)||0):100
       this.upGrow=this.UserGradeGrow<Obj&&Obj-this.UserGradeGrow||0
       this.GradeName=num?state.GradeList[num-1].GradeName:this.UserGrade
     }

@@ -23,13 +23,24 @@
       </div>
     </template>
     <div id="iframeWrap" v-show="QrImg">
-      <iframe :src="QrImg" frameborder="0" :style="css[nowRender.PayType]"></iframe>
+      <div v-if="QrSvg" class="QrBox">
+        <div class="qrStyle">
+          <h3>扫一扫支付</h3>
+          <div v-html="QrSvg"></div>
+        </div>
+        <div class="loginBtn BTN" @click="close">
+          <a>关闭</a>
+        </div>
+        <div class="tips">
+          温馨提示：安全支付，手机扫二维码!
+        </div>
+      </div>
+      <iframe :src="QrImg" frameborder="0" :style="css[nowRender.PayType]" v-else></iframe>
     </div>
   </div>
 </template>
-
-
 <script>
+var qr = require('qr-image');
 export default {
   beforeRouteEnter(to, from, next){
     var title = {
@@ -45,7 +56,7 @@ export default {
       //如果数据不对要跳到普通充值去
       var PayType = state[rechargeWay]&&state[rechargeWay][0].PayType
       if(PayType === '一般'){
-        RootApp.$router.push('/normalPay?method=' + method)
+        //RootApp.$router.push('/normalPay?method=' + method)
       }
 
       next(vm=>{
@@ -68,6 +79,7 @@ export default {
       pageName: '',              //维护的名字
       underMaintain: false,      //是否维护
       QrImg:'',
+      QrSvg:'',
       //当前
       nowRender:{},
       limit:'',
@@ -118,7 +130,6 @@ export default {
       Weixin: '微信快捷',
       Alipay: '支付宝快捷'
     }
-
     //获取数据
     RootApp.AjaxGetInitData(['PayLimit'], state=>{
       //设置金额的限制
@@ -167,12 +178,19 @@ export default {
         if(json.Code === 1){
           layer.msg(json.StrCode);
           this.QrImg=json.BackUrl
+          if(this.nowRender.PayType=='银宝'){
+            this.QrSvg=qr.imageSync(this.QrImg, { type: 'svg' })//生成二维码
+          }
         }else{
           layer.msgWarn(json.StrCode);
         }
       })
     },
-
+    close(){
+      this.QrImg=''
+      this.QrSvg=''
+      this.Money=''
+    }
   }
 }
 </script>
@@ -194,5 +212,19 @@ export default {
     margin-left:8rem;
     width:1000px;
     height:920px
+  }
+  .QrBox{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    .qrStyle{
+      z-index: 10;
+      width:13em;
+      margin:20% auto;
+      h3{
+        text-align: center;
+        margin-bottom:.5em;
+      }
+    }
   }
 </style>

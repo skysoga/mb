@@ -292,11 +292,11 @@ var AppArr=[
   'PayLimit',
   'SiteConfig',
 ]
-// if (_App) {
-//   UserArr=UserArr.concat(AppArr)
-// }else{
+if (_App) {
+  UserArr=UserArr.concat(AppArr)
+}else{
   SiteArr=SiteArr.concat(AppArr)
-// }
+}
 var CacheArr = SiteArr.concat(UserArr).concat(['Difftime'])
 window.state = require('./JSconfig.js')
 state.constant._App=_App
