@@ -173,7 +173,7 @@ export default {
         }
       }
       var nowAjax = ajax[this.method]
-      nowAjax.Money = 1//this.vaVal.Money
+      nowAjax.Money = this.vaVal.Money
       nowAjax.ID = this.nowRender.Id
       nowAjax.BankCode =this.nowRender.PayType
       layer.msgWait("正在提交")
