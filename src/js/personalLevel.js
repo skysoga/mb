@@ -17,8 +17,9 @@ export default {
           vm.UserGrade=stage.UserUpGradeBonus.Grade
           vm.getPerLong(stage.UserUpGradeBonus.Grade)
         }else{
-          vm.UserGrade="测试组"
-          vm.GradeName="测试组"
+          var UserText="测试组"
+          vm.UserGrade=UserText
+          vm.GradeName=UserText
         }
       })
     })
