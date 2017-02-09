@@ -38,7 +38,6 @@
   </div>
 </template>
 <script>
-var scriptDom=true
 export default {
   beforeRouteEnter(to, from, next){
     var title = {
@@ -56,12 +55,11 @@ export default {
       if(PayType === '一般'){
         RootApp.$router.push('/normalPay?method=' + method)
       }else{
-        if(PayType==='迅汇宝'&&scriptDom){
+        if(PayType==='迅汇宝'&&typeof(QRCode)==="undefined"){
           var warn=document.createElement('script')
           warn.src='https://cdn.rawgit.com/davidshimjs/qrcodejs/04f46c6a/qrcode.min.js'
           var first=document.body.firstChild
           document.body.insertBefore(warn,first)
-          scriptDom=false
         }
         next(vm=>{
           //如果没数据进维护页
