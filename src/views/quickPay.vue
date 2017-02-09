@@ -38,6 +38,7 @@
   </div>
 </template>
 <script>
+var scriptDom=true
 export default {
   beforeRouteEnter(to, from, next){
     var title = {
@@ -54,22 +55,25 @@ export default {
       var PayType = state[rechargeWay]&&state[rechargeWay][0].PayType
       if(PayType === '一般'){
         RootApp.$router.push('/normalPay?method=' + method)
-      }
-      var warn=document.createElement('script')
-      warn.src='https://cdn.rawgit.com/davidshimjs/qrcodejs/04f46c6a/qrcode.min.js'
-      var first=document.body.firstChild
-      document.body.insertBefore(warn,first)
-      next(vm=>{
-        //如果没数据进维护页
-        vm.PayType=PayType
-        if(!state[rechargeWay] || !state[rechargeWay][0]){
-          vm.underMaintain = true
-          return
+      }else{
+        if(PayType==='迅汇宝'&&scriptDom){
+          var warn=document.createElement('script')
+          warn.src='https://cdn.rawgit.com/davidshimjs/qrcodejs/04f46c6a/qrcode.min.js'
+          var first=document.body.firstChild
+          document.body.insertBefore(warn,first)
+          scriptDom=false
         }
-
-        vm.underMaintain = false
-        vm.nowRender = state[rechargeWay][0]
-      })
+        next(vm=>{
+          //如果没数据进维护页
+          vm.PayType=PayType
+          if(!state[rechargeWay] || !state[rechargeWay][0]){
+            vm.underMaintain = true
+            return
+          }
+          vm.underMaintain = false
+          vm.nowRender = state[rechargeWay][0]
+        })
+      }
     })
   },
   data () {
@@ -169,7 +173,7 @@ export default {
         }
       }
       var nowAjax = ajax[this.method]
-      nowAjax.Money = this.vaVal.Money
+      nowAjax.Money = 1//this.vaVal.Money
       nowAjax.ID = this.nowRender.Id
       nowAjax.BankCode =this.nowRender.PayType
       layer.msgWait("正在提交")
