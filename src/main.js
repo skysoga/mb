@@ -260,7 +260,7 @@ var UserArr = [
   'UserFirstCardInfo', //返回绑定的第一张银行卡的模糊信息
   'AgentRebate', //获取代理人返点情况
   'UserUpGradeBonus',
-  'UserGrade',
+  // 'UserGrade',
   'UserQQ',
   'UserMobile',
   'UserMail',
