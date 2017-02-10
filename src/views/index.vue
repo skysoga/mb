@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <!-- <router-link v-if="!s.constant._App" v-show="s.UserUpGradeBonus&&s.UserUpGradeBonus.Grade>2" tag="div" to="/ping" class='textMore dataType'><em>线路</em></router-link> -->
-    <router-link v-if="!s.constant._App" tag="div" to="/AppDownload" class='textMore dataType'><em>APP <i class="iconfont">&#xe655;</i></em></router-link>
+    <router-link v-if="s.constant._App" tag="div" to="/AppDownload" class='textMore dataType'><em>APP <i class="iconfont">&#xe655;</i></em></router-link>
     <div id="banner">
       <swiper>
         <swiper-slide v-for="i in s.BannerList||s.SysBanner">
