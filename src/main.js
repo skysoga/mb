@@ -260,7 +260,6 @@ var UserArr = [
   'UserFirstCardInfo', //返回绑定的第一张银行卡的模糊信息
   'AgentRebate', //获取代理人返点情况
   'UserUpGradeBonus',
-  // 'UserGrade',
   'UserQQ',
   'UserMobile',
   'UserMail',
@@ -268,7 +267,6 @@ var UserArr = [
   'UserGradeGrow',
   'UserSex',
   'UserHasSafePwd',
-  // 'UserBalance',
   'UserFirstCardInfo',
   'UserBankCardList',
   'UserLastLoginInfo',
@@ -292,6 +290,7 @@ var AppArr=[
   'PayLimit',
   'SiteConfig',
 ]
+var CacheArr=["LotteryConfig","BannerList","LotteryList","ActivityConfig","FooterConfig","HelpConfig","SiteConfig","HallBanner","GradeList","LoginGreet","DefaultPhotoList","RewardData","AbstractType","PayLimit","CloudUrl","NoticeData"]
 if (_App) {
   UserArr=UserArr.concat(AppArr)
 }else{
@@ -300,6 +299,8 @@ if (_App) {
 var CacheArr = SiteArr.concat(UserArr).concat(['Difftime'])
 window.state = require('./JSconfig.js')
 state.constant._App=_App
+window.CacheData=localStorage.getItem("CacheData")
+CacheData = CacheData?JSON.parse(CacheData):{}
 function setState(key){
   function getLocalDate(str){
     var s = localStorage.getItem(str);
@@ -313,11 +314,17 @@ function setState(key){
   }
   for (var i = key.length - 1; i >= 0; i--) {
     state[key[i]]=getLocalDate(key[i])
+    if(CacheArr.indexOf(key[i])&&
+      (Boolean(CacheData[key[i]])^(state[key[i]]!=null))){
+      //检验是否存在版本号与实际储存值是否非同步存在或不存在
+      console.log(state[key[i]]);
+      delete state[key[i]]
+      delete CacheData[key[i]]
+    }
   }
 };
 setState(CacheArr)
-window.CacheData=localStorage.getItem("CacheData")
-CacheData = CacheData?JSON.parse(CacheData):{}
+console.log(CacheData);
 
 window.store = new Vuex.Store({
   state,
@@ -737,3 +744,8 @@ document.addEventListener('copy', function(e){
     layer.msgWarn('已将内容复制到剪切板')
   }
 })
+onerror=function (msg,url,l) {
+  console.log(msg,url,l);
+  return false
+}
+console.log(123);
