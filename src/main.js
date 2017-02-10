@@ -314,7 +314,7 @@ function setState(key){
   }
   for (var i = key.length - 1; i >= 0; i--) {
     state[key[i]]=getLocalDate(key[i])
-    if(VerifyArr.indexOf(key[i])&&
+    if((VerifyArr.indexOf(key[i])===-1)&&
       (Boolean(CacheData[key[i]])^(state[key[i]]!=null))){
       //检验是否存在版本号与实际储存值是否非同步存在或不存在
       console.log(state[key[i]]);
