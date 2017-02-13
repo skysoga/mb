@@ -45,7 +45,7 @@
 				}
 
 				var Difftime = localStorage.getItem('Difftime')
-				if(Difftime === null){
+				if(Difftime === 'NaN' || !Difftime){
 					RootApp.getServerTime(next)//没获取Difftime就再获取一次
 				}else{
 					next()										//有就直接进页面
@@ -782,16 +782,18 @@
 				store.commit('lt_setChaseIssue', 1)
 			}
 		},
-	  beforeRouteLeave:(to, from, next)=>{
+	  beforeRouteLeave(to, from, next){
 	    //离开页面前将每注金额重设为 PERBET (2元)
-	    store.commit('lt_setPower', 1)
-	    store.commit('lt_setPerbet', PERBET)
-	    store.commit('lt_setUnit', 1)
-	    store.commit('lt_clearBet')
-	    store.commit('lt_clearBasket')
-	    store.commit('lt_setScheme', [])
-	    store.commit('lt_setChasePower', 1)		//清空追号配置
-			store.commit('lt_setChaseIssue', 1)
+	    if(store.state.lt){
+		    store.commit('lt_setPower', 1)
+		    store.commit('lt_setPerbet', PERBET)
+		    store.commit('lt_setUnit', 1)
+		    store.commit('lt_clearBet')
+		    store.commit('lt_clearBasket')
+		    store.commit('lt_setScheme', [])
+		    store.commit('lt_setChasePower', 1)		//清空追号配置
+				store.commit('lt_setChaseIssue', 1)
+	    }
 	    next()
 	  },
 		beforeDestroy(){

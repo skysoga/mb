@@ -359,12 +359,20 @@ window.store = new Vuex.Store({
       localStorage.setItem('CacheData',JSON.stringify(CacheData))
   	},
     setDifftime:(state, timeItemList)=>{
-      console.log(timeItemList)
-      if(!timeItemList || !timeItemList.length){
-        layer.msgWarn("因无法同步服务器时间,您将无法投注,请检查网络情况")
-        return
-      }
-      var _shortest = timeItemList[0].interval,
+      // console.log(timeItemList)
+      // var cantGetTime = !timeItemList || !timeItemList.length || timeItemList.every(item=>!item.SerTime)
+
+      // if(cantGetTime){
+      //   layer.msgWarn("因无法同步服务器时间,您将无法投注,请检查网络情况")
+      //   return
+      // }
+
+      // if(timeItemList.every(item=>!item.SerTime)){
+      //   layer.url("因无法同步服务器时间,您将无法投注,请检查网络情况", "/index")
+      //   return
+      // }
+
+      var _shortest = timeItemList[0].interval,     //算获取最快的时间
           _index = 0
       timeItemList.forEach((item, index)=>{
         if(item.interval < _shortest){
@@ -378,12 +386,8 @@ window.store = new Vuex.Store({
           timeEnd = timeObj.timeEnd,
           SerTime = timeObj.SerTime
       var Difftime = timeBegin + Math.floor((timeEnd - timeBegin)/2) - SerTime
-
-      console.log(timeObj, Difftime)
-      // Difftime = new Date().getTime()- SerTime
       state.Difftime = Difftime
       localStorage.setItem('Difftime',Difftime)
-      console.log('获取了时间：'  + Difftime, SerTime)
     },
     SetMaintain:(state,d)=>{
     	state.Maintain=d
@@ -621,30 +625,44 @@ window.RootApp={
     return function(fun){
       var timeBegin = new Date().getTime()
       _fetch({Action: "GetServerTimeMillisecond"}).then((json)=>{
+        json.Data = undefined
         var timeEnd = new Date().getTime()
         var interval = timeEnd - timeBegin
+
         if(json.Code > -1){
           timeItemList.push(new TimeItem(interval, timeEnd, timeBegin, json.Data))
         }
 
         if(cantGetTime > 4){
-          // layer.msgWarn("因无法同步服务器时间,您将无法投注,请检查网络情况")
-          store.commit('setDifftime', timeItemList)
-          fun && fun()
-          cantGetTime = 0
-          timeItemList = []
+          var noTimeGeted = timeItemList.every(timeItem=>!timeItem.SerTime)  //一次都没获取到数据
+
+          if(noTimeGeted){
+            cantGetTime = 0
+            timeItemList = []
+            layer.url("因无法同步服务器时间,您将无法投注,请检查网络情况", '/index')
+          }else{
+            //有一些获取到了数据，但是超时了。从获取到的再择优
+            store.commit('setDifftime', timeItemList)
+            cantGetTime = 0
+            timeItemList = []
+            fun && fun()
+          }
+
         }else{
           if(interval > 1000){
             cantGetTime++
             this.getServerTime(fun)
           }else{
             if(json.Code === 1) {
-              // var SerTime = json.Data
-              // store.commit('setDifftime', SerTime)
-              store.commit('setDifftime', timeItemList)
-              fun && fun()
-              cantGetTime = 0
-              timeItemList = []
+              if(!json.Data){
+                cantGetTime++;
+                this.getServerTime(fun);
+              }else {
+                store.commit('setDifftime', timeItemList)
+                fun && fun()
+                cantGetTime = 0
+                timeItemList = []
+              }
             }else{
               cantGetTime++;
               this.getServerTime(fun);
