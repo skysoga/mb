@@ -22,7 +22,7 @@
         <br>
       </div>
     </template>
-    <div id="iframeWrap" v-show="QrImg">
+    <div id="iframeWrap" v-show="QrBg">
       <div v-show="QrSvg" class="QrBox">
         <div class="qrStyle">
           <h3>订单金额:¥{{Money}}</h3>
@@ -81,6 +81,7 @@ export default {
       pageName: '',              //维护的名字
       underMaintain: false,      //是否维护
       QrImg:'',
+      QrBg:false,
       QrSvg:false,
       //当前
       nowRender:{},
@@ -148,6 +149,7 @@ export default {
   },
   methods:{
     $vaSubmit () {
+      this.QrBg=true
       var vm=this
       //ajax数据
       var ajax = {
@@ -177,8 +179,8 @@ export default {
       layer.msgWait("正在提交")
       _fetch(nowAjax).then((json)=>{
         if(json.Code === 1){
-          layer.msg(json.StrCode)
           this.QrImg=json.BackUrl
+          layer.closeAll()
           if(this.nowRender.PayType=='迅汇宝'){
             this.QrSvg=true
             this.setQrCode(json.BackUrl)
@@ -186,12 +188,15 @@ export default {
             this.Money = ''
           }
         }else{
+          this.QrBg=false
+          this.Money=''
           layer.msgWarn(json.StrCode);
         }
       })
     },
     close(){
       this.QrImg=''
+      this.QrBg=false
       this.QrSvg=false
       this.$refs.qrcode.innerHTML=""
     },
