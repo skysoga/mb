@@ -45,7 +45,7 @@ var ltCfg = {
   H43:{render:['whole'],alg:countSingle},
   H44:{render:['whole'],alg:countSingle},
   /**四星**/
-  G11:{render:['10000','100','10','1'],alg:(order, tmp)=>mul(4, betSum(order, tmp))},
+  G11:{render:['1000','100','10','1'],alg:(order, tmp)=>mul(4, betSum(order, tmp))},
   G12:4,
   G21:{render:['whole'],alg:(order,tmp)=>C(tmp['whole'].length, 4)},
   G22:{render:['xx','x'],alg:(order,tmp)=>combNoRepeat(tmp['xx'],tmp['x'],2)},
