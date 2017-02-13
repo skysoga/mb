@@ -42,17 +42,17 @@
           return
         }
 
-        var Difftime = localStorage.getItem('Difftime')
-        if(Difftime === null){
-          RootApp.getServerTime(next)//没获取Difftime就再获取一次
-        }else{
-          next()                    //有就直接进页面
-        }
-      })
-    },
-    created(){
-      //从url上获取彩种type和彩种code
-      ;[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
+				var Difftime = localStorage.getItem('Difftime')
+				if(Difftime === 'NaN' || !Difftime){
+					RootApp.getServerTime(next)//没获取Difftime就再获取一次
+				}else{
+					next()										//有就直接进页面
+				}
+			})
+		},
+		created(){
+		  //从url上获取彩种type和彩种code
+		  ;[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
 
       //这里获取一次服务器时间，用以校正
       RootApp.getServerTime()
@@ -759,46 +759,48 @@
           'SYX5':['选一', '前三一码不定位']
         }
 
-        if(this.ltype !== 'K3'){
-          var _group, _subGroup
-          _group = defaultMode[this.ltype][0]      //默认的玩法群
-          _subGroup = defaultMode[this.ltype][1]    //默认的玩法组
-          store.commit('lt_changeMode', state.lt.config[_group][_subGroup][0])
-        }else{
-          store.commit('lt_changeMode', state.lt.config[0])
-        }
-      }
-    },
-    watch:{
-      $route(val){
-        ;[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
-        store.commit('lt_setPerbet', PERBET)
-        store.commit('lt_clearBet')
-        store.commit('lt_clearBasket')
-        store.commit('lt_setScheme', [])
-        store.commit('lt_setChasePower', 1)    //清空追号配置
-        store.commit('lt_setChaseIssue', 1)
-      }
-    },
-    beforeRouteLeave:(to, from, next)=>{
-      //离开页面前将每注金额重设为 PERBET (2元)
-      store.commit('lt_setPower', 1)
-      store.commit('lt_setPerbet', PERBET)
-      store.commit('lt_setUnit', 1)
-      store.commit('lt_clearBet')
-      store.commit('lt_clearBasket')
-      store.commit('lt_setScheme', [])
-      store.commit('lt_setChasePower', 1)    //清空追号配置
-      store.commit('lt_setChaseIssue', 1)
-      next()
-    },
-    beforeDestroy(){
-      clearTimeout(this.timer1)
-      clearTimeout(this.timer2)
-      clearTimeout(this.timer3)
-      clearTimeout(this.timer4)
-      clearInterval(this.baseLoop)
-    },
+				if(this.ltype !== 'K3'){
+					var _group, _subGroup
+				  _group = defaultMode[this.ltype][0]			//默认的玩法群
+				  _subGroup = defaultMode[this.ltype][1]		//默认的玩法组
+	  			store.commit('lt_changeMode', state.lt.config[_group][_subGroup][0])
+				}else{
+					store.commit('lt_changeMode', state.lt.config[0])
+				}
+			}
+		},
+		watch:{
+			$route(val){
+			  ;[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
+		    store.commit('lt_setPerbet', PERBET)
+		    store.commit('lt_clearBet')
+		    store.commit('lt_clearBasket')
+		    store.commit('lt_setScheme', [])
+		    store.commit('lt_setChasePower', 1)		//清空追号配置
+				store.commit('lt_setChaseIssue', 1)
+			}
+		},
+	  beforeRouteLeave(to, from, next){
+	    //离开页面前将每注金额重设为 PERBET (2元)
+	    if(store.state.lt){
+		    store.commit('lt_setPower', 1)
+		    store.commit('lt_setPerbet', PERBET)
+		    store.commit('lt_setUnit', 1)
+		    store.commit('lt_clearBet')
+		    store.commit('lt_clearBasket')
+		    store.commit('lt_setScheme', [])
+		    store.commit('lt_setChasePower', 1)		//清空追号配置
+				store.commit('lt_setChaseIssue', 1)
+	    }
+	    next()
+	  },
+		beforeDestroy(){
+			clearTimeout(this.timer1)
+			clearTimeout(this.timer2)
+			clearTimeout(this.timer3)
+			clearTimeout(this.timer4)
+			clearInterval(this.baseLoop)
+		},
 
   }
 </script>
