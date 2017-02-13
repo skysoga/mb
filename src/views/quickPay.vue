@@ -25,7 +25,7 @@
     <div id="iframeWrap" v-show="QrBg">
       <div v-show="QrSvg" class="QrBox">
         <div class="qrStyle">
-          <h3>订单金额:¥{{Money}}</h3>
+          <h3>充值金额:¥{{Money}}</h3>
           <div id="qrcode" ref="qrcode" style="text-align:center"></div>
         </div>
         <!-- <div class="loginBtn BTN" @click="close"><a>关闭</a></div> -->
