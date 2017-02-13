@@ -1,5 +1,5 @@
 <template>
-	<div class="main creatAccount" style="padding-bottom: 0;">
+  <div class="main creatAccount" style="padding-bottom: 0;">
     <div class="creatAccountTitle radio">
       开户类型
         <input type="radio" value="1" v-model="UserType" id="radio1">

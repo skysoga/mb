@@ -5,11 +5,11 @@
       <tr>
         <td>邀请码</td>
         <td colspan="2">
-          <input v-va:InvitationCode="[{'reg':/^[a-zA-Z0-9]{8}$/}]" regMsg="您输入的邀请码错误或者已过期" tag="邀请码" class="input fl mL15"
-    						 type="url"
-    						 placeholder="请输入邀请码"
-    						 :readonly  = "YqmReadOnly"
-    						 v-model.lazy = "InvitationCode"/>
+          <input v-va:InvitationCode="[{'reg':/^\d{8}$/}]" regMsg="您输入的邀请码错误或者已过期" tag="邀请码" class="input fl mL15"
+                 type="url"
+                 placeholder="请输入邀请码"
+                 :readonly  = "YqmReadOnly"
+                 v-model.lazy = "InvitationCode"/>
         </td>
       </tr>
 
@@ -52,50 +52,56 @@
 <script>
 
 export default {
-	data () {
-		return {
-			InvitationCode: '',
-			UserName: '',
-			Password: '',
-			checkPassword: '',
-			ImgCode: '',
-			YzmSrc: '', 				//邀请码图片地址
-			YqmReadOnly: false	//邀请码框是否只读
-		}
-	},
-	created (){
-		let id = this.$route.query.id;
-		if(id){
-			this.InvitationCode = id;
-			this.YqmReadOnly = true;
-			localStorage.setItem('InvitationCode', id)
-		}else{
-			let InvitationCode = localStorage.getItem('InvitationCode');
-			if(InvitationCode){
-				this.InvitationCode = InvitationCode;
-				this.YqmReadOnly = true;
-			}
-		}
-		this.refreshYzm()			//获取验证码
-	},
-	methods:{
-		//刷新验证码
-		refreshYzm () {
-			_fetchT({Action:'GetImageCode'}).then((text)=>{
-				this.YzmSrc = 'data:image/png;base64,R0lGODlhPAAWAPcAAAAAAAAAMwAAZgAAmQAAzAAA/wArAAArMwArZgArmQArzAAr/wBVAABVMwBVZgBVmQBVzABV/wCAAACAMwCAZgCAmQCAzACA/wCqAACqMwCqZgCqmQCqzACq/wDVAADVMwDVZgDVmQDVzADV/wD/AAD/MwD/ZgD/mQD/zAD//zMAADMAMzMAZjMAmTMAzDMA/zMrADMrMzMrZjMrmTMrzDMr/zNVADNVMzNVZjNVmTNVzDNV/zOAADOAMzOAZjOAmTOAzDOA/zOqADOqMzOqZjOqmTOqzDOq/zPVADPVMzPVZjPVmTPVzDPV/zP/ADP/MzP/ZjP/mTP/zDP//2YAAGYAM2YAZmYAmWYAzGYA/2YrAGYrM2YrZmYrmWYrzGYr/2ZVAGZVM2ZVZmZVmWZVzGZV/2aAAGaAM2aAZmaAmWaAzGaA/2aqAGaqM2aqZmaqmWaqzGaq/2bVAGbVM2bVZmbVmWbVzGbV/2b/AGb/M2b/Zmb/mWb/zGb//5kAAJkAM5kAZpkAmZkAzJkA/5krAJkrM5krZpkrmZkrzJkr/5lVAJlVM5lVZplVmZlVzJlV/5mAAJmAM5mAZpmAmZmAzJmA/5mqAJmqM5mqZpmqmZmqzJmq/5nVAJnVM5nVZpnVmZnVzJnV/5n/AJn/M5n/Zpn/mZn/zJn//8wAAMwAM8wAZswAmcwAzMwA/8wrAMwrM8wrZswrmcwrzMwr/8xVAMxVM8xVZsxVmcxVzMxV/8yAAMyAM8yAZsyAmcyAzMyA/8yqAMyqM8yqZsyqmcyqzMyq/8zVAMzVM8zVZszVmczVzMzV/8z/AMz/M8z/Zsz/mcz/zMz///8AAP8AM/8AZv8Amf8AzP8A//8rAP8rM/8rZv8rmf8rzP8r//9VAP9VM/9VZv9Vmf9VzP9V//+AAP+AM/+AZv+Amf+AzP+A//+qAP+qM/+qZv+qmf+qzP+q///VAP/VM//VZv/Vmf/VzP/V////AP//M///Zv//mf//zP///wAAAAAAAAAAAAAAACH5BAEAAPwALAAAAAA8ABYAAAj' + text;
-			})
-		},
-		$vaSubmit() {
-			var ajax = {
+  data () {
+    return {
+      InvitationCode: '',
+      UserName: '',
+      Password: '',
+      checkPassword: '',
+      ImgCode: '',
+      YzmSrc: '',         //邀请码图片地址
+      YqmReadOnly: false  //邀请码框是否只读
+    }
+  },
+  beforeRouteLeave: (to, from,next)=>{
+    console.log(to);
+    console.log(from);
+    delete from.id
+    next()
+  },
+  created (){
+    let id = this.$route.query.id;
+    if(id){
+      this.InvitationCode = id;
+      this.YqmReadOnly = true;
+      localStorage.setItem('InvitationCode', id)
+    }else{
+      let InvitationCode = localStorage.getItem('InvitationCode');
+      if(InvitationCode){
+        this.InvitationCode = InvitationCode;
+        this.YqmReadOnly = true;
+      }
+    }
+    this.refreshYzm()      //获取验证码
+  },
+  methods:{
+    //刷新验证码
+    refreshYzm () {
+      _fetchT({Action:'GetImageCode'}).then((text)=>{
+        this.YzmSrc = 'data:image/png;base64,R0lGODlhPAAWAPcAAAAAAAAAMwAAZgAAmQAAzAAA/wArAAArMwArZgArmQArzAAr/wBVAABVMwBVZgBVmQBVzABV/wCAAACAMwCAZgCAmQCAzACA/wCqAACqMwCqZgCqmQCqzACq/wDVAADVMwDVZgDVmQDVzADV/wD/AAD/MwD/ZgD/mQD/zAD//zMAADMAMzMAZjMAmTMAzDMA/zMrADMrMzMrZjMrmTMrzDMr/zNVADNVMzNVZjNVmTNVzDNV/zOAADOAMzOAZjOAmTOAzDOA/zOqADOqMzOqZjOqmTOqzDOq/zPVADPVMzPVZjPVmTPVzDPV/zP/ADP/MzP/ZjP/mTP/zDP//2YAAGYAM2YAZmYAmWYAzGYA/2YrAGYrM2YrZmYrmWYrzGYr/2ZVAGZVM2ZVZmZVmWZVzGZV/2aAAGaAM2aAZmaAmWaAzGaA/2aqAGaqM2aqZmaqmWaqzGaq/2bVAGbVM2bVZmbVmWbVzGbV/2b/AGb/M2b/Zmb/mWb/zGb//5kAAJkAM5kAZpkAmZkAzJkA/5krAJkrM5krZpkrmZkrzJkr/5lVAJlVM5lVZplVmZlVzJlV/5mAAJmAM5mAZpmAmZmAzJmA/5mqAJmqM5mqZpmqmZmqzJmq/5nVAJnVM5nVZpnVmZnVzJnV/5n/AJn/M5n/Zpn/mZn/zJn//8wAAMwAM8wAZswAmcwAzMwA/8wrAMwrM8wrZswrmcwrzMwr/8xVAMxVM8xVZsxVmcxVzMxV/8yAAMyAM8yAZsyAmcyAzMyA/8yqAMyqM8yqZsyqmcyqzMyq/8zVAMzVM8zVZszVmczVzMzV/8z/AMz/M8z/Zsz/mcz/zMz///8AAP8AM/8AZv8Amf8AzP8A//8rAP8rM/8rZv8rmf8rzP8r//9VAP9VM/9VZv9Vmf9VzP9V//+AAP+AM/+AZv+Amf+AzP+A//+qAP+qM/+qZv+qmf+qzP+q///VAP/VM//VZv/Vmf/VzP/V////AP//M///Zv//mf//zP///wAAAAAAAAAAAAAAACH5BAEAAPwALAAAAAA8ABYAAAj' + text;
+      })
+    },
+    $vaSubmit() {
+      var ajax = {
         Action:"Register",
-				InvitationCode: this.InvitationCode,
-				UserName: this.UserName,
-				Password: this.Password,
-				ImgCode: this.ImgCode,
-			}
+        InvitationCode: this.InvitationCode,
+        UserName: this.UserName,
+        Password: this.Password,
+        ImgCode: this.ImgCode,
+      }
       var that = this
       _fetch(ajax).then((json)=>{
-      	console.log(json)
+        console.log(json)
         if(json.Code===1||json.Code===0) {
          layer.open({
             shadeClose: false,
@@ -114,20 +120,22 @@ export default {
                   RootApp.Login(that.UserName,function(){
                     router.push("/index");
                   })
-            		}else{
-            			layer.msgWarn(json.StrCode);
-            		}
-            	})
+                }else{
+                  layer.msgWarn(json.StrCode);
+                }
+              })
             },
             no: function no() {
-							that.UserName= ''
-							that.Password= ''
-							that.checkPassword= ''
-							that.ImgCode= ''
+              that.UserName= ''
+              that.Password= ''
+              that.checkPassword= ''
+              that.ImgCode= ''
             }
           });
         }else{
           if(json.Code === -2){
+            this.InvitationCode=''
+            this.ImgCode=''
             localStorage.removeItem('InvitationCode');
             that.YqmReadOnly = false;
           }
@@ -135,8 +143,8 @@ export default {
           that.refreshYzm()
         }
       })
-		}
-	},
+    }
+  },
 }
 </script>
 

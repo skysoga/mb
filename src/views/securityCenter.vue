@@ -1,5 +1,5 @@
 <template>
-	<div class="main">
+  <div class="main">
     <div class="safeTop">
       <h5><span></span><em id="Slevel">您的账号安全级别为{{LevelText}}</em><span></span></h5>
       <div class="star">

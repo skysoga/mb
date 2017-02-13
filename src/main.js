@@ -1,13 +1,13 @@
 ;(function(){
-	try {
-	  sessionStorage.setItem('TextLocalStorage', 'hello world');
-	  sessionStorage.getItem('TextLocalStorage');
-	  sessionStorage.removeItem('TextLocalStorage');
-	} catch(e) {
-	  alert('您的浏览器太旧或者开启了无痕浏览模式，无法浏览网页，请更换浏览器或退出无痕模式，给您带来的不便，表示抱歉！');
-	  localStorage={setItem:function(d){},getItem:function(d){}};
-	  sessionStorage={setItem:function(d){},getItem:function(d){}};
-	}
+  try {
+    sessionStorage.setItem('TextLocalStorage', 'hello world');
+    sessionStorage.getItem('TextLocalStorage');
+    sessionStorage.removeItem('TextLocalStorage');
+  } catch(e) {
+    alert('您的浏览器太旧或者开启了无痕浏览模式，无法浏览网页，请更换浏览器或退出无痕模式，给您带来的不便，表示抱歉！');
+    localStorage={setItem:function(d){},getItem:function(d){}};
+    sessionStorage={setItem:function(d){},getItem:function(d){}};
+  }
 })()
 
 if(!localStorage.getItem("console")){
@@ -46,9 +46,9 @@ Date.prototype.format = function(format) {
   format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
   }
   for (var k in date) {
-	  if (new RegExp("(" + k + ")").test(format)) {
-	    format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
-	  }
+    if (new RegExp("(" + k + ")").test(format)) {
+      format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
+    }
   }
   return format;
 }
@@ -188,14 +188,49 @@ window._App=location.host.search("csz8.net")>-1//是否APP
 ;(function(){
   var a = localStorage.getItem("isApp")
   if (a) {_App=a?true:false}
+  var versions = function() {
+    var u = navigator.userAgent,
+      app = navigator.appVersion;
+    return {
+      // trident: u.indexOf('Trident') > -1, //IE内核
+      // presto: u.indexOf('Presto') > -1, //opera内核
+      // webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      // gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      // mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Adr') > -1, //android终端
+      // iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
+      // iPad: u.indexOf('iPad') > -1, //是否iPad
+      // webApp: u.indexOf('Safari') == -1, //是否web应该程序，没有头部与底部
+      // weixin: u.indexOf('MicroMessenger') > -1, //是否微信 （2015-01-22新增）
+      // qq: u.match(/\sQQ/i) == " qq" //是否QQ
+    };
+  }()
+  if (_App&&versions.ios) {
+    //iosApp专用代码
+    var img=document.createElement("img")
+    img.src="http://static.ydbimg.com/API/YdbOnline.js"
+    img.onerror=function(){
+      var script = document.createElement("script");
+      script.src=img.src
+      document.body.appendChild(script);
+      var inter=setInterval(function(){
+        console.log(1);
+        if(YDBOBJ){
+          (new YDBOBJ()).SetHeadBar(0)
+          clearInterval(inter)
+        }
+      },100)
+    }
+  }
 })()
 
 if (_App) {document.title="彩神争霸"}
 
 window.router = new VueRouter({
-	routes,
-	mode:'history',
-	linkActiveClass:"on",
+  routes,
+  mode:'history',
+  linkActiveClass:"on",
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
@@ -203,40 +238,38 @@ window.router = new VueRouter({
       return { x: 0, y: 0 }
     }
   }
-	// exact: true
+  // exact: true
 });
 
 function SetIndexTitle(s){
-	routes[1].meta.title=`<img src="${state.constant.ImgHost+s.MobileLogo}">`
-	if (!_App) {
-		document.title=s.Name
-		// routes[2].meta.title=routes[1].meta.title
-	}
+  routes[1].meta.title=`<img src="${state.constant.ImgHost+s.MobileLogo}">`
+  if (!_App) {
+    document.title=s.Name
+    // routes[2].meta.title=routes[1].meta.title
+  }
 }
 
 var UserArr = [
-	'UserHasSafePwd', //返回是否已经设置安全密码,1为有,0为没有设置
-	'UserSafeQuestions', //返回设置的密保问题,如果没设置可以返回0或者空数组
-	'UserMobile', //返回已绑定手机的模糊状态,如未绑定,返回空字符串或0
-	'UserMail', //返回已绑定手机的模糊状态,如未绑定,返回空字符串或0
-	'UserName', //返回对应的账号,未登录用户返回空字符串
-	'UserPhoto', //返回用户头像的图片地址
-	'UserNickName',
-	'UserFirstCardInfo', //返回绑定的第一张银行卡的模糊信息
-	'AgentRebate', //获取代理人返点情况
-	'UserUpGradeBonus',
-	'UserGrade',
-	'UserQQ',
-	'UserMobile',
-	'UserMail',
-	'UserBirthDay',
-	'UserGradeGrow',
-	'UserSex',
-	'UserHasSafePwd',
-	// 'UserBalance',
-	'UserFirstCardInfo',
+  'UserHasSafePwd', //返回是否已经设置安全密码,1为有,0为没有设置
+  'UserSafeQuestions', //返回设置的密保问题,如果没设置可以返回0或者空数组
+  'UserMobile', //返回已绑定手机的模糊状态,如未绑定,返回空字符串或0
+  'UserMail', //返回已绑定手机的模糊状态,如未绑定,返回空字符串或0
+  'UserName', //返回对应的账号,未登录用户返回空字符串
+  'UserPhoto', //返回用户头像的图片地址
+  'UserNickName',
+  'UserFirstCardInfo', //返回绑定的第一张银行卡的模糊信息
+  'AgentRebate', //获取代理人返点情况
+  'UserUpGradeBonus',
+  'UserQQ',
+  'UserMobile',
+  'UserMail',
+  'UserBirthDay',
+  'UserGradeGrow',
+  'UserSex',
+  'UserHasSafePwd',
+  'UserFirstCardInfo',
   'UserBankCardList',
-	'UserLastLoginInfo',
+  'UserLastLoginInfo',
   'RebateK3',
   'RebateSSC',
   'NoticeData',
@@ -257,79 +290,96 @@ var AppArr=[
   'PayLimit',
   'SiteConfig',
 ]
-// if (_App) {
-// 	UserArr=UserArr.concat(AppArr)
-// }else{
-	SiteArr=SiteArr.concat(AppArr)
-// }
+var VerifyArr=["LotteryConfig","BannerList","LotteryList","ActivityConfig","FooterConfig","HelpConfig","SiteConfig","HallBanner","GradeList","LoginGreet","DefaultPhotoList","RewardData","AbstractType","PayLimit","CloudUrl","NoticeData"]
+if (_App) {
+  UserArr=UserArr.concat(AppArr)
+}else{
+  SiteArr=SiteArr.concat(AppArr)
+}
 var CacheArr = SiteArr.concat(UserArr).concat(['Difftime'])
 window.state = require('./JSconfig.js')
 state.constant._App=_App
+window.CacheData=localStorage.getItem("CacheData")
+CacheData = CacheData?JSON.parse(CacheData):{}
 function setState(key){
-	function getLocalDate(str){
-		var s = localStorage.getItem(str);
-		try{
-			s = JSON.parse(s);
-		}catch(e){}
-		if (str=="SiteConfig"&&s) {
-			SetIndexTitle(s)
-		}
-		return s;
-	}
+  function getLocalDate(str){
+    var s = localStorage.getItem(str);
+    try{
+      s = JSON.parse(s);
+    }catch(e){}
+    if (str=="SiteConfig"&&s) {
+      SetIndexTitle(s)
+    }
+    return s;
+  }
   for (var i = key.length - 1; i >= 0; i--) {
-  	state[key[i]]=getLocalDate(key[i])
+    state[key[i]]=getLocalDate(key[i])
+    if((VerifyArr.indexOf(key[i])>-1)&&
+      (Boolean(CacheData[key[i]])^(state[key[i]]!=null))){
+      //检验是否存在版本号与实际储存值是否非同步存在或不存在
+      console.log(state[key[i]]);
+      delete state[key[i]]
+      delete CacheData[key[i]]
+    }
   }
 };
 setState(CacheArr)
-window.CacheData=localStorage.getItem("CacheData")
-CacheData = CacheData?JSON.parse(CacheData):{}
+console.log(CacheData);
 
 window.store = new Vuex.Store({
   state,
   getters:{
-  	PhotoPath:state=>state.constant.ImgHost+state.constant.PhotoPath,
-  	WithdrwHtml:state=>{
-  		return "login"
-  	},
-  	PayLimit: state => {
-  		var el = {};
-  		state.PayLimit.forEach(item=>{
-  			el[item.PayName] = [item.MinMoney, item.MaxMoney];
-  		})
-  		return el;
-  	},
-  	NoDataDom:msg => state.tpl.noData.join("msg"),
+    PhotoPath:state=>state.constant.ImgHost+state.constant.PhotoPath,
+    WithdrwHtml:state=>{
+      return "login"
+    },
+    PayLimit: state => {
+      var el = {};
+      state.PayLimit.forEach(item=>{
+        el[item.PayName] = [item.MinMoney, item.MaxMoney];
+      })
+      return el;
+    },
+    NoDataDom:msg => state.tpl.noData.join("msg"),
 
   },
   mutations: {
-  	SaveInitData: (state,Data) => {
-  		for(var k in Data){
-				state[k] = Data[k]
-  			if(CacheArr.indexOf(k)+1){
-  				if (Data[k]===null) {
-				    state[k]=Data[k]=''
-  				}else if (typeof(Data[k])=='object') {
-				    Data[k]=JSON.stringify(Data[k]);
-  				}
-			    localStorage.setItem(k,Data[k]);
-  			}
-  		}
-  	},
-  	ClearInitData:(state,arr)=>{
-  		for (var i = arr.length - 1; i >= 0; i--) {
-  			localStorage.removeItem(arr[i])
-  			state[arr[i]]=null
-        delete CacheData[arr[i]]
-  		}
-      localStorage.setItem('CacheData',JSON.stringify(CacheData))
-  	},
-    setDifftime:(state, timeItemList)=>{
-      console.log(timeItemList)
-      if(!timeItemList || !timeItemList.length){
-        layer.msgWarn("因无法同步服务器时间,您将无法投注,请检查网络情况")
-        return
+    SaveInitData: (state,Data) => {
+      for(var k in Data){
+        state[k] = Data[k]
+        if(CacheArr.indexOf(k)+1){
+          if (Data[k]===null) {
+            state[k]=Data[k]=''
+          }else if (typeof(Data[k])=='object') {
+            Data[k]=JSON.stringify(Data[k]);
+          }
+          localStorage.setItem(k,Data[k]);
+        }
       }
-      var _shortest = timeItemList[0].interval,
+    },
+    ClearInitData:(state,arr)=>{
+      for (var i = arr.length - 1; i >= 0; i--) {
+        localStorage.removeItem(arr[i])
+        state[arr[i]]=null
+        delete CacheData[arr[i]]
+      }
+      localStorage.setItem('CacheData',JSON.stringify(CacheData))
+    },
+    setDifftime:(state, timeItemList)=>{
+      // console.log(timeItemList)
+      // var cantGetTime = !timeItemList || !timeItemList.length || timeItemList.every(item=>!item.SerTime)
+
+      // if(cantGetTime){
+      //   layer.msgWarn("因无法同步服务器时间,您将无法投注,请检查网络情况")
+      //   return
+      // }
+
+      // if(timeItemList.every(item=>!item.SerTime)){
+      //   layer.url("因无法同步服务器时间,您将无法投注,请检查网络情况", "/index")
+      //   return
+      // }
+
+      var _shortest = timeItemList[0].interval,     //算获取最快的时间
           _index = 0
       timeItemList.forEach((item, index)=>{
         if(item.interval < _shortest){
@@ -343,15 +393,11 @@ window.store = new Vuex.Store({
           timeEnd = timeObj.timeEnd,
           SerTime = timeObj.SerTime
       var Difftime = timeBegin + Math.floor((timeEnd - timeBegin)/2) - SerTime
-
-      console.log(timeObj, Difftime)
-      // Difftime = new Date().getTime()- SerTime
       state.Difftime = Difftime
       localStorage.setItem('Difftime',Difftime)
-      console.log('获取了时间：'  + Difftime, SerTime)
     },
     SetMaintain:(state,d)=>{
-    	state.Maintain=d
+      state.Maintain=d
     }
   },
 })
@@ -384,7 +430,7 @@ window.store = new Vuex.Store({
         if (typeof(s)=='string') {
           router.push(s)
         }else{
-          router.go(s)
+          router.go(s||-1)
         }
       }
     })
@@ -588,28 +634,42 @@ window.RootApp={
       _fetch({Action: "GetServerTimeMillisecond"}).then((json)=>{
         var timeEnd = new Date().getTime()
         var interval = timeEnd - timeBegin
+
         if(json.Code > -1){
           timeItemList.push(new TimeItem(interval, timeEnd, timeBegin, json.Data))
         }
 
         if(cantGetTime > 4){
-          // layer.msgWarn("因无法同步服务器时间,您将无法投注,请检查网络情况")
-          store.commit('setDifftime', timeItemList)
-          fun && fun()
-          cantGetTime = 0
-          timeItemList = []
+          var noTimeGeted = timeItemList.every(timeItem=>!timeItem.SerTime)  //一次都没获取到数据
+
+          if(noTimeGeted){
+            cantGetTime = 0
+            timeItemList = []
+            fun && fun()
+            layer.url("因无法同步服务器时间,您将无法投注,请检查网络情况", '/index')
+          }else{
+            //有一些获取到了数据，但是超时了。从获取到的再择优
+            store.commit('setDifftime', timeItemList)
+            cantGetTime = 0
+            timeItemList = []
+            fun && fun()
+          }
+
         }else{
           if(interval > 1000){
             cantGetTime++
             this.getServerTime(fun)
           }else{
             if(json.Code === 1) {
-              // var SerTime = json.Data
-              // store.commit('setDifftime', SerTime)
-              store.commit('setDifftime', timeItemList)
-              fun && fun()
-              cantGetTime = 0
-              timeItemList = []
+              if(!json.Data){
+                cantGetTime++;
+                this.getServerTime(fun);
+              }else {
+                store.commit('setDifftime', timeItemList)
+                fun && fun()
+                cantGetTime = 0
+                timeItemList = []
+              }
             }else{
               cantGetTime++;
               this.getServerTime(fun);
@@ -642,23 +702,27 @@ window.RootApp={
 }
 
 window.RootApp = new Vue({
-	el: '#app',
-	store,
-	router,
-	methods:window.RootApp,
-	created:function(){
-		var len = routes.length
-		var thisp = location.pathname.toLowerCase()
-		if (thisp==="/") {return}
-		console.log(thisp);
-		for (var i = 0; i < len; i++) {
-			if (routes[i].path.toLowerCase()===thisp) {
-				this.beforEnter({matched:[routes[i]]})
-				break
-			}
-		}
-	},
-	render: h => h(App),
+  el: '#app',
+  store,
+  router,
+  methods:window.RootApp,
+  created:function(){
+    var len = routes.length
+    var ToPath=localStorage.getItem('LastPath')
+    if(ToPath){
+      router.push(ToPath)
+    }
+    var ToPath = (ToPath||location.pathname).toLowerCase()
+    if (ToPath==="/") {return}
+    console.log(ToPath);
+    for (var i = 0; i < len; i++) {
+      if (ToPath.search(routes[i].path.toLowerCase())>-1&&routes[i].path!='/') {
+        this.beforEnter({matched:[routes[i]]})
+        break
+      }
+    }
+  },
+  render: h => h(App),
 });
 
 router.beforeEach((to, from, next) => {
@@ -668,33 +732,38 @@ router.beforeEach((to, from, next) => {
   }
   state.turning=true
   RootApp.beforEnter(to)
-	next();
+  next();
 });
 
 router.afterEach((to, from) => {
-	state.turning=false
-	layer.closeAll()
-	state.needVerify++
-	sessionStorage.setItem("needVerify",state.needVerify)
+  state.turning=false
+  layer.closeAll()
+  state.needVerify++
+  sessionStorage.setItem("needVerify",state.needVerify)
 });
 
 //全局指令
 Vue.directive('copyBtn', {
-	bind: function(el, binding, vnode){
-		el.addEventListener('click', function(){
-			var siblings= Array.prototype.filter.call(el.parentNode.children, function(child){ return child !== el; });
-			var targetInput = siblings[0];
-			targetInput.select()
-			document.execCommand('copy')
-		})
-	}
+  bind: function(el, binding, vnode){
+    el.addEventListener('click', function(){
+      var siblings= Array.prototype.filter.call(el.parentNode.children, function(child){ return child !== el; });
+      var targetInput = siblings[0];
+      targetInput.select()
+      document.execCommand('copy')
+    })
+  }
 })
 
 //如果检测到copy事件
 document.addEventListener('copy', function(e){
-	var el = e.target
-	var btn = [].filter.call(el.parentNode.children, child=>(child !== el))[0]
-	if(btn.className.indexOf('copy') > -1){
-		layer.msgWarn('已将内容复制到剪切板')
-	}
+  var el = e.target
+  var btn = [].filter.call(el.parentNode.children, child=>(child !== el))[0]
+  if(btn.className.indexOf('copy') > -1){
+    layer.msgWarn('已将内容复制到剪切板')
+  }
 })
+onerror=function (msg,url,l) {
+  console.log(msg,url,l);
+  return false
+}
+console.log(123);

@@ -1,5 +1,5 @@
 <template>
-	<div class="main manageBankcard" data="">
+  <div class="main manageBankcard" data="">
     <div class="innerWrap">
       <div class="surperise" v-if="$store.state.UserBankCardList">
         <div class="wrap" v-for="n in $store.state.UserBankCardList">

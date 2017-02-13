@@ -47,5 +47,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-	@import '../scss/maintain.scss';
+  @import '../scss/maintain.scss';
 </style>

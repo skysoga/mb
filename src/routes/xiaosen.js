@@ -33,45 +33,45 @@ var routes = [{
   path: '/manageBankcard',
   name: '银行卡管理',
   meta:{
-	title:'银行卡管理',
-	nav:false,
-	link:'/securityCenter',
-	user:true,
-	agent:false
+  title:'银行卡管理',
+  nav:false,
+  link:'/securityCenter',
+  user:true,
+  agent:false
   },
   component: manageBankcard
 },{
   path: '/setMail',
   name: '绑定密保邮箱',
   meta:{
-	title:'绑定密保邮箱',
-	nav:false,
-	link:'/securityCenter',
-	user:true,
+  title:'绑定密保邮箱',
+  nav:false,
+  link:'/securityCenter',
+  user:true,
   verify:'UserMail',
   from:"Mail,",
-	agent:false
+  agent:false
   },
   component: setMail
 },{
   path: '/verifyMail',
   name: '验证密保邮箱',
   meta:{
-	title:'验证密保邮箱',
-	nav:false,
-	link:'/securityCenter',
-	user:false,
-	agent:false
+  title:'验证密保邮箱',
+  nav:false,
+  link:'/securityCenter',
+  user:false,
+  agent:false
   },
   component: verifyMail
 },{
   path: '/setQuestion',
   name: '设置密保问题',
   meta:{
-	title:'设置密保问题',
-	nav:false,
-	link:'/securityCenter',
-	user:true,
+  title:'设置密保问题',
+  nav:false,
+  link:'/securityCenter',
+  user:true,
   agent:false,
   verify:'UserSafeQuestions',
   from:"Question,"
@@ -81,21 +81,21 @@ var routes = [{
   path: '/verifyQuestion',
   name: '验证密保问题',
   meta:{
-	title:'验证密保问题',
-	nav:false,
-	link:'/securityCenter',
-	user:false,
-	agent:false
+  title:'验证密保问题',
+  nav:false,
+  link:'/securityCenter',
+  user:false,
+  agent:false
   },
   component: verifyQuestion
 },{
   path: '/setMobile',
   name: '绑定密保手机',
   meta:{
-	title:'绑定密保手机',
-	nav:false,
-	link:'/securityCenter',
-	user:true,
+  title:'绑定密保手机',
+  nav:false,
+  link:'/securityCenter',
+  user:true,
   agent:false,
   verify:'UserMobile',
   from:"Mobile,"
@@ -105,21 +105,21 @@ var routes = [{
   path: '/verifyMobile',
   name: '验证密保手机',
   meta:{
-	title:'验证密保手机',
-	nav:false,
-	link:'/securityCenter',
-	user:false,
-	agent:false
+  title:'验证密保手机',
+  nav:false,
+  link:'/securityCenter',
+  user:false,
+  agent:false
   },
   component: verifyMobile
 },{
   path: '/setSafePwd',
   name: '设置安全密码',
   meta:{
-	title:'设置安全密码',
-	nav:false,
-	link:'/securityCenter',
-	user:true,
+  title:'设置安全密码',
+  nav:false,
+  link:'/securityCenter',
+  user:true,
   agent:false,
   verify:'UserHasSafePwd',
   from:'SafePwd,Mobile,Question,Mail,'
@@ -129,32 +129,32 @@ var routes = [{
   path: '/verifySafePwd',
   name: '验证安全密码',
   meta:{
-	title:'验证安全密码',
-	nav:false,
-	link:'/securityCenter',
-	user:false,
-	agent:false
+  title:'验证安全密码',
+  nav:false,
+  link:'/securityCenter',
+  user:false,
+  agent:false
   },
   component: verifySafePwd
 },{
   path: '/verifyPwd',
   name: '验证原密码',
   meta:{
-	title:'验证原密码',
-	nav:false,
-	link:'/securityCenter',
-	user:true,
-	agent:false
+  title:'验证原密码',
+  nav:false,
+  link:'/securityCenter',
+  user:true,
+  agent:false
   },
   component: verifyPwd
 },{
   path: '/setPwd',
   name: '设置登录密码',
   meta:{
-	title:'设置登录密码',
-	nav:false,
-	link:'/securityCenter',
-	user:false,
+  title:'设置登录密码',
+  nav:false,
+  link:'/securityCenter',
+  user:false,
   agent:false,
   verify:1,
   from:'Pwd,SafePwdForget,MobileForget,QuestionForget,MailForget,'
@@ -164,177 +164,177 @@ var routes = [{
   path: '/dailyPrise',
   name: '每日加奖',
   meta:{
-	title:"每日加奖",
-	link:"/activity",
-	nav:0,
+  title:"每日加奖",
+  link:"/activity",
+  nav:0,
   },
   component: dailyPrise
 },{
   path: '/upgrade',
   name: '晋级奖励',
   meta:{
-	title:"晋级奖励",
-	link:"/activity",
-	nav:0,
+  title:"晋级奖励",
+  link:"/activity",
+  nav:0,
   },
   component: upgrade
 },{
   path: '/activityInfo/:ID',
   name: 'activityInfo',
   meta:{
-	title:"站长活动",
-	link:"/activity",
-	nav:0,
+  title:"站长活动",
+  link:"/activity",
+  nav:0,
   },
   component: activityInfo
 },{
   path: '/resetWay',
   name: '找回密码',
   meta:{
-	title:"找回密码",
-	link:"/securityCenter",
+  title:"找回密码",
+  link:"/securityCenter",
   user:false,
-	nav:0,
+  nav:0,
   },
   component: resetWay
 },{
   path: '/forgetPwd',
   name: '忘记密码',
   meta:{
-	title:"忘记密码",
-	link:"/login",
+  title:"忘记密码",
+  link:"/login",
   user:false,
-	nav:0,
+  nav:0,
   },
   component: forgetPwd
 },{
   path: '/agentCenter',
   name: '代理中心',
   meta:{
-	title:"代理中心",
-	link:"/userCenter",
-	nav:0,
-	user:true,
-	agent:true
+  title:"代理中心",
+  link:"/userCenter",
+  nav:0,
+  user:true,
+  agent:true
   },
   component: agentCenter
 },{
   path: '/agentReport',
   name: '代理报表',
   meta:{
-	title:"代理报表",
-	link:"/agentCenter",
-	nav:0,
-	user:true,
-	agent:true
+  title:"代理报表",
+  link:"/agentCenter",
+  nav:0,
+  user:true,
+  agent:true
   },
   component: agentReport
 },{
   path: '/manageInvite',
   name: '下级开户',
   meta:{
-	titleList:[{
-		title:"下级开户",
-		to:"/manageInvite"
-	  },{
-		title:"邀请码",
-		to:"/manageIcode"
-	  }],
-	user:true,
-	link:'/agentCenter',
-	agent:true
+  titleList:[{
+    title:"下级开户",
+    to:"/manageInvite"
+    },{
+    title:"邀请码",
+    to:"/manageIcode"
+    }],
+  user:true,
+  link:'/agentCenter',
+  agent:true
   },
   component: manageInvite
 },{
   path: '/manageIcode',
   name: '邀请码',
   meta:{
-	titleList:[{
-		title:"下级开户",
-		to:"/manageInvite"
-	  },{
-		title:"邀请码",
-		to:"/manageIcode"
-	  }],
-	link:'/agentCenter',
-	user:true,
-	agent:true
+  titleList:[{
+    title:"下级开户",
+    to:"/manageInvite"
+    },{
+    title:"邀请码",
+    to:"/manageIcode"
+    }],
+  link:'/agentCenter',
+  user:true,
+  agent:true
   },
   component: manageIcode,
   children:[{
-	  path:'',
-	  component:AgentCode
-	},{
-	  path:'AgentCode',
-	  component:AgentCode
-	},{
-	  path:'memberCode',
-	  component:memberCode
-	}]
+    path:'',
+    component:AgentCode
+  },{
+    path:'AgentCode',
+    component:AgentCode
+  },{
+    path:'memberCode',
+    component:memberCode
+  }]
 },{
   path: '/personalInfo',
   name: '个人资料',
   meta:{
-	titleList:[{
-		title:"个人资料",
-		to:"/personalInfo"
-	  },{
-		title:"等级头衔",
-		to:"/personalLevel"
-	  }],
-	link:'/userCenter',
-	user:true
+  titleList:[{
+    title:"个人资料",
+    to:"/personalInfo"
+    },{
+    title:"等级头衔",
+    to:"/personalLevel"
+    }],
+  link:'/userCenter',
+  user:true
   },
   component: personalInfo
 },{
   path: '/personalLevel',
   name: '等级头衔',
   meta:{
-	titleList:[{
-		title:"个人资料",
-		to:"/personalInfo"
-	  },{
-		title:"等级头衔",
-		to:"/personalLevel"
-	  }],
-	link:'/userCenter',
-	user:true
+  titleList:[{
+    title:"个人资料",
+    to:"/personalInfo"
+    },{
+    title:"等级头衔",
+    to:"/personalLevel"
+    }],
+  link:'/userCenter',
+  user:true
   },
   component: personalLevel
 },{
   path: '/PLstatement',
   name: '今日盈亏',
   meta:{
-	title:"今日盈亏",
-	link:'/userCenter',
-	user:true
+  title:"今日盈亏",
+  link:'/userCenter',
+  user:true
   },
   component: PLstatement
 },{
   path: '/setBankcard',
   name: '绑定银行卡',
   meta:{
-	title:"绑定银行卡",
-	link:'/manageBankcard',
-	user:true
+  title:"绑定银行卡",
+  link:'/manageBankcard',
+  user:true
   },
   component: setBankcard
 },{
   path: '/verifyBankcard',
   name: '验证银行卡',
   meta:{
-	title:"验证银行卡",
-	link:'/manageBankcard',
-	user:true
+  title:"验证银行卡",
+  link:'/manageBankcard',
+  user:true
   },
   component: verifyBankcard
 },{
   path:'/withdraw',
   name:'提现',
   meta:{
-	title:"提现",
-	link:'/userCenter',
-	user:true
+  title:"提现",
+  link:'/userCenter',
+  user:true
   },
   component:withdraw
 },
@@ -365,8 +365,8 @@ var routes = [{
   path:'/ping',
   name:'线路检测',
   meta:{
-	title:'线路检测',
-	link:'/index',
+  title:'线路检测',
+  link:'/index',
   user:true
   },
   component:ping

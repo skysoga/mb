@@ -2,9 +2,9 @@
   <div class="lottery_sscCon">
     <div class="lottery_ssc" v-show = "!ifShowBasket">
       <div class="DontSelect sscActive">
-      	<!-- 头部： 玩法选择， 同类彩种选择-->
+        <!-- 头部： 玩法选择， 同类彩种选择-->
 
-      	<lt-header></lt-header>
+        <lt-header></lt-header>
         <!-- 开奖号码 以及 投注截止时间  -->
         <div class="isLotteryCon">
           <!-- 开奖结果和历史开奖结果 -->
@@ -27,22 +27,22 @@
 @import '../scss/newssc.scss';
 </style>
 <script>
-	import lt_header from '../components/lottery/lt-header'
+  import lt_header from '../components/lottery/lt-header'
   import lt_result from '../components/lottery/lt-result'
   import lt_timebar from '../components/lottery/lt-timebar'
   import lt_footer from '../components/lottery/lt-footer'
   import ssc from '../components/lottery/ssc'
   import basket from '../components/lottery/basket'
 
-	export default {
-		components:{
-			'lt-header': lt_header,
+  export default {
+    components:{
+      'lt-header': lt_header,
       'lt-result': lt_result,
       'lt-timebar': lt_timebar,
       'lt-footer': lt_footer,
       'ssc': ssc,
       'basket': basket,
-		},
+    },
     created(){
       this.$store.commit('lt_initConfig')
     },
@@ -51,5 +51,5 @@
         return this.$store.state.lt.box === 'basket'
       },
     },
-	}
+  }
 </script>

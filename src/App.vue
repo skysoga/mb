@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <div id="shadow" v-show="$store.state.turning"></div>
     <template v-if="$route&&$route.matched[0]">
       <title-info :m="$route.matched[0].meta" :s="$store.state"></title-info>
       <navbar v-show="$route.matched[0].meta.nav"></navbar>
@@ -10,15 +11,43 @@
   </div>
 </template>
 
-<script src="./js/app.js"></script>
+<script>
+  import Navbar from './components/navbar';
+  import TitleInfo from './components/title-info';
+  import './scss/public.scss'
+
+  export default {
+    components: {
+      Navbar,
+      TitleInfo
+    },
+    data:()=>{
+      return{
+      }
+    },
+    watch:{
+      $route(to,from){
+        //RootApp.beforEnter(to)
+        if (this.$store.state.needVerify>5) {
+          console.log("强制踩点功能");
+          RootApp.AjaxGetInitData(["CloudUrl"])
+        }
+        if (_App) {
+          localStorage.setItem('LastPath',to.fullPath)
+        }
+      }
+    }
+  }
+</script>
+
 <style lang='scss'>
 @font-face {
   font-family: 'iconfont';  /* project id 107431 */
-  src: url('//at.alicdn.com/t/font_6vfg2q21bye3ik9.eot');
-  src: url('//at.alicdn.com/t/font_6vfg2q21bye3ik9.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_6vfg2q21bye3ik9.woff') format('woff'),
-  url('//at.alicdn.com/t/font_6vfg2q21bye3ik9.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_6vfg2q21bye3ik9.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_p8f3pggq80aa714i.eot');
+  src: url('//at.alicdn.com/t/font_p8f3pggq80aa714i.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_p8f3pggq80aa714i.woff') format('woff'),
+  url('//at.alicdn.com/t/font_p8f3pggq80aa714i.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_p8f3pggq80aa714i.svg#iconfont') format('svg');
 }
 html{
   height: 100%;
@@ -29,6 +58,15 @@ body{
 #app{
   height: 100%;
   -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+#shadow{
+  position: fixed;
+  top: 0;
+  left:0;
+  z-index: 9;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,.2);
 }
 .laymshade {
   background-color: rgba(0, 0, 0, .3);

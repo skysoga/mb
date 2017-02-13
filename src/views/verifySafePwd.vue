@@ -1,5 +1,5 @@
 <template>
-	<div class="main">
+  <div class="main">
     <table>
       <tbody>
         <tr>
@@ -9,7 +9,7 @@
         <tr></tr>
       </tbody>
     </table>
-    <router-link class='forget fr' :to="{path:'resetWay',query:{Q:'ResetSafePwd'}}">找回安全密码?</router-link>
+    <router-link v-if="isLogin" class='forget fr' :to="{path:'resetWay',query:{Q:'ResetSafePwd'}}">找回安全密码?</router-link>
     <div class="loginBtn BTN"><a v-va-check>确定</a></div>
     <div class="tips">
       安全密码用于提现、绑定银行卡等操作，可保障资金安全。
