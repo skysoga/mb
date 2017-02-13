@@ -468,7 +468,7 @@ export default {
       }else if(!(+this.showPrice)){
         layer.alert('请填写您要投注的金额')
       }else{
-        //如果追号倍数和期号都为1,则为普通投注
+
         var msg = `${this.LotteryName}: ${this.nowIssue}期<br>
                     投注金额: <span style = "color:red">${this.bet.betting_money}元</span><br>
                     投注内容:${this.chosen.join(' ')}`

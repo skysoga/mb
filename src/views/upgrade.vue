@@ -1,5 +1,5 @@
 <template>
-	<div class="activityMian main">
+  <div class="activityMian main">
     <div class="activiTop">
     <img alt="" v-show="Img" width="100%" :src="$store.state.constant.ImgHost+Img">
       <div class="rewardStatus" v-if="$store.state.UserUpGradeBonus"><em class="e1">当前等级：<i>VIP{{$store.state.UserUpGradeBonus.Grade}}</i></em>

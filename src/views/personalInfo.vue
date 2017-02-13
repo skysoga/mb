@@ -1,5 +1,5 @@
 <template>
-	<div class="main personalInfo">
+  <div class="main personalInfo">
     <ul>
         <li class="headImg" @click="HeadImgBoxShow=true">
           <div>

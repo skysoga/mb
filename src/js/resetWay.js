@@ -34,7 +34,7 @@ export default {
     var getUrl=this.$route.query.Q
     var vm=this
     var urlObj=this.getKey()
-      vm.ResetSafePwd=!!store.state.UserHasSafePwd
+      vm.ResetSafePwd=!!(store.state.UserHasSafePwd*1)
       vm.ResetMobile=!!store.state.UserMobile
       vm.ResetQuestion=!!store.state.UserSafeQuestions
       vm.ResetMail=!!store.state.UserMail

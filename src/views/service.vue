@@ -1,5 +1,5 @@
 <template>
-	<div class="main">
+  <div class="main">
     <iframe :src="$store.state.SiteConfig&&$store.state.SiteConfig.Service.Url" width="100%" id="kefu"></iframe>
   </div>
 </template>

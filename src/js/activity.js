@@ -17,16 +17,16 @@ export default {
    },
    methods:{
      getHtml:name=>{
-     	let url;
-     	switch(name){
-     		case "每日加奖":
-     		url="/dailyPrise"
-     		break;
-     		case "晋级奖励":
-     		url="/upgrade"
-     		break;
-     	}
-     	return url;
+       let url;
+       switch(name){
+         case "每日加奖":
+         url="/dailyPrise"
+         break;
+         case "晋级奖励":
+         url="/upgrade"
+         break;
+       }
+       return url;
      },
 
    }

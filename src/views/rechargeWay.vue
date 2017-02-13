@@ -1,5 +1,5 @@
 <template>
-	<div class="main">
+  <div class="main">
     <div class="innerWrap">
 
       <div class="surperise active">
@@ -53,21 +53,21 @@
 
 <script>
 export default {
-	data () {
-		return {
-			imgServer: this.$store.state.constant.ImgHost,
-			wechatType: '一般',
-			aliType: '一般',
-			payLimit:{},
+  data () {
+    return {
+      imgServer: this.$store.state.constant.ImgHost,
+      wechatType: '一般',
+      aliType: '一般',
+      payLimit:{},
       weixMsg:'',
       aliMsg:''
-		}
-	},
-	beforeRouteEnter(to,from,next){
-		RootApp.AjaxGetInitData(['PayLimit','RechargeWayWeixin', 'RechargeWayAlipay','RechargeWayBank'], state=>{
+    }
+  },
+  beforeRouteEnter(to,from,next){
+    RootApp.AjaxGetInitData(['PayLimit','RechargeWayWeixin', 'RechargeWayAlipay','RechargeWayBank'], state=>{
       next()
     })
-	},
+  },
 
   created () {
     let state = this.$store.state
@@ -88,5 +88,5 @@ export default {
 }
 </script>
 <style lang = "scss" scoped>
-	@import '../scss/activity.scss';
+  @import '../scss/activity.scss';
 </style>

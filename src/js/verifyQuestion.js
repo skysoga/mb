@@ -15,8 +15,11 @@ export default {
     if(!(U||F)){
       router.push('/login')
     }
-    if(F){
-      to.meta.link="/resetWay?Q=ResetPwd"
+    var Q=to.query.Q||''
+    if(Q){
+      to.meta.link="/resetWay?Q="+Q
+    }else{
+      to.meta.link="/securityCenter"
     }
     next()
   },

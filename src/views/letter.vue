@@ -6,13 +6,13 @@
       </template>
       <template v-else>
         <div class="" v-for="item in res_data">
-          <a class="active" :data-id="item.ID" @click="jump(item.ID)">
-            <div>
+          <a class="active">
+            <div @click="jump(item.ID)">
               <p>{{item.Title}}<i class="iconfont noRead" v-if="!item.Is_Read">&#xe619;</i></p>
               <span style="color:#666;">{{item.PosUserName}}</span>
               <span>{{item.Post_Time}}</span>
             </div>
-            <i class="fr iconfont" data-id="${Data[i].ID}">&#xe620;</i>
+            <i class="fr iconfont" @click="delLIst(item.ID)">&#xe620;</i>
           </a>
           <div class="hr1px"></div>
         </div>
@@ -60,6 +60,27 @@
             layer.msgWarn(data.StrCode)
           }
         })
+      },
+      delLIst(id){
+        var vm=this
+        var Arr={Action:'DelLetterData',
+            LetterID:id}
+            layer.open({
+              content: '您确定要删除这条私信吗？',
+              className: "layerConfirm",
+              btn: ['确定', '取消'],
+              yes: function(index){
+                layer.close(index)
+                _fetch(Arr).then(json=>{
+                  if(json.Code==1){
+                    layer.msgWarn(json.StrCode)
+                    vm.res_data=[]
+                    vm.ajaxData.Index=0
+                    vm.getData()
+                  }
+                })
+              }
+            })
       },
       scroll:function(){
         if (this.cant_scroll) {

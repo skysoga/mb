@@ -1,5 +1,5 @@
 <template>
-	<div class="main">
+  <div class="main">
     <div class="innerWrap">
         <div v-for="(vlue,index) in $store.state.SysActivity" class="surperise active ">
             <router-link class="wrap line" :to="getHtml(vlue.Name)">

@@ -2,7 +2,8 @@ export default {
   data:()=>{
     return{
       Password:"",
-      nextUrl:""
+      nextUrl:"",
+      isLogin:false
     }
   },
   beforeRouteEnter:(to,from,next)=>{
@@ -14,7 +15,9 @@ export default {
     if(F){
       to.meta.link="/resetWay?Q=ResetPwd"
     }
-    next()
+    next(vm=>{
+      vm.isLogin=U
+    })
   },
   created(){
     var Q=this.$route.query.Q

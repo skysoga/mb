@@ -7,43 +7,43 @@
 
 //中心点位置
 @mixin origin($v){
-	-ms-transform-origin: $v;
-	-moz-transform-origin: $v;
-	-webkit-transform-origin: $v;
-	transform-origin: $v;
+  -ms-transform-origin: $v;
+  -moz-transform-origin: $v;
+  -webkit-transform-origin: $v;
+  transform-origin: $v;
 }
 
 //Y轴缩放
 @mixin scaleY($v){
-	-ms-transform: scaleY($v);
-	-moz-transform: scaleY($v);
-	-webkit-transform: scaleY($v);
-	transform: scaleY($v);
+  -ms-transform: scaleY($v);
+  -moz-transform: scaleY($v);
+  -webkit-transform: scaleY($v);
+  transform: scaleY($v);
 }
 
 //旋转
 @mixin scaleY($v){
-	-ms-transform: scaleY($v);
-	-moz-transform: scaleY($v);
-	-webkit-transform: scaleY($v);
-	transform: scaleY($v);
+  -ms-transform: scaleY($v);
+  -moz-transform: scaleY($v);
+  -webkit-transform: scaleY($v);
+  transform: scaleY($v);
 }
 
 //背景图片
 @mixin bg-linear-gradient($v){
-	background: -ms-linear-gradient(unquote($v));
-	background: -moz-linear-gradient(unquote($v));
+  background: -ms-linear-gradient(unquote($v));
+  background: -moz-linear-gradient(unquote($v));
   background: linear-gradient(unquote('to '+$v));
-	background: -webkit-linear-gradient(unquote($v));
-	// background: linear-gradient(unquote($v));
+  background: -webkit-linear-gradient(unquote($v));
+  // background: linear-gradient(unquote($v));
 }
 
 //背景图片-background-images
 @mixin bgImg-linear-gradient($v){
-	background-image: -ms-linear-gradient(unquote($v));
-	background-image: -moz-linear-gradient(unquote($v));
-	background-image: -webkit-linear-gradient(unquote($v));
-	// background-image: linear-gradient(unquote($v));
+  background-image: -ms-linear-gradient(unquote($v));
+  background-image: -moz-linear-gradient(unquote($v));
+  background-image: -webkit-linear-gradient(unquote($v));
+  // background-image: linear-gradient(unquote($v));
 }
 
 //Y轴偏移
@@ -62,46 +62,46 @@
 }
 
 //通用计算
-@mixin calc($where, $v) { 
-  #{$where}: -ms-calc(#{$v}); 
-  #{$where}: -moz-calc(#{$v}); 
-  #{$where}: -webkit-calc(#{$v}); 
-  #{$where}: calc(#{$v}); 
+@mixin calc($where, $v) {
+  #{$where}: -ms-calc(#{$v});
+  #{$where}: -moz-calc(#{$v});
+  #{$where}: -webkit-calc(#{$v});
+  #{$where}: calc(#{$v});
 }
 
 @mixin tcalc($v) {
   top: unquote('-ms-'+$v);
   top: unquote('-moz-'+$v);
   top: unquote('-webkit-'+$v);
-  top: $v; 
+  top: $v;
 }
 @mixin lcalc($v) {
   left: unquote('-ms-'+$v);
   left: unquote('-moz-'+$v);
   left: unquote('-webkit-'+$v);
-  left: $v; 
+  left: $v;
 }
 @mixin mtcalc($v) {
   margin-top: unquote('-ms-'+$v);
   margin-top: unquote('-moz-'+$v);
   margin-top: unquote('-webkit-'+$v);
-  margin-top: $v; 
+  margin-top: $v;
 }
 @mixin heightCalc($v) {
   height: unquote('-ms-'+$v);
   height: unquote('-moz-'+$v);
   height: unquote('-webkit-'+$v);
-  height: $v; 
+  height: $v;
 }
 @mixin minHeightCalc($v) {
   min-height: unquote('-ms-'+$v);
   min-height: unquote('-moz-'+$v);
   min-height: unquote('-webkit-'+$v);
-  min-height: $v; 
+  min-height: $v;
 }
 @mixin widthCalc($v) {
   width: unquote('-ms-'+$v);
   width: unquote('-moz-'+$v);
   width: unquote('-webkit-'+$v);
-  width: $v; 
+  width: $v;
 }
