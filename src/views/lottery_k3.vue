@@ -17,6 +17,7 @@
       <i @click.stop= "toggleTypeSelect" class="iconfont xiala"></i>
       <!-- 快三彩种切换 -->
         <div class="fix" style ="display:block" v-show = "ifShowTypeSelect" v-if = "LotteryList.length">
+          <ins></ins>
           <a v-for = "lottery in LotteryList"
              @click = "changeLottery(lottery.LotteryCode)">
             {{lottery.LotteryName}}
