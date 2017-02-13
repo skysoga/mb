@@ -17,7 +17,10 @@
   import lt_syx5 from '../json/lt_syx5.json'
   import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
   import {bus, BaseBet, ChaseAjax, easyClone, deleteCompress, Scheme, getBasketAmount, computeIssue, getSSCRebate, getK3Rebate,getRebate,DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../js/kit'
+
   var random=Math.floor(Math.random()*4)
+  var haveGotTime = true		//进页面时是否获取到服务器时间
+
   export default{
     beforeRouteEnter(to, from, next){
       //校验LotteryList， 和LotteryConfig-- 要阻塞，这个地方要改
@@ -44,6 +47,7 @@
 
 				var Difftime = localStorage.getItem('Difftime')
 				if(Difftime === 'NaN' || !Difftime){
+					haveGotTime = false				//进页面时没获取到服务器时间
 					RootApp.getServerTime(next)//没获取Difftime就再获取一次
 				}else{
 					next()										//有就直接进页面
@@ -54,8 +58,11 @@
 		  //从url上获取彩种type和彩种code
 		  ;[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
 
-      //这里获取一次服务器时间，用以校正
-      RootApp.getServerTime()
+      //如果有本地缓存的时间，则再更新一次
+      if(haveGotTime){
+	      RootApp.getServerTime()
+      }
+
       var pageConfig = {
         'SSC': lt_ssc,
         'SYX5': lt_syx5,
