@@ -17,7 +17,10 @@
   import lt_syx5 from '../json/lt_syx5.json'
   import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
   import {bus, BaseBet, ChaseAjax, easyClone, deleteCompress, Scheme, getBasketAmount, computeIssue, getSSCRebate, getK3Rebate,getRebate,DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../js/kit'
-  var random=Math.floor(Math.random()*4)
+
+  var getResultRandom = Math.floor(Math.random()*4)  //获取开奖时间的随机数，用于错开请求
+  var haveGotTime = true		//进页面时是否获取到服务器时间
+
   export default{
     beforeRouteEnter(to, from, next){
       //校验LotteryList， 和LotteryConfig-- 要阻塞，这个地方要改
@@ -42,20 +45,24 @@
           return
         }
 
-        var Difftime = localStorage.getItem('Difftime')
-        if(Difftime === null){
-          RootApp.getServerTime(next)//没获取Difftime就再获取一次
-        }else{
-          next()                    //有就直接进页面
-        }
-      })
-    },
-    created(){
-      //从url上获取彩种type和彩种code
-      ;[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
+				var Difftime = localStorage.getItem('Difftime')
+				if(Difftime === 'NaN' || !Difftime){
+					haveGotTime = false				//进页面时没获取到服务器时间
+					RootApp.getServerTime(next)//没获取Difftime就再获取一次
+				}else{
+					next()										//有就直接进页面
+				}
+			})
+		},
+		created(){
+		  //从url上获取彩种type和彩种code
+		  ;[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
 
-      //这里获取一次服务器时间，用以校正
-      RootApp.getServerTime()
+      //如果有本地缓存的时间，则再更新一次
+      if(haveGotTime){
+	      RootApp.getServerTime()
+      }
+
       var pageConfig = {
         'SSC': lt_ssc,
         'SYX5': lt_syx5,
@@ -571,7 +578,7 @@
                   default:
                     interval=30
                 }
-                if (wait4Results>(5+random) && wait4Results%interval===random) {
+                if (wait4Results>(5+getResultRandom) && wait4Results%interval===getResultRandom) {
                   dispatch('lt_getResults', state.lottery.LotteryCode)    //获取开奖结果
                 }
               }else if(Results[0].IssueNo*1 >= state.NowIssue*1){
@@ -759,46 +766,48 @@
           'SYX5':['选一', '前三一码不定位']
         }
 
-        if(this.ltype !== 'K3'){
-          var _group, _subGroup
-          _group = defaultMode[this.ltype][0]      //默认的玩法群
-          _subGroup = defaultMode[this.ltype][1]    //默认的玩法组
-          store.commit('lt_changeMode', state.lt.config[_group][_subGroup][0])
-        }else{
-          store.commit('lt_changeMode', state.lt.config[0])
-        }
-      }
-    },
-    watch:{
-      $route(val){
-        ;[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
-        store.commit('lt_setPerbet', PERBET)
-        store.commit('lt_clearBet')
-        store.commit('lt_clearBasket')
-        store.commit('lt_setScheme', [])
-        store.commit('lt_setChasePower', 1)    //清空追号配置
-        store.commit('lt_setChaseIssue', 1)
-      }
-    },
-    beforeRouteLeave:(to, from, next)=>{
-      //离开页面前将每注金额重设为 PERBET (2元)
-      store.commit('lt_setPower', 1)
-      store.commit('lt_setPerbet', PERBET)
-      store.commit('lt_setUnit', 1)
-      store.commit('lt_clearBet')
-      store.commit('lt_clearBasket')
-      store.commit('lt_setScheme', [])
-      store.commit('lt_setChasePower', 1)    //清空追号配置
-      store.commit('lt_setChaseIssue', 1)
-      next()
-    },
-    beforeDestroy(){
-      clearTimeout(this.timer1)
-      clearTimeout(this.timer2)
-      clearTimeout(this.timer3)
-      clearTimeout(this.timer4)
-      clearInterval(this.baseLoop)
-    },
+				if(this.ltype !== 'K3'){
+					var _group, _subGroup
+				  _group = defaultMode[this.ltype][0]			//默认的玩法群
+				  _subGroup = defaultMode[this.ltype][1]		//默认的玩法组
+	  			store.commit('lt_changeMode', state.lt.config[_group][_subGroup][0])
+				}else{
+					store.commit('lt_changeMode', state.lt.config[0])
+				}
+			}
+		},
+		watch:{
+			$route(val){
+			  ;[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
+		    store.commit('lt_setPerbet', PERBET)
+		    store.commit('lt_clearBet')
+		    store.commit('lt_clearBasket')
+		    store.commit('lt_setScheme', [])
+		    store.commit('lt_setChasePower', 1)		//清空追号配置
+				store.commit('lt_setChaseIssue', 1)
+			}
+		},
+	  beforeRouteLeave(to, from, next){
+	    //离开页面前将每注金额重设为 PERBET (2元)
+	    if(store.state.lt){
+		    store.commit('lt_setPower', 1)
+		    store.commit('lt_setPerbet', PERBET)
+		    store.commit('lt_setUnit', 1)
+		    store.commit('lt_clearBet')
+		    store.commit('lt_clearBasket')
+		    store.commit('lt_setScheme', [])
+		    store.commit('lt_setChasePower', 1)		//清空追号配置
+				store.commit('lt_setChaseIssue', 1)
+	    }
+	    next()
+	  },
+		beforeDestroy(){
+			clearTimeout(this.timer1)
+			clearTimeout(this.timer2)
+			clearTimeout(this.timer3)
+			clearTimeout(this.timer4)
+			clearInterval(this.baseLoop)
+		},
 
   }
 </script>
