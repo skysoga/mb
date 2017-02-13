@@ -632,7 +632,6 @@ window.RootApp={
     return function(fun){
       var timeBegin = new Date().getTime()
       _fetch({Action: "GetServerTimeMillisecond"}).then((json)=>{
-        json.Data = undefined
         var timeEnd = new Date().getTime()
         var interval = timeEnd - timeBegin
 
@@ -646,6 +645,7 @@ window.RootApp={
           if(noTimeGeted){
             cantGetTime = 0
             timeItemList = []
+            fun && fun()
             layer.url("因无法同步服务器时间,您将无法投注,请检查网络情况", '/index')
           }else{
             //有一些获取到了数据，但是超时了。从获取到的再择优
