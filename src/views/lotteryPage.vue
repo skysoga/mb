@@ -18,7 +18,7 @@
   import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
   import {bus, BaseBet, ChaseAjax, easyClone, deleteCompress, Scheme, getBasketAmount, computeIssue, getSSCRebate, getK3Rebate,getRebate,DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../js/kit'
 
-  var random=Math.floor(Math.random()*4)
+  var getResultRandom = Math.floor(Math.random()*4)  //获取开奖时间的随机数，用于错开请求
   var haveGotTime = true		//进页面时是否获取到服务器时间
 
   export default{
@@ -578,7 +578,7 @@
                   default:
                     interval=30
                 }
-                if (wait4Results>(5+random) && wait4Results%interval===random) {
+                if (wait4Results>(5+getResultRandom) && wait4Results%interval===getResultRandom) {
                   dispatch('lt_getResults', state.lottery.LotteryCode)    //获取开奖结果
                 }
               }else if(Results[0].IssueNo*1 >= state.NowIssue*1){
