@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <div>
+    <div style="float:right;width:20%">
       <div class="textMore dataType" v-if="(res_data.State==='等待开奖')&&(UID==0)" @click='CancelBet($route.query.ID)'><em>撤单</em></div>
     </div>
     <div class="tzHead">
@@ -54,7 +54,7 @@ export default {
         yes: function() {
           _fetch({Action:"CancelBet",ID:id}).then((data)=>{
             if(data.Code===1){
-              layer.url(data.StrCode)
+              layer.url(data.StrCode,'/betCenter/betRecord')
             }else {
               layer.msgWarn(data.StrCode)
             }
