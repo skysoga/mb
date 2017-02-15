@@ -45,6 +45,7 @@ export default {
   },
   methods:{
     CancelBet:function(id){
+      var vm=this
       layer.open({
         shadeClose: false,
         content: '撤单不可恢复，是否确认撤单？',
@@ -54,7 +55,8 @@ export default {
         yes: function() {
           _fetch({Action:"CancelBet",ID:id}).then((data)=>{
             if(data.Code===1){
-              layer.url(data.StrCode,'/betCenter/betRecord')
+              layer.msgWarn(data.StrCode)
+              vm.res_data.State='已撤单'
             }else {
               layer.msgWarn(data.StrCode)
             }
