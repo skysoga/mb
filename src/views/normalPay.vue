@@ -39,8 +39,8 @@
           <td><input type="tel" tag = "充值金额"  v-va:Money  v-model = 'Money'  placeholder="请输入充值金额"></td>
         </tr>
         <tr>
-          <td>银行账户</td>
-          <td><input type="text" tag = "银行账户"  v-va:PayUser.RealName  v-model = 'PayUser'   placeholder="请输入您的银行账户"></td>
+          <td>银行户名</td>
+          <td><input type="text" tag = "银行户名"  v-va:PayUser.RealName  v-model = 'PayUser'   placeholder="请输入您的银行姓名"></td>
         </tr>
       </table>
       <div class="loginBtn BTN"><a v-va-check>确定</a></div>
