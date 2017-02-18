@@ -39,14 +39,14 @@
           <td><input type="tel" tag = "充值金额"  v-va:Money  v-model = 'Money'  placeholder="请输入充值金额"></td>
         </tr>
         <tr>
-          <td>银行户名</td>
-          <td><input type="text" tag = "银行户名"  v-va:PayUser.RealName  v-model = 'PayUser'   placeholder="请输入您的银行姓名"></td>
+          <td>转账户名</td>
+          <td><input type="text" tag = "转账户名"  v-va:PayUser.RealName  v-model = 'PayUser'   placeholder="请输入付款账户的持卡人姓名"></td>
         </tr>
       </table>
       <div class="loginBtn BTN"><a v-va-check>确定</a></div>
       <div class="tips">
-        1、请转账到以上银行账户。<br>
-        2、请正确填写您的户名和充值金额。<br>
+        1、请转账到以上收款银行账户。<br>
+        2、请正确填写转账银行卡的持卡人姓名和充值金额，以便及时核对。<br>
         3、转账1笔提交1次，请勿重复提交订单。<br>
         4、请务必转账后再提交订单,否则无法及时查到您的款项！
       </div>
