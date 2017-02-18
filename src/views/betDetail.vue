@@ -55,7 +55,7 @@ export default {
         yes: function() {
           _fetch({Action:"CancelBet",ID:id}).then((data)=>{
             if(data.Code===1){
-              layer.msgWarn(data.StrCode)
+              layer.msg(data.StrCode)
               vm.res_data.State='已撤单'
             }else {
               layer.msgWarn(data.StrCode)
