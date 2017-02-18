@@ -582,10 +582,12 @@ window.RootApp={
     var newArr=[];
     for (var i = arr.length - 1; i >= 0; i--) {
       switch(arr[i]){
+        //以下是每次都需要更新请求的
         case "UserBalance":
         case "UserWithdrawAvail":
         case "PayLimit":
         case "WithdrawRemainTimes":
+        case "UserGradeGrow":
           newArr.push(arr[i])
         break
         default:
