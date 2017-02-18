@@ -53,7 +53,7 @@ Date.prototype.format = function(format) {
   return format;
 }
 
-document.body.oncontextmenu=function(){ return false;}//防止右键
+// document.body.oncontextmenu=function(){ return false;}//防止右键
 document.addEventListener('touchstart',function(e){},false);//让css的:active生效
 // document.cookie = "Site="+location.hostname.replace('.com','')
 window.rem = document.body.clientWidth/16
@@ -196,7 +196,7 @@ window._App=location.host.search("csz8.net")>-1//是否APP
       // presto: u.indexOf('Presto') > -1, //opera内核
       // webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
       // gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
-      // mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
       ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
       android: u.indexOf('Android') > -1 || u.indexOf('Adr') > -1, //android终端
       // iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
@@ -222,6 +222,9 @@ window._App=location.host.search("csz8.net")>-1//是否APP
         }
       },100)
     }
+  }
+  if (!versions.android) {
+    document.body.oncontextmenu=function(){ return false;}//防止右键
   }
 })()
 
@@ -579,10 +582,12 @@ window.RootApp={
     var newArr=[];
     for (var i = arr.length - 1; i >= 0; i--) {
       switch(arr[i]){
+        //以下是每次都需要更新请求的
         case "UserBalance":
         case "UserWithdrawAvail":
         case "PayLimit":
         case "WithdrawRemainTimes":
+        case "UserGradeGrow":
           newArr.push(arr[i])
         break
         default:

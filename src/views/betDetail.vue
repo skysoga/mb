@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <div>
+    <div style="float:right;width:20%">
       <div class="textMore dataType" v-if="(res_data.State==='等待开奖')&&(UID==0)" @click='CancelBet($route.query.ID)'><em>撤单</em></div>
     </div>
     <div class="tzHead">
@@ -45,6 +45,7 @@ export default {
   },
   methods:{
     CancelBet:function(id){
+      var vm=this
       layer.open({
         shadeClose: false,
         content: '撤单不可恢复，是否确认撤单？',
@@ -54,7 +55,8 @@ export default {
         yes: function() {
           _fetch({Action:"CancelBet",ID:id}).then((data)=>{
             if(data.Code===1){
-              layer.url(data.StrCode)
+              layer.msg(data.StrCode)
+              vm.res_data.State='已撤单'
             }else {
               layer.msgWarn(data.StrCode)
             }
