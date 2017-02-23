@@ -38,6 +38,7 @@
   </div>
 </template>
 <script>
+var TypeArr=["迅汇宝","迅付通"]
 export default {
   beforeRouteEnter(to, from, next){
     var title = {
@@ -51,11 +52,11 @@ export default {
     //获取数据
     RootApp.AjaxGetInitData([rechargeWay], state=>{
       //如果数据不对要跳到普通充值去
-      var PayType = state[rechargeWay]&&state[rechargeWay][0].PayType
+      var PayType =state[rechargeWay]&&state[rechargeWay][0].PayType
       if(PayType === '一般'){
         RootApp.$router.push('/normalPay?method=' + method)
       }else{
-        if(PayType==='迅汇宝'&&typeof(QRCode)==="undefined"){
+        if(TypeArr.indexOf(PayType)!=-1&&typeof(QRCode)==="undefined"){
           var warn=document.createElement('script')
           warn.src='https://cdn.rawgit.com/davidshimjs/qrcodejs/04f46c6a/qrcode.min.js'
           var first=document.body.firstChild
@@ -181,7 +182,7 @@ export default {
         if(json.Code === 1){
           this.QrImg=json.BackUrl
           layer.closeAll()
-          if(this.nowRender.PayType=='迅汇宝'){
+          if(TypeArr.indexOf(this.nowRender.PayType)!=-1){
             this.QrSvg=true
             this.setQrCode(json.BackUrl)
           }else{
