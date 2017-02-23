@@ -18,7 +18,7 @@
   import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
   import {bus, BaseBet, ChaseAjax, easyClone, deleteCompress, Scheme, getBasketAmount, computeIssue, getSSCRebate, getK3Rebate,getRebate,DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../js/kit'
 
-  var getResultRandom = Math.floor(Math.random()*4)  //获取开奖时间的随机数，用于错开请求
+  var randomFeed = Math.floor(Math.random()*4)  //获取开奖时间的随机数，用于错开请求
   var haveGotTime = true		//进页面时是否获取到服务器时间
 
   export default{
@@ -161,7 +161,7 @@
           //变更配置（进入各具体彩种页时，设置）
           lt_initConfig:(state)=>{state.config = pageConfig[state.lottery.LotteryType]},
           lt_updateDate:(state)=>{
-            var nowSerTime = new Date().getTime()-this.$store.state.Difftime;   //当前的服务器时间
+            var nowSerTime = new Date().getTime()- this.$store.state.Difftime;   //当前的服务器时间
             state.Todaystr = new Date(nowSerTime).format("yyyyMMdd");           //今天
           },
           //计算当前期号
@@ -578,7 +578,7 @@
                   default:
                     interval=30
                 }
-                if (wait4Results>(5+getResultRandom) && wait4Results%interval===getResultRandom) {
+                if (wait4Results>(5+randomFeed) && wait4Results%interval===randomFeed) {
                   dispatch('lt_getResults', state.lottery.LotteryCode)    //获取开奖结果
                 }
               }else if(Results[0].IssueNo*1 >= state.NowIssue*1){
@@ -589,29 +589,30 @@
                 //开奖
                 if(wait4Results){
                   wait4BetRecord = true
-                  this.timer1 = setTimeout(()=>{
-                    // console.log('6s')
-                    dispatch('lt_updateBetRecord')      //获取我的投注
-                  }, 6000)
+
+                  // this.timer1 = setTimeout(()=>{
+                  //   // console.log('6s')
+                  //   dispatch('lt_updateBetRecord')      //获取我的投注
+                  // }, 6000)
 
                   this.timer2 = setTimeout(()=>{
                     // console.log('12s')
                     dispatch('lt_updateBetRecord')      //获取我的投注
                     wait4Results = 0
                     wait4BetRecord = false
-                  }, 12000)
+                  }, (11 + randomFeed) * 1000)
                 }
               }
             }
           },
           //获取我的投注
           lt_updateBetRecord:({state, rootState, commit, dispatch})=>{
-            // _fetch({Action: 'GetBetting'}).then((json)=>{
-            //   if(json.Code === 1){
-            //     var betting = json.Data
-            //     commit('lt_setBetRecord', betting)
-            //   }
-            // })
+            _fetch({Action: 'GetBetting'}).then((json)=>{
+              if(json.Code === 1){
+                var betting = json.Data
+                commit('lt_setBetRecord', betting)
+              }
+            })
           },
           //获得返点
           lt_getRebate:({state, rootState, commit, dispatch}, notUseLocal)=>{
@@ -656,10 +657,23 @@
                 commit('lt_clearBet')
                 commit('lt_clearBasket')
                 commit('lt_changeBox', '')
-                //隔3s获取我的投注
-                this.timer3 = setTimeout(()=>{
-                  dispatch('lt_updateBetRecord')
-                }, 3000)
+
+                //开奖后自己添记录到“我的投注里”
+                var totalMoney = _basket.map(bet=>bet.betting_money).reduce((a,b)=>a+b)  //本注总金额
+                var issueNo = _basket[0].betting_issuseNo                                  //期号
+                var _betRecord = state.BetRecord.slice(0)
+                var record = {issueNo: issueNo, normal_money:totalMoney.toFixed(2), openState: '等待开奖'}
+                _betRecord.unshift(record)
+                if(_betRecord.length > 5){
+                  _betRecord.length = 5
+                }
+
+                commit('lt_setBetRecord', _betRecord)
+
+                // //隔3s获取我的投注
+                // this.timer3 = setTimeout(()=>{
+                //   dispatch('lt_updateBetRecord')
+                // }, 3000)
 
                 layer.confirm(`<span style = "color:red">投注成功</span>，您可以在我的账户查看注单详情`,['继续投注','查看注单'], ()=>{},()=>{this.$router.push('/userCenter')})
               }else if(json.Code === -9){
@@ -707,10 +721,11 @@
                 // commit('lt_setChaseIssue', 1)
                 commit('lt_setIsChase', false)  //追号成功后，变成普通投注
 
-                //隔3s获取我的投注
-                this.timer4 = setTimeout(()=>{
-                  dispatch('lt_updateBetRecord')
-                }, 3000)
+                // //隔3s获取我的投注
+                // this.timer4 = setTimeout(()=>{
+                //   dispatch('lt_updateBetRecord')
+                // }, 3000)
+
                 layer.confirm(`<span style = "color:red">投注成功</span>，您可以在我的账户查看注单详情`,['继续投注','查看注单'], ()=>{},()=>{this.$router.push('/userCenter')})
               }else if(json.Code === -9){
                 //清除rebate

@@ -54,7 +54,7 @@ export default{
     BetRecord(){
       var Record = state.lt.BetRecord
       if(!Record || Record.length === 0){
-        var emptyObj = {issueNo:'xxxx', normal_money:'', openState:''}
+        var emptyObj = {issueNo:'    ', normal_money:'', openState:''}
         Record = [0,0,0,0,0].map(item=>emptyObj)
       }
       return Record
