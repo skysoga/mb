@@ -347,6 +347,9 @@ window.store = new Vuex.Store({
 
   },
   mutations: {
+    toggleLoading:(state, bool) =>{
+      state.turning = bool
+    },
     SaveInitData: (state,Data) => {
       for(var k in Data){
         state[k] = Data[k]
@@ -639,8 +642,9 @@ window.RootApp={
       _fetch({Action: "GetServerTimeMillisecond"}).then((json)=>{
         var timeEnd = new Date().getTime()
         var interval = timeEnd - timeBegin
+        var timeReg = /^\d{13}$/
 
-        if(json.Code > -1){
+        if(json.Code > -1 && timeReg.test(json.Data)){
           timeItemList.push(new TimeItem(interval, timeEnd, timeBegin, json.Data))
         }
 

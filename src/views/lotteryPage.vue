@@ -23,12 +23,50 @@
 
   export default{
     beforeRouteEnter(to, from, next){
-      //校验LotteryList， 和LotteryConfig-- 要阻塞，这个地方要改
-      RootApp.GetInitData(['LotteryList','LotteryConfig'], state=>{
-        //从url上获取彩种type和彩种code
-        var [,ltype, lcode] = to.fullPath.slice(1).split('/')
+      //从url上获取彩种type和彩种code
+      var [,ltype, lcode] = to.fullPath.slice(1).split('/')
+      //获取返点
+      var getRebate = new Promise(function(resolve, reject){
+        var storageName = `Rebate${ltype}`
+        var rebate = localStorage.getItem(storageName)
+        rebate = JSON.parse(rebate)
+        if(rebate){
+          resolve(rebate)
+        }else{
+          _fetch({
+            Action: 'GetBetRebate',
+            LotteryType: ltype
+          }).then((json)=>{
+            if(json.Code === 1){
+              localStorage.setItem(storageName ,JSON.stringify(json.BackData))
+              resolve(json.BackData)
+            }else{
+              var err = new Error('无法获得返点，请重试')
+              reject(err)
+            }
+          })
+        }
+      })
+
+      //获取彩种配置和列表
+      var getLotteryList = new Promise(function(resolve, reject){
+        RootApp.GetInitData(['LotteryList','LotteryConfig'], resolve)
+      })
+
+      var getServerTime = new Promise(function(resolve, reject){
+        var Difftime = localStorage.getItem('Difftime')
+        if(Difftime === 'NaN' || !Difftime){
+          haveGotTime = false       //进页面时没获取到服务器时间
+          RootApp.getServerTime(resolve)//没获取Difftime就再获取一次
+        }else{
+          resolve()                    //有就直接进页面
+        }
+      })
+
+      //都获取到了，再进去页面---如果没获取到或者code不是1呢？
+      Promise.all([getRebate, getLotteryList, getServerTime]).then((values)=>{
         //校验下这个彩种存不存在，不存在就送回购彩大厅
-         var table = {
+        var table = {
           'SSC': '时时彩',
           'K3': '快3',
           'SYX5': '11选5'
@@ -45,14 +83,43 @@
           return
         }
 
-				var Difftime = localStorage.getItem('Difftime')
-				if(Difftime === 'NaN' || !Difftime){
-					haveGotTime = false				//进页面时没获取到服务器时间
-					RootApp.getServerTime(next)//没获取Difftime就再获取一次
-				}else{
-					next()										//有就直接进页面
-				}
-			})
+        next()
+
+      }).catch((err)=>{
+        //报错并返回
+        next(false)
+        store.commit('toggleLoading', false)  //关掉loading动画
+        layer.msgWarn(err.message)
+      })
+
+   //    //校验LotteryList， 和LotteryConfig-- 要阻塞，这个地方要改
+   //    RootApp.GetInitData(['LotteryList','LotteryConfig'], state=>{
+   //      //校验下这个彩种存不存在，不存在就送回购彩大厅
+   //       var table = {
+   //        'SSC': '时时彩',
+   //        'K3': '快3',
+   //        'SYX5': '11选5'
+   //      }
+   //      var lotteryTypeList
+   //      state.LotteryConfig.map(item=>{
+   //        if(item.LotteryClassName === table[ltype]){
+   //          lotteryTypeList = item.LotteryList
+   //        }
+   //      })
+
+   //      if(lotteryTypeList.indexOf(lcode) === -1){
+   //        layer.url('您所访问的彩种不存在，即将返回购彩大厅', '/index')
+   //        return
+   //      }
+
+			// 	var Difftime = localStorage.getItem('Difftime')
+			// 	if(Difftime === 'NaN' || !Difftime){
+			// 		haveGotTime = false				//进页面时没获取到服务器时间
+			// 		RootApp.getServerTime(next)//没获取Difftime就再获取一次
+			// 	}else{
+			// 		next()										//有就直接进页面
+			// 	}
+			// })
 		},
 		created(){
 		  //从url上获取彩种type和彩种code
@@ -589,14 +656,12 @@
                 //开奖
                 if(wait4Results){
                   wait4BetRecord = true
-
                   // this.timer1 = setTimeout(()=>{
                   //   // console.log('6s')
                   //   dispatch('lt_updateBetRecord')      //获取我的投注
                   // }, 6000)
 
                   this.timer2 = setTimeout(()=>{
-                    // console.log('12s')
                     dispatch('lt_updateBetRecord')      //获取我的投注
                     wait4Results = 0
                     wait4BetRecord = false
@@ -617,11 +682,12 @@
           //获得返点
           lt_getRebate:({state, rootState, commit, dispatch}, notUseLocal)=>{
             var type = state.lottery.LotteryType
-            var _rebate = rootState['Rebate' + type]
+            var _rebate = localStorage.getItem(`Rebate${type}`)
+            _rebate = JSON.parse(_rebate)
+            // var _rebate = rootState['Rebate' + type]
             if(notUseLocal){
               _rebate = null
             }
-
             if(!_rebate){
               _fetch({
                 Action: 'GetBetRebate',
@@ -752,8 +818,22 @@
       this.setDefaultMode()
       //获取我的投注
       this.$store.dispatch('lt_updateBetRecord')
+
+      var type = this.ltype
+      var rebate = localStorage.getItem(`Rebate${type}`)
+      if(rebate){
+        rebate = JSON.parse(rebate)
+        this.$store.commit({
+          type:'lt_setRebate',
+          rebate: rebate,
+          LotteryType: type
+        })
+      }else{
+        console.log('返点不存在')
+      }
+
       //获取返点
-      this.$store.dispatch('lt_getRebate')
+      // this.$store.dispatch('lt_getRebate')
       //每隔1s调用一次refresh
       this.baseLoop = setInterval(()=>{
         this.$store.dispatch('lt_refresh')
