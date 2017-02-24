@@ -360,9 +360,9 @@ function BaseBet(state,count, betStr){
 
   this.betting_point = lt.award + '-' + lt.Rebate[lt.lottery.LotteryType]            //赔率
   this.betting_model = bet.betting_model                   //元角分
-  this.betting_issuseNo = lt.NowIssue                  //当前期号
-  this.graduation_count = bet.graduation_count                //当前倍率
-  this.compress = bet.compress                            //压缩字符串
+  this.betting_issuseNo = lt.NowIssue                      //当前期号
+  this.graduation_count = bet.graduation_count             //当前倍率
+  this.compress = bet.compress                             //压缩字符串
 }
 
 BaseBet.prototype.power2one = function(state){
@@ -621,6 +621,7 @@ function getK3Rebate(mode, Odds){
     }
   }
 }
+
 function getRebate(mode, Odds){
   for(var i = 0;i < Odds.length;i++){
     if(Odds[i].PlayCode === mode){
