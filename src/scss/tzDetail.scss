@@ -73,6 +73,11 @@ section{
     background-position:0 80%;
     height:auto;
     font-size:.8em;
+    div{
+      white-space:nowrap;
+      text-overflow:ellipsis;
+      overflow:hidden;
+    }
     &:nth-of-type(1){
       background-position:0 0;
       height:2em;
