@@ -40,7 +40,7 @@
         </tr>
         <tr>
           <td>转账户名</td>
-          <td><input type="text" tag = "转账户名"  v-va:PayUser.RealName  v-model = 'PayUser'   placeholder="请输入付款账户的持卡人姓名"></td>
+          <td><input type="text" tag = "转账户名"  v-va:PayUser.RealName  v-model = 'PayUser'   placeholder="请输入付款人的银行卡姓名"></td>
         </tr>
       </table>
       <div class="loginBtn BTN"><a v-va-check>确定</a></div>
