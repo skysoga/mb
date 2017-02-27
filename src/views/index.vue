@@ -6,7 +6,7 @@
       <swiper>
         <swiper-slide v-for="i in s.BannerList||s.SysBanner">
           <router-link v-if="i.Url[0]==='/'" :to="i.Url.replace('.html','')"><img :src="s.constant.ImgHost+i.Image"></router-link>
-          <a v-else :href="i.Url" target="_blank"><img :src="s.constant.ImgHost+i.Image"></a>
+          <a v-else :href="s.constant._App?'javascript:':i.Url" target="_blank"><img :src="s.constant.ImgHost+i.Image"></a>
         </swiper-slide>
       </swiper>
     </div>
