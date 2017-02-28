@@ -26,6 +26,11 @@ export default {
     }
   },
   beforeRouteEnter:(to, from, next) => {
+    if(!sessionStorage.getItem('Maintain')){
+      sessionStorage.setItem('Maintain',JSON.stringify(state.Maintain))
+    }else{
+      state.Maintain=JSON.parse(sessionStorage.getItem('Maintain'))
+    }
     if (state.Maintain) {
       to.meta.title=`<img src="${state.Maintain.ImgUrl+'/logo/mobile_logo.png'}">`
     }else{
@@ -38,6 +43,7 @@ export default {
       _fetch({Action:"GetServerTimeMillisecond"}).then(json=>{
         if (json.Code>-1) {
           clearInterval(DSQ)
+          sessionStorage.removeItem('Maintain')
           router.push("/index")
         }
       })
