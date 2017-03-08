@@ -25,7 +25,7 @@ export default {
         this.Content=dataArr[i].Content
         this.Img=dataArr[i].Img
         if (typeof(this.Img)==="object") {
-          this.Img=this.Img[0]
+          this.Img=this.Img&&this.Img[0]||''
         }
         return
       }
