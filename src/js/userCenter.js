@@ -8,7 +8,7 @@ export default {
   },
   beforeRouteEnter:(to, from, next) => {
     // RootApp.AjaxGetInitData(['UserBalance'])
-    var arr = ["AgentRebate","UserPhoto"];
+    var arr = ["AgentRebate","UserPhoto","SiteConfig"];
     RootApp.GetInitData(arr, state=>{
       next()
     })
