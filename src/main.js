@@ -95,6 +95,7 @@ function FetchCatch(msg,resolve){
     resolve({Code:-1,StrCode:msg})
   }
 }
+var fetchArr=[]
 window._fetch = function (data){
   data = Xss(data)
   if (data[1]) {
@@ -109,8 +110,22 @@ window._fetch = function (data){
     if (typeof(k)==="object") {
       k= encodeURIComponent(JSON.stringify(k));
     }
-    str.push(i+'='+k);
+    str.push(i+'='+k)
   }
+  str=str.join('&')
+  /*// 防止一秒内的完全相同请求
+  var now = new Date().getTime()
+  for (var i = 0; i < fetchArr.length; i++) {
+    if(fetchArr[i][0]+1000<now){
+      fetchArr.length=i
+      break
+    }else if(fetchArr[i][1]===str){
+      return {then:function(){
+        console.log('重复发送')
+      }}
+    }
+  }
+  fetchArr.unshift([now,str])*/
   return new Promise(function(resolve, reject){
     var st = state.turning&&setTimeout(function(){
       console.log("请求超时");
@@ -123,7 +138,7 @@ window._fetch = function (data){
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
       },
-      body: str.join('&')
+      body: str
     }).then((res)=>{
       if (res.status!==200) {
         FetchCatch("网络错误"+res.status,resolve)
