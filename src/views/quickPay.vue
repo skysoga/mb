@@ -119,7 +119,7 @@ export default {
           'left':'-500px'
         },
         '易卡':{
-          'margin-top':2.5*em-100+'px',
+          'margin-top':2.5*em-140+'px',
           'left':'-500px'
         }
       }
