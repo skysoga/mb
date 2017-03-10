@@ -33,7 +33,7 @@
           温馨提示：支付成功后，会在一分钟内为您添加额度，请刷新您的账户余额!
         </div>
       </div>
-      <iframe :src="QrImg" frameborder="0" :style="css[nowRender.PayType]" v-show="!QrSvg"></iframe>
+      <iframe id="ifra" :src="QrImg" frameborder="0" :style="css[nowRender.PayType]" v-show="!QrSvg"></iframe>
     </div>
   </div>
 </template>
@@ -113,6 +113,10 @@ export default {
         '乐盈':{
           'margin-top':2.5*em+'px',
           'left':'-574px'
+        },
+        '云汇':{
+          'margin-top':2.5*em-100+'px',
+          'left':'-510px'
         }
       }
     }
@@ -191,7 +195,7 @@ export default {
         }else{
           this.QrBg=false
           this.Money=''
-          layer.msgWarn(json.StrCode);
+          layer.msgWarn(json.StrCode)
         }
       })
     },
