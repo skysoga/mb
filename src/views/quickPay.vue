@@ -114,7 +114,7 @@ export default {
           'margin-top':2.5*em+'px',
           'left':'-574px'
         },
-        '云汇':{
+        '摩宝':{
           'margin-top':2.5*em-100+'px',
           'left':'-510px'
         }
