@@ -117,6 +117,10 @@ export default {
         '摩宝':{
           'margin-top':2.5*em-100+'px',
           'left':'-500px'
+        },
+        '易卡':{
+          'margin-top':2.5*em-100+'px',
+          'left':'-500px'
         }
       }
     }
