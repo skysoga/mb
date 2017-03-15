@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <iframe :src="ServiceUrl" width="100%" id="kefu"></iframe>
+    <iframe :src="ServiceUrl" id="kefu"></iframe>
   </div>
 </template>
 <script src="../js/service.js"></script>
@@ -10,7 +10,8 @@
   }
   iframe{
     margin-top: -2.3em;
-    width: 100%;
+    width: 16rem;
     height: 100%;
+    overflow-x:hidden;
   }
 </style>
