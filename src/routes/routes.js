@@ -70,7 +70,8 @@ var routes = [{
   meta:{
     title:"在线客服",
     nav:false,
-    link:"/index",
+    // link:"/index",
+    back:-1,
     service:0,
     user:false,
     agent:false

@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <iframe :src="$store.state.SiteConfig&&$store.state.SiteConfig.Service.Url" width="100%" id="kefu"></iframe>
+    <iframe :src="ServiceUrl" width="100%" id="kefu"></iframe>
   </div>
 </template>
 <script src="../js/service.js"></script>
