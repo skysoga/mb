@@ -1,12 +1,22 @@
 export default {
   data:()=>{
-    return{}
+    return{
+      ServiceUrl:null
+    }
   },
-  created:function(){
-    var arr = ["SiteConfig"];
-    RootApp.GetInitData(arr);
-  },
-  mounted:function(){
-    this.$el.querySelector("iframe").style.height=document.body.clientHeight+'px';
+  beforeRouteEnter(to,from,next){
+    var ServiceUrl
+    if (state.SiteConfig) {
+      ServiceUrl=state.SiteConfig.Service.Url
+    }else if(state.Maintain){
+      ServiceUrl=state.Maintain.ServiceUrl
+    }else{
+      router.go(-1)
+      return
+    }
+    next(vm=>{
+      vm.ServiceUrl=ServiceUrl
+      vm.$el.querySelector("iframe").style.height=document.body.clientHeight+'px'
+    })
   }
 }

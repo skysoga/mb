@@ -15,6 +15,7 @@ const lottery_k3 =require('../views/lottery_k3')
 const competition =require('../views/competition')
 const maintain = require('../views/maintain')
 const AppDownload = require('../views/AppDownload')
+const AppPackage = require('../views/AppPackage')
 
 
 var publicRoute = [
@@ -69,7 +70,8 @@ var routes = [{
   meta:{
     title:"在线客服",
     nav:false,
-    link:"/index",
+    // link:"/index",
+    back:-1,
     service:0,
     user:false,
     agent:false
@@ -146,6 +148,14 @@ var routes = [{
     link:"/index",
   },
   component: AppDownload
+},{
+  path: '/AppPackage',
+  // name: 'APP',
+  meta:{
+    title:"APP下载",
+    link:"/index",
+  },
+  component: AppPackage
 }]
 
 routes = routes.concat(guangying).concat(zhiming).concat(xiaosen).concat(publicRoute)

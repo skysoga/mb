@@ -178,6 +178,7 @@ window._fetch = function (data){
             case -7://系统维护
               store.commit('SetMaintain', json.BackData)
               router.push("/maintain")
+              notRes=true
             break;
             case -8://账号冻结
               layer.alert("您的账号已被冻结，详情请咨询客服。",function(){
@@ -387,15 +388,16 @@ window.store = new Vuex.Store({
     WithdrwHtml:state=>{
       return "login"
     },
-    // PayLimit: state => {
-    //   var el = {};
-    //   state.PayLimit.forEach(item=>{
-    //     el[item.PayName] = [item.MinMoney, item.MaxMoney];
-    //   })
-    //   return el;
-    // },
+    PayLimit: state => {
+      var el = {};
+      if(state.PayLimit){
+        state.PayLimit.forEach(item=>{
+          el[item.PayName] = [item.MinMoney, item.MaxMoney];
+        })
+      }
+      return el;
+    },
     NoDataDom:msg => state.tpl.noData.join("msg"),
-
   },
   mutations: {
     toggleLoading:(state, bool) =>{
@@ -564,15 +566,6 @@ window.RootApp={
         SetIndexTitle(s)
       }
     })(data.SiteConfig)
-    ;(data=>{//PayLimit 充值
-      if(data){
-        var el = {};
-        data.forEach(item => {
-          el[item.PayName] = [item.MinMoney, item.MaxMoney];
-        })
-        state.PayLimit=el;
-      }
-    })(data.PayLimit)
     ;(function(LotteryList){
       if(LotteryList&&LotteryList.length){
         data.LotteryList={};
@@ -777,11 +770,12 @@ window.RootApp = new Vue({
   methods:window.RootApp,
   created:function(){
     var len = routes.length
-    var ToPath=localStorage.getItem('LastPath')
-    if(ToPath){
-      router.push(ToPath)
-    }
-    var ToPath = (ToPath||location.pathname).toLowerCase()
+    // var ToPath=localStorage.getItem('LastPath')
+    // if(ToPath){
+    //   router.push(ToPath)
+    // }
+    // var ToPath = (ToPath||location.pathname).toLowerCase()
+    var ToPath = location.pathname.toLowerCase()
     if (ToPath==="/") {return}
     console.log(ToPath);
     for (var i = 0; i < len; i++) {

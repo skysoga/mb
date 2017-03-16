@@ -64,7 +64,7 @@ export default {
     }
   },
   beforeRouteEnter(to,from,next){
-    RootApp.AjaxGetInitData(['PayLimit','RechargeWayWeixin', 'RechargeWayAlipay','RechargeWayBank'], state=>{
+    RootApp.GetInitData(['PayLimit','RechargeWayWeixin', 'RechargeWayAlipay','RechargeWayBank'], state=>{
       next()
     })
   },
