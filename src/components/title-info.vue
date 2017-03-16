@@ -5,7 +5,7 @@
       <span v-html="m.title">
       </span>
       <ul v-if="m.titleList">
-        <li :class="($route.path===i.to||$route.matched[0].path===i.to)?'on':''" v-for="i in m.titleList" v-on:click="$router.push(i.to)"><a>{{i.title}}</a><li>
+        <li :class="($route.path===i.to||$route.matched[0].path===i.to)?'on':''" v-for="i in m.titleList" v-on:click="$router.push(i.to)"><a>{{i.title}}</a></li>
       </ul>
     </template>
     <div v-show="m.back" class="iconfont back" v-on:click="$router.go(m.back)"></div>

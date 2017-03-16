@@ -11,7 +11,7 @@
         <div class="right">
           <h1>系统维护中</h1>
           <p>每一次简单的维护<br>都是为了给您带来更好的服务<br>预计于 <em>{{$store.state.Maintain.FinishTime}}</em>维护完成</p>
-          <router-link class="errorService" to="/service">在线客服</router-link>
+          <router-link v-if="$store.state.Maintain.ServiceUrl" class="errorService" to="/service">在线客服</router-link>
         </div>
       </div>
     </div>
@@ -26,10 +26,17 @@ export default {
     }
   },
   beforeRouteEnter:(to, from, next) => {
+    if(sessionStorage.getItem('Maintain')){
+      state.Maintain=JSON.parse(sessionStorage.getItem('Maintain'))
+    }else if(state.Maintain){
+      sessionStorage.setItem('Maintain',JSON.stringify(state.Maintain))
+    }
     if (state.Maintain) {
       to.meta.title=`<img src="${state.Maintain.ImgUrl+'/logo/mobile_logo.png'}">`
-    }else{
+    }else if(state.SiteConfig){
       to.meta.title=`<img src="${state.constant.ImgHost+state.SiteConfig.MobileLogo}">`
+    }else{
+      router.push('/index')
     }
     next()
   },
@@ -38,6 +45,7 @@ export default {
       _fetch({Action:"GetServerTimeMillisecond"}).then(json=>{
         if (json.Code>-1) {
           clearInterval(DSQ)
+          sessionStorage.removeItem('Maintain')
           router.push("/index")
         }
       })

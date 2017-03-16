@@ -61,6 +61,31 @@ window.em = Math.sqrt((rem-20)*.9)+20
 document.querySelector("html").style.fontSize=rem+'px'
 document.body.style.fontSize=em+'px'
 
+function Xss(data){
+  var k,nk,t,mayBeXss
+  for(var i in data){
+    k=data[i];
+    t=typeof(k)
+    if (t==="object") {
+      k=Xss(k);
+      if (k[1]) {
+        mayBeXss=mayBeXss||{}
+        mayBeXss[i]=k[1]
+      }
+      k=k[0]
+    }
+    if (t==="string") {
+      nk=filterXSS(k)
+      if (k!==nk) {
+        mayBeXss=mayBeXss||{}
+        mayBeXss[i]={old:k,new:nk}
+      }
+      k=nk
+    }
+    data[i]=k
+  }
+  return [data,mayBeXss]
+}
 function FetchCatch(msg,resolve){
   console.log("FetchCatch");
   if (state.turning) {
@@ -70,7 +95,14 @@ function FetchCatch(msg,resolve){
     resolve({Code:-1,StrCode:msg})
   }
 }
+var fetchArr=[]
 window._fetch = function (data){
+  data = Xss(data)
+  if (data[1]) {
+    //可能有xss
+    console.log(data[1]);
+  }
+  data=data[0]
   data.SourceName=_App?"APP":"MB"
   var str=[],k;
   for(var i in data){
@@ -78,8 +110,22 @@ window._fetch = function (data){
     if (typeof(k)==="object") {
       k= encodeURIComponent(JSON.stringify(k));
     }
-    str.push(i+'='+k);
+    str.push(i+'='+k)
   }
+  str=str.join('&')
+  /*// 防止一秒内的完全相同请求
+  var now = new Date().getTime()
+  for (var i = 0; i < fetchArr.length; i++) {
+    if(fetchArr[i][0]+1000<now){
+      fetchArr.length=i
+      break
+    }else if(fetchArr[i][1]===str){
+      return {then:function(){
+        console.log('重复发送')
+      }}
+    }
+  }
+  fetchArr.unshift([now,str])*/
   return new Promise(function(resolve, reject){
     var st = state.turning&&setTimeout(function(){
       console.log("请求超时");
@@ -92,13 +138,18 @@ window._fetch = function (data){
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
       },
-      body: str.join('&')
+      body: str
     }).then((res)=>{
       if (res.status!==200) {
         FetchCatch("网络错误"+res.status,resolve)
         return
       }
       res.json().then(json=>{
+        json = Xss(json)
+        if(json[1]) {
+          console.log(json[1]);
+        }
+        json=json[0]
         state.turning&&clearTimeout(st)
         console.log(json);
         var notRes
@@ -127,6 +178,7 @@ window._fetch = function (data){
             case -7://系统维护
               store.commit('SetMaintain', json.BackData)
               router.push("/maintain")
+              notRes=true
             break;
             case -8://账号冻结
               layer.alert("您的账号已被冻结，详情请咨询客服。",function(){
@@ -775,8 +827,3 @@ document.addEventListener('copy', function(e){
     layer.msgWarn('已将内容复制到剪切板')
   }
 })
-onerror=function (msg,url,l) {
-  console.log(msg,url,l);
-  return false
-}
-console.log(123);

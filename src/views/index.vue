@@ -1,11 +1,12 @@
 <template>
-  <div class="main">
+  <div class="main" id="index">
     <!-- <router-link v-if="!s.constant._App" v-show="s.UserUpGradeBonus&&s.UserUpGradeBonus.Grade>2" tag="div" to="/ping" class='textMore dataType'><em>线路</em></router-link> -->
     <router-link v-if="!s.constant._App" tag="div" to="/AppDownload" class='textMore dataType'><em>APP <i class="iconfont">&#xe655;</i></em></router-link>
     <div id="banner">
       <swiper>
         <swiper-slide v-for="i in s.BannerList||s.SysBanner">
-          <router-link :to="i.Url.replace('.html','')"><img :src="s.constant.ImgHost+i.Image"></router-link>
+          <router-link v-if="i.Url[0]==='/'" :to="i.Url.replace('.html','')"><img :src="s.constant.ImgHost+i.Image"></router-link>
+          <a v-else :href="s.constant._App?'javascript:':i.Url" target="_blank"><img :src="s.constant.ImgHost+i.Image"></a>
         </swiper-slide>
       </swiper>
     </div>
