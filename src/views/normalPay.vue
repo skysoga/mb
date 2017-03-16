@@ -231,12 +231,7 @@ export default{
       //设置金额的限制
       this.vaConfig ||(this.vaConfig = {})
       this.vaConfig['Money'] || (this.vaConfig['Money'] = [])
-      var limit;
-      state['PayLimit'].forEach(item=>{
-        if(item.PayName === limitName[method]){
-          limit = [item.MinMoney, item.MaxMoney]
-        }
-      })
+      var limit=state.PayLimit[limitName[method]];
       this.vaConfig['Money'].push(new this.VaConfig('limit', limit, '', 'Money', limitName[method]))
     })
   },

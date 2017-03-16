@@ -388,15 +388,6 @@ window.store = new Vuex.Store({
     WithdrwHtml:state=>{
       return "login"
     },
-    PayLimit: state => {
-      var el = {};
-      if(state.PayLimit){
-        state.PayLimit.forEach(item=>{
-          el[item.PayName] = [item.MinMoney, item.MaxMoney];
-        })
-      }
-      return el;
-    },
     NoDataDom:msg => state.tpl.noData.join("msg"),
   },
   mutations: {
@@ -566,6 +557,15 @@ window.RootApp={
         SetIndexTitle(s)
       }
     })(data.SiteConfig)
+    ;(function(arr){
+      if(arr){
+        var el = {};
+        arr.forEach(item => {
+          el[item.PayName] = [item.MinMoney, item.MaxMoney];
+        })
+        data.PayLimit=el
+      }
+    })(data.PayLimit)
     ;(function(LotteryList){
       if(LotteryList&&LotteryList.length){
         data.LotteryList={};
