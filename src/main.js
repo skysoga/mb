@@ -275,8 +275,12 @@ var UserArr = [
   'UserLastLoginInfo',
   'RebateK3',
   'RebateSSC',
+  'RebateSYX5',
+  'RebateKL8',
+  'RebatePK10',
+  'RebatePL35',
+  'RebateFC3D',
   'NoticeData',
-  'RebateSYX5'
 ]
 var SiteArr=[ //需要校验更新版本的列表
   'SysActivity',

@@ -135,6 +135,7 @@
         'SYX5': lt_syx5,
         'K3': lt_k3,
       }
+
       var awardSetter = {
         'SSC':getSSCRebate,
         'K3': getK3Rebate,
@@ -724,7 +725,7 @@
                 commit('lt_clearBasket')
                 commit('lt_changeBox', '')
 
-                //开奖后自己添记录到“我的投注里”
+                //投注后自己添记录到“我的投注里”
                 var totalMoney = _basket.map(bet=>bet.betting_money).reduce((a,b)=>a+b)  //本注总金额
                 var issueNo = _basket[0].betting_issuseNo                                  //期号
                 var _betRecord = state.BetRecord.slice(0)
