@@ -769,11 +769,12 @@ window.RootApp = new Vue({
   methods:window.RootApp,
   created:function(){
     var len = routes.length
-    var ToPath=localStorage.getItem('LastPath')
-    if(ToPath){
-      router.push(ToPath)
-    }
-    var ToPath = (ToPath||location.pathname).toLowerCase()
+    // var ToPath=localStorage.getItem('LastPath')
+    // if(ToPath){
+    //   router.push(ToPath)
+    // }
+    // var ToPath = (ToPath||location.pathname).toLowerCase()
+    var ToPath = location.pathname.toLowerCase()
     if (ToPath==="/") {return}
     console.log(ToPath);
     for (var i = 0; i < len; i++) {
