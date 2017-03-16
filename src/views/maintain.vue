@@ -26,15 +26,17 @@ export default {
     }
   },
   beforeRouteEnter:(to, from, next) => {
-    if(!sessionStorage.getItem('Maintain')){
-      sessionStorage.setItem('Maintain',JSON.stringify(state.Maintain))
-    }else{
+    if(sessionStorage.getItem('Maintain')){
       state.Maintain=JSON.parse(sessionStorage.getItem('Maintain'))
+    }else if(state.Maintain){
+      sessionStorage.setItem('Maintain',JSON.stringify(state.Maintain))
     }
     if (state.Maintain) {
       to.meta.title=`<img src="${state.Maintain.ImgUrl+'/logo/mobile_logo.png'}">`
-    }else{
+    }else if(state.SiteConfig){
       to.meta.title=`<img src="${state.constant.ImgHost+state.SiteConfig.MobileLogo}">`
+    }else{
+      router.push('/index')
     }
     next()
   },

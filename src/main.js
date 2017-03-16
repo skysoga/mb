@@ -178,6 +178,7 @@ window._fetch = function (data){
             case -7://系统维护
               store.commit('SetMaintain', json.BackData)
               router.push("/maintain")
+              notRes=true
             break;
             case -8://账号冻结
               layer.alert("您的账号已被冻结，详情请咨询客服。",function(){
