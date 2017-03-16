@@ -388,15 +388,16 @@ window.store = new Vuex.Store({
     WithdrwHtml:state=>{
       return "login"
     },
-    /*PayLimit: state => {
+    PayLimit: state => {
       var el = {};
-      state.PayLimit.forEach(item=>{
-        el[item.PayName] = [item.MinMoney, item.MaxMoney];
-      })
+      if(state.PayLimit){
+        state.PayLimit.forEach(item=>{
+          el[item.PayName] = [item.MinMoney, item.MaxMoney];
+        })
+      }
       return el;
-    },*/
+    },
     NoDataDom:msg => state.tpl.noData.join("msg"),
-
   },
   mutations: {
     toggleLoading:(state, bool) =>{
