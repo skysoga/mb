@@ -387,13 +387,13 @@ window.store = new Vuex.Store({
     WithdrwHtml:state=>{
       return "login"
     },
-    PayLimit: state => {
-      var el = {};
-      state.PayLimit.forEach(item=>{
-        el[item.PayName] = [item.MinMoney, item.MaxMoney];
-      })
-      return el;
-    },
+    // PayLimit: state => {
+    //   var el = {};
+    //   state.PayLimit.forEach(item=>{
+    //     el[item.PayName] = [item.MinMoney, item.MaxMoney];
+    //   })
+    //   return el;
+    // },
     NoDataDom:msg => state.tpl.noData.join("msg"),
 
   },
@@ -564,6 +564,15 @@ window.RootApp={
         SetIndexTitle(s)
       }
     })(data.SiteConfig)
+    ;(data=>{//PayLimit 充值
+      if(data){
+        var el = {};
+        data.forEach(item => {
+          el[item.PayName] = [item.MinMoney, item.MaxMoney];
+        })
+        state.PayLimit=el;
+      }
+    })(data.PayLimit)
     ;(function(LotteryList){
       if(LotteryList&&LotteryList.length){
         data.LotteryList={};
