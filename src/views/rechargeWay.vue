@@ -64,7 +64,7 @@ export default {
     }
   },
   beforeRouteEnter(to,from,next){
-    RootApp.GetInitData(['PayLimit','RechargeWayWeixin', 'RechargeWayAlipay','RechargeWayBank'], state=>{
+    RootApp.AjaxGetInitData(['PayLimit','RechargeWayWeixin', 'RechargeWayAlipay','RechargeWayBank'], state=>{
       next()
     })
   },
@@ -83,6 +83,7 @@ export default {
     }else{
       this.aliMsg="支付宝支付维护中..."
     }
+    console.log(state.PayLimit,this.$store.getters.PayLimit)
     this.payLimit = Object.freeze(this.$store.getters.PayLimit)
   },
 }
