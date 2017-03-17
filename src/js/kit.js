@@ -537,6 +537,56 @@ var throttle = function(delay){
   }
 }(400)
 
+// //根据传入的code,和彩种index来返回 期号字符串
+// function computeIssue(code, index){
+//   var days    //和当前期差几天
+//       ,_index  //那一天的第几期
+//       ,dateStr    //日期字符串
+//       ,_SerTime = (new Date().getTime()- state.Difftime - GMT_DIF) % DAY_TIME
+
+//   if(!state.lt.PlanLen)return
+//   days = Math.floor(index/state.lt.PlanLen)
+//   _index = index - days * state.lt.PlanLen;
+
+//   //跨期的处理
+//   var firstIssue = state.lt.LotteryPlan[0]
+//   if((firstIssue.End < firstIssue.Start) && (firstIssue.Start < _SerTime)){
+//     days++
+//   }
+
+//   //这里挂各特殊彩种的处理函数--有返回的直接出返回结果。不参与下一步
+//   var handler = {
+//     '1001':function(){
+//       //新疆时时彩跨天的处理
+//       if(_index >= 83 && _SerTime <= state.lt.LotteryPlan[state.lt.PlanLen - 1].End){
+//         console.log(_index, _SerTime, state.lt.LotteryPlan[state.lt.PlanLen - 1].End,days)
+//         days--
+//       }
+//     },
+//     //北京快三，以某一期作为基准
+//     '1406':()=>{
+//       var data = state.lt.Todaystr.replace(/^(\d{4})(\d{2})(\d{2})$/,'$1/$2/$3');
+//       return '0'+(Math.floor((Date.parse(data)-Date.parse("2016/8/1"))/DAY_TIME)*89+ BASE_ISSUE_1406 + index);
+//     }
+//   }
+
+//   //计算期号字符串
+//   var handleResult
+//   handler[code] && (handleResult = handler[code]())   //特殊彩种的特殊处理
+
+//   if(handleResult){
+//     return handleResult
+//   }else{
+//     if(days){
+//       var todayTime = new Date(state.lt.Todaystr.replace(/(\d{4})(\d{2})(\d{2})/,"$1/$2/$3")).getTime();
+//       dateStr = new Date(todayTime + days * DAY_TIME).format('yyyyMMdd');
+//     }else{
+//       dateStr = state.lt.Todaystr;
+//     }
+//     return dateStr + state.lt.LotteryPlan[_index].IssueNo
+//   }
+// }
+
 //根据传入的code,和彩种index来返回 期号字符串
 function computeIssue(code, index){
   var days    //和当前期差几天
@@ -554,26 +604,60 @@ function computeIssue(code, index){
     days++
   }
 
-  //这里挂各特殊彩种的处理函数--有返回的直接出返回结果。不参与下一步
+  //一天一期，8点开
+  function oneDayOneIssue(baseIssue, dateStr){
+    return function(){
+      var data = state.lt.Todaystr.replace(/^(\d{4})(\d{2})(\d{2})$/,'$1/$2/$3');
+      var dayDiff = Math.floor((Date.parse(data)-Date.parse(dateStr))/DAY_TIME)
+      var needAddOne = +(_SerTime > 72000000)
+      // console.log(needAddOne, _SerTime, _SerTime-72000000)
+      var issueStr = ('00' + (dayDiff + baseIssue + needAddOne + index)).slice(-3)
+      return data.slice(0,4) + issueStr
+    }
+  }
+
+  //基于固定期
+  function basedOnFixedIssue(baseIssue, dateStr, planLen, zeroCount){
+    if(!zeroCount)zeroCount = 0
+    return function(){
+      var data = state.lt.Todaystr.replace(/^(\d{4})(\d{2})(\d{2})$/,'$1/$2/$3');
+      //补零
+      var zero = ''
+      for(var i = 0;i < zeroCount;i++){
+        zero += '0'
+      }
+      return zero + (Math.floor((Date.parse(data) - Date.parse(dateStr)) / DAY_TIME) * planLen + baseIssue + index);
+    }
+  }
+
+
+  //这里挂各特殊彩种的处理函数--有返回的直接出返回结果。不参与下一步----每年过年前更新一次
   var handler = {
     '1001':function(){
       //新疆时时彩跨天的处理
       if(_index >= 83 && _SerTime <= state.lt.LotteryPlan[state.lt.PlanLen - 1].End){
-        console.log(_index, _SerTime, state.lt.LotteryPlan[state.lt.PlanLen - 1].End,days)
         days--
       }
     },
     //北京快三，以某一期作为基准
-    '1406':()=>{
-      var data = state.lt.Todaystr.replace(/^(\d{4})(\d{2})(\d{2})$/,'$1/$2/$3');
-      return '0'+(Math.floor((Date.parse(data)-Date.parse("2016/8/1"))/DAY_TIME)*89+ BASE_ISSUE_1406 + index);
-    }
+    '1406':basedOnFixedIssue(68616+1, "2017/2/4", 89, 1),
+    //北京快乐8,以某一期作为基准
+    '1302':basedOnFixedIssue(807929, "2017/2/18", 179),
+    //PK10,以某一期作为基准
+    '1303':basedOnFixedIssue(602501, "2017/2/18", 179),
+
+    //福彩3D：每天一期
+    '1201':oneDayOneIssue(33, "2017/2/9"),
+    //排列3：每天一期
+    '1202':oneDayOneIssue(33, "2017/2/9"),
+
   }
 
   //计算期号字符串
   var handleResult
   handler[code] && (handleResult = handler[code]())   //特殊彩种的特殊处理
 
+  //有返回结果，则输出返回结果。没返回结果则正常计算
   if(handleResult){
     return handleResult
   }else{
@@ -583,9 +667,11 @@ function computeIssue(code, index){
     }else{
       dateStr = state.lt.Todaystr;
     }
+
     return dateStr + state.lt.LotteryPlan[_index].IssueNo
   }
 }
+
 
 function getSSCRebate(mode, Odds){
   //前三中三后三一样，前二后二一样
