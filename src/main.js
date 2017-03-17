@@ -346,7 +346,7 @@ var SiteArr=[ //需要校验更新版本的列表
 var AppArr=[
   'ActivityConfig', //活动种类及数据
   'BannerList',
-  'PayLimit',
+  // 'PayLimit',
   'SiteConfig',
 ]
 var VerifyArr=["LotteryConfig","BannerList","LotteryList","ActivityConfig","FooterConfig","HelpConfig","SiteConfig","HallBanner","GradeList","LoginGreet","DefaultPhotoList","RewardData","AbstractType","PayLimit","CloudUrl","NoticeData"]
@@ -392,15 +392,7 @@ window.store = new Vuex.Store({
     WithdrwHtml:state=>{
       return "login"
     },
-    PayLimit: state => {
-      var el = {};
-      state.PayLimit.forEach(item=>{
-        el[item.PayName] = [item.MinMoney, item.MaxMoney];
-      })
-      return el;
-    },
     NoDataDom:msg => state.tpl.noData.join("msg"),
-
   },
   mutations: {
     toggleLoading:(state, bool) =>{
@@ -569,6 +561,15 @@ window.RootApp={
         SetIndexTitle(s)
       }
     })(data.SiteConfig)
+    ;(function(arr){
+      if(arr){
+        var el = {};
+        arr.forEach(item => {
+          el[item.PayName] = [item.MinMoney, item.MaxMoney];
+        })
+        data.PayLimit=el
+      }
+    })(data.PayLimit)
     ;(function(LotteryList){
       if(LotteryList&&LotteryList.length){
         data.LotteryList={};
@@ -773,11 +774,12 @@ window.RootApp = new Vue({
   methods:window.RootApp,
   created:function(){
     var len = routes.length
-    var ToPath=localStorage.getItem('LastPath')
-    if(ToPath){
-      router.push(ToPath)
-    }
-    var ToPath = (ToPath||location.pathname).toLowerCase()
+    // var ToPath=localStorage.getItem('LastPath')
+    // if(ToPath){
+    //   router.push(ToPath)
+    // }
+    // var ToPath = (ToPath||location.pathname).toLowerCase()
+    var ToPath = location.pathname.toLowerCase()
     if (ToPath==="/") {return}
     console.log(ToPath);
     for (var i = 0; i < len; i++) {
