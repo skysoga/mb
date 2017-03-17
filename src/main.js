@@ -342,7 +342,7 @@ var SiteArr=[ //需要校验更新版本的列表
 var AppArr=[
   'ActivityConfig', //活动种类及数据
   'BannerList',
-  'PayLimit',
+  // 'PayLimit',
   'SiteConfig',
 ]
 var VerifyArr=["LotteryConfig","BannerList","LotteryList","ActivityConfig","FooterConfig","HelpConfig","SiteConfig","HallBanner","GradeList","LoginGreet","DefaultPhotoList","RewardData","AbstractType","PayLimit","CloudUrl","NoticeData"]
