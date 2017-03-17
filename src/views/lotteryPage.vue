@@ -23,6 +23,8 @@
   import {sscConfig} from '../js/page_config/lt_ssc'
   import {k3Config} from '../js/page_config/lt_k3'
   import {syx5Config} from '../js/page_config/lt_syx5'
+  import {pk10Config} from '../js/page_config/lt_pk10'
+
 
   import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
   import {bus, BaseBet, ChaseAjax, easyClone, deleteCompress, Scheme, getBasketAmount,
@@ -84,7 +86,11 @@
         var table = {
           'SSC': '时时彩',
           'K3': '快3',
-          'SYX5': '11选5'
+          'SYX5': '11选5',
+          'FC3D': '低频彩',
+          'PL35': '低频彩',
+          'KL8': '其他彩种',
+          'PK10': '其他彩种'
         }
         var lotteryTypeList
         state.LotteryConfig.map(item=>{
@@ -119,13 +125,15 @@
         'SSC': sscConfig,
         'K3': k3Config,
         'SYX5': syx5Config,
+        'PK10': pk10Config,
       }
 
       //处理返点
       var awardSetter = {
         'SSC':getSSCRebate,
         'K3': getK3Rebate,
-        'SYX5': getRebate
+        'SYX5': getRebate,
+        'PK10': getRebate
       }
 
       var wait4Results = 0, wait4BetRecord = false
@@ -870,6 +878,10 @@
         var defaultMode = {
           'SSC':['五星', '直选'],
           'SYX5':['三码', '三码'],
+          'FC3D':['三星', '直选'],
+          'PL35':['三星', '直选'],
+          'KL8':['任选', '普通玩法'],
+          'PK10':['定位胆', '标准'],
         }
 
 				if(this.ltype !== 'K3'){

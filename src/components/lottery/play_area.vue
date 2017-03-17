@@ -29,6 +29,7 @@ import noteBet from './notebet'
 import syx5NoteBet from './syx5_notebet'
 import {sscPlay} from '../../js/page_config/lt_ssc'
 import {syx5Play} from '../../js/page_config/lt_syx5'
+import {pk10Play} from '../../js/page_config/lt_pk10'
 import {factorial, mul, C, combNoRepeat, unique, normalSum2, normalSum3, accumulate,
   diff2, diff3, combSum2, combSum3} from '../../js/kit'
 
@@ -38,10 +39,10 @@ var countSingle = (order,tmp)=>betSum(order,tmp)[0]  //单行计数
 var playCfg = {
   'SSC': sscPlay,
   'SYX5': syx5Play,
+  'PK10': pk10Play,
   // 'FC3D': fc3dPlay,
   // 'PL35': pl3Play,
   // 'KL8': kl8Play,
-  // 'PK10': pk10Play,
 }
 
 
