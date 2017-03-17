@@ -70,6 +70,7 @@ export default {
           if(this.special === 'needOrder'){
             formatBet = formatBet.sort((a,b)=>a-b)
           }
+
           formatBet = formatBet.map(num=>numberStore[num]).join(' ')
           if(!isIllegal && !isRepeat){
             betArr.push(formatBet)
