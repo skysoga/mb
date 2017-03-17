@@ -49,9 +49,9 @@ export default {
         var originArr = realtext.split(',')
 
         /** 四、对每注进行预处理 **/
-        //去掉空格、允许多个空格作为行间分隔符、将字符串转成索引
+        //去掉空格、允许多个空格作为行间分隔符、将字符串转成索引、去重
         var formatArr = originArr.map(bet=>{
-          return bet.trim().split(' ').filter(item=>item.length !== 0).map(num=>+num)
+          return unique(bet.trim().split(' ').filter(item=>item.length !== 0).map(num=>+num))
         })
 
         /** 五、对每注进行合理性判断  **/
@@ -64,15 +64,16 @@ export default {
         var numberStore = createStringArray(0, baseNum[ltype]) //留下个0，因为后续是通过索引获取的，从1开始
         for(var i = 0;i < formatArr.length;i++){
           var formatBet = formatArr[i]
-          var isIllegal = formatBet.some(num=>!numberStore[num] || !num)     //不合法的
-          var isRepeat = formatBet.length !== len
 
           if(this.special === 'needOrder'){
             formatBet = formatBet.sort((a,b)=>a-b)
           }
 
-          formatBet = formatBet.map(num=>numberStore[num]).join(' ')
+          var isIllegal = formatBet.some(num=>!numberStore[num] || !num)     //不合法的
+          var isRepeat = formatBet.length !== len
+
           if(!isIllegal && !isRepeat){
+            formatBet = formatBet.map(num=>numberStore[num]).join(' ')
             betArr.push(formatBet)
           }
         }
