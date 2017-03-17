@@ -179,16 +179,16 @@ var pk10Play = {
   F11:{render:['first','second','third','fourth','fifth','sixth','seventh','eighth','ninth','tenth'], alg:(order, tmp)=>betSum(order, tmp).reduce(function(a,b){return a + b})},
   //前五
   E11:{render:['first','second','third','fourth','fifth'], alg:(order, tmp)=>mulNoRepeat5(tmp['first'],tmp['second'],tmp['third'],tmp['fourth'],tmp['fifth'])},
-  E12:{box:'syx5', len:5, special:10},
+  E12:{box:'syx5', len:5, special:'needOrder'},
   //前四
   D11:{render:['first','second','third','fourth'], alg:(order, tmp)=>mulNoRepeat4(tmp['first'],tmp['second'],tmp['third'],tmp['fourth'])},
-  D12:{box:'syx5', len:4, special:10},
+  D12:{box:'syx5', len:4, special:'needOrder'},
   //前三
   C11:{render:['first','second','third'], alg:(order, tmp)=>mulNoRepeat3(tmp['first'],tmp['second'],tmp['third'])},
-  C12:{box:'syx5', len:3, special:10},
+  C12:{box:'syx5', len:3, special:'needOrder'},
   //前二
   B11:{render:['first','second'], alg:(order, tmp)=>mulNoRepeat2(tmp['first'],tmp['second'])},
-  B12:{box:'syx5', len:2, special:10},
+  B12:{box:'syx5', len:2, special:'needOrder'},
   //前一
   A11:{render:['first'], alg:countSingle},
 }
