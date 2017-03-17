@@ -10,28 +10,31 @@
           <!-- 开奖结果和历史开奖结果 -->
           <lt-result></lt-result>
           <!-- 倒计时和我的投注 -->
-        <lt-timebar></lt-timebar>
+          <lt-timebar></lt-timebar>
         </div>
 
         <!-- 投注区，各彩种不同 -->
-        <ssc :mode = "$store.state.lt.mode.mode"></ssc>
+        <!-- <ssc></ssc> -->
+        <playArea></playArea>
 
         <!-- 倍和单位， 确认投注， 号码篮 -->
         <lt-footer></lt-footer>
       </div>
     </div>
+
     <basket @click.native.stop v-show = "ifShowBasket"></basket>
+
   </div>
 </template>
 <style lang = "scss" scoped>
 @import '../scss/newssc.scss';
 </style>
 <script>
-  import lt_header from '../components/lottery/lt-header'
-  import lt_result from '../components/lottery/lt-result'
-  import lt_timebar from '../components/lottery/lt-timebar'
-  import lt_footer from '../components/lottery/lt-footer'
-  import ssc from '../components/lottery/ssc'
+  import lt_header from '../components/lottery/lt_header'
+  import lt_result from '../components/lottery/lt_result'
+  import lt_timebar from '../components/lottery/lt_timebar'
+  import lt_footer from '../components/lottery/lt_footer'
+  import playArea from '../components/lottery/play_area'
   import basket from '../components/lottery/basket'
 
   export default {
@@ -40,7 +43,7 @@
       'lt-result': lt_result,
       'lt-timebar': lt_timebar,
       'lt-footer': lt_footer,
-      'ssc': ssc,
+      'playArea': playArea,
       'basket': basket,
     },
     created(){

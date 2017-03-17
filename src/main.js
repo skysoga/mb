@@ -781,10 +781,16 @@ window.RootApp = new Vue({
     if (ToPath==="/") {return}
     console.log(ToPath);
     for (var i = 0; i < len; i++) {
-      if (ToPath.search(routes[i].path.toLowerCase())>-1&&routes[i].path!='/') {
-        this.beforEnter({matched:[routes[i]]})
+      var actualPath = routes[i].path.toLowerCase().split('/')[1]  //去掉斜杠的第一个
+      if (actualPath && ToPath.indexOf(actualPath) > -1) {
+        console.log(routes[i])
+        this.beforEnter({ matched: [routes[i]] })
         break
       }
+      // if (ToPath.search(routes[i].path.toLowerCase())>-1&&routes[i].path!='/') {
+      //   this.beforEnter({matched:[routes[i]]})
+      //   break
+      // }
     }
   },
   render: h => h(App),

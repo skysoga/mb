@@ -644,9 +644,28 @@ function syx5_zx2(line1, line2){
 }
 
 
+var countSingle = (order,tmp)=>betSum(order,tmp)[0]  //单行计数
+//获得每个框的号码的数目
+function betSum(order, tmp){
+  var arr = [];
+  for(var i = 0;i < order.length;i++){
+    arr.push(tmp[order[i]].length)
+  }
+  return arr;
+}
+
+function createStringArray(start, end){
+  var result = []
+  for(var i = start;i <= end;i++){
+    var item = ('0' + i).slice(-2)
+    result.push(item)
+  }
+  return result
+}
+
 export {factorial, mul, C, combNoRepeat, unique, normalSum2,
   normalSum3, accumulate,diff2, diff3, combSum2, combSum3,
    bus, BaseBet, compress, throttle, easyClone, ChaseAjax,
     deleteCompress, Scheme, getBasketAmount,computeIssue,
     getSSCRebate,getK3Rebate,getRebate, DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME,
-  GMT_DIF, PERBET,Max_Rate, Max_Chase_Issue, Max_Expect_Rate, BASE_ISSUE_1406, syx5_zx2}
+  GMT_DIF, PERBET,Max_Rate, Max_Chase_Issue, Max_Expect_Rate, BASE_ISSUE_1406, syx5_zx2, countSingle, betSum, createStringArray}

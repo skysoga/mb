@@ -88,8 +88,7 @@
         for(var subGroup in groupItem){
           var subGroupItem = groupItem[subGroup]
           subGroupItem.forEach(modeItem=>{
-            //切换Group时，subGroup第一个为默认选项
-            if(modeItem.mode.indexOf('11') > -1 || modeItem.mode === 'I91'){
+            if(modeItem.default){
               this.$store.commit('lt_changeMode', modeItem)
             }
           })
