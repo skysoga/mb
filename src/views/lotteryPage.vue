@@ -773,7 +773,7 @@
           lt_ordinaryChase:({state, rootState, commit, dispatch})=>{
             var basketTotal = getBasketAmount()[1],
                 scheme = [],
-                code = state.lottery.Lotterycode,
+                code = state.lottery.LotteryCode,
                 issueStr, power, money, issueNo
 
             for(var i = 0, len = state.chaseConf.buy_count; i < len;i++){
