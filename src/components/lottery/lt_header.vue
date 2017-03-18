@@ -42,9 +42,9 @@
         </span>
     </div>
 
-    <div class="lotterySort" ref = "lotterySort" v-show='lTopNav.indexOf(ltype)===-1' :class = "{active:ifShowTypeSelect}">
+    <div class="lotterySort" ref = "lotterySort" :class = "{active:ifShowTypeSelect}">
       <div @click.stop = "toggleTypeSelect">
-        <em>{{lotteryName}}</em><i class="iconfont">&#xe61e;</i>
+        <em>{{lotteryName}}</em><i class="iconfont" v-show="lTopNav.indexOf(ltype)===-1">&#xe61e;</i>
       </div>
 
       <div class="lotteryList fix" v-show = "ifShowTypeSelect">
@@ -116,9 +116,11 @@
       },
       //彩种选择框，切换
       toggleTypeSelect(){
-        this.$store.state.lt.box === 'typeSelect' ?
-           this.$store.commit('lt_changeBox', '') :
-             this.$store.commit('lt_changeBox', 'typeSelect')
+        if(this.lTopNav.indexOf(this.ltype)===-1){
+          this.$store.state.lt.box === 'typeSelect' ?
+             this.$store.commit('lt_changeBox', '') :
+               this.$store.commit('lt_changeBox', 'typeSelect')
+        }
       },
       addSubGroupClass(name){
         var table = {
