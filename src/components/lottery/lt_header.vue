@@ -42,7 +42,7 @@
         </span>
     </div>
 
-    <div class="lotterySort" ref = "lotterySort" :class = "{active:ifShowTypeSelect}">
+    <div class="lotterySort" ref = "lotterySort" v-show='lTopNav.indexOf(ltype)===-1' :class = "{active:ifShowTypeSelect}">
       <div @click.stop = "toggleTypeSelect">
         <em>{{lotteryName}}</em><i class="iconfont">&#xe61e;</i>
       </div>
@@ -78,6 +78,7 @@
     data () {
       return {
         LotteryList: [],//彩种list
+        lTopNav:['PK10','KL8'],//不显示导航的彩种
         ltype: '',      //彩种类型
         lcode: ''        //彩种code
       }
