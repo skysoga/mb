@@ -78,7 +78,7 @@
     data () {
       return {
         LotteryList: [],//彩种list
-        lTopNav:['PK10','KL8'],//不显示导航的彩种
+        lTopNav:['PK10','KL8'],//导航隐藏配置
         ltype: '',      //彩种类型
         lcode: ''        //彩种code
       }
