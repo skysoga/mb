@@ -446,40 +446,42 @@
 
             dispatch('lt_updatePlan', code)    //更新计划
           },
-          lt_fetchPlan:({state, rootState, commit, dispatch}, code)=>{
-            _fetch({Action:'GetLotteryPlan', Qort:code}).then((json)=>{
-              if(json.Code === 1){
-                var plan = json.Data
-                localStorage.setItem("lotteryPlan" + code, JSON.stringify(plan));
-                //如果code和当前的code不一样，说明在异步获取完后，用户已经切换页面了，就直接结束
-                if(code === state.lottery.LotteryCode){
-                  commit('lt_computeIssueNo', plan)
-                }
-              }else{
-                layer.msgWarn(json.StrCode);
-              }
-            })
-          },
           //action-获取开奖计划
           lt_updatePlan:({state, rootState, commit, dispatch}, code)=>{
-            //获取开奖计划，这个以后如果组件内部有用，就单独拉一个action
-            // function getPlan(code){
-            //   _fetch({Action:'GetLotteryPlan', Qort:code}).then((json)=>{
-            //     if(json.Code === 1){
-            //       var plan = json.Data
-            //       localStorage.setItem("lotteryPlan" + code, JSON.stringify(plan));
-            //       //如果code和当前的code不一样，说明在异步获取完后，用户已经切换页面了，就直接结束
-            //       if(code === state.lottery.LotteryCode){
-            //         commit('lt_computeIssueNo', plan)
-            //       }
-            //     }else{
-            //       layer.msgWarn(json.StrCode);
-            //     }
-            //   })
-            // }
 
             if(code === '1008' || code === '1407'){
-              //如果是大发系列的，自己计算计划
+              createDFPlan()        //大发系列的，自行计算计划
+            }else{
+              //不是大发系列的
+              var LotteryPlan = localStorage.getItem("lotteryPlan"+ code)
+              LotteryPlan = LotteryPlan&&JSON.parse(LotteryPlan)
+
+              if(LotteryPlan){
+                checkPlan(code)                   //校验计划
+              }else{
+                // dispatch('lt_fetchPlan', code)    //获取计划
+                getPlan(code)
+              }
+            }
+
+            //获取开奖计划
+            function getPlan(code){
+              _fetch({Action:'GetLotteryPlan', Qort:code}).then((json)=>{
+                if(json.Code === 1){
+                  var plan = json.Data
+                  localStorage.setItem("lotteryPlan" + code, JSON.stringify(plan));
+                  //如果code和当前的code不一样，说明在异步获取完后，用户已经切换页面了，就直接结束
+                  if(code === state.lottery.LotteryCode){
+                    commit('lt_computeIssueNo', plan)
+                  }
+                }else{
+                  layer.msgWarn(json.StrCode);
+                }
+              })
+            }
+
+            // 生成大发的计划
+            function createDFPlan(){
               var LotteryPlan = []
               for (var i = 0; i < 1440; i++) {
                 var el = {}
@@ -493,32 +495,22 @@
                 LotteryPlan.push(el)
               }
               commit('lt_computeIssueNo', LotteryPlan)
-            }else{
-              //不是大发系列的
-              var LotteryPlan = localStorage.getItem("lotteryPlan"+ code)
-              LotteryPlan = LotteryPlan&&JSON.parse(LotteryPlan)
+            }
 
-              if(LotteryPlan){
-                //localStorage中有计划，进行计划的校验，确保是最新的
-                var refer = rootState.LotteryList[code]
-                    ,_EndTime1 = LotteryPlan[refer.VerifyIssue*1-1].EndTime
-                    ,_EndTime2 = refer.VerifyEndTime.split(' ')[1]
+            // 校验计划
+            function checkPlan(code){
+              var refer = rootState.LotteryList[code]
+                  ,_EndTime1 = LotteryPlan[refer.VerifyIssue*1-1].EndTime
+                  ,_EndTime2 = refer.VerifyEndTime.split(' ')[1]
 
-                //因为LotteryList是会变化的，因此用LotteryList和LotteryPlan的比对，来确认需不需要更新
-                if(refer && _EndTime1 !== _EndTime2){
-                  //校验没通过，就删除旧计划，重新拉一遍计划
-                  localStorage.removeItem("lotteryPlan"+code);
-                  dispatch('lt_fetchPlan', code)
-                  getPlan(code)
-                  console.log("需要矫正");
-                }else{
-                  //校验通过，就计算当前期号
-                  commit('lt_computeIssueNo', LotteryPlan)
-                }
+              if(refer && _EndTime1 !== _EndTime2){
+                //校验没通过，就删除旧计划，重新拉一遍计划
+                localStorage.removeItem("lotteryPlan"+code);
+                getPlan(code)
+                console.log("需要矫正");
               }else{
-                //localStorage中没有计划,重新获取计划
-                // getPlan(code)
-                dispatch('lt_fetchPlan', code)
+                //校验通过，就计算当前期号
+                commit('lt_computeIssueNo', LotteryPlan)
               }
             }
           },
@@ -565,19 +557,6 @@
           },
           //refresh
           lt_refresh:({state, rootState, commit, dispatch})=>{
-            function computeCountdown(issueNo, _SerTime){
-              var _issue = state.LotteryPlan[state.IssueNo % state.PlanLen]
-                  ,isCrossDay = (_issue.Start > _issue.End) && (_SerTime > _issue.Start)  //本期跨天,且当前时间大于End
-                  ,isOutOfIssue = state.IssueNo === state.PlanLen                       //如果现在不在任何期内
-                  ,needAddOneDay = isCrossDay || isOutOfIssue
-
-              var Countdown = state.LotteryPlan[state.IssueNo % state.PlanLen].End
-                              +needAddOneDay * DAY_TIME
-                              -_SerTime;
-
-              return Countdown
-            }
-
             var isStop = rootState.LotteryList[this.lcode].IsStop
             if(isStop === '1'){
               commit('lt_stopSell')    //暂停销售
@@ -603,7 +582,6 @@
                 crossCount++
                 var lastIssueEnd = state.LotteryPlan[state.PlanLen - 1].End
                     ,firstIssueStart = state.LotteryPlan[0].Start
-
 
                 //等于： 首尾相接的期号。大于：最后一期在第二天。 余去，则不会进入out of issue
                 if(firstIssueStart >= lastIssueEnd){
@@ -633,20 +611,8 @@
             }
 
             Countdown = Math.floor(Countdown/1000);   //转成以秒为单位
-            // console.log(Countdown)
-            if(Countdown>600){
-              //如果Countdown大于10分钟，则进入预售
-              commit('lt_updateTimeBar', '预售中')
-            }else{
-              //倒计时渲染
-              var hh=Math.floor(Countdown/3600);
-              var MM=Math.floor(Countdown%3600/60);
-              var ss=Math.floor(Countdown%60);
-              hh=hh>9?hh:('0'+hh);
-              MM=MM>9?MM:('0'+MM);
-              ss=ss>9?ss:('0'+ss);
-              commit('lt_updateTimeBar', hh+':'+MM+':'+ss)
-            }
+            updateTimeBar(Countdown)                  //更新倒计时文字
+
             var Results = state.LotteryResults[state.lottery.LotteryCode]
                 ,len = Results?Results.length:0;
 
@@ -687,6 +653,36 @@
                     wait4BetRecord = false
                   }, (11 + randomFeed) * 1000)
                 }
+              }
+            }
+
+            // 计算倒计时
+            function computeCountdown(issueNo, _SerTime){
+              var _issue = state.LotteryPlan[state.IssueNo % state.PlanLen]
+                  ,isCrossDay = (_issue.Start > _issue.End) && (_SerTime > _issue.Start)  //本期跨天,且当前时间大于End
+                  ,isOutOfIssue = state.IssueNo === state.PlanLen                       //如果现在不在任何期内
+                  ,needAddOneDay = isCrossDay || isOutOfIssue
+
+              var Countdown = state.LotteryPlan[state.IssueNo % state.PlanLen].End
+                              +needAddOneDay * DAY_TIME
+                              -_SerTime;
+
+              return Countdown
+            }
+
+            // 更新倒计时文字
+            function updateTimeBar(Countdown){
+              if(Countdown>600){
+                commit('lt_updateTimeBar', '预售中')//如果Countdown大于10分钟，则进入预售
+              }else{
+                //倒计时渲染
+                var hh=Math.floor(Countdown/3600);
+                var MM=Math.floor(Countdown%3600/60);
+                var ss=Math.floor(Countdown%60);
+                hh=hh>9?hh:('0'+hh);
+                MM=MM>9?MM:('0'+MM);
+                ss=ss>9?ss:('0'+ss);
+                commit('lt_updateTimeBar', hh+':'+MM+':'+ss)
               }
             }
           },
@@ -824,6 +820,7 @@
           }
         }
       }
+
 
       //注册彩种模块 --lt
       this.$store.state.lt || this.$store.registerModule('lt', lt)
