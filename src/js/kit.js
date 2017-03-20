@@ -537,56 +537,6 @@ var throttle = function(delay){
   }
 }(400)
 
-// //根据传入的code,和彩种index来返回 期号字符串
-// function computeIssue(code, index){
-//   var days    //和当前期差几天
-//       ,_index  //那一天的第几期
-//       ,dateStr    //日期字符串
-//       ,_SerTime = (new Date().getTime()- state.Difftime - GMT_DIF) % DAY_TIME
-
-//   if(!state.lt.PlanLen)return
-//   days = Math.floor(index/state.lt.PlanLen)
-//   _index = index - days * state.lt.PlanLen;
-
-//   //跨期的处理
-//   var firstIssue = state.lt.LotteryPlan[0]
-//   if((firstIssue.End < firstIssue.Start) && (firstIssue.Start < _SerTime)){
-//     days++
-//   }
-
-//   //这里挂各特殊彩种的处理函数--有返回的直接出返回结果。不参与下一步
-//   var handler = {
-//     '1001':function(){
-//       //新疆时时彩跨天的处理
-//       if(_index >= 83 && _SerTime <= state.lt.LotteryPlan[state.lt.PlanLen - 1].End){
-//         console.log(_index, _SerTime, state.lt.LotteryPlan[state.lt.PlanLen - 1].End,days)
-//         days--
-//       }
-//     },
-//     //北京快三，以某一期作为基准
-//     '1406':()=>{
-//       var data = state.lt.Todaystr.replace(/^(\d{4})(\d{2})(\d{2})$/,'$1/$2/$3');
-//       return '0'+(Math.floor((Date.parse(data)-Date.parse("2016/8/1"))/DAY_TIME)*89+ BASE_ISSUE_1406 + index);
-//     }
-//   }
-
-//   //计算期号字符串
-//   var handleResult
-//   handler[code] && (handleResult = handler[code]())   //特殊彩种的特殊处理
-
-//   if(handleResult){
-//     return handleResult
-//   }else{
-//     if(days){
-//       var todayTime = new Date(state.lt.Todaystr.replace(/(\d{4})(\d{2})(\d{2})/,"$1/$2/$3")).getTime();
-//       dateStr = new Date(todayTime + days * DAY_TIME).format('yyyyMMdd');
-//     }else{
-//       dateStr = state.lt.Todaystr;
-//     }
-//     return dateStr + state.lt.LotteryPlan[_index].IssueNo
-//   }
-// }
-
 //根据传入的code,和彩种index来返回 期号字符串
 function computeIssue(code, index){
   var days    //和当前期差几天
