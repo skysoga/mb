@@ -704,6 +704,7 @@
             if(notUseLocal){
               _rebate = null
             }
+
             if(!_rebate){
               _fetch({
                 Action: 'GetBetRebate',
@@ -715,6 +716,10 @@
                     type:'lt_setRebate',
                     rebate: json.BackData,
                     LotteryType: type
+                  })
+                  // 更新号码篮里的返点信息
+                  state.basket.forEach(bet=>{
+                    bet.setRebate(json.BackData.Rebate, rootState)
                   })
                 }
               })
