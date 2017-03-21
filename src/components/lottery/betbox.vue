@@ -231,28 +231,27 @@ export default {
         alias: this.alias,
         arr: tmp
       })
-
-      this.$emit('choose')
+      this.$emit('choose',this.alias,tmp)
     },
-    filter(item){
-      this.$store.commit({
-        type:'lt_updateTmp',
-        alias: this.alias,
-        arr: refer[item].slice(0)
-      })
-      this.$emit('choose')
-    },
-    filterLight(item){
-      if(item === '清'){
-        return ''
-      }else{
-        if(isArrayEqual(this.chosen, refer[item])){
-          return 'curr'
-        }else{
-          return ''
-        }
-      }
-    }
+    // filter(item){
+    //   this.$store.commit({
+    //     type:'lt_updateTmp',
+    //     alias: this.alias,
+    //     arr: refer[item].slice(0)
+    //   })
+    //   this.$emit('choose')
+    // },
+    // filterLight(item){
+    //   if(item === '清'){
+    //     return ''
+    //   }else{
+    //     if(isArrayEqual(this.chosen, refer[item])){
+    //       return 'curr'
+    //     }else{
+    //       return ''
+    //     }
+    //   }
+    // }
   }
 }
 </script>

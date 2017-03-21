@@ -174,11 +174,41 @@ export default {
     mode:()=>state.lt.mode.mode
   }),
   methods:{
-    whenChoose(){
+    whenChoose(alias, choose){
+      var tmp = state.lt.tmp                     //即时投注号码
+      // 处理胆码和拖码不可重选
+      var isSYX5=this.$route.params.type==='SYX5'
+      if(isSYX5){
+        if(alias === 'dm'){
+          tmp['dm'].forEach(itemDm=>{
+            var indexTm = tmp['tm'].indexOf(itemDm)
+            if(indexTm > -1){
+              var _tm = tmp['tm'].slice(0)
+              _tm.splice(indexTm, 1)
+              this.$store.commit({
+                type:'lt_updateTmp',
+                alias: 'tm',
+                arr: _tm
+              })
+            }
+          })
+        }else if(alias === 'tm'){
+          tmp['tm'].forEach(itemDm=>{
+            var indexTm = tmp['dm'].indexOf(itemDm)
+            if(indexTm > -1){
+              var _dm = tmp['dm'].slice(0)
+              _dm.splice(indexTm, 1)
+              this.$store.commit({
+                type:'lt_updateTmp',
+                alias: 'dm',
+                arr: _dm
+              })
+            }
+          })
+        }
+      }
       var order = this.ltCfg[this.mode].render  //按渲染数组的顺序
-          ,tmp = state.lt.tmp                     //即时投注号码
-          ,result = this.ltCfg[this.mode].alg(order, tmp)  //当前投注注数
-
+      var result = this.ltCfg[this.mode].alg(order, tmp)  //当前投注注数
       this.$store.commit('lt_setBetStr', getBetStr(order, tmp))
       this.$store.commit('lt_setBetCount', result)
     }
