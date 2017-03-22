@@ -700,6 +700,10 @@
                     rebate: json.BackData,
                     LotteryType: type
                   })
+                  // 更新号码篮里的返点信息
+                  state.basket.forEach(bet=>{
+                    bet.setRebate(json.BackData.Rebate, rootState)
+                  })
                 }
               })
             }else{
@@ -745,8 +749,6 @@
               }else if(json.Code === -9){
                 //清除rebate
                 layer.alert(json.StrCode)
-                var type = state.lottery.LotteryType
-                // localStorage.removeItem('Rebate' + type)
                 this.$store.dispatch('lt_getRebate', true)
               }else{
                 layer.msgWarn(json.StrCode)
@@ -796,7 +798,6 @@
               }else if(json.Code === -9){
                 //清除rebate
                 layer.alert(json.StrCode)
-                var type = state.lottery.LotteryType
                 this.$store.dispatch('lt_getRebate', true)
               }else{
                 layer.msgWarn(json.StrCode);

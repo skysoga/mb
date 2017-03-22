@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "vue": "^2.0.1",
-    "vue-awesome-swiper": "^2.2.3",
+    "vue-awesome-swiper": "^2.3.8",
     "vuex": "^2.0.0",
     "whatwg-fetch": "^1.0.0"
   },

@@ -101,7 +101,7 @@
         </tr>
         <tr>
           <td>支付宝姓名</td>
-          <td><input type="text" tag = "支付宝姓名" v-model="PayUser" v-va:PayUser   placeholder="请输入您的支付宝姓名"></td>
+          <td><input type="text" tag = "支付宝姓名" v-model="PayUser" v-va:PayUser   placeholder="请输入您的支付姓名或昵称"></td>
         </tr>
         <tr>
           <td>扫码支付</td>
