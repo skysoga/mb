@@ -528,9 +528,7 @@ export default {
               }else if(json.Code === -9){
                 //清除rebate
                 layer.alert(json.StrCode)
-                var type = this.$store.state.lottery.LotteryType
-                // localStorage.removeItem('Rebate' + type)
-                this.$store.dispatch('lt_getRebate')
+                this.$store.dispatch('lt_getRebate', true)
               }else{
                 layer.msgWarn(json.StrCode)
               }

@@ -766,8 +766,6 @@
               }else if(json.Code === -9){
                 //清除rebate
                 layer.alert(json.StrCode)
-                var type = state.lottery.LotteryType
-                // localStorage.removeItem('Rebate' + type)
                 this.$store.dispatch('lt_getRebate', true)
               }else{
                 layer.msgWarn(json.StrCode)
@@ -816,7 +814,6 @@
               }else if(json.Code === -9){
                 //清除rebate
                 layer.alert(json.StrCode)
-                var type = state.lottery.LotteryType
                 this.$store.dispatch('lt_getRebate', true)
               }else{
                 layer.msgWarn(json.StrCode);
