@@ -129,7 +129,6 @@ export default{
     },
     setCard(key,id){
         var Arr=this.UserBankList
-        var vm=this
         for(var i=0;i<Arr.length;i++){
           if(Arr[i]==key){
             Arr.splice(i,1)
