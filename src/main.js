@@ -388,15 +388,15 @@ window.store = new Vuex.Store({
     WithdrwHtml:state=>{
       return "login"
     },
-    PayLimit: state => {
-      var el = {};
-      if(state.PayLimit){
-        state.PayLimit.forEach(item=>{
-          el[item.PayName] = [item.MinMoney, item.MaxMoney];
-        })
-      }
-      return el;
-    },
+    // PayLimit: state => {
+    //   var el = {};
+    //   if(state.PayLimit){
+    //     state.PayLimit.forEach(item=>{
+    //       el[item.PayName] = [item.MinMoney, item.MaxMoney];
+    //     })
+    //   }
+    //   return el;
+    // },
     NoDataDom:msg => state.tpl.noData.join("msg"),
   },
   mutations: {
@@ -577,8 +577,15 @@ window.RootApp={
         }
       }
     })(data.LotteryList)
-
-
+    ;(function(arr){
+      if(arr){
+        var el = {};
+        arr.forEach(item => {
+          el[item.PayName] = [item.MinMoney, item.MaxMoney];
+        })
+        data.PayLimit=el
+      }
+    })(data.PayLimit)
     if (data.NoticeData&&data.NoticeData.length) {
       if (data.NoticeData.length>2) {
         data.NoticeData.length=2;

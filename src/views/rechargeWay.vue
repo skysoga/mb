@@ -83,7 +83,7 @@ export default {
     }else{
       this.aliMsg="支付宝支付维护中..."
     }
-    this.payLimit = Object.freeze(this.$store.getters.PayLimit)
+    this.payLimit = state.PayLimit
   },
 }
 </script>

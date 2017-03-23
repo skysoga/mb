@@ -49,9 +49,7 @@ export default{
                 vm.UserAvail=state.UserWithdrawAvail
                 vm.PayLimit=state.PayLimit
                 vm.ArrData.BankCardID=vm.UserBankList[0].BankCardID
-                var Arr=vm.getMoney()
-                vm.MinMoney=Arr[0]
-                vm.MaxMoney=Arr[1]
+                vm.getMoney()
                 vm.ReGetTime=state.WithdrawRemainTimes
               })
             })
@@ -115,12 +113,12 @@ export default{
       })
     },
     getMoney(){
-      var Obj=this.PayLimit
-      for(var n in Obj){
-        if(Obj[n].PayName=='提现金额'){
-          return [Obj[n].MinMoney,Obj[n].MaxMoney]
-        }
-      }
+      var Arr=this.PayLimit['提现金额']
+          this.MinMoney=Arr[0]
+          this.MaxMoney=Arr[1]
+          this.vaConfig ||(this.vaConfig = {})
+          this.vaConfig['Money'] || (this.vaConfig['Money'] = [])
+          this.vaConfig['Money'].push(new this.VaConfig('limit', Arr, '', 'Money', '提现金额'))
     },
     toggle(){
       if(this.UserBankList.length>1){
