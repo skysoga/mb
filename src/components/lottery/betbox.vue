@@ -205,7 +205,7 @@ export default {
           alias: this.alias,
           arr: [item]
         })
-        this.$emit('choose')
+        this.$emit('choose',this.alias,[item])
         return
       }
 
@@ -214,6 +214,27 @@ export default {
         _chosen.splice(_pos, 1)
         var tmp = _chosen
       }else{
+        var isSYX5 = this.$route.params.type === 'SYX5'
+        ,mode = this.$store.state.lt.mode.mode
+        var dmMax = {
+          B23:2,
+          B33:2,
+          C23:3,
+          C33:3,
+          D13:4,
+          E13:5,
+          F13:6,
+          G13:7,
+          H13:8
+        }
+
+        if(isSYX5){
+          if(this.alias === 'dm'){
+            if(_chosen.length >= dmMax[mode] - 1){
+              _chosen.splice(_chosen.length -1, 1)
+            }
+          }
+        }
         //不存在添加该项
         _chosen.push(item)
         //去重加排序
@@ -231,28 +252,27 @@ export default {
         alias: this.alias,
         arr: tmp
       })
-
-      this.$emit('choose')
+      this.$emit('choose',this.alias,tmp)
     },
-    filter(item){
-      this.$store.commit({
-        type:'lt_updateTmp',
-        alias: this.alias,
-        arr: refer[item].slice(0)
-      })
-      this.$emit('choose')
-    },
-    filterLight(item){
-      if(item === '清'){
-        return ''
-      }else{
-        if(isArrayEqual(this.chosen, refer[item])){
-          return 'curr'
-        }else{
-          return ''
-        }
-      }
-    }
+    // filter(item){
+    //   this.$store.commit({
+    //     type:'lt_updateTmp',
+    //     alias: this.alias,
+    //     arr: refer[item].slice(0)
+    //   })
+    //   this.$emit('choose')
+    // },
+    // filterLight(item){
+    //   if(item === '清'){
+    //     return ''
+    //   }else{
+    //     if(isArrayEqual(this.chosen, refer[item])){
+    //       return 'curr'
+    //     }else{
+    //       return ''
+    //     }
+    //   }
+    // }
   }
 }
 </script>
