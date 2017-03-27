@@ -748,8 +748,9 @@
                 layer.confirm(`<span style = "color:red">投注成功</span>，您可以在我的账户查看注单详情`,['继续投注','查看注单'], ()=>{},()=>{this.$router.push('/userCenter')})
               }else if(json.Code === -9){
                 //清除rebate
-                layer.alert(json.StrCode)
                 this.$store.dispatch('lt_getRebate', true)
+                // layer.alert(json.StrCode)
+                layer.alert("返点错误，请重新投注")
               }else{
                 layer.msgWarn(json.StrCode)
               }
