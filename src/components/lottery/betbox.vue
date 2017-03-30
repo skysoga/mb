@@ -65,7 +65,7 @@ var cfg = {
   /**十一选五**/
   'd1':{tag:'第一位', itemArr: _syx5, filters:['清']},
   'd2':{tag:'第二位', itemArr: _syx5, filters:['清']},
-  'd3':{tag:'第二位', itemArr: _syx5, filters:['清']},
+  'd3':{tag:'第三位', itemArr: _syx5, filters:['清']},
   'd':{itemArr: _syx5, filters:['清']},
   'dm':{tag:'胆码', itemArr: _syx5, filters:['清']},
   'tm':{tag:'拖码', itemArr: _syx5, filters:['清']},
