@@ -38,7 +38,7 @@
   </div>
 </template>
 <script>
-var TypeArr=["迅汇宝","迅付通","赢通宝"]
+var TypeArr=["迅汇宝","迅付通","赢通宝","汇鑫"]
 export default {
   beforeRouteEnter(to, from, next){
     var title = {
