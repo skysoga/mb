@@ -1,5 +1,5 @@
 <template>
-  <div class="sscMain">
+  <div :class="{'sscMain':true,'quWei':getQW}">
     <div class="sscTips">
       <p>{{tip}}<i>{{award}}</i>元 </p>
       <!-- <p>每位至少选1个号码，按位猜对号码即中196000元 </p> -->
@@ -44,7 +44,7 @@ var playCfg = {
   // 'PL35': pl3Play,
   // 'KL8': kl8Play,
 }
-
+var modeArr=['定单双']
 export default {
   components:{
     betbox,
@@ -75,7 +75,10 @@ export default {
   computed:mapState({
     tip:()=>state.lt.mode.tip,      //提示
     award:()=>state.lt.award,        //奖金
-    mode:()=>state.lt.mode.mode
+    mode:()=>state.lt.mode.mode,
+    getQW:()=>{
+      return modeArr.indexOf(state.lt.mode.name)>-1
+    }
   }),
   methods:{
     whenChoose(alias, choose){
