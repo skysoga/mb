@@ -13,10 +13,6 @@
       </div>
 
       <div class="numberContent">
-        <a><span>上</span></a>
-        <a><span>中</span></a>
-        <a><span>下</span></a>
-        <a><span>大·双</span></a>
         <a v-for = "item in itemArr"
            @click = "choose(item)"
            :class = "chosen.indexOf(item) > -1 ? 'curr': ''">

@@ -168,5 +168,8 @@ function betSum(order, tmp){
       display:none;
     }
   }
+  i{
+    color:#dc3b40;
+  }
 }
 </style>
