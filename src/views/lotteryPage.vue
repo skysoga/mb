@@ -557,7 +557,9 @@
           },
           //refresh
           lt_refresh:({state, rootState, commit, dispatch})=>{
-            var isStop = rootState.LotteryList[this.lcode].IsStop
+            var code = state.lottery.LotteryCode
+            var isStop = rootState.LotteryList[code].IsStop
+            // var isStop = rootState.LotteryList[this.lcode].IsStop
             if(isStop === '1'){
               commit('lt_stopSell')    //暂停销售
               return
