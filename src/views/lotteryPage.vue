@@ -544,7 +544,7 @@
             })
           },
           //refresh
-          lt_refresh:({state, rootState, commit, dispatch})=>{
+        lt_refresh:({state, rootState, commit, dispatch})=>{
             function computeCountdown(issueNo, _SerTime){
               var _issue = state.LotteryPlan[state.IssueNo % state.PlanLen]
                   ,isCrossDay = (_issue.Start > _issue.End) && (_SerTime > _issue.Start)  //本期跨天,且当前时间大于End
@@ -558,7 +558,10 @@
               return Countdown
             }
 
-            var isStop = rootState.LotteryList[this.lcode].IsStop
+            var code = state.lottery.LotteryCode
+            var isStop = rootState.LotteryList[code].IsStop
+
+            // var isStop = rootState.LotteryList[this.lcode].IsStop
             if(isStop === '1'){
               commit('lt_stopSell')    //暂停销售
               return
@@ -649,7 +652,6 @@
                   dispatch('lt_getResults', state.lottery.LotteryCode)    //获取开奖结果
                 }
               }else if(Results[0].IssueNo*1 >= state.NowIssue*1){
-                // console.log(state.OldIssue);
                 commit('lt_stopSell')    //暂停销售
               }else{
                 commit('lt_displayResults', true)
