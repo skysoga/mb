@@ -68,6 +68,29 @@ body{
   height: 100%;
   background: rgba(0,0,0,.2);
 }
+/* ==================*/
+.PK10{
+  .line1{
+    height: 2em;
+    line-height: 3em;
+  }
+  .betFilterAnd{
+    padding: .2rem !important;
+    li{
+      span{
+        display: none;
+      }
+    }
+  }
+  .sscMain{
+    .sscTips{
+      padding-top: 4.7em;
+    }
+  }
+}
+
+
+/* ==================*/
 .laymshade {
   background-color: rgba(0, 0, 0, .3);
 }

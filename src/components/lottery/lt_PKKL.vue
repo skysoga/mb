@@ -64,7 +64,7 @@ export default{
   z-index: 5;
   .record.open{
     height: 12.3em;
-    border-top:1px solid #bdb58b;
+    overflow-y: auto;
   }
 }
 .title{
@@ -82,10 +82,12 @@ export default{
   font-size: .65em;
   line-height: 1.4em;
   color: #333;
-  transition: 1s;
+  transition: .6s;
   height: 0;
   overflow: hidden;
   background: #f5f1e5;
+  border-color: #bdb58b;
+  box-shadow: 0 -1px 0 #bdb58b ;
   li{
     .left,.right{
       float: left;
@@ -99,22 +101,23 @@ export default{
     .left{
       width: 7.8em;
       padding-left: 1em;
+      border-right:1px solid #bdb58b;
     }
     .right{
       position: relative;
-      width: 65%;
-      border-left:1px solid #bdb58b;
+      width: 60%;
       padding-left: 1.52em;
       &:before{
         content:"";
         display: block;
         position: absolute;
-        left: -.18em;
-        top:2em;
+        left: -.315em;
+        top:2.2em;
         width: .3em;
         height: .3em;
         border-radius: .4em;
-        box-shadow: 0 0 0 .2em #bdb58b;
+        /*box-shadow: 0 0 0 .2em #bdb58b;*/
+        border:.15em solid #bdb58b;
         background: #f5f1e5;
       }
     }

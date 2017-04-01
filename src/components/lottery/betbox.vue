@@ -13,6 +13,10 @@
       </div>
 
       <div class="numberContent">
+        <a><span>上</span></a>
+        <a><span>中</span></a>
+        <a><span>下</span></a>
+        <a><span>大·双</span></a>
         <a v-for = "item in itemArr"
            @click = "choose(item)"
            :class = "chosen.indexOf(item) > -1 ? 'curr': ''">
@@ -279,6 +283,11 @@ export default {
 
 <style lang = "scss" scoped>
 @import '../../scss/scssConfig','../../scss/mixin';
+.numberContent{
+  ins{
+
+  }
+}
 .selectNumber{
   padding:.3rem 0.5rem;
   padding-right: 0;
