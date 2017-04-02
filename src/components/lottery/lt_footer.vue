@@ -123,9 +123,9 @@ export default {
 
 $height:2.4em;
 .move{
-  animation: xAxismove 1s 1 ease-in;
+  animation: xAxismove .5s 1 ease-in;
   span{
-    animation: yAxismove 1s 1 cubic-bezier(1, 1, 1, 1);
+    animation: yAxismove .5s 1 cubic-bezier(1, 1, 1, 1);
   }
 }
 .moveNum{
@@ -133,7 +133,7 @@ $height:2.4em;
   position: absolute;
   left: 0.2em;
   top: 0.6em;
-  z-index: 99999;
+  z-index: 6;
   will-change: transform;
   width: 1.6em;
   height: 1.6em;
@@ -233,7 +233,7 @@ $height:2.4em;
         height: 1.6em;
         line-height: 1.7em;
         text-align: center;
-        z-index: 3;
+        z-index: 7;
       }
     }
   }
