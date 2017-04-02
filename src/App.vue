@@ -88,7 +88,17 @@ body{
     }
   }
 }
-
+.quWei{
+  .numberContent{
+    a{
+      width: calc(12.4rem / 3) !important;
+      span{
+        border-radius: .2em;
+        width: 4.4em;
+      }
+    }
+  }
+}
 
 /* ==================*/
 .laymshade {

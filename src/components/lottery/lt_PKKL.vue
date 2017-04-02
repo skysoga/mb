@@ -106,7 +106,10 @@ export default{
     .right{
       position: relative;
       width: 60%;
-      padding-left: 1.52em;
+      padding-left: 1.3em;
+      a{
+        margin:0 .2em;
+      }
       &:before{
         content:"";
         display: block;
