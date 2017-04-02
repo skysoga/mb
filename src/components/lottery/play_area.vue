@@ -44,7 +44,7 @@ var playCfg = {
   // 'PL35': pl3Play,
   // 'KL8': kl8Play,
 }
-var modeArr=['定单双']
+var modeArr=['定单双','趣味']
 export default {
   components:{
     betbox,
@@ -77,7 +77,7 @@ export default {
     award:()=>state.lt.award,        //奖金
     mode:()=>state.lt.mode.mode,
     getQW:()=>{
-      return modeArr.indexOf(state.lt.mode.name)>-1
+      return modeArr.indexOf(state.lt.mode.name)>-1||state.lt.lottery.LotteryType=='KL8'&&modeArr.indexOf(state.lt.mode.group)>-1
     }
   }),
   methods:{
