@@ -61,10 +61,9 @@ export default{
   top: 2.3em;
   left: 0;
   width: 100%;
-  z-index: 5;
+  z-index: 6;
   .record.open{
-    height: 12.3em;
-    overflow-y: auto;
+    height: 38.6em;
   }
 }
 .title{
