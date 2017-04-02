@@ -655,6 +655,7 @@
                   dispatch('lt_getResults', state.lottery.LotteryCode)    //获取开奖结果
                 }
               }else if(Results[0].IssueNo*1 >= state.NowIssue*1){
+                console.log(Results[0].IssueNo * 1, state.NowIssue * 1, '暂停销售log')
                 commit('lt_stopSell', 0)    //暂停销售
               }else{
                 commit('lt_displayResults', true)
