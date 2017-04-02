@@ -313,7 +313,7 @@ export default {
       border:1px solid #e3decf;
       border-radius: .3em;
       position: relative;
-      z-index: 3;
+      z-index: 2;
       margin-top: .8em;
       padding:.2em .5em;
       /*&:before,&:after{
