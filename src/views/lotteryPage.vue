@@ -291,10 +291,13 @@
           lt_setLotteryResult:(state, {code, results})=>{              //设置某一彩种的开奖结果
             Vue.set(state.LotteryResults, code, results)
           },
-          lt_stopSell:(state)=>{
-            this.$store.commit('lt_updateTimeBar', '暂停销售')    //暂停销售
-            // Vue.set(state, 'NowIssue', '00000000000')
-            // Vue.set(state, 'OldIssue', '00000000000')
+          lt_stopSell:(state, type)=>{
+            if(type !== 1){
+              var timebar = '暂停销售' //0--前端监测到的，就暂停销售
+            }else{
+              var timebar = '停止销售' //1--后端返回的，就停止销售
+            }
+            this.$store.commit('lt_updateTimeBar', timebar)    //暂停销售
           },
           lt_setIssueNo:(state, IssueNo)=>{state.IssueNo = IssueNo},  //设置当前期号
           lt_displayResults:(state, bool)=>{                          //展示开奖结果或开奖动画
@@ -563,8 +566,7 @@
 
             // var isStop = rootState.LotteryList[this.lcode].IsStop
             if(isStop === '1'){
-              //commit('lt_stopSell')    //暂停销售
-              this.$store.commit('lt_updateTimeBar', '停止销售')
+              commit('lt_stopSell', 1)    //停止销售
               return
             }
 
@@ -653,7 +655,8 @@
                   dispatch('lt_getResults', state.lottery.LotteryCode)    //获取开奖结果
                 }
               }else if(Results[0].IssueNo*1 >= state.NowIssue*1){
-                commit('lt_stopSell')    //暂停销售
+                console.log(Results[0].IssueNo * 1, state.NowIssue * 1, '暂停销售log')
+                commit('lt_stopSell', 0)    //暂停销售
               }else{
                 commit('lt_displayResults', true)
                 //开奖

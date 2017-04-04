@@ -435,6 +435,10 @@ window.store = new Vuex.Store({
       }
       localStorage.setItem('CacheData',JSON.stringify(CacheData))
     },
+    setTmpDifftime:(state, Difftime)=>{
+      state.Difftime = Difftime
+      localStorage.setItem('Difftime',Difftime)
+    },
     setDifftime:(state, timeItemList)=>{
       // console.log(timeItemList)
       // var cantGetTime = !timeItemList || !timeItemList.length || timeItemList.every(item=>!item.SerTime)
@@ -718,15 +722,16 @@ window.RootApp={
         if(json.Code > -1 && timeReg.test(json.Data)){
           timeItemList.push(new TimeItem(interval, timeEnd, timeBegin, json.Data))
         }
-
         if(cantGetTime > 4){
           var noTimeGeted = timeItemList.every(timeItem=>!timeItem.SerTime)  //一次都没获取到数据
-
           if(noTimeGeted){
+            store.commit('setTmpDifftime', 0)
+            layer.msgWarn('因无法同步服务器时间,您可能无法正常投注，请检查网络情况')
             cantGetTime = 0
             timeItemList = []
             fun && fun()
-            layer.url("因无法同步服务器时间,您将无法投注,请检查网络情况", '/index')
+
+            // layer.url("因无法同步服务器时间,您将无法投注,请检查网络情况", '/index')
           }else{
             //有一些获取到了数据，但是超时了。从获取到的再择优
             store.commit('setDifftime', timeItemList)
