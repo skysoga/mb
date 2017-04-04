@@ -563,7 +563,8 @@
 
             // var isStop = rootState.LotteryList[this.lcode].IsStop
             if(isStop === '1'){
-              commit('lt_stopSell')    //暂停销售
+              //commit('lt_stopSell')    //暂停销售
+              this.$store.commit('lt_updateTimeBar', '停止销售')
               return
             }
 

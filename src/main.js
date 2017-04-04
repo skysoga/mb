@@ -86,13 +86,17 @@ function Xss(data){
   }
   return [data,mayBeXss]
 }
-function FetchCatch(msg,resolve){
-  console.log("FetchCatch");
+function FetchCatch(msg, resolve, error) {
   if (state.turning) {
     layer.msgWarn(msg)
-    state.turning=false
-  }else{
-    resolve({Code:-1,StrCode:msg})
+    state.turning = false
+  } else {
+    console.log(error)
+    error = error&&error.message
+    if (error) {
+      msg += '<br/>'+error
+    }
+    resolve({ Code: -1, StrCode: msg })
   }
 }
 var fetchArr=[]
@@ -113,7 +117,7 @@ window._fetch = function (data){
     str.push(i+'='+k)
   }
   str=str.join('&')
-  /*// 防止一秒内的完全相同请求
+  // 防止一秒内的完全相同请求
   var now = new Date().getTime()
   for (var i = 0; i < fetchArr.length; i++) {
     if(fetchArr[i][0]+1000<now){
@@ -125,7 +129,7 @@ window._fetch = function (data){
       }}
     }
   }
-  fetchArr.unshift([now,str])*/
+  fetchArr.unshift([now,str])
   return new Promise(function(resolve, reject){
     var st = state.turning&&setTimeout(function(){
       console.log("请求超时");
@@ -135,6 +139,7 @@ window._fetch = function (data){
     fetch('/tools/ssc_ajax.ashx', {
       credentials:'same-origin',
       method: 'POST',
+      cache: 'no-store',
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
       },
@@ -189,23 +194,29 @@ window._fetch = function (data){
               })
               notRes=true
             break;
+            case -1:
+              if (json.StrCode === '空') {
+                // 出现意外错误，需要补发接口
+                console.log('补发接口')
+                _fetch(data,option).then(json=>{
+                  resolve(json)
+                })
+                notRes=true
+              }
+            break;
           }
           if (data.Action.search('Verify')===0&&json.Code>-1) {
             state.UserVerify=data.Action.replace('Verify','')+','
           }
         })()
         notRes||resolve(json)
-      }).catch(r=>{
-        console.log(r.message)
-        FetchCatch("网络数据错误",resolve)
+      }).catch(error => {
+        var msg = "网络数据错误"
+        FetchCatch(msg, resolve, error)
       })
-    }).catch((r)=>{
-      console.log(r.message);
-      if ("Failed to fetch"===r.message) {
-        FetchCatch("您的设备失去了网络连接",resolve)
-      }else{
-        FetchCatch("网络错误，请检查网络状态",resolve)
-      }
+    }).catch(error => {
+      var msg = "网络错误，请检查网络状态"
+      FetchCatch(msg, resolve,error)
     })
   })
 }
