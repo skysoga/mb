@@ -1,5 +1,5 @@
 import {factorial, mul, C, combNoRepeat, normalSum2, normalSum3, accumulate,
-  diff2, diff3, combSum2, combSum3, countSingle, betSum} from '../kit'
+  diff2, diff3, combSum2, combSum3, countSingle, betSum,oneRandom, _random, _syx5} from '../kit'
 
 var syx5Config = {
   "三码":{
@@ -417,4 +417,92 @@ var syx5Play = {
   I11:{render:['dds'], alg:countSingle}, //定单双
   I12:{render:['czw'], alg:countSingle}, //猜中位
 }
-export {syx5Config, syx5Play}
+
+function syx5OneStar(){
+  var line =  Math.floor(Math.random() * 3)
+  var res = []
+  for(var i = 0;i < 3;i++){
+    var lineRes = []
+    if(line === i){
+      var feed = Math.floor(Math.random() * 11)
+      lineRes.push(_syx5[feed])
+    }
+    res.push(lineRes)
+  }
+  return res
+}
+
+// 给出一注十一选五单式的注单
+function getSYX5NoteRandom(num, baseArr, noNeedOrder){
+  var source = baseArr.slice()
+  var res = []
+  for(var i = 0;i < num;i++){
+    var feed = Math.floor(Math.random() * source.length)  //随机索引
+    res.push(source[feed]) //添加到每一行的结果数组中
+    source.splice(feed, 1)     //从源数组中剔掉一个，保证单行不会出现重复
+  }
+
+  if(noNeedOrder === true){
+    res = res.sort((a,b)=>a-b)
+  }
+  return res
+}
+
+function getDTRandom(num){
+  var feed = Math.floor(Math.random() * 2)
+  return feed === 0 ? _random([1, num -1], false, _syx5) : _random([num -1, 1], false, _syx5)
+}
+
+
+var dds = ['5单0双','4单1双','3单2双','2单3双','1单4双','0单5双']
+var czw = ['03','04','05','06','07','08','09']
+var syx5Random = {
+  //选一
+  A11:()=>_random([1], false, _syx5),         //前三一码不定位
+  A21:()=>syx5OneStar(),                      //定位胆
+  A31:()=>_random([1], false, _syx5),         //任选复式一中一
+  //选二
+  B11:()=>_random([1,1], false, _syx5),       //前二直选复式
+  B21:()=>_random([2], false, _syx5),         //前二组选复式
+  B23:()=>getDTRandom(2),                     //前二组选胆拖
+  B31:()=>_random([2], false, _syx5),         //任选二中二
+  B33:()=>getDTRandom(2),                     //任选二中二胆拖
+  //选三
+  C11:()=>_random([1,1,1], false, _syx5),     //前三直选复式
+  C21:()=>_random([3], false, _syx5),         //前三组选复式
+  C23:()=>getDTRandom(3),                     //前三组选胆拖
+  C31:()=>_random([3], false, _syx5),         //任选三中三复式
+  C33:()=>getDTRandom(3),                     //任选三中三胆拖
+  D11:()=>_random([4], false, _syx5),         //任选四中四复式
+  D13:()=>getDTRandom(4),                     //任选四中四胆拖
+  E11:()=>_random([5], false, _syx5),         //任选五中五复式
+  E13:()=>getDTRandom(5),                     //任选五中五胆拖
+  F11:()=>_random([6], false, _syx5),         //任选六中五复式
+  F13:()=>getDTRandom(6),                     //任选六中五胆拖
+  G11:()=>_random([7], false, _syx5),         //任选七中五复式
+  G13:()=>getDTRandom(7),                     //任选七中五胆拖
+  H11:()=>_random([8], false, _syx5),         //任选八中五复式
+  H13:()=>getDTRandom(8),                     //任选八中五胆拖
+  I11:()=>_random([1], false, dds),         //趣味定单双
+  I12:()=>_random([1], false, czw),         //趣味猜中位
+}
+
+var syx5RandomNote = {
+  A32:()=>[0].map(item=>_syx5[oneRandom(11)]),  //任选单式一中一
+  B12:()=>getSYX5NoteRandom(2, _syx5),          //前二直选单式
+  B22:()=>getSYX5NoteRandom(2, _syx5, true),    //前二组选单式
+  B32:()=>getSYX5NoteRandom(2, _syx5, true),    //任选二中二单式
+  C12:()=>getSYX5NoteRandom(3, _syx5),          //前三直选单式
+  C22:()=>getSYX5NoteRandom(3, _syx5, true),    //前三组选单式
+  C32:()=>getSYX5NoteRandom(3, _syx5, true),    //任选三中三单式
+  D12:()=>getSYX5NoteRandom(4, _syx5, true),    //任选四中四单式
+  E12:()=>getSYX5NoteRandom(5, _syx5, true),    //任选五中五单式
+  F12:()=>getSYX5NoteRandom(6, _syx5, true),    //任选六中五单式
+  G12:()=>getSYX5NoteRandom(7, _syx5, true),    //任选七中五单式
+  H12:()=>getSYX5NoteRandom(8, _syx5, true),    //任选八中五单式
+
+}
+
+var syx5SpecialMode = {}
+
+export {syx5Config, syx5Play, syx5Random, syx5RandomNote, syx5SpecialMode}

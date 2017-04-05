@@ -699,9 +699,67 @@ function createStringArray(start, end){
   return result
 }
 
+/**
+ * [_random 获得机选数组]
+ * @param  {[type]} cfgArr    [配置数组]
+ * @param  {[type]} canRepeat [是否允许跨行重复，单行肯定不能重复的]
+ * @param  {[type]} baseArr   [基础数组]
+ * @return {[type]}           [返回一个层级数组]
+ */
+function _random(cfgArr, canRepeat, baseArr){
+  var len = cfgArr.length,  //有几行
+      res = [],             //结果数组
+      feeds = baseArr.slice(0) //基础数组的拷贝
+
+  for(var i = 0;i < len;i++){
+    var lineLen = cfgArr[i],    //每行要获取的随机数个数
+        lineRes = [],           //每行的结果数组
+        _feeds = canRepeat ? feeds.slice(0) : feeds  //每行的数据源
+
+    for(var j = 0;j < lineLen;j++){
+      var feed = Math.floor(Math.random() * _feeds.length)  //随机索引
+      lineRes.push(_feeds[feed]) //添加到每一行的结果数组中
+      _feeds.splice(feed, 1)     //从源数组中剔掉一个，保证单行不会出现重复
+    }
+
+    lineRes = lineRes.sort((a,b)=>a-b)   //对每一行的结果数组进行排序
+    res.push(lineRes)
+  }
+  return res
+}
+
+var _0to9 = [0,1,2,3,4,5,6,7,8,9],
+    _dsds = ['大', '小', '单', '双'],
+    // filters = ['全', '大', '小', '奇', '偶', '清'],
+    _0to27 = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27],
+    _1to26 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26],
+    _0to18 = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
+    _1to17 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],
+    _syx5 = ['01','02','03','04','05','06','07','08','09','10','11'],
+    _pk10 = ['01','02','03','04','05','06','07','08','09','10']
+
+// 给出0-(n-1)的随机数
+var oneRandom = (n)=>Math.floor(Math.random() * n)
+
+// 一星
+function oneStar(){
+   var line =  Math.floor(Math.random() * 5)
+   var res = []
+   for(var i = 0;i < 5;i++){
+    var lineRes = []
+    if(line === i){
+      lineRes.push(Math.floor(Math.random() * 10))
+    }
+    res.push(lineRes)
+   }
+   return res
+}
+
+
 export {factorial, mul, C, combNoRepeat, unique, normalSum2,
   normalSum3, accumulate,diff2, diff3, combSum2, combSum3,
    bus, BaseBet, compress, throttle, easyClone, ChaseAjax,
     deleteCompress, Scheme, getBasketAmount,computeIssue,
     getSSCRebate,getK3Rebate,getRebate, DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME,
-  GMT_DIF, PERBET,Max_Rate, Max_Chase_Issue, Max_Expect_Rate, BASE_ISSUE_1406, syx5_zx2, countSingle, betSum, createStringArray}
+  GMT_DIF, PERBET,Max_Rate, Max_Chase_Issue, Max_Expect_Rate, BASE_ISSUE_1406, syx5_zx2,
+  countSingle, betSum, createStringArray, _random, _0to9, _dsds, _0to27, _1to26, _0to18, _1to17, _syx5, _pk10, oneRandom, oneStar}
