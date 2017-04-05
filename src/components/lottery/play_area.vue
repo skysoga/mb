@@ -114,15 +114,16 @@ export default {
           })
         }
       }
+      var isSYX5Type = ['SYX5', 'PK10'].indexOf(this.$route.params.type) > -1
       var order = this.ltCfg[this.mode].render  //按渲染数组的顺序
       var result = this.ltCfg[this.mode].alg(order, tmp)  //当前投注注数
-      this.$store.commit('lt_setBetStr', getBetStr(order, tmp))
+      this.$store.commit('lt_setBetStr', getBetStr(order, tmp, isSYX5Type))
       this.$store.commit('lt_setBetCount', result)
     }
   }
 }
 
-function getBetStr(order, tmp){
+function getBetStr(order, tmp, isSYX5Type){
   var betStrArr = []
   for(var i = 0;i < order.length;i++){
     betStrArr.push(tmp[order[i]].join(' '))
@@ -130,7 +131,11 @@ function getBetStr(order, tmp){
 
   betStrArr = betStrArr.map(item=>{
     if(item === ''){
-      return '-'
+      if(isSYX5Type === false){
+        return '-'
+      }else{
+        return '--'
+      }
     }else{
       return item
     }
