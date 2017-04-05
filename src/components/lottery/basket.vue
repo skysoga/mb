@@ -58,6 +58,7 @@ import {PERBET,Max_Rate,Max_Chase_Issue} from '../../JSconfig'
 import {normalSum3, normalSum2, diff3, diff2, combSum3, combSum2, BaseBet,bus} from '../../js/kit'
 import {sscRandom, sscRandomNote, sscSpecialMode} from '../../js/page_config/lt_ssc'
 import {syx5Random, syx5RandomNote, syx5SpecialMode} from '../../js/page_config/lt_syx5'
+import {pk10Random, pk10RandomNote, pk10SpecialMode} from '../../js/page_config/lt_pk10'
 
 function getBetStr(arr, isSYX5Type){
   arr = arr.map(item=>item.join(' ')).map(item=>{
@@ -95,149 +96,20 @@ function getTag(code, config){
 var randomCfgs = {
   SSC: sscRandom,
   SYX5: syx5Random,
-  // PK10: pk10Random
+  PK10: pk10Random
 }
-
-
-// //复式的机选生成函数
-// var randomCfg = {
-//   //五星
-//   H11:()=>_random([1,1,1,1,1], true, _0to9),  //五星复式
-//   H21:()=>_random([5], false, _0to9),         //组选120
-//   H22:()=>_random([1,3], false, _0to9),       //组选60
-//   H23:()=>_random([2,1], false, _0to9),       //组选30
-//   H24:()=>_random([1,2], false, _0to9),       //组选20
-//   H25:()=>_random([1,1], false, _0to9),       //组选10
-//   H26:()=>_random([1,1], false, _0to9),       //组选5
-//   H31:()=>_random([1], false, _0to9),         //一码不定位
-//   H32:()=>_random([2], false, _0to9),         //二码不定位
-//   H33:()=>_random([3], false, _0to9),         //三码不定位
-//   H41:()=>_random([1], false, _0to9),         //一帆风顺
-//   H42:()=>_random([1], false, _0to9),         //好事成双
-//   H43:()=>_random([1], false, _0to9),         //三星报喜
-//   H44:()=>_random([1], false, _0to9),         //四季发财
-//   //四星
-//   G11:()=>_random([1,1,1,1], true, _0to9),    //四星复式
-//   G21:()=>_random([4], false, _0to9),         //四星组选24
-//   G22:()=>_random([1,2], false, _0to9),       //四星组选12
-//   G23:()=>_random([2], false, _0to9),         //四星组选6
-//   G24:()=>_random([1,1], false, _0to9),       //四星组选4
-//   G31:()=>_random([1], false, _0to9),         //一码不定位
-//   G32:()=>_random([2], false, _0to9),         //二码不定位
-//   //前三
-//   F11:()=>_random([1,1,1], true, _0to9),     //直选复式
-//   F13:()=>_random([1], false, _0to27),        //直选和值
-//   F14:()=>_random([1], false, _0to9),         //跨度
-//   F21:()=>_random([1], false, _1to26),        //组选和值
-//   F22:()=>_random([2], false, _0to9),         //组三
-//   F23:()=>_random([3], false, _0to9),         //组六
-//   F25:()=>_random([1], false, _0to9),         //组选包胆
-//   F31:()=>_random([1], false, _0to9),         //一码不定位
-//   F32:()=>_random([2], false, _0to9),         //二码不定位
-//   //中三
-//   E11:()=>_random([1,1,1], true, _0to9),     //直选复式
-//   E13:()=>_random([1], false, _0to27),        //直选和值
-//   E14:()=>_random([1], false, _0to9),         //跨度
-//   E21:()=>_random([1], false, _1to26),        //组选和值
-//   E22:()=>_random([2], false, _0to9),         //组三
-//   E23:()=>_random([3], false, _0to9),         //组六
-//   E25:()=>_random([1], false, _0to9),         //组选包胆
-//   E31:()=>_random([1], false, _0to9),         //一码不定位
-//   E32:()=>_random([2], false, _0to9),         //二码不定位
-//   //后三
-//   D11:()=>_random([1,1,1], true, _0to9),     //直选复式
-//   D13:()=>_random([1], false, _0to27),        //直选和值
-//   D14:()=>_random([1], false, _0to9),         //跨度
-//   D21:()=>_random([1], false, _1to26),        //组选和值
-//   D22:()=>_random([2], false, _0to9),         //组三
-//   D23:()=>_random([3], false, _0to9),         //组六
-//   D25:()=>_random([1], false, _0to9),         //组选包胆
-//   D31:()=>_random([1], false, _0to9),         //一码不定位
-//   D32:()=>_random([2], false, _0to9),         //二码不定位
-//   //前二
-//   C11:()=>_random([1,1], true, _0to9),       //直选复式
-//   C13:()=>_random([1], false, _0to18),        //直选和值
-//   C14:()=>_random([1], false, _0to9),         //跨度
-//   C21:()=>_random([2], false, _0to9),         //组选复式
-//   C23:()=>_random([1], false, _1to17),        //组选和值
-//   C24:()=>_random([1], false, _0to9),         //组选包胆
-//   //后二
-//   B11:()=>_random([1,1], true, _0to9),       //直选复式
-//   B13:()=>_random([1], false, _0to18),        //直选和值
-//   B14:()=>_random([1], false, _0to9),         //跨度
-//   B21:()=>_random([2], false, _0to9),         //组选复式
-//   B23:()=>_random([1], false, _1to17),        //组选和值
-//   B24:()=>_random([1], false, _0to9),         //组选包胆
-//   //一星
-//   A11:()=>oneStar(),                          //一星
-//   //大小单双
-//   I91:()=>_random([1,1], true, _dsds),         //前二大小单双
-//   I92:()=>_random([1,1], true, _dsds),         //后二大小单双
-//   I93:()=>_random([1,1,1], true, _dsds),         //前三大小单双
-//   I95:()=>_random([1,1,1], true, _dsds),         //后三大小单双
-// }
-
 
 var randomNoteBets = {
   SSC: sscRandomNote,
   SYX5: syx5RandomNote,
-  // PK10: pk10RandomNote
+  PK10: pk10RandomNote
 }
-
-//单式的机选生成函数
-// var randomNoteBet = {
-//   H12:()=>[0,0,0,0,0].map(item=>oneRandom()),    //五星单式
-//   G12:()=>[0,0,0,0].map(item=>oneRandom()),      //四星单式
-//   F12:()=>[0,0,0].map(item=>oneRandom()),        //前三单式
-//   F24:()=>_random([3], false, _0to9)[0],         //前三混合组选单式
-//   F26:()=>z3NoteBet(),                           //前三组三单式
-//   F27:()=>_random([3], false, _0to9)[0],         //前三组六单式
-//   E12:()=>[0,0,0].map(item=>oneRandom()),        //中三单式
-//   E24:()=>_random([3], false, _0to9)[0],         //中三混合组选单式
-//   E26:()=>z3NoteBet(),                           //中三组三单式
-//   E27:()=>_random([3], false, _0to9)[0],         //中三组六单式
-//   D12:()=>[0,0,0].map(item=>oneRandom()),        //后三单式
-//   D24:()=>_random([3], false, _0to9)[0],         //后三混合组选单式
-//   D26:()=>z3NoteBet(),                           //后三组三单式
-//   D27:()=>_random([3], false, _0to9)[0],         //后三组六单式
-//   C12:()=>[0,0].map(item=>oneRandom()),          //前二直选单式
-//   C22:()=>_random([2], false, _0to9)[0],         //前二组选单式
-//   B12:()=>[0,0].map(item=>oneRandom()),          //后二直选单式
-//   B22:()=>_random([2], false, _0to9)[0],         //后二组选单式
-// }
 
 var specialModes = {
   SSC: sscSpecialMode,
   SYX5: syx5SpecialMode,
-  // PK10: pk10SpecialMode
+  PK10: pk10SpecialMode
 }
-
-//哪种机选注数不是一注的，在这里特殊处理
-// var specialMode = {
-//   F13:(feed)=>normalSum3(feed[0][0]),
-//   F14:(feed)=>diff3(feed[0][0]),
-//   F21:(feed)=>combSum3(feed[0][0]),
-//   F22:(feed)=>2,
-//   F25:(feed)=>54,
-//   E13:(feed)=>normalSum3(feed[0][0]),
-//   E14:(feed)=>diff3(feed[0][0]),
-//   E21:(feed)=>combSum3(feed[0][0]),
-//   E22:(feed)=>2,
-//   E25:(feed)=>54,
-//   D13:(feed)=>normalSum3(feed[0][0]),
-//   D14:(feed)=>diff3(feed[0][0]),
-//   D21:(feed)=>combSum3(feed[0][0]),
-//   D22:(feed)=>2,
-//   D25:(feed)=>54,
-//   C13:(feed)=>normalSum2(feed[0][0]),
-//   C14:(feed)=>diff2(feed[0][0]),
-//   C23:(feed)=>combSum2(feed[0][0]),
-//   C24:(feed)=>9,
-//   B13:(feed)=>normalSum2(feed[0][0]),
-//   B14:(feed)=>diff2(feed[0][0]),
-//   B23:(feed)=>combSum2(feed[0][0]),
-//   B24:(feed)=>9,
-// }
 
 export default {
   data(){
@@ -457,11 +329,6 @@ export default {
           var randomBet = new BaseBet(this.$store.state, 1, betStr)
         }
 
-        // //单式的处理
-        // var betStr = noteBetList.indexOf(this.mode) > -1 ? randomFeed : getBetStr(randomFeed)
-        // //有些机选不了一注的。至少n注
-        // var count = specialMode[this.mode] ? specialMode[this.mode](randomFeed) : 1
-        // var randomBet = new BaseBet(this.$store.state,count, betStr)
         randomBet.clearCompress()
         this.$store.commit('lt_addRandomBet', randomBet)
       }

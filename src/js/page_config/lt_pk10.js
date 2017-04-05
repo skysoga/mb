@@ -193,4 +193,17 @@ var pk10Play = {
   A11:{render:['first'], alg:countSingle},
 }
 
-export {pk10Config, pk10Play}
+//复式注单随机生成函数
+var pk10Random = {
+
+}
+
+//单式注单随机生成函数
+var pk10RandomNote = {
+
+}
+
+//特殊的，不能够注数为1的一些玩法
+var pk10SpecialMode = {}
+
+export {pk10Config, pk10Play,pk10Random, pk10RandomNote, pk10SpecialMode}
