@@ -65,7 +65,7 @@ export default {
         for(var i = 0;i < formatArr.length;i++){
           var formatBet = formatArr[i]
 
-          if(this.special === 'needOrder'){
+          if(this.special === 'noOrder'){
             formatBet = formatBet.sort((a,b)=>a-b)
           }
 
