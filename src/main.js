@@ -725,8 +725,14 @@ window.RootApp={
         if(cantGetTime > 4){
           var noTimeGeted = timeItemList.every(timeItem=>!timeItem.SerTime)  //一次都没获取到数据
           if(noTimeGeted){
-            store.commit('setTmpDifftime', 0)
-            layer.msgWarn('因无法同步服务器时间,您可能无法正常投注，请检查网络情况')
+            var Difftime=0
+            try{
+              Difftime=(new Date().getTimezoneOffset()+480)*60
+            }catch(e){
+              layer.msgWarn('不支持getTimezoneOffset')
+            }
+            store.commit('setTmpDifftime', Difftime)
+            layer.msgWarn('因无法同步服务器时间,您可能无法正常投注')
             cantGetTime = 0
             timeItemList = []
             fun && fun()
