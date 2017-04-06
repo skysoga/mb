@@ -315,7 +315,7 @@ export default {
     random(n){
       for(var i = 0;i < n;i++){
         var isNoteBet = Object.keys(this.randomNoteBet).indexOf(this.mode) > -1
-        var isSYX5Type = ['SYX5', 'PK10'].indexOf(this.ltype) > -1
+        var isSYX5Type = ['SYX5','PK10'].indexOf(this.ltype) > -1
 
         if(isNoteBet === false){
           var randomFeed = this.randomCfg[this.mode]() //层次数组

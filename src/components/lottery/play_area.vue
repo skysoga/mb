@@ -114,7 +114,7 @@ export default {
           })
         }
       }
-      var isSYX5Type = ['SYX5', 'PK10'].indexOf(this.$route.params.type) > -1
+      var isSYX5Type = ['SYX5'].indexOf(this.$route.params.type) > -1
       var order = this.ltCfg[this.mode].render  //按渲染数组的顺序
       var result = this.ltCfg[this.mode].alg(order, tmp)  //当前投注注数
       this.$store.commit('lt_setBetStr', getBetStr(order, tmp, isSYX5Type))
