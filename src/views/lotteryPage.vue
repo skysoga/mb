@@ -570,7 +570,7 @@
               return
             }
 
-            var _SerTime = (new Date().getTime()- this.$store.state.Difftime - GMT_DIF) % DAY_TIME
+            var _SerTime = (new Date().getTime()- this.$store.state.Difftime - GMT_DIF) % DAY_TIME //折合成当日的时间
                 ,IssueNo = state.IssueNo
             if(_SerTime<1000) {
               // console.log("新的一天");
