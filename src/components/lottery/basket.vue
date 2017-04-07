@@ -315,15 +315,15 @@ export default {
     random(n){
       for(var i = 0;i < n;i++){
         var isNoteBet = Object.keys(this.randomNoteBet).indexOf(this.mode) > -1
-        var isSYX5Type = ['SYX5','PK10'].indexOf(this.ltype) > -1
-
         if(isNoteBet === false){
           var randomFeed = this.randomCfg[this.mode]() //层次数组
+          var isSYX5Type = ['SYX5'].indexOf(this.ltype) > -1
           var betStr = getBetStr(randomFeed, isSYX5Type)
           var count = this.specialMode[this.mode] ? this.specialMode[this.mode](randomFeed) : 1
           var randomBet = new BaseBet(this.$store.state, count, betStr)
         }else{
           var noteBetArr = this.randomNoteBet[this.mode]()
+          var isSYX5Type = ['SYX5','PK10'].indexOf(this.ltype) > -1
           var delimiter = isSYX5Type ? ' ' : ''
           var betStr = noteBetArr.join(delimiter)
           var randomBet = new BaseBet(this.$store.state, 1, betStr)
