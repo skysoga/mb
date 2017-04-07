@@ -6,7 +6,7 @@
     <div class="errorContent fix" v-if="$store.state.Maintain">
       <div class="maintain">
         <div class="left">
-          <img src="http://images.dafa176.com/system/pc/error/error.png" alt="" width="130" height="87">
+          <img src="http://imagess-google.com/system/pc/error/error.png" alt="" width="130" height="87">
         </div>
         <div class="right">
           <h1>系统维护中</h1>
