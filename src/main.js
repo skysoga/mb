@@ -136,7 +136,9 @@ window._fetch = function (data){
       FetchCatch('网络请求超时，请检查网络状态',resolve)
       reject()
     },10000)
-    fetch('/tools/ssc_ajax.ashx', {
+    var fetchUrl = state.UserName||data.UserName
+    fetchUrl = fetchUrl?'/tools/ssc_ajax.ashx?U='+fetchUrl:'/tools/ssc_ajax.ashx'
+    fetch(fetchUrl, {
       credentials:'same-origin',
       method: 'POST',
       cache: 'no-store',
