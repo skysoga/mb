@@ -66,7 +66,7 @@ var XssList=filterXSS.whiteList
 for(var x in XssList){
   XssList[x].push('style')
 }
-filterXSS.whiteList=XssList
+// filterXSS.whiteList=XssList
 
 function Xss(data){
   var k,nk,t,mayBeXss
