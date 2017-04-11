@@ -67,8 +67,8 @@ var setObj={}
 for(var x in XssList){
   setObj[x]=XssList[x].push('style')
 }
-
 filterXSS.whiteList=setObj
+
 function Xss(data){
   var k,nk,t,mayBeXss
   for(var i in data){
