@@ -61,6 +61,14 @@ window.em = Math.sqrt((rem-20)*.9)+20
 document.querySelector("html").style.fontSize=rem+'px'
 document.body.style.fontSize=em+'px'
 
+// 修改默认配置XSS 添加STYLE
+var XssList=filterXSS.whiteList
+var setObj={}
+for(var x in XssList){
+  setObj[x]=XssList[x].push('style')
+}
+filterXSS.whiteList=setObj
+
 function Xss(data){
   var k,nk,t,mayBeXss
   for(var i in data){
