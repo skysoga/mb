@@ -63,11 +63,10 @@ document.body.style.fontSize=em+'px'
 
 // 修改默认配置XSS 添加STYLE
 var XssList=filterXSS.whiteList
-var setObj={}
 for(var x in XssList){
-  setObj[x]=XssList[x].push('style')
+  XssList[x].push('style')
 }
-filterXSS.whiteList=setObj
+filterXSS.whiteList=XssList
 
 function Xss(data){
   var k,nk,t,mayBeXss
