@@ -86,18 +86,37 @@ function Xss(data){
   }
   return [data,mayBeXss]
 }
-function FetchCatch(msg, resolve, error) {
+window._catch = function(data){
+  fetch('/catch?'+JSON.stringify(data), {
+    credentials:'same-origin',
+    method: 'GET',
+    cache: 'no-store',
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    // body: str
+  })
+}
+function FetchCatch(opt) {
+  console.log(opt);
+  var {msg, status, resolve, error, T, S}=opt
+  if (status){
+    msg += status
+  }
+  if (error) {
+    error=error.toString()
+    msg += '<br/>'+error
+  }
+  if (S){
+    msg += '<br/>'+S
+  }
   if (state.turning) {
     layer.msgWarn(msg)
     state.turning = false
-  } else {
-    console.log(error)
-    error = error&&error.message
-    if (error) {
-      msg += '<br/>'+error
-    }
+  }else{
     resolve({ Code: -1, StrCode: msg })
   }
+  _catch(opt)
 }
 var fetchArr=[]
 window._fetch = function (data){
@@ -147,10 +166,35 @@ window._fetch = function (data){
       },
       body: str
     }).then((res)=>{
+      var T = (new Date().getTime()-now)/1000
+      var H={}
+      try{
+        for (var pair of res.headers.entries()) {
+          pair[0]=pair[0].toLowerCase()
+          if (['a','x-sec'].indexOf(pair[0])>-1) {
+            H[pair[0]]=pair[1]
+          }
+        }
+      }catch(e){
+        H={'x-sec':'I','a':'E'}
+      }
+      var S = H['x-sec']+H['a']
       if (res.status!==200) {
-        FetchCatch("网络错误"+res.status,resolve)
+        // FetchCatch("网络错误"+res.status,resolve)
+        var msg = "网络错误"
+        FetchCatch({
+          msg,
+          status:res.status,
+          resolve,
+          T,  //fetch耗时,
+          S,
+          data //fetch的body
+        })
         return
       }
+
+      // res.headers.entries()
+      // console.log();
       res.json().then(json=>{
         json = Xss(json)
         if(json[1]) {
@@ -214,11 +258,25 @@ window._fetch = function (data){
         notRes||resolve(json)
       }).catch(error => {
         var msg = "网络数据错误"
-        FetchCatch(msg, resolve, error)
+        // FetchCatch(msg, resolve, error)
+        FetchCatch({
+          msg,
+          error,
+          resolve,
+          T,  //fetch耗时
+          S,
+          str //fetch的body
+        })
       })
     }).catch(error => {
       var msg = "网络错误，请检查网络状态"
-      FetchCatch(msg, resolve,error)
+      FetchCatch({
+        msg,
+        error,
+        resolve,
+        str //fetch的body
+      })
+    })
     })
   })
 }
