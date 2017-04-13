@@ -171,8 +171,8 @@ window._fetch = function (data){
   fetchArr.unshift([now,str])
   return new Promise(function(resolve, reject){
     var st = state.turning&&setTimeout(function(){
-      console.log("请求超时");
-      FetchCatch('网络请求超时，请重试',resolve)
+      var msg = '网络请求超时，请重试'
+      FetchCatch({msg},resolve)
       reject()
     },10000)
     var fetchUrl = state.UserName||data.UserName
@@ -214,12 +214,14 @@ window._fetch = function (data){
       }
       res.text().then(json=>{
         if (data.Action==='GetImageCode') {
+          //获取验证码的不需要转换成json
           resolve(json)
           return
         }
         try{
           json = JSON.parse(json)
         }catch(error){
+          // 解析成json数据失败
           var msg = "网络数据解析错误"
           FetchCatch({
             msg,
@@ -231,7 +233,6 @@ window._fetch = function (data){
           })
         }
         if (typeof(json)==='string') return
-        console.log(json);
         json = Xss(json)
         if(json[1]) {
           console.log(json[1]);
@@ -260,8 +261,8 @@ window._fetch = function (data){
                 notRes=true
               }
             break;
-            case -6://IP黑名单
-            break;
+            // case -6://IP黑名单
+            // break;
             case -7://系统维护
               store.commit('SetMaintain', json.BackData)
               router.push("/maintain")
