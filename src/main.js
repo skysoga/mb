@@ -213,6 +213,10 @@ window._fetch = function (data){
         return
       }
       res.text().then(json=>{
+        if (data.Action==='GetImageCode') {
+          resolve(json)
+          return
+        }
         try{
           json = JSON.parse(json)
         }catch(error){
@@ -314,29 +318,30 @@ window._fetch = function (data){
 
 // 获取图形码接口专用
 window._fetchT=function _fetchT(data){
-  var str=[],k;
-  for(var i in data){
-    k=data[i];
-    if (typeof(k)==="object") {
-      k=JSON.stringify(k);
-    }
-    str.push(i+'='+k);
-  }
-  data = str.join('&');
-  return new Promise(function(resolve, reject){
-    fetch('/tools/ssc_ajax.ashx', {
-      credentials:'same-origin',
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: data
-    }).then((res)=>{
-      res.text().then(text=>{
-        resolve(text)
-      })
-    })
-  })
+  return _fetch(data)
+  // var str=[],k;
+  // for(var i in data){
+  //   k=data[i];
+  //   if (typeof(k)==="object") {
+  //     k=JSON.stringify(k);
+  //   }
+  //   str.push(i+'='+k);
+  // }
+  // data = str.join('&');
+  // return new Promise(function(resolve, reject){
+  //   fetch('/tools/ssc_ajax.ashx', {
+  //     credentials:'same-origin',
+  //     method: 'POST',
+  //     headers: {
+  //       "Content-Type": "application/x-www-form-urlencoded"
+  //     },
+  //     body: data
+  //   }).then((res)=>{
+  //     res.text().then(text=>{
+  //       resolve(text)
+  //     })
+  //   })
+  // })
 }
 window._App=location.host.search("csz8.net")>-1//是否APP
 ;(function(){
