@@ -94,14 +94,25 @@ function Xss(data){
   return [data,mayBeXss]
 }
 window._catch = function(data){
-  fetch('/catch?'+JSON.stringify(data), {
+  var str=[],k;
+  for(var i in data){
+    k=data[i];
+    if (typeof(k)==="object") {
+      k= encodeURIComponent(JSON.stringify(k));
+    }
+    str.push(i+'='+k)
+  }
+  str=str.join('&')
+  var fetchUrl = state.UserName||data.UserName
+  fetchUrl = fetchUrl?'/catch?U='+fetchUrl:'/catch'
+  fetch(fetchUrl, {
     credentials:'same-origin',
-    method: 'GET',
+    method: 'POST',
     cache: 'no-store',
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     },
-    // body: str
+    body: str
   })
 }
 function FetchCatch(opt) {
@@ -117,12 +128,14 @@ function FetchCatch(opt) {
   if (S){
     msg += '<br/>'+S
   }
+  layer.alert(msg)
   if (state.turning) {
-    layer.msgWarn(msg)
+    // layer.alert(msg)
     state.turning = false
-  }else{
+  }/*else{
     resolve({ Code: -1, StrCode: msg })
-  }
+  }*/
+  delete opt.resolve
   _catch(opt)
 }
 var fetchArr=[]
@@ -159,7 +172,7 @@ window._fetch = function (data){
   return new Promise(function(resolve, reject){
     var st = state.turning&&setTimeout(function(){
       console.log("请求超时");
-      FetchCatch('网络请求超时，请检查网络状态',resolve)
+      FetchCatch('网络请求超时，请重试',resolve)
       reject()
     },10000)
     var fetchUrl = state.UserName||data.UserName
@@ -185,7 +198,7 @@ window._fetch = function (data){
       }catch(e){
         H={'x-sec':'I','a':'E'}
       }
-      var S = H['x-sec']+H['a']
+      var S = H['a']+'_'+H['x-sec']
       if (res.status!==200) {
         // FetchCatch("网络错误"+res.status,resolve)
         var msg = "网络错误"
@@ -199,10 +212,22 @@ window._fetch = function (data){
         })
         return
       }
-
-      // res.headers.entries()
-      // console.log();
-      res.json().then(json=>{
+      res.text().then(json=>{
+        try{
+          json = JSON.parse(json)
+        }catch(error){
+          var msg = "网络数据解析错误"
+          FetchCatch({
+            msg,
+            json,
+            resolve,
+            T,  //fetch耗时,
+            S,
+            data //fetch的body
+          })
+        }
+        if (typeof(json)==='string') return
+        console.log(json);
         json = Xss(json)
         if(json[1]) {
           console.log(json[1]);
@@ -283,7 +308,6 @@ window._fetch = function (data){
         resolve,
         str //fetch的body
       })
-    })
     })
   })
 }
