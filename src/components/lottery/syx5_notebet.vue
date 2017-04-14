@@ -1,6 +1,6 @@
 <template>
   <div class="textareaNumber">
-    <textarea placeholder=" 每1个号码之间请用空格( )、逗号(,)、分号(;)隔开" v-model = "betStr" @input = "whenInput"></textarea>
+    <textarea placeholder=" 每一注号码之间请使用空格分开，每注之间以回车、逗号或分号进行分隔" v-model = "betStr" @input = "whenInput"></textarea>
   </div>
 </template>
 
