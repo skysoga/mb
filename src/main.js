@@ -773,7 +773,7 @@ window.RootApp={
           newArr.push(arr[i])
         break
         default:
-          if(state[arr[i]]==null){
+          if (state[arr[i]]==null||arr[i].search('RechargeWay')===0) {
             newArr.push(arr[i])
           }
       }
