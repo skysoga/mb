@@ -48,8 +48,9 @@ export default {
     var rechargeWay = 'RechargeWay' + method
 
     to.meta.title = title[method]   //标题
+
     //获取数据
-    RootApp.AjaxGetInitData([rechargeWay], state=>{
+    RootApp.GetInitData([rechargeWay], state=>{
       //如果数据不对要跳到普通充值去
       var PayType =state[rechargeWay]&&state[rechargeWay][0].PayType
       if(PayType === '一般'){
@@ -146,7 +147,7 @@ export default {
       Alipay: '支付宝快捷'
     }
     //获取数据
-    RootApp.AjaxGetInitData(['PayLimit'], state=>{
+    RootApp.GetInitData(['PayLimit'], state=>{
       //设置金额的限制
       this.vaConfig ||(this.vaConfig = {})
       this.vaConfig['Money'] || (this.vaConfig['Money'] = [])
