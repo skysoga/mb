@@ -198,7 +198,7 @@ window._fetch = function (data){
       }catch(e){
         H={'x-sec':'I','a':'E'}
       }
-      var S = H['a']+'_'+H['x-sec']
+      var S=(!H['a'])?null:( H['a']+(H['x-sec']?('_'+H['x-sec']):''))
       if (res.status!==200) {
         // FetchCatch("网络错误"+res.status,resolve)
         var msg = "网络错误"
@@ -208,7 +208,7 @@ window._fetch = function (data){
           resolve,
           T,  //fetch耗时,
           S,
-          data //fetch的body
+          // data //fetch的body
         })
         return
       }
@@ -222,15 +222,22 @@ window._fetch = function (data){
           json = JSON.parse(json)
         }catch(error){
           // 解析成json数据失败
-          var msg = "网络数据解析错误"
-          FetchCatch({
-            msg,
-            json,
-            resolve,
-            T,  //fetch耗时,
-            S,
-            data //fetch的body
-          })
+          if (json[0]==='<') {
+            // 可能是一些高防拦截等需要重发
+            _fetch(data,option).then(json=>{
+              resolve(json)
+            })
+          }else{
+            var msg = "网络数据解析错误"
+            FetchCatch({
+              msg,
+              json,
+              resolve,
+              T,  //fetch耗时,
+              S,
+              data //fetch的body
+            })
+          }
         }
         if (typeof(json)==='string') return
         json = Xss(json)
