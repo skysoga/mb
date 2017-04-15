@@ -38,7 +38,6 @@
   </div>
 </template>
 <script>
-var TypeArr=["迅汇宝","迅付通","赢通宝","汇鑫","安快","仁信","金海哲"]
 export default {
   beforeRouteEnter(to, from, next){
     var title = {
@@ -56,7 +55,7 @@ export default {
       if(PayType === '一般'){
         RootApp.$router.push('/normalPay?method=' + method)
       }else{
-        if(TypeArr.indexOf(PayType)!=-1&&typeof(QRCode)==="undefined"){
+        if(state.bankType.Type.indexOf(PayType)==-1&&typeof(QRCode)==="undefined"){
           var warn=document.createElement('script')
           warn.src='https://cdn.rawgit.com/davidshimjs/qrcodejs/04f46c6a/qrcode.min.js'
           var first=document.body.firstChild
@@ -119,6 +118,10 @@ export default {
           'left':'-500px'
         },
         '易卡':{
+          'margin-top':2.5*em-140+'px',
+          'left':'-500px'
+        },
+        '久付':{
           'margin-top':2.5*em-140+'px',
           'left':'-500px'
         }
@@ -185,7 +188,7 @@ export default {
         if(json.Code === 1){
           this.QrImg=json.BackUrl
           layer.closeAll()
-          if(TypeArr.indexOf(this.nowRender.PayType)!=-1){
+          if(state.bankType.Type.indexOf(this.nowRender.PayType)==-1){
             this.QrSvg=true
             this.setQrCode(json.BackUrl)
           }else{
