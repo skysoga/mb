@@ -1,6 +1,6 @@
 <template>
   <div class="main" style="padding-bottom: 0;">
-    <img src="http://images.dafa176.com/system/mobile/other/agentIntro.jpg" alt="" width="100%">
+    <img src="http://imagess-google.com/system/mobile/other/agentIntro.jpg" alt="" width="100%">
     <div class="agentIntroDes">
       <em>当您能看到这个页面，说明您的账号即是玩家账号也是代理账号，即可以自己投注，也可以发展下级玩家，赚取返点佣金。</em>
       <h3><i class="iconfont">&#xe644;</i>如何赚取返点？</h3>

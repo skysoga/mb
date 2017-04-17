@@ -114,11 +114,11 @@ export default{
     },
     getMoney(){
       var Arr=this.PayLimit['提现金额']
-      this.MinMoney=Arr[0]
-      this.MaxMoney=Arr[1]
-      this.vaConfig ||(this.vaConfig = {})
-      this.vaConfig['Money'] || (this.vaConfig['Money'] = [])
-      this.vaConfig['Money'].push(new this.VaConfig('limit', Arr, '', 'Money', '提现金额'))
+          this.MinMoney=Arr[0]
+          this.MaxMoney=Arr[1]
+          this.vaConfig ||(this.vaConfig = {})
+          this.vaConfig['Money'] || (this.vaConfig['Money'] = [])
+          this.vaConfig['Money'].push(new this.VaConfig('limit', Arr, '', 'Money', '提现金额'))
     },
     toggle(){
       if(this.UserBankList.length>1){

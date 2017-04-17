@@ -55,7 +55,7 @@
 export default {
   data () {
     return {
-      imgServer: this.$store.state.constant.ImgHost,
+      imgServer: state.constant.ImgHost,
       wechatType: '一般',
       aliType: '一般',
       payLimit:{},
@@ -69,11 +69,11 @@ export default {
     })
   },
   created () {
-    let state = this.$store.state
     if(state.RechargeWayWeixin){
       this.weixMsg=false
       this.wechatType = state.RechargeWayWeixin[0].PayType || '一般'
     }else{
+      this.wechatType=''
       this.weixMsg="微信支付维护中..."
     }
     if(state.RechargeWayAlipay){
@@ -81,6 +81,7 @@ export default {
       this.aliType = state.RechargeWayAlipay[0].PayType || '一般'
     }else{
       this.aliMsg="支付宝支付维护中..."
+      this.wechatType=''
     }
     this.payLimit = state.PayLimit
   },

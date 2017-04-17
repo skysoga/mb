@@ -7,7 +7,7 @@ module.exports = {
     index: path.resolve(__dirname, '../dist/index.html'),  // 编译输入的 index.html 文件
     assetsRoot: path.resolve(__dirname, '../dist'),  // 编译输出的静态资源路径
     assetsSubDirectory: 'static',                    // 编译输出的二级目录
-    assetsPublicPath: '//static.imagess-google.com/',   // 编译发布的根目录，可配置为资源服务器域名或 CDN 域名
+    assetsPublicPath: Usercfg.assetsPublicPath||'/',   // 编译发布的根目录，可配置为资源服务器域名或 CDN 域名
     //assetsPublicPath: 'http://oi2tooqla.bkt.clouddn.com/',   // 编译发布的根目录，可配置为资源服务器域名或 CDN 域名
     productionSourceMap: false,                       // 是否开启 cssSourceMap
     // Gzip off by default as many popular static hosts such as
@@ -32,7 +32,14 @@ module.exports = {
           headers:{Origin:"http://m.dafatest.com"},
           // localAddress:"http://css.dafatest.com",
           secure: false
-        }
+        },
+        '/catch': {
+          target: Usercfg.APIhost||'http://192.168.3.253:99',
+          changeOrigin: true,
+          headers:{Origin:"http://m.dafatest.com"},
+          // localAddress:"http://css.dafatest.com",
+          secure: false
+        },
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
