@@ -74,12 +74,14 @@ export default {
       this.weixMsg=false
       this.wechatType = state.RechargeWayWeixin[0].PayType || '一般'
     }else{
+      this.wechatType=''
       this.weixMsg="微信支付维护中..."
     }
     if(state.RechargeWayAlipay){
       this.aliMsg=false
       this.aliType = state.RechargeWayAlipay[0].PayType || '一般'
     }else{
+      this.wechatType=''
       this.aliMsg="支付宝支付维护中..."
     }
     this.payLimit = state.PayLimit
