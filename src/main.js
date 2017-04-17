@@ -121,10 +121,11 @@ function FetchCatch(opt) {
   if (status){
     msg += status
   }
-  /*if (error) {
+  if (error) {
     error=error.toString()
-    msg += '<br/>'+error
-  }*/
+    // msg += '<br/>'+error
+    console.log(error);
+  }
   if (S){
     msg += '_'+S
   }
@@ -507,7 +508,7 @@ window.store = new Vuex.Store({
     WithdrwHtml:state=>{
       return "login"
     },
-    },    NoDataDom:msg => state.tpl.noData.join("msg"),
+    NoDataDom:msg => state.tpl.noData.join("msg"),
   },
   mutations: {
     toggleLoading:(state, bool) =>{
