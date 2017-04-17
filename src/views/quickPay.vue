@@ -48,9 +48,13 @@ export default {
     var rechargeWay = 'RechargeWay' + method
 
     to.meta.title = title[method]   //标题
-
+    var rechargeWay = 'RechargeWay' + method
+    var limitName = {
+      Weixin: '微信快捷',
+      Alipay: '支付宝快捷'
+    }
     //获取数据
-    RootApp.GetInitData([rechargeWay], state=>{
+    RootApp.GetInitData([rechargeWay,'PayLimit'], state=>{
       //如果数据不对要跳到普通充值去
       var PayType =state[rechargeWay]&&state[rechargeWay][0].PayType
       if(PayType === '一般'){
@@ -64,6 +68,7 @@ export default {
         }
         next(vm=>{
           //如果没数据进维护页
+          vm.method = method
           vm.PayType=PayType
           if(!state[rechargeWay] || !state[rechargeWay][0]){
             vm.underMaintain = true
@@ -71,6 +76,10 @@ export default {
           }
           vm.underMaintain = false
           vm.nowRender = state[rechargeWay][0]
+          vm.vaConfig ||(vm.vaConfig = {})
+          vm.vaConfig['Money'] || (vm.vaConfig['Money'] = [])
+          var limit=state['PayLimit'][limitName[method]]
+          vm.vaConfig['Money'].push(new vm.VaConfig('limit', limit, '', 'Money', limitName[method]))
         })
       }
     })
@@ -137,23 +146,6 @@ export default {
       }
       return _name[this.method]
     }
-  },
-  created (){
-    var method = this.$route.query.method       //'Bank', 'Weixin', 'Alipay'
-    this.method = method
-    var rechargeWay = 'RechargeWay' + method
-    var limitName = {
-      Weixin: '微信快捷',
-      Alipay: '支付宝快捷'
-    }
-    //获取数据
-    RootApp.GetInitData(['PayLimit'], state=>{
-      //设置金额的限制
-      this.vaConfig ||(this.vaConfig = {})
-      this.vaConfig['Money'] || (this.vaConfig['Money'] = [])
-      var limit=state['PayLimit'][limitName[method]]
-      this.vaConfig['Money'].push(new this.VaConfig('limit', limit, '', 'Money', limitName[method]))
-    })
   },
   methods:{
     $vaSubmit () {

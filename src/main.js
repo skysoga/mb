@@ -121,12 +121,12 @@ function FetchCatch(opt) {
   if (status){
     msg += status
   }
-  if (error) {
+  /*if (error) {
     error=error.toString()
     msg += '<br/>'+error
-  }
+  }*/
   if (S){
-    msg += '<br/>'+S
+    msg += '_'+S
   }
   layer.alert(msg)
   if (state.turning) {
@@ -767,13 +767,13 @@ window.RootApp={
         //以下是每次都需要更新请求的
         case "UserBalance":
         case "UserWithdrawAvail":
-        case "PayLimit":
+        // case "PayLimit":
         case "WithdrawRemainTimes":
         case "UserGradeGrow":
           newArr.push(arr[i])
         break
         default:
-          if (state[arr[i]]==null||arr[i].search('RechargeWay')===0) {
+          if (state[arr[i]]==null) {
             newArr.push(arr[i])
           }
       }
