@@ -5,18 +5,17 @@
       return{}
     },
     beforeRouteEnter(to,from,next){
-      if (!localStorage.getItem('InvitationCode')) {
-        var id = to.query.id
-        localStorage.setItem('InvitationCode',id)
-        // localStorage.setItem('isApp',1)
-        // window._App=true
+      var id = to.query.id
+      if (/^\d{8}$/.test(id)) {
+        var head = document.getElementsByTagName('head')[0]
+        var styleTag = document.createElement('style')
+        styleTag.textContent='#index .textMore{display: none; }'
+        head.appendChild(styleTag)
+        if (!localStorage.getItem('InvitationCode')) {
+          localStorage.setItem('InvitationCode',id)
+        }
       }
       router.push('/index')
     },
   }
 </script>
-<style>
-  #index .textMore{
-    display: none;
-  }
-</style>

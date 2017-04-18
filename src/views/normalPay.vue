@@ -219,7 +219,6 @@ export default{
   created (){
     var method = this.$route.query.method       //'Bank', 'Weixin', 'Alipay'
     this.method = method
-
     var limitName = {
       Bank: '银行转账',
       Weixin: '微信支付',

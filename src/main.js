@@ -93,14 +93,51 @@ function Xss(data){
   }
   return [data,mayBeXss]
 }
-function FetchCatch(msg,resolve){
-  console.log("FetchCatch");
-  if (state.turning) {
-    layer.msgWarn(msg)
-    state.turning=false
-  }else{
-    resolve({Code:-1,StrCode:msg})
+window._catch = function(data){
+  var str=[],k;
+  for(var i in data){
+    k=data[i];
+    if (typeof(k)==="object") {
+      k= encodeURIComponent(JSON.stringify(k));
+    }
+    str.push(i+'='+k)
   }
+  str=str.join('&')
+  var fetchUrl = state.UserName||data.UserName
+  fetchUrl = fetchUrl?'/catch?U='+fetchUrl:'/catch'
+  fetch(fetchUrl, {
+    credentials:'same-origin',
+    method: 'POST',
+    cache: 'no-store',
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: str
+  })
+}
+function FetchCatch(opt) {
+  console.log(opt);
+  var {msg, status, resolve, error, T, S}=opt
+  if (status){
+    msg += status
+  }
+  if (error) {
+    error=error.toString()
+    // msg += '<br/>'+error
+    console.log(error);
+  }
+  if (S){
+    msg += '_'+S
+  }
+  layer.alert(msg)
+  if (state.turning) {
+    // layer.alert(msg)
+    state.turning = false
+  }/*else{
+    resolve({ Code: -1, StrCode: msg })
+  }*/
+  delete opt.resolve
+  _catch(opt)
 }
 var fetchArr=[]
 window._fetch = function (data){
@@ -120,7 +157,7 @@ window._fetch = function (data){
     str.push(i+'='+k)
   }
   str=str.join('&')
-  /*// 防止一秒内的完全相同请求
+  // 防止一秒内的完全相同请求
   var now = new Date().getTime()
   for (var i = 0; i < fetchArr.length; i++) {
     if(fetchArr[i][0]+1000<now){
@@ -132,26 +169,78 @@ window._fetch = function (data){
       }}
     }
   }
-  fetchArr.unshift([now,str])*/
+  fetchArr.unshift([now,str])
   return new Promise(function(resolve, reject){
     var st = state.turning&&setTimeout(function(){
-      console.log("请求超时");
-      FetchCatch('网络请求超时，请检查网络状态',resolve)
+      var msg = '网络请求超时，请重试'
+      FetchCatch({msg},resolve)
       reject()
     },10000)
-    fetch('/tools/ssc_ajax.ashx', {
+    var fetchUrl = state.UserName||data.UserName
+    fetchUrl = fetchUrl?'/tools/ssc_ajax.ashx?U='+fetchUrl:'/tools/ssc_ajax.ashx'
+    fetch(fetchUrl, {
       credentials:'same-origin',
       method: 'POST',
+      cache: 'no-store',
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
       },
       body: str
     }).then((res)=>{
+      var T = (new Date().getTime()-now)/1000
+      var H={}
+      try{
+        for (var pair of res.headers.entries()) {
+          pair[0]=pair[0].toLowerCase()
+          if (['a','x-sec'].indexOf(pair[0])>-1) {
+            H[pair[0]]=pair[1]
+          }
+        }
+      }catch(e){
+        H={'x-sec':'I','a':'E'}
+      }
+      var S=(!H['a'])?null:( H['a']+(H['x-sec']?('_'+H['x-sec']):''))
       if (res.status!==200) {
-        FetchCatch("网络错误"+res.status,resolve)
+        // FetchCatch("网络错误"+res.status,resolve)
+        var msg = "网络错误"
+        FetchCatch({
+          msg,
+          status:res.status,
+          resolve,
+          T,  //fetch耗时,
+          S,
+          // data //fetch的body
+        })
         return
       }
-      res.json().then(json=>{
+      res.text().then(json=>{
+        if (data.Action==='GetImageCode') {
+          //获取验证码的不需要转换成json
+          resolve(json)
+          return
+        }
+        try{
+          json = JSON.parse(json)
+        }catch(error){
+          // 解析成json数据失败
+          if (json[0]==='<') {
+            // 可能是一些高防拦截等需要重发
+            _fetch(data,option).then(json=>{
+              resolve(json)
+            })
+          }else{
+            var msg = "网络数据解析错误"
+            FetchCatch({
+              msg,
+              json,
+              resolve,
+              T,  //fetch耗时,
+              S,
+              data //fetch的body
+            })
+          }
+        }
+        if (typeof(json)==='string') return
         json = Xss(json)
         if(json[1]) {
           console.log(json[1]);
@@ -180,8 +269,8 @@ window._fetch = function (data){
                 notRes=true
               }
             break;
-            case -6://IP黑名单
-            break;
+            // case -6://IP黑名单
+            // break;
             case -7://系统维护
               store.commit('SetMaintain', json.BackData)
               router.push("/maintain")
@@ -196,52 +285,72 @@ window._fetch = function (data){
               })
               notRes=true
             break;
+            case -1:
+              if (json.StrCode === '空') {
+                // 出现意外错误，需要补发接口
+                console.log('补发接口')
+                _fetch(data,option).then(json=>{
+                  resolve(json)
+                })
+                notRes=true
+              }
+            break;
           }
           if (data.Action.search('Verify')===0&&json.Code>-1) {
             state.UserVerify=data.Action.replace('Verify','')+','
           }
         })()
         notRes||resolve(json)
-      }).catch(r=>{
-        console.log(r.message)
-        FetchCatch("网络数据错误",resolve)
+      }).catch(error => {
+        var msg = "网络数据错误"
+        // FetchCatch(msg, resolve, error)
+        FetchCatch({
+          msg,
+          error,
+          resolve,
+          T,  //fetch耗时
+          S,
+          str //fetch的body
+        })
       })
-    }).catch((r)=>{
-      console.log(r.message);
-      if ("Failed to fetch"===r.message) {
-        FetchCatch("您的设备失去了网络连接",resolve)
-      }else{
-        FetchCatch("网络错误，请检查网络状态",resolve)
-      }
+    }).catch(error => {
+      var msg = "网络错误，请检查网络状态"
+      FetchCatch({
+        msg,
+        error,
+        resolve,
+        str //fetch的body
+      })
     })
   })
 }
 
 // 获取图形码接口专用
 window._fetchT=function _fetchT(data){
-  var str=[],k;
-  for(var i in data){
-    k=data[i];
-    if (typeof(k)==="object") {
-      k=JSON.stringify(k);
-    }
-    str.push(i+'='+k);
-  }
-  data = str.join('&');
-  return new Promise(function(resolve, reject){
-    fetch('/tools/ssc_ajax.ashx', {
-      credentials:'same-origin',
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: data
-    }).then((res)=>{
-      res.text().then(text=>{
-        resolve(text)
-      })
-    })
-  })
+  return _fetch(data)
+  // var str=[],k;
+  // for(var i in data){
+  //   k=data[i];
+  //   if (typeof(k)==="object") {
+  //     k=JSON.stringify(k);
+  //   }
+  //   str.push(i+'='+k);
+  // }
+  // data = str.join('&');
+  // return new Promise(function(resolve, reject){
+  //   fetch('/tools/ssc_ajax.ashx', {
+  //     credentials:'same-origin',
+  //     method: 'POST',
+  //     headers: {
+  //       "Content-Type": "application/x-www-form-urlencoded"
+  //     },
+  //     body: data
+  //   }).then((res)=>{
+  //     res.text().then(text=>{
+  //       resolve(text)
+  //     })
+  //   })
+  // })
 }
 window._App=location.host.search("csz8.net")>-1//是否APP
 ;(function(){
@@ -426,6 +535,10 @@ window.store = new Vuex.Store({
       }
       localStorage.setItem('CacheData',JSON.stringify(CacheData))
     },
+    setTmpDifftime:(state, Difftime)=>{
+      state.Difftime = Difftime
+      localStorage.setItem('Difftime',Difftime)
+    },
     setDifftime:(state, timeItemList)=>{
       // console.log(timeItemList)
       // var cantGetTime = !timeItemList || !timeItemList.length || timeItemList.every(item=>!item.SerTime)
@@ -588,8 +701,6 @@ window.RootApp={
         }
       }
     })(data.LotteryList)
-
-
     if (data.NoticeData&&data.NoticeData.length) {
       if (data.NoticeData.length>2) {
         data.NoticeData.length=2;
@@ -652,13 +763,13 @@ window.RootApp={
         //以下是每次都需要更新请求的
         case "UserBalance":
         case "UserWithdrawAvail":
-        case "PayLimit":
+        // case "PayLimit":
         case "WithdrawRemainTimes":
         case "UserGradeGrow":
           newArr.push(arr[i])
         break
         default:
-          if(state[arr[i]]==null){
+          if (state[arr[i]]==null) {
             newArr.push(arr[i])
           }
       }
@@ -711,15 +822,22 @@ window.RootApp={
         if(json.Code > -1 && timeReg.test(json.Data)){
           timeItemList.push(new TimeItem(interval, timeEnd, timeBegin, json.Data))
         }
-
         if(cantGetTime > 4){
           var noTimeGeted = timeItemList.every(timeItem=>!timeItem.SerTime)  //一次都没获取到数据
-
           if(noTimeGeted){
+            var Difftime=0
+            try{
+              Difftime=(new Date().getTimezoneOffset()+480)*60
+            }catch(e){
+              layer.msgWarn('不支持getTimezoneOffset')
+            }
+            store.commit('setTmpDifftime', Difftime)
+            layer.msgWarn('因无法同步服务器时间,您可能无法正常投注')
             cantGetTime = 0
             timeItemList = []
             fun && fun()
-            layer.url("因无法同步服务器时间,您将无法投注,请检查网络情况", '/index')
+
+            // layer.url("因无法同步服务器时间,您将无法投注,请检查网络情况", '/index')
           }else{
             //有一些获取到了数据，但是超时了。从获取到的再择优
             store.commit('setDifftime', timeItemList)
