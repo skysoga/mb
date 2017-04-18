@@ -36,7 +36,7 @@ export default{
   },
   computed:mapState({
     nowIssue:()=>{
-      var nowIssue = state.lt.NowIssue
+      var nowIssue = state.lt.NowIssue||[]
       return nowIssue.length < 8 ? nowIssue : nowIssue.slice(4)
     },
     TimeBar:()=>state.lt.TimeBar,
