@@ -44,7 +44,11 @@ export default{
             var arr=['UserBalance', 'UserWithdrawAvail','UserBankCardList','WithdrawRemainTimes','PayLimit']
             RootApp.GetInitData(arr,state=>{
               next(vm=>{
-                vm.UserBankList=state.UserBankCardList
+                vm.UserBankList=vm.setBankList(state.UserBankCardList)
+                if(!vm.UserBankList.length){
+                  layer.url('无可提现银行卡','/securityCenter')
+                  return
+                }
                 vm.UserBalance=state.UserBalance
                 vm.UserAvail=state.UserWithdrawAvail
                 vm.PayLimit=state.PayLimit
@@ -147,6 +151,15 @@ export default{
         vm.UserBalance=ref.UserBalance
         vm.UserAvail=ref.UserWithdrawAvail
       })
+    },
+    setBankList(Arr){
+      var list=[]
+      Arr.forEach(val=>{
+        if(!val.IsDisable){
+          list.push(val)
+        }
+      })
+      return list
     }
   }
 }
