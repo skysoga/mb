@@ -11,7 +11,7 @@
           <div class="fr">
               <a v-if="n.isLock&&!n.IsDisable">已锁定</a>
               <a v-if="n.IsDisable">已禁用</a>
-              <router-link v-if="!n.isLock" class="modify" :to="'setBankcard?Q='+n.BankCardID">修改</router-link>
+              <router-link v-else class="modify" :to="'setBankcard?Q='+n.BankCardID">修改</router-link>
           </div>
         </div>
       </div>
