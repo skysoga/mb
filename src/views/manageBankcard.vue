@@ -10,7 +10,7 @@
           </div>
           <div class="fr">
               <a v-if="n.isLock&&!n.IsDisable">已锁定</a>
-              <span v-if="n.IsDisable" :style="{'color':$store.state.color.red}">已禁用</span>
+              <a v-if="n.IsDisable">已禁用</a>
               <router-link v-if="!n.isLock" class="modify" :to="'setBankcard?Q='+n.BankCardID">修改</router-link>
           </div>
         </div>
