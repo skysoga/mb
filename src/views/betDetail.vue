@@ -11,7 +11,7 @@
       <tr><td>投注时间</td><td>{{res_data.AddTime}}</td></tr>
       <tr><td>投注单号</td><td>{{res_data.SerialNum}}</td></tr><tr><td>投注金额</td><td>¥{{res_data.BetMoney}}元</td></tr>
       <tr><td>派送奖金</td><td>¥{{res_data.Bonus}}元</td></tr>
-      <tr v-if="res_data.State==='已中奖'||res_data.State==='未中奖'"><td>开奖号码</td><td id="lotteryopen">{{res_data.OpenNum}}</td></tr>
+      <tr v-if="res_data.State==='已中奖'||res_data.State==='未中奖'"><td>开奖号码</td><td id="lotteryopen" @click="WinShow(res_data.OpenNum)">{{setNum(res_data.OpenNum)}}</td></tr>
       <tr></tr>
     </table>
     <section>
@@ -44,6 +44,15 @@ export default {
     }
   },
   methods:{
+    WinShow(str){
+      var len=str.length
+      if(len<30){return}
+      layer.alert(str)
+    },
+    setNum(str){
+      var str=str.split(',').slice(0,10)
+      return str.join(',')
+    },
     CancelBet:function(id){
       var vm=this
       layer.open({
