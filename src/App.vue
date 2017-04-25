@@ -69,6 +69,13 @@ body{
   background: rgba(0,0,0,.2);
 }
 /* ==================*/
+.KL8{
+  .sscMain{
+    .sscTips{
+      padding-top: 4.7em;
+    }
+  }
+}
 .PK10{
   .line1{
     height: 2em;
