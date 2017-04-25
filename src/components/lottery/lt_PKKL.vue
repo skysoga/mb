@@ -5,11 +5,17 @@
       <li class="fix" v-for="item in pastOpen">
         <div class="left">第{{item.IssueNo}}期<br>{{item.OpenTime}}</div>
         <div class="right">
-          <div class="line1">
+          <template v-if="ltype==='KL8'">
+            <div class="line1">
+              <a v-for = "(num,key) in item.LotteryOpen" v-if="key<10"><span>{{num}}</span></a>
+            </div>
+            <div class="line2">
+              <a v-for = "(num,key) in item.LotteryOpen" v-if="key>9&&key<20"><span>{{delEnd(num)}}</span></a>
+            </div>
+          </template>
+          <div class="line1" v-else>
             <a v-for = "num in item.LotteryOpen"><span>{{num}}</span></a>
           </div>
-          <!-- <div class="line2">
-          </div> -->
         </div>
       </li>
     </ul>
@@ -51,7 +57,10 @@ export default{
     }
   }),
   methods:{
-
+    delEnd(num){
+      var num=num.split('+')[0]
+      return num
+    }
   }
 }
 </script>

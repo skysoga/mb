@@ -24,6 +24,7 @@
   import {k3Config} from '../js/page_config/lt_k3'
   import {syx5Config} from '../js/page_config/lt_syx5'
   import {pk10Config} from '../js/page_config/lt_pk10'
+  import {kl8Config} from '../js/page_config/lt_kl8'
 
 
   import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
@@ -126,6 +127,7 @@
         'K3': k3Config,
         'SYX5': syx5Config,
         'PK10': pk10Config,
+        'KL8': kl8Config
       }
 
       //处理返点
@@ -133,7 +135,8 @@
         'SSC':getSSCRebate,
         'K3': getK3Rebate,
         'SYX5': getRebate,
-        'PK10': getRebate
+        'PK10': getRebate,
+        'KL8': getRebate
       }
 
       var wait4Results = 0, wait4BetRecord = false

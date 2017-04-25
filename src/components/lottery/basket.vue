@@ -59,6 +59,7 @@ import {normalSum3, normalSum2, diff3, diff2, combSum3, combSum2, BaseBet,bus} f
 import {sscRandom, sscRandomNote, sscSpecialMode} from '../../js/page_config/lt_ssc'
 import {syx5Random, syx5RandomNote, syx5SpecialMode} from '../../js/page_config/lt_syx5'
 import {pk10Random, pk10RandomNote, pk10SpecialMode} from '../../js/page_config/lt_pk10'
+import {kl8Random, kl8RandomNote, kl8SpecialMode} from '../../js/page_config/lt_kl8'
 
 function getBetStr(arr, isSYX5Type){
   arr = arr.map(item=>item.join(' ')).map(item=>{
@@ -96,19 +97,22 @@ function getTag(code, config){
 var randomCfgs = {
   SSC: sscRandom,
   SYX5: syx5Random,
-  PK10: pk10Random
+  PK10: pk10Random,
+  KL8: kl8Random
 }
 
 var randomNoteBets = {
   SSC: sscRandomNote,
   SYX5: syx5RandomNote,
-  PK10: pk10RandomNote
+  PK10: pk10RandomNote,
+  KL8: kl8RandomNote
 }
 
 var specialModes = {
   SSC: sscSpecialMode,
   SYX5: syx5SpecialMode,
-  PK10: pk10SpecialMode
+  PK10: pk10SpecialMode,
+  KL8: kl8SpecialMode
 }
 
 export default {

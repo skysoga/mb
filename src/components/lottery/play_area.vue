@@ -30,6 +30,7 @@ import syx5NoteBet from './syx5_notebet'
 import {sscPlay} from '../../js/page_config/lt_ssc'
 import {syx5Play} from '../../js/page_config/lt_syx5'
 import {pk10Play} from '../../js/page_config/lt_pk10'
+import {kl8Play} from '../../js/page_config/lt_kl8'
 import {factorial, mul, C, combNoRepeat, unique, normalSum2, normalSum3, accumulate,
   diff2, diff3, combSum2, combSum3} from '../../js/kit'
 
@@ -40,9 +41,9 @@ var playCfg = {
   'SSC': sscPlay,
   'SYX5': syx5Play,
   'PK10': pk10Play,
+  'KL8': kl8Play,
   // 'FC3D': fc3dPlay,
   // 'PL35': pl3Play,
-  // 'KL8': kl8Play,
 }
 var modeArr=['定单双','趣味']
 export default {
@@ -117,6 +118,7 @@ export default {
       var isSYX5Type = ['SYX5'].indexOf(this.$route.params.type) > -1
       var order = this.ltCfg[this.mode].render  //按渲染数组的顺序
       var result = this.ltCfg[this.mode].alg(order, tmp)  //当前投注注数
+
       this.$store.commit('lt_setBetStr', getBetStr(order, tmp, isSYX5Type))
       this.$store.commit('lt_setBetCount', result)
     }
