@@ -47,7 +47,7 @@ export default {
     WinShow(str){
       var len=str.length
       if(len<30){return}
-      str=str.split('+')[0]
+      str=str.split('+')[0].split(',').slice(0,20).join(',')
       layer.alert(str)
     },
     setNum(str){
