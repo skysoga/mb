@@ -47,12 +47,13 @@ export default {
     WinShow(str){
       var len=str.length
       if(len<30){return}
+      str=str.split('+')[0]
       layer.alert(str)
     },
     setNum(str){
-      var str=str.split(',')
-      var Arr=str.slice(0,10).join(',')
-      return str.length>10?Arr+'[详情]':Arr
+      var atr=str.split(',')
+      var Arr=atr.slice(0,10).join(',')
+      return atr.length>10?Arr+'[详情]':Arr
     },
     CancelBet:function(id){
       var vm=this
