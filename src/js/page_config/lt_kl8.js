@@ -1,4 +1,4 @@
-import {C, countSingle, betSum} from '../kit'
+import {C, countSingle, betSum,_random} from '../kit'
 
 var kl8Config = {
   "任选":{
@@ -106,5 +106,31 @@ var kl8Play = {
   B12:{render:['isum'], alg:countSingle},
 
 }
+var _kl8=Array.from({length:80}, (v,k) => (k+1)<10?'0'+(k+1):(k+1).toString())
+var sxp=['上','中','下']
+var jep=['奇','和','偶']
+var hzdxds=['大单','大双','小单','小双']
+//复式注单随机生成函数
+var kl8Random = {
+  // 任选
+  A10:()=>_random([1], false, _kl8),
+  A11:()=>_random([2], false, _kl8),
+  A12:()=>_random([3], false, _kl8),
+  A13:()=>_random([4], false, _kl8),
+  A14:()=>_random([5], false, _kl8),
+  A15:()=>_random([6], false, _kl8),
+  A16:()=>_random([7], false, _kl8),
+  // 趣味
+  B10:()=>_random([1], false, sxp),
+  B11:()=>_random([1], false, jep),
+  B12:()=>_random([1], false, hzdxds)
+}
 
-export {kl8Config, kl8Play}
+//单式注单随机生成函数
+var kl8RandomNote = {
+}
+
+//特殊的，不能够注数为1的一些玩法
+var kl8SpecialMode = {}
+
+export {kl8Config, kl8Play,kl8Random, kl8RandomNote, kl8SpecialMode}

@@ -214,6 +214,18 @@ export default {
         _chosen.splice(_pos, 1)
         var tmp = _chosen
       }else{
+        var isKL8 = this.$route.params.type === 'KL8'                 //是快乐8
+           ,notSelectOne = this.$store.state.lt.mode.mode !== 'A10'   //不是任选一
+
+        if(isKL8 && notSelectOne){
+          var above = this.$store.state.lt.tmp['above']
+          var below = this.$store.state.lt.tmp['below']
+          if((above.length + below.length) >= 8){
+            layer.msgWarn('对不起，当前玩法最多只能选择8个号码')
+            return
+          }
+        }
+
         var isSYX5 = this.$route.params.type === 'SYX5'
         ,mode = this.$store.state.lt.mode.mode
         var dmMax = {

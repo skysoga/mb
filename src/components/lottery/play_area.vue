@@ -115,29 +115,40 @@ export default {
           })
         }
       }
-      var isSYX5Type = ['SYX5'].indexOf(this.$route.params.type) > -1
-      var order = this.ltCfg[this.mode].render  //按渲染数组的顺序
-      var result = this.ltCfg[this.mode].alg(order, tmp)  //当前投注注数
 
-      this.$store.commit('lt_setBetStr', getBetStr(order, tmp, isSYX5Type))
+      var order = this.ltCfg[this.mode].render  //按渲染数组的顺序
+          ,result = this.ltCfg[this.mode].alg(order, tmp)  //当前投注注数
+
+      //快乐8的字符串需特殊处理,两行合一行
+      var betStr = ''
+      var isKL8Random = this.$route.params.type === 'KL8' && this.mode.slice(0,2) === 'A1'
+      var isSYX5 = this.$route.params.type === 'SYX5'
+      if(isKL8Random){
+        var _tmp = {kl8:tmp['above'].concat(tmp['below'])}
+        betStr = getBetStr(['kl8'], _tmp, 2)
+      }else if(isSYX5){
+        betStr = getBetStr(order, tmp, 2)
+      }else{
+        betStr = getBetStr(order, tmp, 1)
+      }
+      this.$store.commit('lt_setBetStr', betStr)
       this.$store.commit('lt_setBetCount', result)
     }
   }
 }
 
-function getBetStr(order, tmp, isSYX5Type){
+function getBetStr(order, tmp, digit){
   var betStrArr = []
   for(var i = 0;i < order.length;i++){
     betStrArr.push(tmp[order[i]].join(' '))
   }
-
   betStrArr = betStrArr.map(item=>{
+    var placeholder = ''
+    for(var j = 0;j < digit;j++){
+      placeholder += '-'
+    }
     if(item === ''){
-      if(isSYX5Type === false){
-        return '-'
-      }else{
-        return '--'
-      }
+      return placeholder
     }else{
       return item
     }
