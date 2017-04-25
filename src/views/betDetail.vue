@@ -45,15 +45,15 @@ export default {
   },
   methods:{
     WinShow(str){
-      var len=str.length
-      if(len<30){return}
+      var len=str.split(',').length
+      if(len<9){return}
       str=str.split('+')[0].split(',').slice(0,20).join(',')
       layer.alert(str)
     },
     setNum(str){
       var atr=str.split(',')
-      var Arr=atr.slice(0,10).join(',')
-      return atr.length>10?Arr+'[详情]':Arr
+      var Arr=atr.slice(0,8).join(',')
+      return atr.length>8?Arr+'[详情]':Arr
     },
     CancelBet:function(id){
       var vm=this
