@@ -50,8 +50,9 @@ export default {
       layer.alert(str)
     },
     setNum(str){
-      var str=str.split(',').slice(0,10)
-      return str.join(',')
+      var str=str.split(',')
+      var Arr=str.slice(0,10).join(',')
+      return str.length>10?Arr+'[详情]':Arr
     },
     CancelBet:function(id){
       var vm=this
