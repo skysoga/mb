@@ -10,7 +10,7 @@ export default {
     var F=sessionStorage.getItem('isFind')
     var U=localStorage.getItem('UserName')
     if(!(U||F)){
-      router.push('/login')
+      router.replace('/login')
     }
     next(vm=>{
       vm.isOrUrl=to.query.Q||''
@@ -41,12 +41,12 @@ export default {
                   btn: ["是","否"],
                   yes:function(){
                     vm.upPwd(function(){
-                      router.push('/setBankcard?Q='+vm.isOrUrl)
+                      router.replace('/setBankcard?Q='+vm.isOrUrl)
                     })
                   },
                   no:function(){
                     vm.upPwd(function(){
-                      router.push('/securityCenter')
+                      router.replace('/securityCenter')
                     })
                   }
                 })

@@ -20,7 +20,7 @@ export default{
     },
     beforeRouteEnter:(to, from, next) => {
       if (_App) {
-        router.push("/notfount")
+        router.replace("/notfount")
       }
       next()
     },

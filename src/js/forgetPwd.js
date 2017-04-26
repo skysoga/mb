@@ -9,7 +9,7 @@ export default {
   created(){
     var user=localStorage.getItem("UserName")
     if(!!user){
-      router.push("/securityCenter")
+      router.replace("/securityCenter")
     }else{
       sessionStorage.removeItem("isFind")
       var Sarr=["UserHasSafePwd","UserMail","UserMobile","UserSafeQuestions"]
@@ -32,7 +32,7 @@ export default {
           if(json.Code==1||json.Code==0){
             RootApp.SaveInitData(json.BackData)
             sessionStorage.setItem('isFind',true)
-           RootApp.$router.push({path:'resetWay',query:{Q:'ResetPwd'}})
+           RootApp.$router.replace({path:'resetWay',query:{Q:'ResetPwd'}})
           }else{
             layer.msgWarn(json.StrCode)
           }

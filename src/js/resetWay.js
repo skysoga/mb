@@ -23,7 +23,7 @@ export default {
     var U=localStorage.getItem('UserName')
     next(vm=>{
       if(!(U||F)){
-        router.push('/login')
+        router.replace('/login')
       }
       if(F){
         to.meta.link='/forgetPwd'

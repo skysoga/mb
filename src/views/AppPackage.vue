@@ -15,7 +15,7 @@
           localStorage.setItem('InvitationCode',id)
         }
       }
-      router.push('/index')
+      router.replace('/index')
     },
   }
 </script>

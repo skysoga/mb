@@ -100,7 +100,7 @@
         // next(false)
         store.commit('toggleLoading', false)  //关掉loading动画
         layer.msgWarn(err.message)
-        RootApp.$router.push('/index')
+        RootApp.$router.replace('/index')
       })
 		},
 		created(){

@@ -34,7 +34,7 @@ export default {
         if (json.Code===1) {
           RootApp.Logout()
           RootApp.Login(this.UserName,function(){
-            router.push(state.login2path||"/index")
+            router.replace(state.login2path||"/index")
           })
         }else if(json.Code===2){
           vm.IcodeShow=true
@@ -47,7 +47,7 @@ export default {
     },
     bottomBox(key,val){
       if(key=='forgetPwd'){
-        router.push("/forgetPwd")
+        router.replace("/forgetPwd")
       }else if(key=='pc'){
         location.href="http://"+location.host.replace('m.','www.')+"/index.html?CanPc";
       }

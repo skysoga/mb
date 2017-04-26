@@ -34,7 +34,7 @@ export default {
   beforeRouteEnter(to,from,next){
     var U=localStorage.getItem('UserName')
     if(!U){
-      router.push('/login')
+      router.replace('/login')
     }
     var Qort=to.query.Q
     var nextto=Qort=='withdraw'?'/withdraw':'/manageBankcard'
@@ -109,10 +109,10 @@ export default {
                   title: "温馨提示",
                   btn: ["是","否"],
                   no(index){
-                    router.push("/manageBankcard")
+                    router.replace("/manageBankcard")
                   },
                   yes(index){
-                    router.push(vm.nextUrl)
+                    router.replace(vm.nextUrl)
                   }
                 })
             }else{
@@ -144,7 +144,7 @@ export default {
             layer.url("您已绑定5张银行卡，无法绑定更多的卡","/manageBankcard")
           }else if(this.isLock(state.UserBankCardList)){
             if(!state.UserVerify||state.UserVerify!=="BankCard,"){
-              router.push('/verifyBankcard')
+              router.replace('/verifyBankcard')
             }
           }
         }

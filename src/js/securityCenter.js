@@ -44,7 +44,7 @@ export default {
       _fetch(ajax).then((json)=>{
           if (json.Code===1) {
             RootApp.Logout()
-            router.push("/login")
+            router.replace("/login")
           }else{
             layer.msgWarn(json.StrCode)
           }
@@ -52,12 +52,12 @@ export default {
     },
     setNextUrl(){
       if(!this.HasSafePwd){
-        router.push("/setSafePwd?Q=bindCard")
+        router.replace("/setSafePwd?Q=bindCard")
       }else{
         if(!this.FirstCard){
-          router.push("/setBankcard")
+          router.replace("/setBankcard")
         }else{
-          router.push("/manageBankcard")
+          router.replace("/manageBankcard")
         }
       }
     }
