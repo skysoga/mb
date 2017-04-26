@@ -83,32 +83,23 @@
 
       Promise.all([getRebate, getLotteryList, getServerTime]).then((values)=>{
         //校验下这个彩种存不存在，不存在就送回购彩大厅
-        var table = {
-          'SSC': '时时彩',
-          'K3': '快3',
-          'SYX5': '11选5',
-          'FC3D': '低频彩',
-          'PL35': '低频彩',
-          'KL8': '其他彩种',
-          'PK10': '其他彩种'
-        }
-        var lotteryTypeList
-        state.LotteryConfig.map(item=>{
-          if(item.LotteryClassName === table[ltype]){
-            lotteryTypeList = item.LotteryList
-          }
-        })
-
-        if(lotteryTypeList.indexOf(lcode) === -1){
-          layer.url('您所访问的彩种不存在，即将返回购彩大厅', '/index')
+        var lotteryItem = state.LotteryList[lcode]
+        if(lotteryItem === undefined){
+          layer.url('您所访问的彩种不存在，即将返回购彩大厅', '/lotteryHall')
           return
+        }else{
+          var LotteryType = lotteryItem.LotteryType
+          if(lotteryItem.LotteryType !== ltype){
+            RootApp.$router.push(`./lottery/${LotteryType}/${lcode}`)
+          }
         }
         next()
       }).catch((err)=>{
         //报错并返回
-        next(false)
+        // next(false)
         store.commit('toggleLoading', false)  //关掉loading动画
         layer.msgWarn(err.message)
+        RootApp.$router.push('/index')
       })
 		},
 		created(){
