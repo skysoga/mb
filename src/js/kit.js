@@ -359,7 +359,8 @@ function BaseBet(state,count, betStr){
     this.betting_money = +(lt.perbet * _count * bet.betting_model * bet.graduation_count).toFixed(2)
   }
 
-  this.betting_point = lt.award + '-' + lt.Rebate[lt.lottery.LotteryType]            //赔率
+  this.betting_point = lt.lottery.LotteryType!=='K3'?(lt.award.split(',')[0] + '-' + lt.Rebate[lt.lottery.LotteryType]):(lt.award + '-' + lt.Rebate[lt.lottery.LotteryType])           //赔率
+
   this.betting_model = bet.betting_model                   //元角分
   this.betting_issuseNo = lt.NowIssue                      //当前期号
   this.graduation_count = bet.graduation_count             //当前倍率
