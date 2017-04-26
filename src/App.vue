@@ -14,7 +14,6 @@
 <script>
   import Navbar from './components/navbar';
   import TitleInfo from './components/title-info';
-  import './scss/public.scss'
 
   export default {
     components: {
@@ -41,6 +40,7 @@
 </script>
 
 <style lang='scss'>
+@import './scss/public.scss';
 @font-face {
   font-family: 'iconfont';  /* project id 107431 */
   src: url('//at.alicdn.com/t/font_p8f3pggq80aa714i.eot');
