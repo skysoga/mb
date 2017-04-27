@@ -23,6 +23,8 @@ import Vuex from 'vuex'
 import App from './App'
 import routes from './routes/routes'
 import Va from './plugins/va'
+import {DAY_TIME, GMT_DIF} from './js/kit'
+
 window.Vue=Vue
 Vue.use(Va)
 Vue.use(VueRouter)
@@ -64,6 +66,37 @@ window.rem = document.body.clientWidth/16
 window.em = Math.sqrt((rem-20)*.9)+20
 document.querySelector("html").style.fontSize=rem+'px'
 document.body.style.fontSize=em+'px'
+window._Tool = {
+  Array: {
+    Unique: function (array) {
+      var n = []; //临时数组
+      for (var i = 0; i < array.length; i++) {
+        if (n.indexOf(array[i]) == -1) n.push(array[i]);
+      }
+      return n;
+    }
+  },
+  // 获得服务器的时间
+  Date: {
+    getTime:function(){
+      return new Date().getTime()-state.Difftime||0
+      /*if (state.Difftime) {
+        return {then:function(fun){
+          fun&&fun(new Date().getTime()-state.Difftime)
+        }}
+      }else{
+        return new Promise(function(resolve, reject) {
+          RootApp.getServerTime(function(){
+            if (state.Difftime) {
+              resolve(new Date().getTime()-state.Difftime)
+            }
+          })
+        })
+      }*/
+    }
+  }
+}
+
 
 // 修改默认配置XSS 添加STYLE
 var XssList=filterXSS.whiteList
@@ -463,19 +496,26 @@ var SiteArr=[ //需要校验更新版本的列表
   'RewardData',//每日加奖设置
   'DefaultPhotoList',
 ]
+
 var AppArr=[
   'ActivityConfig', //活动种类及数据
   'BannerList',
   // 'PayLimit',
   'SiteConfig',
 ]
+
+var LocalCacheArr = [//本地控制缓存版本
+  'RankingList',//昨日奖金榜
+]
+
+
 var VerifyArr=["LotteryConfig","BannerList","LotteryList","ActivityConfig","FooterConfig","HelpConfig","SiteConfig","HallBanner","GradeList","LoginGreet","DefaultPhotoList","RewardData","AbstractType","PayLimit","CloudUrl","NoticeData"]
 if (_App) {
   UserArr=UserArr.concat(AppArr)
 }else{
   SiteArr=SiteArr.concat(AppArr)
 }
-var CacheArr = SiteArr.concat(UserArr).concat(['Difftime'])
+var CacheArr = SiteArr.concat(UserArr).concat(['Difftime']).concat(LocalCacheArr)
 window.state = require('./JSconfig.js')
 state.constant._App=_App
 window.CacheData=localStorage.getItem("CacheData")
@@ -492,7 +532,8 @@ function setState(key){
     return s;
   }
   for (var i = key.length - 1; i >= 0; i--) {
-    state[key[i]]=getLocalDate(key[i])
+    var value=getLocalDate(key[i])
+    // state[key[i]]=getLocalDate(key[i])
     if((VerifyArr.indexOf(key[i])>-1)&&
       (Boolean(CacheData[key[i]])^(state[key[i]]!=null))){
       //检验是否存在版本号与实际储存值是否非同步存在或不存在
@@ -500,8 +541,40 @@ function setState(key){
       delete state[key[i]]
       delete CacheData[key[i]]
     }
+
+    if (value!==null) {
+      // 进行localStorage数据的合法化验证，不符合目前要求的数据进行剔除
+      switch(key[i]){
+        case 'SiteConfig':
+          console.log(value);
+          if (!(value.Style&&value.Style.Id)) {
+            value=''
+          }
+        break;
+        default:
+          if(LocalCacheArr.indexOf(key[i])>-1){
+            // 判断与LocalCacheData的同步
+            var cache = value
+            // console.log('存在localCache的字段',key[i])
+            var hasVersion = !!LocalCacheData[key[i]]
+            var hasCache = !!cache
+            var needDelete = hasVersion ^ hasCache  //异或
+            // console.log(needDelete, hasVersion, hasCache)
+            if(needDelete){
+              localStorage.removeItem(key[i])  //删除对应的缓存
+              delete LocalCacheData[key[i]]
+              localStorage.setItem("LocalCacheData",JSON.stringify(LocalCacheData))
+            }
+          }
+        break
+      }
+      // localState[key[i]]=value
+    }
+    state[key[i]]=value
   }
 };
+var LocalCacheData=localStorage.getItem("LocalCacheData")
+LocalCacheData = LocalCacheData ? JSON.parse(LocalCacheData) : {}
 setState(CacheArr)
 console.log(CacheData);
 
@@ -727,6 +800,25 @@ window.RootApp={
         }
       }
     })(data.ActivityConfig)
+    ;(function(){
+      var change=[]
+      for (var i = LocalCacheArr.length - 1; i >= 0; i--) {
+        if(data[LocalCacheArr[i]]){
+          change.push(LocalCacheArr[i])
+        }
+      }
+      var len = change.length
+      console.log(len);
+      if (len) {
+        var time = _Tool.Date.getTime()
+        time/=DAY_TIME
+        time=Math.floor(time)%366
+        for (var i = len - 1; i >= 0; i--) {
+          LocalCacheData[change[i]]=time
+        }
+        localStorage.setItem("LocalCacheData",JSON.stringify(LocalCacheData))
+      }
+    })()
     return data;
   },
   SaveInitData(d){
@@ -775,6 +867,22 @@ window.RootApp={
         default:
           if (state[arr[i]]==null) {
             newArr.push(arr[i])
+          }else if(LocalCacheArr.indexOf(arr[i])>-1){
+            var time = _Tool.Date.getTime()
+            var todayms = time%DAY_TIME - GMT_DIF   //当天的毫秒值
+            time/=DAY_TIME
+            time=Math.floor(time)%366
+
+            if (LocalCacheData[arr[i]]!=time) {
+              console.log(arr[i]+"过期");
+              //每天0点20分更新
+              if (todayms%DAY_TIME > 20 * 60 * 1000) {
+                console.log(arr[i]+"更新");
+                newArr.push(arr[i])
+              }
+            }else{
+              console.log(arr[i]+"没过期");
+            }
           }
       }
     }
