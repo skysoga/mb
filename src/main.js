@@ -1,3 +1,7 @@
+//layer 、filterXSS引入失败，刷新
+if((typeof(layer)||typeof(filterXSS))=='undefined'){
+  location.href=location.href
+}
 ;(function(){
   try {
     sessionStorage.setItem('TextLocalStorage', 'hello world');
