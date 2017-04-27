@@ -10,7 +10,7 @@ export default {
     var F=sessionStorage.getItem('isFind')
     var U=localStorage.getItem('UserName')
     if(!(U||F)){
-      router.push('/login')
+      router.replace('/login')
     }
     if(F){
       to.meta.link="/resetWay?Q=ResetPwd"

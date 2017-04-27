@@ -19,7 +19,7 @@ export default {
       to.meta.link="/securityCenter"
     }
     if(!(U||F)){
-      router.push('/login')
+      router.replace('/login')
     }
     next()
   },

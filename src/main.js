@@ -1,3 +1,7 @@
+//layer 、filterXSS引入失败，刷新
+if((typeof(layer)||typeof(filterXSS))=='undefined'){
+  location.href=location.href
+}
 ;(function(){
   try {
     sessionStorage.setItem('TextLocalStorage', 'hello world');
@@ -264,7 +268,7 @@ window._fetch = function (data){
               if(state.UserName){
                 layer.alert("由于您长时间未操作，已自动退出，需要重新登录",function(){
                   RootApp.Logout()
-                  router.push("/login")
+                  router.replace("/login")
                 })
                 notRes=true
               }
@@ -273,7 +277,7 @@ window._fetch = function (data){
             // break;
             case -7://系统维护
               store.commit('SetMaintain', json.BackData)
-              router.push("/maintain")
+              router.replace("/maintain")
               notRes=true
             break;
             case -8://账号冻结
@@ -281,7 +285,7 @@ window._fetch = function (data){
                 RootApp.Logout()
                 var meta = RootApp._route.matched[0]
                 meta = meta&&meta.meta
-                router.push("/login")
+                router.replace("/login")
               })
               notRes=true
             break;
@@ -671,7 +675,7 @@ window.RootApp={
           btn: ["领取奖励", "留在本页"],
           yes: function(Lindex) {
             layer.close(Lindex);
-            router.push("/upgrade")
+            router.replace("/upgrade")
           }
         })
       },100)
@@ -875,9 +879,9 @@ window.RootApp={
     if(meta.user){
       if (!state.UserName) {
         state.login2path = to.path
-        router.push("/login")
+        router.replace("/login")
       }else if(state.agent){
-        state.AgentRebate||router.push("/notfount")
+        state.AgentRebate||router.replace("/notfount")
       }
     }
     if (meta.verify) {

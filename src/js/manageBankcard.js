@@ -38,7 +38,7 @@ export default {
   methods:{
     setCard(){
       var Xurl=this.oneCarLok?'/verifyBankcard':'/setBankcard'
-      router.push(Xurl)
+      router.replace(Xurl)
     },
     setTip(){
       var List=this.CardList

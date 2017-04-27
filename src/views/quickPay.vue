@@ -58,7 +58,7 @@ export default {
       //如果数据不对要跳到普通充值去
       var PayType =state[rechargeWay]&&state[rechargeWay][0].PayType
       if(PayType === '一般'){
-        RootApp.$router.push('/normalPay?method=' + method)
+        router.replace('/normalPay?method=' + method)
       }else{
         if(state.bankType.Type.indexOf(PayType)==-1&&typeof(QRCode)==="undefined"){
           var warn=document.createElement('script')
