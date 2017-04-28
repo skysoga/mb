@@ -155,7 +155,7 @@ export default{
     setBankList(Arr){
       var list=[]
       Arr.forEach(val=>{
-        if(!val.IsDisable){
+        if(val&&!val.IsDisable){
           list.push(val)
         }
       })
