@@ -1,0 +1,106 @@
+//變數
+$nav-top-h: 5em; //top選單高度
+
+//共用
+@mixin li-txt {
+  position: relative;
+  display: table;
+  width: 100%;
+  height:($nav-top-h - 0.3em);
+  font-size: 0.8em;
+  color: #5C5F60;
+  padding-top: 0.3em;
+
+}
+@mixin li-icon ($v) {
+  line-height: 1em;
+  content: $v;
+  font-size: 2em;
+}
+
+
+.nav-top-pos {
+  position: fixed;
+  width: 100%;
+  height: $nav-top-h;
+}
+.nav-top {
+  overflow: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  background-color: #22292C;
+  ul {
+    white-space: nowrap;
+    // height: $nav-top-h;
+    height: ($nav-top-h - 1.2em);
+    li {
+      display: inline-block;
+      width: 5em;
+      text-align: center;
+      padding: 0;
+      color: #5C5F60;
+      &:nth-child(1) {
+        a {
+          @include li-txt;
+            &:before {
+              @include li-icon("■");
+            }
+        }
+      }
+      &:nth-child(2) {
+        a {
+          @include li-txt;
+            &:before {
+              @include li-icon("\e627");
+            }
+        }
+      }
+      &:nth-child(3) {
+        a {
+          @include li-txt;
+          &:before {
+            @include li-icon("\e627");
+          }
+        }
+      }
+      &:nth-child(4) {
+        a {
+          @include li-txt;
+          &:before {
+            @include li-icon("\e627");
+          }
+        }
+      }
+      &:nth-child(5) {
+        a {
+          @include li-txt;
+          &:before {
+            @include li-icon("\e627");
+          }
+        }
+      }
+      &:nth-child(6) {
+        a {
+          @include li-txt;
+          &:before {
+            @include li-icon("\e627");
+          }
+        }
+      }
+      &:nth-child(7) {
+        a {
+          @include li-txt;
+          &:before {
+            @include li-icon("\e627");
+          }
+        }
+      }
+      &:hover, &.on {
+        background-color: #151B1D;
+        a {
+          color: #F2F2F2;
+        }
+      }
+    }
+  }
+}

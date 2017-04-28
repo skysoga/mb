@@ -3,6 +3,7 @@ const register =require('../views/register')
 const rechargeWay =require('../views/rechargeWay')
 const normalPay =require('../views/normalPay')
 const quickPay =require('../views/quickPay')
+const lotteryHall =require('../views/lotteryHall')
 const lotteryPage = require('../views/lotteryPage')
 const lottery_ssc = require('../views/lottery_ssc')
 const lottery_k3 = require('../views/lottery_k3')
@@ -48,6 +49,15 @@ var routes = [
       user: true
     },
     component: quickPay
+  },{
+    path: '/lotteryHall',
+    name: '全部彩种',
+    meta:{
+      title:"全部彩种",
+      nav:0,
+      link:'index'
+    },
+    component: lotteryHall
   },{
     path: '/lottery',
     name: '彩种',
