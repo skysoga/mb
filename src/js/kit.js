@@ -592,11 +592,11 @@ function computeIssue(code, index){
       }
     },
     //北京快三，以某一期作为基准
-    '1406':basedOnFixedIssue(68616+1, "2017/2/4", 89, 1),
+    '1406':basedOnFixedIssue(68606+1, "2017/2/4", 89, 1),
     //北京快乐8,以某一期作为基准
-    '1302':basedOnFixedIssue(807929, "2017/2/18", 179),
+    '1302':basedOnFixedIssue(807929-19, "2017/2/18", 179),
     //PK10,以某一期作为基准
-    '1303':basedOnFixedIssue(602501, "2017/2/18", 179),
+    '1303':basedOnFixedIssue(602501-20, "2017/2/18", 179),
 
     //福彩3D：每天一期
     '1201':oneDayOneIssue(33, "2017/2/9"),
