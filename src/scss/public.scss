@@ -99,21 +99,12 @@ input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{
     color:$green;
 }
 
-.iconfont.loading:after { content: "\e600"; }
 .iconfont.unfold:after { content: "\e601"; }
-.iconfont.gerenzhongxin:after { content: "\e602"; }
 .iconfont.back:after { content: "\e60a"; }
-.iconfont.question:after { content: "\e60c"; }
 .iconfont.right:after {
   content: "\e60e";
 }
-.iconfont.fold:after { content: "\e60f"; }
 .iconfont.info:after { content: "\e610"; }
-.iconfont.zhuye:after { content: "\e604"; }
-.iconfont.kefu:after { content: "\e605"; }
-//.iconfont.0004:after { content: "\e606"; }
-.iconfont.huodong:after { content: "\e607"; }
-.iconfont.tishi:after { content: "\e608"; }
 .iconfont.gonggao:after {
   content: "\e649";
   color:#dc3b40;
@@ -121,7 +112,6 @@ input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{
   display: inline-block;
   font-size: 1.2em;
 }
-.iconfont.gongyongzanwushuju:after { content: "\e60d"; }
 .iconfont.xiala:after { content: "\e61e"; }
 .iconfont.copy:after { content: "\e61f"; }
 
