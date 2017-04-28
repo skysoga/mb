@@ -16,6 +16,7 @@ $nav-top-h: 5em; //top選單高度
   line-height: 1em;
   content: $v;
   font-size: 2em;
+  font-family: 'iconfont';
 }
 
 
@@ -43,7 +44,7 @@ $nav-top-h: 5em; //top選單高度
         a {
           @include li-txt;
             &:before {
-              @include li-icon("■");
+              @include li-icon("\e65a");
             }
         }
       }
@@ -51,7 +52,7 @@ $nav-top-h: 5em; //top選單高度
         a {
           @include li-txt;
             &:before {
-              @include li-icon("\e627");
+              @include li-icon("\e656");
             }
         }
       }
@@ -59,7 +60,7 @@ $nav-top-h: 5em; //top選單高度
         a {
           @include li-txt;
           &:before {
-            @include li-icon("\e627");
+            @include li-icon("\e658");
           }
         }
       }
@@ -67,7 +68,7 @@ $nav-top-h: 5em; //top選單高度
         a {
           @include li-txt;
           &:before {
-            @include li-icon("\e627");
+            @include li-icon("\e657");
           }
         }
       }
@@ -75,7 +76,7 @@ $nav-top-h: 5em; //top選單高度
         a {
           @include li-txt;
           &:before {
-            @include li-icon("\e627");
+            @include li-icon("\e659");
           }
         }
       }
