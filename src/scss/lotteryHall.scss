@@ -78,22 +78,6 @@ $nav-top-h: 5em; //top選單高度
           }
         }
       }
-      &:nth-child(6) {
-        a {
-          @include li-txt;
-          &:before {
-            @include li-icon("\e627");
-          }
-        }
-      }
-      &:nth-child(7) {
-        a {
-          @include li-txt;
-          &:before {
-            @include li-icon("\e627");
-          }
-        }
-      }
       &:hover, &.on {
         background-color: #151B1D;
         a {
