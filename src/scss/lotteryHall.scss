@@ -23,7 +23,6 @@ $nav-top-h: 5em; //top選單高度
 .nav-top-pos {
   position: fixed;
   width: 100%;
-  height: $nav-top-h;
 }
 .nav-top {
   overflow: auto;
@@ -32,7 +31,6 @@ $nav-top-h: 5em; //top選單高度
   background-color: #22292C;
   ul {
     white-space: nowrap;
-    // height: $nav-top-h;
     height: ($nav-top-h - 1.2em);
     li {
       display: inline-block;
