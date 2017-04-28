@@ -25,7 +25,12 @@
             <span>{{s.LotteryList[l].LotteryIntro}}</span>
           </router-link>
         </li>
-        <li v-for="l in 3-(len%3||3)"></li>
+        <!-- <li v-for="l in 3-(len%3||3)"></li> -->
+        <li>
+          <router-link class="active L_more" :to="'/lotteryHall'">
+            <p>更多彩种</p>
+          </router-link>
+        </li>
       </ul>
     </div>
   </div>
@@ -36,5 +41,11 @@
 #HotLottery ul{
   -webkit-transform-origin: 0 0;
   -webkit-transform: scale(0.33333, 0.33333);
+}
+.L_more:before {
+  font-family: 'iconfont';
+  content: '\E635';
+  color: #FA7E00;
+  font-size: 3.8em;
 }
 </style>
