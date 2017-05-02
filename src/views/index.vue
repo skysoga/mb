@@ -38,13 +38,8 @@
 <script src="../js/index.js"></script>
 <style lang="scss" scoped>
 @import '../scss/index.scss';
-#HotLottery ul{
+#HotLottery ul {
   -webkit-transform-origin: 0 0;
   -webkit-transform: scale(0.33333, 0.33333);
-}
-.L_more:before {
-  font-family: 'iconfont';
-  content: '\e650';
-  color: #FA7E00;
 }
 </style>
