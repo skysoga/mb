@@ -1,15 +1,16 @@
 <template>
   <div class="main">
-    <article>
+<!--     <article>
       <h2>{{initData.Title}}</h2>
-    </article>
+    </article> -->
+    <!-- 彩种类别 -->
     <div class="nav-slider-wrapper">
       <div class="nav-top-pos">
         <div class="nav-top">
           <ul>
             <li v-for = "(item,index) in lotteryConfig"
-            :class = "{on:item.LotteryClassName === nowLotteryClass}"
-            @click="changeNowLotteryClass(item.LotteryClassName, item.LotteryList)">
+                :class = "{on:item.LotteryClassName === nowLotteryClass}"
+                @click="changeNowLotteryClass(item.LotteryClassName, item.LotteryList)">
               <a href="###">
                 <p>{{item.LotteryClassName}}</p>
               </a>
@@ -18,12 +19,18 @@
         </div>
       </div>
     </div>
-    <div id="HotLottery" class="lottery-list-box" v-if="s.LotteryList" :style="{height:Math.ceil(len/3)*5+'em'}">
+
+    <!--彩种列表  -->
+    <div id="HotLottery"
+         class="lottery-list-box"
+         v-if="LotteryList"
+         :style="{height:Math.ceil(len/3)*5+'em'}">
       <ul>
         <li v-for="l in nowDisplayList">
-          <router-link :class="'active L_'+s.LotteryList[l].LotteryType" :to="'/lottery/'+s.LotteryList[l].LotteryType+'/'+l">
-            <p>{{s.LotteryList[l].LotteryName}}</p>
-            <span>{{s.LotteryList[l].LotteryIntro}}</span>
+          <router-link :class="'active L_'+LotteryList[l].LotteryType"
+                        :to="'/lottery/'+LotteryList[l].LotteryType+'/'+l">
+            <p>{{LotteryList[l].LotteryName}}</p>
+            <span>{{LotteryList[l].LotteryIntro}}</span>
           </router-link>
         </li>
       </ul>

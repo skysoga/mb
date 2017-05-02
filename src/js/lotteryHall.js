@@ -1,10 +1,10 @@
 import {mapState} from 'vuex'
 export default {
-props:["s"],
+// props:["s"],
 data() {
   return {
-    initData: [],
-    li_state: 0,
+    // initData: [],
+    // li_state: 0,
     nowLotteryClass: '全部彩种',
     nowDisplayList:[]
   }
