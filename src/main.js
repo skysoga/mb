@@ -95,6 +95,37 @@ window.rem = document.body.clientWidth/16
 window.em = Math.sqrt((rem-20)*.9)+20
 document.querySelector("html").style.fontSize=rem+'px'
 document.body.style.fontSize=em+'px'
+window._Tool = {
+  Array: {
+    Unique: function (array) {
+      var n = []; //临时数组
+      for (var i = 0; i < array.length; i++) {
+        if (n.indexOf(array[i]) == -1) n.push(array[i]);
+      }
+      return n;
+    }
+  },
+  // 获得服务器的时间
+  Date: {
+    getTime:function(){
+      return new Date().getTime()-state.Difftime||0
+      /*if (state.Difftime) {
+        return {then:function(fun){
+          fun&&fun(new Date().getTime()-state.Difftime)
+        }}
+      }else{
+        return new Promise(function(resolve, reject) {
+          RootApp.getServerTime(function(){
+            if (state.Difftime) {
+              resolve(new Date().getTime()-state.Difftime)
+            }
+          })
+        })
+      }*/
+    }
+  }
+}
+
 
 // 修改默认配置XSS 添加STYLE
 var XssList=filterXSS.whiteList
@@ -511,6 +542,7 @@ var SiteArr=[ //需要校验更新版本的列表
   'RewardData',//每日加奖设置
   'DefaultPhotoList',
 ]
+
 var AppArr=[
   'ActivityConfig', //活动种类及数据
   'BannerList',
@@ -587,6 +619,8 @@ function setState(key){
   }
   console.log(localState);
 };
+var LocalCacheData=localStorage.getItem("LocalCacheData")
+LocalCacheData = LocalCacheData ? JSON.parse(LocalCacheData) : {}
 setState(CacheArr)
 console.log(CacheData);
 
