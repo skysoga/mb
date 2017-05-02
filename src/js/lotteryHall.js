@@ -5,8 +5,7 @@ data() {
   return {
     initData: [],
     li_state: 0,
-    LotteryClassName: '全部彩种',
-    nowLotteryClass: '全部',
+    nowLotteryClass: '全部彩种',
     nowDisplayList:[]
   }
 },
@@ -27,7 +26,7 @@ created(){
           }
     		})
   		this.whole = {
-  			LotteryClassName: '全部',
+  			LotteryClassName: '全部彩种',
   			LotteryList:allLottery
   		}
   		this.lotteryConfig.splice(0,0, this.whole)
