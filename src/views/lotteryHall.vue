@@ -3,10 +3,24 @@
     <article>
       <h2>{{initData.Title}}</h2>
     </article>
-    <nav-slider></nav-slider>
+    <div class="nav-slider-wrapper">
+      <div class="nav-top-pos">
+        <div class="nav-top">
+          <ul>
+            <li v-for = "(item,index) in lotteryConfig"
+            :class = "{on:item.LotteryClassName === nowLotteryClass}"
+            @click="changeNowLotteryClass(item.LotteryClassName, item.LotteryList)">
+              <a href="###">
+                <p>{{item.LotteryClassName}}</p>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
     <div id="HotLottery" class="lottery-list-box" v-if="s.LotteryList" :style="{height:Math.ceil(len/3)*5+'em'}">
       <ul>
-        <li v-for="l in LList">
+        <li v-for="l in nowDisplayList">
           <router-link :class="'active L_'+s.LotteryList[l].LotteryType" :to="'/lottery/'+s.LotteryList[l].LotteryType+'/'+l">
             <p>{{s.LotteryList[l].LotteryName}}</p>
             <span>{{s.LotteryList[l].LotteryIntro}}</span>

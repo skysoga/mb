@@ -1,13 +1,47 @@
-import navslider from '../components/nav-slider'
+import {mapState} from 'vuex'
 export default {
-  props:["s"],
-  data() {
-    return {
-      LList:["1401","1402","1407","1406","1405","1000","1001","1008","1003","1403","1410","1408","1411","1409","1404"],
-      initData: []
+props:["s"],
+data() {
+  return {
+    initData: [],
+    li_state: 0,
+    LotteryClassName: '全部彩种',
+    nowLotteryClass: '全部',
+    nowDisplayList:[]
+  }
+},
+beforeRouteEnter(to,from,next){
+  var Arr=['LotteryConfig']
+  RootApp.GetInitData(Arr,state=>{
+    next()
+  })
+},
+created(){
+    if(this.$store.state.LotteryConfig){
+  		this.lotteryConfig = this.$store.state.LotteryConfig.slice(1,this.$store.state.LotteryConfig.length-1)
+  		var allLottery = []
+      this.lotteryConfig.forEach(item=>{
+          if ("热门" !== item.LotteryClassName){
+             allLottery = allLottery.concat(item.LotteryList)
+            console.log(item.LotteryList);
+          }
+    		})
+  		this.whole = {
+  			LotteryClassName: '全部',
+  			LotteryList:allLottery
+  		}
+  		this.lotteryConfig.splice(0,0, this.whole)
+      this.nowDisplayList = this.lotteryConfig[0].LotteryList
+    }
+	},
+  methods: {
+    changeNowLotteryClass: function(lotteryClass, lotteryList) {
+      this.nowLotteryClass = lotteryClass
+      this.nowDisplayList=lotteryList
     }
   },
-  components: {
-    'nav-slider': navslider
-  }
+	computed:mapState({
+		LotteryConfig:'LotteryConfig',
+		LotteryList:'LotteryList'
+	})
 }
