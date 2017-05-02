@@ -137,7 +137,7 @@ $height:2.4em;
   will-change: transform;
   width: 1.6em;
   height: 1.6em;
-  transform: translateX(-15em);
+  transform: translateX(-10rem);
   span{
     background: #dc3b40;
     border-radius: 1.6em;
