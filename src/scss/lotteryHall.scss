@@ -95,8 +95,12 @@ $nav-top-h: 4.5em; //top選單高度
       width: 33.3%;
       height: 5.5em;
       border-bottom: 1px solid #D3D3D3;
+      border-right: 1px solid #D3D3D3;
       text-align: center;
       padding-top: 0.5em;
+      &:nth-child(3n+0) {
+        border-right: none;
+      }
       &:hover {
         background-color: #EEE;
       }
