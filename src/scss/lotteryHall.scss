@@ -1,31 +1,13 @@
 //變數
 $nav-top-h: 4.5em; //top選單高度
 
-//共用
-@mixin li-txt {
-  position: relative;
-  display: table;
-  width: 100%;
-  height:($nav-top-h - 0.3em);
-  font-size: 0.8em;
-  color: #5C5F60;
-  padding-top: 0.3em;
-
-}
-@mixin li-icon ($v) {
-  line-height: 1em;
-  content: $v;
-  font-size: 2em;
-  font-family: 'iconfont';
-}
-
 .nav-slider-wrapper {
   position: relative;
 }
 .nav-top-pos {
   position: fixed;
   width: 100%;
-  z-index: 2;
+  z-index: 1;
 }
 .nav-top {
   overflow: auto;
@@ -41,43 +23,52 @@ $nav-top-h: 4.5em; //top選單高度
       text-align: center;
       padding: 0;
       color: #5C5F60;
+      a {
+        position: relative;
+        display: table;
+        width: 100%;
+        height:($nav-top-h - 0.3em);
+        font-size: 0.8em;
+        color: #5C5F60;
+        padding-top: 0.3em;
+        &:before {
+          line-height: 1em;
+          font-size: 2em;
+          font-family: 'iconfont';
+        }
+      }
       &:nth-child(1) {
         a {
-          @include li-txt;
             &:before {
-              @include li-icon("\e65a");
+              content: "\e65a";
             }
         }
       }
       &:nth-child(2) {
         a {
-          @include li-txt;
             &:before {
-              @include li-icon("\e656");
+              content: "\e656";
             }
         }
       }
       &:nth-child(3) {
         a {
-          @include li-txt;
           &:before {
-            @include li-icon("\e658");
+            content: "\e658";
           }
         }
       }
       &:nth-child(4) {
         a {
-          @include li-txt;
           &:before {
-            @include li-icon("\e657");
+            content: "\e657";
           }
         }
       }
       &:nth-child(5) {
         a {
-          @include li-txt;
           &:before {
-            @include li-icon("\e659");
+            content: "\e659";
           }
         }
       }

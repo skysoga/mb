@@ -44,8 +44,7 @@
 }
 .L_more:before {
   font-family: 'iconfont';
-  content: '\E635';
+  content: '\e650';
   color: #FA7E00;
-  font-size: 3.8em;
 }
 </style>
