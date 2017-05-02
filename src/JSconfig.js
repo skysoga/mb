@@ -48,7 +48,7 @@ var _FomatConfig = {
 
 module.exports = {
   constant:{
-    ImgHost: '//imagess-google.com',
+    ImgHost: 'http://imagess-google.com',
     PhotoPath: '/system/common/headimg/',
     DefPhoto: 'defaultHeadImg.png'
   },
