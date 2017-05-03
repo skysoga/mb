@@ -32,7 +32,6 @@ export default {
     RootApp.GetInitData(arr, state=>{
       next(vm=>{
         vm.lotteryConfig = vm.LotteryConfig.slice(0,1)
-        console.log(vm.lotteryConfig[0].LotteryList);
         vm.LotteryConfig[0].LotteryList.length =11
         vm.nowDisplayList = vm.lotteryConfig[0].LotteryList
         vm.len = vm.lotteryConfig[0].LotteryList.length
