@@ -1,5 +1,5 @@
 import { swiper, swiperSlide, swiperPlugins } from 'vue-awesome-swiper'
-  import {mapState} from 'vuex'
+import {mapState} from 'vuex'
 export default {
   props:["s"],
   data:()=>{
@@ -31,13 +31,14 @@ export default {
     RootApp.GetInitData(arr, state=>{
       next(vm=>{
         vm.lotteryConfig = vm.LotteryConfig.slice(0,1)
-      if (vm.lotteryConfig[0].LotteryList.length !=0){
-        vm.nowDisplayList = vm.lotteryConfig[0].LotteryList
-      }
-      if (vm.nowDisplayList.length >11)
-      {
-        vm.nowDisplayList.length =11
-      }
+        if (vm.lotteryConfig[0].LotteryList.length !=0){
+          vm.nowDisplayList = vm.lotteryConfig[0].LotteryList
+        }
+        var showlength=11
+        if (vm.nowDisplayList.length >showlength)
+        {
+          vm.nowDisplayList.length =showlength
+        }
       });
     })
   },
