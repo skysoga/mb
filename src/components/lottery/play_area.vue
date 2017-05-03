@@ -192,5 +192,8 @@ function betSum(order, tmp){
   i{
     color:#dc3b40;
   }
+  span{
+    color:#ff9831;
+  }
 }
 </style>
