@@ -30,8 +30,13 @@ export default {
     arr = (!_App||state.UserName)?arr.concat(ar):arr
     RootApp.GetInitData(arr, state=>{
       next(vm=>{
+        var deleteletters=vm.LotteryConfig.slice(5,6)
         vm.lotteryConfig = vm.LotteryConfig.slice(0,1)
-        if (vm.lotteryConfig[0].LotteryList.length !=0){
+        for (var i=deleteletters[0].LotteryList.length-1 ; i >=0  ;i--)
+        {
+          vm.deleteNoUseGame(deleteletters[0].LotteryList[i],vm.lotteryConfig[0].LotteryList)
+        }
+        if (vm.lotteryConfig[0].LotteryList.length !=0 ){
           vm.nowDisplayList = vm.lotteryConfig[0].LotteryList
         }
         var showlength=11
@@ -41,6 +46,17 @@ export default {
         }
       });
     })
+  },
+   methods: {
+    deleteNoUseGame: function(deleteList,useLiset ) {
+        for (var j=0 ; j <= useLiset.length ;j++)
+        {
+          if (deleteList == useLiset[j])
+          {
+            useLiset.splice(j,1)
+          }
+        }
+    }
   },
 	computed:mapState({
 		LotteryConfig:'LotteryConfig',
