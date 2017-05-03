@@ -14,7 +14,6 @@
 <script>
   import Navbar from './components/navbar';
   import TitleInfo from './components/title-info';
-  import './scss/public.scss'
 
   export default {
     components: {
@@ -41,6 +40,7 @@
 </script>
 
 <style lang='scss'>
+@import './scss/public.scss';
 @font-face {
   font-family: 'iconfont';  /* project id 107431 */
   src: url('//at.alicdn.com/t/font_0w89bgq238tzkt9.eot');
@@ -68,6 +68,46 @@ body{
   height: 100%;
   background: rgba(0,0,0,.2);
 }
+/* ==================*/
+.KL8{
+  .sscMain{
+    .sscTips{
+      padding-top: 4.7em;
+    }
+  }
+}
+.PK10{
+  .line1{
+    height: 2em;
+    line-height: 3em;
+  }
+  .betFilterAnd{
+    padding: .2rem !important;
+    li{
+      span{
+        display: none;
+      }
+    }
+  }
+  .sscMain{
+    .sscTips{
+      padding-top: 4.7em;
+    }
+  }
+}
+.quWei{
+  .numberContent{
+    a{
+      width: calc(12.4rem / 3) !important;
+      span{
+        border-radius: .2em;
+        width: 4.4em;
+      }
+    }
+  }
+}
+
+/* ==================*/
 .laymshade {
   background-color: rgba(0, 0, 0, .3);
 }

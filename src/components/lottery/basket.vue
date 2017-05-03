@@ -56,56 +56,25 @@
 
 import {PERBET,Max_Rate,Max_Chase_Issue} from '../../JSconfig'
 import {normalSum3, normalSum2, diff3, diff2, combSum3, combSum2, BaseBet,bus} from '../../js/kit'
-function getBetStr(arr){
+import {sscRandom, sscRandomNote, sscSpecialMode} from '../../js/page_config/lt_ssc'
+import {syx5Random, syx5RandomNote, syx5SpecialMode} from '../../js/page_config/lt_syx5'
+import {pk10Random, pk10RandomNote, pk10SpecialMode} from '../../js/page_config/lt_pk10'
+import {kl8Random, kl8RandomNote, kl8SpecialMode} from '../../js/page_config/lt_kl8'
+
+function getBetStr(arr, isSYX5Type){
   arr = arr.map(item=>item.join(' ')).map(item=>{
     if(item===''){
-      return '-'
+      if(isSYX5Type){
+        return '--'
+      }else{
+        return '-'
+      }
     }else{
       return item
     }
   })
 
   return arr.join(',')
-}
-var _0to9 = [0,1,2,3,4,5,6,7,8,9],
-    _dsds = ['大', '小', '单', '双'],
-    filters = ['全', '大', '小', '奇', '偶', '清'],
-    _0to27 = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27],
-    _1to26 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26],
-    _0to18 = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
-    _1to17 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]
-
-var oneRandom = ()=>Math.floor(Math.random() * 10)
-
-//获得机选数组
-function _random(cfgArr, canRepeat, baseArr){
-  var len = cfgArr.length, res = [], feeds = baseArr.slice(0)
-
-  for(var i = 0;i < len;i++){
-    var lineLen = cfgArr[i], lineRes = [],
-        _feeds = canRepeat ? feeds.slice(0) : feeds
-
-    for(var j = 0;j < cfgArr[i];j++){
-      var feed = Math.floor(Math.random() * _feeds.length)
-      lineRes.push(_feeds[feed])
-      _feeds.splice(feed, 1)
-    }
-    res.push(lineRes.sort((a,b)=>a-b))
-  }
-  return res
-}
-
-function oneStar(){
-   var line =  Math.floor(Math.random() * 5)
-   var res = []
-   for(var i = 0;i < 5;i++){
-    var lineRes = []
-    if(line === i){
-      lineRes.push(Math.floor(Math.random() * 10))
-    }
-    res.push(lineRes)
-   }
-   return res
 }
 
 //获取tag和 [五星, 复式， 直选这种]
@@ -124,152 +93,26 @@ function getTag(code, config){
   }
 }
 
-var noteBetList = ['H12','G12','F12','F24','F26','F27','E12','E24','E26','E27','D12','D24','D26','D27','C12','C22','B12','B22']
-//如果是文本框的形式，返回字符串即可
-var randomCfg = {
-  //五星
-  H11:()=>_random([1,1,1,1,1], true, _0to9),  //五星复式
-  H12:()=>[0,0,0,0,0].map(item=>oneRandom()).join(''),    //五星单式
-  H21:()=>_random([5], false, _0to9),         //组选120
-  H22:()=>_random([1,3], false, _0to9),       //组选60
-  H23:()=>_random([2,1], false, _0to9),       //组选30
-  H24:()=>_random([1,2], false, _0to9),       //组选20
-  H25:()=>_random([1,1], false, _0to9),       //组选10
-  H26:()=>_random([1,1], false, _0to9),       //组选5
-  H31:()=>_random([1], false, _0to9),         //一码不定位
-  H32:()=>_random([2], false, _0to9),         //二码不定位
-  H33:()=>_random([3], false, _0to9),         //三码不定位
-  H41:()=>_random([1], false, _0to9),         //一帆风顺
-  H42:()=>_random([1], false, _0to9),         //好事成双
-  H43:()=>_random([1], false, _0to9),         //三星报喜
-  H44:()=>_random([1], false, _0to9),         //四季发财
-  //四星
-  G11:()=>_random([1,1,1,1], true, _0to9),    //四星复式
-  G12:()=>[0,0,0,0].map(item=>oneRandom()).join(''),  //四星单式
-  G21:()=>_random([4], false, _0to9),         //四星组选24
-  G22:()=>_random([1,2], false, _0to9),       //四星组选12
-  G23:()=>_random([2], false, _0to9),         //四星组选6
-  G24:()=>_random([1,1], false, _0to9),       //四星组选4
-  G31:()=>_random([1], false, _0to9),         //一码不定位
-  G32:()=>_random([2], false, _0to9),         //二码不定位
-  //前三
-  F11:()=>_random([1,1,1], true, _0to9),     //直选复式
-  F12:()=>[0,0,0].map(item=>oneRandom()).join(''),  //单式
-  F13:()=>_random([1], false, _0to27),        //直选和值
-  F14:()=>_random([1], false, _0to9),         //跨度
-  F21:()=>_random([1], false, _1to26),        //组选和值
-  F22:()=>_random([2], false, _0to9),         //组三
-  F23:()=>_random([3], false, _0to9),         //组六
-  F24:()=>_random([3], false, _0to9)[0].join(''),   //混合组选单式
-  F25:()=>_random([1], false, _0to9),         //组选包胆
-  F26:()=>{
-    var feeds = [0,1,2,3,4,5,6,7,8,9]
-        ,_f = Math.floor(Math.random() * feeds.length)
-        ,sin = feeds[_f]
-        ,dou = 0
-    feeds.splice(_f,1)
-    dou = feeds[Math.floor(Math.random() * feeds.length)]
-    return [[sin,dou,dou],[dou,sin,dou],[dou,dou,sin]][Math.floor(Math.random() * 3)].join('')
-  },                                          //组三单式
-  F27:()=>_random([3], false, _0to9)[0].join(''),         //组六单式
-  F31:()=>_random([1], false, _0to9),         //一码不定位
-  F32:()=>_random([2], false, _0to9),         //二码不定位
-  //中三
-  E11:()=>_random([1,1,1], true, _0to9),     //直选复式
-  E12:()=>[0,0,0].map(item=>oneRandom()).join(''),  //单式
-  E13:()=>_random([1], false, _0to27),        //直选和值
-  E14:()=>_random([1], false, _0to9),         //跨度
-  E21:()=>_random([1], false, _1to26),        //组选和值
-  E22:()=>_random([2], false, _0to9),         //组三
-  E23:()=>_random([3], false, _0to9),         //组六
-  E24:()=>_random([3], false, _0to9)[0].join(''),   //混合组选单式
-  E25:()=>_random([1], false, _0to9),         //组选包胆
-  E26:()=>{
-    var feeds = [0,1,2,3,4,5,6,7,8,9]
-        ,_f = Math.floor(Math.random() * feeds.length)
-        ,sin = feeds[_f]
-        ,dou = 0
-    feeds.splice(_f,1)
-    dou = feeds[Math.floor(Math.random() * feeds.length)]
-    return [[sin,dou,dou],[dou,sin,dou],[dou,dou,sin]][Math.floor(Math.random() * 3)].join('')
-  },                                          //组三单式
-  E27:()=>_random([3], false, _0to9)[0].join(''),         //组六单式
-  E31:()=>_random([1], false, _0to9),         //一码不定位
-  E32:()=>_random([2], false, _0to9),         //二码不定位
-  //后三
-  D11:()=>_random([1,1,1], true, _0to9),     //直选复式
-  D12:()=>[0,0,0].map(item=>oneRandom()).join(''),  //单式
-  D13:()=>_random([1], false, _0to27),        //直选和值
-  D14:()=>_random([1], false, _0to9),         //跨度
-  D21:()=>_random([1], false, _1to26),        //组选和值
-  D22:()=>_random([2], false, _0to9),         //组三
-  D23:()=>_random([3], false, _0to9),         //组六
-  D24:()=>_random([3], false, _0to9)[0].join(''),   //混合组选单式
-  D25:()=>_random([1], false, _0to9),         //组选包胆
-  D26:()=>{
-    var feeds = [0,1,2,3,4,5,6,7,8,9]
-        ,_f = Math.floor(Math.random() * feeds.length)
-        ,sin = feeds[_f]
-        ,dou = 0
-    feeds.splice(_f,1)
-    dou = feeds[Math.floor(Math.random() * feeds.length)]
-    return [[sin,dou,dou],[dou,sin,dou],[dou,dou,sin]][Math.floor(Math.random() * 3)].join('')
-  },                                          //组三单式
-  D27:()=>_random([3], false, _0to9)[0].join(''),         //组六单式
-  D31:()=>_random([1], false, _0to9),         //一码不定位
-  D32:()=>_random([2], false, _0to9),         //二码不定位
-  //前二
-  C11:()=>_random([1,1], true, _0to9),       //直选复式
-  C12:()=>[0,0].map(item=>oneRandom()).join(''),  //直选单式
-  C13:()=>_random([1], false, _0to18),        //直选和值
-  C14:()=>_random([1], false, _0to9),         //跨度
-  C21:()=>_random([2], false, _0to9),         //组选复式
-  C22:()=>_random([2], false, _0to9)[0].join(''), //组选单式
-  C23:()=>_random([1], false, _1to17),        //组选和值
-  C24:()=>_random([1], false, _0to9),         //组选包胆
-  //后二
-  B11:()=>_random([1,1], true, _0to9),       //直选复式
-  B12:()=>[0,0].map(item=>oneRandom()).join(''),  //直选单式
-  B13:()=>_random([1], false, _0to18),        //直选和值
-  B14:()=>_random([1], false, _0to9),         //跨度
-  B21:()=>_random([2], false, _0to9),         //组选复式
-  B22:()=>_random([2], false, _0to9)[0].join(''), //组选单式
-  B23:()=>_random([1], false, _1to17),        //组选和值
-  B24:()=>_random([1], false, _0to9),         //组选包胆
-  //一星
-  A11:()=>oneStar(),                          //一星
-  //大小单双
-  I91:()=>_random([1,1], true, _dsds),         //前二大小单双
-  I92:()=>_random([1,1], true, _dsds),         //后二大小单双
-  I93:()=>_random([1,1,1], true, _dsds),         //前三大小单双
-  I95:()=>_random([1,1,1], true, _dsds),         //后三大小单双
+
+var randomCfgs = {
+  SSC: sscRandom,
+  SYX5: syx5Random,
+  PK10: pk10Random,
+  KL8: kl8Random
 }
 
-//哪种机选注数不是一注的，在这里特殊处理
-var specialMode = {
-  F13:(feed)=>normalSum3(feed[0][0]),
-  F14:(feed)=>diff3(feed[0][0]),
-  F21:(feed)=>combSum3(feed[0][0]),
-  F22:(feed)=>2,
-  F25:(feed)=>54,
-  E13:(feed)=>normalSum3(feed[0][0]),
-  E14:(feed)=>diff3(feed[0][0]),
-  E21:(feed)=>combSum3(feed[0][0]),
-  E22:(feed)=>2,
-  E25:(feed)=>54,
-  D13:(feed)=>normalSum3(feed[0][0]),
-  D14:(feed)=>diff3(feed[0][0]),
-  D21:(feed)=>combSum3(feed[0][0]),
-  D22:(feed)=>2,
-  D25:(feed)=>54,
-  C13:(feed)=>normalSum2(feed[0][0]),
-  C14:(feed)=>diff2(feed[0][0]),
-  C23:(feed)=>combSum2(feed[0][0]),
-  C24:(feed)=>9,
-  B13:(feed)=>normalSum2(feed[0][0]),
-  B14:(feed)=>diff2(feed[0][0]),
-  B23:(feed)=>combSum2(feed[0][0]),
-  B24:(feed)=>9,
+var randomNoteBets = {
+  SSC: sscRandomNote,
+  SYX5: syx5RandomNote,
+  PK10: pk10RandomNote,
+  KL8: kl8RandomNote
+}
+
+var specialModes = {
+  SSC: sscSpecialMode,
+  SYX5: syx5SpecialMode,
+  PK10: pk10SpecialMode,
+  KL8: kl8SpecialMode
 }
 
 export default {
@@ -279,6 +122,18 @@ export default {
     }
   },
   computed:{
+    ltype(){
+      return this.$route.params.type
+    },
+    randomCfg(){
+      return randomCfgs[this.ltype]
+    },
+    randomNoteBet(){
+      return randomNoteBets[this.ltype]
+    },
+    specialMode(){
+      return specialModes[this.ltype]
+    },
     chasePower:{
       get(){
         return this.$store.state.lt.chaseConf.power
@@ -463,11 +318,21 @@ export default {
     //机选n注
     random(n){
       for(var i = 0;i < n;i++){
-        var randomFeed = randomCfg[this.mode]()
-        var betStr = noteBetList.indexOf(this.mode) > -1 ? randomFeed : getBetStr(randomFeed)
-        //有些机选不了一注的。至少n注
-        var count = specialMode[this.mode] ? specialMode[this.mode](randomFeed) : 1
-        var randomBet = new BaseBet(this.$store.state,count, betStr)
+        var isNoteBet = Object.keys(this.randomNoteBet).indexOf(this.mode) > -1
+        if(isNoteBet === false){
+          var randomFeed = this.randomCfg[this.mode]() //层次数组
+          var isSYX5Type = ['SYX5'].indexOf(this.ltype) > -1
+          var betStr = getBetStr(randomFeed, isSYX5Type)
+          var count = this.specialMode[this.mode] ? this.specialMode[this.mode](randomFeed) : 1
+          var randomBet = new BaseBet(this.$store.state, count, betStr)
+        }else{
+          var noteBetArr = this.randomNoteBet[this.mode]()
+          var isSYX5Type = ['SYX5','PK10'].indexOf(this.ltype) > -1
+          var delimiter = isSYX5Type ? ' ' : ''
+          var betStr = noteBetArr.join(delimiter)
+          var randomBet = new BaseBet(this.$store.state, 1, betStr)
+        }
+
         randomBet.clearCompress()
         this.$store.commit('lt_addRandomBet', randomBet)
       }
@@ -593,7 +458,7 @@ left: 0;
 }
 .moreOption{
   background-color: white;
-  background: url('http://virjay.com/cartButtom.png') left bottom white;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAFCAIAAAD67UpFAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTM4IDc5LjE1OTgyNCwgMjAxNi8wOS8xNC0wMTowOTowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTcgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RDg4NTdGNzlCNjA4MTFFNjk2RkRCQjhEOUJBNkIwM0MiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RDg4NTdGN0FCNjA4MTFFNjk2RkRCQjhEOUJBNkIwM0MiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpEODg1N0Y3N0I2MDgxMUU2OTZGREJCOEQ5QkE2QjAzQyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpEODg1N0Y3OEI2MDgxMUU2OTZGREJCOEQ5QkE2QjAzQyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Ps6yJOQAAABuSURBVHjabMw7CoAwEATQ/YQUYinaCHr/UynY+MEqiAaSddVGSKbaGR6LIgJJvPfLvDl36F2WRd1U1lpMqbpxmEKIAPgOwkxd35r05brsMQIRIT5Uf2nVMUPP82Lmz31RrWOGMhsBQfjRp8ItwAChVzJfsFDx6QAAAABJRU5ErkJggg==) left bottom white;
   background-repeat: repeat-x;
   background-size: 10px;
 }

@@ -359,7 +359,8 @@ function BaseBet(state,count, betStr){
     this.betting_money = +(lt.perbet * _count * bet.betting_model * bet.graduation_count).toFixed(2)
   }
 
-  this.betting_point = lt.award + '-' + lt.Rebate[lt.lottery.LotteryType]            //赔率
+  this.betting_point = lt.lottery.LotteryType!=='K3'?(lt.award.split(',')[0] + '-' + lt.Rebate[lt.lottery.LotteryType]):(lt.award + '-' + lt.Rebate[lt.lottery.LotteryType])           //赔率
+
   this.betting_model = bet.betting_model                   //元角分
   this.betting_issuseNo = lt.NowIssue                      //当前期号
   this.graduation_count = bet.graduation_count             //当前倍率
@@ -555,26 +556,60 @@ function computeIssue(code, index){
     days++
   }
 
-  //这里挂各特殊彩种的处理函数--有返回的直接出返回结果。不参与下一步
+  //一天一期，8点开
+  function oneDayOneIssue(baseIssue, dateStr){
+    return function(){
+      var data = state.lt.Todaystr.replace(/^(\d{4})(\d{2})(\d{2})$/,'$1/$2/$3');
+      var dayDiff = Math.floor((Date.parse(data)-Date.parse(dateStr))/DAY_TIME)
+      var needAddOne = +(_SerTime > 72000000)
+      // console.log(needAddOne, _SerTime, _SerTime-72000000)
+      var issueStr = ('00' + (dayDiff + baseIssue + needAddOne + index)).slice(-3)
+      return data.slice(0,4) + issueStr
+    }
+  }
+
+  //基于固定期
+  function basedOnFixedIssue(baseIssue, dateStr, planLen, zeroCount){
+    if(!zeroCount)zeroCount = 0
+    return function(){
+      var data = state.lt.Todaystr.replace(/^(\d{4})(\d{2})(\d{2})$/,'$1/$2/$3');
+      //补零
+      var zero = ''
+      for(var i = 0;i < zeroCount;i++){
+        zero += '0'
+      }
+      return zero + (Math.floor((Date.parse(data) - Date.parse(dateStr)) / DAY_TIME) * planLen + baseIssue + index);
+    }
+  }
+
+
+  //这里挂各特殊彩种的处理函数--有返回的直接出返回结果。不参与下一步----每年过年前更新一次
   var handler = {
     '1001':function(){
       //新疆时时彩跨天的处理
       if(_index >= 83 && _SerTime <= state.lt.LotteryPlan[state.lt.PlanLen - 1].End){
-        console.log(_index, _SerTime, state.lt.LotteryPlan[state.lt.PlanLen - 1].End,days)
         days--
       }
     },
     //北京快三，以某一期作为基准
-    '1406':()=>{
-      var data = state.lt.Todaystr.replace(/^(\d{4})(\d{2})(\d{2})$/,'$1/$2/$3');
-      return '0'+(Math.floor((Date.parse(data)-Date.parse("2016/8/1"))/DAY_TIME)*89+ BASE_ISSUE_1406 + index);
-    }
+    '1406':basedOnFixedIssue(68606+1, "2017/2/4", 89, 1),
+    //北京快乐8,以某一期作为基准
+    '1302':basedOnFixedIssue(807929-19, "2017/2/18", 179),
+    //PK10,以某一期作为基准
+    '1303':basedOnFixedIssue(602501-20, "2017/2/18", 179),
+
+    //福彩3D：每天一期
+    '1201':oneDayOneIssue(33, "2017/2/9"),
+    //排列3：每天一期
+    '1202':oneDayOneIssue(33, "2017/2/9"),
+
   }
 
   //计算期号字符串
   var handleResult
   handler[code] && (handleResult = handler[code]())   //特殊彩种的特殊处理
 
+  //有返回结果，则输出返回结果。没返回结果则正常计算
   if(handleResult){
     return handleResult
   }else{
@@ -584,9 +619,11 @@ function computeIssue(code, index){
     }else{
       dateStr = state.lt.Todaystr;
     }
+
     return dateStr + state.lt.LotteryPlan[_index].IssueNo
   }
 }
+
 
 function getSSCRebate(mode, Odds){
   //前三中三后三一样，前二后二一样
@@ -645,9 +682,86 @@ function syx5_zx2(line1, line2){
 }
 
 
+var countSingle = (order,tmp)=>betSum(order,tmp)[0]  //单行计数
+//获得每个框的号码的数目
+function betSum(order, tmp){
+  var arr = [];
+  for(var i = 0;i < order.length;i++){
+    arr.push(tmp[order[i]].length)
+  }
+  return arr;
+}
+
+function createStringArray(start, end){
+  var result = []
+  for(var i = start;i <= end;i++){
+    var item = ('0' + i).slice(-2)
+    result.push(item)
+  }
+  return result
+}
+
+/**
+ * [_random 获得机选数组]
+ * @param  {[type]} cfgArr    [配置数组]
+ * @param  {[type]} canRepeat [是否允许跨行重复，单行肯定不能重复的]
+ * @param  {[type]} baseArr   [基础数组]
+ * @return {[type]}           [返回一个层级数组]
+ */
+function _random(cfgArr, canRepeat, baseArr){
+  var len = cfgArr.length,  //有几行
+      res = [],             //结果数组
+      feeds = baseArr.slice(0) //基础数组的拷贝
+
+  for(var i = 0;i < len;i++){
+    var lineLen = cfgArr[i],    //每行要获取的随机数个数
+        lineRes = [],           //每行的结果数组
+        _feeds = canRepeat ? feeds.slice(0) : feeds  //每行的数据源
+
+    for(var j = 0;j < lineLen;j++){
+      var feed = Math.floor(Math.random() * _feeds.length)  //随机索引
+      lineRes.push(_feeds[feed]) //添加到每一行的结果数组中
+      _feeds.splice(feed, 1)     //从源数组中剔掉一个，保证单行不会出现重复
+    }
+
+    lineRes = lineRes.sort((a,b)=>a-b)   //对每一行的结果数组进行排序
+    res.push(lineRes)
+  }
+  return res
+}
+
+var _0to9 = [0,1,2,3,4,5,6,7,8,9],
+    _dsds = ['大', '小', '单', '双'],
+    // filters = ['全', '大', '小', '奇', '偶', '清'],
+    _0to27 = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27],
+    _1to26 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26],
+    _0to18 = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
+    _1to17 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],
+    _syx5 = ['01','02','03','04','05','06','07','08','09','10','11'],
+    _pk10 = ['01','02','03','04','05','06','07','08','09','10']
+
+// 给出0-(n-1)的随机数
+var oneRandom = (n)=>Math.floor(Math.random() * n)
+
+// 一星
+function oneStar(){
+   var line =  Math.floor(Math.random() * 5)
+   var res = []
+   for(var i = 0;i < 5;i++){
+    var lineRes = []
+    if(line === i){
+      lineRes.push(Math.floor(Math.random() * 10))
+    }
+    res.push(lineRes)
+   }
+   return res
+}
+
+
 export {factorial, mul, C, combNoRepeat, unique, normalSum2,
   normalSum3, accumulate,diff2, diff3, combSum2, combSum3,
    bus, BaseBet, compress, throttle, easyClone, ChaseAjax,
     deleteCompress, Scheme, getBasketAmount,computeIssue,
     getSSCRebate,getK3Rebate,getRebate, DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME,
-  GMT_DIF, PERBET,Max_Rate, Max_Chase_Issue, Max_Expect_Rate, BASE_ISSUE_1406, syx5_zx2}
+  GMT_DIF, PERBET,Max_Rate, Max_Chase_Issue, Max_Expect_Rate, BASE_ISSUE_1406, syx5_zx2,
+  countSingle, betSum, createStringArray, _random, _0to9, _dsds, _0to27, _1to26, _0to18, _1to17, _syx5, _pk10, oneRandom, oneStar}

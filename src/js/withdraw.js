@@ -65,7 +65,7 @@ export default{
               title: "温馨提示",
               btn: ["是","否"],
               yes:function(){
-                router.push("/setBankcard?Q=withdraw")
+                router.replace("/setBankcard?Q=withdraw")
               },
               no(){
                 state.turning=false
@@ -80,7 +80,7 @@ export default{
             title: "温馨提示",
             btn: ["是","否"],
             yes:function(){
-              router.push("/setSafePwd?Q=withdraw")
+              router.replace("/setSafePwd?Q=withdraw")
             },
             no(){
               state.turning=false
@@ -102,7 +102,7 @@ export default{
             btn:["返回我的账户","留在本页"],
             yes:function(){
               vm.upTime()
-              router.push("/userCenter")
+              router.replace("/userCenter")
             },
             no:function(){
               vm.upTime()
@@ -154,8 +154,8 @@ export default{
     },
     setBankList(Arr){
       var list=[]
-      Arr.forEach(val=>{
-        if(!val.IsDisable){
+      Arr&&Arr.forEach(val=>{
+        if(val&&!val.IsDisable){
           list.push(val)
         }
       })

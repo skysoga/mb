@@ -44,7 +44,7 @@
 
     <div class="lotterySort" ref = "lotterySort" :class = "{active:ifShowTypeSelect}">
       <div @click.stop = "toggleTypeSelect">
-        <em>{{lotteryName}}</em><i class="iconfont">&#xe61e;</i>
+        <em>{{lotteryName}}</em><i class="iconfont" v-show="lTopNav.indexOf(ltype)===-1">&#xe61e;</i>
       </div>
 
       <div class="lotteryList fix" v-show = "ifShowTypeSelect">
@@ -78,6 +78,7 @@
     data () {
       return {
         LotteryList: [],//彩种list
+        lTopNav:['PK10','KL8'],//导航隐藏配置
         ltype: '',      //彩种类型
         lcode: ''        //彩种code
       }
@@ -88,8 +89,7 @@
         for(var subGroup in groupItem){
           var subGroupItem = groupItem[subGroup]
           subGroupItem.forEach(modeItem=>{
-            //切换Group时，subGroup第一个为默认选项
-            if(modeItem.mode.indexOf('11') > -1 || modeItem.mode === 'I91'){
+            if(modeItem.default){
               this.$store.commit('lt_changeMode', modeItem)
             }
           })
@@ -116,9 +116,11 @@
       },
       //彩种选择框，切换
       toggleTypeSelect(){
-        this.$store.state.lt.box === 'typeSelect' ?
-           this.$store.commit('lt_changeBox', '') :
-             this.$store.commit('lt_changeBox', 'typeSelect')
+        if(this.lTopNav.indexOf(this.ltype)===-1){
+          this.$store.state.lt.box === 'typeSelect' ?
+             this.$store.commit('lt_changeBox', '') :
+               this.$store.commit('lt_changeBox', 'typeSelect')
+        }
       },
       addSubGroupClass(name){
         var table = {

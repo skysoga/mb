@@ -11,6 +11,15 @@
     </div>
   </div>
 </template>
+<script>
+  export default {
+    beforeCreate(){
+      if (_App) {
+        router.go(-1)
+      }
+    }
+  }
+</script>
 <style lang='scss' scoped>
   @import "../scss/_variable";
   .downLink{

@@ -1,4 +1,4 @@
-[
+var k3Config = [
   {
     "name": "和值",
     "mode": "A10",
@@ -48,3 +48,5 @@
     "eg": [1,4,4]
   }
 ]
+
+export {k3Config}

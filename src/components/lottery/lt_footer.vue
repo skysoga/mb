@@ -10,10 +10,11 @@
           <p>{{betCount ? betStr: ''}}</p>
         </div>
       </div>
-
       <div class="betCart" >
         <a @click.stop = "showBasket">
-          <i class="iconfont">&#xe64d;<em v-show = "betAmount">{{betAmount}}</em></i>
+          <i class="iconfont">&#xe64d;<em v-show = "betAmount">{{betAmount}}</em>
+            <div :class="'moveNum '+moveClass"><span>1</span></div>
+          </i>
           号码篮</a>
       </div>
     </div>
@@ -51,6 +52,7 @@ export default {
         {unit: 0.1, word: '角'},
         {unit: 0.01, word: '分'},
       ],
+      moveClass:''
     }
   },
   computed:{
@@ -103,6 +105,11 @@ export default {
       }
       bus.$emit('clearNoteStr')   //清空文本框文字
       this.$store.commit('lt_addBet')
+
+      this.moveClass = 'move'
+      setTimeout(()=>{
+        this.moveClass = ''
+      },1000)
     },
     showBasket(){
       store.commit('lt_changeBox', 'basket')
@@ -115,6 +122,55 @@ export default {
 @import '../../scss/scssConfig','../../scss/mixin';
 
 $height:2.4em;
+.move{
+  animation: xAxismove .5s 1 ease-in;
+  span{
+    animation: yAxismove .5s 1 cubic-bezier(1, 1, 1, 1);
+  }
+}
+.moveNum{
+  font-size: .5em;
+  position: absolute;
+  left: 0.2em;
+  top: 0.6em;
+  z-index: 6;
+  will-change: transform;
+  width: 1.6em;
+  height: 1.6em;
+  transform: translateX(-10rem);
+  span{
+    background: #dc3b40;
+    border-radius: 1.6em;
+    width: 1.6em;
+    height: 1.6em;
+    line-height: 1.7em;
+    text-align: center;
+    color: white;
+  }
+}
+
+.moveNum {
+}
+
+.moveNum span {
+  display: block;
+  will-change: transform;
+}
+@keyframes yAxismove {
+  50% {
+    animation-timing-function: cubic-bezier(0.53, -0.51, 0.99, 0.03);
+    transform: translateY(-4em);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@keyframes xAxismove {
+  100% {
+    animation-timing-function: ease-in;
+    transform: translateX(0);
+  }
+}
 
 .sscBetInfo{
   position: fixed;
@@ -123,7 +179,7 @@ $height:2.4em;
   bottom:0;
   background: #575858;
   width: 100%;
-  z-index: 499;
+  z-index: 5;
 }
 .betContent{
   width: 66.5%;
@@ -131,6 +187,8 @@ $height:2.4em;
   height: 100%;
   background: #252625;
   position: relative;
+  z-index: 7;
+  transition: .1s;
 }
 .betCart{
   float: left;
@@ -141,6 +199,7 @@ $height:2.4em;
   &:before{
     content: "";
     position: absolute;
+    transition: .1s;
     width: 0;
     height: 0;
     border-top: $height/1.96 solid transparent;
@@ -174,7 +233,7 @@ $height:2.4em;
         height: 1.6em;
         line-height: 1.7em;
         text-align: center;
-        z-index: 3;
+        z-index: 7;
       }
     }
   }
@@ -216,7 +275,7 @@ $height:2.4em;
   width: 100%;
   height: $height;
   display: none;
-  z-index: 499;
+  z-index: 2;
   span{
     font-size: 0.8em;
     color:#666;

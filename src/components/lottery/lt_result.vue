@@ -60,7 +60,10 @@ export default {
     }
   },
   computed:mapState({
-    oldIssue:()=>state.lt.OldIssue.slice(4),
+    oldIssue:()=>{
+      var oldIssue = state.lt.OldIssue
+      return oldIssue.length < 8 ? oldIssue : oldIssue.slice(4)
+    },
     results(){
       var _results = state.lt.LotteryResults[this.lcode]
       if(!_results || !_results.length){

@@ -60,7 +60,7 @@ function howManyNum(arr, n){
 }
 
 export default {
-  props:['len'],
+  props:['len', 'special'],
   created(){
     bus.$off('clearNoteStr')
     bus.$on('clearNoteStr', ()=>{
@@ -83,26 +83,15 @@ export default {
         var realtext = this.betStr.replace(/[;\s]/g, ',')
         var betArr = unique(realtext.split(',').filter(item=>item.length === len))
 
-        switch(this.mode){
-          case 'F24':
-          case 'D24':
-          case 'E24':
-            betArr = combNote([2,3], betArr); //混合组选
-            break
-          case 'F26':
-          case 'E26':
-          case 'D26':
-            betArr = combNote(2, betArr);     //组三单式
-            break
-          case 'F27':
-          case 'E27':
-          case 'D27':
-            betArr = combNote(3, betArr);     //组六单式
-            break
-          case 'C22':
-          case 'B22':
-            betArr = combNote(2, betArr);     //组选单式
-            break
+        if(this.special){
+          //'b3x2'即选三个，有两个不相同的数字
+          var specialFilter = {
+            'b3x2x3':combNote([2,3],betArr),
+            'b3x2':combNote(2,betArr),
+            'b3x3':combNote(3,betArr),
+            'b2x2':combNote(2,betArr)
+          }
+          betArr = specialFilter[this.special]
         }
 
         var compressMode = ['H12', 'G12']

@@ -24,7 +24,7 @@
 
 <script>
 import {mapState} from 'vuex'
-import {unique} from '../../js/kit'
+import {unique, createStringArray} from '../../js/kit'
 
 function isArrayEqual(a, b){
   return a.every((item, index)=>b[index]===item ) && a.length === b.length
@@ -32,53 +32,131 @@ function isArrayEqual(a, b){
 
 var _0to9 = [0,1,2,3,4,5,6,7,8,9],
     _dsds = ['大', '小', '单', '双'],
-    filters = ['全', '大', '小', '奇', '偶', '清'],
     _0to27 = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27],
     _1to26 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26],
     _0to18 = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
     _1to17 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],
-    _syx5 = ['01','02','03','04','05','06','07','08','09','10','11']
+    _syx5 = ['01','02','03','04','05','06','07','08','09','10','11'],
+    _above = createStringArray(1,40),
+    _below = createStringArray(41, 80),
+    _1to10String = createStringArray(1,10)
 
 var cfg = {
   /**时时彩**/
-  '10000': {tag: '万位', itemArr: _0to9, filters: filters},
-  '1000': {tag: '千位', itemArr: _0to9, filters: filters},
-  '100': {tag: '百位', itemArr: _0to9, filters: filters},
-  '10': {tag: '十位', itemArr: _0to9, filters: filters},
-  '1': {tag: '个位', itemArr: _0to9, filters: filters},
-  'xxxx': {tag: '四重号位', itemArr: _0to9, filters: filters},
-  'xxx': {tag: '三重号位', itemArr: _0to9, filters: filters},
-  'xx': {tag: '二重号位', itemArr: _0to9, filters: filters},
-  'x': {tag: '单号位', itemArr: _0to9, filters: filters},
+  '10000': {tag: '万位', itemArr: _0to9},
+  '1000': {tag: '千位', itemArr: _0to9},
+  '100': {tag: '百位', itemArr: _0to9},
+  '10': {tag: '十位', itemArr: _0to9},
+  '1': {tag: '个位', itemArr: _0to9},
+  'xxxx': {tag: '四重号位', itemArr: _0to9},
+  'xxx': {tag: '三重号位', itemArr: _0to9},
+  'xx': {tag: '二重号位', itemArr: _0to9},
+  'x': {tag: '单号位', itemArr: _0to9},
+  'zx120': {tag: '组选120', itemArr: _0to9},
+  'zx24': {tag: '组选24', itemArr: _0to9},
+  'yffs': {tag: '一帆风顺', itemArr: _0to9},
+  'hscs': {tag: '好事成双', itemArr: _0to9},
+  'sxbx': {tag: '三星报喜', itemArr: _0to9},
+  'sjfc': {tag: '四季发财', itemArr: _0to9},
+
   //带i的是大小单双
-  'i10000': {tag: '万位', itemArr: _dsds, filters: ['清']},
-  'i1000': {tag: '千位', itemArr: _dsds, filters: ['清']},
-  'i100': {tag: '百位', itemArr: _dsds, filters: ['清']},
-  'i10': {tag: '十位', itemArr: _dsds, filters: ['清']},
-  'i1': {tag: '个位', itemArr: _dsds, filters: ['清']},
-  'whole':{itemArr: _0to9, filters: ['清']},
-  'psum27':{itemArr: _0to27, filters: ['清']},
-  'psum18':{itemArr: _0to18, filters: ['清']},
-  'csum26':{itemArr: _1to26, filters:['清']},
-  'csum17':{itemArr: _1to17, filters:['清']},
-  'baodan':{itemArr: _0to9, filters:['清']},
+  'i10000': {tag: '万位', itemArr: _dsds},
+  'i1000': {tag: '千位', itemArr: _dsds},
+  'i100': {tag: '百位', itemArr: _dsds},
+  'i10': {tag: '十位', itemArr: _dsds},
+  'i1': {tag: '个位', itemArr: _dsds},
+  'whole':{itemArr: _0to9},
+
+  'psum27':{tag:'和值', itemArr: _0to27},
+  'psum18':{tag:'和值', itemArr: _0to18},
+  'csum26':{tag:'和值', itemArr: _1to26},
+  'csum17':{tag:'和值', itemArr: _1to17},
+  'baodan':{tag:'包胆', itemArr: _0to9},
+  'diff':{tag:'跨度', itemArr: _0to9},
+  'budingwei':{tag:'不定位', itemArr: _0to9},
+  'z3':{tag:'组三',itemArr: _0to9},
+  'z6':{tag:'组六',itemArr: _0to9},
+  'zx':{tag:'组选',itemArr: _0to9},
   /**十一选五**/
-  'd1':{tag:'第一位', itemArr: _syx5, filters:['清']},
-  'd2':{tag:'第二位', itemArr: _syx5, filters:['清']},
-  'd3':{tag:'第三位', itemArr: _syx5, filters:['清']},
-  'd':{itemArr: _syx5, filters:['清']},
-  'dm':{tag:'胆码', itemArr: _syx5, filters:['清']},
-  'tm':{tag:'拖码', itemArr: _syx5, filters:['清']},
-  'qezx':{tag:'前二组选', itemArr: _syx5, filters:['清']},
-  'qszx':{tag:'前三组选', itemArr: _syx5, filters:['清']},
-  'x2z2':{tag:'选二中二', itemArr: _syx5, filters:['清']},
-  'x3z3':{tag:'选三中三', itemArr: _syx5, filters:['清']},
-  'x4z4':{tag:'选四中四', itemArr: _syx5, filters:['清']},
-  'x5z5':{tag:'选五中五', itemArr: _syx5, filters:['清']},
-  'x6z5':{tag:'选六中五', itemArr: _syx5, filters:['清']},
-  'x7z5':{tag:'选七中五', itemArr: _syx5, filters:['清']},
-  'x8z5':{tag:'选八中五', itemArr: _syx5, filters:['清']},
+  'd1':{tag:'第一位', itemArr: _syx5},
+  'd2':{tag:'第二位', itemArr: _syx5},
+  'd3':{tag:'第三位', itemArr: _syx5},
+  'd':{itemArr: _syx5},
+  '_budingwei':{tag:'不定位', itemArr: _syx5},
+  'dm':{tag:'胆码', itemArr: _syx5},
+  'tm':{tag:'拖码', itemArr: _syx5},
+  'qezx':{tag:'前二组选', itemArr: _syx5},
+  'qszx':{tag:'前三组选', itemArr: _syx5},
+  'x1z1':{tag:'选一中一', itemArr: _syx5},
+  'x2z2':{tag:'选二中二', itemArr: _syx5},
+  'x3z3':{tag:'选三中三', itemArr: _syx5},
+  'x4z4':{tag:'选四中四', itemArr: _syx5},
+  'x5z5':{tag:'选五中五', itemArr: _syx5},
+  'x6z5':{tag:'选六中五', itemArr: _syx5},
+  'x7z5':{tag:'选七中五', itemArr: _syx5},
+  'x8z5':{tag:'选八中五', itemArr: _syx5},
+  'dds':{itemArr:['5单0双','4单1双','3单2双','2单3双','1单4双','0单5双']},
+  'czw':{tag:'猜中位', itemArr: ['03','04','05','06','07','08','09']},
+  /**快乐8**/
+  'above':{tag:'上盘', itemArr: _above},
+  'below':{tag:'下盘', itemArr: _below},
+  'szx':{itemArr: ['上', '中', '下']},
+  'jho':{itemArr: ['奇', '和', '偶']},
+  'isum':{itemArr: ['大单','大双','小单','小双']},
+  /**PK10**/
+  'first':{tag:'冠军', itemArr: _1to10String},
+  'second':{tag:'亚军', itemArr: _1to10String},
+  'third':{tag:'季军', itemArr: _1to10String},
+  'fourth':{tag:'第四', itemArr: _1to10String},
+  'fifth':{tag:'第五', itemArr: _1to10String},
+  'sixth':{tag:'第六', itemArr: _1to10String},
+  'seventh':{tag:'第七', itemArr: _1to10String},
+  'eighth':{tag:'第八', itemArr: _1to10String},
+  'ninth':{tag:'第九', itemArr: _1to10String},
+  'tenth':{tag:'第十', itemArr: _1to10String},
 }
+
+// var cfg = {
+//   /**时时彩**/
+//   '10000': {tag: '万位', itemArr: _0to9, filters: filters},
+//   '1000': {tag: '千位', itemArr: _0to9, filters: filters},
+//   '100': {tag: '百位', itemArr: _0to9, filters: filters},
+//   '10': {tag: '十位', itemArr: _0to9, filters: filters},
+//   '1': {tag: '个位', itemArr: _0to9, filters: filters},
+//   'xxxx': {tag: '四重号位', itemArr: _0to9, filters: filters},
+//   'xxx': {tag: '三重号位', itemArr: _0to9, filters: filters},
+//   'xx': {tag: '二重号位', itemArr: _0to9, filters: filters},
+//   'x': {tag: '单号位', itemArr: _0to9, filters: filters},
+//   //带i的是大小单双
+//   'i10000': {tag: '万位', itemArr: _dsds, filters: ['清']},
+//   'i1000': {tag: '千位', itemArr: _dsds, filters: ['清']},
+//   'i100': {tag: '百位', itemArr: _dsds, filters: ['清']},
+//   'i10': {tag: '十位', itemArr: _dsds, filters: ['清']},
+//   'i1': {tag: '个位', itemArr: _dsds, filters: ['清']},
+//   'whole':{itemArr: _0to9, filters: ['清']},
+//   'psum27':{itemArr: _0to27, filters: ['清']},
+//   'psum18':{itemArr: _0to18, filters: ['清']},
+//   'csum26':{itemArr: _1to26, filters:['清']},
+//   'csum17':{itemArr: _1to17, filters:['清']},
+//   'baodan':{itemArr: _0to9, filters:['清']},
+//   /**十一选五**/
+//   'd1':{tag:'第一位', itemArr: _syx5, filters:['清']},
+//   'd2':{tag:'第二位', itemArr: _syx5, filters:['清']},
+//   'd3':{tag:'第二位', itemArr: _syx5, filters:['清']},
+//   'd':{itemArr: _syx5, filters:['清']},
+//   'dm':{tag:'胆码', itemArr: _syx5, filters:['清']},
+//   'tm':{tag:'拖码', itemArr: _syx5, filters:['清']},
+//   'qezx':{tag:'前二组选', itemArr: _syx5, filters:['清']},
+//   'qszx':{tag:'前三组选', itemArr: _syx5, filters:['清']},
+//   'x2z2':{tag:'选二中二', itemArr: _syx5, filters:['清']},
+//   'x3z3':{tag:'选三中三', itemArr: _syx5, filters:['清']},
+//   'x4z4':{tag:'选四中四', itemArr: _syx5, filters:['清']},
+//   'x5z5':{tag:'选五中五', itemArr: _syx5, filters:['清']},
+//   'x6z5':{tag:'选六中五', itemArr: _syx5, filters:['清']},
+//   'x7z5':{tag:'选七中五', itemArr: _syx5, filters:['清']},
+//   'x8z5':{tag:'选八中五', itemArr: _syx5, filters:['清']},
+// }
+
 var refer = {
   '全':[0,1,2,3,4,5,6,7,8,9],
   '大':[5,6,7,8,9],
@@ -127,7 +205,7 @@ export default {
           alias: this.alias,
           arr: [item]
         })
-        this.$emit('choose')
+        this.$emit('choose',this.alias,[item])
         return
       }
 
@@ -136,6 +214,39 @@ export default {
         _chosen.splice(_pos, 1)
         var tmp = _chosen
       }else{
+        var isKL8 = this.$route.params.type === 'KL8'                 //是快乐8
+           ,notSelectOne = this.$store.state.lt.mode.mode !== 'A10'   //不是任选一
+
+        if(isKL8 && notSelectOne){
+          var above = this.$store.state.lt.tmp['above']
+          var below = this.$store.state.lt.tmp['below']
+          if((above.length + below.length) >= 8){
+            layer.msgWarn('对不起，当前玩法最多只能选择8个号码')
+            return
+          }
+        }
+
+        var isSYX5 = this.$route.params.type === 'SYX5'
+        ,mode = this.$store.state.lt.mode.mode
+        var dmMax = {
+          B23:2,
+          B33:2,
+          C23:3,
+          C33:3,
+          D13:4,
+          E13:5,
+          F13:6,
+          G13:7,
+          H13:8
+        }
+
+        if(isSYX5){
+          if(this.alias === 'dm'){
+            if(_chosen.length >= dmMax[mode] - 1){
+              _chosen.splice(_chosen.length -1, 1)
+            }
+          }
+        }
         //不存在添加该项
         _chosen.push(item)
         //去重加排序
@@ -153,34 +264,38 @@ export default {
         alias: this.alias,
         arr: tmp
       })
-
-      this.$emit('choose')
+      this.$emit('choose',this.alias,tmp)
     },
-    filter(item){
-      this.$store.commit({
-        type:'lt_updateTmp',
-        alias: this.alias,
-        arr: refer[item].slice(0)
-      })
-      this.$emit('choose')
-    },
-    filterLight(item){
-      if(item === '清'){
-        return ''
-      }else{
-        if(isArrayEqual(this.chosen, refer[item])){
-          return 'curr'
-        }else{
-          return ''
-        }
-      }
-    }
+    // filter(item){
+    //   this.$store.commit({
+    //     type:'lt_updateTmp',
+    //     alias: this.alias,
+    //     arr: refer[item].slice(0)
+    //   })
+    //   this.$emit('choose')
+    // },
+    // filterLight(item){
+    //   if(item === '清'){
+    //     return ''
+    //   }else{
+    //     if(isArrayEqual(this.chosen, refer[item])){
+    //       return 'curr'
+    //     }else{
+    //       return ''
+    //     }
+    //   }
+    // }
   }
 }
 </script>
 
 <style lang = "scss" scoped>
 @import '../../scss/scssConfig','../../scss/mixin';
+.numberContent{
+  ins{
+
+  }
+}
 .selectNumber{
   padding:.3rem 0.5rem;
   padding-right: 0;
@@ -210,7 +325,7 @@ export default {
       border:1px solid #e3decf;
       border-radius: .3em;
       position: relative;
-      z-index: 3;
+      z-index: 2;
       margin-top: .8em;
       padding:.2em .5em;
       /*&:before,&:after{

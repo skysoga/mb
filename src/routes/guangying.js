@@ -5,9 +5,9 @@ const normalPay =require('../views/normalPay')
 const quickPay =require('../views/quickPay')
 const lotteryHall =require('../views/lotteryHall')
 const lotteryPage = require('../views/lotteryPage')
-const lottery_ssc = require('../views/lottery_ssc')
-const lottery_k3 = require('../views/lottery_k3')
-const lottery_syx5 = require('../views/lottery_syx5')
+// const lottery_common = require('../views/lottery_common')
+// const lottery_k3 = require('../views/lottery_k3')
+// const lottery_syx5 = require('../views/lottery_syx5')
 
 var routes = [
   {
@@ -67,23 +67,36 @@ var routes = [
     },
     redirect: '/notfound',
     children:[
-      {
-        path: 'SSC/:code',
-        name: '时时彩',
-        component: lottery_ssc,
-      },
-      {
-        path: 'K3/:code',
-        name: '快三',
-        component: lottery_k3
-      },
-      {
-        path: 'SYX5/:code',
-        name: '11选5',
-        component: lottery_syx5
-      }
-    ]
+    component: lotteryPage
   }
+
+
+  // {
+  //   path: '/lottery',
+  //   name: '彩种',
+  //   component: lotteryPage,
+  //   meta: {
+  //     user: true,
+  //   },
+  //   redirect: '/notfound',
+  //   children:[
+  //     {
+  //       path: 'SSC/:code',
+  //       name: '时时彩',
+  //       component: lottery_ssc,
+  //     },
+  //     {
+  //       path: 'K3/:code',
+  //       name: '快三',
+  //       component: lottery_k3
+  //     },
+  //     {
+  //       path: 'SYX5/:code',
+  //       name: '11选5',
+  //       component: lottery_syx5
+  //     }
+  //   ]
+  // }
 ]
 
 module.exports = routes

@@ -49,7 +49,10 @@
 import {mapState} from 'vuex'
 export default{
   computed:mapState({
-    nowIssue:()=>state.lt.NowIssue.slice(4),
+    nowIssue:()=>{
+      var nowIssue = state.lt.NowIssue
+      return nowIssue.length < 8 ? nowIssue : nowIssue.slice(4)
+    },
     TimeBar:()=>state.lt.TimeBar,
     BetRecord(){
       var Record = state.lt.BetRecord

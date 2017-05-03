@@ -36,7 +36,7 @@ export default {
     }else if(state.SiteConfig){
       to.meta.title=`<img src="${state.constant.ImgHost+state.SiteConfig.MobileLogo}">`
     }else{
-      router.push('/index')
+      router.replace('/index')
     }
     next()
   },
@@ -46,7 +46,7 @@ export default {
         if (json.Code>-1) {
           clearInterval(DSQ)
           sessionStorage.removeItem('Maintain')
-          router.push("/index")
+          router.replace("/index")
         }
       })
     },120000)

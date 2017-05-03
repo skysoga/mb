@@ -93,7 +93,8 @@
         <ul>
           <li v-for = "(item,index) in itemArr"
               @click = "choose(item)"
-              :class = "{checked: chosen.indexOf(item) > -1}">{{item}}<p v-if = "mode === 'A10' && award">{{index < 4 ? '赔率': '赔'}}{{getSumRebate(index)}}</p>
+              :class = "{checked: chosen.indexOf(item) > -1}">{{item}}
+              <p v-if = "mode === 'A10' && award">{{index < 4 ? '赔率': '赔'}}{{getSumRebate(index)}}</p>
           </li>
         </ul>
       </div>

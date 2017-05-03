@@ -68,7 +68,6 @@ export default {
       next()
     })
   },
-
   created () {
     if(state.RechargeWayWeixin){
       this.weixMsg=false
@@ -81,6 +80,7 @@ export default {
       this.aliMsg=false
       this.aliType = state.RechargeWayAlipay[0].PayType || '一般'
     }else{
+      this.wechatType=''
       this.aliMsg="支付宝支付维护中..."
       this.wechatType=''
     }

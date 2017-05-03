@@ -1,3 +1,7 @@
+//layer 、filterXSS引入失败，刷新
+if((typeof(layer)||typeof(filterXSS))=='undefined'){
+  location.href=location.href
+}
 ;(function(){
   try {
     sessionStorage.setItem('TextLocalStorage', 'hello world');
@@ -19,6 +23,8 @@ import Vuex from 'vuex'
 import App from './App'
 import routes from './routes/routes'
 import Va from './plugins/va'
+import {DAY_TIME, GMT_DIF} from './js/kit'
+var localState={}
 window.Vue=Vue
 Vue.use(Va)
 Vue.use(VueRouter)
@@ -52,7 +58,36 @@ Date.prototype.format = function(format) {
   }
   return format;
 }
-
+window._Tool = {
+  Array: {
+    Unique: function (array) {
+      var n = []; //临时数组
+      for (var i = 0; i < array.length; i++) {
+        if (n.indexOf(array[i]) == -1) n.push(array[i]);
+      }
+      return n;
+    }
+  },
+  // 获得服务器的时间
+  Date: {
+    getTime:function(){
+      return new Date().getTime()-state.Difftime||0
+      /*if (state.Difftime) {
+        return {then:function(fun){
+          fun&&fun(new Date().getTime()-state.Difftime)
+        }}
+      }else{
+        return new Promise(function(resolve, reject) {
+          RootApp.getServerTime(function(){
+            if (state.Difftime) {
+              resolve(new Date().getTime()-state.Difftime)
+            }
+          })
+        })
+      }*/
+    }
+  }
+}
 // document.body.oncontextmenu=function(){ return false;}//防止右键
 document.addEventListener('touchstart',function(e){},false);//让css的:active生效
 // document.cookie = "Site="+location.hostname.replace('.com','')
@@ -60,6 +95,37 @@ window.rem = document.body.clientWidth/16
 window.em = Math.sqrt((rem-20)*.9)+20
 document.querySelector("html").style.fontSize=rem+'px'
 document.body.style.fontSize=em+'px'
+window._Tool = {
+  Array: {
+    Unique: function (array) {
+      var n = []; //临时数组
+      for (var i = 0; i < array.length; i++) {
+        if (n.indexOf(array[i]) == -1) n.push(array[i]);
+      }
+      return n;
+    }
+  },
+  // 获得服务器的时间
+  Date: {
+    getTime:function(){
+      return new Date().getTime()-state.Difftime||0
+      /*if (state.Difftime) {
+        return {then:function(fun){
+          fun&&fun(new Date().getTime()-state.Difftime)
+        }}
+      }else{
+        return new Promise(function(resolve, reject) {
+          RootApp.getServerTime(function(){
+            if (state.Difftime) {
+              resolve(new Date().getTime()-state.Difftime)
+            }
+          })
+        })
+      }*/
+    }
+  }
+}
+
 
 // 修改默认配置XSS 添加STYLE
 var XssList=filterXSS.whiteList
@@ -121,10 +187,11 @@ function FetchCatch(opt) {
   if (status){
     msg += status
   }
-  /*if (error) {
+  if (error) {
     error=error.toString()
-    msg += '<br/>'+error
-  }*/
+    // msg += '<br/>'+error
+    console.log(error);
+  }
   if (S){
     msg += '_'+S
   }
@@ -175,8 +242,15 @@ window._fetch = function (data){
       FetchCatch({msg},resolve)
       reject()
     },10000)
-    var fetchUrl = state.UserName||data.UserName
-    fetchUrl = fetchUrl?'/tools/ssc_ajax.ashx?U='+fetchUrl:'/tools/ssc_ajax.ashx'
+    var fetchUrl = '/tools/ssc_ajax.ashx?A='+data.Action
+    if(site){
+      fetchUrl+='&S='+site
+    }
+    var user = state.UserName||data.UserName
+    if(user){
+      fetchUrl+='&U='+user
+    }
+
     fetch(fetchUrl, {
       credentials:'same-origin',
       method: 'POST',
@@ -250,7 +324,9 @@ window._fetch = function (data){
         var notRes
         if (data.Action==="GetInitData") {
           if (json.Code===1||json.Code===0) {
-            var Data = RootApp.SetFilter(json.BackData);
+            json = RootApp.SetFilter(json)
+            var Data = json.BackData
+            RootApp.WatchInitData(Data)
             RootApp.SaveInitData(Data)
             if(JSON.stringify(json.CacheData) !== "{}"){
               localStorage.setItem('CacheData',JSON.stringify(Object.assign(CacheData,json.CacheData)))
@@ -263,7 +339,7 @@ window._fetch = function (data){
               if(state.UserName){
                 layer.alert("由于您长时间未操作，已自动退出，需要重新登录",function(){
                   RootApp.Logout()
-                  router.push("/login")
+                  router.replace("/login")
                 })
                 notRes=true
               }
@@ -272,7 +348,7 @@ window._fetch = function (data){
             // break;
             case -7://系统维护
               store.commit('SetMaintain', json.BackData)
-              router.push("/maintain")
+              router.replace("/maintain")
               notRes=true
             break;
             case -8://账号冻结
@@ -280,7 +356,7 @@ window._fetch = function (data){
                 RootApp.Logout()
                 var meta = RootApp._route.matched[0]
                 meta = meta&&meta.meta
-                router.push("/login")
+                router.replace("/login")
               })
               notRes=true
             break;
@@ -351,10 +427,19 @@ window._fetchT=function _fetchT(data){
   //   })
   // })
 }
-window._App=location.host.search("csz8.net")>-1//是否APP
-;(function(){
+window._App=(function(host){
+  //是否APP
   var a = localStorage.getItem("isApp")
-  if (a) {_App=a?true:false}
+  if (a) {return a}
+  console.log(host);
+  host = host.split('.')
+  host = host[host.length-2]
+  if (['csz8','caishen01'].indexOf(host)>-1) {
+    return true
+  }
+  return false
+})(location.host)
+;(function(){
   var versions = function() {
     var u = navigator.userAgent,
       app = navigator.appVersion;
@@ -382,7 +467,6 @@ window._App=location.host.search("csz8.net")>-1//是否APP
       script.src=img.src
       document.body.appendChild(script);
       var inter=setInterval(function(){
-        console.log(1);
         if(YDBOBJ){
           (new YDBOBJ()).SetHeadBar(0)
           clearInterval(inter)
@@ -442,8 +526,12 @@ var UserArr = [
   'UserLastLoginInfo',
   'RebateK3',
   'RebateSSC',
+  'RebateSYX5',
+  'RebateKL8',
+  'RebatePK10',
+  'RebatePL35',
+  'RebateFC3D',
   'NoticeData',
-  'RebateSYX5'
 ]
 var SiteArr=[ //需要校验更新版本的列表
   'SysActivity',
@@ -454,45 +542,85 @@ var SiteArr=[ //需要校验更新版本的列表
   'RewardData',//每日加奖设置
   'DefaultPhotoList',
 ]
+
 var AppArr=[
   'ActivityConfig', //活动种类及数据
   'BannerList',
-  'PayLimit',
+  // 'PayLimit',
   'SiteConfig',
 ]
-var VerifyArr=["LotteryConfig","BannerList","LotteryList","ActivityConfig","FooterConfig","HelpConfig","SiteConfig","HallBanner","GradeList","LoginGreet","DefaultPhotoList","RewardData","AbstractType","PayLimit","CloudUrl","NoticeData"]
+var LocalCacheArr = [//本地控制缓存版本
+  'RankingList',//昨日奖金榜
+]
+var VerifyArr=["LotteryConfig","BannerList","LotteryList","ActivityConfig","FooterConfig","HelpConfig","SiteConfig","HallBanner","GradeList","DefaultPhotoList","RewardData","AbstractType","PayLimit","CloudUrl","NoticeData"]
 if (_App) {
   UserArr=UserArr.concat(AppArr)
 }else{
   SiteArr=SiteArr.concat(AppArr)
 }
-var CacheArr = SiteArr.concat(UserArr).concat(['Difftime'])
+var CacheArr = SiteArr.concat(UserArr).concat(LocalCacheArr).concat(['Difftime'])
 window.state = require('./JSconfig.js')
 state.constant._App=_App
 window.CacheData=localStorage.getItem("CacheData")
 CacheData = CacheData?JSON.parse(CacheData):{}
+var LocalCacheData=localStorage.getItem("LocalCacheData")
+LocalCacheData = LocalCacheData ? JSON.parse(LocalCacheData) : {}
 function setState(key){
   function getLocalDate(str){
     var s = localStorage.getItem(str);
     try{
       s = JSON.parse(s);
     }catch(e){}
-    if (str=="SiteConfig"&&s) {
+    /*if (str=="SiteConfig"&&s) {
       SetIndexTitle(s)
-    }
+    }*/
     return s;
   }
+  var value
   for (var i = key.length - 1; i >= 0; i--) {
-    state[key[i]]=getLocalDate(key[i])
+    value=getLocalDate(key[i])
+    // state[key[i]]=getLocalDate(key[i])
     if((VerifyArr.indexOf(key[i])>-1)&&
-      (Boolean(CacheData[key[i]])^(state[key[i]]!=null))){
+      (Boolean(CacheData[key[i]])^(value!=null))){
       //检验是否存在版本号与实际储存值是否非同步存在或不存在
       console.log(state[key[i]]);
       delete state[key[i]]
       delete CacheData[key[i]]
     }
+    if (value!==null) {
+      // 进行localStorage数据的合法化验证，不符合目前要求的数据进行剔除
+      switch(key[i]){
+        case 'SiteConfig':
+          console.log(value);
+          if (!(value.Style&&value.Style.Id)) {
+            value=''
+          }
+        break;
+        default:
+          if(LocalCacheArr.indexOf(key[i])>-1){
+            // 判断与LocalCacheData的同步
+            var cache = value
+            // console.log('存在localCache的字段',key[i])
+            var hasVersion = !!LocalCacheData[key[i]]
+            var hasCache = !!cache
+            var needDelete = hasVersion ^ hasCache  //异或
+            // console.log(needDelete, hasVersion, hasCache)
+            if(needDelete){
+              localStorage.removeItem(key[i])  //删除对应的缓存
+              delete LocalCacheData[key[i]]
+              localStorage.setItem("LocalCacheData",JSON.stringify(LocalCacheData))
+            }
+          }
+        break
+      }
+      localState[key[i]]=value
+    }
+    state[key[i]]=value
   }
+  console.log(localState);
 };
+var LocalCacheData=localStorage.getItem("LocalCacheData")
+LocalCacheData = LocalCacheData ? JSON.parse(LocalCacheData) : {}
 setState(CacheArr)
 console.log(CacheData);
 
@@ -503,15 +631,6 @@ window.store = new Vuex.Store({
     WithdrwHtml:state=>{
       return "login"
     },
-    // PayLimit: state => {
-    //   var el = {};
-    //   if(state.PayLimit){
-    //     state.PayLimit.forEach(item=>{
-    //       el[item.PayName] = [item.MinMoney, item.MaxMoney];
-    //     })
-    //   }
-    //   return el;
-    // },
     NoDataDom:msg => state.tpl.noData.join("msg"),
   },
   mutations: {
@@ -663,7 +782,9 @@ window.RootApp={
     this.SaveInitData({UserName:UserName})
     fun()
   },
-  SetFilter:function(data){
+  SetFilter:function(json){
+    var data=json.BackData
+    var CacheData=json.CacheData
     ;(function(Bonus){
       if (!Bonus||Bonus.State) {return}
       setTimeout(function(){
@@ -675,16 +796,25 @@ window.RootApp={
           btn: ["领取奖励", "留在本页"],
           yes: function(Lindex) {
             layer.close(Lindex);
-            router.push("/upgrade")
+            router.replace("/upgrade")
           }
         })
       },100)
     })(data.UserUpGradeBonus)
-    ;(function(s){
+    /*;(function(s){
       if (s) {
         SetIndexTitle(s)
       }
-    })(data.SiteConfig)
+    })(data.SiteConfig)*/
+    ;(function(arr){
+      if(arr){
+        var el = {};
+        arr.forEach(item => {
+          el[item.PayName] = [item.MinMoney, item.MaxMoney];
+        })
+        data.PayLimit=el
+      }
+    })(data.PayLimit)
     ;(function(LotteryList){
       if(LotteryList&&LotteryList.length){
         data.LotteryList={};
@@ -696,15 +826,6 @@ window.RootApp={
         }
       }
     })(data.LotteryList)
-    ;(function(arr){
-      if(arr){
-        var el = {};
-        arr.forEach(item => {
-          el[item.PayName] = [item.MinMoney, item.MaxMoney];
-        })
-        data.PayLimit=el
-      }
-    })(data.PayLimit)
     if (data.NoticeData&&data.NoticeData.length) {
       if (data.NoticeData.length>2) {
         data.NoticeData.length=2;
@@ -727,10 +848,71 @@ window.RootApp={
         }
       }
     })(data.ActivityConfig)
-    return data;
+    ;(function(RankingList){
+      if (RankingList&&RankingList.length===0) {
+        delete data.RankingList
+      }
+    })(data.RankingList)
+    ;(function(){
+      var change=[]
+      for (var i = LocalCacheArr.length - 1; i >= 0; i--) {
+        if(data[LocalCacheArr[i]]){
+          change.push(LocalCacheArr[i])
+        }
+      }
+      var len = change.length
+      console.log(len);
+      if (len) {
+        var time = _Tool.Date.getTime()
+        time/=DAY_TIME
+        time=Math.floor(time)%366
+        for (var i = len - 1; i >= 0; i--) {
+          LocalCacheData[change[i]]=time
+        }
+        localStorage.setItem("LocalCacheData",JSON.stringify(LocalCacheData))
+      }
+    })()
+    return json;
   },
   SaveInitData(d){
     store.commit('SaveInitData', d)
+  },
+  WatchInitData(d) {
+    //必须跟随执行的函数
+    console.log(d)
+    var head = document.getElementsByTagName('head')[0]
+    var v
+    for(var i in d) {
+      switch(i){
+        case 'SiteConfig':
+          ;(function(s){
+            console.log(s);
+            routes[1].meta.title=`<img src="${state.constant.ImgHost+s.MobileLogo}">`
+            if (!_App) {
+              document.title=s.Name
+              // routes[2].meta.title=routes[1].meta.title
+            }
+            document.title = s.Name
+            if(!s.PCLogo){//PCLogo为空时转换
+              s.PCLogo={}
+              s.PCLogo.logo1=''
+            }
+            var site = s.PCLogo.logo1
+            if (site) {
+              site=site.split('/')[1]
+              window.site=site
+              switch(site){
+                case 'huifa':
+                  var scriptTag = document.createElement('script')
+                  scriptTag.src='http://m.badzzducom2.shop3721.com/yunbd.php?tk=60b6ef7bef953ce499b6b5f85c409962'
+                  head.appendChild(scriptTag)
+                break
+              }
+            }
+          })(d.SiteConfig)
+        break
+      }
+    }
   },
   AjaxGetInitData(arr,fun){
     state.needVerify=0
@@ -775,6 +957,21 @@ window.RootApp={
         default:
           if (state[arr[i]]==null) {
             newArr.push(arr[i])
+          }else if(LocalCacheArr.indexOf(arr[i])>-1){
+            var time = _Tool.Date.getTime()
+            var todayms = time%DAY_TIME - GMT_DIF   //当天的毫秒值
+            time/=DAY_TIME
+            time=Math.floor(time)%366
+            if (LocalCacheData[arr[i]]!=time) {
+              console.log(arr[i]+"过期");
+              //每天0点20分更新
+              if (todayms%DAY_TIME > 20 * 60 * 1000) {
+                console.log(arr[i]+"更新");
+                newArr.push(arr[i])
+              }
+            }else{
+              console.log(arr[i]+"没过期");
+            }
           }
       }
     }
@@ -879,9 +1076,9 @@ window.RootApp={
     if(meta.user){
       if (!state.UserName) {
         state.login2path = to.path
-        router.push("/login")
+        router.replace("/login")
       }else if(state.agent){
-        state.AgentRebate||router.push("/notfount")
+        state.AgentRebate||router.replace("/notfount")
       }
     }
     if (meta.verify) {
@@ -895,7 +1092,7 @@ window.RootApp={
     }
   },
 }
-
+RootApp.WatchInitData(localState)
 window.RootApp = new Vue({
   el: '#app',
   store,
@@ -912,10 +1109,16 @@ window.RootApp = new Vue({
     if (ToPath==="/") {return}
     console.log(ToPath);
     for (var i = 0; i < len; i++) {
-      if (ToPath.search(routes[i].path.toLowerCase())>-1&&routes[i].path!='/') {
-        this.beforEnter({matched:[routes[i]]})
+      var actualPath = routes[i].path.toLowerCase().split('/')[1]  //去掉斜杠的第一个
+      if (actualPath && ToPath.indexOf(actualPath) > -1) {
+        console.log(routes[i])
+        this.beforEnter({ matched: [routes[i]] })
         break
       }
+      // if (ToPath.search(routes[i].path.toLowerCase())>-1&&routes[i].path!='/') {
+      //   this.beforEnter({matched:[routes[i]]})
+      //   break
+      // }
     }
   },
   render: h => h(App),

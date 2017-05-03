@@ -17,7 +17,7 @@ export default {
       //必须是从根路径来的且带着id=邀请码
       //如果是注册
       next(vm=>{
-        router.push("/register"+search)
+        router.replace("/register"+search)
       })
     }
     var NologApp = _App&&!state.UserName
