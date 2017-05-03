@@ -6,7 +6,7 @@ data() {
     // initData: [],
     // li_state: 0,
     nowLotteryClass: '全部彩种',
-    nowDisplayList:[],
+    nowDisplayList:[]
   }
 },
 beforeRouteEnter(to,from,next){
