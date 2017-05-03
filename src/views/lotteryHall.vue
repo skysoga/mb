@@ -32,6 +32,7 @@
             <span>{{LotteryList[l].LotteryIntro}}</span>
           </router-link>
         </li>
+        <li v-for=" l in 3 - ( nowDisplayList.length%3 || 3 )"></li>
       </ul>
     </div>
   </div>
