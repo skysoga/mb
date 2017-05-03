@@ -59,14 +59,13 @@ var routes = [
     },
     component: lotteryHall
   },{
-    path: '/lottery',
+    path: '/lottery/:type/:code',
     name: '彩种',
-    component: lotteryPage,
-    meta: {
+    meta:{
+      title:"彩种",
       user: true,
+      component:lotteryPage
     },
-    redirect: '/notfound',
-    children:[
     component: lotteryPage
   }
 
