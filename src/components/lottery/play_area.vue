@@ -1,7 +1,7 @@
 <template>
   <div :class="{'sscMain':true,'quWei':getQW}">
     <div class="sscTips">
-      <p>{{tip}}<i>{{award}}</i>元 </p>
+      <p>{{tip}}<i>{{award}}</i>元 <span>奖金详情</span></p>
       <!-- <p>每位至少选1个号码，按位猜对号码即中196000元 </p> -->
     </div>
 
