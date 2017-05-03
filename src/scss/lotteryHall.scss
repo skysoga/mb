@@ -1,9 +1,6 @@
 //變數
 $nav-top-h: 4.5em; //top選單高度
 
-.nav-slider-wrapper {
-  position: relative;
-}
 .nav-top-pos {
   position: fixed;
   width: 100%;
@@ -98,6 +95,9 @@ $nav-top-h: 4.5em; //top選單高度
       border-right: 1px solid #D3D3D3;
       text-align: center;
       padding-top: 0.5em;
+      &.add-item {
+        border-right: none;
+      }
       &:nth-child(3n+0) {
         border-right: none;
       }
