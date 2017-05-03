@@ -77,6 +77,9 @@ body{
   }
   .betFilterAnd{
     padding: .2rem !important;
+    div{
+      width: 100% !important;
+    }
     li{
       span{
         display: none;
