@@ -62,7 +62,7 @@ var routes = [
     path: '/lottery/:type/:code',
     name: '彩种',
     meta:{
-      title:"彩种",
+      // title:"彩种",
       user: true,
       component:lotteryPage
     },

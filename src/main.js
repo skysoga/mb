@@ -489,7 +489,12 @@ window.router = new VueRouter({
     if (savedPosition) {
       return savedPosition
     } else {
-      return { x: 0, y: 0 }
+      return false
+      // if(to.name === '彩种'){
+      //   return false
+      // }else{
+      //   return { x: 0, y: 0 }
+      // }
     }
   }
   // exact: true
@@ -1107,7 +1112,6 @@ window.RootApp = new Vue({
     // var ToPath = (ToPath||location.pathname).toLowerCase()
     var ToPath = location.pathname.toLowerCase()
     if (ToPath==="/") {return}
-    console.log(ToPath);
     for (var i = 0; i < len; i++) {
       var actualPath = routes[i].path.toLowerCase().split('/')[1]  //去掉斜杠的第一个
       if (actualPath && ToPath.indexOf(actualPath) > -1) {
@@ -1125,7 +1129,8 @@ window.RootApp = new Vue({
 });
 
 router.beforeEach((to, from, next) => {
-  console.log("beforeEach");
+  //不在scrollBehavior中设置，改为自己操控。来避免全部彩种进入时，被归位的问题
+  document.body.scrollTop = 0
   if(state.UserName&&state.UserName!==localStorage.getItem('UserName')){
     setState(UserArr)
   }
