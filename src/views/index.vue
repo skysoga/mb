@@ -19,18 +19,18 @@
     <div class="hr1px"></div>
     <div id="HotLottery" v-if="s.LotteryList" v-bind:style="{height:Math.ceil(len/3)*5+'em'}">
       <ul>
-        <li v-for="l in LList">
+        <li v-for="l in nowDisplayList">
           <router-link :class="'active L_'+s.LotteryList[l].LotteryType" :to="'/lottery/'+s.LotteryList[l].LotteryType+'/'+l">
             <p>{{s.LotteryList[l].LotteryName}}</p>
             <span>{{s.LotteryList[l].LotteryIntro}}</span>
           </router-link>
         </li>
-        <!-- <li v-for="l in 3-(len%3||3)"></li> -->
         <li>
           <router-link class="active L_more" :to="'/lotteryHall'">
             <p>更多彩种</p>
           </router-link>
         </li>
+        <li v-for="l in 3-((len-1)%3||3)"></li>
       </ul>
     </div>
   </div>

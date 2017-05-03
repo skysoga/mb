@@ -1,10 +1,11 @@
 import { swiper, swiperSlide, swiperPlugins } from 'vue-awesome-swiper'
+  import {mapState} from 'vuex'
 export default {
   props:["s"],
   data:()=>{
     return{
-      LList:["1401","1402","1407","1406","1405","1000","1001","1008","1003","1403","1410","1408","1411","1409"],
-      len:0
+      nowDisplayList:[],
+      len:11
     }
   },
   components: {
@@ -30,20 +31,15 @@ export default {
     arr = (!_App||state.UserName)?arr.concat(ar):arr
     RootApp.GetInitData(arr, state=>{
       next(vm=>{
-       /* var K3,SSC
-        for (var i = state.LotteryConfig.length - 1; i >= 0; i--) {
-          switch(state.LotteryConfig[i].LotteryClassID){
-            case "14":
-              K3 = state.LotteryConfig[i].LotteryList
-            break
-            case "10":
-              SSC = state.LotteryConfig[i].LotteryList
-            break
-          }
-        }
-        vm.LList = K3.concat(SSC)*/
-        vm.len = vm.LList.length
+        vm.lotteryConfig = vm.LotteryConfig.slice(0,1)
+        vm.LotteryConfig[0].LotteryList.length =11
+        vm.nowDisplayList = vm.lotteryConfig[0].LotteryList
+        vm.len = vm.lotteryConfig[0].LotteryList.length
       });
     })
-  }
+  },
+	computed:mapState({
+		LotteryConfig:'LotteryConfig',
+		LotteryList:'LotteryList'
+	})
 }
