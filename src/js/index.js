@@ -4,8 +4,7 @@ export default {
   props:["s"],
   data:()=>{
     return{
-      nowDisplayList:[],
-      len:11
+      nowDisplayList:["1401","1402","1407","1406","1405","1000","1001","1008","1003","1403","1410"],
     }
   },
   components: {
@@ -32,9 +31,13 @@ export default {
     RootApp.GetInitData(arr, state=>{
       next(vm=>{
         vm.lotteryConfig = vm.LotteryConfig.slice(0,1)
-        vm.LotteryConfig[0].LotteryList.length =11
+      if (vm.lotteryConfig[0].LotteryList.length !=0){
         vm.nowDisplayList = vm.lotteryConfig[0].LotteryList
-        vm.len = vm.lotteryConfig[0].LotteryList.length
+      }
+      if (vm.nowDisplayList.length >11)
+      {
+        vm.nowDisplayList.length =11
+      }
       });
     })
   },

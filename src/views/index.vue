@@ -17,7 +17,7 @@
       <a v-else><i class="iconfont gonggao fl"></i><span>欢迎来到{{s.constant._App?'彩神争霸':s.SiteConfig.Name}}</span></a>
     </div>
     <div class="hr1px"></div>
-    <div id="HotLottery" v-if="s.LotteryList" v-bind:style="{height:Math.ceil(len/3)*5+'em'}">
+    <div id="HotLottery" v-if="s.LotteryList" v-bind:style="{height:Math.ceil(nowDisplayList.length/3)*5+'em'}">
       <ul>
         <li v-for="l in nowDisplayList">
           <router-link :class="'active L_'+s.LotteryList[l].LotteryType" :to="'/lottery/'+s.LotteryList[l].LotteryType+'/'+l">
@@ -29,8 +29,8 @@
           <router-link class="active L_more" :to="'/lotteryHall'">
             <p>更多彩种</p>
           </router-link>
+          <li v-for="l in 3-((nowDisplayList.length-1)%3||3)"></li>
         </li>
-        <li v-for="l in 3-((len-1)%3||3)"></li>
       </ul>
     </div>
   </div>
