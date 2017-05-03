@@ -11,7 +11,7 @@
             <li v-for = "item in lotteryConfig"
                 :class = "{on:item.LotteryClassName === nowLotteryClass}"
                 @click="changeNowLotteryClass(item.LotteryClassName, item.LotteryList)">
-              <a href="###">
+              <a>
                 <p>{{item.LotteryClassName}}</p>
               </a>
             </li>
@@ -23,8 +23,7 @@
     <!-- 彩种列表  -->
     <div id="HotLottery"
          class="lottery-list-box"
-         v-if="LotteryList"
-         :style="{height:Math.ceil(len/3)*5+'em'}">
+         v-if="LotteryList">
       <ul>
         <li v-for="l in nowDisplayList">
           <router-link :class="'active L_'+LotteryList[l].LotteryType"
