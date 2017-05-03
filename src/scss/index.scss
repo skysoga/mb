@@ -116,6 +116,7 @@
       padding-top: 1.7em;
       background-size: auto 3.5em;
       p{
+        margin-top:3em;
         font-size: 1.4em;
         font-weight: 400;
         text-align: center;
@@ -137,7 +138,9 @@
   }
 }
 
-#HotLottery a:before{
+#HotLottery a{
+  position:relative;
+  &:before,&:after{
     font-family: "iconfont";
     font-size:3.8em;
     line-height:0;
@@ -146,6 +149,17 @@
     line-height: .22em;
     height: .54em;
     margin:.28em 0;
+    top:.43em;
+    position:absolute;
+    width: 100%;
+  }
+  &:after{
+    content:'\e660';
+    z-index: 3;
+    color:white;
+    font-size:3.6em;
+    margin-top:.323em;
+  }
 }
 
 
