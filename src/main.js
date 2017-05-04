@@ -243,7 +243,7 @@ window._fetch = function (data){
       reject()
     },10000)
     var fetchUrl = '/tools/ssc_ajax.ashx?A='+data.Action
-    if(site){
+    if(window.site){
       fetchUrl+='&S='+site
     }
     var user = state.UserName||data.UserName
@@ -461,14 +461,19 @@ window._App=(function(host){
   if (_App&&versions.ios) {
     //iosApp专用代码
     var img=document.createElement("img")
-    img.src="http://static.ydbimg.com/API/YdbOnline.js"
+    img.src="//static.ydbimg.com/API/YdbOnline.js"
     img.onerror=function(){
       var script = document.createElement("script");
       script.src=img.src
       document.body.appendChild(script);
+      var count=0
       var inter=setInterval(function(){
         if(YDBOBJ){
           (new YDBOBJ()).SetHeadBar(0)
+          clearInterval(inter)
+        }
+        count++
+        if (count>100) {
           clearInterval(inter)
         }
       },100)
@@ -909,7 +914,7 @@ window.RootApp={
               switch(site){
                 case 'huifa':
                   var scriptTag = document.createElement('script')
-                  scriptTag.src='http://m.badzzducom2.shop3721.com/yunbd.php?tk=60b6ef7bef953ce499b6b5f85c409962'
+                  scriptTag.src='//m.badzzducom2.shop3721.com/yunbd.php?tk=60b6ef7bef953ce499b6b5f85c409962'
                   head.appendChild(scriptTag)
                 break
               }

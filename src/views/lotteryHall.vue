@@ -19,8 +19,7 @@
     </div>
     <!-- 彩种列表  -->
     <div id="HotLottery"
-         class="lottery-list-box"
-         v-if="LotteryList">
+         v-if="LotteryList" v-bind:style="{height:Math.ceil(nowDisplayList.length/3)*5+'em'}">
       <ul>
         <li v-for="l in nowDisplayList">
           <router-link :class="'active L_'+LotteryList[l].LotteryType"
@@ -29,7 +28,7 @@
             <span>{{LotteryList[l].LotteryIntro}}</span>
           </router-link>
         </li>
-        <li class="add-item" v-for=" l in 3 - ( nowDisplayList.length%3 || 3 )"></li>
+        <li v-for=" l in 3 - ( nowDisplayList.length%3 || 3 )"></li>
       </ul>
     </div>
   </div>
