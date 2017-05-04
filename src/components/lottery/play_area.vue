@@ -1,7 +1,8 @@
 <template>
   <div :class="{'sscMain':true,'quWei':getQW}">
     <div class="sscTips">
-      <p>{{tip}}<i>{{award}}</i>元 <span>奖金详情</span></p>
+      <p v-if="isBonus" @click="showBonus">{{tip}}<span>奖金详情</span></p>
+      <p v-else>{{tip}}<i>{{award}}</i>元</p>
       <!-- <p>每位至少选1个号码，按位猜对号码即中196000元 </p> -->
     </div>
 
@@ -46,6 +47,14 @@ var playCfg = {
   // 'PL35': pl3Play,
 }
 var modeArr=['定单双','趣味']
+// 奖金详情专用
+var kl8bonus={
+'A12':[3,2],
+'A13':[4,3,2],
+'A14':[5,4,3],
+'A15':[6,5,4,3],
+'A16':[7,6,5,4,0]
+}
 export default {
   components:{
     betbox,
@@ -79,6 +88,9 @@ export default {
     mode:()=>state.lt.mode.mode,
     getQW:()=>{
       return modeArr.indexOf(state.lt.mode.name)>-1||state.lt.lottery.LotteryType=='KL8'&&modeArr.indexOf(state.lt.mode.group)>-1
+    },
+    isBonus:()=>{
+      return !!kl8bonus[state.lt.mode.mode]
     }
   }),
   methods:{
@@ -133,6 +145,31 @@ export default {
       }
       this.$store.commit('lt_setBetStr', betStr)
       this.$store.commit('lt_setBetCount', result)
+    },
+    BonusArr(str){
+      return str.split(',')
+    },
+    showBonus(){
+      var trArr=[]
+      var Arr=kl8bonus[this.mode]
+      var Bonus=this.BonusArr(this.award)
+      for(var i=0;i<Arr.length;i++){
+        trArr.push('<tr><td>'+Arr[i]+'</td><td>'+Bonus[i]+'</td></tr>')
+      }
+      var table=`
+          <table>
+            <tr>
+              <th>猜中</th>
+              <th>单注最高奖金</th>
+            </tr>
+            ${trArr.join('')}
+          </table>
+        `
+      layer.open({
+        title: false,
+        content:table,
+        btn:['确定']
+      })
     }
   }
 }
