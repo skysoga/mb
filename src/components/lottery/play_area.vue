@@ -53,7 +53,9 @@ var kl8bonus={
 'A13':[4,3,2],
 'A14':[5,4,3],
 'A15':[6,5,4,3],
-'A16':[7,6,5,4,0]
+'A16':[7,6,5,4,0],
+'B10':["中","上","下"],
+'B11':["和","奇","偶"]
 }
 export default {
   components:{
@@ -154,7 +156,7 @@ export default {
       var Arr=kl8bonus[this.mode]
       var Bonus=this.BonusArr(this.award)
       for(var i=0;i<Arr.length;i++){
-        trArr.push('<tr><td>'+Arr[i]+'</td><td><span>'+Bonus[i]+'<span>元</td></tr>')
+        trArr.push('<tr><td>'+Arr[i]+'</td><td><span>'+(Bonus[i]||Bonus[i-1])+'<span>元</td></tr>')
       }
       var table=`
           <table>
