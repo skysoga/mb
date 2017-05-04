@@ -30,8 +30,19 @@ export default {
     arr = (!_App||state.UserName)?arr.concat(ar):arr
     RootApp.GetInitData(arr, state=>{
       next(vm=>{
-        var deleteletters=vm.LotteryConfig.slice(5,6)
-        vm.lotteryConfig = vm.LotteryConfig.slice(0,1)
+        var deleteNum=0
+        var hotNum=0
+        for (var k=0 ; k<vm.LotteryConfig.length; k++)
+        {
+          if (vm.LotteryConfig[k].LotteryClassID==0)
+          {
+            hotNum=k
+          }else if (vm.LotteryConfig[k].LotteryClassID==12){
+            deleteNum=k
+          }
+        }
+        var deleteletters=vm.LotteryConfig.slice(deleteNum,deleteNum+1)
+        vm.lotteryConfig = vm.LotteryConfig.slice(hotNum,hotNum+1)
         for (var i=deleteletters[0].LotteryList.length-1 ; i >=0  ;i--)
         {
           vm.deleteNoUseGame(deleteletters[0].LotteryList[i],vm.lotteryConfig[0].LotteryList)
