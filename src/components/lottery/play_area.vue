@@ -154,7 +154,7 @@ export default {
       var Arr=kl8bonus[this.mode]
       var Bonus=this.BonusArr(this.award)
       for(var i=0;i<Arr.length;i++){
-        trArr.push('<tr><td>'+Arr[i]+'</td><td>'+Bonus[i]+'</td></tr>')
+        trArr.push('<tr><td>'+Arr[i]+'</td><td><span>'+Bonus[i]+'<span>元</td></tr>')
       }
       var table=`
           <table>
