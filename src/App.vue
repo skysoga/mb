@@ -43,11 +43,11 @@
 @import './scss/public.scss';
 @font-face {
   font-family: 'iconfont';  /* project id 107431 */
-  src: url('//at.alicdn.com/t/font_xcz2yojou44jwcdi.eot');
-  src: url('//at.alicdn.com/t/font_xcz2yojou44jwcdi.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_xcz2yojou44jwcdi.woff') format('woff'),
-  url('//at.alicdn.com/t/font_xcz2yojou44jwcdi.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_xcz2yojou44jwcdi.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_fxwpqtscf2rwl8fr.eot');
+  src: url('//at.alicdn.com/t/font_fxwpqtscf2rwl8fr.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_fxwpqtscf2rwl8fr.woff') format('woff'),
+  url('//at.alicdn.com/t/font_fxwpqtscf2rwl8fr.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_fxwpqtscf2rwl8fr.svg#iconfont') format('svg');
 }
 html{
   height: 100%;
@@ -73,6 +73,17 @@ body{
   .sscMain{
     .sscTips{
       padding-top: 4.7em;
+    }
+  }
+  .betFilterAnd{
+    padding: .2rem !important;
+    div{
+      width: 100% !important;
+    }
+    li{
+      span{
+        display: none;
+      }
     }
   }
 }

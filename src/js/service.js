@@ -15,7 +15,7 @@ export default {
       return
     }
     next(vm=>{
-      vm.ServiceUrl=ServiceUrl
+      vm.ServiceUrl=ServiceUrl.replace('http:','')
       vm.$el.querySelector("iframe").style.height=document.body.clientHeight+'px'
     })
   }

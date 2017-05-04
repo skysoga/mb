@@ -1,6 +1,10 @@
+@import 'scssConfig','mixin';
 //變數
 $nav-top-h: 4.5em; //top選單高度
 
+.main {
+  padding-bottom: 0;
+}
 .nav-top-pos {
   position: fixed;
   width: 100%;
@@ -69,7 +73,7 @@ $nav-top-h: 4.5em; //top選單高度
           }
         }
       }
-      &:hover, &.on {
+      &.on {
         background-color: #151B1D;
         a {
           color: #F2F2F2;
@@ -80,43 +84,114 @@ $nav-top-h: 4.5em; //top選單高度
 }
 
 //項目內容
-.lottery-list-box {
-  position: absolute;
-  margin-top: 3.3em;
-  background-color: #FFF;
-  width: 100%;
-  // height: 100%;
-  ul {
-    li {
-      float: left;
+#HotLottery {
+ margin-top: 3.3em;
+ height: 100%;
+ overflow: hidden;
+ background-color: #fff;
+  ul{
+   width: 300%;
+   @include origin(0 0);
+   @include scale(0.333333,0.333333);
+   font-size: 1.5em;
+    li{
       width: 33.3%;
-      height: 5.5em;
-      border-bottom: 1px solid #D3D3D3;
-      border-right: 1px solid #D3D3D3;
-      text-align: center;
-      padding-top: 0.5em;
-      &.add-item {
-        border-right: none;
+      height: 10em;
+      float:left;
+      position:relative;
+      border-top: 0 none;
+      border-left: 0 none;
+      overflow: hidden;
+      a{
+        display: block;
+        height: 100%;
+        line-height: 1.5em;
+        position: relative;
       }
-      &:nth-child(3n+0) {
-        border-right: none;
+      img{
+        display: block;
+        width: 80%;
+        margin: 20px auto;
       }
-      &:hover {
-        background-color: #EEE;
+      &:nth-child(1):before,&:nth-child(2):before,&:nth-child(3):before,{
+        display:none;
       }
-      a {
-        font-family: 'iconfont';
-        &:before {
-          font-size: 2em;
-        }
-        p {
-          font-size: 0.7em;
-        }
-        span {
-          font-size: 0.7em;
-          color: #9B9B9B;
-        }
+      &:nth-child(3n+1):after{
+        display:none;
+      }
+      &:before,&:after{
+        content:"";
+        position:absolute;
+      }
+      &:before{
+        width:100%;
+        height: 3px;
+        @include bgImg-linear-gradient('90deg, #d0d0d0, #d0d0d0 50%, transparent 50%');
+      }
+      &:after{
+        height:100%;
+        width:3px;
+        top:0;
+        left:0;
+        @include bgImg-linear-gradient('0deg, #d0d0d0, #d0d0d0 50%, transparent 50%');
       }
     }
+    .active{
+      background-repeat: no-repeat;
+      background-position: .5rem center;
+      /*padding-left: 10%;*/
+      padding-top: 1.7em;
+      background-size: auto 3.5em;
+      p{
+        margin-top:3em;
+        font-size: 1.4em;
+        font-weight: 400;
+        text-align: center;
+        letter-spacing: 0.05em;
+        color:#333;
+      }
+      span{
+        color: $font-gray;
+        display: block;
+        font-size: 1.15em;
+        letter-spacing: .05em;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        text-align: center;
+        margin:.2em 0;
+      }
+    }
+  }
+}
+
+#HotLottery a{
+  position:relative;
+  &:before,&:after{
+    font-family: "iconfont";
+    font-size:3.8em;
+    line-height:0;
+    text-align:center;
+    display: block;
+    line-height: .22em;
+    height: .54em;
+    margin:.28em 0;
+    top:.43em;
+    position:absolute;
+    width: 100%;
+  }
+  &:after{
+    content:'\e660';
+    z-index: 3;
+    color:white;
+    font-size:3.6em;
+    margin-top:.323em;
+  }
+}
+
+
+@media only screen and(-webkit - min - device - pixel - ratio: 3) {
+  #HotLottery ul li:before{
+    height: 2px;
   }
 }
