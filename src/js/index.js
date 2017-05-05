@@ -30,49 +30,79 @@ export default {
       ar=["SiteConfig"];
     state.UserName&&arr.push("NoticeData")
     arr = (!_App||state.UserName)?arr.concat(ar):arr
+
     RootApp.GetInitData(arr, state=>{
       next(vm=>{
-        var deleteNum=0
-        var hotNum=0
-        for (var k=0 ; k<vm.LotteryConfig.length; k++)
-        {
-          if (vm.LotteryConfig[k].LotteryClassID==0)
-          {
-            hotNum=k
-          }else if (vm.LotteryConfig[k].LotteryClassID==12){
-            deleteNum=k
+        // var deleteNum=0
+        // var hotNum=0
+        // for (var k=0 ; k<vm.LotteryConfig.length; k++)
+        // {
+        //   if (vm.LotteryConfig[k].LotteryClassID=== '0')
+        //   {
+        //     hotNum=k
+        //   }else if (vm.LotteryConfig[k].LotteryClassID === '12'){
+        //     deleteNum=k
+        //   }
+        // }
+
+        // var deleteletters=vm.LotteryConfig.slice(deleteNum,deleteNum+1)
+        // vm.lotteryConfig = vm.LotteryConfig.slice(hotNum,hotNum+1)
+        // for (var i=deleteletters[0].LotteryList.length-1 ; i >=0  ;i--)
+        // {
+        //   vm.deleteNoUseGame(deleteletters[0].LotteryList[i],vm.lotteryConfig[0].LotteryList)
+        // }
+
+
+        // if (vm.lotteryConfig[0].LotteryList.length !=0 ){
+        //   vm.nowDisplayList = vm.lotteryConfig[0].LotteryList
+        // }
+
+        // var showlength=11
+        // if (vm.nowDisplayList.length >showlength)
+        // {
+        //   vm.nowDisplayList.length =showlength
+        // }
+
+        //不上线的彩种code列表， 用slice避免对源数组产生引用
+        var offLineLottery = []
+        vm.LotteryConfig.forEach(item=>{
+          if(item.LotteryClassID === '12'){
+            offLineLottery = item.LotteryList.slice()
           }
-        }
+        })
 
-        var deleteletters=vm.LotteryConfig.slice(deleteNum,deleteNum+1)
-        vm.lotteryConfig = vm.LotteryConfig.slice(hotNum,hotNum+1)
-        for (var i=deleteletters[0].LotteryList.length-1 ; i >=0  ;i--)
-        {
-          vm.deleteNoUseGame(deleteletters[0].LotteryList[i],vm.lotteryConfig[0].LotteryList)
-        }
+        // 获取热门彩种code列表
+        var hotLottery = []
+        vm.LotteryConfig.forEach(item=>{
+          if(item.LotteryClassID === '0'){
+            hotLottery = item.LotteryList.slice()
+          }
+        })
 
-        if (vm.lotteryConfig[0].LotteryList.length !=0 ){
-          vm.nowDisplayList = vm.lotteryConfig[0].LotteryList
+        // 剔除不上线的彩种
+        hotLottery = hotLottery.filter(code=>offLineLottery.indexOf(code) === -1)
+        // 如果热门超过11，就截断
+        var showlength = 11
+        if(hotLottery.length > showlength){
+          hotLottery.length = showlength
         }
-        var showlength=11
-        if (vm.nowDisplayList.length >showlength)
-        {
-          vm.nowDisplayList.length =showlength
-        }
+        vm.nowDisplayList = hotLottery
+
+
       });
     })
   },
-   methods: {
-    deleteNoUseGame: function(deleteList,useLiset ) {
-        for (var j=0 ; j <= useLiset.length ;j++)
-        {
-          if (deleteList == useLiset[j])
-          {
-            useLiset.splice(j,1)
-          }
-        }
-    }
-  },
+  // methods: {
+  //   deleteNoUseGame: function(deleteList,useLiset ) {
+  //       for (var j=0 ; j <= useLiset.length ;j++)
+  //       {
+  //         if (deleteList == useLiset[j])
+  //         {
+  //           useLiset.splice(j,1)
+  //         }
+  //       }
+  //   }
+  // },
 	computed:mapState({
 		LotteryConfig:'LotteryConfig',
 		LotteryList:'LotteryList'

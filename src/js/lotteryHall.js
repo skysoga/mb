@@ -12,7 +12,7 @@ beforeRouteEnter(to,from,next){
   RootApp.GetInitData(Arr,state=>{
     next(vm => {
       var display = []
-      var offLineLottery = ['12']  //不上线的彩种ClassID， 统一用ClassID来定位
+      var offLineLottery = ['12', '0']  //不显示的彩种ClassID， 统一用ClassID来定位
       display = vm.LotteryConfig.filter(item=>offLineLottery.indexOf(item.LotteryClassID) === -1)
 
   		var allLottery = []
