@@ -49,7 +49,7 @@ export default {
       if(key=='forgetPwd'){
         router.push("/forgetPwd")
       }else if(key=='pc'){
-        location.href="http://"+location.host.replace('m.','www.')+"/index.html?CanPc";
+        location.href="http://"+location.host.replace('m.','')+"?CanPc";
       }
     },
     imgUrl(){
