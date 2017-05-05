@@ -477,6 +477,9 @@ content:"\e62c";
 /**
  * 
  */
+ $c-PK10:#f22751;
+ $c-PL35:#38b366;
+
 
 .L_K3:before,.L_PK10:before,.L_XYNC:before,.L_KL8:before,.L_PL35:before,.L_FC3D:before,.L_SSC:before,.L_SYX5:before,.L_more:before{
   position:absolute;
@@ -496,10 +499,10 @@ content:"\e62c";
 .L_PK10{
   &:before {
     content: "\e661";
-    color: #38b366;
+    color: $c-PK10;
   }
   &:after{
-    text-shadow: 0 .07em .1em rgba(#38b366,.42);
+    text-shadow: 0 .07em .1em rgba($c-PK10,.42);
   }
 }
 
@@ -526,10 +529,10 @@ content:"\e62c";
 .L_PL35{
   &:before {
     content: "\e65e";
-    color: #ffa500;
+    color: $c-PL35;
   }
   &:after{
-    text-shadow: 0 .07em .1em rgba(#ffa500,.42);
+    text-shadow: 0 .07em .1em rgba($c-PL35,.42);
   }
 }
 
