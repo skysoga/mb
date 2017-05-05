@@ -1135,7 +1135,9 @@ window.RootApp = new Vue({
 
 router.beforeEach((to, from, next) => {
   //不在scrollBehavior中设置，改为自己操控。来避免全部彩种进入时，被归位的问题
-  document.body.scrollTop = 0
+  if(to.name != '彩种'){
+    document.body.scrollTop = 0
+  }
   if(state.UserName&&state.UserName!==localStorage.getItem('UserName')){
     setState(UserArr)
   }
