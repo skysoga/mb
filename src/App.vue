@@ -43,11 +43,11 @@
 @import './scss/public.scss';
 @font-face {
   font-family: 'iconfont';  /* project id 107431 */
-  src: url('//at.alicdn.com/t/font_fxwpqtscf2rwl8fr.eot');
-  src: url('//at.alicdn.com/t/font_fxwpqtscf2rwl8fr.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_fxwpqtscf2rwl8fr.woff') format('woff'),
-  url('//at.alicdn.com/t/font_fxwpqtscf2rwl8fr.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_fxwpqtscf2rwl8fr.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_33bjgr46ox2k2o6r.eot');
+  src: url('//at.alicdn.com/t/font_33bjgr46ox2k2o6r.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_33bjgr46ox2k2o6r.woff') format('woff'),
+  url('//at.alicdn.com/t/font_33bjgr46ox2k2o6r.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_33bjgr46ox2k2o6r.svg#iconfont') format('svg');
 }
 html{
   height: 100%;
