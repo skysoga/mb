@@ -20,10 +20,12 @@ export default {
         router.replace("/register"+search)
       })
     }
+    //是APP且未登录
     var NologApp = _App&&!state.UserName
     if (NologApp) {
       to.meta.title='未登录'
     }
+
     var arr = [!NologApp?"BannerList":"SysBanner","LotteryConfig","LotteryList"],
       ar=["SiteConfig"];
     state.UserName&&arr.push("NoticeData")
@@ -41,12 +43,14 @@ export default {
             deleteNum=k
           }
         }
+
         var deleteletters=vm.LotteryConfig.slice(deleteNum,deleteNum+1)
         vm.lotteryConfig = vm.LotteryConfig.slice(hotNum,hotNum+1)
         for (var i=deleteletters[0].LotteryList.length-1 ; i >=0  ;i--)
         {
           vm.deleteNoUseGame(deleteletters[0].LotteryList[i],vm.lotteryConfig[0].LotteryList)
         }
+
         if (vm.lotteryConfig[0].LotteryList.length !=0 ){
           vm.nowDisplayList = vm.lotteryConfig[0].LotteryList
         }

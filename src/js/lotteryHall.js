@@ -1,32 +1,37 @@
 import {mapState} from 'vuex'
 export default {
-// props:["s"],
 data() {
   return {
-    // initData: [],
-    // li_state: 0,
     nowLotteryClass: '全部彩种',
-    nowDisplayList:[]
+    nowDisplayList:[],
+    display:[] //用于显示的数据
   }
 },
 beforeRouteEnter(to,from,next){
   var Arr=['LotteryConfig','LotteryList']
   RootApp.GetInitData(Arr,state=>{
     next(vm => {
-  		vm.lotteryConfig = vm.LotteryConfig.slice(1,vm.LotteryConfig.length-1)
+      var display = []
+      var offLineLottery = ['12']  //不上线的彩种ClassID， 统一用ClassID来定位
+      display = vm.LotteryConfig.filter(item=>offLineLottery.indexOf(item.LotteryClassID) === -1)
+
   		var allLottery = []
-      vm.lotteryConfig.forEach(item=>{
-          if ("热门" !== item.LotteryClassName){
+
+      // 把除了热门之外的彩种拼接成全部彩种的数组
+      display.forEach(item=>{
+          if ("0" !== item.LotteryClassID){
              allLottery = allLottery.concat(item.LotteryList)
-            console.log(item.LotteryList);
           }
-    		})
-  		vm.whole = {
+        })
+
+  		var whole = {
   			LotteryClassName: '全部彩种',
   			LotteryList:allLottery
   		}
-  		vm.lotteryConfig.splice(0,0, vm.whole)
-      vm.nowDisplayList = vm.lotteryConfig[0].LotteryList
+
+  		display.splice(0,0, whole)
+      vm.nowDisplayList = display[0].LotteryList
+      vm.display = display
     })
   })
 },
@@ -38,6 +43,6 @@ beforeRouteEnter(to,from,next){
   },
 	computed:mapState({
 		LotteryConfig:'LotteryConfig',
-		LotteryList:'LotteryList'
+		LotteryList:'LotteryList',
 	})
 }

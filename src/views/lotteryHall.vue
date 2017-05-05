@@ -7,7 +7,7 @@
     <div class="nav-top-pos">
       <div class="nav-top">
         <ul>
-          <li v-for = "item in lotteryConfig"
+          <li v-for = "item in display"
               :class = "{on:item.LotteryClassName === nowLotteryClass}"
               @click="changeNowLotteryClass(item.LotteryClassName, item.LotteryList)">
             <a>
