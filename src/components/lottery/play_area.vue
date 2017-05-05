@@ -170,6 +170,7 @@ export default {
       layer.open({
         title: false,
         content:table,
+        className:'table',
         btn:['确定']
       })
     }
