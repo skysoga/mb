@@ -10,7 +10,7 @@
           <li v-for = "item in display"
               :class = "{on:item.LotteryClassName === nowLotteryClass}"
               @click="changeNowLotteryClass(item.LotteryClassName, item.LotteryList)">
-            <a>
+            <a :class="setStyle(item.LotteryClassID)">
               <p>{{item.LotteryClassName}}</p>
             </a>
           </li>
