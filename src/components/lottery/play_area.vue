@@ -92,7 +92,7 @@ export default {
       return modeArr.indexOf(state.lt.mode.name)>-1||state.lt.lottery.LotteryType=='KL8'&&modeArr.indexOf(state.lt.mode.group)>-1
     },
     isBonus:()=>{
-      return !!kl8bonus[state.lt.mode.mode]
+      return !!kl8bonus[state.lt.mode.mode]&&(state.lt.award.indexOf(',')>-1)
     }
   }),
   methods:{
