@@ -13,11 +13,11 @@ beforeRouteEnter(to,from,next){
   RootApp.GetInitData(Arr,state=>{
     next(vm => {
       var display = []
-      
+
       var offLineLottery = ['12','0']  //不显示在列表栏的彩种ClassID， 统一用ClassID来定位
       display = vm.LotteryConfig.filter(item=>offLineLottery.indexOf(item.LotteryClassID) === -1)
 
-  		var allLottery = []
+      var allLottery = []
 
       // 把除了热门之外的彩种拼接成全部彩种的数组
       display.forEach(item=>{
@@ -26,13 +26,13 @@ beforeRouteEnter(to,from,next){
           }
         })
 
-  		var whole = {
-  			LotteryClassName: '全部彩种',
+      var whole = {
+        LotteryClassName: '全部彩种',
         LotteryClassID:'All',
-  			LotteryList:allLottery
-  		}
+        LotteryList:allLottery
+      }
 
-  		display.splice(0,0, whole)
+      display.splice(0,0, whole)
       vm.nowDisplayList = display[0].LotteryList
       vm.display = display
     })
@@ -49,8 +49,8 @@ beforeRouteEnter(to,from,next){
       }
     }
   },
-	computed:mapState({
-		LotteryConfig:'LotteryConfig',
-		LotteryList:'LotteryList',
-	})
+  computed:mapState({
+    LotteryConfig:'LotteryConfig',
+    LotteryList:'LotteryList',
+  })
 }
