@@ -18,6 +18,7 @@ $nav-top-h: 4.5em; //top選單高度
   ul {
     white-space: nowrap;
     height: ($nav-top-h - 1.2em);
+    overflow-y: hidden;
     li {
       display: inline-block;
       width: 5em;
@@ -32,47 +33,49 @@ $nav-top-h: 4.5em; //top選單高度
         font-size: 0.8em;
         color: #5C5F60;
         padding-top: 0.5em;
-        &:before {
+        // &:before {
+        // }
+        i{
           line-height: 1em;
           font-size: 2em;
           font-family: 'iconfont';
         }
       }
-      &:nth-child(1) {
-        a {
-            &:before {
-              content: "\e65a";
-            }
-        }
-      }
-      &:nth-child(2) {
-        a {
-            &:before {
-              content: "\e656";
-            }
-        }
-      }
-      &:nth-child(3) {
-        a {
-          &:before {
-            content: "\e658";
-          }
-        }
-      }
-      &:nth-child(4) {
-        a {
-          &:before {
-            content: "\e657";
-          }
-        }
-      }
-      &:nth-child(5) {
-        a {
-          &:before {
-            content: "\e659";
-          }
-        }
-      }
+      // &:nth-child(1) {
+      //   a {
+      //       &:before {
+      //         content: "\e65a";
+      //       }
+      //   }
+      // }
+      // &:nth-child(2) {
+      //   a {
+      //       &:before {
+      //         content: "\e656";
+      //       }
+      //   }
+      // }
+      // &:nth-child(3) {
+      //   a {
+      //     &:before {
+      //       content: "\e658";
+      //     }
+      //   }
+      // }
+      // &:nth-child(4) {
+      //   a {
+      //     &:before {
+      //       content: "\e657";
+      //     }
+      //   }
+      // }
+      // &:nth-child(5) {
+      //   a {
+      //     &:before {
+      //       content: "\e659";
+      //     }
+      //   }
+      // }
       &.on {
         background-color: #151B1D;
         a {
@@ -81,6 +84,33 @@ $nav-top-h: 4.5em; //top選單高度
       }
     }
   }
+}
+
+//彩种图标
+.A_ALL{
+  &:after{
+    content:'\e65a';
+  }
+}
+.A_K3{
+  &:after{
+    content:'\e656';
+  }
+}
+.A_SSC{
+  &:after{
+    content:'\e658';
+  }
+}
+.A_OTHER{
+  &:after{
+    content:'\e657';
+  } 
+}
+.A_SYX5{
+  &:after{
+    content:'\e659';
+  } 
 }
 
 //項目內容
