@@ -33,36 +33,6 @@ export default {
 
     RootApp.GetInitData(arr, state=>{
       next(vm=>{
-        // var deleteNum=0
-        // var hotNum=0
-        // for (var k=0 ; k<vm.LotteryConfig.length; k++)
-        // {
-        //   if (vm.LotteryConfig[k].LotteryClassID=== '0')
-        //   {
-        //     hotNum=k
-        //   }else if (vm.LotteryConfig[k].LotteryClassID === '12'){
-        //     deleteNum=k
-        //   }
-        // }
-
-        // var deleteletters=vm.LotteryConfig.slice(deleteNum,deleteNum+1)
-        // vm.lotteryConfig = vm.LotteryConfig.slice(hotNum,hotNum+1)
-        // for (var i=deleteletters[0].LotteryList.length-1 ; i >=0  ;i--)
-        // {
-        //   vm.deleteNoUseGame(deleteletters[0].LotteryList[i],vm.lotteryConfig[0].LotteryList)
-        // }
-
-
-        // if (vm.lotteryConfig[0].LotteryList.length !=0 ){
-        //   vm.nowDisplayList = vm.lotteryConfig[0].LotteryList
-        // }
-
-        // var showlength=11
-        // if (vm.nowDisplayList.length >showlength)
-        // {
-        //   vm.nowDisplayList.length =showlength
-        // }
-
         //不上线的彩种code列表， 用slice避免对源数组产生引用
         var offLineLottery = []
         vm.LotteryConfig.forEach(item=>{
@@ -86,23 +56,12 @@ export default {
         if(hotLottery.length > showlength){
           hotLottery.length = showlength
         }
-        vm.nowDisplayList = hotLottery
-
-
+        if (hotLottery.length !=0 ){
+              vm.nowDisplayList = hotLottery
+        }
       });
     })
   },
-  // methods: {
-  //   deleteNoUseGame: function(deleteList,useLiset ) {
-  //       for (var j=0 ; j <= useLiset.length ;j++)
-  //       {
-  //         if (deleteList == useLiset[j])
-  //         {
-  //           useLiset.splice(j,1)
-  //         }
-  //       }
-  //   }
-  // },
 	computed:mapState({
 		LotteryConfig:'LotteryConfig',
 		LotteryList:'LotteryList'
