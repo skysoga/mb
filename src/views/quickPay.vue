@@ -197,7 +197,15 @@ export default {
           layer.closeAll()
           if(AliTypes.indexOf(this.nowRender.PayType)==-1){
             this.QrSvg=true
-            this.setQrCode(json.BackUrl)
+            var isData=this.QrImg.search(/data:/)>-1
+            if(isData){
+              var qrcode=document.getElementById("qrcode")
+              var img=document.createElement("img")
+              img.src=this.QrImg
+              qrcode.appendChild(img)
+            }else{
+              this.setQrCode(json.BackUrl)
+            }
           }else{
             this.Money = ''
           }
