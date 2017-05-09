@@ -1,4 +1,4 @@
-<template>
+\<template>
   <div @click = "closeBox" class="lotteryOutCon">
     <!-- 普通彩种 -->
     <LotteryCommon v-if = "$route.params.type !== 'K3'"></LotteryCommon>
