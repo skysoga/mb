@@ -256,13 +256,13 @@ va.install = function(Vue, options){
             typeof _result === 'string' ? layer.msgWarn(_result) : showErr(conditions[0].tag, _result)
             return
           }
-          //如果判别类型中，存在limit类型，那么将经过数据转换的结果赋给DOM
-          if(conditions.some(item=>item.type === 'limit')){
-            if(!isNaN(value)){
-              value = (+value).toString()
-              dom.value = value
-            }
-          }
+          // //如果判别类型中，存在limit类型，那么将经过数据转换的结果赋给DOM
+          // if(conditions.some(item=>item.type === 'limit')){
+          //   if(!isNaN(value)){
+          //     value = (+value).toString()
+          //     dom.value = value
+          //   }
+          // }
           vm.vaVal[name] = value
         }
         //校验通过的回调

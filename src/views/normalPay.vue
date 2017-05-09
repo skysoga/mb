@@ -97,7 +97,7 @@
         </tr>
         <tr>
           <td>充值金额</td>
-          <td><input  type="tel" tag = "充值金额" v-model.trim="Money" v-va:Money placeholder="请输入充值金额"></td>
+          <td><input  type="tel" tag = "充值金额"  v-model.trim="Money" v-va:Money placeholder="请输入充值金额"></td>
         </tr>
         <tr>
           <td>支付宝姓名</td>
