@@ -10,7 +10,7 @@
         <tr>
           <td>充值金额</td>
           <td>
-            <input type="tel" tag="充值金额" v-va:Money v-model='Money' placeholder="请输入充值金额">
+            <input type="tel" tag="充值金额" v-va:Money v-model.trim='Money' placeholder="请输入充值金额">
           </td>
         </tr>
         <tr></tr>
@@ -38,6 +38,8 @@
   </div>
 </template>
 <script>
+var AliArr=['仁信']//支付宝第三方弹窗
+var AliTypes
 export default {
   beforeRouteEnter(to, from, next){
     var title = {
@@ -53,6 +55,10 @@ export default {
       Weixin: '微信快捷',
       Alipay: '支付宝快捷'
     }
+    AliTypes=state.bankType.Type.slice(0)
+    if(method=='Alipay'){
+      AliTypes=AliTypes.concat(AliArr)
+    }
     //获取数据
     RootApp.GetInitData([rechargeWay,'PayLimit'], state=>{
       //如果数据不对要跳到普通充值去
@@ -60,7 +66,7 @@ export default {
       if(PayType === '一般'){
         RootApp.$router.push('/normalPay?method=' + method)
       }else{
-        if(state.bankType.Type.indexOf(PayType)==-1&&typeof(QRCode)==="undefined"){
+        if(AliTypes.indexOf(PayType)==-1&&typeof(QRCode)==="undefined"){
           var warn=document.createElement('script')
           warn.src='https://cdn.rawgit.com/davidshimjs/qrcodejs/04f46c6a/qrcode.min.js'
           var first=document.body.firstChild
@@ -134,6 +140,10 @@ export default {
         '久付':{
           'margin-top':2.5*em-140+'px',
           'left':'-500px'
+        },
+        '仁信':{
+          'margin-top':2.5*em-140+'px',
+          'left':'-300px'
         }
       }
     }
@@ -181,7 +191,7 @@ export default {
         if(json.Code === 1){
           this.QrImg=json.BackUrl
           layer.closeAll()
-          if(state.bankType.Type.indexOf(this.nowRender.PayType)==-1){
+          if(AliTypes.indexOf(this.nowRender.PayType)==-1){
             this.QrSvg=true
             this.setQrCode(json.BackUrl)
           }else{

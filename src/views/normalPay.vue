@@ -36,7 +36,7 @@
         </tr>
         <tr>
           <td>充值金额</td>
-          <td><input type="tel" tag = "充值金额"  v-va:Money  v-model = 'Money'  placeholder="请输入充值金额"></td>
+          <td><input type="tel" tag = "充值金额"  v-va:Money  v-model.trim = 'Money'  placeholder="请输入充值金额"></td>
         </tr>
         <tr>
           <td>转账户名</td>
