@@ -64,7 +64,7 @@ export default {
     RootApp.GetInitData([rechargeWay,'PayLimit'], state=>{
       //如果数据不对要跳到普通充值去
       var PayType =state[rechargeWay]&&state[rechargeWay][0].PayType
-      if(PayType === '一般'){
+      if(PayType && PayType === '一般'){
         router.replace('/normalPay?method=' + method)
       }else{
         if(AliTypes.indexOf(PayType)==-1&&typeof(QRCode)==="undefined"){
