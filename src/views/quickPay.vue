@@ -144,6 +144,10 @@ export default {
         '仁信':{
           'margin-top':2.5*em-140+'px',
           'left':'-300px'
+        },
+        'AUSTPAY':{
+          'margin-top':2.5*em-100+'px',
+          'left':'-500px'
         }
       }
     }

@@ -30,7 +30,7 @@
         <tr>
           <td>提现金额</td>
           <td>
-            <input type="tel" v-va:Money tag="提现金额" v-model.trim="ArrData.Money" placeholder="请输入您要提现的金额">
+            <input type="tel" v-va:Money="[{reg:/^([1-9]\d*|0)$/}]" tag="提现金额" v-model.trim="ArrData.Money" placeholder="请输入您要提现的金额">
           </td>
         </tr>
         <tr>
