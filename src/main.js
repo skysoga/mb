@@ -434,7 +434,7 @@ window._App=(function(host){
   console.log(host);
   host = host.split('.')
   host = host[host.length-2]
-  if (['csz8','caishen01'].indexOf(host)>-1) {
+  if (['csz8','caishen01','caishenzhengba'].indexOf(host)>-1) {
     return true
   }
   return false

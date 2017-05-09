@@ -10,7 +10,7 @@
         <tr>
           <td>充值金额</td>
           <td>
-            <input type="tel" tag="充值金额" v-va:Money v-model='Money' placeholder="请输入充值金额">
+            <input type="tel" tag="充值金额" v-va:Money v-model.trim='Money' placeholder="请输入充值金额">
           </td>
         </tr>
         <tr></tr>
@@ -55,7 +55,6 @@ export default {
       Weixin: '微信快捷',
       Alipay: '支付宝快捷'
     }
-
     AliTypes=state.bankType.Type.slice(0)
     if(method=='Alipay'){
       AliTypes=AliTypes.concat(AliArr)
@@ -64,9 +63,11 @@ export default {
     RootApp.GetInitData([rechargeWay,'PayLimit'], state=>{
       //如果数据不对要跳到普通充值去
       var PayType =state[rechargeWay]&&state[rechargeWay][0].PayType
+    
       if(PayType && PayType === '一般'){
         router.replace('/normalPay?method=' + method)
       }else{
+       
         if(AliTypes.indexOf(PayType)==-1&&typeof(QRCode)==="undefined"){
           var warn=document.createElement('script')
           warn.src='https://cdn.rawgit.com/davidshimjs/qrcodejs/04f46c6a/qrcode.min.js'
@@ -145,6 +146,10 @@ export default {
         '仁信':{
           'margin-top':2.5*em-140+'px',
           'left':'-300px'
+        },
+        'AUSTPAY':{
+          'margin-top':2.5*em-100+'px',
+          'left':'-500px'
         }
       }
     }
@@ -192,6 +197,7 @@ export default {
         if(json.Code === 1){
           this.QrImg=json.BackUrl
           layer.closeAll()
+      
           if(AliTypes.indexOf(this.nowRender.PayType)==-1){
             this.QrSvg=true
             var isData=this.QrImg.search(/data:/)>-1
