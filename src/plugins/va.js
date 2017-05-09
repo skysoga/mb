@@ -248,17 +248,18 @@ va.install = function(Vue, options){
               value = dom.value,
               conditions = vm.vaConfig[name]
 
-          console.log(conditions)
+          //如果判别类型中，存在limit类型，那么将经过数据转换的结果赋给DOM
+          if(conditions.some(item=>item.type === 'limit')){
+            value = (+value).toString()
+            dom.value = value
+          }
+
           var _result = check(value, conditions)
           //如果返回不为0,则有报错
           if(_result){
             //如果返回的是字符串，则为自定义报错； 如果是数组，则使用showErr 报错
             typeof _result === 'string' ? layer.msgWarn(_result) : showErr(conditions[0].tag, _result)
             return
-          }
-          //如果判别类型中，存在limit类型，那么将经过数据转换的结果赋给DOM
-          if(conditions.some(item=>item.type === 'limit')){
-            dom.value = +value
           }
           vm.vaVal[name] = value
         }
