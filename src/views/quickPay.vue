@@ -202,6 +202,7 @@ export default {
               var qrcode=document.getElementById("qrcode")
               var img=document.createElement("img")
               img.src=this.QrImg
+              img.width="260"
               qrcode.appendChild(img)
             }else{
               this.setQrCode(json.BackUrl)
