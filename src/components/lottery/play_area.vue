@@ -55,7 +55,9 @@ var kl8bonus={
 'A15':[6,5,4,3],
 'A16':[7,6,5,4,0],
 'B10':["中","上","下"],
-'B11':["和","奇","偶"]
+'B11':["和","奇","偶"],
+'I11':['0单5双','5单0双','1单4双','4单1双','2单3双','3单2双'],
+'I12':['03,09','04,08','05,07','06']
 }
 export default {
   components:{
@@ -92,7 +94,7 @@ export default {
       return modeArr.indexOf(state.lt.mode.name)>-1||state.lt.lottery.LotteryType=='KL8'&&modeArr.indexOf(state.lt.mode.group)>-1
     },
     isBonus:()=>{
-      return !!kl8bonus[state.lt.mode.mode]
+      return !!kl8bonus[state.lt.mode.mode]&&(state.lt.award.indexOf(',')>-1)
     }
   }),
   methods:{
@@ -170,6 +172,7 @@ export default {
       layer.open({
         title: false,
         content:table,
+        className:'table',
         btn:['确定']
       })
     }

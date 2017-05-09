@@ -155,11 +155,12 @@ export default{
     i{
       display: block;
       /*transition: .6s;*/
+      transform:rotate(180deg);
     }
   }
   &.close{
     i{
-      transform:rotate(180deg);
+      transform:rotate(0);
     }
   }
 }
