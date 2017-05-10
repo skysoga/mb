@@ -4,7 +4,7 @@
       <div class="textMore dataType" v-if="(res_data.State==='等待开奖')&&(UID==0)" @click='CancelBet($route.query.ID)'><em>撤单</em></div>
     </div>
     <div class="tzHead">
-      <div class="fl iconfont" :class="lottery_icon" style="font-size: 2.5em;margin: 0 .4em 0 1rem;width:1em"></div>
+      <div class="fl iconfont" :class="lottery_icon"></div>
       <h1>{{res_data.LotteryName}}</h1><span :style="state_color[res_data.State]">{{res_data.State}}</span><p>第{{res_data.IssueNo}}期</p>
     </div>
     <table>
