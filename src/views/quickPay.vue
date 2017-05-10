@@ -63,11 +63,11 @@ export default {
     RootApp.GetInitData([rechargeWay,'PayLimit'], state=>{
       //如果数据不对要跳到普通充值去
       var PayType =state[rechargeWay]&&state[rechargeWay][0].PayType
-    
+
       if(PayType && PayType === '一般'){
         router.replace('/normalPay?method=' + method)
       }else{
-       
+
         if(AliTypes.indexOf(PayType)==-1&&typeof(QRCode)==="undefined"){
           var warn=document.createElement('script')
           warn.src='https://cdn.rawgit.com/davidshimjs/qrcodejs/04f46c6a/qrcode.min.js'
@@ -197,7 +197,7 @@ export default {
         if(json.Code === 1){
           this.QrImg=json.BackUrl
           layer.closeAll()
-      
+
           if(AliTypes.indexOf(this.nowRender.PayType)==-1){
             this.QrSvg=true
             var isData=this.QrImg.search(/data:/)>-1
@@ -205,6 +205,7 @@ export default {
               var qrcode=document.getElementById("qrcode")
               var img=document.createElement("img")
               img.src=this.QrImg
+              img.width='260'
               qrcode.appendChild(img)
             }else{
               this.setQrCode(json.BackUrl)
