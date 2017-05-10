@@ -143,7 +143,7 @@ export default{
     var rechargeWay = 'RechargeWay' + method
     to.meta.title = title[method]   //标题
 
-    RootApp.AjaxGetInitData([rechargeWay], state=>{
+    RootApp.GetInitData([rechargeWay], state=>{
       if(shouldCheck.indexOf(method) > -1){
         var PayType = state[rechargeWay]&&state[rechargeWay][0].PayType
         //假如充值方式为快捷充值了，就跳转至快捷充值
