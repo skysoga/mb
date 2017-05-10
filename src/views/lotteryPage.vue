@@ -35,12 +35,15 @@
   var randomFeed = Math.floor(Math.random()*4)  //获取开奖时间的随机数，用于错开请求
   var haveGotTime = true		                    //标志位-进页面时是否获取到服务器时间
 
+  function scrollTop(){document.body.scrollTop = 0}  //滚动置顶
+
   export default{
     components:{
       LotteryCommon,
       LotteryK3
     },
     beforeRouteEnter(to, from, next){
+      scrollTop()
       //从url上获取彩种type和彩种code
       var [,ltype, lcode] = to.fullPath.slice(1).split('/')
       //获取返点
@@ -276,8 +279,13 @@
           lt_setBetRecord:(state, BetRecord)=>{state.BetRecord =BetRecord;},  //投注记录
 
                           /** 通用 **/
-
-          lt_changeBox:(state, boxName)=>{state.box = boxName},     //变更弹出框
+          //变更弹出框
+          lt_changeBox:(state, boxName)=>{
+            state.box = boxName
+            if(boxName === ''){
+              scrollTop()
+            }
+          },
           //变更玩法
           lt_changeMode:(state, mode)=>{
             var type = state.lottery.LotteryType   //彩种类型 SSC、K3
