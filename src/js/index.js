@@ -1,10 +1,11 @@
 import { swiper, swiperSlide, swiperPlugins } from 'vue-awesome-swiper'
 import {mapState} from 'vuex'
+var hotDefault = ["1401","1402","1407","1406","1405","1000","1001","1008","1003","1403","1410"]
 export default {
   props:["s"],
   data:()=>{
     return{
-      nowDisplayList:["1401","1402","1407","1406","1405","1000","1001","1008","1003","1403","1410"],
+      hotLottery:hotDefault,
     }
   },
   components: {
@@ -36,12 +37,13 @@ export default {
         //不上线的彩种code列表， 用slice避免对源数组产生引用
         var offLineLottery = []
         vm.LotteryConfig.forEach(item=>{
+          // 不上线：排列3，福彩3D  LotteryClassID === '12'
           if(item.LotteryClassID === '12'){
             offLineLottery = item.LotteryList.slice()
           }
         })
 
-        // 获取热门彩种code列表
+        // 获取热门彩种code列表, LotteryClassID === '0'
         var hotLottery = []
         vm.LotteryConfig.forEach(item=>{
           if(item.LotteryClassID === '0'){
@@ -50,20 +52,25 @@ export default {
         })
 
         // 剔除不上线的彩种
-        hotLottery = hotLottery.filter(code=>offLineLottery.indexOf(code) === -1)
-        // 如果热门超过11，就截断
-        var showlength = 11
-        if(hotLottery.length > showlength){
-          hotLottery.length = showlength
-        }
-        if (hotLottery.length !=0 ){
-              vm.nowDisplayList = hotLottery
-        }
+        vm.hotLottery = hotLottery.filter(code=>offLineLottery.indexOf(code) === -1)
       });
     })
   },
 	computed:mapState({
 		LotteryConfig:'LotteryConfig',
-		LotteryList:'LotteryList'
+		LotteryList:'LotteryList',
+    nowDisplayList(){
+      var hotLottery = this.hotLottery
+      // 如果后台数据错误就返回默认的数组，如果热门超过11个，那么返回前11个
+      if(Array.isArray(hotLottery)){
+        if(hotLottery.length > 11){
+          return hotLottery.slice(0,11)  //截取前11个
+        }else{
+          return hotLottery
+        }
+      }else{
+        return hotDefault
+      }
+    }
 	})
 }
