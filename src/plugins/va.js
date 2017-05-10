@@ -135,7 +135,7 @@ var regList = {
   Mobile: /^1[3|4|5|7|8]\d{9}$/,
   RealName: /^[\u4e00-\u9fa5|·]{2,16}$|^[a-zA-Z|\s]{2,20}$/,
   BankNum: /^\d{10,19}$/,
-  Money: /^([1-9]\d*|0)$/,
+  Money: /^([1-9]\d*|[0-9]\d*\.\d{1,2}|0)$/,
   Answer: /^\S+$/,
   Mail: /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/
 }
@@ -248,7 +248,7 @@ va.install = function(Vue, options){
               value = dom.value,
               conditions = vm.vaConfig[name]
 
-          console.log(conditions)
+
           var _result = check(value, conditions)
           //如果返回不为0,则有报错
           if(_result){
@@ -256,10 +256,13 @@ va.install = function(Vue, options){
             typeof _result === 'string' ? layer.msgWarn(_result) : showErr(conditions[0].tag, _result)
             return
           }
-          //如果判别类型中，存在limit类型，那么将经过数据转换的结果赋给DOM
-          if(conditions.some(item=>item.type === 'limit')){
-            dom.value = +value
-          }
+          // //如果判别类型中，存在limit类型，那么将经过数据转换的结果赋给DOM
+          // if(conditions.some(item=>item.type === 'limit')){
+          //   if(!isNaN(value)){
+          //     value = (+value).toString()
+          //     dom.value = value
+          //   }
+          // }
           vm.vaVal[name] = value
         }
         //校验通过的回调

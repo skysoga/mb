@@ -36,7 +36,7 @@
         </tr>
         <tr>
           <td>充值金额</td>
-          <td><input type="tel" tag = "充值金额"  v-va:Money  v-model = 'Money'  placeholder="请输入充值金额"></td>
+          <td><input type="tel" tag = "充值金额"  v-va:Money  v-model.trim = 'Money'  placeholder="请输入充值金额"></td>
         </tr>
         <tr>
           <td>转账户名</td>
@@ -97,7 +97,7 @@
         </tr>
         <tr>
           <td>充值金额</td>
-          <td><input  type="tel" tag = "充值金额" v-model="Money" v-va:Money placeholder="请输入充值金额"></td>
+          <td><input  type="tel" tag = "充值金额"  v-model.trim="Money" v-va:Money placeholder="请输入充值金额"></td>
         </tr>
         <tr>
           <td>支付宝姓名</td>
@@ -143,11 +143,11 @@ export default{
     var rechargeWay = 'RechargeWay' + method
     to.meta.title = title[method]   //标题
 
-    RootApp.AjaxGetInitData([rechargeWay], state=>{
+    RootApp.GetInitData([rechargeWay], state=>{
       if(shouldCheck.indexOf(method) > -1){
         var PayType = state[rechargeWay]&&state[rechargeWay][0].PayType
         //假如充值方式为快捷充值了，就跳转至快捷充值
-        if(PayType !== '一般'){
+        if(PayType && PayType !== '一般'){
           router.replace('/quickPay?method=' + method)
         }
       }
