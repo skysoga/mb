@@ -43,6 +43,7 @@ export default {
           }
         })
 
+
         // 获取热门彩种code列表, LotteryClassID === '0'
         var hotLottery = []
         vm.LotteryConfig.forEach(item=>{
@@ -52,6 +53,7 @@ export default {
         })
 
         // 剔除不上线的彩种
+          vm.nowDisplayList = hotLottery
         vm.hotLottery = hotLottery.filter(code=>offLineLottery.indexOf(code) === -1)
       });
     })

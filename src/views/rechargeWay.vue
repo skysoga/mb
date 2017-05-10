@@ -14,7 +14,7 @@
       </div>
 
       <div class="surperise active">
-        <router-link class = "wrap" :to = "wechatType === '一般' ? 'normalPay?method=Weixin' : 'quickPay?method=Weixin'">
+        <a class = "wrap" @click = "setUrl(wechatType,'Weixin',weixMsg)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/weixin.png'">
           <div class="text">
             <strong>微信支付</strong>
@@ -27,11 +27,11 @@
             </p>
           </div>
           <i class="iconfont right fr"></i>
-        </router-link>
+        </a>
       </div>
 
       <div class="surperise active">
-        <router-link class = "wrap" :to = "aliType === '一般' ? 'normalPay?method=Alipay' : 'quickPay?method=Alipay'">
+        <a class = "wrap" @click = "setUrl(aliType,'Alipay',aliMsg)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/alipay.png'">
           <div class="text">
             <strong>支付宝支付</strong>
@@ -44,7 +44,7 @@
             </p>
           </div>
           <i class="iconfont right fr"></i>
-        </router-link>
+        </a>
       </div>
 
     </div>
@@ -86,6 +86,12 @@ export default {
     }
     this.payLimit = state.PayLimit
   },
+  methods:{
+    setUrl(key,name,bool){
+      var Url= key === '一般' ? 'normalPay?method='+name : 'quickPay?method='+name
+      !bool&&router.push(Url)
+    }
+  }
 }
 </script>
 <style lang = "scss" scoped>
