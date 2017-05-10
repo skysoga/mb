@@ -148,8 +148,8 @@ export default {
           'left':'-300px'
         },
         'AUSTPAY':{
-          'margin-top':2.5*em-100+'px',
-          'left':'-500px'
+          'margin-top':2.5*em+'px',
+          'left':'-156px'
         }
       }
     }
