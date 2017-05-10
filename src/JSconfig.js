@@ -74,6 +74,6 @@ module.exports = {
   Max_Expect_Rate: 20000, //追号最大预期盈利率限制
   needVerify:sessionStorage.getItem("needVerify")||0,
   bankType:{
-     Type:["久付","乐盈","闪付","通汇卡","易卡","银宝","摩宝"]
+     Type:["久付","乐盈","闪付","通汇卡","易卡","银宝","摩宝","AUSTPAY"]
   }
 }
