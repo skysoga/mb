@@ -5,7 +5,7 @@ export default {
   props:["s"],
   data:()=>{
     return{
-      hotLottery:hotDefault,
+      hotLottery:[],
     }
   },
   components: {
@@ -32,6 +32,7 @@ export default {
     state.UserName&&arr.push("NoticeData")
     arr = (!_App||state.UserName)?arr.concat(ar):arr
 
+
     RootApp.GetInitData(arr, state=>{
       next(vm=>{
         //不上线的彩种code列表， 用slice避免对源数组产生引用
@@ -53,7 +54,7 @@ export default {
         })
 
         // 剔除不上线的彩种
-          vm.nowDisplayList = hotLottery
+        vm.nowDisplayList = hotLottery
         vm.hotLottery = hotLottery.filter(code=>offLineLottery.indexOf(code) === -1)
       });
     })
