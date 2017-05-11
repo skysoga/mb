@@ -114,7 +114,7 @@ var specialModes = {
   PK10: pk10SpecialMode,
   KL8: kl8SpecialMode
 }
-
+function scrollTop(){document.body.scrollTop = 0}  //滚动置顶
 export default {
   data(){
     return {
@@ -234,6 +234,7 @@ export default {
   methods:{
     //返回投注页
     back(){
+      scrollTop()
       if(this.isChase){
         this.leaveChase(()=>{
           this.$store.commit('lt_changeBox', '')
