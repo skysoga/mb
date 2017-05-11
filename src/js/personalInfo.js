@@ -33,7 +33,7 @@ export default {
       layer.msgWait("正在提交")
       _fetch(arr).then(data=>{
           if(data.Code==1){
-           RootApp.AjaxGetInitData(['UserPhoto'],()=>{
+           RootApp.GetInitData(['UserPhoto'],()=>{
               layer.msgWarn(data.StrCode)
               this.HeadImgBoxShow=false
             })
@@ -75,10 +75,10 @@ export default {
             if(key=='NickName'){
               this.UserNickName=value
             }
-            layer.msgWarn(data.StrCode)
-            RootApp.AjaxGetInitData(["User"+key],function(data){
-              RootApp.SaveInitData(data.BackData)
-            })
+            var obj={}
+            obj['User'+key]=value
+            RootApp.SaveInitData(obj)
+            layer.alert(data.StrCode)
           }else{
             var skey="User"+key
             layer.msgWarn(data.StrCode)
