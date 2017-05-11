@@ -33,10 +33,9 @@ export default {
       layer.msgWait("正在提交")
       _fetch(arr).then(data=>{
           if(data.Code==1){
-           RootApp.GetInitData(['UserPhoto'],()=>{
-              layer.msgWarn(data.StrCode)
-              this.HeadImgBoxShow=false
-            })
+            RootApp.SaveInitData({'UserPhoto':arr.UserPhoto})
+            layer.alert(data.StrCode)
+            this.HeadImgBoxShow=false
           }else{
             layer.msgWarn(data.StrCode)
           }
