@@ -35,12 +35,15 @@
   var randomFeed = Math.floor(Math.random()*4)  //获取开奖时间的随机数，用于错开请求
   var haveGotTime = true		                    //标志位-进页面时是否获取到服务器时间
 
+  function scrollTop(){document.body.scrollTop = 0}  //滚动置顶
+
   export default{
     components:{
       LotteryCommon,
       LotteryK3
     },
     beforeRouteEnter(to, from, next){
+      scrollTop()
       //从url上获取彩种type和彩种code
       var [,ltype, lcode] = to.fullPath.slice(1).split('/')
       //获取返点
@@ -276,8 +279,10 @@
           lt_setBetRecord:(state, BetRecord)=>{state.BetRecord =BetRecord;},  //投注记录
 
                           /** 通用 **/
-
-          lt_changeBox:(state, boxName)=>{state.box = boxName},     //变更弹出框
+          //变更弹出框
+          lt_changeBox:(state, boxName, shouldScrollTop)=>{
+            state.box = boxName
+          },
           //变更玩法
           lt_changeMode:(state, mode)=>{
             var type = state.lottery.LotteryType   //彩种类型 SSC、K3
@@ -428,6 +433,7 @@
         actions: {
           //变更彩种的异步操作
           lt_updateLottery:({state, rootState, commit, dispatch}, code)=>{
+            scrollTop()
             //进入每个彩种，先把开奖结果初始化，如果不存在的话
             if(!state.LotteryResults[code]){
               commit({
@@ -744,6 +750,7 @@
                 commit('lt_clearBet')
                 commit('lt_clearBasket')
                 commit('lt_changeBox', '')
+                scrollTop()  //滚动复原
 
                 //投注后自己添记录到“我的投注里”
                 var totalMoney = _basket.map(bet=>bet.betting_money).reduce((a,b)=>a+b)  //本注总金额
@@ -800,6 +807,7 @@
                 commit('lt_clearBet')            //清空bet
                 commit('lt_clearBasket')        //清空basket
                 commit('lt_changeBox', '')      //将所有弹出框关闭
+                scrollTop()
                 commit('lt_setScheme', [])      //清空scheme
                 // commit('lt_setChasePower', 1)    //清空追号配置
                 // commit('lt_setChaseIssue', 1)
