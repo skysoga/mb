@@ -88,7 +88,8 @@
       Promise.all([getRebate, getLotteryList, getServerTime]).then((values)=>{
         //校验下这个彩种存不存在，不存在就送回购彩大厅
         var lotteryItem = state.LotteryList[lcode]
-        if(lotteryItem === undefined){
+        var offLineLottery = ['FC3D', 'PL35']
+        if(lotteryItem === undefined || offLineLottery.indexOf(lotteryItem.LotteryType) > -1){
           layer.url('您所访问的彩种不存在，即将返回购彩大厅', '/lotteryHall')
           return
         }else{
