@@ -280,11 +280,8 @@
 
                           /** 通用 **/
           //变更弹出框
-          lt_changeBox:(state, boxName)=>{
+          lt_changeBox:(state, boxName, shouldScrollTop)=>{
             state.box = boxName
-            if(boxName === ''){
-              scrollTop()
-            }
           },
           //变更玩法
           lt_changeMode:(state, mode)=>{
@@ -436,6 +433,7 @@
         actions: {
           //变更彩种的异步操作
           lt_updateLottery:({state, rootState, commit, dispatch}, code)=>{
+            scrollTop()
             //进入每个彩种，先把开奖结果初始化，如果不存在的话
             if(!state.LotteryResults[code]){
               commit({
@@ -752,6 +750,7 @@
                 commit('lt_clearBet')
                 commit('lt_clearBasket')
                 commit('lt_changeBox', '')
+                scrollTop()  //滚动复原
 
                 //投注后自己添记录到“我的投注里”
                 var totalMoney = _basket.map(bet=>bet.betting_money).reduce((a,b)=>a+b)  //本注总金额
@@ -808,6 +807,7 @@
                 commit('lt_clearBet')            //清空bet
                 commit('lt_clearBasket')        //清空basket
                 commit('lt_changeBox', '')      //将所有弹出框关闭
+                scrollTop()
                 commit('lt_setScheme', [])      //清空scheme
                 // commit('lt_setChasePower', 1)    //清空追号配置
                 // commit('lt_setChaseIssue', 1)
