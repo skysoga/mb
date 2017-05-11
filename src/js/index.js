@@ -47,15 +47,20 @@ export default {
 
         // 获取热门彩种code列表, LotteryClassID === '0'
         var hotLottery = []
-        vm.LotteryConfig.forEach(item=>{
-          if(item.LotteryClassID === '0'){
-            hotLottery = item.LotteryList.slice()
-          }
-        })
+        if(NologApp){
+          hotLottery = hotDefault
+        }else{
+          vm.LotteryConfig.forEach(item=>{
+            if(item.LotteryClassID === '0'){
+              hotLottery = item.LotteryList.slice()
+            }
+          })
+
+          hotLottery.filter(code=>offLineLottery.indexOf(code) === -1)
+        }
 
         // 剔除不上线的彩种
-        vm.nowDisplayList = hotLottery
-        vm.hotLottery = hotLottery.filter(code=>offLineLottery.indexOf(code) === -1)
+        vm.hotLottery = hotLottery
       });
     })
   },
