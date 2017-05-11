@@ -546,7 +546,6 @@ var UserArr = [
 var SiteArr=[ //需要校验更新版本的列表
   'SysActivity',
   'SysBanner',
-  'LotteryConfig', //所有彩种列表
   'LotteryList', //所有彩种信息
   'GradeList',//等级体系
   'RewardData',//每日加奖设置
@@ -554,6 +553,7 @@ var SiteArr=[ //需要校验更新版本的列表
 ]
 
 var AppArr=[
+  'LotteryConfig', //所有彩种列表
   'ActivityConfig', //活动种类及数据
   'BannerList',
   // 'PayLimit',
