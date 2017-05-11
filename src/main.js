@@ -889,7 +889,6 @@ window.RootApp={
   },
   WatchInitData(d) {
     //必须跟随执行的函数
-    console.log(d)
     var head = document.getElementsByTagName('head')[0]
     var v
     for(var i in d) {

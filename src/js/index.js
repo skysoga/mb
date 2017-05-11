@@ -44,7 +44,6 @@ export default {
           }
         })
 
-
         // 获取热门彩种code列表, LotteryClassID === '0'
         var hotLottery = []
         if(NologApp){
@@ -56,7 +55,7 @@ export default {
             }
           })
 
-          hotLottery.filter(code=>offLineLottery.indexOf(code) === -1)
+          hotLottery = hotLottery.filter(code=>offLineLottery.indexOf(code) === -1)
         }
 
         // 剔除不上线的彩种
