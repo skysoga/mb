@@ -95,7 +95,7 @@
         }else{
           var LotteryType = lotteryItem.LotteryType
           if(lotteryItem.LotteryType !== ltype){
-            RootApp.$router.push(`./lottery/${LotteryType}/${lcode}`)
+            RootApp.$router.replace(`./lottery/${LotteryType}/${lcode}`)
           }
         }
         next()
