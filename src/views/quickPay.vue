@@ -56,9 +56,8 @@ export default {
       Alipay: '支付宝快捷'
     }
     AliTypes=state.bankType.Type.slice(0)
-    if(method=='Alipay'){
-      AliTypes=AliTypes.concat(AliArr)
-    }
+    AliTypes=AliTypes.concat(AliArr)
+
     //获取数据
     RootApp.GetInitData([rechargeWay,'PayLimit'], state=>{
       //如果数据不对要跳到普通充值去
