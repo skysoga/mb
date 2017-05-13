@@ -7,14 +7,14 @@ export default {
       DefaultID:'',
       DefaultName:'',
       UserNickName:'',
-      UserQQ:'',
+      // UserQQ:'',
       UserBirthDay:'',
       UserSex:'',
       HeadImgBoxList:''//以上头像组件关联
     }
   },
   beforeRouteEnter(to,from,next){
-    var arr=['UserName','UserNickName','UserMobile','UserMail','UserPhoto','UserSex','UserQQ','UserBirthDay','DefaultPhotoList']
+    var arr=['UserName','UserNickName','UserMobile','UserMail','UserPhoto','UserSex','UserBirthDay','DefaultPhotoList']
     RootApp.GetInitData(arr,state=>{
       next()
     })
@@ -22,7 +22,7 @@ export default {
   created(){
         this.DefaultPhoto=state.UserPhoto
         this.UserNickName=state.UserNickName
-        this.UserQQ=state.UserQQ
+        // this.UserQQ=state.UserQQ  'UserQQ',
         this.UserSex=state.UserSex
         this.UserBirthDay=state.UserBirthDay
         this.HeadImgBoxList=state.DefaultPhotoList

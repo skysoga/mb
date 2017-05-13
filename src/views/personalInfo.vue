@@ -28,7 +28,7 @@
     <ul>
         <li><div><span>手机</span><i class="iconfont right"></i><em>{{$store.state.UserMobile||'未绑定'}}</em></div></li>
         <li><div><span>邮箱</span><i class="iconfont right"></i><em>{{$store.state.UserMail||'未绑定'}}</em></div></li>
-        <li>
+        <!-- <li>
         <div>
           <span>Q Q</span>
           <i class="iconfont right"></i>
@@ -41,7 +41,7 @@
                   maxlength="12">
           </em>
         </div>
-        </li>
+        </li> -->
         <li><div><span>性别</span><i class="iconfont right"></i><em>
             <select tag="性别" va-para="Sex" v-model="UserSex" v-va:Sex.vanow>
                 <option value="2">保密</option>
