@@ -16,6 +16,9 @@ export default {
     }
     next()
   },
+  created(){
+    layer.url('暂停使用手机绑定','/securityCenter')
+  },
   methods:{
     $vaSubmit(){
       var ajax = {
