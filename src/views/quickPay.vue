@@ -38,8 +38,6 @@
   </div>
 </template>
 <script>
-var AliArr=['仁信']//支付宝第三方弹窗
-var AliTypes
 export default {
   beforeRouteEnter(to, from, next){
     var title = {
@@ -55,21 +53,17 @@ export default {
       Weixin: '微信快捷',
       Alipay: '支付宝快捷'
     }
-    AliTypes=state.bankType.Type.slice(0)
-    if(method=='Alipay'){
-      AliTypes=AliTypes.concat(AliArr)
-    }
+
     //获取数据
     RootApp.GetInitData([rechargeWay,'PayLimit'], state=>{
       //如果数据不对要跳到普通充值去
       var PayType =state[rechargeWay]&&state[rechargeWay][0].PayType
-      var OpenType =state[rechargeWay]&&state[rechargeWay][0].OpenType
 
       if(PayType && PayType === '一般'){
         router.replace('/normalPay?method=' + method)
       }else{
 
-        if(OpenType===2&&typeof(QRCode)==="undefined"){
+        if(typeof(QRCode)==="undefined"){
           var warn=document.createElement('script')
           warn.src='https://cdn.rawgit.com/davidshimjs/qrcodejs/04f46c6a/qrcode.min.js'
           var first=document.body.firstChild
@@ -196,19 +190,19 @@ export default {
       layer.msgWait("正在提交")
       _fetch(nowAjax).then((json)=>{
         if(json.Code === 1){
+          var OpenType=json.OpenType
           this.QrImg=json.BackUrl
           layer.closeAll()
 
-          if(this.nowRender.OpenType!==1){
+          if(OpenType!==1){
             this.QrSvg=true
-            var isData=this.QrImg.search(/data:/)>-1
-            if(isData){
+            if(OpenType===3){
               var qrcode=document.getElementById("qrcode")
               var img=document.createElement("img")
               img.src=this.QrImg
               img.width='260'
               qrcode.appendChild(img)
-            }else{
+            }else if(OpenType===2){
               this.setQrCode(json.BackUrl)
             }
           }else{
