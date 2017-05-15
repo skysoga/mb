@@ -4,7 +4,7 @@ import BottomBox from '../components/bottom-box';
       return{
         BetweenType:'',
         BottomBoxShow:false,
-        BottomBoxList:{K3:"快3",SSC:"时时彩",SYX5:"11选5",FC3D:"福彩3D",PL35:"排列3/5",KL8:"北京快乐8",PK10:"北京PK10"},
+        BottomBoxList:{K3:"快3",SSC:"时时彩",SYX5:"11选5",FC3D:"福彩3D",PL35:"排列3",KL8:"北京快乐8",PK10:"北京PK10"},
         AgentRebate:'',//自身返点数组
         setObj:{Max:'8.0',Min:'0.0'},//最大返点
         ArrObj:'',//当前总数据
