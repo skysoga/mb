@@ -4,7 +4,7 @@ import BottomBox from '../components/bottom-box';
       return{
         BetweenType:'',
         BottomBoxShow:false,
-        BottomBoxList:{K3:"快3",SSC:"时时彩",SYX5:"11选5",FC3D:"福彩3D",PL35:"排列3",KL8:"北京快乐8",PK10:"北京PK10"},
+        BottomBoxList:{K3:"快3",SSC:"时时彩",SYX5:"11选5",FC3D:"福彩3D",PL3:"排列3",KL8:"北京快乐8",PK10:"北京PK10"},
         AgentRebate:'',//自身返点数组
         setObj:{Max:'8.0',Min:'0.0'},//最大返点
         ArrObj:'',//当前总数据
@@ -81,12 +81,12 @@ import BottomBox from '../components/bottom-box';
           {"Mode":"三星-组选复式","Odd":[6,990]},
           {"Mode":"三星-组选单式","Odd":[6,990]},
           {"Mode":"三星-组选胆拖","Odd":[6,990]},
+          {"Mode":"三星-一码不定位","Odd":[270,990]},
           {"Mode":"二星-直选复式","Odd":[1,110]},
           {"Mode":"二星-直选单式","Odd":[1,110]},
           {"Mode":"二星-组选复式","Odd":[2,110]},
           {"Mode":"二星-组选单式","Odd":[2,110]},
           {"Mode":"二星-组选胆拖","Odd":[2,110]},
-          {"Mode":"三星-一码不定位","Odd":[270,990]},
           {"Mode":"定位胆-复式","Odd":[1,11]},
           {"Mode":"趣味-定单双-5单0双","Odd":[720,55440]},
           {"Mode":"趣味-定单双-4单1双","Odd":[9000,55440]},
@@ -101,12 +101,12 @@ import BottomBox from '../components/bottom-box';
           {"Mode":"任选复式-一中一","Odd":[25200,55440]},
           {"Mode":"任选复式-二中二","Odd":[10080,55440]},
           {"Mode":"任选复式-三中三","Odd":[3360,55440]},
-          {"Mode":"任选单式-一中一","Odd":[25200,55440]},
           {"Mode":"任选复式-四中四","Odd":[840,55440]},
           {"Mode":"任选复式-五中五","Odd":[120,55440]},
           {"Mode":"任选复式-六中五","Odd":[720,55440]},
           {"Mode":"任选复式-七中五","Odd":[2520,55440]},
           {"Mode":"任选复式-八中五","Odd":[6720,55440]},
+          {"Mode":"任选单式-一中一","Odd":[25200,55440]},
           {"Mode":"任选单式-二中二","Odd":[10080,55440]},
           {"Mode":"任选单式-三中三","Odd":[3360,55440]},
           {"Mode":"任选单式-四中四","Odd":[840,55440]},
@@ -140,7 +140,7 @@ import BottomBox from '../components/bottom-box';
           {"Mode":"三星-一码不定位","Odd":[271,1000]},
           {"Mode":"三星-二码不定位","Odd":[54,1000]},
         ],
-        "PL35":[
+        "PL3":[
           {"Mode":"大小单双-二星","Odd":[1,4]},
           {"Mode":"一星-复式","Odd":[1,10]},
           {"Mode":"后二-直选","Odd":[1,100]},
@@ -201,7 +201,7 @@ import BottomBox from '../components/bottom-box';
           "SSC":{"Rebate":[8.0,0.00],"List":[]},
           "SYX5":{"Rebate":[8.0,0.00],"List":[]},
           "FC3D":{"Rebate":[8.0,0.00],"List":[]},
-          "PL35":{"Rebate":[8.0,0.00],"List":[]},
+          "PL3":{"Rebate":[8.0,0.00],"List":[]},
           "KL8":{"Rebate":[8.0,0.00],"List":[]},
           "PK10":{"Rebate":[8.0,0.00],"List":[]}
       }
