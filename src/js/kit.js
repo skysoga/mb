@@ -540,7 +540,7 @@ var throttle = function(delay){
 }(400)
 
 //根据传入的code,和彩种index来返回 期号字符串
-function computeIssue(code, index){
+function computeIssue(code, index, isChase){
   var days    //和当前期差几天
       ,_index  //那一天的第几期
       ,dateStr    //日期字符串
@@ -582,14 +582,18 @@ function computeIssue(code, index){
     }
   }
 
-
   //这里挂各特殊彩种的处理函数--有返回的直接出返回结果。不参与下一步----每年过年前更新一次
   var handler = {
     '1001':function(){
-      //新疆时时彩跨天的处理
-      if(_index >= 83 && _SerTime <= state.lt.LotteryPlan[state.lt.PlanLen - 1].End){
+      if(isChase){
+        days--
+      }else if(_index >= 83 && _SerTime <= state.lt.LotteryPlan[state.lt.PlanLen - 1].End){
         days--
       }
+      // //新疆时时彩跨天的处理
+      // if(_index >= 83 && _SerTime <= state.lt.LotteryPlan[state.lt.PlanLen - 1].End){
+      //   days--
+      // }
     },
     //北京快三，以某一期作为基准
     '1406':basedOnFixedIssue(68606+1, "2017/2/4", 89, 1),

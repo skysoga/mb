@@ -789,7 +789,7 @@
 
             for(var i = 0, len = state.chaseConf.buy_count; i < len;i++){
               issueNo = state.IssueNo + i
-              issueStr = computeIssue(code, issueNo)
+              issueStr = computeIssue(code, issueNo, true)
               power = state.chaseConf.power
               money = (basketTotal * state.chaseConf.power).toFixed(4) * 1
               scheme.push(new Scheme(issueStr, power, money))
