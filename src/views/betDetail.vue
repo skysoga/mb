@@ -46,16 +46,16 @@ export default {
   methods:{
     WinShow(str,e){
       var len=e?str.split(' ').length:str.split(',').length
-      if(len<(e?12:9)){return}
+      if(len<(e?11:9)){return}
       str=e?str:str.split('+')[0].split(',').slice(0,20).join(',')
       layer.alert(str)
     },
     setNum(str,e){
       var atr=e?str.split(' '):str.split(',')
-      var Num=e?11:8
+      var Num=e?10:8
       var xtr=atr.slice(0,Num)
       var Arr=e?xtr.join(' '):xtr.join(',')
-      return atr.length>(e?11:8)?Arr+'[详情]':Arr
+      return atr.length>(e?10:8)?Arr+'[详情]':Arr
     },
     CancelBet:function(id){
       var vm=this
