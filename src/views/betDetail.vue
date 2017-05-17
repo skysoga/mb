@@ -18,7 +18,7 @@
     <header>我的投注</header>
     <ul><li></li>
       <li v-for="item in res_data.BetInfoList">
-        <div>{{item.BetNum}}</div>
+        <div @click="WinShow(item.BetNum,true)">{{setNum(item.BetNum,true)}}</div>
         <span>{{item.PlayName}}</span>
         <span class="fr" v-if="Number(item.Bonus)">奖金：{{item.Bonus}}</span>
         <p class="hr1px"></p></li>
@@ -44,16 +44,18 @@ export default {
     }
   },
   methods:{
-    WinShow(str){
-      var len=str.split(',').length
-      if(len<9){return}
-      str=str.split('+')[0].split(',').slice(0,20).join(',')
+    WinShow(str,e){
+      var len=e?str.split(' ').length:str.split(',').length
+      if(len<(e?12:9)){return}
+      str=e?str:str.split('+')[0].split(',').slice(0,20).join(',')
       layer.alert(str)
     },
-    setNum(str){
-      var atr=str.split(',')
-      var Arr=atr.slice(0,8).join(',')
-      return atr.length>8?Arr+'[详情]':Arr
+    setNum(str,e){
+      var atr=e?str.split(' '):str.split(',')
+      var Num=e?11:8
+      var xtr=atr.slice(0,Num)
+      var Arr=e?xtr.join(' '):xtr.join(',')
+      return atr.length>(e?11:8)?Arr+'[详情]':Arr
     },
     CancelBet:function(id){
       var vm=this
