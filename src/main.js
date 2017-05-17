@@ -246,7 +246,7 @@ window._fetch = function (data){
     if(window.site){
       fetchUrl+='&S='+site
     }
-    var user = state.UserName||data.UserName
+    var user = data.Action!=='Register'&&state.UserName||data.UserName
     if(user){
       fetchUrl+='&U='+user
     }
