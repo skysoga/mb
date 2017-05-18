@@ -38,6 +38,7 @@
   </div>
 </template>
 <script>
+var OType=['金付卡']//新开窗口数组
 export default {
   beforeRouteEnter(to, from, next){
     var title = {
@@ -187,14 +188,24 @@ export default {
       nowAjax.Money = this.vaVal.Money
       nowAjax.ID = this.nowRender.Id
       nowAjax.BankCode =this.nowRender.PayType
+      if(OType.indexOf(nowAjax.BankCode)!==-1&&!YDB){
+        var newTab=window.open('about:blank')
+      }
       layer.msgWait("正在提交")
       _fetch(nowAjax).then((json)=>{
         if(json.Code === 1){
           var OpenType=json.OpenType
           this.QrImg=json.BackUrl
           layer.closeAll()
-
-          if(OpenType!==1){
+          if(OpenType===1){
+            this.Money = ''
+          }else if(OpenType===4){
+            this.QrBg=false
+            RootApp.OpenWin(json.BackUrl,function(url){
+              newTab.location.href=url
+            })
+            this.Money = ''
+          }else{
             this.QrSvg=true
             if(OpenType===3){
               var qrcode=document.getElementById("qrcode")
@@ -205,8 +216,6 @@ export default {
             }else if(OpenType===2){
               this.setQrCode(json.BackUrl)
             }
-          }else{
-            this.Money = ''
           }
         }else{
           this.QrBg=false

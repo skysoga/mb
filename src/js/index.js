@@ -63,6 +63,16 @@ export default {
       });
     })
   },
+  methods:{
+    setUrl(link){
+      if(!YDB){
+        var newTab=window.open('about:blank')
+      }
+      RootApp.OpenWin(link,url=>{
+        newTab.location.href=url
+      })
+    }
+  },
 	computed:mapState({
 		LotteryConfig:'LotteryConfig',
 		LotteryList:'LotteryList',

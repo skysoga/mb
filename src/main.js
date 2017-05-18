@@ -93,6 +93,7 @@ document.addEventListener('touchstart',function(e){},false);//让css的:active�
 // document.cookie = "Site="+location.hostname.replace('.com','')
 window.rem = document.body.clientWidth/16
 window.em = Math.sqrt((rem-20)*.9)+20
+window.YDB = null
 document.querySelector("html").style.fontSize=rem+'px'
 document.body.style.fontSize=em+'px'
 window._Tool = {
@@ -458,7 +459,7 @@ window._App=(function(host){
       // qq: u.match(/\sQQ/i) == " qq" //是否QQ
     };
   }()
-  if (_App&&versions.ios) {
+  if (_App) {
     //iosApp专用代码
     var img=document.createElement("img")
     img.src="//static.ydbimg.com/API/YdbOnline.js"
@@ -468,8 +469,9 @@ window._App=(function(host){
       document.body.appendChild(script);
       var count=0
       var inter=setInterval(function(){
-        if(YDBOBJ){
-          (new YDBOBJ()).SetHeadBar(0)
+        if(typeof YDBOBJ!=='undefined'){
+          YDB=new YDBOBJ()
+          YDB.SetHeadBar(0)
           clearInterval(inter)
         }
         count++
@@ -791,6 +793,13 @@ window.RootApp={
     // this.GetInitData(UserArr,fun)
     this.SaveInitData({UserName:UserName})
     fun()
+  },
+  OpenWin:function(url,fun){
+    if(YDB){
+      YDB.OpenWithSafari(url)
+    }else{
+      fun(url)
+    }
   },
   SetFilter:function(json){
     var data=json.BackData
