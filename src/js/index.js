@@ -66,14 +66,6 @@ export default {
   methods:{
     setUrl(link){
       RootApp.OpenWin(link)
-
-
-      // if(!YDB){
-      //   var newTab=window.open('about:blank')
-      // }
-      // RootApp.OpenWin(link,url=>{
-      //   newTab.location.href=url
-      // })
     }
   },
 	computed:mapState({
