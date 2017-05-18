@@ -199,6 +199,9 @@ export default {
           var OpenType=json.OpenType
           this.QrImg=json.BackUrl
           layer.closeAll()
+          if(OType.indexOf(nowAjax.BankCode)>-1){
+            OpenType=4
+          }
           if(OpenType===1){
             this.Money = ''
           }else if(OpenType===4){
