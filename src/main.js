@@ -794,11 +794,15 @@ window.RootApp={
     this.SaveInitData({UserName:UserName})
     fun()
   },
-  OpenWin:function(url,fun){
+  OpenWin:function(url, newTab){
+    //app
     if(YDB){
       YDB.OpenWithSafari(url)
     }else{
-      fun(url)
+      if(!newTab){
+        newTab = window.open('about:blank')
+      }
+      newTab.location.href=url
     }
   },
   SetFilter:function(json){

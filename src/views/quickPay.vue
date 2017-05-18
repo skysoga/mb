@@ -188,9 +188,11 @@ export default {
       nowAjax.Money = this.vaVal.Money
       nowAjax.ID = this.nowRender.Id
       nowAjax.BankCode =this.nowRender.PayType
+
       if(OType.indexOf(nowAjax.BankCode)!==-1&&!YDB){
         var newTab=window.open('about:blank')
       }
+
       layer.msgWait("正在提交")
       _fetch(nowAjax).then((json)=>{
         if(json.Code === 1){
@@ -201,9 +203,7 @@ export default {
             this.Money = ''
           }else if(OpenType===4){
             this.QrBg=false
-            RootApp.OpenWin(json.BackUrl,function(url){
-              newTab.location.href=url
-            })
+            RootApp.OpenWin(json.BackUrl, newTab)
             this.Money = ''
           }else{
             this.QrSvg=true
