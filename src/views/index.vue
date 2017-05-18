@@ -5,8 +5,11 @@
     <div id="banner">
       <swiper>
         <swiper-slide v-for="i in s.BannerList||s.SysBanner">
-          <router-link v-if="i.Url[0]==='/'" :to="i.Url.replace('.html','')"><img :src="s.constant.ImgHost+i.Image"></router-link>
-          <a v-else @click="setUrl(i.Url)"><img :src="s.constant.ImgHost+i.Image"></a>
+          <a v-if="i.Url===null"><img :src="s.constant.ImgHost+i.Image"></a>
+          <template v-else>
+            <router-link v-if="i.Url && i.Url[0]==='/'" :to="i.Url.replace('.html','')"><img :src="s.constant.ImgHost+i.Image"></router-link>
+            <a v-else @click="setUrl(i.Url)"><img :src="s.constant.ImgHost+i.Image"></a>
+          </template>
         </swiper-slide>
       </swiper>
     </div>

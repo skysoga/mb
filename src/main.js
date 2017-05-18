@@ -797,9 +797,7 @@ window.RootApp={
   OpenWin:function(url, newTab){
     //app
     if(YDB){
-      layer.alert('正在跳转窗口', function(){
-        YDB.OpenWithSafari(url)
-      })
+      YDB.OpenWithSafari(url)
     }else{
       if(!newTab){
         newTab = window.open('about:blank')
