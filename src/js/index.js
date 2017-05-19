@@ -74,7 +74,7 @@ export default {
     nowDisplayList(){
       var hotLottery = this.hotLottery
       // 如果后台数据错误就返回默认的数组，如果热门超过11个，那么返回前11个
-      if(Array.isArray(hotLottery)){
+      if(Array.isArray(hotLottery) && hotLottery.length){
         if(hotLottery.length > 11){
           return hotLottery.slice(0,11)  //截取前11个
         }else{
