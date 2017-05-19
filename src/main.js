@@ -556,6 +556,7 @@ var SiteArr=[ //需要校验更新版本的列表
 
 var AppArr=[
   'LotteryConfig', //所有彩种列表
+  'LotteryHot',
   'ActivityConfig', //活动种类及数据
   'BannerList',
   // 'PayLimit',
@@ -564,7 +565,7 @@ var AppArr=[
 var LocalCacheArr = [//本地控制缓存版本
   'RankingList',//昨日奖金榜
 ]
-var VerifyArr=["LotteryConfig","BannerList","LotteryList","ActivityConfig","FooterConfig","HelpConfig","SiteConfig","HallBanner","GradeList","DefaultPhotoList","RewardData","AbstractType","PayLimit","CloudUrl","NoticeData"]
+var VerifyArr=["LotteryConfig","LotteryHot","BannerList","LotteryList","ActivityConfig","FooterConfig","HelpConfig","SiteConfig","HallBanner","GradeList","DefaultPhotoList","RewardData","AbstractType","PayLimit","CloudUrl","NoticeData"]
 if (_App) {
   UserArr=UserArr.concat(AppArr)
 }else{
@@ -949,6 +950,7 @@ window.RootApp={
       for (var i = AppArr.length - 1; i >= 0; i--) {
         delete ajax.CacheData[AppArr[i]]
       }
+      delete ajax.CacheData.LotteryHot
       delete ajax.CacheData.LotteryConfig
       delete ajax.CacheData.LotteryList
     }else{

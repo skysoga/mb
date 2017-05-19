@@ -6,6 +6,7 @@ export default {
   data:()=>{
     return{
       hotLottery:[],
+      NologApp:''
     }
   },
   components: {
@@ -27,7 +28,7 @@ export default {
       to.meta.title='未登录'
     }
 
-    var arr = [!NologApp?"BannerList":"SysBanner","LotteryConfig","LotteryList"],
+    var arr = [!NologApp?"BannerList":"SysBanner","LotteryConfig","LotteryHot","LotteryList"],
       ar=["SiteConfig"];
     state.UserName&&arr.push("NoticeData")
     arr = (!_App||state.UserName)?arr.concat(ar):arr
@@ -36,43 +37,61 @@ export default {
     RootApp.GetInitData(arr, state=>{
       next(vm=>{
         //不上线的彩种code列表， 用slice避免对源数组产生引用
-        var offLineLottery = []
-        vm.LotteryConfig.forEach(item=>{
-          // 不上线：排列3，福彩3D  LotteryClassID === '12'
-          if(item.LotteryClassID === '12'){
-            offLineLottery = item.LotteryList.slice()
-          }
-        })
-
-        // 获取热门彩种code列表, LotteryClassID === '0'
-        var hotLottery = []
-        if(NologApp){
-          hotLottery = hotDefault
-        }else{
-          vm.LotteryConfig.forEach(item=>{
-            if(item.LotteryClassID === '0'){
-              hotLottery = item.LotteryList.slice()
-            }
-          })
-
-          hotLottery = hotLottery.filter(code=>offLineLottery.indexOf(code) === -1)
-        }
-
+        // var offLineLottery = []
+        // vm.LotteryConfig.forEach(item=>{
+        //   // 不上线：排列3，福彩3D  LotteryClassID === '12'
+        //   if(item.LotteryClassID === '12'){
+        //     offLineLottery = item.LotteryList.slice()
+        //   }
+        // })
+        //
+        // // 获取热门彩种code列表, LotteryClassID === '0'
+        // var hotLottery = []
+        // if(NologApp){
+        //   hotLottery = hotDefault
+        // }else{
+        //   hotLottery=vm.LotteryHot
+        //   hotLottery = hotLottery.filter(code=>offLineLottery.indexOf(code) === -1)
+        // }
         // 剔除不上线的彩种
-        vm.hotLottery = hotLottery
+        // vm.hotLottery = hotLottery
+        // vm.hotLottery=vm.setDataHot(vm.LotteryConfig,vm.LotteryHot);
       });
     })
   },
   methods:{
     setUrl(link){
       RootApp.OpenWin(link)
+    },
+    setDataHot(LotteryConfig,LotteryHot){
+      var NologApp = _App&&!state.UserName
+      var offLineLottery = []
+      LotteryConfig.forEach(item=>{
+        // 不上线：排列3，福彩3D  LotteryClassID === '12'
+        if(item.LotteryClassID === '12'){
+          offLineLottery = item.LotteryList.slice()
+        }
+      })
+
+      // 获取热门彩种code列表, LotteryClassID === '0'
+      var hotLottery = []
+      if(NologApp){
+        hotLottery = hotDefault
+      }else{
+        hotLottery=LotteryHot
+        hotLottery = hotLottery.filter(code=>offLineLottery.indexOf(code) === -1)
+      }
+      return hotLottery;
     }
   },
 	computed:mapState({
 		LotteryConfig:'LotteryConfig',
+    LotteryHot:'LotteryHot',
 		LotteryList:'LotteryList',
     nowDisplayList(){
-      var hotLottery = this.hotLottery
+      //  state.LotteryHot
+       //var hotLottery = this.hotLottery
+        var hotLottery = this.setDataHot(state.LotteryConfig,state.LotteryHot)
       // 如果后台数据错误就返回默认的数组，如果热门超过11个，那么返回前11个
       if(Array.isArray(hotLottery) && hotLottery.length){
         if(hotLottery.length > 11){
