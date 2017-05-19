@@ -14,7 +14,11 @@ export default {
     if(!(U||F)){
       router.replace('/login')
     }
-    next()
+    layer.alert('暂停使用邮箱绑定',()=>{
+      router.push('/securityCenter')
+      state.turning=false
+    })
+    // next()
   },
   methods:{
     $vaSubmit(){

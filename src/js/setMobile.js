@@ -14,9 +14,11 @@ export default {
     if(!(U||F)){
       router.replace('/login')
     }
-    next(vm=>{
-      layer.url('暂停使用手机绑定','/securityCenter')
+    layer.alert('暂停使用手机绑定',()=>{
+      router.push('/securityCenter')
+      state.turning=false
     })
+    // next()
   },
   methods:{
     $vaSubmit(){
