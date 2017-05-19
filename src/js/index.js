@@ -63,22 +63,21 @@ export default {
     setUrl(link){
       RootApp.OpenWin(link)
     },
-    setDataHot(LotteryConfig,LotteryHot){
+    setDataHot(){
       var NologApp = _App&&!state.UserName
       var offLineLottery = []
-      LotteryConfig.forEach(item=>{
+      state.LotteryConfig.forEach(item=>{
         // 不上线：排列3，福彩3D  LotteryClassID === '12'
         if(item.LotteryClassID === '12'){
           offLineLottery = item.LotteryList.slice()
         }
       })
 
-      // 获取热门彩种code列表, LotteryClassID === '0'
       var hotLottery = []
       if(NologApp){
         hotLottery = hotDefault
       }else{
-        hotLottery=LotteryHot
+        hotLottery=state.LotteryHot
         hotLottery = hotLottery.filter(code=>offLineLottery.indexOf(code) === -1)
       }
       return hotLottery;
@@ -89,9 +88,7 @@ export default {
     LotteryHot:'LotteryHot',
 		LotteryList:'LotteryList',
     nowDisplayList(){
-      //  state.LotteryHot
-       //var hotLottery = this.hotLottery
-        var hotLottery = this.setDataHot(state.LotteryConfig,state.LotteryHot)
+        var hotLottery = this.setDataHot()
       // 如果后台数据错误就返回默认的数组，如果热门超过11个，那么返回前11个
       if(Array.isArray(hotLottery) && hotLottery.length){
         if(hotLottery.length > 11){
