@@ -21,11 +21,7 @@ export default {
     }else{
       to.meta.link="/securityCenter"
     }
-    layer.alert('暂停使用手机绑定',()=>{
-      router.push('/securityCenter')
-      state.turning=false
-    })
-    // next()
+    next()
   },
   created(){
     var Q=this.$route.query.Q
