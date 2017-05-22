@@ -15,8 +15,8 @@ import BottomBox from '../components/bottom-box';
       }
     },
     created(){
-      if(RootApp.$route&&RootApp.$route.params.id){
-        this.BetweenType=RootApp.$route.params.id
+      if(this.$route&&this.$route.params.id){
+        this.BetweenType=this.$route.params.id
       }else{
         this.BetweenType="K3"
       }
