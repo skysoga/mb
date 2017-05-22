@@ -1,3 +1,12 @@
+var setBankList=Arr=>{
+      var list=[]
+      Arr&&Arr.forEach(val=>{
+        if(val&&!val.IsDisable){
+          list.push(val)
+        }
+      })
+      return list
+    }
 export default{
   data(){
     return{
@@ -43,12 +52,14 @@ export default{
           if(FistCard&&FistCard[0]){
             var arr=['UserBalance', 'UserWithdrawAvail','UserBankCardList','WithdrawRemainTimes','PayLimit']
             RootApp.GetInitData(arr,state=>{
-              next(vm=>{
-                vm.UserBankList=vm.setBankList(state.UserBankCardList)
-                if(!vm.UserBankList.length){
-                  layer.url('无可提现银行卡','/securityCenter')
+              var BankList=setBankList(state.UserBankCardList)
+                if(!BankList.length){
+                  layer.url('无可提现银行卡','/userCenter')
+                  state.turning=false
                   return
                 }
+              next(vm=>{
+                vm.UserBankList=BankList
                 vm.UserBalance=state.UserBalance
                 vm.UserAvail=state.UserWithdrawAvail
                 vm.PayLimit=state.PayLimit
@@ -151,15 +162,6 @@ export default{
         vm.UserBalance=ref.UserBalance
         vm.UserAvail=ref.UserWithdrawAvail
       })
-    },
-    setBankList(Arr){
-      var list=[]
-      Arr&&Arr.forEach(val=>{
-        if(val&&!val.IsDisable){
-          list.push(val)
-        }
-      })
-      return list
     }
   }
 }
