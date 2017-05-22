@@ -9,9 +9,14 @@
             <p>尾号：*********{{n.CardNum.substr(-4)}}</p>
           </div>
           <div class="fr">
-              <a v-if="n.isLock&&!n.IsDisable">已锁定</a>
               <a v-if="n.IsDisable">已禁用</a>
-              <router-link v-else class="modify" :to="'setBankcard?Q='+n.BankCardID">修改</router-link>
+              <template v-else>
+                <a v-if="n.isLock">已锁定</a>
+                <template v-else>
+                  <a>未锁定</a>
+                  <router-link class="modify" :to="'setBankcard?Q='+n.BankCardID">修改</router-link>
+                </template>
+              </template>
           </div>
         </div>
       </div>
