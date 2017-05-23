@@ -585,7 +585,7 @@ function computeIssue(code, index, isChase){
   //这里挂各特殊彩种的处理函数--有返回的直接出返回结果。不参与下一步----每年过年前更新一次
   var handler = {
     '1001':function(){
-      if(isChase){
+      if(isChase && days){
         days--
       }else if(_index >= 83 && _SerTime <= state.lt.LotteryPlan[state.lt.PlanLen - 1].End){
         days--
