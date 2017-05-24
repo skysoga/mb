@@ -974,6 +974,7 @@ window.RootApp={
         // case "PayLimit":
         case "WithdrawRemainTimes":
         case "UserGradeGrow":
+        case "UserBankCardList":
           newArr.push(arr[i])
         break
         default:
