@@ -4,7 +4,7 @@
       <tbody>
         <tr>
           <td>账号</td>
-          <td colspan="2"><input v-model.lazy="UserName" class="input" tag="帐号" type="email" v-va:UserName placeholder="请输入账号" /></td>
+          <td colspan="2"><input v-model.lazy="UserName" class="input" tag="帐号" type="email" v-va:UserName placeholder="请输入账号" regMsg="账号应为4-16个字符，可使用字母、数字，禁止以0开头"/></td>
         </tr>
         <tr>
           <td>密码</td>
