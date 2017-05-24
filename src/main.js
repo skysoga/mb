@@ -204,7 +204,7 @@ function FetchCatch(opt) {
     resolve({ Code: -1, StrCode: msg })
   }*/
   delete opt.resolve
-  _catch(opt)
+  // _catch(opt)
 }
 var fetchArr=[]
 window._fetch = function (data){
