@@ -14,9 +14,15 @@ export default {
     if(!(U||F)){
       router.replace('/login')
     }
-    layer.alert('暂停使用手机绑定',()=>{
-      router.push('/securityCenter')
-      state.turning=false
+    RootApp.GetInitData(['UserMobile'],state=>{
+      if(state.UserMobile){
+        next()
+      }else{
+        layer.alert('暂停使用手机绑定',function(){
+          router.push('/securityCenter')
+          state.turning=false
+        })
+      }
     })
     // next()
   },

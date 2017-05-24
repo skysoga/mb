@@ -21,11 +21,7 @@ export default {
     if(!(U||F)){
       router.replace('/login')
     }
-    layer.alert('暂停使用邮箱绑定',()=>{
-      router.push('/securityCenter')
-      state.turning=false
-    })
-    // next()
+    next()
   },
   created(){
     var Q=this.$route.query.Q
