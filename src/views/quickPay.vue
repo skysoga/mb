@@ -146,6 +146,22 @@ export default {
         'AUSTPAY':{
           'margin-top':2.5*em+'px',
           'left':'-156px'
+        },
+        '闪讯付':{
+          'margin-top':2.5*em-290+'px',
+          'left':'-500px',
+          '-webkit-transform':'scale(.5)',
+          '-ms-transform':'scale(.5)',
+          '-moz-transform':'scale(.5)',
+          'transform':'scale(.5)',
+        },
+        '快支付':{
+          'margin-top':2.5*em-290+'px',
+          'left':'-500px',
+          '-webkit-transform':'scale(.5)',
+          '-ms-transform':'scale(.5)',
+          '-moz-transform':'scale(.5)',
+          'transform':'scale(.5)',
         }
       }
     }
