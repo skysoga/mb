@@ -4,7 +4,7 @@
       <tbody>
         <tr>
           <td>账号</td>
-          <td colspan="2"><input v-model.lazy="UserName" class="input" tag="帐号" type="email" v-va:UserName="[{reg:/^[\w|\d]{4,}$/}]" placeholder="请输入账号"/></td>
+          <td colspan="2"><input v-model.lazy="UserName" class="input" tag="帐号" type="email" v-va:UserName placeholder="请输入账号"/></td>
         </tr>
         <tr>
           <td>密码</td>
