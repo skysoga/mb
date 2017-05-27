@@ -2,6 +2,7 @@ import { swiper, swiperSlide, swiperPlugins } from 'vue-awesome-swiper'
 import {mapState} from 'vuex'
 var hotDefault = ["1406","1402","1407","1000","1001","1008","1303","1302","1100","1101","1103"]
 export default {
+  name:'index',
   props:["s"],
   data:()=>{
     return{
@@ -35,28 +36,7 @@ export default {
 
 
     RootApp.GetInitData(arr, state=>{
-      next(vm=>{
-        //不上线的彩种code列表， 用slice避免对源数组产生引用
-        // var offLineLottery = []
-        // vm.LotteryConfig.forEach(item=>{
-        //   // 不上线：排列3，福彩3D  LotteryClassID === '12'
-        //   if(item.LotteryClassID === '12'){
-        //     offLineLottery = item.LotteryList.slice()
-        //   }
-        // })
-        //
-        // // 获取热门彩种code列表, LotteryClassID === '0'
-        // var hotLottery = []
-        // if(NologApp){
-        //   hotLottery = hotDefault
-        // }else{
-        //   hotLottery=vm.LotteryHot
-        //   hotLottery = hotLottery.filter(code=>offLineLottery.indexOf(code) === -1)
-        // }
-        // 剔除不上线的彩种
-        // vm.hotLottery = hotLottery
-        // vm.hotLottery=vm.setDataHot(vm.LotteryConfig,vm.LotteryHot);
-      });
+      next();
     })
   },
   methods:{
@@ -64,6 +44,7 @@ export default {
       RootApp.OpenWin(link)
     },
     setDataHot(){
+      var state = this.$store.state
       var NologApp = _App&&!state.UserName
       var offLineLottery = []
       state.LotteryConfig.forEach(item=>{
@@ -79,10 +60,11 @@ export default {
       }else{
         if(this.$store.state.LotteryHot){
           console.log('热门彩票新接口')
-          hotLottery=state.LotteryHot
+          hotLottery=state.LotteryHot.slice()
         }else{
+
           console.log('热门彩票旧接口')
-          vm.LotteryConfig.forEach(item=>{
+          this.LotteryConfig.forEach(item=>{
             if(item.LotteryClassID === '0'){
               hotLottery = item.LotteryList.slice()
             }
