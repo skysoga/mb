@@ -77,7 +77,18 @@ export default {
       if(NologApp){
         hotLottery = hotDefault
       }else{
-        hotLottery=state.LotteryHot
+        if(this.$store.state.LotteryHot){
+          console.log('热门彩票新接口')
+          hotLottery=state.LotteryHot
+        }else{
+          console.log('热门彩票旧接口')
+          this.LotteryConfig.forEach(item=>{
+            if(item.LotteryClassID === '0'){
+              hotLottery = item.LotteryList.slice()
+            }
+          })
+        }
+
         hotLottery = hotLottery.filter(code=>offLineLottery.indexOf(code) === -1)
       }
       return hotLottery;
