@@ -204,7 +204,7 @@ function FetchCatch(opt) {
     resolve({ Code: -1, StrCode: msg })
   }*/
   delete opt.resolve
-  _catch(opt)
+  // _catch(opt)
 }
 var fetchArr=[]
 window._fetch = function (data){
@@ -976,6 +976,7 @@ window.RootApp={
         // case "PayLimit":
         case "WithdrawRemainTimes":
         case "UserGradeGrow":
+        case "UserBankCardList":
           newArr.push(arr[i])
         break
         default:

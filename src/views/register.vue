@@ -15,7 +15,15 @@
 
       <tr>
         <td>账号</td>
-        <td  colspan="2"><input class="input fl mL15" type="url" v-va:UserName tag="帐号" v-model.lazy="UserName" placeholder="请输入账号" /></td>
+        <td  colspan="2">
+          <input class="input fl mL15"
+                 type="url"
+                 v-va:UserName="[{reg:/^[a-zA-Z\d]{4,16}$/}]"
+                 tag="帐号"
+                 regMsg = "账号应为4-16个字符，可使用字母、数字"
+                 v-model.lazy="UserName"
+                 placeholder="请输入账号"/>
+        </td>
       </tr>
 
       <tr>
@@ -64,8 +72,6 @@ export default {
     }
   },
   beforeRouteLeave: (to, from,next)=>{
-    console.log(to);
-    console.log(from);
     delete from.id
     next()
   },

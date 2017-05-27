@@ -51,8 +51,20 @@ export default {
       })
     },
     setNextUrl(){
-      if(!this.HasSafePwd){
-        router.replace("/setSafePwd?Q=bindCard")
+      if(!this.HasSafePwd || this.HasSafePwd == 0){
+        // layer.open({
+        //   shadeClose: false,
+        //   className: "layerConfirm",
+        //   content: "您还未设置安全密码，是否先去设置安全密码?",
+        //   title: "温馨提示",
+        //   btn: ["是","否"],
+        //   yes:function(index){
+        //     layer.close(index)
+        //     router.replace("/setSafePwd?Q=bindCard")
+        //   },
+        //   no(){}
+        // })
+        router.replace("/manageBankcard")
       }else{
         if(!this.FirstCard){
           router.replace("/setBankcard")

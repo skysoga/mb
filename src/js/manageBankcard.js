@@ -1,3 +1,4 @@
+var isSPwd = false
 export default {
   data:()=>{
     return{
@@ -26,9 +27,9 @@ export default {
     }
   },
   beforeRouteEnter(to,from,next){
-    var arr = ["UserBankCardList"];
-    //为了防止已锁定的银行卡更新不及时,这边用ajax方式
-    RootApp.AjaxGetInitData(arr,state=>{
+    var arr = ["UserBankCardList","UserHasSafePwd"];
+    RootApp.GetInitData(arr,state=>{
+      isSPwd=state.UserHasSafePwd
       next(vm=>{
         vm.CardList=state.UserBankCardList
         vm.setTip()
@@ -37,6 +38,21 @@ export default {
   },
   methods:{
     setCard(){
+      if(!isSPwd || isSPwd == 0){
+        layer.open({
+          shadeClose: false,
+          className: "layerConfirm",
+          content: "您还未设置安全密码，是否先去设置安全密码?",
+          title: "温馨提示",
+          btn: ["是","否"],
+          yes:function(index){
+            layer.close(index)
+            router.replace("/setSafePwd?Q=bindCard")
+          },
+          no(){}
+        })
+        return
+      }
       var Xurl=this.oneCarLok?'/verifyBankcard':'/setBankcard'
       router.replace(Xurl)
     },
