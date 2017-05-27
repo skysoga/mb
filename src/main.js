@@ -556,7 +556,7 @@ var SiteArr=[ //需要校验更新版本的列表
 
 var AppArr=[
   'LotteryConfig', //所有彩种列表
-  'LotteryHot',
+  'LotteryHot',    //热门彩票
   'ActivityConfig', //活动种类及数据
   'BannerList',
   // 'PayLimit',

@@ -82,7 +82,7 @@ export default {
           hotLottery=state.LotteryHot
         }else{
           console.log('热门彩票旧接口')
-          this.LotteryConfig.forEach(item=>{
+          vm.LotteryConfig.forEach(item=>{
             if(item.LotteryClassID === '0'){
               hotLottery = item.LotteryList.slice()
             }
