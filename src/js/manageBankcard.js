@@ -47,7 +47,7 @@ export default {
           btn: ["是","否"],
           yes:function(index){
             layer.close(index)
-            router.replace("/setSafePwd")
+            router.replace("/setSafePwd?Q=bindCard")
           },
           no(){}
         })

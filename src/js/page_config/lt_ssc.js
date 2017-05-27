@@ -735,7 +735,7 @@ var sscPlay = {
   H43:{render:['sxbx'],alg:countSingle},
   H44:{render:['sjfc'],alg:countSingle},
   /**四星**/
-  G11:{render:['10000','100','10','1'],alg:(order, tmp)=>mul(4, betSum(order, tmp))},
+  G11:{render:['1000','100','10','1'],alg:(order, tmp)=>mul(4, betSum(order, tmp))},
   G12:{box:'normal', len:4},
   G21:{render:['zx24'],alg:(order,tmp)=>C(tmp['zx24'].length, 4)},
   G22:{render:['xx','x'],alg:(order,tmp)=>combNoRepeat(tmp['xx'],tmp['x'],2)},
