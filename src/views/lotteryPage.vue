@@ -1,13 +1,13 @@
 <template>
   <div @click = "closeBox" class="lotteryOutCon">
-    <!-- 普通彩种 -->
-    <LotteryCommon v-if = "$route.params.type !== 'K3'"></LotteryCommon>
-    <!-- 快三彩种 -->
-    <LotteryK3 v-if = "$route.params.type === 'K3'"></LotteryK3>
+    <template v-if = "false">
+      <!-- 普通彩种 -->
+      <LotteryCommon v-if = "$route.params.type !== 'K3'"></LotteryCommon>
+      <!-- 快三彩种 -->
+      <LotteryK3 v-if = "$route.params.type === 'K3'"></LotteryK3>
+    </template>
 
-<!--     <keep-alive>
-      <router-view></router-view>
-    </keep-alive> -->
+    <Lottery6HC></Lottery6HC>
   </div>
 </template>
 <style lang='scss' scoped>
@@ -19,12 +19,14 @@
 <script>
   import LotteryCommon from './lottery_common'
   import LotteryK3 from './lottery_k3'
+  import Lottery6HC from './lottery_6hc'
 
   import {sscConfig} from '../js/page_config/lt_ssc'
   import {k3Config} from '../js/page_config/lt_k3'
   import {syx5Config} from '../js/page_config/lt_syx5'
   import {pk10Config} from '../js/page_config/lt_pk10'
   import {kl8Config} from '../js/page_config/lt_kl8'
+  import {hcConfig} from '../js/page_config/lt_6hc'
 
 
   import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
@@ -40,7 +42,8 @@
   export default{
     components:{
       LotteryCommon,
-      LotteryK3
+      LotteryK3,
+      Lottery6HC
     },
     beforeRouteEnter(to, from, next){
       scrollTop()
@@ -122,7 +125,8 @@
         'K3': k3Config,
         'SYX5': syx5Config,
         'PK10': pk10Config,
-        'KL8': kl8Config
+        'KL8': kl8Config,
+        '6HC': hcConfig
       }
 
       //处理返点
@@ -131,7 +135,8 @@
         'K3': getK3Rebate,
         'SYX5': getRebate,
         'PK10': getRebate,
-        'KL8': getRebate
+        'KL8': getRebate,
+        '6HC': getRebate,
       }
 
       var wait4Results = 0, wait4BetRecord = false
