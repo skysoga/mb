@@ -44,10 +44,15 @@
     <!-- 上期开奖结果 -->
     <div v-if = "$store.state.lt.OldIssue" @click.stop = "togglePastOpen" >
       <p>{{oldIssue}}期开奖号码</p>
-      <div style="display: block;">
+      <div class="DiceImg" style="display: block;">
         <div class = "Dice"
              :class = "displayClass + item"
              v-for = "item in display"></div>
+        <i class="iconfont xiala"></i>
+      </div>
+      <div class="DiceText" style="display: block;">
+        <div class = "Dice"
+             v-for = "item in display">{{item}}</div>
         <i class="iconfont xiala"></i>
       </div>
     </div>

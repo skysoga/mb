@@ -11,9 +11,26 @@ $qingse:#caebda;
   background:#000;
 }
 // html,body{height:100%;overflow: hidden}
-.Dice{
-  width:1.2em;
-  height:1.2em;
+
+.DiceImg{
+  z-index: 4;
+  position: relative;
+  .Dice{
+    width:1.2em;
+    height:1.2em;
+  }
+}
+.DiceText{
+  transform: translateY(-1.6em);
+  z-index: 3;
+  position: relative;
+  .Dice{
+    background:none;
+    width: 1.2em;
+  }
+  i{
+    opacity: 0;
+  }
 }
 
 .top{
