@@ -46,6 +46,9 @@
       Lottery6HC
     },
     beforeRouteEnter(to, from, next){
+      next()
+      return
+
       scrollTop()
       //从url上获取彩种type和彩种code
       var [,ltype, lcode] = to.fullPath.slice(1).split('/')
@@ -87,7 +90,6 @@
           resolve()                    //有就直接进页面
         }
       })
-
       Promise.all([getRebate, getLotteryList, getServerTime]).then((values)=>{
         //校验下这个彩种存不存在，不存在就送回购彩大厅
         var lotteryItem = state.LotteryList[lcode]
@@ -895,6 +897,7 @@
           'PL35':['三星', '直选'],
           'KL8':['任选', '普通玩法'],
           'PK10':['定位胆', '标准'],
+          '6HC': ['特码', '任选一']
         }
 
 				if(this.ltype !== 'K3'){
