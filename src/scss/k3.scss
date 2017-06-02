@@ -32,6 +32,19 @@ $qingse:#caebda;
     opacity: 0;
   }
 }
+.openPastDiceImg{
+  position:relative;
+  z-index: 4;
+}
+.openPastDiceText{
+    position: absolute;
+    z-index: 3;
+    width: 100%;
+    transform: translateY(-1.6em);
+  .Dice{
+    background:none;
+  }
+}
 
 .top{
   z-index: 10;
