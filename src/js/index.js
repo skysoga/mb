@@ -58,9 +58,9 @@ export default {
       if(NologApp){
         hotLottery = hotDefault
       }else{
-        if(this.$store.state.LotteryHot){
+        if(this.$store.state.LotteryHot.LotteryList){
           console.log('热门彩票新接口')
-          hotLottery=state.LotteryHot.slice()
+          hotLottery=state.LotteryHot.LotteryList.slice()
         }else{
 
           console.log('热门彩票旧接口')
