@@ -40,7 +40,7 @@ $qingse:#caebda;
     position: absolute;
     z-index: 3;
     width: 100%;
-    transform: translateY(-1.6em);
+    transform: translateY(-1.5em);
   .Dice{
     background:none;
   }
@@ -281,7 +281,7 @@ $qingse:#caebda;
     }
   }
   td:nth-of-type(1){
-    width:4.5rem;
+    width:5rem;
     border-right:1px solid #212121;
     // text-indent:3em;
     // text-align: right;
@@ -299,13 +299,13 @@ $qingse:#caebda;
     }
   }
   td:nth-of-type(3){
-    width:2.33333rem;
+    width:2.16rem;
   }
   td:nth-of-type(4){
-    width:2.33333rem;
+    width:2.16rem;
   }
   td:nth-of-type(5){
-    width:2.33334rem;
+    width:2.16rem;
   }
 }
 .myBet{
