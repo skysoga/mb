@@ -64,8 +64,12 @@ export default {
     })
   },
   methods:{
-    setUrl(link){
-      RootApp.OpenWin(link)
+    setUrl(url,filterHtml){
+      if(filterHtml){
+        return url.replace('.html','').replace(/\s/g, '')
+      }else{
+        RootApp.OpenWin(url.replace(/\s/g, ''))
+      }
     }
   },
 	computed:mapState({
