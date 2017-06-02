@@ -68,8 +68,9 @@
       <tr><td>期号</td> <td>开奖号码</td> <td>和值</td> <td>大小</td> <td>单双</td></tr>
       <tr v-for = "item in pastOpen">
         <td>&nbsp;&nbsp;&nbsp;{{item.IssueNo}}<i>—</i></td>
-        <td>
-          <div class="Dice" :class = "'Dice' + num" v-for = "num in item.LotteryOpen"></div>
+        <td style="position:relative;">
+          <div class="openPastDiceImg"><div class="Dice" :class = "'Dice' + num" v-for = "num in item.LotteryOpen"></div></div>
+          <div class="openPastDiceText"><div class="Dice" v-for = "num in item.LotteryOpen">{{num}}</div></div>
         </td>
         <td>{{item.sum}}</td>
         <td><span class="light">{{item.bigOrSmall}}</span></td>
