@@ -44,7 +44,8 @@
 
     <div class="lotterySort" ref = "lotterySort" :class = "{active:ifShowTypeSelect}">
       <div @click.stop = "toggleTypeSelect">
-        <em>{{lotteryName}}</em><i class="iconfont" v-show="lTopNav.indexOf(ltype)===-1">&#xe61e;</i>
+        <em v-show = "noLotteryName.indexOf(ltype) === -1">{{lotteryName}}</em>
+        <i class="iconfont" v-show="lTopNav.indexOf(ltype)===-1">&#xe61e;</i>
       </div>
 
       <div class="lotteryList fix" v-show = "ifShowTypeSelect">
@@ -78,7 +79,8 @@
     data () {
       return {
         LotteryList: [],//彩种list
-        lTopNav:['PK10','KL8'],//导航隐藏配置
+        lTopNav:['PK10','KL8', '6HC'],//导航隐藏配置
+        noLotteryName: ['6HC'],
         ltype: '',      //彩种类型
         lcode: ''        //彩种code
       }

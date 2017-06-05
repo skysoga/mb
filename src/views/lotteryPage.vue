@@ -1,13 +1,13 @@
 <template>
   <div @click = "closeBox" class="lotteryOutCon">
-    <template v-if = "false">
+    <template >
       <!-- 普通彩种 -->
       <LotteryCommon v-if = "$route.params.type !== 'K3'"></LotteryCommon>
       <!-- 快三彩种 -->
       <LotteryK3 v-if = "$route.params.type === 'K3'"></LotteryK3>
     </template>
 
-    <Lottery6HC></Lottery6HC>
+    <Lottery6HC v-if = "false"></Lottery6HC>
   </div>
 </template>
 <style lang='scss' scoped>
@@ -46,8 +46,8 @@
       Lottery6HC
     },
     beforeRouteEnter(to, from, next){
-      next()
-      return
+      // next()
+      // return
 
       scrollTop()
       //从url上获取彩种type和彩种code
@@ -897,7 +897,7 @@
           'PL35':['三星', '直选'],
           'KL8':['任选', '普通玩法'],
           'PK10':['定位胆', '标准'],
-          '6HC': ['特码', '任选一']
+          '6HC': ['特码', '特码']
         }
 
 				if(this.ltype !== 'K3'){

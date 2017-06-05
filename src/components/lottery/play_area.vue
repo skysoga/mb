@@ -6,6 +6,8 @@
       <!-- <p>每位至少选1个号码，按位猜对号码即中196000元 </p> -->
     </div>
 
+    <bet-tip :award = "award" :tip = "tip" :itemArr = "lottery === 'KL8' ? kl8bonus[mode] : null"></bet-tip>
+
     <!-- 普通 -->
     <betbox v-if = "!ltCfg[mode].box"
             v-for = "alias in ltCfg[mode].render"
@@ -13,8 +15,6 @@
             v-on:choose = "whenChoose">
             </betbox>
 
-    <!-- 单式 -->
-    <!-- <notebet v-if = "!isNaN(ltCfg[mode])" :len = "ltCfg[mode]"></notebet> -->
 
     <!-- len:多少位一注， special:是否为特殊玩法（组三，组六） -->
     <noteBet v-if = "ltCfg[mode].box && ltCfg[mode].box === 'normal'" :len = "ltCfg[mode].len" :special = "ltCfg[mode].special"></noteBet>
@@ -27,6 +27,7 @@
 import {mapState} from 'vuex'
 import betbox from './betbox'
 import noteBet from './notebet'
+import bet_tip from './bet_tip'
 import syx5NoteBet from './syx5_notebet'
 import {sscPlay} from '../../js/page_config/lt_ssc'
 import {syx5Play} from '../../js/page_config/lt_syx5'
@@ -63,7 +64,8 @@ export default {
   components:{
     betbox,
     noteBet,
-    syx5NoteBet
+    syx5NoteBet,
+    'bet-tip': bet_tip,
   },
   created(){
     this.ltCfg = playCfg[this.$route.params.type]
@@ -83,13 +85,15 @@ export default {
   },
   data(){
     return {
-      ltCfg: {}
+      ltCfg: {},
+      kl8bonus:kl8bonus,
     }
   },
   computed:mapState({
     tip:()=>state.lt.mode.tip,      //提示
     award:()=>state.lt.award,        //奖金
     mode:()=>state.lt.mode.mode,
+    lottery:()=>state.lt.lottery.LotteryType,
     getQW:()=>{
       return modeArr.indexOf(state.lt.mode.name)>-1||state.lt.lottery.LotteryType=='KL8'&&modeArr.indexOf(state.lt.mode.group)>-1
     },
