@@ -325,12 +325,51 @@ window._fetch = function (data){
         var notRes
         if (data.Action==="GetInitData") {
           if (json.Code===1||json.Code===0) {
-            json = RootApp.SetFilter(json)
+            try{
+              json = RootApp.SetFilter(json)
+            }catch(error){
+              var msg = "Filter数据错误"
+              // FetchCatch(msg, resolve, error)
+              FetchCatch({
+                msg,
+                error,
+                resolve,
+                T,  //fetch耗时
+                S,
+                str //fetch的body
+              })
+            }
             var Data = json.BackData
-            RootApp.WatchInitData(Data)
-            RootApp.SaveInitData(Data)
-            if(JSON.stringify(json.CacheData) !== "{}"){
-              localStorage.setItem('CacheData',JSON.stringify(Object.assign(CacheData,json.CacheData)))
+            try{
+              RootApp.WatchInitData(Data)
+            }catch(error){
+              var msg = "Watch数据错误"
+              // FetchCatch(msg, resolve, error)
+              FetchCatch({
+                msg,
+                error,
+                resolve,
+                T,  //fetch耗时
+                S,
+                str //fetch的body
+              })
+            }
+            try{
+              RootApp.SaveInitData(Data)
+              if(JSON.stringify(json.CacheData) !== "{}"){
+                localStorage.setItem('CacheData',JSON.stringify(Object.assign(CacheData,json.CacheData)))
+              }
+            }catch(error){
+              var msg = "Save数据错误"
+              // FetchCatch(msg, resolve, error)
+              FetchCatch({
+                msg,
+                error,
+                resolve,
+                T,  //fetch耗时
+                S,
+                str //fetch的body
+              })
             }
           }
         }
