@@ -27,6 +27,7 @@ $qingse:#caebda;
   .Dice{
     background:none;
     width: 1.2em;
+    height: 2em;
   }
   i{
     opacity: 0;
@@ -194,10 +195,10 @@ $qingse:#caebda;
             top: 0;
           }
           &:before{
-            left:2.1em;
+            left:2.3em;
           }
           &:after{
-            right:2.3em;
+            right:2.4em;
           }
           }
       }
