@@ -11,9 +11,40 @@ $qingse:#caebda;
   background:#000;
 }
 // html,body{height:100%;overflow: hidden}
-.Dice{
-  width:1.2em;
-  height:1.2em;
+
+.DiceImg{
+  z-index: 4;
+  position: relative;
+  .Dice{
+    width:1.2em;
+    height:1.2em;
+  }
+}
+.DiceText{
+  transform: translateY(-1.6em);
+  z-index: 3;
+  position: relative;
+  .Dice{
+    background:none;
+    width: 1.2em;
+    height: 2em;
+  }
+  i{
+    opacity: 0;
+  }
+}
+.openPastDiceImg{
+  position:relative;
+  z-index: 4;
+}
+.openPastDiceText{
+    position: absolute;
+    z-index: 3;
+    width: 100%;
+    transform: translateY(-1.5em);
+  .Dice{
+    background:none;
+  }
 }
 
 .top{
@@ -164,10 +195,10 @@ $qingse:#caebda;
             top: 0;
           }
           &:before{
-            left:2.1em;
+            left:2.3em;
           }
           &:after{
-            right:2.3em;
+            right:2.4em;
           }
           }
       }
@@ -251,7 +282,7 @@ $qingse:#caebda;
     }
   }
   td:nth-of-type(1){
-    width:4.5rem;
+    width:5rem;
     border-right:1px solid #212121;
     // text-indent:3em;
     // text-align: right;
@@ -269,13 +300,13 @@ $qingse:#caebda;
     }
   }
   td:nth-of-type(3){
-    width:2.33333rem;
+    width:2.16rem;
   }
   td:nth-of-type(4){
-    width:2.33333rem;
+    width:2.16rem;
   }
   td:nth-of-type(5){
-    width:2.33334rem;
+    width:2.16rem;
   }
 }
 .myBet{

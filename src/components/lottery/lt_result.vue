@@ -69,7 +69,7 @@ export default {
       if(!_results || !_results.length){
         return []
       }else{
-        return _results[0].LotteryOpen.split(',')
+        return _results[0].LotteryOpen.split(',').slice(0,20)
       }
     },
     display(){

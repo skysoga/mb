@@ -40,8 +40,12 @@ export default {
     })
   },
   methods:{
-    setUrl(link){
-      RootApp.OpenWin(link)
+    setUrl(url,filterHtml){
+      if(filterHtml){
+        return url.replace('.html','').replace(/\s/g, '')
+      }else{
+        RootApp.OpenWin(url.replace(/\s/g, ''))
+      }
     },
     setDataHot(){
       var state = this.$store.state
@@ -74,13 +78,14 @@ export default {
         hotLottery = hotLottery.filter(code=>offLineLottery.indexOf(code) === -1)
       }
       return hotLottery;
-    }
+    },
   },
 	computed:mapState({
 		LotteryConfig:'LotteryConfig',
     LotteryHot:'LotteryHot',
 		LotteryList:'LotteryList',
     nowDisplayList(){
+
         var hotLottery = this.setDataHot()
       // 如果后台数据错误就返回默认的数组，如果热门超过11个，那么返回前11个
       if(Array.isArray(hotLottery) && hotLottery.length){
