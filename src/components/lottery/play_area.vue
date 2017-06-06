@@ -1,12 +1,7 @@
 <template>
   <div :class="{'sscMain':true,'quWei':getQW}">
-    <div class="sscTips">
-      <p v-if="isBonus" @click="showBonus">{{tip}}<span>奖金详情</span></p>
-      <p v-else>{{tip}}<i>{{award}}</i>元</p>
-      <!-- <p>每位至少选1个号码，按位猜对号码即中196000元 </p> -->
-    </div>
-
-    <bet-tip :award = "award" :tip = "tip" :itemArr = "lottery === 'KL8' ? kl8bonus[mode] : null"></bet-tip>
+    <!-- 奖金详情 -->
+    <bet-tip :award = "award" :tip = "tip" :itemArr = "bonusText[lotteryMode]"></bet-tip>
 
     <!-- 普通 -->
     <betbox v-if = "!ltCfg[mode].box"
@@ -44,21 +39,19 @@ var playCfg = {
   'SYX5': syx5Play,
   'PK10': pk10Play,
   'KL8': kl8Play,
-  // 'FC3D': fc3dPlay,
-  // 'PL35': pl3Play,
 }
 var modeArr=['定单双','趣味']
 // 奖金详情专用
-var kl8bonus={
-'A12':[3,2],
-'A13':[4,3,2],
-'A14':[5,4,3],
-'A15':[6,5,4,3],
-'A16':[7,6,5,4,0],
-'B10':["中","上","下"],
-'B11':["和","奇","偶"],
-'I11':['0单5双','5单0双','1单4双','4单1双','2单3双','3单2双'],
-'I12':['03,09','04,08','05,07','06']
+var bonusText={
+'KL8A12':[3,2],
+'KL8A13':[4,3,2],
+'KL8A14':[5,4,3],
+'KL8A15':[6,5,4,3],
+'KL8A16':[7,6,5,4,0],
+'KL8B10':["中","上","下"],
+'KL8B11':["和","奇","偶"],
+'SYX5I11':['0单5双','5单0双','1单4双','4单1双','2单3双','3单2双'],
+'SYX5I12':['03,09','04,08','05,07','06']
 }
 export default {
   components:{
@@ -86,7 +79,7 @@ export default {
   data(){
     return {
       ltCfg: {},
-      kl8bonus:kl8bonus,
+      bonusText:bonusText,
     }
   },
   computed:mapState({
@@ -97,9 +90,12 @@ export default {
     getQW:()=>{
       return modeArr.indexOf(state.lt.mode.name)>-1||state.lt.lottery.LotteryType=='KL8'&&modeArr.indexOf(state.lt.mode.group)>-1
     },
-    isBonus:()=>{
-      return !!kl8bonus[state.lt.mode.mode]&&(state.lt.award.indexOf(',')>-1)
-    }
+    isBonus(){
+      return !!bonusText[this.lotteryMode]&&(state.lt.award.indexOf(',')>-1)
+    },
+    lotteryMode(){
+      return [this.lottery, this.mode].join('')
+    },
   }),
   methods:{
     whenChoose(alias, choose){
@@ -159,7 +155,7 @@ export default {
     },
     showBonus(){
       var trArr=[]
-      var Arr=kl8bonus[this.mode]
+      var Arr=bonusText[this.lotteryMode]
       var Bonus=this.BonusArr(this.award)
       for(var i=0;i<Arr.length;i++){
         trArr.push('<tr><td>'+Arr[i]+'</td><td><span>'+(Bonus[i]||Bonus[i-1])+'<span>元</td></tr>')
