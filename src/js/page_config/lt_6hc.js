@@ -287,7 +287,6 @@ var hcConfig = {
         "subGroup": "尾数",
         "tag": "二尾连",
         "eg":[],
-        "default":true
       },
       {
         "name": "三尾连",
@@ -297,7 +296,6 @@ var hcConfig = {
         "subGroup": "尾数",
         "tag": "三尾连",
         "eg":[],
-        "default":true
       },
       {
         "name": "四尾连",
@@ -307,7 +305,6 @@ var hcConfig = {
         "subGroup": "尾数",
         "tag": "四尾连",
         "eg":[],
-        "default":true
       },
     ]
   },

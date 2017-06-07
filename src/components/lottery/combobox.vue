@@ -1,10 +1,10 @@
 <template>
 <div class="selectNumber fix">
   <div class="numberContent">
-    <div v-for = "(item, index) in itemArr" class = "bet-item-box">
+    <div v-for = "(item, index) in itemArr" class = "bet-item-box"  @click = "choose(item)" :class = "{curr: chosen.indexOf(item)>-1}">
       <a class = "bet-item">{{item}}</a>
-      <span class = "bet-item-award">赔率12.236</span>
-      <div class = "bet-item-eg-box">
+      <span class = "bet-item-award" v-if = "needAward">赔率1.236</span>
+      <div class = "bet-item-eg-box" v-if = "egArr.length">
         <span v-for = "eg in egText[index]" class = "bet-item-eg">{{eg}}</span>
       </div>
 
@@ -15,15 +15,38 @@
 
 <script>
 export default{
-  props:['itemArr','egArr'],
+  props:{
+    itemArr:{
+      type: Array,
+      required:true
+    },
+    egArr:{
+      default:function(){
+        return []
+      }
+    },
+    award:{
+      type:String,
+    },
+    needAward:{
+      type:Boolean,
+      required:true
+    },
+    chosen:{
+      type:Array,
+      required:true
+    }
+  },
   name:'combobox',
   data(){
     return {
 
     }
   },
-  created(){
-    console.log('combobox')
+  methods:{
+    choose(item){
+      this.$emit('choose', item, this.itemArr)
+    }
   },
   computed:{
     egText(){
@@ -35,80 +58,30 @@ export default{
 
 <style scoped lang = "scss">
 @import '../../scss/scssConfig','../../scss/mixin';
-.selectNumber{
-  display: table;
-  position: relative;
-  .title{
-    height: 1.85em;
-    width: 2.6rem;
-    display: table-cell;
-    em{
-      font-size: 0.65em;
-      width:3.2em;
-      display: block;
-      text-align: left;
-      line-height: 1.3em;
-      color:#948a6e;
-      background: #eeebda;
-      border:1px solid #e3decf;
-      border-radius: .3em;
-      position: relative;
-      z-index: 2;
-      margin-top: .8em;
-      padding:.2em .5em;
-      /*&:before,&:after{
-        content:"";
-        position: absolute;
-        // display: none;
-      }
-      &:before{
-        width: 0;
-        height: 0;
-        right: -.6em;
-        top: 0;
-        border-top: .79em solid transparent;
-        border-left: .6em solid #f4f1e2;
-        border-bottom: .79em solid transparent;
-        z-index: 2;
-      }
-      &:after{
-        width: 0;
-        height: 0;
-        right: -.64em;
-        transform:scale(1.1);
-        top: 0;
-        border-top: .79em solid transparent;
-        border-left: .6em solid #ece7d9;
-        border-bottom: .79em solid transparent;
-        z-index: 1;
-      }*/
-    }
-  }
-}
 
 .numberContent{
-  padding:0.3rem 0;
+  margin:0 auto;
+  padding:0.3rem 0 0.1rem 0.7rem;
   display: flex;
   flex-wrap: wrap;
-  justify-content:center;
-  width: 100%;
-  /*号码项*/
+  width: 95%;
 }
 
 .bet-item-box{
   width: 28%;
-  margin:0.2rem 0.3rem;
-  padding-top:0.3em;
+  margin:0.3rem 0.3rem;
   font-size: .8em;
   border:1px solid #dfdfdf;
   border-radius:.15rem;
   background: #faf9f6;
 }
+
 .bet-item{
   display:flex;
   align-items:center;
   justify-content:center;
   width:100%;
+  padding:0.35rem 0;
   color: #333;
   font-size:1em;
 }
@@ -119,9 +92,8 @@ export default{
   justify-content:center;
   width:100%;
   color:#dc3b40;
-  padding-bottom:.3rem;
+  padding-bottom:.35rem;
   font-size:.6em;
-  border-bottom:1px solid #dfdfdf;
 }
 
 .bet-item-eg-box{
@@ -131,6 +103,7 @@ export default{
   width:100%;
   padding-left:0.2em;
   padding:0.2em 0 0.2em 0.2em;
+  border-top:1px solid #dfdfdf;
 }
 
 .bet-item-eg{
@@ -138,6 +111,18 @@ export default{
   padding:0 0.2em;
   font-size:.05em;
   color:#888;
+}
+
+.curr{
+  background: #dc3b40;
+  border:1px solid #dc3b40;
+  .bet-item, .bet-item-award, .bet-item-eg{
+    color: #faf9f6;
+  }
+
+  .bet-item-eg-box{
+    border-top:1px solid #faf9f6;
+  }
 }
 
 </style>

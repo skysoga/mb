@@ -15,43 +15,27 @@
 
         <div class = "sscMain">
           <bet-tip :award = "award" :tip = "tip" :itemArr = "bonusText[lotteryMode]"></bet-tip>
-          <template v-if = "false">
-
+          <!-- 三色玩法框(01-49) -->
           <colorbox v-if = "renderItem.box === 'colorbox'"
                     @choose = "choose"
                     :chosen = "chosen"></colorbox>
 
+          <!-- 号码/赔率 -->
           <normal-box v-if = "renderItem.box === 'normalbox'"
                       :itemArr = "renderItem.itemArr"
                       @choose = "choose"
                       :chosen = "chosen"></normal-box>
-          </template>
 
-          <combobox :itemArr = "renderConfig['D1'].itemArr" :egArr = "renderConfig['D1'].egArr"></combobox>
+          <!-- 复合型 -->
+          <combobox v-if = "renderItem.box === 'combobox'"
+                    :itemArr = "renderItem.itemArr"
+                    :egArr = "renderItem.egArr"
+                    :needAward = "renderItem.needAward"
+                    @choose = "choose"
+                    :chosen = "chosen"></combobox>
         </div>
 
 
-        <div class = "sscMain" v-if = "false">
-          <div class="sscTips">
-            <p v-if="isBonus" @click="showBonus">{{tip}}<span>奖金详情</span></p>
-            <p v-else>{{tip}}<i>{{award}}</i>元</p>
-            <!-- <p>每位至少选1个号码，按位猜对号码即中196000元 </p> -->
-          </div>
-
-          <!-- 普通 -->
-          <betbox v-if = "!ltCfg[mode].box"
-                  v-for = "alias in ltCfg[mode].render"
-                  :alias = "alias"
-                  v-on:choose = "whenChoose">
-                  </betbox>
-
-        </div>
-
-
-        <!-- 新彩种自己开一个playArea -->
-
-        <!-- 投注区，各彩种不同 -->
-        <!-- <playArea></playArea > -->
 
         <!-- 倍和单位， 确认投注， 号码篮 -->
         <lt-footer v-if = "false"></lt-footer>
@@ -75,9 +59,10 @@ import normal_box from '../components/lottery/normal_box'
 import combobox from '../components/lottery/combobox'
 
 // 两面的按钮组
-var lmItemArr = ['大','小','单','双','大单','大双','小单','小双','合大','合小','合单','合双','尾大','尾小','家禽','野兽','红波','绿波','蓝波']
-var tmbbItemArr = ['红大','红小','红单','红双','红合单','红合双','绿大','绿小','绿单','绿双','绿合单','绿合双','蓝大','蓝小','蓝单','蓝双','蓝合单','蓝合双']
-var tmbbEgArr = [
+const lmItemArr = ['大','小','单','双','大单','大双','小单','小双','合大','合小','合单','合双','尾大','尾小','家禽','野兽','红波','绿波','蓝波']
+// 特码半波
+const tmbbItemArr = ['红大','红小','红单','红双','红合单','红合双','绿大','绿小','绿单','绿双','绿合单','绿合双','蓝大','蓝小','蓝单','蓝双','蓝合单','蓝合双']
+const tmbbEgArr = [
     //红
     '29,30,34,35,40,45,46',
     '01,02,07,08,12,13,18,19,23,24',
@@ -100,6 +85,18 @@ var tmbbEgArr = [
     '03,09,10,14,25,36,41,47',
     '04,15,20,26,31,37,42,48'
 ]
+//生肖
+const sxItemArr = ['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪']
+//生肖的示例
+const sxEgArr = [
+  '10,22,34,46', '09,21,33,45', '08,20,32,44', '07,19,31,43','06,18,30,42', '05,17,29,41',
+  '04,16,28,40', '03,15,27,39', '02,14,26,38', '01,13,25,37,49', '12,24,36,48', '11,23,35,47'
+]
+
+// 特码头尾
+const tmtwItemArr = ['0头','1头','2头','3头','4头','0尾','1尾','2尾','3尾','4尾','5尾','6尾','7尾','8尾','9尾']
+// 尾数
+const wsItemArr = ['0尾','1尾','2尾','3尾','4尾','5尾','6尾','7尾','8尾','9尾']
 
 export default {
   components:{
@@ -139,8 +136,22 @@ export default {
         'C3':{box:'colorbox'},
         'C4':{box:'colorbox'},
         'C5':{box:'colorbox'},
-        'D1':{box:'combobox',itemArr:tmbbItemArr, egArr:tmbbEgArr},
-
+        'D1':{box:'combobox',itemArr:tmbbItemArr, egArr:tmbbEgArr, needAward:true},
+        'E1':{box:'combobox',itemArr:sxItemArr, egArr:sxEgArr, needAward:true},
+        'E2':{box:'combobox',itemArr:sxItemArr, egArr:sxEgArr, needAward:true},
+        'E3':{box:'combobox',itemArr:sxItemArr, egArr: [], needAward:false},
+        'E4':{box:'combobox',itemArr:sxItemArr, egArr: [], needAward:false},
+        'E5':{box:'combobox',itemArr:sxItemArr, egArr: [], needAward:false},
+        'F1':{box:'combobox',itemArr:tmtwItemArr, egArr: [], needAward:true},
+        'F2':{box:'combobox',itemArr:wsItemArr, egArr: [], needAward:false},
+        'F3':{box:'combobox',itemArr:wsItemArr, egArr: [], needAward:false},
+        'F4':{box:'combobox',itemArr:wsItemArr, egArr: [], needAward:false},
+        'G1':{box:'colorbox'},
+        'G2':{box:'colorbox'},
+        'G3':{box:'colorbox'},
+        'G4':{box:'colorbox'},
+        'G5':{box:'colorbox'},
+        'G6':{box:'colorbox'}
       },
       chosen:[]
     }
@@ -155,7 +166,10 @@ export default {
     },
     renderItem(){
       return this.renderConfig[this.mode]
-    }
+    },
+    // chosen(){
+    //   return this.$store.state.lt.tmp['6HC']
+    // }
   }),
   methods:{
     choose(item, order){
