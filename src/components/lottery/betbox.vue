@@ -116,47 +116,6 @@ var cfg = {
   'tenth':{tag:'第十', itemArr: _1to10String},
 }
 
-// var cfg = {
-//   /**时时彩**/
-//   '10000': {tag: '万位', itemArr: _0to9, filters: filters},
-//   '1000': {tag: '千位', itemArr: _0to9, filters: filters},
-//   '100': {tag: '百位', itemArr: _0to9, filters: filters},
-//   '10': {tag: '十位', itemArr: _0to9, filters: filters},
-//   '1': {tag: '个位', itemArr: _0to9, filters: filters},
-//   'xxxx': {tag: '四重号位', itemArr: _0to9, filters: filters},
-//   'xxx': {tag: '三重号位', itemArr: _0to9, filters: filters},
-//   'xx': {tag: '二重号位', itemArr: _0to9, filters: filters},
-//   'x': {tag: '单号位', itemArr: _0to9, filters: filters},
-//   //带i的是大小单双
-//   'i10000': {tag: '万位', itemArr: _dsds, filters: ['清']},
-//   'i1000': {tag: '千位', itemArr: _dsds, filters: ['清']},
-//   'i100': {tag: '百位', itemArr: _dsds, filters: ['清']},
-//   'i10': {tag: '十位', itemArr: _dsds, filters: ['清']},
-//   'i1': {tag: '个位', itemArr: _dsds, filters: ['清']},
-//   'whole':{itemArr: _0to9, filters: ['清']},
-//   'psum27':{itemArr: _0to27, filters: ['清']},
-//   'psum18':{itemArr: _0to18, filters: ['清']},
-//   'csum26':{itemArr: _1to26, filters:['清']},
-//   'csum17':{itemArr: _1to17, filters:['清']},
-//   'baodan':{itemArr: _0to9, filters:['清']},
-//   /**十一选五**/
-//   'd1':{tag:'第一位', itemArr: _syx5, filters:['清']},
-//   'd2':{tag:'第二位', itemArr: _syx5, filters:['清']},
-//   'd3':{tag:'第二位', itemArr: _syx5, filters:['清']},
-//   'd':{itemArr: _syx5, filters:['清']},
-//   'dm':{tag:'胆码', itemArr: _syx5, filters:['清']},
-//   'tm':{tag:'拖码', itemArr: _syx5, filters:['清']},
-//   'qezx':{tag:'前二组选', itemArr: _syx5, filters:['清']},
-//   'qszx':{tag:'前三组选', itemArr: _syx5, filters:['清']},
-//   'x2z2':{tag:'选二中二', itemArr: _syx5, filters:['清']},
-//   'x3z3':{tag:'选三中三', itemArr: _syx5, filters:['清']},
-//   'x4z4':{tag:'选四中四', itemArr: _syx5, filters:['清']},
-//   'x5z5':{tag:'选五中五', itemArr: _syx5, filters:['清']},
-//   'x6z5':{tag:'选六中五', itemArr: _syx5, filters:['清']},
-//   'x7z5':{tag:'选七中五', itemArr: _syx5, filters:['清']},
-//   'x8z5':{tag:'选八中五', itemArr: _syx5, filters:['清']},
-// }
-
 var refer = {
   '全':[0,1,2,3,4,5,6,7,8,9],
   '大':[5,6,7,8,9],

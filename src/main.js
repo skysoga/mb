@@ -543,6 +543,7 @@ var UserArr = [
   'RebatePK10',
   'RebatePL35',
   'RebateFC3D',
+  'Rebate6HC',
   'NoticeData',
 ]
 var SiteArr=[ //需要校验更新版本的列表

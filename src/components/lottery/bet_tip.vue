@@ -11,11 +11,11 @@ export default {
   props: {
     tip:{
       type: String,
-      required: true
+      // required: true
     },
     award:{
       type: String,
-      required: true
+      // required: true
     },
     itemArr:{
       required: false
