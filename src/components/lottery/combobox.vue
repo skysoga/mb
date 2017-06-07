@@ -36,8 +36,6 @@ export default{
 <style scoped lang = "scss">
 @import '../../scss/scssConfig','../../scss/mixin';
 .selectNumber{
-  padding:.3rem 0.5rem;
-  padding-right: 0;
   display: table;
   position: relative;
   .title{
@@ -89,8 +87,10 @@ export default{
 }
 
 .numberContent{
+  padding:0.3rem 0;
   display: flex;
   flex-wrap: wrap;
+  justify-content:center;
   width: 100%;
   /*号码项*/
 }
@@ -127,15 +127,17 @@ export default{
 .bet-item-eg-box{
   display:flex;
   flex-wrap: wrap;
+  justify-content:center;
   width:100%;
   padding-left:0.2em;
   padding:0.2em 0 0.2em 0.2em;
 }
 
 .bet-item-eg{
+  display:inline-block;
   padding:0 0.2em;
   font-size:.05em;
-  color:#666;
+  color:#888;
 }
 
 </style>
