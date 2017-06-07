@@ -96,11 +96,11 @@ export default{
 }
 
 .bet-item-box{
-  font-size: .8em;
-  width: calc(13rem / 3);
-  width: -webkit-calc(13rem / 3);
+  width: 28%;
   margin:0.2rem 0.3rem;
-  border:1px solid #bfbfbf;
+  padding-top:0.3em;
+  font-size: .8em;
+  border:1px solid #dfdfdf;
   border-radius:.15rem;
   background: #faf9f6;
 }
@@ -109,7 +109,6 @@ export default{
   align-items:center;
   justify-content:center;
   width:100%;
-  height:2em;
   color: #333;
   font-size:1em;
 }
@@ -122,19 +121,21 @@ export default{
   color:#dc3b40;
   padding-bottom:.3rem;
   font-size:.6em;
-  border-bottom:1px solid #bfbfbf;
+  border-bottom:1px solid #dfdfdf;
 }
 
 .bet-item-eg-box{
   display:flex;
+  flex-wrap: wrap;
   width:100%;
-  height:3em;
+  padding-left:0.2em;
+  padding:0.2em 0 0.2em 0.2em;
 }
 
 .bet-item-eg{
-  padding:0.2em;
-  display: flex;
-  font-size:.6em;
+  padding:0 0.2em;
+  font-size:.05em;
+  color:#666;
 }
 
 </style>
