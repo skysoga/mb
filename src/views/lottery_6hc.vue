@@ -99,6 +99,13 @@ const tmtwItemArr = ['0头','1头','2头','3头','4头','0尾','1尾','2尾','3�
 const wsItemArr = ['0尾','1尾','2尾','3尾','4尾','5尾','6尾','7尾','8尾','9尾']
 
 export default {
+  created(){
+    this.$store.commit({
+      type:'lt_updateTmp',
+      alias: '6HC',
+      arr: []
+    })
+  },
   components:{
       'lt-header': lt_header,
       'lt-result': lt_result,
@@ -167,25 +174,33 @@ export default {
     renderItem(){
       return this.renderConfig[this.mode]
     },
-    // chosen(){
-    //   return this.$store.state.lt.tmp['6HC']
-    // }
+    chosen(){
+      return this.$store.state.lt.tmp['6HC']
+    }
   }),
   methods:{
     choose(item, order){
-      if(this.chosen.indexOf(item) === -1){
+      var chosen = this.chosen.slice()
+      if(chosen.indexOf(item) === -1){
         //添加并排序
-        this.chosen.push(item)
-        this.chosen.sort((a,b)=>{
+        chosen.push(item)
+        chosen.sort((a,b)=>{
           var pos1 = order.indexOf(a)
           var pos2 = order.indexOf(b)
           return pos1 - pos2
         })
       }else{
         // 已经存在就删除
-        var pos = this.chosen.indexOf(item)
-        this.chosen.splice(pos,1)
+        var pos = chosen.indexOf(item)
+        chosen.splice(pos,1)
       }
+
+      // 全部用vuex中的tmp['6HC']作为存储
+      this.$store.commit({
+        type:'lt_updateTmp',
+        alias: '6HC',
+        arr: chosen
+      })
     }
   }
 }
