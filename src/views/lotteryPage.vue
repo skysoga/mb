@@ -787,6 +787,48 @@
               }
             })
           },
+          // 新彩种的投注接口
+          lt_confirmBet1:({state, rootState, commit, dispatch}, basket)=>{
+            layer.msgWait('正在投注')
+            _fetch({
+              'Action':'AddBetting',
+              'data': {BettingData:basket}
+            }).then((json)=>{
+              if(json.Code === 1){
+                layer.msg(json.StrCode)
+                commit('lt_clearBet')
+                commit('lt_clearBasket')
+                commit('lt_changeBox', '')
+                scrollTop()  //滚动复原
+
+                //投注后自己添记录到“我的投注里”
+                var totalMoney = basket.map(bet=>bet.betting_money).reduce((a,b)=>a+b)  //本注总金额
+                var issueNo = basket[0].betting_issuseNo                                  //期号
+                var _betRecord = state.BetRecord.slice(0)
+                var record = {issueNo: issueNo, normal_money:totalMoney.toFixed(2), openState: '等待开奖'}
+                _betRecord.unshift(record)
+                if(_betRecord.length > 5){
+                  _betRecord.length = 5
+                }
+
+                commit('lt_setBetRecord', _betRecord)
+
+                // //隔3s获取我的投注
+                // this.timer3 = setTimeout(()=>{
+                //   dispatch('lt_updateBetRecord')
+                // }, 3000)
+
+                layer.confirm(`<span style = "color:red">投注成功</span>，您可以在我的账户查看注单详情`,['继续投注','查看注单'], ()=>{},()=>{this.$router.push('/userCenter')})
+              }else if(json.Code === -9){
+                //清除rebate
+                layer.alert(json.StrCode)
+                this.$store.dispatch('lt_getRebate', true)
+              }else{
+                layer.msgWarn(json.StrCode)
+              }
+            })
+          },
+
           //普通追号
           lt_ordinaryChase:({state, rootState, commit, dispatch})=>{
             var basketTotal = getBasketAmount()[1],
