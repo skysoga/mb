@@ -35,15 +35,15 @@ var hcConfig = {
       "eg":[],
       "default":true
     },
-    {
-      "name": "正码合",
-      "mode": "B2",
-      "tip": "计算开奖号码前六位求和的值，小于150为总和小，大于等于150为总和大，是奇数为总和单，偶数为总和双，和值的个位数小于5为总尾小，大于等于5为总尾大。（每个按钮单独显示赔率）",
-      "group": "正码",
-      "subGroup": "正码",
-      "tag": "正码合",
-      "eg":[],
-    },
+    // {
+    //   "name": "正码合",
+    //   "mode": "B2",
+    //   "tip": "计算开奖号码前六位求和的值，小于150为总和小，大于等于150为总和大，是奇数为总和单，偶数为总和双，和值的个位数小于5为总尾小，大于等于5为总尾大。（每个按钮单独显示赔率）",
+    //   "group": "正码",
+    //   "subGroup": "正码",
+    //   "tag": "正码合",
+    //   "eg":[],
+    // },
     {
       "name": "正一特",
       "mode": "B3",
@@ -415,7 +415,7 @@ var renderConfig = {
   'A1':{box:'colorbox', alg:1},
   'A2':{box:'normalbox', itemArr:lmItemArr, alg:1},
   'B1':{box:'colorbox', alg:1},
-  'B2':{box:'normalbox', itemArr:['总和单','总和双','总和大','总和小','总尾大','总尾小'], alg:1},
+  // 'B2':{box:'normalbox', itemArr:['总和单','总和双','总和大','总和小','总尾大','总尾小'], alg:1},
   'B3':{box:'colorbox', alg:1},
   'B4':{box:'colorbox', alg:1},
   'B5':{box:'colorbox', alg:1},
