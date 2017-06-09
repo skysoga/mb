@@ -46,8 +46,6 @@
       Lottery6HC
     },
     beforeRouteEnter(to, from, next){
-      next()
-      return
 
       scrollTop()
       //从url上获取彩种type和彩种code
@@ -62,7 +60,7 @@
         }else{
           _fetch({
             Action: 'GetBetRebate',
-            LotteryType: ltype
+            LotteryType: '6HCN'
           }).then((json)=>{
             if(json.Code === 1){
               localStorage.setItem(storageName ,JSON.stringify(json.BackData))

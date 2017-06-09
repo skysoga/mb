@@ -5,8 +5,11 @@
         <!-- 头部： 玩法选择， 同类彩种选择-->
         <lt-header></lt-header>
 
+        <time-result></time-result>
+
+
         <!-- 开奖号码 以及 投注截止时间  -->
-        <div class="isLotteryCon" >
+        <div class="isLotteryCon" v-if = "false">
           <!-- 开奖结果和历史开奖结果 -->
           <lt-result></lt-result>
           <!-- 倒计时和我的投注 -->
@@ -62,6 +65,7 @@ import bet_tip from '../components/lottery/bet_tip'
 import colorbox from '../components/lottery/colorbox'
 import normal_box from '../components/lottery/normal_box'
 import combobox from '../components/lottery/combobox'
+import time_result from '../components/lottery/time_result'
 import lt_footer1 from '../components/lottery/lt_footer1'
 import {renderConfig} from '../js/page_config/lt_6hc'
 import {C} from '../js/kit'
@@ -83,7 +87,7 @@ export default {
       'normal-box': normal_box,
       'combobox': combobox,
       'lt-footer1': lt_footer1,
-
+      'time-result': time_result
   },
   data(){
     return {
@@ -196,6 +200,7 @@ export default {
 <style lang = "scss" scoped>
 @import '../scss/newssc.scss';
 .sscMain{
+  padding-top:4.2rem;
   padding-bottom:6rem;
 }
 </style>

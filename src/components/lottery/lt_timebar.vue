@@ -8,6 +8,7 @@
         <em>{{TimeBar}}</em>
       </div>
     </div>
+
     <!-- 我的投注 -->
     <table class="pastOpen" v-show = "ifShowBetRecord">
       <tr>
