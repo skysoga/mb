@@ -65,7 +65,7 @@ import bet_tip from '../components/lottery/bet_tip'
 import colorbox from '../components/lottery/colorbox'
 import normal_box from '../components/lottery/normal_box'
 import combobox from '../components/lottery/combobox'
-import time_result from '../components/lottery/time_result'
+import time_result from '../components/lottery/6hc_time_result'
 import lt_footer1 from '../components/lottery/lt_footer1'
 import {renderConfig} from '../js/page_config/lt_6hc'
 import {C} from '../js/kit'
@@ -200,7 +200,7 @@ export default {
 <style lang = "scss" scoped>
 @import '../scss/newssc.scss';
 .sscMain{
-  padding-top:4.2rem;
+  padding-top:6.8rem;
   padding-bottom:6rem;
 }
 </style>

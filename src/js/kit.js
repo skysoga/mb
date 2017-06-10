@@ -12,6 +12,15 @@ var Max_Chase_Issue = 50  //追号最大期数
 var Max_Expect_Rate = 20000 //追号最大预期盈利率限制
 var BASE_ISSUE_1406 = 52586+1-7*89 //北京快三基准期
 
+var natal = 9  //本命 9-鸡
+var animals = ['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪']
+
+function getAnimal(numStr){
+  var num = (+numStr)%12
+  var index = ((natal + 13) - num)%12
+  return animals[index]
+}
+
 //阶乘
 var factorial = (function(){
   var cache = {};
@@ -768,4 +777,4 @@ export {factorial, mul, C, combNoRepeat, unique, normalSum2,
     deleteCompress, Scheme, getBasketAmount,computeIssue,
     getSSCRebate,getK3Rebate,getRebate, DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME,
   GMT_DIF, PERBET,Max_Rate, Max_Chase_Issue, Max_Expect_Rate, BASE_ISSUE_1406, syx5_zx2,
-  countSingle, betSum, createStringArray, _random, _0to9, _dsds, _0to27, _1to26, _0to18, _1to17, _syx5, _pk10, oneRandom, oneStar}
+  countSingle, betSum, createStringArray, _random, _0to9, _dsds, _0to27, _1to26, _0to18, _1to17, _syx5, _pk10, oneRandom, oneStar,getAnimal}
