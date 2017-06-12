@@ -1,7 +1,8 @@
 <template>
   <div class="sscTips">
-    <p v-if="isMultiple" @click="showBonus">{{tip}}<span>奖金详情</span></p>
-    <p v-else>{{tip}}<i>{{award}}</i>元</p>
+    <p v-if = "this.type === 'noAward'">{{tip}}</p>
+    <p v-if = "this.type === 'multiple'" @click="showBonus">{{tip}}<span>奖金详情</span></p>
+    <p v-if = "this.type === 'single'" >{{tip}}奖金<i>{{award}}</i>元</p>
   </div>
 </template>
 
@@ -11,26 +12,51 @@ export default {
   props: {
     tip:{
       type: String,
-      // required: true
+      required: true
     },
+    //赔率或者奖金 字符串或者数组
     award:{
-      type: String,
-      // required: true
+      required:false
     },
+    // 多赔率的配置数组
     itemArr:{
       required: false
     },
   },
+  data(){
+    return {
+      type: ''
+    }
+  },
+  beforeUpdate(){
+    this.checkProps()
+  },
+  created(){
+    this.checkProps()
+  },
   computed:{
     isMultiple(){
-      return Array.isArray(this.itemArr)
+      return Array.isArray(this.award)
     }
   },
   methods:{
+    checkProps(){
+      var award = this.award
+      var itemArr = this.itemArr
+      if(typeof award === 'string'){
+        this.type = 'single'
+      }else if(Array.isArray(award)){
+        if(this.itemArr !== undefined){
+          this.type = 'multiple'
+        }else{
+          this.type = 'noAward'
+        }
+      }
+    },
     showBonus(){
       var trArr=[]
       var Arr = this.itemArr
-      var Bonus = this.award.split(',')
+      var Bonus = this.award
       for(var i=0;i<Arr.length;i++){
         trArr.push('<tr><td>'+Arr[i]+'</td><td><span>'+(Bonus[i]||Bonus[i-1])+'<span>元</td></tr>')
       }

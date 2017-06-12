@@ -12,12 +12,14 @@ var Max_Chase_Issue = 50  //追号最大期数
 var Max_Expect_Rate = 20000 //追号最大预期盈利率限制
 var BASE_ISSUE_1406 = 52586+1-7*89 //北京快三基准期
 
-var natal = 9  //本命 9-鸡
+var natal = '鸡'  //本命 9-鸡
 var animals = ['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪']
 
+
 function getAnimal(numStr){
+  var natalIndex = animals.indexOf(natal)
   var num = (+numStr)%12
-  var index = ((natal + 13) - num)%12
+  var index = ((natalIndex + 13) - num)%12
   return animals[index]
 }
 
@@ -565,12 +567,12 @@ function computeIssue(code, index, isChase){
     days++
   }
 
-  //一天一期，8点开
+  //一天一期，20点开
   function oneDayOneIssue(baseIssue, dateStr){
     return function(){
       var data = state.lt.Todaystr.replace(/^(\d{4})(\d{2})(\d{2})$/,'$1/$2/$3');
       var dayDiff = Math.floor((Date.parse(data)-Date.parse(dateStr))/DAY_TIME)
-      var needAddOne = +(_SerTime > 72000000)
+      var needAddOne = +(_SerTime > 72000000)  //八点开
       // console.log(needAddOne, _SerTime, _SerTime-72000000)
       var issueStr = ('00' + (dayDiff + baseIssue + needAddOne + index)).slice(-3)
       return data.slice(0,4) + issueStr
@@ -615,7 +617,6 @@ function computeIssue(code, index, isChase){
     '1201':oneDayOneIssue(33, "2017/2/9"),
     //排列3：每天一期
     '1202':oneDayOneIssue(33, "2017/2/9"),
-
   }
 
   //计算期号字符串
@@ -661,7 +662,19 @@ function getSSCRebate(mode, Odds){
   }
 }
 
-function getK3Rebate(mode, Odds){
+// function getK3Rebate(mode, Odds){
+//   for(var i = 0;i < Odds.length;i++){
+//     if(Odds[i].PlayCode === mode){
+//       if(Odds[i].Bonus.indexOf(',') > -1){
+//         return Odds[i].Bonus.split(',')
+//       }else{
+//         return Odds[i].Bonus
+//       }
+//     }
+//   }
+// }
+
+function getMultipleRebate(mode, Odds){
   for(var i = 0;i < Odds.length;i++){
     if(Odds[i].PlayCode === mode){
       if(Odds[i].Bonus.indexOf(',') > -1){
@@ -673,13 +686,14 @@ function getK3Rebate(mode, Odds){
   }
 }
 
-function getRebate(mode, Odds){
-  for(var i = 0;i < Odds.length;i++){
-    if(Odds[i].PlayCode === mode){
-      return Odds[i].Bonus
-    }
-  }
-}
+
+// function getRebate(mode, Odds){
+//   for(var i = 0;i < Odds.length;i++){
+//     if(Odds[i].PlayCode === mode){
+//       return Odds[i].Bonus
+//     }
+//   }
+// }
 
 
 function syx5_zx2(line1, line2){
@@ -775,6 +789,7 @@ export {factorial, mul, C, combNoRepeat, unique, normalSum2,
   normalSum3, accumulate,diff2, diff3, combSum2, combSum3,
    bus, BaseBet, compress, throttle, easyClone, ChaseAjax,
     deleteCompress, Scheme, getBasketAmount,computeIssue,
-    getSSCRebate,getK3Rebate,getRebate, DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME,
+    getSSCRebate,getMultipleRebate, DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME,
   GMT_DIF, PERBET,Max_Rate, Max_Chase_Issue, Max_Expect_Rate, BASE_ISSUE_1406, syx5_zx2,
-  countSingle, betSum, createStringArray, _random, _0to9, _dsds, _0to27, _1to26, _0to18, _1to17, _syx5, _pk10, oneRandom, oneStar,getAnimal}
+  countSingle, betSum, createStringArray, _random, _0to9, _dsds, _0to27, _1to26, _0to18, _1to17, _syx5, _pk10, oneRandom, oneStar,
+  getAnimal, natal, animals}

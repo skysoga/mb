@@ -1,13 +1,11 @@
 <template>
   <div @click = "closeBox" class="lotteryOutCon">
-    <template v-if = "false">
-      <!-- 普通彩种 -->
-      <LotteryCommon v-if = "$route.params.type !== 'K3'"></LotteryCommon>
-      <!-- 快三彩种 -->
-      <LotteryK3 v-if = "$route.params.type === 'K3'"></LotteryK3>
-    </template>
+    <!-- 普通彩种 -->
+    <LotteryCommon v-if = "$route.params.type !== 'K3' && $route.params.type !== '6HC'"></LotteryCommon>
+    <!-- 快三彩种 -->
+    <LotteryK3 v-if = "$route.params.type === 'K3'"></LotteryK3>
 
-    <Lottery6HC ></Lottery6HC>
+    <Lottery6HC v-if = "$route.params.type === '6HC'"></Lottery6HC>
   </div>
 </template>
 <style lang='scss' scoped>
@@ -31,7 +29,7 @@
 
   import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
   import {bus, BaseBet, ChaseAjax, easyClone, deleteCompress, Scheme, getBasketAmount,
-          computeIssue, getSSCRebate, getK3Rebate,getRebate,
+          computeIssue, getSSCRebate, getMultipleRebate,
           DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../js/kit'
 
   var randomFeed = Math.floor(Math.random()*4)  //获取开奖时间的随机数，用于错开请求
@@ -60,7 +58,7 @@
         }else{
           _fetch({
             Action: 'GetBetRebate',
-            LotteryType: '6HCN'
+            LotteryType: ltype,
           }).then((json)=>{
             if(json.Code === 1){
               localStorage.setItem(storageName ,JSON.stringify(json.BackData))
@@ -132,11 +130,11 @@
       //处理返点
       var awardSetter = {
         'SSC':getSSCRebate,
-        'K3': getK3Rebate,
-        'SYX5': getRebate,
-        'PK10': getRebate,
-        'KL8': getRebate,
-        '6HC': getRebate,
+        'K3': getMultipleRebate,
+        'SYX5': getMultipleRebate,
+        'PK10': getMultipleRebate,
+        'KL8': getMultipleRebate,
+        '6HC': getMultipleRebate,
       }
 
       var wait4Results = 0, wait4BetRecord = false

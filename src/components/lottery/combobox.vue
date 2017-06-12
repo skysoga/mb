@@ -3,7 +3,7 @@
   <div class="numberContent">
     <div v-for = "(item, index) in itemArr" class = "bet-item-box"  @click = "choose(item)" :class = "{curr: chosen.indexOf(item)>-1}">
       <a class = "bet-item">{{item}}</a>
-      <span class = "bet-item-award" v-if = "needAward">赔率1.236</span>
+      <span class = "bet-item-award" v-if = "needAward && renderOdds && renderOdds.length">赔率{{renderOdds[index]}}</span>
       <div class = "bet-item-eg-box" v-if = "egArr.length">
         <span v-for = "eg in egText[index]" class = "bet-item-eg">{{eg}}</span>
       </div>
@@ -25,8 +25,8 @@ export default{
         return []
       }
     },
-    award:{
-      type:String,
+    renderOdds:{
+      required:true,
     },
     needAward:{
       type:Boolean,

@@ -1,13 +1,13 @@
-var str49 = '从1-49中任选1个或多个号码，每个号码为一注，所选号码在开奖号码前六位中存在，即为中奖。奖金'
-var getZTStr = (numStr)=>`从1-49中任选1个或多个号码，每个号码为一注，所选号码与开奖号码第${numStr}位相同，即为中奖。奖金`
-var getBZStr = (numStr)=>`至少选择${numStr}个号码，每${numStr}个号码为一注，所有号码均未在开奖号码中出现，即为中奖。奖金`
+var str49 = '从1-49中任选1个或多个号码，每个号码为一注，所选号码在开奖号码前六位中存在，即为中奖。'
+var getZTStr = (numStr)=>`从1-49中任选1个或多个号码，每个号码为一注，所选号码与开奖号码第${numStr}位相同，即为中奖。`
+var getBZStr = (numStr)=>`至少选择${numStr}个号码，每${numStr}个号码为一注，所有号码均未在开奖号码中出现，即为中奖。`
 var getZMLMStr = (numStr)=>`开奖号码第${numStr}位，大于或等于25为大，小于或等于24为小；奇数为单，偶数为双；和单和双为两个数相加后得数的单双；尾大尾小即看个位数值，小于等于4为小，大于4为大；为49时为和，不算任何大小单双，但算波色。（每个按钮单独显示赔率）`
 
 var hcConfig = {
   "特码":{
     "特码":[{
       "name": "直选",
-      "mode": "A1",
+      "mode": "A01",
       "tip": str49,
       "group": "特码",
       "subGroup": "特码",
@@ -16,7 +16,7 @@ var hcConfig = {
       "default":true
     },{
       "name": "两面",
-      "mode": "A2",
+      "mode": "A02",
       "tip": "开奖号码最后一位为特码。大于或等于25为特码大，小于或等于24为特码小；奇数为单，偶数为双；特码两个数相加后得数，奇数为合单，偶数为合双，小于等于6为合小，大于6为合大；尾大尾小即看特码个位数值，小于等于4为小，大于4为大；特码为49时为和，不算任何大小单双，但算波色。（每个按钮单独显示赔率）",
       "group": "特码",
       "subGroup": "特码",
@@ -27,7 +27,7 @@ var hcConfig = {
   "正码":{
     "正码":[{
       "name": "任选",
-      "mode": "B1",
+      "mode": "B01",
       "tip": str49,
       "group": "正码",
       "subGroup": "正码",
@@ -37,7 +37,7 @@ var hcConfig = {
     },
     // {
     //   "name": "正码合",
-    //   "mode": "B2",
+    //   "mode": "B02",
     //   "tip": "计算开奖号码前六位求和的值，小于150为总和小，大于等于150为总和大，是奇数为总和单，偶数为总和双，和值的个位数小于5为总尾小，大于等于5为总尾大。（每个按钮单独显示赔率）",
     //   "group": "正码",
     //   "subGroup": "正码",
@@ -46,7 +46,7 @@ var hcConfig = {
     // },
     {
       "name": "正一特",
-      "mode": "B3",
+      "mode": "B03",
       "tip": getZTStr('一'),
       "group": "正码",
       "subGroup": "正码",
@@ -55,7 +55,7 @@ var hcConfig = {
     },
     {
       "name": "正二特",
-      "mode": "B4",
+      "mode": "B04",
       "tip": getZTStr('二'),
       "group": "正码",
       "subGroup": "正码",
@@ -64,7 +64,7 @@ var hcConfig = {
     },
     {
       "name": "正三特",
-      "mode": "B5",
+      "mode": "B05",
       "tip": getZTStr('三'),
       "group": "正码",
       "subGroup": "正码",
@@ -73,7 +73,7 @@ var hcConfig = {
     },
     {
       "name": "正四特",
-      "mode": "B6",
+      "mode": "B06",
       "tip": getZTStr('四'),
       "group": "正码",
       "subGroup": "正码",
@@ -82,7 +82,7 @@ var hcConfig = {
     },
     {
       "name": "正五特",
-      "mode": "B7",
+      "mode": "B07",
       "tip": getZTStr('五'),
       "group": "正码",
       "subGroup": "正码",
@@ -91,7 +91,7 @@ var hcConfig = {
     },
     {
       "name": "正六特",
-      "mode": "B8",
+      "mode": "B08",
       "tip": getZTStr('六'),
       "group": "正码",
       "subGroup": "正码",
@@ -100,7 +100,7 @@ var hcConfig = {
     },
     {
       "name": "正一两面",
-      "mode": "B9",
+      "mode": "B09",
       "tip": getZMLMStr('一'),
       "group": "正码",
       "subGroup": "正码",
@@ -157,8 +157,8 @@ var hcConfig = {
     "连码":[
       {
         "name": "三全中",
-        "mode": "C1",
-        "tip": '至少选择三个号码，每三个号码为一组合，若三个号码都是开奖号码之正码，即为中奖。奖金',
+        "mode": "C01",
+        "tip": '至少选择三个号码，每三个号码为一组合，若三个号码都是开奖号码之正码，即为中奖。',
         "group": "连码",
         "subGroup": "连码",
         "tag": "三全中",
@@ -167,8 +167,8 @@ var hcConfig = {
       },
       {
         "name": "三中二",
-        "mode": "C2",
-        "tip": '至少选择三个号码，每三个号码为一组合，若其中至少有两个是开奖号码中的正码，即为中奖。若中两码，叫三中二，奖金为xx元；若三码全中，叫三中二之中三，奖金',
+        "mode": "C02",
+        "tip": '至少选择三个号码，每三个号码为一组合，若其中至少有两个是开奖号码中的正码，即为中奖。若中两码，叫三中二之中二;若三码全中，叫三中二之中三。',
         "group": "连码",
         "subGroup": "连码",
         "tag": "三中二",
@@ -176,8 +176,8 @@ var hcConfig = {
       },
       {
         "name": "二全中",
-        "mode": "C3",
-        "tip": '至少选择两个号码，每二个码号为一组合，二个号码都是开奖码号之正码（不含特码），即为中奖。奖金',
+        "mode": "C03",
+        "tip": '至少选择两个号码，每二个码号为一组合，二个号码都是开奖码号之正码（不含特码），即为中奖。',
         "group": "连码",
         "subGroup": "连码",
         "tag": "二全中",
@@ -185,8 +185,8 @@ var hcConfig = {
       },
       {
         "name": "二中特",
-        "mode": "C4",
-        "tip": '至少选择两个号码，每二个号码为一组合，二个号码都是开奖号码（含特码），即为中奖。若两个都是正码，叫二中特之二中，奖金xx元。若选号中包含特码，叫二中特之中特，奖金',
+        "mode": "C04",
+        "tip": '至少选择两个号码，每二个号码为一组合，二个号码都是开奖号码（含特码），即为中奖。若两个都是正码，叫二中特之二中。若选号中包含特码，叫二中特之中特。',
         "group": "连码",
         "subGroup": "连码",
         "tag": "二中特",
@@ -194,8 +194,8 @@ var hcConfig = {
       },
       {
         "name": "特串",
-        "mode": "C5",
-        "tip": '至少选择两个号码，每二个号码为一组合，其中一个是正码，一个是特别号码，即为中奖。奖金',
+        "mode": "C05",
+        "tip": '至少选择两个号码，每二个号码为一组合，其中一个是正码，一个是特别号码，即为中奖。',
         "group": "连码",
         "subGroup": "连码",
         "tag": "特串",
@@ -207,7 +207,7 @@ var hcConfig = {
     "半波":[
       {
         "name": "特码半波",
-        "mode": "D1",
+        "mode": "D01",
         "tip": "根据特码对应的特性来区分。分为红蓝绿三个波色，以及号码大于或等于25为大，小于或等于24为小；奇数为单，偶数为双；合单合双为开奖号的十位与个位相加后得数的单双。下注内容与号码特性完全吻合即为中奖。（每个按钮单独显示赔率）",
         "group": "半波",
         "subGroup": "半波",
@@ -221,7 +221,7 @@ var hcConfig = {
     "生肖":[
       {
         "name": "特肖",
-        "mode": "E1",
+        "mode": "E01",
         "tip": "从十二生肖中任选1个或多个，每个生肖为一注，所选生肖与特码对应的生肖相同，即为中奖。",
         "group": "生肖",
         "subGroup": "生肖",
@@ -231,7 +231,7 @@ var hcConfig = {
       },
       {
         "name": "一肖",
-        "mode": "E2",
+        "mode": "E02",
         "tip": "从十二生肖中任选1个或多个，每个生肖为一注，开奖号码（含特码）中含有投注所属生肖，即为中奖。",
         "group": "生肖",
         "subGroup": "生肖",
@@ -240,7 +240,7 @@ var hcConfig = {
       },
       {
         "name": "二肖连",
-        "mode": "E3",
+        "mode": "E03",
         "tip": "至少选择两个生肖，每二个生肖为一组合，开奖号码（含特码）中含有投注所属全部生肖，即为中奖。",
         "group": "生肖",
         "subGroup": "生肖",
@@ -249,7 +249,7 @@ var hcConfig = {
       },
       {
         "name": "三肖连",
-        "mode": "E4",
+        "mode": "E04",
         "tip": "至少选择三个生肖，每三个生肖为一组合，开奖号码（含特码）中含有投注所属全部生肖，即为中奖。",
         "group": "生肖",
         "subGroup": "生肖",
@@ -258,7 +258,7 @@ var hcConfig = {
       },
       {
         "name": "四肖连",
-        "mode": "E5",
+        "mode": "E05",
         "tip": "至少选择四个生肖，每四个生肖为一组合，开奖号码（含特码）中含有投注所属全部生肖，即为中奖。",
         "group": "生肖",
         "subGroup": "生肖",
@@ -271,7 +271,7 @@ var hcConfig = {
     "尾数":[
       {
         "name": "特码头尾",
-        "mode": "F1",
+        "mode": "F01",
         "tip": '',
         "group": "尾数",
         "subGroup": "尾数",
@@ -281,7 +281,7 @@ var hcConfig = {
       },
       {
         "name": "二尾连",
-        "mode": "F2",
+        "mode": "F02",
         "tip": "至少选择两个尾数，每两个尾数为一组合，开奖号码（含特码）中含有投注对应全部尾数，即为中奖。",
         "group": "尾数",
         "subGroup": "尾数",
@@ -290,7 +290,7 @@ var hcConfig = {
       },
       {
         "name": "三尾连",
-        "mode": "F3",
+        "mode": "F03",
         "tip": "至少选择三个尾数，每三个尾数为一组合，开奖号码（含特码）中含有投注对应全部尾数，即为中奖。",
         "group": "尾数",
         "subGroup": "尾数",
@@ -299,7 +299,7 @@ var hcConfig = {
       },
       {
         "name": "四尾连",
-        "mode": "F4",
+        "mode": "F04",
         "tip": "至少选择四个尾数，每四个尾数为一组合，开奖号码（含特码）中含有投注对应全部尾数，即为中奖。",
         "group": "尾数",
         "subGroup": "尾数",
@@ -312,7 +312,7 @@ var hcConfig = {
     "不中":[
       {
         "name": "五不中",
-        "mode": "G1",
+        "mode": "G01",
         "tip": getBZStr('五'),
         "group": "不中",
         "subGroup": "不中",
@@ -322,7 +322,7 @@ var hcConfig = {
       },
       {
         "name": "六不中",
-        "mode": "G2",
+        "mode": "G02",
         "tip": getBZStr('六'),
         "group": "不中",
         "subGroup": "不中",
@@ -331,7 +331,7 @@ var hcConfig = {
       },
       {
         "name": "七不中",
-        "mode": "G3",
+        "mode": "G03",
         "tip": getBZStr('七'),
         "group": "不中",
         "subGroup": "不中",
@@ -340,7 +340,7 @@ var hcConfig = {
       },
       {
         "name": "八不中",
-        "mode": "G4",
+        "mode": "G04",
         "tip": getBZStr('八'),
         "group": "不中",
         "subGroup": "不中",
@@ -349,7 +349,7 @@ var hcConfig = {
       },
       {
         "name": "九不中",
-        "mode": "G5",
+        "mode": "G05",
         "tip": getBZStr('九'),
         "group": "不中",
         "subGroup": "不中",
@@ -358,7 +358,7 @@ var hcConfig = {
       },
       {
         "name": "十不中",
-        "mode": "G6",
+        "mode": "G06",
         "tip": getBZStr('十'),
         "group": "不中",
         "subGroup": "不中",
@@ -412,43 +412,43 @@ const wsItemArr = ['0尾','1尾','2尾','3尾','4尾','5尾','6尾','7尾','8尾
 
 
 var renderConfig = {
-  'A1':{box:'colorbox', alg:1},
-  'A2':{box:'normalbox', itemArr:lmItemArr, alg:1},
-  'B1':{box:'colorbox', alg:1},
-  // 'B2':{box:'normalbox', itemArr:['总和单','总和双','总和大','总和小','总尾大','总尾小'], alg:1},
-  'B3':{box:'colorbox', alg:1},
-  'B4':{box:'colorbox', alg:1},
-  'B5':{box:'colorbox', alg:1},
-  'B6':{box:'colorbox', alg:1},
-  'B7':{box:'colorbox', alg:1},
-  'B8':{box:'colorbox', alg:1},
-  'B9':{box:'normalbox', itemArr:lmItemArr, alg:1},
+  'A01':{box:'colorbox', alg:1},
+  'A02':{box:'normalbox', itemArr:lmItemArr, alg:1},
+  'B01':{box:'colorbox', alg:1},
+  // 'B02':{box:'normalbox', itemArr:['总和单','总和双','总和大','总和小','总尾大','总尾小'], alg:1},
+  'B03':{box:'colorbox', alg:1},
+  'B04':{box:'colorbox', alg:1},
+  'B05':{box:'colorbox', alg:1},
+  'B06':{box:'colorbox', alg:1},
+  'B07':{box:'colorbox', alg:1},
+  'B08':{box:'colorbox', alg:1},
+  'B09':{box:'normalbox', itemArr:lmItemArr, alg:1},
   'B10':{box:'normalbox', itemArr:lmItemArr, alg:1},
   'B11':{box:'normalbox', itemArr:lmItemArr, alg:1},
   'B12':{box:'normalbox', itemArr:lmItemArr, alg:1},
   'B13':{box:'normalbox', itemArr:lmItemArr, alg:1},
   'B14':{box:'normalbox', itemArr:lmItemArr, alg:1},
-  'C1':{box:'colorbox', alg:3},
-  'C2':{box:'colorbox', alg:3},
-  'C3':{box:'colorbox', alg:2},
-  'C4':{box:'colorbox', alg:2},
-  'C5':{box:'colorbox', alg:2},
-  'D1':{box:'combobox',itemArr:tmbbItemArr, egArr:tmbbEgArr, needAward:true, alg:1},
-  'E1':{box:'combobox',itemArr:sxItemArr, egArr:sxEgArr, needAward:true, alg:1},
-  'E2':{box:'combobox',itemArr:sxItemArr, egArr:sxEgArr, needAward:true, alg:1},
-  'E3':{box:'combobox',itemArr:sxItemArr, egArr: [], needAward:false, alg:2},
-  'E4':{box:'combobox',itemArr:sxItemArr, egArr: [], needAward:false, alg:3},
-  'E5':{box:'combobox',itemArr:sxItemArr, egArr: [], needAward:false, alg:4},
-  'F1':{box:'combobox',itemArr:tmtwItemArr, egArr: [], needAward:true, alg:1},
-  'F2':{box:'combobox',itemArr:wsItemArr, egArr: [], needAward:false, alg:2},
-  'F3':{box:'combobox',itemArr:wsItemArr, egArr: [], needAward:false, alg:3},
-  'F4':{box:'combobox',itemArr:wsItemArr, egArr: [], needAward:false, alg:4},
-  'G1':{box:'colorbox', alg:5},
-  'G2':{box:'colorbox', alg:6},
-  'G3':{box:'colorbox', alg:7},
-  'G4':{box:'colorbox', alg:8},
-  'G5':{box:'colorbox', alg:9},
-  'G6':{box:'colorbox', alg:10}
+  'C01':{box:'colorbox', alg:3},
+  'C02':{box:'colorbox', alg:3},
+  'C03':{box:'colorbox', alg:2},
+  'C04':{box:'colorbox', alg:2},
+  'C05':{box:'colorbox', alg:2},
+  'D01':{box:'combobox',itemArr:tmbbItemArr, egArr:tmbbEgArr, needAward:true, alg:1},
+  'E01':{box:'combobox',itemArr:sxItemArr, egArr:sxEgArr, needAward:true, alg:1},
+  'E02':{box:'combobox',itemArr:sxItemArr, egArr:sxEgArr, needAward:true, alg:1},
+  'E03':{box:'combobox',itemArr:sxItemArr, egArr: [], needAward:false, alg:2},
+  'E04':{box:'combobox',itemArr:sxItemArr, egArr: [], needAward:false, alg:3},
+  'E05':{box:'combobox',itemArr:sxItemArr, egArr: [], needAward:false, alg:4},
+  'F01':{box:'combobox',itemArr:tmtwItemArr, egArr: [], needAward:true, alg:1},
+  'F02':{box:'combobox',itemArr:wsItemArr, egArr: [], needAward:false, alg:2},
+  'F03':{box:'combobox',itemArr:wsItemArr, egArr: [], needAward:false, alg:3},
+  'F04':{box:'combobox',itemArr:wsItemArr, egArr: [], needAward:false, alg:4},
+  'G01':{box:'colorbox', alg:5},
+  'G02':{box:'colorbox', alg:6},
+  'G03':{box:'colorbox', alg:7},
+  'G04':{box:'colorbox', alg:8},
+  'G05':{box:'colorbox', alg:9},
+  'G06':{box:'colorbox', alg:10}
 }
 
 export {hcConfig, renderConfig}

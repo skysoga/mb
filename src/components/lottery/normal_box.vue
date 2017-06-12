@@ -6,11 +6,11 @@
   </div>
 
   <div class="numberContent">
-    <div v-for = "item in itemArr"
+    <div v-for = "(item, index) in itemArr"
          class = "bet-item-box"
          @click = "choose(item)">
       <a class = "bet-item" :class = "{curr:chosen.indexOf(item) > -1}">{{item}}</a>
-      <span class = "bet-item-rate">17.893</span>
+      <span class = "bet-item-rate" v-if = "renderOdds && renderOdds.length">{{renderOdds[index]}}</span>
     </div>
   </div>
 </div>
@@ -26,6 +26,9 @@ export default {
     },
     itemArr:{
       type: Array,
+      required:true
+    },
+    renderOdds:{
       required:true
     },
 
