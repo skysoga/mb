@@ -30,6 +30,8 @@ export default {
       layer.msgWait("正在提交")
       _fetch(ajax).then((json)=>{
           if(json.Code===1) {
+            var Arr=["UserHasSafePwd"]
+            store.commit('ClearInitData', Arr)//更新安全密码
             switch(vm.isOrUrl){
               case 'bindCard':
               case 'withdraw':

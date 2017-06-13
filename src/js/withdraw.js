@@ -46,13 +46,13 @@ export default{
   beforeRouteEnter(to,from,next){
     var bArr=["UserHasSafePwd","UserFirstCardInfo"]
     RootApp.GetInitData(bArr,ref=>{
-      var safaPwd=state.UserHasSafePwd*1,
-        FistCard=state.UserFirstCardInfo;
+      var safaPwd=ref.UserHasSafePwd*1,
+        FistCard=ref.UserFirstCardInfo;
         if(safaPwd){
           if(FistCard&&FistCard[0]){
             var arr=['UserBalance', 'UserWithdrawAvail','UserBankCardList','WithdrawRemainTimes','PayLimit']
-            RootApp.GetInitData(arr,state=>{
-              var BankList=setBankList(state.UserBankCardList)
+            RootApp.GetInitData(arr,ref=>{
+              var BankList=setBankList(ref.UserBankCardList)
                 if(!BankList.length){
                   layer.url('无可提现银行卡','/userCenter')
                   state.turning=false
@@ -60,12 +60,12 @@ export default{
                 }
               next(vm=>{
                 vm.UserBankList=BankList
-                vm.UserBalance=state.UserBalance
-                vm.UserAvail=state.UserWithdrawAvail
-                vm.PayLimit=state.PayLimit
+                vm.UserBalance=ref.UserBalance
+                vm.UserAvail=ref.UserWithdrawAvail
+                vm.PayLimit=ref.PayLimit
                 vm.ArrData.BankCardID=vm.UserBankList[0].BankCardID
                 vm.getMoney()
-                vm.ReGetTime=state.WithdrawRemainTimes
+                vm.ReGetTime=ref.WithdrawRemainTimes
               })
             })
           }else{
