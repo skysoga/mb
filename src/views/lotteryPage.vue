@@ -536,13 +536,20 @@
               DataNum: 10
             }).then((json)=>{
               if(json.Code === 1) {
-                if (10===json.BackData.length) {
-                  commit({
-                    type: 'lt_setLotteryResult',
-                    code,
-                    results: json.BackData
-                  })
-                }
+                // if (10===json.BackData.length) {
+                //   commit({
+                //     type: 'lt_setLotteryResult',
+                //     code,
+                //     results: json.BackData
+                //   })
+                // }
+
+               commit({
+                  type: 'lt_setLotteryResult',
+                  code,
+                  results: json.BackData
+                })
+
 
                 /*var len = json.BackData.length
                     ,bData = json.BackData
@@ -566,7 +573,6 @@
           },
           //refresh
           lt_refresh:({state, rootState, commit, dispatch})=>{
-            console.log('jk')
             var code = state.lottery.LotteryCode
             var isStop = rootState.LotteryList[code].IsStop
             // var isStop = rootState.LotteryList[this.lcode].IsStop
@@ -575,7 +581,7 @@
               return
             }
 
-            var _SerTime = (new Date().getTime()- this.$store.state.Difftime - GMT_DIF) % DAY_TIME //折合成当日的时间
+            var _SerTime = (new Date().getTime()- rootState.Difftime - GMT_DIF) % DAY_TIME //折合成当日的时间
                 ,IssueNo = state.IssueNo
             if(_SerTime<1000) {
               // console.log("新的一天");
@@ -583,9 +589,9 @@
               commit('lt_setIssueNo', state.IssueNo%state.PlanLen)
             }
 
-            //6HC
-            if(code === '1301'){
-              var serverTimeStamp = new Date().getTime() - this.$store.state.Difftime
+
+            function get6HCCountdown(){
+              var serverTimeStamp = new Date().getTime() - rootState.Difftime
               var serverTime =new Date(serverTimeStamp)  //服务器时间
               var dayIndex = serverTime.getDay(),  //星期几
                   serverDate = serverTime.getDate(),
@@ -605,9 +611,9 @@
               nextDraw.setDate(serverDate + refer[dayIndex])
               nextDraw.setHours(21,30,0)
               nextDraw.setMilliseconds(0)
-              var countDown = nextDraw.getTime() -  serverTime.getTime()
-              console.log(countDown)
-              if(countDown <= 1000){
+              var Countdown = nextDraw.getTime() -  serverTime.getTime() //获得和最近一次开奖的毫秒时间差
+              // console.log(Countdown)
+              if(Countdown <= 1000){
                 // 更新期号
                 commit('lt_updateIssue')
                 var _year = new Date(new Date().getTime()- this.$store.state.Difftime - GMT_DIF).getFullYear()  //本年
@@ -619,52 +625,58 @@
                   btn: ["确定"]
                 });
               }
-              countDown = Math.floor(countDown/1000)  //折算成秒
-              return
+              return Countdown
             }
 
-            if(!state.PlanLen) return
-            var Countdown = computeCountdown(state.IssueNo, _SerTime)
-            Countdown %= DAY_TIME;
-            //如果倒计时小于0，则一直更新到最新期
-            //用循环是因为有可能长时间不相应，需要一次性校正到位
-            var crossCount = 0
-            if(Countdown<=0){
-              while(Countdown<=0){
-                crossCount++
-                var lastIssueEnd = state.LotteryPlan[state.PlanLen - 1].End
-                    ,firstIssueStart = state.LotteryPlan[0].Start
+            if(code !== '1301'){
+              if(!state.PlanLen) return
+              var Countdown = computeCountdown(state.IssueNo, _SerTime)
+              Countdown %= DAY_TIME;
+              //如果倒计时小于0，则一直更新到最新期
+              //用循环是因为有可能长时间不相应，需要一次性校正到位
+              var crossCount = 0
+              if(Countdown<=0){
+                while(Countdown<=0){
+                  crossCount++
+                  var lastIssueEnd = state.LotteryPlan[state.PlanLen - 1].End
+                      ,firstIssueStart = state.LotteryPlan[0].Start
 
-                //等于： 首尾相接的期号。大于：最后一期在第二天。 余去，则不会进入out of issue
-                if(firstIssueStart >= lastIssueEnd){
-                  commit('lt_setIssueNo', ++IssueNo%state.PlanLen)
-                }else{
-                  commit('lt_setIssueNo', ++IssueNo)
+                  //等于： 首尾相接的期号。大于：最后一期在第二天。 余去，则不会进入out of issue
+                  if(firstIssueStart >= lastIssueEnd){
+                    commit('lt_setIssueNo', ++IssueNo%state.PlanLen)
+                  }else{
+                    commit('lt_setIssueNo', ++IssueNo)
+                  }
+
+                  Countdown = computeCountdown(state.IssueNo, _SerTime)
                 }
 
-                Countdown = computeCountdown(state.IssueNo, _SerTime)
+                if(crossCount > 1){
+                  console.log('更新到最新期')
+                  commit('lt_updateDate')
+                  commit('lt_setIssueNo', state.IssueNo%state.PlanLen)
+                }
+
+                //期号更新
+                commit('lt_updateIssue')
+                var _year = new Date(new Date().getTime()- this.$store.state.Difftime - GMT_DIF).getFullYear()  //本年
+                layer.open({
+                  shadeClose: false,
+                  className: "layerConfirm layerCenter",
+                  content: `${state.OldIssue.replace(_year,"")}期已截止</br>当前期号<span style="color:red">${state.NowIssue.replace(_year,"")}</span></br>投注时请注意期号`,
+                  title: "温馨提示",
+                  btn: ["确定"]
+                });
               }
 
-              if(crossCount > 1){
-                console.log('更新到最新期')
-                commit('lt_updateDate')
-                commit('lt_setIssueNo', state.IssueNo%state.PlanLen)
-              }
-
-              //期号更新
-              commit('lt_updateIssue')
-              var _year = new Date(new Date().getTime()- this.$store.state.Difftime - GMT_DIF).getFullYear()  //本年
-              layer.open({
-                shadeClose: false,
-                className: "layerConfirm layerCenter",
-                content: `${state.OldIssue.replace(_year,"")}期已截止</br>当前期号<span style="color:red">${state.NowIssue.replace(_year,"")}</span></br>投注时请注意期号`,
-                title: "温馨提示",
-                btn: ["确定"]
-              });
+            }else{
+              // 获得6HC的倒计时
+              var Countdown = get6HCCountdown()
             }
 
+
             Countdown = Math.floor(Countdown/1000);   //转成以秒为单位
-            updateTimeBar(Countdown)                  //更新倒计时文字
+            updateTimeBar(Countdown, code)                  //更新倒计时文字
 
             var Results = state.LotteryResults[state.lottery.LotteryCode]
                 ,len = Results?Results.length:0;
@@ -685,11 +697,14 @@
                     interval=30
                 }
                 if (wait4Results>(5+randomFeed) && wait4Results%interval===randomFeed) {
+                  console.log('获取开奖结果')
                   dispatch('lt_getResults', state.lottery.LotteryCode)    //获取开奖结果
                 }
               }else if(Results[0].IssueNo*1 >= state.NowIssue*1){
+                console.log('暂停销售')
                 commit('lt_stopSell', 0)    //暂停销售
               }else{
+                console.log('开奖')
                 commit('lt_displayResults', true)
                 //开奖
                 if(wait4Results){
@@ -723,8 +738,8 @@
             }
 
             // 更新倒计时文字
-            function updateTimeBar(Countdown){
-              if(Countdown>600){
+            function updateTimeBar(Countdown, code){
+              if(Countdown>600 && code !== '1301'){
                 commit('lt_updateTimeBar', '预售中')//如果Countdown大于10分钟，则进入预售
               }else{
                 //倒计时渲染

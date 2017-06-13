@@ -3,7 +3,7 @@
   <!-- 开奖号码 -->
   <div class = "result" @click.stop = "togglePastOpen">
     <span class = "text-small">
-      2017056期开奖号码 <i class = "iconfont">&#xe601;</i>
+      {{oldIssue}}期开奖号码 <i class = "iconfont">&#xe601;</i>
     </span>
 
     <div class = "openNumber">
@@ -23,10 +23,10 @@
   <!-- 倒计时 -->
   <div class = "timebar"  @click.stop = "togglePastOpen">
     <div class = "timebar-issue">
-      <p>2017057期</p>
+      <p>{{nowIssue}}期</p>
       <p>投注截止</p>
     </div>
-    <h4>02:05:46</h4>
+    <h4>{{TimeBar}}</h4>
   </div>
 
   <div class = "past-open" v-if = "ifShowPastOpen">
@@ -102,6 +102,26 @@ export default {
   computed:{
     ifShowPastOpen(){
       return state.lt.box === 'pastOpen'
+    },
+    TimeBar(){
+      return this.$store.state.lt.TimeBar
+    },
+    nowIssue(){
+      var nowIssue = this.$store.state.lt.NowIssue
+      if(!nowIssue){
+        return ''
+      }else{
+        return nowIssue.length < 8 ? nowIssue : nowIssue.slice(4)
+      }
+    },
+    oldIssue(){
+      var oldIssue = this.$store.state.lt.OldIssue
+      if(!oldIssue){
+        return ''
+      }else{
+        return oldIssue.length < 8 ? oldIssue : oldIssue.slice(4)
+
+      }
     },
     // openNumbers(){
     //   return this.wait4Results
