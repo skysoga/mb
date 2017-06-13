@@ -571,7 +571,7 @@ function computeIssue(code, index, isChase){
   function oneDayOneIssue(baseIssue, dateStr){
     return function(){
       var data = state.lt.Todaystr.replace(/^(\d{4})(\d{2})(\d{2})$/,'$1/$2/$3');
-      var dayDiff = Math.floor((Date.parse(data)-Date.parse(dateStr))/DAY_TIME)
+      var dayDiff = Math.floor((Date.parse(data)-Date.parse(dateStr))/DAY_TIME) //相差天数
       var needAddOne = +(_SerTime > 72000000)  //八点开
       // console.log(needAddOne, _SerTime, _SerTime-72000000)
       var issueStr = ('00' + (dayDiff + baseIssue + needAddOne + index)).slice(-3)

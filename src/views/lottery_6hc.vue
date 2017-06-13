@@ -7,7 +7,7 @@
         <time-result></time-result>
 
         <div class = "sscMain">
-          <bet-tip :award = "renderAward" :tip = "tip" :itemArr = "bonusText[lotteryMode]"></bet-tip>
+          <bet-tip :award = "renderAward" :tip = "tip" :itemArr = "bonusText[lotteryMode]" isOdds = "true"></bet-tip>
 
           <!-- 三色玩法框(01-49)(无赔率) -->
           <colorbox v-if = "renderItem.box === 'colorbox'"

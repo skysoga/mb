@@ -566,6 +566,7 @@
           },
           //refresh
           lt_refresh:({state, rootState, commit, dispatch})=>{
+            console.log('jk')
             var code = state.lottery.LotteryCode
             var isStop = rootState.LotteryList[code].IsStop
             // var isStop = rootState.LotteryList[this.lcode].IsStop
@@ -580,6 +581,46 @@
               // console.log("新的一天");
               commit('lt_updateDate')
               commit('lt_setIssueNo', state.IssueNo%state.PlanLen)
+            }
+
+            //6HC
+            if(code === '1301'){
+              var serverTimeStamp = new Date().getTime() - this.$store.state.Difftime
+              var serverTime =new Date(serverTimeStamp)  //服务器时间
+              var dayIndex = serverTime.getDay(),  //星期几
+                  serverDate = serverTime.getDate(),
+                  serverHour = serverTime.getHours(),
+                  serverMinute = serverTime.getMinutes()
+              var before2130 = serverHour < 21 || serverHour === 21 && serverMinute < 30  //在九点半之前
+              var beforeRefer = [2,1,0,1,0,1,0],
+                  afterRefer = [2,1,2,1,2,1,3]
+
+              if(before2130){
+                var refer = beforeRefer
+              }else{
+                var refer = afterRefer
+              }
+
+              var nextDraw = new Date(serverTimeStamp)
+              nextDraw.setDate(serverDate + refer[dayIndex])
+              nextDraw.setHours(21,30,0)
+              nextDraw.setMilliseconds(0)
+              var countDown = nextDraw.getTime() -  serverTime.getTime()
+              console.log(countDown)
+              if(countDown <= 1000){
+                // 更新期号
+                commit('lt_updateIssue')
+                var _year = new Date(new Date().getTime()- this.$store.state.Difftime - GMT_DIF).getFullYear()  //本年
+                layer.open({
+                  shadeClose: false,
+                  className: "layerConfirm layerCenter",
+                  content: `${state.OldIssue.replace(_year,"")}期已截止</br>当前期号<span style="color:red">${state.NowIssue.replace(_year,"")}</span></br>投注时请注意期号`,
+                  title: "温馨提示",
+                  btn: ["确定"]
+                });
+              }
+              countDown = Math.floor(countDown/1000)  //折算成秒
+              return
             }
 
             if(!state.PlanLen) return
@@ -605,6 +646,7 @@
               }
 
               if(crossCount > 1){
+                console.log('更新到最新期')
                 commit('lt_updateDate')
                 commit('lt_setIssueNo', state.IssueNo%state.PlanLen)
               }
