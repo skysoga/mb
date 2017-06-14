@@ -1,13 +1,14 @@
 <template>
 <div class = "sscFooter">
-  <div class = "bet-money" v-if = "betStr.length">
+  <div class = "bet-money" v-if = "betCount">
     当前选号
     <span class = "text-ellipsis" >{{betStr}}</span>
   </div>
 
-  <div class = "bet-money">
+  <div class = "bet-money" v-if = "betCount">
     每注金额<input type = "text" :value = "value" @input = "inputPerbet"> <span v-show = "!value.length">请输入投注金额</span>
   </div>
+
   <div class = "bet-info">
     <div class = "bet-info-left">
       <a class = "bet-info-clear" @click = "clearBet">清空</a>

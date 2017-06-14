@@ -256,6 +256,7 @@ export default {
     },
     // 清空当前选号
     clearBet(){
+      this.perbet = ''
       this.$store.commit({
         type:'lt_updateTmp',
         alias: '6HC',

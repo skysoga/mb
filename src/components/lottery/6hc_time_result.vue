@@ -1,7 +1,7 @@
 <template>
 <div class = "isLotteryCon">
   <!-- 开奖号码 -->
-  <div class = "result" @click.stop = "togglePastOpen">
+  <div class = "result"  v-if = "$store.state.lt.OldIssue" @click.stop = "togglePastOpen">
     <span class = "text-small">
       {{oldIssue}}期开奖号码 <i class = "iconfont">&#xe601;</i>
     </span>
@@ -21,7 +21,7 @@
   </div>
 
   <!-- 倒计时 -->
-  <div class = "timebar"  @click.stop = "togglePastOpen">
+  <div class = "timebar"  v-if = "$store.state.lt.NowIssue"  @click.stop = "togglePastOpen"  >
     <div class = "timebar-issue">
       <p>{{nowIssue}}期</p>
       <p>投注截止</p>
@@ -108,19 +108,19 @@ export default {
     },
     nowIssue(){
       var nowIssue = this.$store.state.lt.NowIssue
-      if(!nowIssue){
-        return ''
-      }else{
-        return nowIssue.length < 8 ? nowIssue : nowIssue.slice(4)
-      }
+      return nowIssue.length < 8 ? nowIssue : nowIssue.slice(4)
     },
     oldIssue(){
       var oldIssue = this.$store.state.lt.OldIssue
-      if(!oldIssue){
-        return ''
+      return oldIssue.length < 8 ? oldIssue : oldIssue.slice(4)
+    },
+    results(){
+      var code = this.$route.params.code
+      var _results = this.$store.state.lt.LotteryResults[code]
+      if(!_results || !_results.length){
+        return []
       }else{
-        return oldIssue.length < 8 ? oldIssue : oldIssue.slice(4)
-
+        return _results[0].LotteryOpen.split(',').slice(0,20)
       }
     },
     // openNumbers(){

@@ -209,6 +209,7 @@
           },
           //计算当前期号
           lt_computeIssueNo:(state, LotteryPlan)=>{
+
             state.LotteryPlan = LotteryPlan
             state.PlanLen = LotteryPlan.length
             var _timeE=[]     //EndTime的暂存数组
@@ -457,8 +458,10 @@
           },
           //action-获取开奖计划
           lt_updatePlan:({state, rootState, commit, dispatch}, code)=>{
-
-            if(code === '1008' || code === '1407'){
+            if(code === '1301'){
+              // commit('lt_computeIssueNo', LotteryPlan)
+              console.log('6HC  updatePlan  设置开奖计划')
+            }else if(code === '1008' || code === '1407'){
               createDFPlan()        //大发系列的，自行计算计划
             }else{
               //不是大发系列的
