@@ -303,7 +303,7 @@ window._fetch = function (data){
               resolve(json)
             })
           }else{
-            var msg = "网络数据解析错误"
+            var msg = "数据解析错误"
             FetchCatch({
               msg,
               json,
@@ -417,7 +417,7 @@ window._fetch = function (data){
         })()
         notRes||resolve(json)
       }).catch(error => {
-        var msg = "网络数据错误"
+        var msg = "数据错误"
         // FetchCatch(msg, resolve, error)
         FetchCatch({
           msg,
