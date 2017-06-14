@@ -162,6 +162,10 @@ export default {
           '-ms-transform':'scale(.5)',
           '-moz-transform':'scale(.5)',
           'transform':'scale(.5)',
+        },
+        '立刻付':{
+          'margin-top':2.5*em-230+'px',
+          'left': '-500px'
         }
       }
     }
