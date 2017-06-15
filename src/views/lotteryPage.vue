@@ -193,6 +193,9 @@
           //渲染用
           Todaystr:'',
           TimeBar:'00:00:00',      //倒计时内容
+          NowIssue: '',            //当前期
+          OldIssue: '',            //上一期
+
           //counter或flag
           displayResults: false,  //false显示等待开奖的动画， true显示开奖结果
           perbet: PERBET
@@ -707,7 +710,7 @@
                 console.log('暂停销售')
                 commit('lt_stopSell', 0)    //暂停销售
               }else{
-                console.log('开奖')
+                console.log('开奖', Results[0].IssueNo, state.OldIssue)
                 commit('lt_displayResults', true)
                 //开奖
                 if(wait4Results){
