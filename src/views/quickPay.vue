@@ -162,6 +162,18 @@ export default {
           '-ms-transform':'scale(.5)',
           '-moz-transform':'scale(.5)',
           'transform':'scale(.5)',
+        },
+        '新摩宝':{
+          'margin-top':2.5*em-100+'px',
+          'left':'-500px'
+        },
+        '立刻付':{
+          'margin-top':2.5*em-290+'px',
+          'left':'-500px',
+          '-webkit-transform':'scale(.7)',
+          '-ms-transform':'scale(.7)',
+          '-moz-transform':'scale(.7)',
+          'transform':'scale(.7)',
         }
       }
     }
