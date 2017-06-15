@@ -210,8 +210,15 @@
             var nowSerTime = new Date().getTime()- this.$store.state.Difftime;   //当前的服务器时间
             state.Todaystr = new Date(nowSerTime).format("yyyyMMdd");           //今天
           },
+          lt_setPlan:(state, plan)=>{
+            state.LotteryPlan = plan
+          },
           //计算当前期号
           lt_computeIssueNo:(state, LotteryPlan)=>{
+            var code = state.lottery.LotteryCode
+            if(code === '1301'){
+              return
+            }
 
             state.LotteryPlan = LotteryPlan
             state.PlanLen = LotteryPlan.length
@@ -456,14 +463,74 @@
             wait4BetRecord = false
             clearTimeout(this.timer1)
             clearTimeout(this.timer2)
-
             dispatch('lt_updatePlan', code)    //更新计划
           },
+          lt_get6HCPlan:({state, rootState, commit, dispatch}, code)=>{
+            var LotteryPlan = localStorage.getItem("lotteryPlan"+ code)
+            LotteryPlan = LotteryPlan&&JSON.parse(LotteryPlan)
+
+            if(LotteryPlan){
+              console.log('使用缓存')
+              // var Schedule = LotteryPlan.Schedule.split(',')
+              // // 期号表最后一期的时间
+              // var lastIssueTime = new Date()
+              // var len = Schedule.length
+              // lastIssueTime.setMonth(LotteryPlan.Month - 1)
+              // lastIssueTime.setDate(Schedule[len - 1])
+              // lastIssueTime.setHours(21,30,0)
+
+              // if(Date.now() >= lastIssueTime.getTime()){
+              //   console.log('本月计划已经过期')
+              //   // 如何确定获取下个月的计划
+              //   fetch6HCPlan()
+              // }else{
+              // }
+              use6HCPlan(LotteryPlan)
+            }else{
+              console.log('都没有')
+              fetch6HCPlan()
+            }
+
+            function fetch6HCPlan(){
+              _fetch({Action:'GetLotteryPlan', Qort:'1301'}).then((json)=>{
+                if(json.Code === 1){
+                  var monthPlan = json.Data
+                  localStorage.setItem("lotteryPlan" + code, JSON.stringify(monthPlan));
+                  //如果code和当前的code不一样，说明在异步获取完后，用户已经切换页面了，就直接结束
+                  console.log(json)
+                  use6HCPlan(monthPlan)
+                }else{
+                  layer.msgWarn(json.StrCode);
+                }
+              })
+            }
+
+
+            function use6HCPlan(monthPlan){
+              // 将对应的当月期号表变成毫秒值
+              var Month = monthPlan.Month
+              var Schedule = monthPlan.Schedule.split(',')
+              var cursor = new Date()
+              cursor.setMonth(Month - 1)
+              cursor.setHours(21,30,0)
+
+              monthPlan.BeforeIssue = +monthPlan.BeforeIssue
+              monthPlan.Schedule = monthPlan.Schedule.split(',').map(str=>+str)
+              monthPlan.ScheduleStamp = monthPlan.Schedule.map(num=>{
+                cursor.setDate(num)
+                return cursor.getTime()
+              })
+
+              commit('lt_setPlan', monthPlan)
+            }
+          },
+
+
+
           //action-获取开奖计划
           lt_updatePlan:({state, rootState, commit, dispatch}, code)=>{
             if(code === '1301'){
-              // commit('lt_computeIssueNo', LotteryPlan)
-              console.log('6HC  updatePlan  设置开奖计划')
+              dispatch('lt_get6HCPlan', code)
             }else if(code === '1008' || code === '1407'){
               createDFPlan()        //大发系列的，自行计算计划
             }else{
@@ -634,6 +701,30 @@
               return Countdown
             }
 
+            function get6HCCountdown(){
+              var serverTimeStamp = new Date().getTime() - rootState.Difftime
+              var {BeforeIssue, Month, NextFirst, Schedule} = state.LotteryPlan
+              var cursor = new Date(serverTimeStamp)
+              cursor.setMonth(Month - 1)
+              cursor.setHours(21,30,0)
+              cursor.setMilliseconds(0)
+
+              var _issue = 1
+              for(var i = 0;i < Schedule.length;i++){
+                cursor.setDate(Schedule[i])
+                if(cursor.getTime() > serverTimeStamp){
+                  _issue = _issue + i
+                  break
+                }
+              }
+              var issue = BeforeIssue + _issue
+              commit('lt_setIssueNo', issue)
+              commit('lt_updateIssue')
+              var Countdown = cursor.getTime() - serverTimeStamp
+              return Countdown
+            }
+
+
             if(code !== '1301'){
               if(!state.PlanLen) return
               var Countdown = computeCountdown(state.IssueNo, _SerTime)
@@ -707,7 +798,7 @@
                   dispatch('lt_getResults', state.lottery.LotteryCode)    //获取开奖结果
                 }
               }else if(Results[0].IssueNo*1 >= state.NowIssue*1){
-                console.log('暂停销售')
+                console.log('暂停销售', Results[0].IssueNo, state.NowIssue)
                 commit('lt_stopSell', 0)    //暂停销售
               }else{
                 console.log('开奖', Results[0].IssueNo, state.OldIssue)
@@ -939,7 +1030,6 @@
           }
         }
       }
-
 
       //注册彩种模块 --lt
       this.$store.state.lt || this.$store.registerModule('lt', lt)

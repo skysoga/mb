@@ -557,14 +557,16 @@ function computeIssue(code, index, isChase){
       ,dateStr    //日期字符串
       ,_SerTime = (new Date().getTime()- state.Difftime - GMT_DIF) % DAY_TIME
 
-  if(!state.lt.PlanLen)return
-  days = Math.floor(index/state.lt.PlanLen)
-  _index = index - days * state.lt.PlanLen;
+  if(code !== '1301'){
+    if(!state.lt.PlanLen)return
+    days = Math.floor(index/state.lt.PlanLen)
+    _index = index - days * state.lt.PlanLen;
 
-  //跨期的处理
-  var firstIssue = state.lt.LotteryPlan[0]
-  if((firstIssue.End < firstIssue.Start) && (firstIssue.Start < _SerTime)){
-    days++
+    //跨期的处理
+    var firstIssue = state.lt.LotteryPlan[0]
+    if((firstIssue.End < firstIssue.Start) && (firstIssue.Start < _SerTime)){
+      days++
+    }
   }
 
   //一天一期，20点开
@@ -617,6 +619,11 @@ function computeIssue(code, index, isChase){
     '1201':oneDayOneIssue(33, "2017/2/9"),
     //排列3：每天一期
     '1202':oneDayOneIssue(33, "2017/2/9"),
+    '1301':function(){
+      var dateStr = new Date().getFullYear().toString()
+      var issueNo = ('0' + index).slice(0,3)
+      return dateStr + issueNo
+    }
   }
 
   //计算期号字符串
