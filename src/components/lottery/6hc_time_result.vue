@@ -6,18 +6,36 @@
       {{oldIssue}}期开奖号码 <i class = "iconfont">&#xe601;</i>
     </span>
 
-    <div class = "openNumber">
-      <div v-for = "(numStr, index) in openNumbers" v-if = "index < 6" class = "number-box">
-        <em :class = "{red:inArray(red, numStr), blue:inArray(red, numStr), green:inArray(green, numStr)}">{{numStr}}</em>
+    <div class = "openNumber"  v-if = "displayResults">
+      <div v-for = "(numStr, index) in results" v-if = "index < 6" class = "number-box">
+        <em :class = "{red:inArray(red, numStr), blue:inArray(blue, numStr), green:inArray(green, numStr)}">{{numStr}}</em>
         <span class = "number-box-text">{{getAnimal(numStr)}}</span>
       </div>
       <div class = "number-box"><span class = "symbol">+</span></div>
       <div class = "number-box">
-        <em :class = "{red:inArray(red, openNumbers[6]), blue:inArray(red, openNumbers[6]), green:inArray(green, openNumbers[6])}">{{openNumbers[6]}}</em>
-        <span class = "number-box-text">{{getAnimal(openNumbers[6])}}</span>
+        <em :class = "{red:inArray(red, results[6]), blue:inArray(blue, results[6]), green:inArray(green, results[6])}">{{results[6]}}</em>
+        <span class = "number-box-text">{{getAnimal(results[6])}}</span>
       </div>
-      <!-- <div class = "number-box"><em class = "red">07</em><span class = "number-box-text">兔</span></div> -->
     </div>
+
+    <div class = "openNumber" v-if = "!displayResults">
+      <div v-for = "(numStr, index) in wait4Results" v-if = "index < 6" class = "number-box">
+        <em class = "red">{{numStr}}</em>
+        <!-- <span class = "number-box-text">鼠</span> -->
+        <!-- <span class = "number-box-text">{{getAnimal(numStr)}}</span> -->
+      </div>
+      <div class = "number-box"><span class = "symbol">+</span></div>
+      <div class = "number-box">
+        <em class = "red">{{wait4Results[6]}}</em>
+        <!-- <span class = "number-box-text">鼠</span> -->
+        <!-- <span class = "number-box-text">{{getAnimal(wait4Results[6])}}</span> -->
+      </div>
+    </div>
+
+
+
+
+
   </div>
 
   <!-- 倒计时 -->
@@ -37,17 +55,19 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for = "n in 8" >
-          <td>2017056</td>
+        <tr v-for = "item in pastOpen" >
+          <td>{{item.IssueNo}}</td>
           <td class = "past-open-result">
-            <div class = "past-open-result-box"><em class = "red">07</em><span>兔</span></div>
-            <div class = "past-open-result-box"><em class = "green">05</em><span>兔</span></div>
-            <div class = "past-open-result-box"><em class = "blue">15</em><span>兔</span></div>
-            <div class = "past-open-result-box"><em class = "blue">10</em><span>兔</span></div>
-            <div class = "past-open-result-box"><em class = "red">01</em><span>兔</span></div>
-            <div class = "past-open-result-box"><em class = "blue">09</em><span>兔</span></div>
+            <div v-for = "(numStr, index) in item.LotteryOpen" class = "past-open-result-box" v-if = "index < 6">
+              <em :class = "{red:inArray(red, numStr), blue:inArray(blue, numStr), green:inArray(green, numStr)}">{{numStr}}</em>
+              <span>{{getAnimal(numStr)}}</span>
+            </div>
+
             <div class = "past-open-result-box"><span class = "symbol">+</span></div>
-            <div class = "past-open-result-box"><em class = "blue">03</em><span>兔</span></div>
+            <div class = "past-open-result-box">
+              <em :class = "{red:inArray(red, item.LotteryOpen[6]), blue:inArray(blue, item.LotteryOpen[6]), green:inArray(green, item.LotteryOpen[6])}">03</em>
+              <span>{{getAnimal(item.LotteryOpen[6])}}</span>
+            </div>
           </td>
           <td>17.05.12</td>
         </tr>
@@ -69,7 +89,8 @@ export default {
       red:['01','02','07','08','12','13','18','19','23','24','29','30','34','35','40','45','46'],
       blue:['03','04','09','10','14','15','20','25','26','31','36','37','41','42','47','48'],
       green:['05','06','11','16','17','21','22','27','28','32','33','38','39','43','44','49'],
-      // wait4Results:['01','01','01','01','01','01','01']
+      wait4Results:['01','01','01','01','01','01','01'],
+      timer:null,
     }
   },
   methods:{
@@ -84,20 +105,20 @@ export default {
     },
   },
   created(){
-    // function circle(numStr){
-    //   var num = +numStr
-    //   num++
-    //   if(num > 49){
-    //     return '01'
-    //   }else{
-    //     return ('0' + num).slice(0,2)
-    //   }
-    // }
-    // var arr = ['01','01','01','01','01','01','01']
-    // setInterval(()=>{
-    //   arr = arr.map(circle)
-    //   this.wait4Results = arr
-    // },40)
+    function circle(numStr){
+      var num = +numStr
+      num++
+      if(num > 49){
+        return '01'
+      }else{
+        return ('0' + num).slice(0,2)
+      }
+    }
+    var arr = ['01','01','01','01','01','01','01']
+    this.timer = setInterval(()=>{
+      arr = arr.map(circle)
+      this.wait4Results = arr
+    },40)
   },
   computed:{
     ifShowPastOpen(){
@@ -123,9 +144,25 @@ export default {
         return _results[0].LotteryOpen.split(',').slice(0,20)
       }
     },
+    pastOpen(){
+      var code = this.$route.params.code
+      return state.lt.LotteryResults[code].map(item=>{
+        var el = {}
+        el.IssueNo = item.IssueNo
+        el.LotteryOpen = item.LotteryOpen.split(',').map(str=>('0' + str).slice(-2))
+        el.OpenTime = item.OpenTime.split(' ')[1] //开奖时间的时分秒
+        return el
+      })
+    },
+    displayResults(){
+      return this.$store.state.lt.displayResults
+    }
     // openNumbers(){
     //   return this.wait4Results
     // }
+  },
+  beforeDestroy(){
+    clearInterval(this.timer)
   }
 }
 </script>
@@ -178,7 +215,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  height:2.2rem;
+  /*height:2.2rem;*/
   /*border: 1px solid #aaa;*/
   em{
     display: flex;
@@ -219,7 +256,7 @@ export default {
   top:4.2rem;
   left:0;
   width:100%;
-  height:22rem;
+  min-height:10rem;
   border-top:1px solid #fff;
   background: #e1d9ba;
 }

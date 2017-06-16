@@ -273,17 +273,19 @@ export default {
         return
       }
 
-      var lotteryCode = this.$store.state.lt.lottery.LotteryCode
-      var nowIssue = this.$store.state.lt.NowIssue
-      var lotteryName = this.$store.state.lt.lottery.LotteryName
+      var lt = this.$store.state.lt
+      var lotteryCode = lt.lottery.LotteryCode
+      var nowIssue = lt.NowIssue
+      var lotteryName = lt.lottery.LotteryName
       var betMoney = this.betCount * this.perbet
+      var rebate = lt.Rebate[this.lottery]
       var bet = {
         lottery_code: lotteryCode,
         play_detail_code: lotteryCode + this.mode,
         betting_number: this.betStr,
         betting_count: this.betCount,
         betting_money: betMoney,
-        betting_point: '',    //还没好
+        betting_point: '0-' + rebate,
         betting_model: 1,
         betting_issuseNo: nowIssue,
         graduation_count:1
@@ -293,6 +295,7 @@ export default {
       var msg = `${lotteryName}: ${nowIssue}期<br>
                     投注金额: <span style = "color:red">${betMoney}元</span><br>
                     投注内容:${this.betStr}`
+      var that = this
       layer.open({
         title:"投注确认",
         style:'width:18em;font-size:.7em',
@@ -300,7 +303,15 @@ export default {
         content: msg,
         btn: ['确定', '取消'],
         yes: ()=>{
-          this.$store.dispatch('lt_confirmBet1', basket)
+          this.$store.dispatch({
+            type: 'lt_confirmBet1',
+            basket: basket,
+            success: function(){
+              //清空每注单价
+              that.perbet = ''
+            }
+          })
+          // this.$store.dispatch('lt_confirmBet1', basket)
         },
         no:()=>{}
       })

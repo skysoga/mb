@@ -42,7 +42,7 @@ export default {
       }
     }
     var arr = [0,0,0,0,0]
-    setInterval(()=>{
+    this.timer = setInterval(()=>{
       arr = arr.map(circle)
       this.wait4Results = arr
     },40)
@@ -52,6 +52,7 @@ export default {
       wait4Results:[0,0,0,0,0],
       ltype: '',    //彩种类型
       lcode: '',    //彩种code
+      timer: null,
     }
   },
   watch:{
@@ -94,6 +95,9 @@ export default {
          this.$store.commit('lt_changeBox', '') :
            this.$store.commit('lt_changeBox', 'pastOpen')
     },
+  },
+  beforeDestroy(){
+    clearInterval(this.timer)
   }
 }
 </script>

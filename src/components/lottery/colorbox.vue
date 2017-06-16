@@ -134,7 +134,7 @@ export default {
     border: 1px solid #bfbfbf;
     font-size: .8em;
     margin:0.3em;
-    text-indent: -0.2em;
+    text-indent: -0.3em;
   }
   .red{
     color:#dc3b40;

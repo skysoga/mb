@@ -471,21 +471,13 @@
 
             if(LotteryPlan){
               console.log('使用缓存')
-              // var Schedule = LotteryPlan.Schedule.split(',')
-              // // 期号表最后一期的时间
-              // var lastIssueTime = new Date()
-              // var len = Schedule.length
-              // lastIssueTime.setMonth(LotteryPlan.Month - 1)
-              // lastIssueTime.setDate(Schedule[len - 1])
-              // lastIssueTime.setHours(21,30,0)
-
-              // if(Date.now() >= lastIssueTime.getTime()){
-              //   console.log('本月计划已经过期')
-              //   // 如何确定获取下个月的计划
-              //   fetch6HCPlan()
-              // }else{
-              // }
-              use6HCPlan(LotteryPlan)
+              var now = new Date()
+              if(now.getMonth() + 1 > LotteryPlan.Month){
+                console.log('彩种计划过期了，需要更新')
+                fetch6HCPlan()
+              }else{
+                use6HCPlan(LotteryPlan)
+              }
             }else{
               console.log('都没有')
               fetch6HCPlan()
@@ -495,6 +487,9 @@
               _fetch({Action:'GetLotteryPlan', Qort:'1301'}).then((json)=>{
                 if(json.Code === 1){
                   var monthPlan = json.Data
+
+                  monthPlan = JSON.parse('{"Month":6,"BeforeIssue":"62","Schedule":"1,3,6,8,10,13,15,17,20,22,24,27,29","NextFirst":"2"}')
+
                   localStorage.setItem("lotteryPlan" + code, JSON.stringify(monthPlan));
                   //如果code和当前的code不一样，说明在异步获取完后，用户已经切换页面了，就直接结束
                   console.log(json)
@@ -515,6 +510,7 @@
               cursor.setHours(21,30,0)
 
               monthPlan.BeforeIssue = +monthPlan.BeforeIssue
+              monthPlan.NextFirst = +monthPlan.NextFirst
               monthPlan.Schedule = monthPlan.Schedule.split(',').map(str=>+str)
               monthPlan.ScheduleStamp = monthPlan.Schedule.map(num=>{
                 cursor.setDate(num)
@@ -524,9 +520,6 @@
               commit('lt_setPlan', monthPlan)
             }
           },
-
-
-
           //action-获取开奖计划
           lt_updatePlan:({state, rootState, commit, dispatch}, code)=>{
             if(code === '1301'){
@@ -662,65 +655,52 @@
               commit('lt_setIssueNo', state.IssueNo%state.PlanLen)
             }
 
-
             function get6HCCountdown(){
               var serverTimeStamp = new Date().getTime() - rootState.Difftime
-              var serverTime =new Date(serverTimeStamp)  //服务器时间
-              var dayIndex = serverTime.getDay(),  //星期几
-                  serverDate = serverTime.getDate(),
-                  serverHour = serverTime.getHours(),
-                  serverMinute = serverTime.getMinutes()
-              var before2130 = serverHour < 21 || serverHour === 21 && serverMinute < 30  //在九点半之前
-              var beforeRefer = [2,1,0,1,0,1,0],
-                  afterRefer = [2,1,2,1,2,1,3]
-
-              if(before2130){
-                var refer = beforeRefer
-              }else{
-                var refer = afterRefer
-              }
-
-              var nextDraw = new Date(serverTimeStamp)
-              nextDraw.setDate(serverDate + refer[dayIndex])
-              nextDraw.setHours(21,30,0)
-              nextDraw.setMilliseconds(0)
-              var Countdown = nextDraw.getTime() -  serverTime.getTime() //获得和最近一次开奖的毫秒时间差
-              // console.log(Countdown)
-              if(Countdown <= 1000){
-                // 更新期号
-                commit('lt_updateIssue')
-                var _year = new Date(new Date().getTime()- this.$store.state.Difftime - GMT_DIF).getFullYear()  //本年
-                layer.open({
-                  shadeClose: false,
-                  className: "layerConfirm layerCenter",
-                  content: `${state.OldIssue.replace(_year,"")}期已截止</br>当前期号<span style="color:red">${state.NowIssue.replace(_year,"")}</span></br>投注时请注意期号`,
-                  title: "温馨提示",
-                  btn: ["确定"]
-                });
-              }
-              return Countdown
-            }
-
-            function get6HCCountdown(){
-              var serverTimeStamp = new Date().getTime() - rootState.Difftime
-              var {BeforeIssue, Month, NextFirst, Schedule} = state.LotteryPlan
+              var {BeforeIssue, Month, NextFirst, Schedule, ScheduleStamp} = state.LotteryPlan
               var cursor = new Date(serverTimeStamp)
-              cursor.setMonth(Month - 1)
-              cursor.setHours(21,30,0)
-              cursor.setMilliseconds(0)
+
+              // 每月将缓存清楚掉重新拉取---月头
+              if(cursor.getMonth() + 1 > Month){
+                var hour = cursor.getHours()
+                var minute = cursor.getMinutes()
+                var second = cursor.getSeconds()
+                var ms = cursor.getMilliseconds()
+                console.log('运行时发现计划过期',hour, minute, second, ms)
+                if([hour, minute, second].every(num=>num===0)){
+                  console.log('运行时，删除原缓存，并拉取新的计划')
+                  localStorage.removeItem('lotteryPlan' + code)
+                  dispatch('lt_get6HCPlan', code)
+                }
+              }
 
               var _issue = 1
-              for(var i = 0;i < Schedule.length;i++){
-                cursor.setDate(Schedule[i])
-                if(cursor.getTime() > serverTimeStamp){
+              for(var i = 0;i < ScheduleStamp.length;i++){
+                if(ScheduleStamp[i] > serverTimeStamp){
                   _issue = _issue + i
                   break
                 }
               }
+
               var issue = BeforeIssue + _issue
+              // 设置期号
               commit('lt_setIssueNo', issue)
               commit('lt_updateIssue')
-              var Countdown = cursor.getTime() - serverTimeStamp
+
+              // 如果有值说明还在期号表内
+              if(Schedule[i] !== undefined){
+                var Countdown = ScheduleStamp[i] - serverTimeStamp
+              }else{
+                //月尾
+                console.log('一个月的结束，先用nextFirst')
+                cursor.setMonth(Month)
+                cursor.setDate(NextFirst)
+                cursor.setHours(21,30,0)
+                cursor.setMilliseconds(0)
+                _issue = Schedule.length
+                var Countdown = cursor.getTime() - serverTimeStamp
+              }
+
               return Countdown
             }
 
@@ -769,6 +749,24 @@
             }else{
               // 获得6HC的倒计时
               var Countdown = get6HCCountdown()
+              if(Countdown < 0){
+                // nextFirst的时间都到了。依然没有获取到开奖计划
+                commit('lt_stopSell', 0)    //暂停销售
+                console.log('本月计划未更新')
+                return
+              }else if(Countdown < 1000){
+                console.log('下一期了')
+                // var _year = new Date(new Date().getTime()- this.$store.state.Difftime - GMT_DIF).getFullYear()  //本年
+                var currIssue = computeIssue(code, state.IssueNo)
+                var nextIssue= computeIssue(code, state.IssueNo + 1)
+                layer.open({
+                  shadeClose: false,
+                  className: "layerConfirm layerCenter",
+                  content: `${currIssue}期已截止</br>当前期号<span style="color:red">${nextIssue}</span></br>投注时请注意期号`,
+                  title: "温馨提示",
+                  btn: ["确定"]
+                });
+              }
             }
 
 
@@ -801,7 +799,7 @@
                 console.log('暂停销售', Results[0].IssueNo, state.NowIssue)
                 commit('lt_stopSell', 0)    //暂停销售
               }else{
-                console.log('开奖', Results[0].IssueNo, state.OldIssue)
+                // console.log('开奖', Results[0].IssueNo, state.OldIssue)
                 commit('lt_displayResults', true)
                 //开奖
                 if(wait4Results){
@@ -938,7 +936,7 @@
             })
           },
           // 新彩种的投注接口
-          lt_confirmBet1:({state, rootState, commit, dispatch}, basket)=>{
+          lt_confirmBet1:({state, rootState, commit, dispatch}, {basket, success})=>{
             layer.msgWait('正在投注')
             _fetch({
               'Action':'AddBetting',
@@ -962,6 +960,8 @@
                 }
 
                 commit('lt_setBetRecord', _betRecord)
+
+                success()
 
                 // //隔3s获取我的投注
                 // this.timer3 = setTimeout(()=>{
