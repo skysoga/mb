@@ -7,7 +7,14 @@
         <time-result></time-result>
 
         <div class = "sscMain">
-          <bet-tip :award = "renderAward" :tip = "tip" :itemArr = "bonusText[lotteryMode]" isOdds = "true"></bet-tip>
+          <div class="sscTips" v-if = "!tipDisplayFlag && tipOverLong">
+            <p>
+              {{actualTip}}
+              <span @click = "showDetail" style = "color:#218ddd;">详细</span>
+            </p>
+          </div>
+
+          <bet-tip v-else :award = "renderAward" :tip = "tip" :itemArr = "bonusText[lotteryMode]" :isOdds = "true"></bet-tip>
 
           <!-- 三色玩法框(01-49)(无赔率) -->
           <colorbox v-if = "renderItem.box === 'colorbox'"
@@ -95,6 +102,8 @@ export default {
       perbet:'',
       poultry: ['牛','马','羊','鸡','狗','猪'],//家禽
       wild: ['鼠','虎','兔','龙','蛇','猴'], //野兽
+      ellipsisWidth: 45,
+      // tipDisplayFlag: false,
     }
   },
   computed:mapState({
@@ -106,6 +115,17 @@ export default {
         return award.map(item=>(+item/2).toString())
       }else{
         return  (+award/2).toString()
+      }
+    },
+    tipDisplayFlag:()=>state.lt.tipDisplayFlag,
+    tipOverLong(){
+      return this.tip.length > this.ellipsisWidth
+    },
+    actualTip(){
+      if(!this.tipOverLong){
+        return this.tip
+      }else{
+        return this.tip.slice(0, this.ellipsisWidth) + '...'
       }
     },
     renderOdds(){
@@ -231,6 +251,9 @@ export default {
     },
   }),
   methods:{
+    showDetail(){
+      this.$store.commit('lt_showFullTip', true)
+    },
     choose(item, order){
       var chosen = this.chosen.slice()
       if(chosen.indexOf(item) === -1){
@@ -325,5 +348,25 @@ export default {
 .sscMain{
   padding-top:6.8rem;
   padding-bottom:6rem;
+}
+
+.sscTips{
+  margin:0 0.6em;
+  color:#333;
+  p{
+    font-size: 0.65em;
+  }
+  &+.selectNumber{
+    &:before{
+      display:none;
+    }
+  }
+  i{
+    color:#dc3b40;
+  }
+  span{
+    color:#ff9831;
+    display: inline-block;
+  }
 }
 </style>

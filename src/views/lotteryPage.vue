@@ -198,6 +198,7 @@
 
           //counter或flag
           displayResults: false,  //false显示等待开奖的动画， true显示开奖结果
+          tipDisplayFlag: false,  //是否省略玩法
           perbet: PERBET
 
         },
@@ -290,6 +291,9 @@
           lt_displayResults:(state, bool)=>{                          //展示开奖结果或开奖动画
             state.displayResults = bool
           },
+          lt_showFullTip:(state, bool)=>{
+            state.tipDisplayFlag = bool
+          },
           lt_updateTimeBar:(state, text)=>{state.TimeBar = text;},      //倒计时的内容
           lt_setBetRecord:(state, BetRecord)=>{state.BetRecord =BetRecord;},  //投注记录
 
@@ -309,6 +313,9 @@
             //更改玩法时，对应玩法的奖金也跟着变
             state.award = awardSetter[type](mode.mode, Odds)
             //更换玩法，bet清空
+            //
+            //隐藏过长的玩法说明
+            state.tipDisplayFlag = false
           },
           //变更彩种
           lt_changeLottery:(state, code)=>{

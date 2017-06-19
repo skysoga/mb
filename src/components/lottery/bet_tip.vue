@@ -1,7 +1,7 @@
 <template>
   <div class="sscTips">
-    <p v-if = "this.type === 'noAward'">{{actualTip}}</p>
-    <p v-if = "this.type === 'multiple'" @click="showBonus">{{actualTip}}<span>奖金详情</span></p>
+    <p v-if = "this.type === 'noAward'">{{tip}}</p>
+    <p v-if = "this.type === 'multiple'" @click="showBonus">{{tip}}<span>奖金详情</span></p>
     <p v-if = "this.type === 'single'" >{{tip}}{{this.isOdds ? '赔率' : '奖金'}}<i>{{award}}</i>{{this.isOdds ? '': '元'}}</p>
   </div>
 </template>
@@ -39,16 +39,7 @@ export default {
     this.checkProps()
   },
   computed:{
-    tipOverLong(){
-      return this.tip.length > 50
-    },
-    actualTip(){
-      if(!this.tipOverLong){
-        return this.tip
-      }else{
-        return this.tip.slice(0,42) + '...'
-      }
-    }
+
   },
   methods:{
     checkProps(){
