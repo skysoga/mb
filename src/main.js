@@ -940,10 +940,21 @@ window.RootApp={
   SaveInitData(d){
     store.commit('SaveInitData', d)
   },
+  // 设置网页title
+  setTitle(siteName, routeName){
+    var title
+    if(siteName){
+      title = `${siteName}-${routeName}`
+    }else{
+      title = `${routeName}`
+    }
+    document.title = title
+  },
   WatchInitData(d) {
     //必须跟随执行的函数
     var head = document.getElementsByTagName('head')[0]
     var v
+    var vm = this
     for(var i in d) {
       switch(i){
         case 'SiteConfig':
@@ -951,10 +962,12 @@ window.RootApp={
             console.log(s);
             routes[1].meta.title=`<img src="${state.constant.ImgHost+s.MobileLogo}">`
             if (!_App) {
-              document.title=s.Name
+              vm.title = s.Name
+              // document.title=s.Name
               // routes[2].meta.title=routes[1].meta.title
             }
-            document.title = s.Name
+            vm.title = s.Name
+            // document.title = s.Name
             if(!s.PCLogo){//PCLogo为空时转换
               s.PCLogo={}
               s.PCLogo.logo1=''
@@ -1156,12 +1169,20 @@ window.RootApp={
     }
   },
 }
-RootApp.WatchInitData(localState)
+
 window.RootApp = new Vue({
   el: '#app',
   store,
   router,
   methods:window.RootApp,
+  data:{
+    title: ''
+  },
+  watch:{
+    $route(newRoute, oldRoute){
+      this.setTitle(this.title, newRoute.name)
+    }
+  },
   created:function(){
     var len = routes.length
     // var ToPath=localStorage.getItem('LastPath')
@@ -1185,6 +1206,8 @@ window.RootApp = new Vue({
   },
   render: h => h(App),
 });
+
+RootApp.WatchInitData(localState)
 
 router.beforeEach((to, from, next) => {
   //不在scrollBehavior中设置，改为自己操控。来避免全部彩种进入时，被归位的问题
