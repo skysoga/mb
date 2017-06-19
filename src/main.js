@@ -190,7 +190,7 @@ function FetchCatch(opt) {
   }
   if (error) {
     error=error.toString()
-    // msg += '<br/>'+error
+    msg += '<br/>'+error
     console.log(error);
   }
   if (S){
