@@ -28,7 +28,7 @@
 </template>
 
 <script>
-
+import {getAnimal} from '../js/page_config/lt_6hc'
 export default {
   data(){
     return {
@@ -119,6 +119,15 @@ export default {
     _fetch({Action:"GetBetDetail",UserId:to.query.UID||0,ID:to.query.ID}).then((data)=>{
       next(vm=>{
         if(data.Code===1){
+          var res_data = data.BackData
+          var {LotteryName} = res_data
+          // if(LotteryName === '六合彩'){
+          //   res_data.BetInfoList = res_data.BetInfoList.map(dataItem=>{
+          //     dataItem.BetNum = dataItem.BetNum.split(',').map(char=>getAnimal(char)).join(',')
+          //     return dataItem
+          //   })
+          // }
+
           vm.res_data=data.BackData
           let type=data.BackData.LotteryName.substr(data.BackData.LotteryName.length-2)
           vm.transType(type)
