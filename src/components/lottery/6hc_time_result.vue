@@ -80,7 +80,8 @@
 </template>
 
 <script>
-import {createStringArray, getAnimal} from '../../js/kit'
+import {getAnimal} from '../../js/page_config/lt_6hc'
+import {createStringArray} from '../../js/kit'
 
 export default {
   data(){

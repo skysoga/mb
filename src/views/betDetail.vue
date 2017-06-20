@@ -50,12 +50,18 @@ export default {
       str=e?str:str.split('+')[0].split(',').slice(0,20).join(',')
       layer.alert(str)
     },
-    setNum(str,e){
-      var atr=e?str.split(' '):str.split(',')
-      var Num=e?10:8
-      var xtr=atr.slice(0,Num)
-      var Arr=e?xtr.join(' '):xtr.join(',')
-      return atr.length>(e?10:8)?Arr+'[详情]':Arr
+    setNum(str,flag){
+      //flag 标志位
+      if(flag){
+        var delimiter = flag ? ' ' : ','
+        var MaxNum = flag ? 10 : 8
+      }
+
+      var originArr = str.split(delimiter)
+      var actualArr = originArr.slice(0, MaxNum)
+      var betNum = actualArr.join(delimiter)
+      var result = originArr.length>MaxNum ? betNum+'[详情]': betNum
+      return result
     },
     CancelBet:function(id){
       var vm=this

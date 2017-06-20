@@ -64,8 +64,8 @@ import normal_box from '../components/lottery/normal_box'
 import combobox from '../components/lottery/combobox'
 import time_result from '../components/lottery/6hc_time_result'
 import lt_footer1 from '../components/lottery/lt_footer1'
-import {renderConfig} from '../js/page_config/lt_6hc'
-import {C, natal, animals} from '../js/kit'
+import {renderConfig, natal, animals, getAnimalIndex} from '../js/page_config/lt_6hc'
+import {C} from '../js/kit'
 export default {
   created(){
     this.$store.commit({
@@ -103,7 +103,6 @@ export default {
       poultry: ['牛','马','羊','鸡','狗','猪'],//家禽
       wild: ['鼠','虎','兔','龙','蛇','猴'], //野兽
       ellipsisWidth: 45,
-      // tipDisplayFlag: false,
     }
   },
   computed:mapState({
@@ -302,10 +301,37 @@ export default {
       var lotteryName = lt.lottery.LotteryName
       var betMoney = this.betCount * this.perbet
       var rebate = lt.Rebate[this.lottery]
+
+      var lotteryMode = lotteryCode + this.mode
+      var chosen = this.chosen
+
+
+      // 关于生肖的处理
+      var sxLotteryMode = ['1301E01','1301E02','1301E03','1301E04','1301E05'] //和生肖相关的玩法
+      var poultryWild = ['1301A02','1301B09','1301B10','1301B11','1301B12','1301B13','1301B14']  //家禽野兽相关玩法
+      if(sxLotteryMode.indexOf(lotteryMode) > -1){
+        chosen = chosen.map(char=>getAnimalIndex(char))  //对生肖进行转换
+      }else if(poultryWild.indexOf(lotteryMode) > -1){
+        var annimal2Index = (arr)=>arr.map(char=>getAnimalIndex(char)).sort((a,b)=>a-b).join(' ')   //转成数字，排序，再以空格为分隔拼起
+        var poultryStr = annimal2Index(this.poultry)
+        var wildStr = annimal2Index(this.wild)
+        chosen = chosen.map(char=>{
+          var item = char;
+          if(char === '家禽'){
+            item = `家禽(${poultryStr})`
+          }else if(char === '野兽'){
+            item = `野兽(${wildStr})`
+          }
+          return item
+        })
+      }
+
+      var betStr = chosen.join(',')
+
       var bet = {
         lottery_code: lotteryCode,
         play_detail_code: lotteryCode + this.mode,
-        betting_number: this.betStr,
+        betting_number: betStr,
         betting_count: this.betCount,
         betting_money: betMoney,
         betting_point: '0-' + rebate,
