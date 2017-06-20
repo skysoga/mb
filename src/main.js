@@ -334,6 +334,7 @@ window._fetch = function (data){
           console.log(json[1]);
         }
         json=json[0]
+        json.StrCode = `·${json.StrCode}·`
         state.turning&&clearTimeout(st)
         console.log(json);
         var notRes
