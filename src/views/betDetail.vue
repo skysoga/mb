@@ -45,7 +45,7 @@ export default {
   },
   methods:{
     WinShow(str,e){
-      var len=e?str.split(' ').length:str.split(',').length
+      var len=e&&this.res_data.LotteryName!='六合彩'?str.split(' ').length:str.split(',').length
       if(len<(e?11:9)){return}
       str=e?str:str.split('+')[0].split(',').slice(0,20).join(',')
       layer.alert(str)
@@ -53,7 +53,7 @@ export default {
     setNum(str,flag){
       //flag 标志位
       if(flag){
-        var delimiter = flag ? ' ' : ','
+        var delimiter = flag&&this.res_data.LotteryName!='六合彩' ? ' ' : ','
         var MaxNum = flag ? 10 : 8
       }
 
