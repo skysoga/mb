@@ -270,7 +270,7 @@
             var code = state.lottery.LotteryCode   //当前彩种号
             Vue.set(state, 'NowIssue', computeIssue(code, state.IssueNo))        //当前期 (可以下注的这一期)
             Vue.set(state, 'OldIssue', computeIssue(code, state.IssueNo - 1))   //上一期
-            state.displayResults = false  //进入等待开奖动画
+            this.$store.commit('lt_displayResults', false)
             state.basket.forEach(bet=>{
               bet.betting_issuseNo = computeIssue(code, state.IssueNo)
             })
@@ -692,7 +692,10 @@
               var issue = BeforeIssue + _issue
               // 设置期号
               commit('lt_setIssueNo', issue)
-              commit('lt_updateIssue')
+              var code = state.lottery.LotteryCode   //当前彩种号
+              Vue.set(state, 'NowIssue', computeIssue(code, state.IssueNo))        //当前期 (可以下注的这一期)
+              Vue.set(state, 'OldIssue', computeIssue(code, state.IssueNo - 1))   //上一期
+              // commit('lt_updateIssue')
 
               // 如果有值说明还在期号表内
               if(Schedule[i] !== undefined){

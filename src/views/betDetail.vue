@@ -29,6 +29,8 @@
 
 <script>
 import {getAnimal} from '../js/page_config/lt_6hc'
+import cl from '../js/page_config/chinese-lunar'
+
 export default {
   data(){
     return {
@@ -115,18 +117,46 @@ export default {
     }
   },
   beforeRouteEnter(to,from,next){
+
     // to.meta.link=from.fullPath
     _fetch({Action:"GetBetDetail",UserId:to.query.UID||0,ID:to.query.ID}).then((data)=>{
       next(vm=>{
         if(data.Code===1){
           var res_data = data.BackData
           var {LotteryName} = res_data
-          // if(LotteryName === '六合彩'){
-          //   res_data.BetInfoList = res_data.BetInfoList.map(dataItem=>{
-          //     dataItem.BetNum = dataItem.BetNum.split(',').map(char=>getAnimal(char)).join(',')
-          //     return dataItem
-          //   })
-          // }
+          if(LotteryName === '六合彩'){
+            // 使用 AddTime来生成时间
+            try{
+              var AddTime = new Date(res_data.AddTime)
+            }catch(error){
+              var AddTime = new Date()
+            }
+            var natal = cl.solarToLunar(AddTime, 'A');
+
+            res_data.BetInfoList = res_data.BetInfoList.map(dataItem=>{
+
+              // 把生肖复原
+              if(dataItem.PlayName.indexOf('生肖') > -1){
+                dataItem.BetNum = dataItem.BetNum.split(',').map(char=>getAnimal(char, natal)).join(',')
+              }
+
+              // 把两面相关的 家禽野兽复原
+              if(dataItem.PlayName.indexOf('两面') > -1){
+                dataItem.BetNum = dataItem.BetNum.split(',').map(char=>{
+                  if(char.indexOf('家禽') > -1){
+                    return '家禽'
+                  }else if(char.indexOf('野兽') > -1){
+                    return '野兽'
+                  }else{
+                    return char
+                  }
+                }).join(',')
+              }
+
+
+              return dataItem
+            })
+          }
 
           vm.res_data=data.BackData
           let type=data.BackData.LotteryName.substr(data.BackData.LotteryName.length-2)

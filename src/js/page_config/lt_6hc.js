@@ -1,12 +1,18 @@
+import cl from './chinese-lunar'
 var str49 = '从1-49中任选1个或多个号码，每个号码为一注，所选号码在开奖号码前六位中存在，即为中奖。'
 var getZTStr = (numStr)=>`从1-49中任选1个或多个号码，每个号码为一注，所选号码与开奖号码第${numStr}位相同，即为中奖。`
 var getBZStr = (numStr)=>`至少选择${numStr}个号码，每${numStr}个号码为一注，所有号码均未在开奖号码中出现，即为中奖。`
 var getZMLMStr = (numStr)=>`开奖号码第${numStr}位，大于或等于25为大，小于或等于24为小；奇数为单，偶数为双；和单和双为两个数相加后得数的单双；尾大尾小即看个位数值，小于等于4为小，大于4为大；为49时为和，不算任何大小单双，但算波色。（每个按钮单独显示赔率）`
 
-var natal = '鸡'  //本命 9-鸡
+// var lunar = cl.solarToLunar(new Date(), 'A');
+// console.log(lunar)
+var natal = cl.solarToLunar(new Date(), 'A');  //本命 9-鸡
 var animals = ['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪']
 
-function getAnimal(numStr){
+console.log(natal)
+function getAnimal(numStr, Natal){
+  console.log(Natal, '实际')
+  var natal = Natal || natal
   var natalIndex = animals.indexOf(natal)
   var num = (+numStr)%12
   var index = ((natalIndex + 13) - num)%12
