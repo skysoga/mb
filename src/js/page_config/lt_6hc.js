@@ -1,4 +1,5 @@
-import cl from './chinese-lunar'
+// import cl from './chinese-lunar'
+import getNatal from './natal'
 var str49 = '从1-49中任选1个或多个号码，每个号码为一注，所选号码在开奖号码前六位中存在，即为中奖。'
 var getZTStr = (numStr)=>`从1-49中任选1个或多个号码，每个号码为一注，所选号码与开奖号码第${numStr}位相同，即为中奖。`
 var getBZStr = (numStr)=>`至少选择${numStr}个号码，每${numStr}个号码为一注，所有号码均未在开奖号码中出现，即为中奖。`
@@ -6,10 +7,9 @@ var getZMLMStr = (numStr)=>`开奖号码第${numStr}位，大于或等于25为�
 
 // var lunar = cl.solarToLunar(new Date(), 'A');
 // console.log(lunar)
-var natal = cl.solarToLunar(new Date(), 'A');  //本命 9-鸡
+var natal = getNatal(new Date());  //本命 9-鸡
 var animals = ['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪']
 
-console.log(natal)
 function getAnimal(numStr, Natal){
   console.log(Natal, '实际')
   var natal = Natal || natal
