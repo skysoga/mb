@@ -315,7 +315,7 @@ window._fetch = function (data, option = {}){
               resolve(json)
             })
           }else{
-            var msg = "数据解析错误"
+            var msg = "数据解析错误" + json
             FetchCatch({msg})
           }
         }
@@ -343,14 +343,14 @@ window._fetch = function (data, option = {}){
             try{
               json = RootApp.SetFilter(json)
             }catch(error){
-              var msg = "Filter数据错误"
+              var msg = "Filter数据错误" + json
               FetchCatch({msg,error})
             }
             var Data = json.BackData
             try{
               RootApp.WatchInitData(Data)
             }catch(error){
-              var msg = "Watch数据错误"
+              var msg = "Watch数据错误" + Data
               FetchCatch({msg,error})
             }
 
@@ -360,7 +360,7 @@ window._fetch = function (data, option = {}){
                 localStorage.setItem('CacheData',JSON.stringify(Object.assign(CacheData,json.CacheData)))
               }
             }catch(error){
-              var msg = "Save数据错误"
+              var msg = "Save数据错误" + Data
               FetchCatch({msg,error})
             }
           }
@@ -419,7 +419,14 @@ window._fetch = function (data, option = {}){
         FetchCatch({msg,error})
       })
     }).catch(error => {
-      var msg = "网络错误，请检查网络状态"
+      var msg = ''
+      if("Failed to fetch"===error.message){
+        msg = "您的设备失去了网络连接"
+      }else{
+        msg = "网络错误，请检查网络状态"
+      }
+
+      // var msg = "网络错误，请检查网络状态"
       FetchCatch({msg,error})
     })
   })
