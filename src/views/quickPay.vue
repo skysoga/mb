@@ -174,6 +174,10 @@ export default {
           '-ms-transform':'scale(.7)',
           '-moz-transform':'scale(.7)',
           'transform':'scale(.7)',
+        },
+        '众宝':{
+          'margin-top':2.5*em-112+'px',
+          'left':'-430px'
         }
       }
     }
