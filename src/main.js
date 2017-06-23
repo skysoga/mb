@@ -227,7 +227,7 @@ function FetchCatch({msg, error}){
 }
 
 var fetchArr=[]
-window._fetch = function (data){
+window._fetch = function (data, option = {}){
   data = Xss(data)
   if (data[1]) {
     //可能有xss
