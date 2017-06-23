@@ -176,8 +176,12 @@ export default {
           'transform':'scale(.7)',
         },
         '众宝':{
-          'margin-top':2.5*em-112+'px',
-          'left':'-430px'
+          'margin-top':2.5*em-160+'px',
+          'left':'-410px',
+          '-webkit-transform':'scale(1.3)',
+          '-ms-transform':'scale(1.3)',
+          '-moz-transform':'scale(1.3)',
+          'transform':'scale(1.3)',
         }
       }
     }
