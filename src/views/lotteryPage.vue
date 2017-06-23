@@ -25,7 +25,7 @@
   import {pk10Config} from '../js/page_config/lt_pk10'
   import {kl8Config} from '../js/page_config/lt_kl8'
   import {hcConfig} from '../js/page_config/lt_6hc'
-
+  import getNatal from '../js/page_config/natal'
 
   import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
   import {bus, BaseBet, ChaseAjax, easyClone, deleteCompress, Scheme, getBasketAmount,
@@ -203,6 +203,13 @@
 
         },
         getters: {
+          // 本命
+          lt_natal(state, getters, rootState){
+            var Difftime = rootState.Difftime || 0
+            var serverTime = new Date().getTime() - Difftime
+            var natal = getNatal(new Date(serverTime));  //本命 9-鸡
+            return natal
+          }
         },
         mutations:{
                           /** 期号 **/

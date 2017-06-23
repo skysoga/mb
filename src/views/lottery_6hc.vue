@@ -64,8 +64,9 @@ import normal_box from '../components/lottery/normal_box'
 import combobox from '../components/lottery/combobox'
 import time_result from '../components/lottery/6hc_time_result'
 import lt_footer1 from '../components/lottery/lt_footer1'
-import {renderConfig, natal, animals, getAnimalIndex} from '../js/page_config/lt_6hc'
+import {renderConfig, animals, getAnimalIndex} from '../js/page_config/lt_6hc'
 import {C} from '../js/kit'
+
 export default {
   created(){
     this.$store.commit({
@@ -98,7 +99,7 @@ export default {
         '6HCF03':['含0尾', '不含0尾'],
         '6HCF04':['含0尾', '不含0尾'],
       },
-      renderConfig:renderConfig, //页面配置
+      // renderConfig:renderConfig, //页面配置
       perbet:'',
       poultry: ['牛','马','羊','鸡','狗','猪'],//家禽
       wild: ['鼠','虎','兔','龙','蛇','猴'], //野兽
@@ -106,6 +107,13 @@ export default {
     }
   },
   computed:mapState({
+    renderConfig(){
+      var animalEgMode = ['E01','E02']
+      animalEgMode.forEach(mode=>{
+        renderConfig[mode].egArr = animals.map(char=>this.getAnimalEg(char, this.natal))
+      })
+      return renderConfig
+    },
     tip:()=>state.lt.mode.tip,      //提示
     award:()=>state.lt.award,        //奖金（当前玩法）
     renderAward(){
@@ -127,6 +135,9 @@ export default {
         return this.tip.slice(0, this.ellipsisWidth) + '...'
       }
     },
+    natal(){
+      return this.$store.getters.lt_natal
+    },
     renderOdds(){
       var mode = this.mode
       var award = this.award.map(item=>item/2)
@@ -136,7 +147,7 @@ export default {
         'A02':()=>{
           var res = []
           // 野兽家禽（哪个含本命）
-          if(this.wild.indexOf(natal) > -1){
+          if(this.wild.indexOf(this.natal) > -1){
             // 如果含本命的是野兽
             var tmp = award[4]
             award[4] = award[5]
@@ -157,7 +168,7 @@ export default {
       var liangmian = ()=>{
         var res = []
         // 野兽家禽（哪个含本命）
-        if(this.wild.indexOf(natal) > -1){
+        if(this.wild.indexOf(this.natal) > -1){
           // 如果含本命的是野兽
           var tmp = award[4]
           award[4] = award[5]
@@ -176,7 +187,7 @@ export default {
       // 特肖
       var benming = ()=>{
         var res = []
-        var natalIndex = animals.indexOf(natal)
+        var natalIndex = animals.indexOf(this.natal)
         for(var i = 0;i < 12;i++){
           if(i === natalIndex){
             res.push(award[0])
@@ -250,6 +261,23 @@ export default {
     },
   }),
   methods:{
+    //获取各个生肖的示例文字
+    getAnimalEg(char, natal){
+      if(animals.indexOf(char) === -1){
+        return false
+      }
+
+      var eg = []
+      var tmp = getAnimalIndex(char, natal)
+      if(tmp === 0){
+        tmp = 12
+      }
+      while(tmp <= 49){
+        eg.push(tmp)
+        tmp = tmp + 12
+      }
+      return eg.join(',')
+    },
     showDetail(){
       this.$store.commit('lt_showFullTip', true)
     },
@@ -311,9 +339,11 @@ export default {
       var poultryWild = ['1301A02','1301B09','1301B10','1301B11','1301B12','1301B13','1301B14']  //家禽野兽相关玩法
       var lwMode = ['1301F02','1301F03','1301F04']
       if(sxLotteryMode.indexOf(lotteryMode) > -1){
-        chosen = chosen.map(char=>getAnimalIndex(char))  //对生肖进行转换
+        //对生肖进行转换
+        chosen = chosen.map(char=>getAnimalIndex(char, this.natal))
       }else if(poultryWild.indexOf(lotteryMode) > -1){
-        var annimal2Index = (arr)=>arr.map(char=>getAnimalIndex(char)).sort((a,b)=>a-b).join(' ')   //转成数字，排序，再以空格为分隔拼起
+         //转成数字，排序，再以空格为分隔拼起
+        var annimal2Index = (arr)=>arr.map(char=>getAnimalIndex(char, this.natal)).sort((a,b)=>a-b).join(' ')
         var poultryStr = annimal2Index(this.poultry)
         var wildStr = annimal2Index(this.wild)
         chosen = chosen.map(char=>{

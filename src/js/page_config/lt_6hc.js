@@ -4,21 +4,27 @@ var getZTStr = (numStr)=>`从1-49中任选1个或多个号码，每个号码为�
 var getBZStr = (numStr)=>`至少选择${numStr}个号码，每${numStr}个号码为一注，所有号码均未在开奖号码中出现，即为中奖。`
 var getZMLMStr = (numStr)=>`开奖号码第${numStr}位，大于或等于25为大，小于或等于24为小；奇数为单，偶数为双；和单和双为两个数相加后得数的单双；尾大尾小即看个位数值，小于等于4为小，大于4为大；为49时为和，不算任何大小单双，但算波色。（每个按钮单独显示赔率）`
 
-var Difftime = localStorage.getItem('Difftime') || 0
-var serverTime = new Date().getTime() - Difftime
-var natal = getNatal(new Date(serverTime));  //本命 9-鸡
+// var Difftime = localStorage.getItem('Difftime') || 0
+// var serverTime = new Date().getTime() - Difftime
+// var natal = getNatal(new Date(serverTime));  //本命 9-鸡
 var animals = ['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪']
 
-function getAnimal(numStr, Natal){
-  var natal = Natal || natal
-  console.log(natal, '实际')
+function getAnimal(numStr, natal){
+  if(!natal){
+    console.log('未传入本命')
+    return
+  }
   var natalIndex = animals.indexOf(natal)
   var num = (+numStr)%12
   var index = ((natalIndex + 13) - num)%12
   return animals[index]
 }
 
-function getAnimalIndex(char){
+function getAnimalIndex(char, natal){
+  if(!natal){
+    console.log('未传入本命')
+    return
+  }
   var natalIndex = animals.indexOf(natal)
   var charIndex = animals.indexOf(char)
   var result = 1 + (natalIndex - charIndex)
@@ -423,32 +429,6 @@ const tmbbEgArr = [
 ]
 //生肖
 const sxItemArr = animals
-//获取各个生肖的示例文字
-function getAnimalEg(char){
-  if(animals.indexOf(char) === -1){
-    return false
-  }
-
-  var eg = []
-  var tmp = getAnimalIndex(char)
-  if(tmp === 0){
-    tmp = 12
-  }
-  while(tmp <= 49){
-    eg.push(tmp)
-    tmp = tmp + 12
-  }
-  return eg.join(',')
-}
-
-
-// //生肖的示例
-// const sxEgArr = [
-//   '10,22,34,46', '09,21,33,45', '08,20,32,44', '07,19,31,43','06,18,30,42', '05,17,29,41',
-//   '04,16,28,40', '03,15,27,39', '02,14,26,38', '01,13,25,37,49', '12,24,36,48', '11,23,35,47'
-// ]
-
-var sxEgArr = animals.map(char=>getAnimalEg(char))
 
 // 特码头尾
 const tmtwItemArr = ['0头','1头','2头','3头','4头','0尾','1尾','2尾','3尾','4尾','5尾','6尾','7尾','8尾','9尾']
@@ -479,8 +459,8 @@ var renderConfig = {
   'C04':{box:'colorbox', alg:2},
   'C05':{box:'colorbox', alg:2},
   'D01':{box:'combobox',itemArr:tmbbItemArr, egArr:tmbbEgArr, needAward:true, alg:1},
-  'E01':{box:'combobox',itemArr:sxItemArr, egArr:sxEgArr, needAward:true, alg:1},
-  'E02':{box:'combobox',itemArr:sxItemArr, egArr:sxEgArr, needAward:true, alg:1},
+  'E01':{box:'combobox',itemArr:sxItemArr, egArr:[], needAward:true, alg:1},
+  'E02':{box:'combobox',itemArr:sxItemArr, egArr:[], needAward:true, alg:1},
   'E03':{box:'combobox',itemArr:sxItemArr, egArr: [], needAward:false, alg:2},
   'E04':{box:'combobox',itemArr:sxItemArr, egArr: [], needAward:false, alg:3},
   'E05':{box:'combobox',itemArr:sxItemArr, egArr: [], needAward:false, alg:4},
@@ -496,4 +476,4 @@ var renderConfig = {
   'G06':{box:'colorbox', alg:10}
 }
 
-export {hcConfig, renderConfig, natal, animals, getAnimal, getAnimalIndex}
+export {hcConfig, renderConfig, animals, getAnimal, getAnimalIndex}

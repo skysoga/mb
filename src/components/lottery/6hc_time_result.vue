@@ -95,7 +95,9 @@ export default {
     }
   },
   methods:{
-    getAnimal:getAnimal,
+    getAnimal(numStr){
+      return getAnimal(numStr, this.natal)
+    },
     inArray(arr, item){
       return arr.indexOf(item) > -1
     },
@@ -157,10 +159,10 @@ export default {
     },
     displayResults(){
       return this.$store.state.lt.displayResults
+    },
+    natal(){
+      return this.$store.getters.lt_natal
     }
-    // openNumbers(){
-    //   return this.wait4Results
-    // }
   },
   beforeDestroy(){
     clearInterval(this.timer)

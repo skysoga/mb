@@ -12,27 +12,6 @@ var Max_Chase_Issue = 50  //追号最大期数
 var Max_Expect_Rate = 20000 //追号最大预期盈利率限制
 var BASE_ISSUE_1406 = 52586+1-7*89 //北京快三基准期
 
-// var natal = '鸡'  //本命 9-鸡
-// var animals = ['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪']
-
-// function getAnimal(numStr){
-//   var natalIndex = animals.indexOf(natal)
-//   var num = (+numStr)%12
-//   var index = ((natalIndex + 13) - num)%12
-//   return animals[index]
-// }
-
-// function getAnimalIndex(char){
-//   var natalIndex = animals.indexOf(natal)
-//   var charIndex = animals.indexOf(char)
-//   var result = 1 + (natalIndex - charIndex)
-//   result = result < 0 ? (result + 12) : result
-//   return result
-// }
-
-
-
-
 //阶乘
 var factorial = (function(){
   var cache = {};
