@@ -116,10 +116,12 @@ var routes = [{
     redirect:"/center/newWinners"
   },{
     path:"newWinners",
-    component:newWinners
+    component:newWinners,
+    name: '中奖信息'
   },{
     path:"competition",
-    component:competition
+    component:competition,
+    name: '昨日奖金榜',
   }]
 }, {
   path: '/userCenter',

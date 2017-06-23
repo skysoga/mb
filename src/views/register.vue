@@ -132,6 +132,7 @@ export default {
               })
             },
             no: function no() {
+              that.refreshYzm()
               that.UserName= ''
               that.Password= ''
               that.checkPassword= ''

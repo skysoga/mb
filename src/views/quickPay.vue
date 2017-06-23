@@ -18,7 +18,7 @@
       <div class="loginBtn BTN"><a v-va-check>确定</a></div>
       <div class="tips">
         1、扫一扫弹出的二维码进行充值。
-        <br> 2、可以使用其他手机扫二维码进行充值，也可以将二维码保存到相册再使用微信识别相册中的二维码进行充值，该二维码仅当次有效，每次充值前务必重新保存最新的二维码。
+        <br> 2、可以使用其他手机扫二维码进行充值，也可以将二维码保存到相册再使用{{this.$route.meta.title}}识别相册中的二维码进行充值，该二维码仅当次有效，每次充值前务必重新保存最新的二维码。
         <br>
       </div>
     </template>
@@ -162,6 +162,26 @@ export default {
           '-ms-transform':'scale(.5)',
           '-moz-transform':'scale(.5)',
           'transform':'scale(.5)',
+        },
+        '新摩宝':{
+          'margin-top':2.5*em-100+'px',
+          'left':'-500px'
+        },
+        '立刻付':{
+          'margin-top':2.5*em-290+'px',
+          'left':'-500px',
+          '-webkit-transform':'scale(.7)',
+          '-ms-transform':'scale(.7)',
+          '-moz-transform':'scale(.7)',
+          'transform':'scale(.7)',
+        },
+        '众宝':{
+          'margin-top':2.5*em-160+'px',
+          'left':'-410px',
+          '-webkit-transform':'scale(1.3)',
+          '-ms-transform':'scale(1.3)',
+          '-moz-transform':'scale(1.3)',
+          'transform':'scale(1.3)',
         }
       }
     }

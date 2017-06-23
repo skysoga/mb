@@ -18,6 +18,7 @@ export default {
    methods:{
      getHtml:name=>{
        let url;
+       console.log(name)
        switch(name){
          case "每日加奖":
          url="/dailyPrise"
