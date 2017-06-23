@@ -29,7 +29,7 @@
 
 <script>
 import {getAnimal} from '../js/page_config/lt_6hc'
-import cl from '../js/page_config/chinese-lunar'
+import getNatal from '../js/page_config/natal'
 
 export default {
   data(){
@@ -131,7 +131,7 @@ export default {
             }catch(error){
               var AddTime = new Date()
             }
-            var natal = cl.solarToLunar(AddTime, 'A');
+            var natal = getNatal(AddTime);
 
             res_data.BetInfoList = res_data.BetInfoList.map(dataItem=>{
 

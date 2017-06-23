@@ -221,7 +221,7 @@ function FetchCatch(opt) {
   // _catch(opt)
 }
 var fetchArr=[]
-window._fetch = function (data){
+window._fetch = function (data, option = {}){
   data = Xss(data)
   if (data[1]) {
     //可能有xss
@@ -301,6 +301,7 @@ window._fetch = function (data){
         })
         return
       }
+
       res.text().then(json=>{
         if (data.Action==='GetImageCode') {
           //获取验证码的不需要转换成json
