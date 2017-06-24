@@ -100,7 +100,9 @@ export default {
       layer.msgWait("正在提交")
       _fetch(arr).then(json=>{
           if(json.Code==1){
-            RootApp.AjaxGetInitData(['UserBankCardList','UserFirstCardInfo'])
+              var Arr=["UserBankCardList","UserFirstCardInfo"]
+              store.commit('ClearInitData', Arr)//更新首张银行卡和银行列表
+            // RootApp.AjaxGetInitData(['UserBankCardList','UserFirstCardInfo'])
             if(vm.nextUrl=='/withdraw'){
               layer.open({
                   shadeClose: false,

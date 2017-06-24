@@ -113,7 +113,7 @@
         }, time))
       },
       jump:function(id){
-        let router=this.$router
+        // let router=this.$router
         router.push({ path: '/playerHome',query:{ID:id}})
       }
     },

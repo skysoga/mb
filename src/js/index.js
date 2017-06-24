@@ -2,10 +2,12 @@ import { swiper, swiperSlide, swiperPlugins } from 'vue-awesome-swiper'
 import {mapState} from 'vuex'
 var hotDefault = ["1406","1402","1407","1000","1001","1008","1303","1302","1100","1101","1103"]
 export default {
+  name:'index',
   props:["s"],
   data:()=>{
     return{
       hotLottery:[],
+      NologApp:''
     }
   },
   components: {
@@ -27,52 +29,64 @@ export default {
       to.meta.title='未登录'
     }
 
-    var arr = [!NologApp?"BannerList":"SysBanner","LotteryConfig","LotteryList"],
+    var arr = [!NologApp?"BannerList":"SysBanner","LotteryConfig","LotteryHot","LotteryList"],
       ar=["SiteConfig"];
     state.UserName&&arr.push("NoticeData")
     arr = (!_App||state.UserName)?arr.concat(ar):arr
 
 
     RootApp.GetInitData(arr, state=>{
-      next(vm=>{
-        //不上线的彩种code列表， 用slice避免对源数组产生引用
-        var offLineLottery = []
-        vm.LotteryConfig.forEach(item=>{
-          // 不上线：排列3，福彩3D  LotteryClassID === '12'
-          if(item.LotteryClassID === '12'){
-            offLineLottery = item.LotteryList.slice()
-          }
-        })
+      next();
+    })
+  },
+  methods:{
+    setUrl(url,filterHtml){
+      if(filterHtml){
+        return url.replace('.html','').replace(/\s/g, '')
+      }else{
+        RootApp.OpenWin(url.replace(/\s/g, ''))
+      }
+    },
+    setDataHot(){
+      var state = this.$store.state
+      var NologApp = _App&&!state.UserName
+      var offLineLottery = []
+      state.LotteryConfig.forEach(item=>{
+        // 不上线：排列3，福彩3D  LotteryClassID === '12'
+        if(item.LotteryClassID === '12'){
+          offLineLottery = item.LotteryList.slice()
+        }
+      })
 
-        // 获取热门彩种code列表, LotteryClassID === '0'
-        var hotLottery = []
-        if(NologApp){
-          hotLottery = hotDefault
+      var hotLottery = []
+      if(NologApp){
+        hotLottery = hotDefault
+      }else{
+        if(this.$store.state.LotteryHot.LotteryList){
+          console.log('热门彩票新接口')
+          hotLottery=state.LotteryHot.LotteryList.slice()
         }else{
-          vm.LotteryConfig.forEach(item=>{
+
+          console.log('热门彩票旧接口')
+          this.LotteryConfig.forEach(item=>{
             if(item.LotteryClassID === '0'){
               hotLottery = item.LotteryList.slice()
             }
           })
-
-          hotLottery = hotLottery.filter(code=>offLineLottery.indexOf(code) === -1)
         }
 
-        // 剔除不上线的彩种
-        vm.hotLottery = hotLottery
-      });
-    })
-  },
-  methods:{
-    setUrl(link){
-      RootApp.OpenWin(link)
-    }
+        hotLottery = hotLottery.filter(code=>offLineLottery.indexOf(code) === -1)
+      }
+      return hotLottery;
+    },
   },
 	computed:mapState({
 		LotteryConfig:'LotteryConfig',
+    LotteryHot:'LotteryHot',
 		LotteryList:'LotteryList',
     nowDisplayList(){
-      var hotLottery = this.hotLottery
+
+        var hotLottery = this.setDataHot()
       // 如果后台数据错误就返回默认的数组，如果热门超过11个，那么返回前11个
       if(Array.isArray(hotLottery) && hotLottery.length){
         if(hotLottery.length > 11){

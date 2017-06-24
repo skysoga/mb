@@ -57,9 +57,9 @@ export default {
       layer.msgWait("正在提交")
       _fetch(ajax).then((json)=>{
           if(json.Code===1) {
-            RootApp.AjaxGetInitData(["UserSafeQuestions"],function(){
-              layer.url(json.StrCode,'/securityCenter')
-            })
+            var Arr=['UserSafeQuestions']
+            store.commit('ClearInitData',Arr)
+            layer.url(json.StrCode,'/securityCenter')
           }else{
             layer.msgWarn(json.StrCode)
           }

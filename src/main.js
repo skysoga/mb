@@ -196,30 +196,50 @@ window._catch = function(data){
     body: str
   })
 }
-function FetchCatch(opt) {
-  console.log(opt);
-  var {msg, status, resolve, error, T, S}=opt
-  if (status){
-    msg += status
+
+// function FetchCatch(opt) {
+//   console.log(opt);
+//   var {msg, status, resolve, error, T, S}=opt
+//   if (status){
+//     msg += status
+//   }
+//   if (error) {
+//     error=error.toString()
+//     msg += '<br/>'+error
+//     console.log(error);
+//   }
+//   if (S){
+//     msg += '_'+S
+//   }
+//   layer.alert(msg)
+//   if (state.turning) {
+//     // layer.alert(msg)
+//     state.turning = false
+//   }/*else{
+//     resolve({ Code: -1, StrCode: msg })
+//   }*/
+//   delete opt.resolve
+//   // _catch(opt)
+// }
+
+/**
+ * [FetchCatch description]
+ * @param {[type]} options.msg   [报错信息]
+ * @param {[type]} options.error [错误对象]
+ */
+function FetchCatch({msg, error}){
+  if(error){
+    error = error.toString()
+    msg += '<br/>'+error
   }
-  if (error) {
-    error=error.toString()
-    // msg += '<br/>'+error
-    console.log(error);
-  }
-  if (S){
-    msg += '_'+S
-  }
+
   layer.alert(msg)
-  if (state.turning) {
-    // layer.alert(msg)
+
+  if(state.turning){
     state.turning = false
-  }/*else{
-    resolve({ Code: -1, StrCode: msg })
-  }*/
-  delete opt.resolve
-  // _catch(opt)
+  }
 }
+
 var fetchArr=[]
 window._fetch = function (data, option = {}){
   data = Xss(data)
@@ -254,7 +274,7 @@ window._fetch = function (data, option = {}){
   return new Promise(function(resolve, reject){
     var st = state.turning&&setTimeout(function(){
       var msg = '网络请求超时，请重试'
-      FetchCatch({msg},resolve)
+      FetchCatch({msg})
       reject()
     },10000)
     var fetchUrl = '/tools/ssc_ajax.ashx?A='+data.Action
@@ -289,16 +309,8 @@ window._fetch = function (data, option = {}){
       }
       var S=(!H['a'])?null:( H['a']+(H['x-sec']?('_'+H['x-sec']):''))
       if (res.status!==200) {
-        // FetchCatch("网络错误"+res.status,resolve)
-        var msg = "网络错误"
-        FetchCatch({
-          msg,
-          status:res.status,
-          resolve,
-          T,  //fetch耗时,
-          S,
-          // data //fetch的body
-        })
+        var msg = "网络错误" + res.status
+        FetchCatch({msg})
         return
       }
 
@@ -318,101 +330,120 @@ window._fetch = function (data, option = {}){
               resolve(json)
             })
           }else{
-            var msg = "网络数据解析错误"
-            FetchCatch({
-              msg,
-              json,
-              resolve,
-              T,  //fetch耗时,
-              S,
-              data //fetch的body
-            })
+            var msg = "数据解析错误" + json
+            FetchCatch({msg})
           }
         }
-        if (typeof(json)==='string') return
-        json = Xss(json)
-        if(json[1]) {
-          console.log(json[1]);
+
+        try{
+          if (typeof(json)==='string') return
+          json = Xss(json)
+          if(json[1]) {
+            console.log(json[1]);
+          }
+          json=json[0]
+          state.turning&&clearTimeout(st)
+        }catch(error){
+          var msg = "请求中含有敏感字符"
+          FetchCatch({msg,error})
         }
         json=json[0]
         json.StrCode = `·${json.StrCode}·`
         state.turning&&clearTimeout(st)
         console.log(json);
         var notRes
+
+        // 对首屏接口的返回结果的处理
         if (data.Action==="GetInitData") {
           if (json.Code===1||json.Code===0) {
-            json = RootApp.SetFilter(json)
+            try{
+              json = RootApp.SetFilter(json)
+            }catch(error){
+              var msg = "Filter数据错误" + json
+              FetchCatch({msg,error})
+            }
             var Data = json.BackData
-            RootApp.WatchInitData(Data)
-            RootApp.SaveInitData(Data)
-            if(JSON.stringify(json.CacheData) !== "{}"){
-              localStorage.setItem('CacheData',JSON.stringify(Object.assign(CacheData,json.CacheData)))
+            try{
+              RootApp.WatchInitData(Data)
+            }catch(error){
+              var msg = "Watch数据错误" + Data
+              FetchCatch({msg,error})
+            }
+
+            try{
+              RootApp.SaveInitData(Data)
+              if(JSON.stringify(json.CacheData) !== "{}"){
+                localStorage.setItem('CacheData',JSON.stringify(Object.assign(CacheData,json.CacheData)))
+              }
+            }catch(error){
+              var msg = "Save数据错误" + Data
+              FetchCatch({msg,error})
             }
           }
         }
-        ;(function(){
-          switch(json.Code){
-            case 0://未登录
-              if(state.UserName){
-                layer.alert("由于您长时间未操作，已自动退出，需要重新登录",function(){
+
+        try{
+          ;(function(){
+            switch(json.Code){
+              case 0://未登录
+                if(state.UserName){
+                  layer.alert("由于您长时间未操作，已自动退出，需要重新登录",function(){
+                    RootApp.Logout()
+                    router.replace("/login")
+                  })
+                  notRes=true
+                }
+              break;
+              // case -6://IP黑名单
+              // break;
+              case -7://系统维护
+                store.commit('SetMaintain', json.BackData)
+                router.replace("/maintain")
+                notRes=true
+              break;
+              case -8://账号冻结
+                layer.alert("您的账号已被冻结，详情请咨询客服。",function(){
                   RootApp.Logout()
+                  var meta = RootApp._route.matched[0]
+                  meta = meta&&meta.meta
                   router.replace("/login")
                 })
                 notRes=true
-              }
-            break;
-            // case -6://IP黑名单
-            // break;
-            case -7://系统维护
-              store.commit('SetMaintain', json.BackData)
-              router.replace("/maintain")
-              notRes=true
-            break;
-            case -8://账号冻结
-              layer.alert("您的账号已被冻结，详情请咨询客服。",function(){
-                RootApp.Logout()
-                var meta = RootApp._route.matched[0]
-                meta = meta&&meta.meta
-                router.replace("/login")
-              })
-              notRes=true
-            break;
-            case -1:
-              if (json.StrCode === '空') {
-                // 出现意外错误，需要补发接口
-                console.log('补发接口')
-                _fetch(data,option).then(json=>{
-                  resolve(json)
-                })
-                notRes=true
-              }
-            break;
-          }
-          if (data.Action.search('Verify')===0&&json.Code>-1) {
-            state.UserVerify=data.Action.replace('Verify','')+','
-          }
-        })()
+              break;
+              case -1:
+                if (json.StrCode === '空') {
+                  // 出现意外错误，需要补发接口
+                  console.log('补发接口')
+                  _fetch(data,option).then(json=>{
+                    resolve(json)
+                  })
+                  notRes=true
+                }
+              break;
+            }
+            if (data.Action.search('Verify')===0&&json.Code>-1) {
+              state.UserVerify=data.Action.replace('Verify','')+','
+            }
+          })()
+        }catch(error){
+          var msg = "返回数据拦截处理错误"
+          FetchCatch({msg,error})
+        }
         notRes||resolve(json)
       }).catch(error => {
-        var msg = "网络数据错误"
-        // FetchCatch(msg, resolve, error)
-        FetchCatch({
-          msg,
-          error,
-          resolve,
-          T,  //fetch耗时
-          S,
-          str //fetch的body
-        })
+        var msg = "数据错误"
+        FetchCatch({msg,error})
       })
     }).catch(error => {
-      var msg = "网络错误，请检查网络状态"
-      FetchCatch({
-        msg,
-        error,
-        resolve,
-        str //fetch的body
-      })
+      var msg = ''
+      if("Failed to fetch"===error.message){
+        msg = "您的设备失去了网络连接"
+      }else{
+        msg = "网络错误，请检查网络状态"
+      }
+
+      // var msg = "网络错误，请检查网络状态"
+      FetchCatch({msg,error})
     })
   })
 }
@@ -444,16 +475,22 @@ window._fetchT=function _fetchT(data){
   //   })
   // })
 }
+
 window._App=(function(host){
   //是否APP
   var a = localStorage.getItem("isApp")
   if (a) {return a}
   console.log(host);
-  host = host.split('.')
-  host = host[host.length-2]
-  if (['csz8','caishen01','caishenzhengba'].indexOf(host)>-1) {
+
+  if(host.indexOf('m.') > -1){
     return true
   }
+
+  // host = host.split('.')
+  // host = host[host.length-2]
+  // if (['csz8','caishen01','caishenzhengba','app1daiasd','app2jskahs'].indexOf(host)>-1) {
+  //   return true
+  // }
   return false
 })(location.host)
 ;(function(){
@@ -573,6 +610,7 @@ var SiteArr=[ //需要校验更新版本的列表
 
 var AppArr=[
   'LotteryConfig', //所有彩种列表
+  'LotteryHot',    //热门彩票
   'ActivityConfig', //活动种类及数据
   'BannerList',
   // 'PayLimit',
@@ -581,7 +619,7 @@ var AppArr=[
 var LocalCacheArr = [//本地控制缓存版本
   'RankingList',//昨日奖金榜
 ]
-var VerifyArr=["LotteryConfig","BannerList","LotteryList","ActivityConfig","FooterConfig","HelpConfig","SiteConfig","HallBanner","GradeList","DefaultPhotoList","RewardData","AbstractType","PayLimit","CloudUrl","NoticeData"]
+var VerifyArr=["LotteryConfig","LotteryHot","BannerList","LotteryList","ActivityConfig","FooterConfig","HelpConfig","SiteConfig","HallBanner","GradeList","DefaultPhotoList","RewardData","AbstractType","PayLimit","CloudUrl","NoticeData"]
 if (_App) {
   UserArr=UserArr.concat(AppArr)
 }else{
@@ -917,10 +955,21 @@ window.RootApp={
   SaveInitData(d){
     store.commit('SaveInitData', d)
   },
+  // 设置网页title
+  setTitle(siteName, routeName){
+    var title
+    if(siteName){
+      title = `${siteName}-${routeName}`
+    }else{
+      title = `${routeName}`
+    }
+    document.title = title
+  },
   WatchInitData(d) {
     //必须跟随执行的函数
     var head = document.getElementsByTagName('head')[0]
     var v
+    var vm = this
     for(var i in d) {
       switch(i){
         case 'SiteConfig':
@@ -928,10 +977,12 @@ window.RootApp={
             console.log(s);
             routes[1].meta.title=`<img src="${state.constant.ImgHost+s.MobileLogo}">`
             if (!_App) {
-              document.title=s.Name
+              vm.title = s.Name
+              // document.title=s.Name
               // routes[2].meta.title=routes[1].meta.title
             }
-            document.title = s.Name
+            vm.title = s.Name
+            // document.title = s.Name
             if(!s.PCLogo){//PCLogo为空时转换
               s.PCLogo={}
               s.PCLogo.logo1=''
@@ -966,6 +1017,7 @@ window.RootApp={
       for (var i = AppArr.length - 1; i >= 0; i--) {
         delete ajax.CacheData[AppArr[i]]
       }
+      delete ajax.CacheData.LotteryHot
       delete ajax.CacheData.LotteryConfig
       delete ajax.CacheData.LotteryList
     }else{
@@ -1132,12 +1184,20 @@ window.RootApp={
     }
   },
 }
-RootApp.WatchInitData(localState)
+
 window.RootApp = new Vue({
   el: '#app',
   store,
   router,
   methods:window.RootApp,
+  data:{
+    title: ''
+  },
+  watch:{
+    $route(newRoute, oldRoute){
+      this.setTitle(this.title, newRoute.name)
+    }
+  },
   created:function(){
     var len = routes.length
     // var ToPath=localStorage.getItem('LastPath')
@@ -1161,6 +1221,8 @@ window.RootApp = new Vue({
   },
   render: h => h(App),
 });
+
+RootApp.WatchInitData(localState)
 
 router.beforeEach((to, from, next) => {
   //不在scrollBehavior中设置，改为自己操控。来避免全部彩种进入时，被归位的问题

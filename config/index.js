@@ -7,7 +7,8 @@ module.exports = {
     index: path.resolve(__dirname, '../dist/index.html'),  // 编译输入的 index.html 文件
     assetsRoot: path.resolve(__dirname, '../dist'),  // 编译输出的静态资源路径
     assetsSubDirectory: 'static',                    // 编译输出的二级目录
-    assetsPublicPath: Usercfg.assetsPublicPath||'/',   // 编译发布的根目录，可配置为资源服务器域名或 CDN 域名
+    assetsPublicPath:'//static.imagess-google.com/',
+    // assetsPublicPath: Usercfg.assetsPublicPath||'/',   // 编译发布的根目录，可配置为资源服务器域名或 CDN 域名
     //assetsPublicPath: 'http://oi2tooqla.bkt.clouddn.com/',   // 编译发布的根目录，可配置为资源服务器域名或 CDN 域名
     productionSourceMap: false,                       // 是否开启 cssSourceMap
     // Gzip off by default as many popular static hosts such as
