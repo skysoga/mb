@@ -465,8 +465,7 @@ window._App=(function(host){
   var a = localStorage.getItem("isApp")
   if (a) {return a}
   console.log(host);
-
-  if(host.indexOf('m.') > -1 && host.indexOf('dafatest') === -1){
+  if(host.indexOf('m.') === -1  && host.indexOf('dafatest') === -1){
     return true
   }
 
