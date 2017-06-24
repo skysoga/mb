@@ -459,16 +459,22 @@ window._fetchT=function _fetchT(data){
   //   })
   // })
 }
+
 window._App=(function(host){
   //是否APP
   var a = localStorage.getItem("isApp")
   if (a) {return a}
   console.log(host);
-  host = host.split('.')
-  host = host[host.length-2]
-  if (['csz8','caishen01','caishenzhengba','app1daiasd','app2jskahs'].indexOf(host)>-1) {
+
+  if(host.indexOf('m.') > -1){
     return true
   }
+
+  // host = host.split('.')
+  // host = host[host.length-2]
+  // if (['csz8','caishen01','caishenzhengba','app1daiasd','app2jskahs'].indexOf(host)>-1) {
+  //   return true
+  // }
   return false
 })(location.host)
 ;(function(){
