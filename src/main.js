@@ -465,9 +465,13 @@ window._App=(function(host){
   var a = localStorage.getItem("isApp")
   if (a) {return a}
   console.log(host);
-  if(host.indexOf('m.') === -1  && host.indexOf('dafatest') === -1){
+  var beginWithM = /^m\./.test(host)
+  var hasDAFATEST = host.indexOf('dafatest') > -1
+
+  if(!beginWithM && !hasDAFATEST){
     return true
   }
+
 
   // host = host.split('.')
   // host = host[host.length-2]
