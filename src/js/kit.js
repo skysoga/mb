@@ -644,10 +644,21 @@ function getSSCRebate(mode, Odds){
       if(mode === 'I94' || mode === 'I95')mode = 'I93';
       break;
   }
+
+  // 一个彩种中有两个赔率的
+  var specialMode = ['F21','F24','F25','E21','E24','E25','D21','D24','D25']
+
   var rebateSSC = Odds
   for(var i = 0;i < rebateSSC.length;i++){
     if(rebateSSC[i].PlayCode === mode){
-      return rebateSSC[i].Bonus;
+      var bonus = rebateSSC[i].Bonus
+
+      if(specialMode.indexOf(mode) > -1){
+        var half = ((+bonus)/2).toFixed(2)
+        return bonus + ',' + half
+      }else{
+        return bonus
+      }
     }
   }
 }
