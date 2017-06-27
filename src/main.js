@@ -645,9 +645,13 @@ function setState(key){
       switch(key[i]){
         case 'SiteConfig':
           console.log(value);
-          if (!(value.Style&&value.Style.Id)) {
-            value=''
+          if(!value.Style || (value.Style.Id !== 0 && !value.Style.Id)){
+            value = ''
           }
+
+          // if (!(value.Style&&value.Style.Id)) {
+          //   value=''
+          // }
         break;
         default:
           if(LocalCacheArr.indexOf(key[i])>-1){
@@ -974,6 +978,7 @@ window.RootApp={
               s.PCLogo={}
               s.PCLogo.logo1=''
             }
+
             var site = s.PCLogo.logo1
             if (site) {
               site=site.split('/')[1]
