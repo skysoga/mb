@@ -952,6 +952,7 @@ window.RootApp={
     document.title = title
   },
   WatchInitData(d) {
+    console.log(d, 'test')
     //必须跟随执行的函数
     var head = document.getElementsByTagName('head')[0]
     var v
@@ -1181,10 +1182,14 @@ window.RootApp = new Vue({
   },
   watch:{
     $route(newRoute, oldRoute){
+      console.log(newRoute,name)
       this.setTitle(this.title, newRoute.name)
     }
   },
   created:function(){
+    this.WatchInitData(localState)
+    this.setTitle(this.title, this.$route.name)
+
     var len = routes.length
     // var ToPath=localStorage.getItem('LastPath')
     // if(ToPath){
@@ -1208,7 +1213,7 @@ window.RootApp = new Vue({
   render: h => h(App),
 });
 
-RootApp.WatchInitData(localState)
+// RootApp.WatchInitData(localState)
 
 router.beforeEach((to, from, next) => {
   //不在scrollBehavior中设置，改为自己操控。来避免全部彩种进入时，被归位的问题

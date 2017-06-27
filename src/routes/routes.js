@@ -103,7 +103,7 @@ var routes = [{
   meta:{
     titleList:[{
       title:"中奖信息",
-      to:"/center/newWinners"
+      to:"/center/newWinners",
     },{
       title:"昨日奖金榜",
       to:"/center/competition"
@@ -152,7 +152,7 @@ var routes = [{
   component: AppDownload
 },{
   path: '/AppPackage',
-  // name: 'APP',
+  name: 'APP下载',
   meta:{
     title:"APP下载",
     link:"/index",
