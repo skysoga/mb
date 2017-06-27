@@ -2,11 +2,12 @@
 <div class = "sscFooter">
   <div class = "bet-money" v-if = "betCount">
     当前选号
-    <span class = "text-ellipsis" >{{betStr}}</span>
+    <span class = "text-ellipsis" @click = "showBetStr">{{displayBetStr}}</span>
   </div>
 
   <div class = "bet-money" v-if = "betCount">
-    每注金额<input type = "text" :value = "value" @input = "inputPerbet"> <span v-show = "!value.length">请输入投注金额</span>
+    每注金额<input type = "tel" maxlength="7" :value = "value" @input = "inputPerbet">
+    <span>{{value.length ? '元': '请输入投注金额'}}</span>
   </div>
 
   <div class = "bet-info">
@@ -37,6 +38,21 @@ export default{
       requied:true
     }
   },
+  data(){
+    return {
+      lengthLimit: 30,
+    }
+  },
+  computed:{
+    displayBetStr(){
+      var overlong = this.betStr.length > this.lengthLimit
+      if(overlong){
+        return this.betStr.slice(0, this.lengthLimit) + '...'
+      }else{
+        return this.betStr
+      }
+    }
+  },
   methods:{
     clearBet(){
       this.$emit('clearBet')
@@ -52,7 +68,11 @@ export default{
         $event.target.value = value
       }
       this.$emit('input', value)
+    },
+    showBetStr(){
+      layer.alert(this.betStr)
     }
+
   },
 }
 </script>

@@ -139,6 +139,9 @@ export default {
       return this.$store.getters.lt_natal
     },
     renderOdds(){
+      if(!Array.isArray(this.award)){
+        return null
+      }
       var mode = this.mode
       var award = this.award.map(item=>item/2)
       var odds = []
@@ -257,7 +260,7 @@ export default {
       return this.chosen.join(',')
     },
     betCount(){
-      return C(this.chosen.length, this.renderItem.alg)
+      return Math.round(C(this.chosen.length, this.renderItem.alg))
     },
   }),
   methods:{

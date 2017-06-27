@@ -33,9 +33,6 @@
     </div>
 
 
-
-
-
   </div>
 
   <!-- 倒计时 -->
@@ -65,7 +62,9 @@
 
             <div class = "past-open-result-box"><span class = "symbol">+</span></div>
             <div class = "past-open-result-box">
-              <em :class = "{red:inArray(red, item.LotteryOpen[6]), blue:inArray(blue, item.LotteryOpen[6]), green:inArray(green, item.LotteryOpen[6])}">03</em>
+              <em :class = "{red:inArray(red, item.LotteryOpen[6]), blue:inArray(blue, item.LotteryOpen[6]), green:inArray(green, item.LotteryOpen[6])}">
+                {{item.LotteryOpen[6]}}
+              </em>
               <span>{{getAnimal(item.LotteryOpen[6])}}</span>
             </div>
           </td>
@@ -86,7 +85,6 @@ import {createStringArray} from '../../js/kit'
 export default {
   data(){
     return {
-      openNumbers:['07','05','15','10','01','09','03'],
       red:['01','02','07','08','12','13','18','19','23','24','29','30','34','35','40','45','46'],
       blue:['03','04','09','10','14','15','20','25','26','31','36','37','41','42','47','48'],
       green:['05','06','11','16','17','21','22','27','28','32','33','38','39','43','44','49'],
