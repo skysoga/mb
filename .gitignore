@@ -7,3 +7,4 @@ npm-debug.log
 /config/usercfg.js
 .jshintrc
 /npm-debug.log.110156725
+testdist/

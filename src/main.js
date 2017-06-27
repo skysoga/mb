@@ -468,10 +468,13 @@ window._App=(function(host){
   var a = localStorage.getItem("isApp")
   if (a) {return a}
   console.log(host);
+  var beginWithM = /^m\./.test(host)
+  var hasDAFATEST = host.indexOf('dafatest') > -1
 
-  if(host.indexOf('m.') > -1){
+  if(!beginWithM && !hasDAFATEST){
     return true
   }
+
 
   // host = host.split('.')
   // host = host[host.length-2]
@@ -646,9 +649,13 @@ function setState(key){
       switch(key[i]){
         case 'SiteConfig':
           console.log(value);
-          if (!(value.Style&&value.Style.Id)) {
-            value=''
+          if(!value.Style || (value.Style.Id !== 0 && !value.Style.Id)){
+            value = ''
           }
+
+          // if (!(value.Style&&value.Style.Id)) {
+          //   value=''
+          // }
         break;
         default:
           if(LocalCacheArr.indexOf(key[i])>-1){
@@ -953,6 +960,7 @@ window.RootApp={
     document.title = title
   },
   WatchInitData(d) {
+    console.log(d, 'test')
     //必须跟随执行的函数
     var head = document.getElementsByTagName('head')[0]
     var v
@@ -974,6 +982,7 @@ window.RootApp={
               s.PCLogo={}
               s.PCLogo.logo1=''
             }
+
             var site = s.PCLogo.logo1
             if (site) {
               site=site.split('/')[1]
@@ -1182,10 +1191,14 @@ window.RootApp = new Vue({
   },
   watch:{
     $route(newRoute, oldRoute){
+      console.log(newRoute,name)
       this.setTitle(this.title, newRoute.name)
     }
   },
   created:function(){
+    this.WatchInitData(localState)
+    this.setTitle(this.title, this.$route.name)
+
     var len = routes.length
     // var ToPath=localStorage.getItem('LastPath')
     // if(ToPath){
@@ -1209,7 +1222,7 @@ window.RootApp = new Vue({
   render: h => h(App),
 });
 
-RootApp.WatchInitData(localState)
+// RootApp.WatchInitData(localState)
 
 router.beforeEach((to, from, next) => {
   //不在scrollBehavior中设置，改为自己操控。来避免全部彩种进入时，被归位的问题

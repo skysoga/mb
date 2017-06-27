@@ -33,7 +33,7 @@
           温馨提示：支付成功后，会在一分钟内为您添加额度，请刷新您的账户余额!
         </div>
       </div>
-      <iframe id="ifra" :src="QrImg" frameborder="0" :style="css[nowRender.PayType]" v-show="!QrSvg"></iframe>
+      <iframe id="ifra" :src="QrImg" frameborder="0" :style="css[(method=='Weixin'&&PayType=='众宝')?'众宝WX':PayType]" v-show="!QrSvg"></iframe>
     </div>
   </div>
 </template>
@@ -182,6 +182,14 @@ export default {
           '-ms-transform':'scale(1.3)',
           '-moz-transform':'scale(1.3)',
           'transform':'scale(1.3)',
+        },
+        '众宝WX':{
+          'margin-top':2.5*em-250+'px',
+          'left':'-226px',
+          '-webkit-transform':'scale(1)',
+          '-ms-transform':'scale(1)',
+          '-moz-transform':'scale(1)',
+          'transform':'scale(1)',
         }
       }
     }
