@@ -26,6 +26,8 @@ export default {
          case "晋级奖励":
          url="/upgrade"
          break;
+         default:
+          url = "/activity"
        }
        return url;
      },
