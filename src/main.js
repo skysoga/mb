@@ -329,15 +329,19 @@ window._fetch = function (data, option = {}){
           }
 
           json=json[0]
-          state.turning&&clearTimeout(st)
+          //不需要改StrCode的接口
+          var notChangeStrCode = ["GetRebateInfo"]
+
+          // 对StrCode 加上一些前后缀来表明后端的信息
+          if(notChangeStrCode.indexOf(data.Action) === -1){
+            json.StrCode = `·${json.StrCode}·`
+          }
+          state.turning && clearTimeout(st)
         }catch(error){
           var msg = "请求中含有敏感字符"
           FetchCatch({msg,error})
         }
 
-
-        json.StrCode = `·${json.StrCode}·`
-        state.turning&&clearTimeout(st)
         var notRes
 
         // 对首屏接口的返回结果的处理

@@ -263,13 +263,16 @@ var routes = [{
   component: manageIcode,
   children:[{
     path:'',
-    component:AgentCode
+    component:AgentCode,
+    name:'代理邀请码'
   },{
     path:'AgentCode',
-    component:AgentCode
+    component:AgentCode,
+    name:'代理邀请码'
   },{
     path:'memberCode',
-    component:memberCode
+    component:memberCode,
+    name:'玩家邀请码'
   }]
 },{
   path: '/personalInfo',
@@ -348,7 +351,11 @@ var routes = [{
     user:true
   },
   children: [
-        { path: '/rebateDes/:id', component: rebateDes},
+        {
+          path: '/rebateDes/:id',
+          component: rebateDes,
+          name:'返点赔率表'
+        },
       ],
   component:rebateDes
 },
