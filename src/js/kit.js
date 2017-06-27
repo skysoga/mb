@@ -661,7 +661,7 @@ function getSSCRebate(mode, Odds){
 
       if(specialMode.indexOf(mode) > -1){
         var half = ((+bonus)/2).toFixed(2)
-        return bonus + ',' + half
+        return [bonus, half]
       }else{
         return bonus
       }
