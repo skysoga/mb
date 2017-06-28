@@ -596,7 +596,7 @@ function computeIssue(code, index, isChase){
       // }
     },
     //北京快三，以某一期作为基准
-    '1406':basedOnFixedIssue(68606+1, "2017/2/4", 89, 1),
+    '1406':basedOnFixedIssue(68606, "2017/2/4", 89, 1),
     //北京快乐8,以某一期作为基准
     '1302':basedOnFixedIssue(807929-19, "2017/2/18", 179),
     //PK10,以某一期作为基准
