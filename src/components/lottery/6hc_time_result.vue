@@ -181,6 +181,7 @@ export default {
 }
 
 .isLotteryCon{
+  color:#666;
   display: flex;
   position: fixed;
   top:2.3em;
@@ -325,13 +326,15 @@ td.past-open-result{
 
 
 .timebar-issue{
+  margin-top:0.1rem;
   padding:0.2rem;
   font-size:.7em;
   text-align: center
 }
 
 .timebar h4{
-  margin-top:0.2rem;
+  color:#333;
+  margin-top:0.35rem;
   text-align: center;
   font-weight:400;
 }

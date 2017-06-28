@@ -5,10 +5,6 @@
         <!-- 头部： 玩法选择， 同类彩种选择-->
         <lt-header></lt-header>
 
-
-
-
-
         <time-result></time-result>
 
         <div class = "sscMain">
