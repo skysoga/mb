@@ -68,7 +68,7 @@
               <span>{{getAnimal(item.LotteryOpen[6])}}</span>
             </div>
           </td>
-          <td>17.05.12</td>
+          <td>{{item.OpenTime}}</td>
         </tr>
 
       </tbody>
@@ -103,7 +103,7 @@ export default {
       this.$store.state.lt.box === 'pastOpen' ?
          this.$store.commit('lt_changeBox', '') :
            this.$store.commit('lt_changeBox', 'pastOpen')
-    },
+    }
   },
   created(){
     function circle(numStr){
@@ -151,7 +151,11 @@ export default {
         var el = {}
         el.IssueNo = item.IssueNo
         el.LotteryOpen = item.LotteryOpen.split(',').map(str=>('0' + str).slice(-2))
-        el.OpenTime = item.OpenTime.split(' ')[1] //开奖时间的时分秒
+        var mdy = item.OpenTime.split(' ')[0] //开奖时间的年月日
+        var [month, date, year] = mdy.split('/')
+        year = year.slice(-2)
+        month = ('0' + month).slice(-2)
+        el.OpenTime = `${year}.${month}.${date}`
         return el
       })
     },
