@@ -259,7 +259,7 @@ export default {
 
 .text-small{
   font-size:.7em;
-  margin-left:1rem;
+  margin-left:0.65rem;
 }
 
 .past-open{
