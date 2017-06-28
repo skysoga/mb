@@ -11,7 +11,7 @@
         <em :class = "{red:inArray(red, numStr), blue:inArray(blue, numStr), green:inArray(green, numStr)}">{{numStr}}</em>
         <span class = "number-box-text">{{getAnimal(numStr)}}</span>
       </div>
-      <div class = "number-box"><span class = "symbol">+</span></div>
+      <div class = "number-box"><span class = "symbol up">+</span></div>
       <div class = "number-box">
         <em :class = "{red:inArray(red, results[6]), blue:inArray(blue, results[6]), green:inArray(green, results[6])}">{{results[6]}}</em>
         <span class = "number-box-text">{{getAnimal(results[6])}}</span>
@@ -206,6 +206,11 @@ export default {
   font-size:1.2em;
   padding:0.1rem;
 }
+
+.up{
+  margin-top:-1rem;
+}
+
 
 .openNumber{
   display: flex;

@@ -101,8 +101,10 @@ export default{
   flex-wrap: wrap;
   justify-content:center;
   width:100%;
-  padding-left:0.2em;
-  padding:0.2em 0 0.2em 0.2em;
+  padding-top:0.3em;
+  padding-bottom:0.2em;
+  padding-left:0.1em;
+  /*padding:0.2em 0 0.2em 0.2em;*/
   border-top:1px solid #dfdfdf;
 }
 
