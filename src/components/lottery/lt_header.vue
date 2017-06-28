@@ -22,11 +22,11 @@
                   </li>
                 </ul>
 
-                <ul class="betFilterAnd">
+                <ul class="betFilterAnd"  :style = "{padding: isHideSubGroup ? '0.2rem' : ''}">
                   <li class="fix"
                       v-for = "(subGroup, subGroupName) in config[mode.group]"
                       :class = "addSubGroupClass(subGroupName)">
-                    <span>{{subGroupName}}</span>
+                    <span v-show = "!isHideSubGroup">{{subGroupName}}</span>
                     <div class="fix">
                       <a v-for = "modeItem in subGroup"
                           :class = "modeItem.mode === mode.mode? 'curr': ''"
@@ -80,7 +80,8 @@
       return {
         LotteryList: [],//彩种list
         lTopNav:['PK10','KL8', '6HC'],//导航隐藏配置
-        noLotteryName: ['6HC'],
+        hideSubGroup:['6HC'],         //没有次级补录
+        noLotteryName: ['6HC'],       //没有彩种名字
         ltype: '',      //彩种类型
         lcode: ''        //彩种code
       }
@@ -137,6 +138,9 @@
       }
     },
     computed: mapState({
+      isHideSubGroup(){
+        return this.hideSubGroup.indexOf(this.ltype) > -1
+      },
       mode:state=>state.lt.mode,
       config: state=>state.lt.config,
       LotteryName: state=>state.lt.lottery.LotteryName,

@@ -4,6 +4,11 @@
       <div class="DontSelect sscActive">
         <!-- 头部： 玩法选择， 同类彩种选择-->
         <lt-header></lt-header>
+
+
+
+
+
         <time-result></time-result>
 
         <div class = "sscMain">
@@ -53,7 +58,7 @@
 
 <script>
 import {mapState} from 'vuex'
-import lt_header from '../components/lottery/lt_header'
+import lt_header from '../components/lottery/lt_header1'
 import lt_result from '../components/lottery/lt_result'
 import lt_timebar from '../components/lottery/lt_timebar'
 import lt_footer from '../components/lottery/lt_footer'
