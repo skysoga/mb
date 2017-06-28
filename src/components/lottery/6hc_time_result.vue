@@ -181,7 +181,7 @@ export default {
 }
 
 .isLotteryCon{
-  color:#666;
+  color:#333;
   display: flex;
   position: fixed;
   top:2.3em;

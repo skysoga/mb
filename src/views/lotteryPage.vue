@@ -672,6 +672,10 @@
             function get6HCCountdown(){
               var serverTimeStamp = new Date().getTime() - rootState.Difftime
               var {BeforeIssue, Month, NextFirst, Schedule, ScheduleStamp} = state.LotteryPlan
+              if(!BeforeIssue || !Month || !NextFirst || !Schedule || !ScheduleStamp){
+                console.log('方案尚未加载到')
+                return
+              }
               var cursor = new Date(serverTimeStamp)
 
               // 每月将缓存清楚掉重新拉取---月头
