@@ -176,7 +176,7 @@ export default {
           'transform':'scale(.7)',
         },
         '众宝':{
-          'margin-top':2.5*em-203+'px',
+          'margin-top':2.5*em-225+'px',
           'left':'-200px',
           '-webkit-transform':'scale(1.1)',
           '-ms-transform':'scale(1.1)',
