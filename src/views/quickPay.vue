@@ -176,12 +176,12 @@ export default {
           'transform':'scale(.7)',
         },
         '众宝':{
-          'margin-top':2.5*em-160+'px',
-          'left':'-410px',
-          '-webkit-transform':'scale(1.3)',
-          '-ms-transform':'scale(1.3)',
-          '-moz-transform':'scale(1.3)',
-          'transform':'scale(1.3)',
+          'margin-top':2.5*em-203+'px',
+          'left':'-200px',
+          '-webkit-transform':'scale(1.1)',
+          '-ms-transform':'scale(1.1)',
+          '-moz-transform':'scale(1.1)',
+          'transform':'scale(1.1)',
         },
         '众宝WX':{
           'margin-top':2.5*em-250+'px',
