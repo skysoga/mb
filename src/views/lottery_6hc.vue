@@ -75,16 +75,17 @@ export default {
     })
   },
   components:{
-      'lt-header': lt_header,
-      'bet-tip': bet_tip,
-      'colorbox': colorbox,
-      'normal-box': normal_box,
-      'combobox': combobox,
-      'lt-footer1': lt_footer1,
-      'time-result': time_result
+      'lt-header': lt_header,  //头部切换玩法，和其他彩种不太一致
+      'bet-tip': bet_tip,      //玩法说明
+      'colorbox': colorbox,    //三色投注框
+      'normal-box': normal_box,//两面投注框
+      'combobox': combobox,    //复合投注框
+      'lt-footer1': lt_footer1, //投注确认框
+      'time-result': time_result //倒计时及开奖结果显示
   },
   data(){
     return {
+      // 彩种的显示文本
       bonusText: {
         '6HCC02':['中二','中特'],
         '6HCC04':['二中','中特'],
@@ -102,6 +103,7 @@ export default {
     }
   },
   computed:mapState({
+    // 6HC的页面信息配置
     renderConfig(){
       var animalEgMode = ['E01','E02']
       animalEgMode.forEach(mode=>{
@@ -133,6 +135,7 @@ export default {
     natal(){
       return this.$store.getters.lt_natal
     },
+    // 用于渲染的赔率
     renderOdds(){
       if(!Array.isArray(this.award)){
         return null

@@ -44,7 +44,7 @@
       Lottery6HC
     },
     beforeRouteEnter(to, from, next){
-
+      // 将滚动置顶
       scrollTop()
       //从url上获取彩种type和彩种code
       var [,ltype, lcode] = to.fullPath.slice(1).split('/')
@@ -86,6 +86,8 @@
           resolve()                    //有就直接进页面
         }
       })
+
+      // 进入彩种页必须先获取到  赔率/彩种配置/服务器时间
       Promise.all([getRebate, getLotteryList, getServerTime]).then((values)=>{
         //校验下这个彩种存不存在，不存在就送回购彩大厅
         var lotteryItem = state.LotteryList[lcode]
@@ -102,9 +104,11 @@
         next()
       }).catch((err)=>{
         //报错并返回
-        // next(false)
-        store.commit('toggleLoading', false)  //关掉loading动画
+
+         //关掉loading动画
+        store.commit('toggleLoading', false)
         layer.msgWarn(err.message)
+        //返回首页
         RootApp.$router.replace('/index')
       })
 		},
@@ -127,7 +131,7 @@
         '6HC': hcConfig
       }
 
-      //处理返点
+      //处理返点---除了时时彩其余彩种都用同一个处理函数
       var awardSetter = {
         'SSC':getSSCRebate,
         'K3': getMultipleRebate,
@@ -882,10 +886,13 @@
             var _rebate = localStorage.getItem(`Rebate${type}`)
             _rebate = JSON.parse(_rebate)
             // var _rebate = rootState['Rebate' + type]
+
+            // 不使用本地返点
             if(notUseLocal){
               _rebate = null
             }
 
+            // 没有返点就重新拉取返点数据
             if(!_rebate){
               _fetch({
                 Action: 'GetBetRebate',
@@ -898,6 +905,7 @@
                     rebate: json.BackData,
                     LotteryType: type
                   })
+
                   // 更新号码篮里的返点信息
                   state.basket.forEach(bet=>{
                     bet.setRebate(json.BackData.Rebate, rootState)
@@ -916,6 +924,7 @@
           lt_confirmBet:({state, rootState, commit, dispatch})=>{
             var _basket = deleteCompress(state.basket)
             layer.msgWait('正在投注')
+
             _fetch({
               'Action':'AddBetting',
               'data': {BettingData:_basket}
@@ -1015,6 +1024,7 @@
 
             commit('lt_setScheme', scheme)
           },
+          // 追号投注
           lt_chase:({state, rootState, commit, dispatch})=>{
             layer.msgWait('正在投注')
             _fetch({
