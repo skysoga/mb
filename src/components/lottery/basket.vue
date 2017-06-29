@@ -114,8 +114,10 @@ var specialModes = {
   PK10: pk10SpecialMode,
   KL8: kl8SpecialMode
 }
+
 function scrollTop(){document.body.scrollTop = 0}  //滚动置顶
 export default {
+  name:'basket',
   data(){
     return {
       PERBET:PERBET,

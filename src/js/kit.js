@@ -1,11 +1,11 @@
 import Vue from 'vue'
 var bus = new Vue()     //空vue用来做事件管理
-var DAY_TIME = 24 * 60 * 60 * 1000
-var HOUR_TIME = 60 * 60 * 1000
-var MINUTE_TIME = 60 * 1000
-var SECOND_TIME = 1000
+var DAY_TIME = 24 * 60 * 60 * 1000  //一天的毫秒值
+var HOUR_TIME = 60 * 60 * 1000      //一小时的毫秒值
+var MINUTE_TIME = 60 * 1000         //一分钟的毫秒值
+var SECOND_TIME = 1000              //一秒的毫秒值
 // var GMT_DIF =new Date().getTimezoneOffset()*60*1000
-var GMT_DIF = -8 * 60 *60*1000
+var GMT_DIF = -8 * 60 *60*1000  //格林威治和东八区的相差时间
 var PERBET = 2    //每注2元
 var Max_Rate =10000   //最大倍数
 var Max_Chase_Issue = 50  //追号最大期数
@@ -88,6 +88,7 @@ function combNoRepeat(singleArr, combArr, n){
   return a * C(m-1, n) + b * C(m, n);
 }
 
+// 数组去重
 function unique(arr){
   var hashTable = {}, newArr = [];
   for(var i = 0;i < arr.length;i++){
@@ -99,6 +100,7 @@ function unique(arr){
   return newArr;
 }
 
+// 嵌套循环3次
 function loop3(arr,fn){
   var l = arr.length;
   for(var i = 0;i < l;i++){
@@ -110,6 +112,7 @@ function loop3(arr,fn){
   }
 }
 
+// 嵌套循环3次
 function loop2(arr,fn){
   var l = arr.length;
   for(var i = 0;i < l;i++){
@@ -119,6 +122,7 @@ function loop2(arr,fn){
   }
 }
 
+//直选和值3
 var normalSum3 = (function(){
   var base = [0,1,2,3,4,5,6,7,8,9];
   var cache = {};
@@ -244,6 +248,7 @@ var diff2 = (function(){
   }
 })()
 
+// 组选和值3
 var combSum3 = (function(){
   var base = [0,1,2,3,4,5,6,7,8,9];
   var cache = {};
@@ -322,6 +327,7 @@ var combSum2 = (function(){
   }
 })()
 
+
 function accumulate(arr, fn){
   var s = 0;
   for(var i = 0;i < arr.length;i++){
@@ -342,6 +348,7 @@ function easyClone(obj){
   return newObj;
 }
 
+// 注单构造器
 function BaseBet(state,count, betStr){
   var lt = state.lt,
       bet = state.lt.bet,
@@ -367,21 +374,25 @@ function BaseBet(state,count, betStr){
   this.compress = bet.compress                             //压缩字符串
 }
 
+// 倍数归一，普通投注切换追号时，号码篮内倍率变成1
 BaseBet.prototype.power2one = function(state){
   this.graduation_count = 1
   this.betting_money = +(state.lt.perbet * this.betting_count * this.betting_model * this.graduation_count).toFixed(2)
 }
 
+// 设置赔率
 BaseBet.prototype.setRebate = function(rebate, state){
   var lt = state.lt
   this.betting_point = rebate + '-' + lt.Rebate[lt.lottery.LotteryType]
 }
 
+// 设置倍数
 BaseBet.prototype.setPower = function(power, state){
   this.graduation_count = power
   this.betting_money = +(state.lt.perbet * this.betting_count * this.betting_model * this.graduation_count).toFixed(2)
 }
 
+// 清楚压缩字符串
 BaseBet.prototype.clearCompress = function(){
   this.compress = ''
 }
@@ -443,7 +454,7 @@ function statistics(){
   return [totalBet, totalMoney];
 }
 
-
+// 删除compress
 function deleteCompress(basket, ifChase){
   return basket.map(function(item){
               var cloneItem = easyClone(item);
@@ -462,6 +473,7 @@ function deleteCompress(basket, ifChase){
           })
 }
 
+// 压缩注单 （五星复式）
 function compress(source){
   source = unique(source.map(function(item){return +item})).sort(function(a,b){return a-b})
   //如果只有一注，直接返回
@@ -524,6 +536,7 @@ function compress(source){
   }
 }
 
+// 节流函数（用于注单组件的输入节流）
 var throttle = function(delay){
   var timer = null;
   var count = 0;

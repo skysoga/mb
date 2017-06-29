@@ -24,6 +24,7 @@
       </div>
     </div>
 
+    <!-- 号码篮 -->
     <basket @click.native.stop v-show = "ifShowBasket"></basket>
 
   </div>

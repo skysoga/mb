@@ -42,6 +42,7 @@ function getTimeFromYMD(ymd){
   return new Date(yy, mm -1, dd).getTime()
 }
 
+// 返回生肖
 function getNatal(timeObj){
   var time = timeObj.getTime()
   for(var i =0;i < spring.length;i++){

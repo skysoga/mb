@@ -213,11 +213,12 @@
         },
         mutations:{
                           /** 期号 **/
-
+          //设置Todaystr
           lt_updateDate:(state)=>{
             var nowSerTime = new Date().getTime()- this.$store.state.Difftime;   //当前的服务器时间
             state.Todaystr = new Date(nowSerTime).format("yyyyMMdd");           //今天
           },
+          // 设置LotteryPlan
           lt_setPlan:(state, plan)=>{
             state.LotteryPlan = plan
           },
@@ -501,9 +502,6 @@
               _fetch({Action:'GetLotteryPlan', Qort:'1301'}).then((json)=>{
                 if(json.Code === 1){
                   var monthPlan = json.Data
-
-                  monthPlan = JSON.parse('{"Month":6,"BeforeIssue":"62","Schedule":"1,3,6,8,10,13,15,17,20,22,24,27,29","NextFirst":"2"}')
-
                   localStorage.setItem("lotteryPlan" + code, JSON.stringify(monthPlan));
                   //如果code和当前的code不一样，说明在异步获取完后，用户已经切换页面了，就直接结束
                   console.log(json)
@@ -1051,6 +1049,11 @@
           }
         }
       }
+
+
+      /**
+       * 彩种模块执行入口
+       */
 
       //注册彩种模块 --lt
       this.$store.state.lt || this.$store.registerModule('lt', lt)
