@@ -1,4 +1,4 @@
-import guangying from './guangying'
+import lottery from './lottery'
 import zhiming from './zhiming'
 import xiaosen from './xiaosen'
 
@@ -160,7 +160,7 @@ var routes = [{
   component: AppPackage
 }]
 
-routes = routes.concat(guangying).concat(zhiming).concat(xiaosen).concat(publicRoute)
+routes = routes.concat(lottery).concat(zhiming).concat(xiaosen).concat(publicRoute)
 
 
 module.exports = routes
