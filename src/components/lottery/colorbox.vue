@@ -9,9 +9,7 @@
        @click = "choose(item)"
        :class = "{curr: chosen.indexOf(item) > -1}">
 
-       <span :class = "{red:red.indexOf(item)>-1, blue:blue.indexOf(item)>-1, green:green.indexOf(item)>-1}">
-         {{item}}
-       </span>
+       <span :class = "{red:red.indexOf(item)>-1, blue:blue.indexOf(item)>-1, green:green.indexOf(item)>-1}">{{item}}</span>
     </a>
   </div>
 </div>
