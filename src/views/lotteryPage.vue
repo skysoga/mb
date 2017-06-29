@@ -534,6 +534,7 @@
               })
 
               commit('lt_setPlan', monthPlan)
+              dispatch('lt_refresh')
             }
           },
           //action-获取开奖计划
