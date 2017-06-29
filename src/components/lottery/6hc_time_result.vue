@@ -275,7 +275,7 @@ export default {
 
 .past-open{
   position: absolute;
-  top:4.2rem;
+  top:3.74em;
   left:0;
   width:100%;
   min-height:10rem;
