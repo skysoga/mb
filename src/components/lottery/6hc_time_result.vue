@@ -190,6 +190,13 @@ export default {
   background: #e1d9ba;
   z-index: 5;
   height: 4.2rem;
+ /* position: relative;
+  &:before{
+    position:absolute;
+    content:'';
+    width: 100%;
+    border-top:1px solid white;
+  }*/
 }
 
 .result{
@@ -199,7 +206,17 @@ export default {
 
 .timebar{
   flex:1;
-  border-left:1px solid #bdb48b;
+  position: relative;
+  &:before{
+    content:'';
+    display: block;
+    position: absolute;
+    height: calc(4.2rem - 1px);
+    width: 1px;
+    background-image: -webkit-linear-gradient(0deg, #bdb48b, #bdb48b 50%, transparent 50%);
+    left: 0;
+    top:0;
+  }
 }
 
 .symbol{
@@ -226,32 +243,28 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  /*height:2.2rem;*/
-  /*border: 1px solid #aaa;*/
   em{
     display: flex;
     align-items: center;
     justify-content: center;
     width: 1.8em;
     height: 1.8em;
-    /*background: #dc3b40;*/
-    @include bg-linear-gradient('top, #f86469 0%,#bf1f24 75%')
-    box-shadow: 0px 3px 1px #bbb59c;
+    box-shadow: 0px 2px 1px #bbb59c;
     border-radius: 50%;
     color:white;
     font-size: 0.8em;
   }
 
   em.red{
-    background: #dc3b40;
+    @include bg-linear-gradient('top, #f87b7e 0%,#dc3b40 75%')
   }
 
   em.blue{
-    background: #218ddd;
+    @include bg-linear-gradient('top, #6ebefa 0%,#218ddd 75%')
   }
 
   em.green{
-    background: #38b366;
+    @include bg-linear-gradient('top, #69d893 0%,#38b366 75%')
   }
 }
 
