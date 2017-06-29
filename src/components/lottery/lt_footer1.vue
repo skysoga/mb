@@ -12,7 +12,7 @@
 
   <div class = "bet-info">
     <div class = "bet-info-left">
-      <a class = "bet-info-clear" @click = "clearBet">清空</a>
+      <a class = "bet-info-clear" @click = "clearBet"><i class="iconfont"></i>清空</a>
       <span class = "bet-info-count">共{{betCount}}注</span>
     </div>
     <div class = "bet-info-right">
@@ -122,9 +122,8 @@ $footer-left:0.5rem;
   align-items:center;
   width:100%;
   height:2.3rem;
-  background: #000;
+  background: #252525;
   color:#ddd;
-  border:3px solid #000;
 }
 
 .bet-info-left{
@@ -139,7 +138,16 @@ $footer-left:0.5rem;
 
 .bet-info-clear{
   padding-left:$footer-left;
-  color:#aaa;
+  color:#717271;
+  i{
+    &:before{
+      content:'\e620';
+      font-size: 1.6em;
+      display: inline-block;
+      transform: translateY(.12em);
+      padding-right: .2em;
+    }
+  }
 }
 
 .bet-info-count{
@@ -150,6 +158,6 @@ $footer-left:0.5rem;
   background: #dc3b40;
   border:none;
   padding:0.3rem 0.55rem;
-  border-radius: 0.3rem;
+  border-radius: 0.26rem;
 }
 </style>
