@@ -94,6 +94,7 @@ $footer-left:0.5rem;
   bottom:0;
   width:100%;
   font-size:.7em;
+  z-index: 3;
 }
 
 .bet-money{
