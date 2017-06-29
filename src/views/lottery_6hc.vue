@@ -55,9 +55,9 @@
 <script>
 import {mapState} from 'vuex'
 import lt_header from '../components/lottery/lt_header1'
-import lt_result from '../components/lottery/lt_result'
-import lt_timebar from '../components/lottery/lt_timebar'
-import lt_footer from '../components/lottery/lt_footer'
+// import lt_result from '../components/lottery/lt_result'
+// import lt_timebar from '../components/lottery/lt_timebar'
+// import lt_footer from '../components/lottery/lt_footer'
 import lt_PKKL from '../components/lottery/lt_PKKL'
 import bet_tip from '../components/lottery/bet_tip'
 import colorbox from '../components/lottery/colorbox'
@@ -78,9 +78,9 @@ export default {
   },
   components:{
       'lt-header': lt_header,
-      'lt-result': lt_result,
-      'lt-timebar': lt_timebar,
-      'lt-footer': lt_footer,
+      // 'lt-result': lt_result,
+      // 'lt-timebar': lt_timebar,
+      // 'lt-footer': lt_footer,
       'bet-tip': bet_tip,
       'colorbox': colorbox,
       'normal-box': normal_box,
