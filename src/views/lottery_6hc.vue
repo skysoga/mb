@@ -11,11 +11,13 @@
           <div class="sscTips" v-if = "!tipDisplayFlag && tipOverLong">
             <p>
               {{actualTip}}
-              <span @click = "showDetail" style = "color:#218ddd;">详细</span>
+              <span @click = "toggleDetail(true)" style = "color:#218ddd;">详细</span>
             </p>
           </div>
 
-          <bet-tip v-else :award = "renderAward" :tip = "tip" :itemArr = "bonusText[lotteryMode]" :isOdds = "true"></bet-tip>
+          <bet-tip v-else :award = "renderAward" :tip = "tip" :itemArr = "bonusText[lotteryMode]" :isOdds = "true">
+            <span v-if = "tipDisplayFlag" @click = "toggleDetail(false)" style = "color:#218ddd;">收起</span>
+          </bet-tip>
 
           <!-- 三色玩法框(01-49)(无赔率) -->
           <colorbox v-if = "renderItem.box === 'colorbox'"
@@ -100,11 +102,10 @@ export default {
         '6HCF03':['含0尾', '不含0尾'],
         '6HCF04':['含0尾', '不含0尾'],
       },
-      // renderConfig:renderConfig, //页面配置
       perbet:'',
       poultry: ['牛','马','羊','鸡','狗','猪'],//家禽
       wild: ['鼠','虎','兔','龙','蛇','猴'], //野兽
-      ellipsisWidth: 45,
+      ellipsisWidth: 46,
     }
   },
   computed:mapState({
@@ -282,8 +283,8 @@ export default {
       }
       return eg.join(',')
     },
-    showDetail(){
-      this.$store.commit('lt_showFullTip', true)
+    toggleDetail(bool){
+      this.$store.commit('lt_showFullTip', bool)
     },
     choose(item, order){
       var chosen = this.chosen.slice()
