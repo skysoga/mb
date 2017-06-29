@@ -85,6 +85,7 @@ $footer-left:0.5rem;
   width:16em;
   overflow:hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .sscFooter{
