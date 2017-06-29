@@ -2,7 +2,7 @@
 <div class = "sscFooter">
   <div class = "bet-money" v-if = "betCount">
     当前选号
-    <span class = "text-ellipsis" @click = "showBetStr">{{displayBetStr}}</span>
+    <span class = "text-ellipsis" @click = "showBetStr">{{betStr}}</span>
   </div>
 
   <div class = "bet-money" v-if = "betCount">
