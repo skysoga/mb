@@ -131,7 +131,7 @@ export default {
       margin-top:0.3rem;
       align-items:center;
       justify-content:center;
-      font-size:.3em;
+      font-size:.6em;
       color: #666;
     }
   }

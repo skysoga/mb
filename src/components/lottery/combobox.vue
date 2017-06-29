@@ -1,13 +1,14 @@
 <template>
 <div class="selectNumber fix">
   <div class="numberContent">
-    <div v-for = "(item, index) in itemArr" class = "bet-item-box"  @click = "choose(item)" :class = "{curr: chosen.indexOf(item)>-1}">
-      <a class = "bet-item">{{item}}</a>
-      <span class = "bet-item-award" v-if = "needAward && renderOdds && renderOdds.length">赔率{{renderOdds[index]}}</span>
-      <div class = "bet-item-eg-box" v-if = "egArr.length">
-        <span v-for = "eg in egText[index]" class = "bet-item-eg">{{eg}}</span>
+    <div v-for = "(item, index) in itemArr" class="bet-item-box-Con">
+      <div class = "bet-item-box"  @click = "choose(item)" :class = "{curr: chosen.indexOf(item)>-1}">
+        <a class = "bet-item">{{item}}</a>
+        <span class = "bet-item-award" v-if = "needAward && renderOdds && renderOdds.length">赔率{{renderOdds[index]}}</span>
+        <div class = "bet-item-eg-box fix" v-if = "egArr.length">
+          <span v-for = "eg in egText[index]" class = "bet-item-eg">{{eg}}</span>
+        </div>
       </div>
-
     </div>
   </div>
 </div>
@@ -65,12 +66,12 @@ export default{
   flex-wrap: wrap;
   width: 95%;
 }
-
-.bet-item-box{
-  width: 30%;
-  margin:0.3rem;
-  margin-right:0;
+.bet-item-box-Con{
+  width: calc(100% / 3);
   font-size: .8em;
+  padding: .48em;
+}
+.bet-item-box{
   border:1px solid #dfdfdf;
   border-radius:.15rem;
   background: #faf9f6;
@@ -81,7 +82,7 @@ export default{
   align-items:center;
   justify-content:center;
   width:100%;
-  padding:0.2rem 0;
+  padding-top:0.2em;
   color: #333;
   font-size:1em;
 }
@@ -92,8 +93,9 @@ export default{
   justify-content:center;
   width:100%;
   color:#dc3b40;
-  padding-bottom:.35rem;
-  font-size:.6em;
+  padding-top:.16em;
+  padding-bottom:.5em;
+  font-size:.66em;
 }
 
 .bet-item-eg-box{
@@ -101,18 +103,17 @@ export default{
   flex-wrap: wrap;
   justify-content:center;
   width:100%;
-  padding-top:0.3em;
-  padding-bottom:0.2em;
-  padding-left:0.1em;
-  /*padding:0.2em 0 0.2em 0.2em;*/
   border-top:1px solid #dfdfdf;
+  padding:0 5%;
 }
 
 .bet-item-eg{
-  display:inline-block;
-  padding:0 0.1em;
-  font-size:.05em;
+  display:block;
+  float: left;
+  width: 18%;
+  font-size:.6em;
   color:#888;
+  text-align: center;
 }
 
 .curr{
