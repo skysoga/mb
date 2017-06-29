@@ -410,7 +410,7 @@ export default {
 <style lang = "scss" scoped>
 @import '../scss/newssc.scss';
 .sscMain{
-  padding-top:6.8rem;
+  padding-top:6.5em;
   padding-bottom:6rem;
 }
 

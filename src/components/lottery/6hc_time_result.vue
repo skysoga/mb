@@ -55,13 +55,13 @@
         <tr v-for = "item in pastOpen" >
           <td>{{item.IssueNo}}</td>
           <td class = "past-open-result">
-            <div v-for = "(numStr, index) in item.LotteryOpen" class = "past-open-result-box" v-if = "index < 6">
+            <div v-for = "(numStr, index) in item.LotteryOpen" class = "past-open-result-box fix" v-if = "index < 6">
               <em :class = "{red:inArray(red, numStr), blue:inArray(blue, numStr), green:inArray(green, numStr)}">{{numStr}}</em>
               <span>{{getAnimal(numStr)}}</span>
             </div>
 
-            <div class = "past-open-result-box"><span class = "symbol">+</span></div>
-            <div class = "past-open-result-box">
+            <div class = "past-open-result-box fix"><span class = "symbol">+</span></div>
+            <div class = "past-open-result-box fix">
               <em :class = "{red:inArray(red, item.LotteryOpen[6]), blue:inArray(blue, item.LotteryOpen[6]), green:inArray(green, item.LotteryOpen[6])}">
                 {{item.LotteryOpen[6]}}
               </em>
@@ -189,29 +189,24 @@ export default {
   width: 100%;
   background: #e1d9ba;
   z-index: 5;
-  height: 4.2rem;
- /* position: relative;
-  &:before{
-    position:absolute;
-    content:'';
-    width: 100%;
-    border-top:1px solid white;
-  }*/
+  height: 3.75em;
 }
 
 .result{
   flex:2;
-  margin-top:.2rem;
+  padding-top:.24em;
+  border-top: 1px solid white;
 }
 
 .timebar{
   flex:1;
   position: relative;
+  border-top: 1px solid white;
   &:before{
     content:'';
     display: block;
     position: absolute;
-    height: calc(4.2rem - 1px);
+    height: calc(3.75em - 1px);
     width: 1px;
     background-image: -webkit-linear-gradient(0deg, #bdb48b, #bdb48b 50%, transparent 50%);
     left: 0;
@@ -234,8 +229,8 @@ export default {
   align-items: center;
   justify-content: space-between;
   width:100%;
-  height:2.8rem;
-  padding:0 .6rem;
+  height:3.4em;
+  padding:0 .6em;
   font-size:.7em;
 }
 
@@ -268,11 +263,14 @@ export default {
   }
 }
 
-.number-box-text{margin-top:.2rem;}
+.number-box-text{
+  margin-top:.2em;
+}
 
 .text-small{
   font-size:.7em;
-  margin-left:0.65rem;
+  margin-left:1em;
+  display: block;
 }
 
 .past-open{
@@ -292,9 +290,14 @@ export default {
     font-weight:400;
     line-height:2.4em;
     border-bottom:1px solid #bdb48b;
+    color:#666;
   }
   td{
     padding:0.4rem 0.4rem;
+    &:first-child,&:last-child{
+      width:5.6em;
+      color:#666;
+    }
   }
 }
 
@@ -308,27 +311,31 @@ export default {
 
 td.past-open-result{
   padding:0.4rem 0.7rem;
+  padding-right: .3rem;
 }
 
 .past-open-result::before{
-  content:"-";
+  content:"";
+  width: .8em;
+  height: 1px;
+  background: #a7a182;
   position:absolute;
-  left:-0.2em;
-  top:0.7rem;
+  left:-.4em;
+  top:50%;
 }
 
 .past-open-result-box{
-  width:1rem;
-  display: flex;
-  flex-wrap:wrap;
-  justify-content: center;
-  flex:1;
   font-size: 0.7em;
-
+  text-align: center;
+  float: left;
+  width: 12.5%;
   em{
     font-size:1.3em;
+    display: block;
   }
-
+  span{
+    color:#666;
+  }
   .red{
     color:#dc3b40;
   }
@@ -344,15 +351,13 @@ td.past-open-result{
 
 
 .timebar-issue{
-  margin-top:0.1rem;
-  padding:0.2rem;
+  padding-top:.24em;
   font-size:.7em;
   text-align: center
 }
 
 .timebar h4{
   color:#333;
-  margin-top:0.35rem;
   text-align: center;
   font-weight:400;
 }

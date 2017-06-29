@@ -24,6 +24,7 @@
 
                 <ul class="betFilterAnd"
                     :style = "{padding: isHideSubGroup ? '0.2rem' : ''}">
+                  <div class="choosePlayType"><div>玩法选择</div></div>
                   <li class="fix"
                       v-for = "(subGroup, subGroupName) in config[mode.group]"
                       :class = "addSubGroupClass(subGroupName)">
@@ -358,7 +359,48 @@
   text-align: left;
   padding:.2rem .4rem;
   padding-left: 1.6rem;
-  overflow: hidden;
+  position: relative;
+  .choosePlayType{
+    width: 100%;
+    position: absolute;
+    top:-.5em;
+    height: 1em;
+    font-size: .5em;
+    line-height: .5em;
+    z-index: 3;
+    margin-left: -.4em;
+    text-align: center;
+    padding:0;
+    >div{
+      color:#999;
+      margin: 0 auto;
+      float: inherit;
+      width: 6.4em !important;
+      padding: 0;
+      display: inline-block;
+      height: 1.6em;
+      line-height: 1em;
+      text-align: center;
+      margin-left: calc((100% - 6.4em) / 2);
+      background: white;
+      position: relative;
+      &:before,&:after{
+        position:absolute;
+        top:.3em;
+        left: -.4em;
+        content:'';
+        display: block;
+        height: .5em;
+        width: .5em;
+        border-radius: 50%;
+        background: #dfdfdf;
+      }
+      &:after{
+        left: inherit;
+        right:-.4em;
+      }
+    }
+  }
   li{
     &:last-child{
       span:after{
