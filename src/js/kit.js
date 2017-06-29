@@ -12,7 +12,11 @@ var Max_Chase_Issue = 50  //追号最大期数
 var Max_Expect_Rate = 20000 //追号最大预期盈利率限制
 var BASE_ISSUE_1406 = 52586+1-7*89 //北京快三基准期
 
-//阶乘
+/**
+ * 阶乘
+ * @param  n    基数
+ * @return {[number]} [n!]
+ */
 var factorial = (function(){
   var cache = {};
   return function(n){
@@ -31,7 +35,11 @@ var factorial = (function(){
   }
 })()
 
-//分步计数
+/**
+ * mul [分步计数]
+ * @len 几个数
+ * @arr 要相乘起来的数组
+ */
 var mul = (function(){
   var cache = {};
   return function(len, arr){
@@ -52,7 +60,8 @@ var mul = (function(){
   }
 })()
 
-//组合
+
+
 var C = (function(factorial){
   var cache = {};
   return function(m,n){

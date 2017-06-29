@@ -85,6 +85,7 @@ export default {
   },
   data(){
     return {
+      // 彩种的显示文本
       bonusText: {
         '6HCC02':['中二','中特'],
         '6HCC04':['二中','中特'],
@@ -102,6 +103,7 @@ export default {
     }
   },
   computed:mapState({
+    // 6HC的页面信息配置
     renderConfig(){
       var animalEgMode = ['E01','E02']
       animalEgMode.forEach(mode=>{
