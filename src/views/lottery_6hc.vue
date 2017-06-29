@@ -335,7 +335,7 @@ export default {
       // 关于生肖的处理
       var sxLotteryMode = ['1301E01','1301E02','1301E03','1301E04','1301E05'] //和生肖相关的玩法
       var poultryWild = ['1301A02','1301B09','1301B10','1301B11','1301B12','1301B13','1301B14']  //家禽野兽相关玩法
-      var lwMode = ['1301F02','1301F03','1301F04']
+      var lwMode = ['1301F02','1301F03','1301F04']  //尾数
       if(sxLotteryMode.indexOf(lotteryMode) > -1){
         //对生肖进行转换
         chosen = chosen.map(char=>getAnimalIndex(char, this.natal))
