@@ -1,3 +1,8 @@
+/**
+ * 此js文件为工具函数的集合。建议根据功能进行分拆，避免过大难以维护
+ */
+
+
 import Vue from 'vue'
 var bus = new Vue()     //空vue用来做事件管理
 var DAY_TIME = 24 * 60 * 60 * 1000  //一天的毫秒值
@@ -731,7 +736,7 @@ function getMultipleRebate(mode, Odds){
 //   }
 // }
 
-
+// 这个可能没有使用到--考虑删除
 function syx5_zx2(line1, line2){
   var count = 0
   for(var i = 0;i < line1.length;i++){
@@ -800,6 +805,7 @@ function _random(cfgArr, canRepeat, baseArr){
   return res
 }
 
+// 一些默认数组，可能没有用到了
 var _0to9 = [0,1,2,3,4,5,6,7,8,9],
     _dsds = ['大', '小', '单', '双'],
     // filters = ['全', '大', '小', '奇', '偶', '清'],

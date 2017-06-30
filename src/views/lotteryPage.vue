@@ -346,7 +346,8 @@
 
                           /** 投注-注单 **/
 
-          lt_setPerbet:(state, price)=>{state.perbet = price},    //设置每注单价
+          //设置每注单价
+          lt_setPerbet:(state, price)=>{state.perbet = price},
           //即时投注号码的更改
           lt_updateTmp:(state, {alias, arr})=>{
             Vue.set(state.tmp, alias, arr)
@@ -436,6 +437,7 @@
             state.basket = [];
             this.$store.commit('lt_setScheme', [])
           },
+          // 从号码篮中删除一注
           lt_deleteBet:(state, index)=>{
             state.basket.splice(index,1)
             this.$store.dispatch('lt_ordinaryChase')
@@ -447,12 +449,14 @@
           lt_setChaseIssue:(state, chaseIssue)=>{state.chaseConf.buy_count = chaseIssue},
           lt_setChasePower:(state, chasePower)=>{state.chaseConf.power = chasePower},
           lt_setScheme:(state, scheme)=>{state.scheme = scheme},
+          // 将号码篮中的倍数清为1
           lt_basketPowerTo1:(state)=>{
             state.basket.forEach(bet=>{
               bet.graduation_count = 1
               bet.betting_money = +(state.perbet * bet.betting_count * bet.graduation_count * bet.betting_model).toFixed(2)
             })
           },
+          // 设置是否是追号
           lt_setIsChase:(state, bool)=>{
             state.isChase = bool
             if(bool){
@@ -491,7 +495,9 @@
             if(LotteryPlan){
               console.log('使用缓存')
               var now = new Date()
-              if(now.getMonth() + 1 > LotteryPlan.Month){
+              var _12to1 = (now.getMonth() + 1 === 1) &&  LotteryPlan.Month === 12
+              var outOfDate = now.getMonth() + 1 > LotteryPlan.Month  && _12to1
+              if(outOfDate){
                 console.log('彩种计划过期了，需要更新')
                 fetch6HCPlan()
               }else{
@@ -682,7 +688,9 @@
               var cursor = new Date(serverTimeStamp)
 
               // 每月将缓存清楚掉重新拉取---月头
-              if(cursor.getMonth() + 1 > Month){
+              var _12to1 = (cursor.getMonth() + 1 === 1) &&  Month === 12 //防止过年出问题
+              var outOfDate = cursor.getMonth() + 1 > Month  && _12to1  //过期了
+              if(outOfDate){
                 var hour = cursor.getHours()
                 var minute = cursor.getMinutes()
                 var second = cursor.getSeconds()
@@ -702,7 +710,7 @@
                   break
                 }
               }
-              // commit('lt_updateIssue')
+
 
               // 如果有值说明还在期号表内
               if(Schedule[i] !== undefined){

@@ -365,7 +365,7 @@ export default {
       var bet = {
         lottery_code: lotteryCode,
         play_detail_code: lotteryCode + this.mode,
-        betting_number: betStr,
+        betting_number: betStr + `@${this.natal}`,
         betting_count: this.betCount,
         betting_money: betMoney,
         betting_point: '0-' + rebate,
