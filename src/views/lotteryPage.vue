@@ -512,7 +512,7 @@
               })
             }
 
-
+            //对6HC的计划进行一些变换并报错到vuex中
             function use6HCPlan(monthPlan){
               // 将对应的当月期号表变成毫秒值
               var Month = monthPlan.Month

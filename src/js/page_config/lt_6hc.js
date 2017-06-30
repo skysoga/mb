@@ -2,11 +2,8 @@ import getNatal from './natal'
 var str49 = '从1-49中任选1个或多个号码，每个号码为一注，所选号码在开奖号码前六位中存在，即为中奖。'
 var getZTStr = (numStr)=>`从1-49中任选1个或多个号码，每个号码为一注，所选号码与开奖号码第${numStr}位相同，即为中奖。`
 var getBZStr = (numStr)=>`至少选择${numStr}个号码，每${numStr}个号码为一注，所有号码均未在开奖号码中出现，即为中奖。`
-var getZMLMStr = (numStr)=>`开奖号码第${numStr}位，大于或等于25为大，小于或等于24为小；奇数为单，偶数为双；和单和双为两个数相加后得数的单双；尾大尾小即看个位数值，小于等于4为小，大于4为大；为49时为和，不算任何大小单双，但算波色。（每个按钮单独显示赔率）`
+var getZMLMStr = (numStr)=>`开奖号码第${numStr}位，大于或等于25为大，小于或等于24为小；奇数为单，偶数为双；和单和双为两个数相加后得数的单双；尾大尾小即看个位数值，小于等于4为小，大于4为大；为49时为和，不算任何大小单双，但算波色。`
 
-// var Difftime = localStorage.getItem('Difftime') || 0
-// var serverTime = new Date().getTime() - Difftime
-// var natal = getNatal(new Date(serverTime));  //本命 9-鸡
 var animals = ['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪']
 
 function getAnimal(numStr, natal){
@@ -84,57 +81,21 @@ var hcConfig = {
       "eg":[],
     },
     {
-      "name": "正２特",
-      "mode": "B04",
-      "tip": getZTStr('二'),
-      "group": "正码",
-      "subGroup": "正码",
-      "tag": "正２特",
-      "eg":[],
-    },
-    {
-      "name": "正３特",
-      "mode": "B05",
-      "tip": getZTStr('三'),
-      "group": "正码",
-      "subGroup": "正码",
-      "tag": "正３特",
-      "eg":[],
-    },
-    {
-      "name": "正４特",
-      "mode": "B06",
-      "tip": getZTStr('四'),
-      "group": "正码",
-      "subGroup": "正码",
-      "tag": "正４特",
-      "eg":[],
-    },
-    {
-      "name": "正５特",
-      "mode": "B07",
-      "tip": getZTStr('五'),
-      "group": "正码",
-      "subGroup": "正码",
-      "tag": "正５特",
-      "eg":[],
-    },
-    {
-      "name": "正６特",
-      "mode": "B08",
-      "tip": getZTStr('六'),
-      "group": "正码",
-      "subGroup": "正码",
-      "tag": "正６特",
-      "eg":[],
-    },
-    {
       "name": "正１两面",
       "mode": "B09",
       "tip": getZMLMStr('一'),
       "group": "正码",
       "subGroup": "正码",
       "tag": "正１两面",
+      "eg":[],
+    },
+    {
+      "name": "正２特",
+      "mode": "B04",
+      "tip": getZTStr('二'),
+      "group": "正码",
+      "subGroup": "正码",
+      "tag": "正２特",
       "eg":[],
     },
     {
@@ -147,12 +108,30 @@ var hcConfig = {
       "eg":[],
     },
     {
+      "name": "正３特",
+      "mode": "B05",
+      "tip": getZTStr('三'),
+      "group": "正码",
+      "subGroup": "正码",
+      "tag": "正３特",
+      "eg":[],
+    },
+    {
       "name": "正３两面",
       "mode": "B11",
       "tip": getZMLMStr('三'),
       "group": "正码",
       "subGroup": "正码",
       "tag": "正３两面",
+      "eg":[],
+    },
+    {
+      "name": "正４特",
+      "mode": "B06",
+      "tip": getZTStr('四'),
+      "group": "正码",
+      "subGroup": "正码",
+      "tag": "正４特",
       "eg":[],
     },
     {
@@ -165,12 +144,30 @@ var hcConfig = {
       "eg":[],
     },
     {
+      "name": "正５特",
+      "mode": "B07",
+      "tip": getZTStr('五'),
+      "group": "正码",
+      "subGroup": "正码",
+      "tag": "正５特",
+      "eg":[],
+    },
+    {
       "name": "正５两面",
       "mode": "B13",
       "tip": getZMLMStr('五'),
       "group": "正码",
       "subGroup": "正码",
       "tag": "正５两面",
+      "eg":[],
+    },
+    {
+      "name": "正６特",
+      "mode": "B08",
+      "tip": getZTStr('六'),
+      "group": "正码",
+      "subGroup": "正码",
+      "tag": "正６特",
       "eg":[],
     },
     {

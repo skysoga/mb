@@ -11,11 +11,13 @@
           <div class="sscTips" v-if = "!tipDisplayFlag && tipOverLong">
             <p>
               {{actualTip}}
-              <span @click = "showDetail" style = "color:#218ddd;">详细</span>
+              <span @click = "toggleDetail(true)" style = "color:#218ddd;">详细</span>
             </p>
           </div>
 
-          <bet-tip v-else :award = "renderAward" :tip = "tip" :itemArr = "bonusText[lotteryMode]" :isOdds = "true"></bet-tip>
+          <bet-tip v-else :award = "renderAward" :tip = "tip" :itemArr = "bonusText[lotteryMode]" :isOdds = "true">
+            <span v-if = "tipDisplayFlag" @click = "toggleDetail(false)" style = "color:#218ddd;">收起</span>
+          </bet-tip>
 
           <!-- 三色玩法框(01-49)(无赔率) -->
           <colorbox v-if = "renderItem.box === 'colorbox'"
@@ -55,10 +57,6 @@
 <script>
 import {mapState} from 'vuex'
 import lt_header from '../components/lottery/lt_header1'
-// import lt_result from '../components/lottery/lt_result'
-// import lt_timebar from '../components/lottery/lt_timebar'
-// import lt_footer from '../components/lottery/lt_footer'
-import lt_PKKL from '../components/lottery/lt_PKKL'
 import bet_tip from '../components/lottery/bet_tip'
 import colorbox from '../components/lottery/colorbox'
 import normal_box from '../components/lottery/normal_box'
@@ -78,9 +76,6 @@ export default {
   },
   components:{
       'lt-header': lt_header,
-      // 'lt-result': lt_result,
-      // 'lt-timebar': lt_timebar,
-      // 'lt-footer': lt_footer,
       'bet-tip': bet_tip,
       'colorbox': colorbox,
       'normal-box': normal_box,
@@ -100,11 +95,10 @@ export default {
         '6HCF03':['含0尾', '不含0尾'],
         '6HCF04':['含0尾', '不含0尾'],
       },
-      // renderConfig:renderConfig, //页面配置
       perbet:'',
       poultry: ['牛','马','羊','鸡','狗','猪'],//家禽
       wild: ['鼠','虎','兔','龙','蛇','猴'], //野兽
-      ellipsisWidth: 45,
+      ellipsisWidth: 46,
     }
   },
   computed:mapState({
@@ -282,8 +276,8 @@ export default {
       }
       return eg.join(',')
     },
-    showDetail(){
-      this.$store.commit('lt_showFullTip', true)
+    toggleDetail(bool){
+      this.$store.commit('lt_showFullTip', bool)
     },
     choose(item, order){
       var chosen = this.chosen.slice()
