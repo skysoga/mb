@@ -165,7 +165,6 @@ export default {
 
           vm.res_data=data.BackData
           let type=data.BackData.LotteryName.substr(data.BackData.LotteryName.length-2)
-          console.log(type)
           vm.transType(type)
         }else {
           layer.msgWarn(data.StrCode)
