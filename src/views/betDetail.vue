@@ -113,7 +113,7 @@ export default {
       case '/5':
         this.lottery_icon = 'L_PL35'
         break
-      case '六合彩':
+      case '合彩':
         this.lottery_icon = 'L_6HC'
         break
       }
@@ -165,6 +165,7 @@ export default {
 
           vm.res_data=data.BackData
           let type=data.BackData.LotteryName.substr(data.BackData.LotteryName.length-2)
+          console.log(type)
           vm.transType(type)
         }else {
           layer.msgWarn(data.StrCode)
