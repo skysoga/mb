@@ -66,7 +66,7 @@ export default {
 
         if(typeof(QRCode)==="undefined"){
           var warn=document.createElement('script')
-          warn.src='https://cdn.rawgit.com/davidshimjs/qrcodejs/04f46c6a/qrcode.min.js'
+          warn.src='/static/public/qrcode.min.js'
           var first=document.body.firstChild
           document.body.insertBefore(warn,first)
         }
