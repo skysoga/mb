@@ -88,8 +88,8 @@ export default{
       }else{
         _fetch(Arr).then(json=>{
           if(json.Code==1){
-            vm.setString(json.StrCode)
-            vm.CodeInit[num]=json.StrCode
+            vm.setString(json.Data||json.StrCode)
+            vm.CodeInit[num]=json.Data||json.StrCode
           }else{
             layer.msgWarn(json.StrCode)
           }
