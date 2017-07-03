@@ -113,6 +113,9 @@ export default {
       case '/5':
         this.lottery_icon = 'L_PL35'
         break
+      case '六合彩':
+        this.lottery_icon = 'L_6HC'
+        break
       }
     }
   },
@@ -134,15 +137,17 @@ export default {
             var natal = getNatal(AddTime);
 
             res_data.BetInfoList = res_data.BetInfoList.map(dataItem=>{
-
+              var sx=dataItem.BetNum.split('@')[1]
+              var str=dataItem.BetNum.split('@')[0]
+              dataItem.BetNum=str//所有六合彩注单不包含@后数据
               // 把生肖复原
               if(dataItem.PlayName.indexOf('生肖') > -1){
-                dataItem.BetNum = dataItem.BetNum.split(',').map(char=>getAnimal(char, natal)).join(',')
+                dataItem.BetNum = str.split(',').map(char=>getAnimal(char, sx||natal)).join(',')
               }
 
               // 把两面相关的 家禽野兽复原
               if(dataItem.PlayName.indexOf('两面') > -1){
-                dataItem.BetNum = dataItem.BetNum.split(',').map(char=>{
+                dataItem.BetNum = str.split(',').map(char=>{
                   if(char.indexOf('家禽') > -1){
                     return '家禽'
                   }else if(char.indexOf('野兽') > -1){
