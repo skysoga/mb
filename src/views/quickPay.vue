@@ -194,6 +194,10 @@ export default {
         '云安付':{
           'margin-top':2.5*em-100+'px',
           'left':'-500px',
+        },
+        '元宝':{
+          'margin-top':2.5*em-80+'px',
+          'left':'-500px',
         }
       }
     }
