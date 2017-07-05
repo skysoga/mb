@@ -494,12 +494,12 @@
             if(LotteryPlan){
               console.log('使用缓存')
               var month = new Date(new Date().getTime()- rootState.Difftime).getMonth() + 1
-              var _12to1 = (month === 1) &&  LotteryPlan.Month === 12
-              var outOfDate = month > LotteryPlan.Month  || _12to1
-              console.log(month > LotteryPlan.Month);
-              console.log(_12to1);
-              if(outOfDate){
-                console.log('彩种计划过期了，需要更新')
+              // var _12to1 = (month === 1) &&  LotteryPlan.Month === 12
+              // var outOfDate = month > LotteryPlan.Month  || _12to1
+              if(month !== LotteryPlan.Month){
+                //此处判断的盲区为   跨年同月
+                console.log('彩种计划变更，需要更新')
+                // console.log('彩种计划过期了，需要更新')
                 fetch6HCPlan()
               }else{
                 use6HCPlan(LotteryPlan)
