@@ -186,10 +186,6 @@ export default {
         '众宝WX':{
           'margin-top':2.5*em-250+'px',
           'left':'-226px',
-          '-webkit-transform':'scale(1)',
-          '-ms-transform':'scale(1)',
-          '-moz-transform':'scale(1)',
-          'transform':'scale(1)',
         },
         '云安付':{
           'margin-top':2.5*em-100+'px',
