@@ -349,11 +349,10 @@ footer{
       margin:map-get($l,bottom)/2-.8em .3em;
       @include border-radius( .2em);
       background: #feab03;
-      @include bg-linear-gradient('to bottom, #ffdb01 0%,#e07a06 100%'); 
+      @include bg-linear-gradient('bottom, #ffdb01 0%,#e07a06 100%'); 
     }
     .fr:active{
       background: #feab03;
-      // background: linear-gradient(to bottom, #ffdb01 0%,#e07a06 100%);
     }
   }
   table{
