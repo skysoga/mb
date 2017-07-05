@@ -264,7 +264,7 @@ content:"\e62c";
   user-select:none;
   color:#ffffff;
   background: #dc3b40;
-  @include bg-linear-gradient('to bottom, #dc3b40 2%, #dc3b40 50%, #db3b40 51%, #d7363b 100%');
+  @include bg-linear-gradient('bottom, #dc3b40 2%, #dc3b40 50%, #db3b40 51%, #d7363b 100%');
 
 
   a{
