@@ -155,6 +155,7 @@ export default {
         var [month, date, year] = mdy.split('/')
         year = year.slice(-2)
         month = ('0' + month).slice(-2)
+        date = ('0' + date).slice(-2)
         el.OpenTime = `${year}.${month}.${date}`
         return el
       })

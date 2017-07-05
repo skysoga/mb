@@ -6,7 +6,7 @@
         <a class = "bet-item">{{item}}</a>
         <span class = "bet-item-award" v-if = "needAward && renderOdds && renderOdds.length">赔率{{renderOdds[index]}}</span>
         <div class = "bet-item-eg-box fix" v-if = "egArr.length">
-          <span v-for = "eg in egText[index]" class = "bet-item-eg">{{eg}}</span>
+          <span v-for = "eg in egText[index]" class = "bet-item-eg">{{eg>9?eg:('0'+eg)}}</span>
         </div>
       </div>
     </div>
@@ -108,12 +108,13 @@ export default{
 }
 
 .bet-item-eg{
-  display:block;
-  float: left;
-  width: 18%;
+  /*display:block;*/
+  /*float: left;*/
+  /*width: 18%;*/
   font-size:.6em;
   color:#888;
   text-align: center;
+  padding: 0 .04em
 }
 
 .curr{
