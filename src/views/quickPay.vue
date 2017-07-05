@@ -198,6 +198,10 @@ export default {
         '元宝':{
           'margin-top':2.5*em-80+'px',
           'left':'-500px',
+        },
+        '高通':{
+          'margin-top':2.5*em-235+'px',
+          'left':'-490px',
         }
       }
     }
