@@ -196,14 +196,14 @@ export default {
   float: left;
   padding-top:.24em;
   border-top: 1px solid white;
-  width: 72%;
+  width: 68%;
 }
 
 .timebar{
   float: left;
   position: relative;
   border-top: 1px solid white;
-  width: 28%;
+  width: 32%;
   &:before{
     content:'';
     display: block;
@@ -224,13 +224,14 @@ export default {
 .openNumber{
   width:100%;
   padding:0 .6em;
-  margin-top:.4em;
+  margin-top:.46em;
   font-size:.7em;
   display: table;
   table-layout: fixed;
 }
 
 .number-box{
+  vertical-align: top;
   display: table-cell;
   margin:0 .3em;
   text-align: center;
