@@ -105,7 +105,7 @@ export default {
   computed:mapState({
     // 6HC的页面信息配置
     renderConfig(){
-      var animalEgMode = ['E01','E02']
+      var animalEgMode = ['E01','E02','E03','E04','E05']
       animalEgMode.forEach(mode=>{
         renderConfig[mode].egArr = animals.map(char=>this.getAnimalEg(char, this.natal))
       })
