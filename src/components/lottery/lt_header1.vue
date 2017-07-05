@@ -336,15 +336,14 @@
 }
 
 .betFilter{
-    padding: 0.2rem;
-    box-shadow: 0 2px 10px rgba(41, 41, 41, 0.08);
-    li{
-      padding: 0;
-      width: 2.72rem;
-    }
-    .lastSelect{
-      width: 3.9rem;
-    }
+  padding: 0.2rem;
+  li{
+    padding: 0;
+    width: 2.72rem;
+  }
+  .lastSelect{
+    width: 3.9rem;
+  }
 }
 .betFilter .curr{
   background: #dc3b40;
@@ -371,6 +370,15 @@
     margin-left: -.4em;
     text-align: center;
     padding:0;
+    &:before{
+      content:'';
+      width: 100%;
+      height: 1px;
+      position:absolute;
+      left: 0;
+      top:0.45em;
+      background-image: -webkit-linear-gradient(90deg, #dfdfdf, #dfdfdf 50%, transparent 50%);
+    }
     >div{
       color:#999;
       margin: 0 auto;

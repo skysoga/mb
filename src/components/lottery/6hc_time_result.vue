@@ -1,34 +1,34 @@
 <template>
-<div class = "isLotteryCon">
+<div class="isLotteryCon">
   <!-- 开奖号码 -->
-  <div class = "result"  v-if = "$store.state.lt.OldIssue" @click.stop = "togglePastOpen">
-    <span class = "text-small">
-      {{oldIssue}}期开奖号码 <i class = "iconfont">&#xe601;</i>
+  <div class="result"  v-if="$store.state.lt.OldIssue" @click.stop="togglePastOpen">
+    <span class="text-small">
+      {{oldIssue}}期开奖号码 <i class="iconfont">&#xe601;</i>
     </span>
 
-    <div class = "openNumber"  v-if = "displayResults">
-      <div v-for = "(numStr, index) in results" v-if = "index < 6" class = "number-box">
-        <em :class = "{red:inArray(red, numStr), blue:inArray(blue, numStr), green:inArray(green, numStr)}">{{numStr}}</em>
-        <span class = "number-box-text">{{getAnimal(numStr)}}</span>
+    <div class="openNumber"  v-if="displayResults">
+      <div v-for="(numStr, index) in results" v-if="index < 6" class="number-box">
+        <em :class="{red:inArray(red, numStr), blue:inArray(blue, numStr), green:inArray(green, numStr)}">{{numStr}}</em>
+        <span class="number-box-text">{{getAnimal(numStr)}}</span>
       </div>
-      <div class = "number-box"><span class = "symbol up">+</span></div>
-      <div class = "number-box">
-        <em :class = "{red:inArray(red, results[6]), blue:inArray(blue, results[6]), green:inArray(green, results[6])}">{{results[6]}}</em>
-        <span class = "number-box-text">{{getAnimal(results[6])}}</span>
+      <div class="number-box plus"><em class="symbol">+</em></div>
+      <div class="number-box">
+        <em :class="{red:inArray(red, results[6]), blue:inArray(blue, results[6]), green:inArray(green, results[6])}">{{results[6]}}</em>
+        <span class="number-box-text">{{getAnimal(results[6])}}</span>
       </div>
     </div>
 
-    <div class = "openNumber" v-if = "!displayResults">
-      <div v-for = "(numStr, index) in wait4Results" v-if = "index < 6" class = "number-box">
-        <em class = "red">{{numStr}}</em>
-        <!-- <span class = "number-box-text">鼠</span> -->
-        <!-- <span class = "number-box-text">{{getAnimal(numStr)}}</span> -->
+    <div class="openNumber" v-if="!displayResults">
+      <div v-for="(numStr, index) in wait4Results" v-if="index < 6" class="number-box">
+        <em class="red">{{numStr}}</em>
+        <!-- <span class="number-box-text">鼠</span> -->
+        <!-- <span class="number-box-text">{{getAnimal(numStr)}}</span> -->
       </div>
-      <div class = "number-box"><span class = "symbol">+</span></div>
-      <div class = "number-box">
-        <em class = "red">{{wait4Results[6]}}</em>
-        <!-- <span class = "number-box-text">鼠</span> -->
-        <!-- <span class = "number-box-text">{{getAnimal(wait4Results[6])}}</span> -->
+      <div class="number-box plus"><span class="symbol">+</span></div>
+      <div class="number-box">
+        <em class="red">{{wait4Results[6]}}</em>
+        <!-- <span class="number-box-text">鼠</span> -->
+        <!-- <span class="number-box-text">{{getAnimal(wait4Results[6])}}</span> -->
       </div>
     </div>
 
@@ -36,7 +36,7 @@
   </div>
 
   <!-- 倒计时 -->
-  <div class = "timebar"  v-if = "$store.state.lt.NowIssue"  @click.stop = "togglePastOpen"  >
+  <div class="timebar"  v-if = "$store.state.lt.NowIssue"  @click.stop = "togglePastOpen"  >
     <div class = "timebar-issue">
       <p>{{nowIssue}}期</p>
       <p>投注截止</p>
@@ -182,7 +182,6 @@ export default {
 
 .isLotteryCon{
   color:#333;
-  display: flex;
   position: fixed;
   top:2.3em;
   left: 0;
@@ -193,15 +192,17 @@ export default {
 }
 
 .result{
-  flex:2;
+  float: left;
   padding-top:.24em;
   border-top: 1px solid white;
+  width: 72%;
 }
 
 .timebar{
-  flex:1;
+  float: left;
   position: relative;
   border-top: 1px solid white;
+  width: 28%;
   &:before{
     content:'';
     display: block;
@@ -214,40 +215,39 @@ export default {
   }
 }
 
-.symbol{
-  font-size:1.2em;
-  padding:0.1rem;
-}
-
 .up{
   margin-top:-1rem;
 }
 
 
 .openNumber{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   width:100%;
-  height:3.4em;
   padding:0 .6em;
+  margin-top:.4em;
   font-size:.7em;
+  display: table;
+  table-layout: fixed;
 }
 
 .number-box{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: table-cell;
+  margin:0 .3em;
+  text-align: center;
+  em,span{
+    width: 100%;
+    display: block;
+    margin:0 auto;
+    text-align: center;
+  }
   em{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.8em;
     height: 1.8em;
+    width: 1.8em;
+    line-height: 1.8em;
     box-shadow: 0px 2px 1px #bbb59c;
     border-radius: 50%;
     color:white;
     font-size: 0.8em;
+    margin-bottom:.4em;
   }
 
   em.red{
@@ -261,14 +261,27 @@ export default {
   em.green{
     @include bg-linear-gradient('top, #69d893 0%,#38b366 75%')
   }
-}
-
-.number-box-text{
-  margin-top:.2em;
+  &.plus{
+    width: 1em;
+    em{
+      color:#333;
+      box-shadow: none;
+      font-size: 1.1em;
+      line-height: 1.2em;
+      width: 100%;
+    }
+  }
+  &:first-child,&:last-child{
+    margin-right: 0;
+  }
+  span{
+    line-height: 1em;
+  }
 }
 
 .text-small{
   font-size:.7em;
+  line-height: 1.3em;
   margin-left:1em;
   display: block;
 }
@@ -353,6 +366,7 @@ td.past-open-result{
 .timebar-issue{
   padding-top:.24em;
   font-size:.7em;
+  line-height: 1.5em;
   text-align: center
 }
 
