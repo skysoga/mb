@@ -2,7 +2,7 @@
 <div class = "sscFooter">
   <div class = "bet-money" v-if = "betCount">
     当前选号
-    <span class = "text-ellipsis" @click = "showBetStr">{{displayBetStr}}</span>
+    <span class = "text-ellipsis" @click = "showBetStr">{{betStr}}</span>
   </div>
 
   <div class = "bet-money" v-if = "betCount">
@@ -85,6 +85,7 @@ $footer-left:0.5rem;
   width:16em;
   overflow:hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .sscFooter{
@@ -93,27 +94,35 @@ $footer-left:0.5rem;
   bottom:0;
   width:100%;
   font-size:.7em;
+  z-index: 3;
 }
 
 .bet-money{
   display: flex;
   align-items: center;
   width:100%;
-  height:1.8rem;
+  height:2.5em;
   padding-left:$footer-left;
   background: #fff;
   border-top:1px solid #dfdfdf;
   color:#666;
-  font-size:.65rem;
   input{
-    width:4rem;
-    margin-left:0.4rem;
+    display: inline-block;
+    height: 1.7em;
+    font-weight: 500;
+    width:5em;
+    line-height: 1em;
+    margin-left:0.4em;
     border:1px solid #dfdfdf;
-    border-radius:0.1rem;
-    padding-left:0.2em;
+    border-radius:0.1em;
+    padding:0.35em;
+    -webkit-appearance:none;
   }
   span{
-    margin-left:0.4rem;
+    margin-left:0.4em;
+  }
+  .text-ellipsis{
+    font-weight: bold;
   }
 }
 

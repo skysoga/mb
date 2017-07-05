@@ -75,16 +75,17 @@ export default {
     })
   },
   components:{
-      'lt-header': lt_header,
-      'bet-tip': bet_tip,
-      'colorbox': colorbox,
-      'normal-box': normal_box,
-      'combobox': combobox,
-      'lt-footer1': lt_footer1,
-      'time-result': time_result
+      'lt-header': lt_header,  //头部切换玩法，和其他彩种不太一致
+      'bet-tip': bet_tip,      //玩法说明
+      'colorbox': colorbox,    //三色投注框
+      'normal-box': normal_box,//两面投注框
+      'combobox': combobox,    //复合投注框
+      'lt-footer1': lt_footer1, //投注确认框
+      'time-result': time_result //倒计时及开奖结果显示
   },
   data(){
     return {
+      // 彩种的显示文本
       bonusText: {
         '6HCC02':['中二','中特'],
         '6HCC04':['二中','中特'],
@@ -102,6 +103,7 @@ export default {
     }
   },
   computed:mapState({
+    // 6HC的页面信息配置
     renderConfig(){
       var animalEgMode = ['E01','E02']
       animalEgMode.forEach(mode=>{
@@ -133,6 +135,7 @@ export default {
     natal(){
       return this.$store.getters.lt_natal
     },
+    // 用于渲染的赔率
     renderOdds(){
       if(!Array.isArray(this.award)){
         return null
@@ -335,7 +338,7 @@ export default {
       // 关于生肖的处理
       var sxLotteryMode = ['1301E01','1301E02','1301E03','1301E04','1301E05'] //和生肖相关的玩法
       var poultryWild = ['1301A02','1301B09','1301B10','1301B11','1301B12','1301B13','1301B14']  //家禽野兽相关玩法
-      var lwMode = ['1301F02','1301F03','1301F04']
+      var lwMode = ['1301F02','1301F03','1301F04']  //尾数
       if(sxLotteryMode.indexOf(lotteryMode) > -1){
         //对生肖进行转换
         chosen = chosen.map(char=>getAnimalIndex(char, this.natal))
@@ -362,7 +365,7 @@ export default {
       var bet = {
         lottery_code: lotteryCode,
         play_detail_code: lotteryCode + this.mode,
-        betting_number: betStr,
+        betting_number: betStr + `@${this.natal}`,
         betting_count: this.betCount,
         betting_money: betMoney,
         betting_point: '0-' + rebate,
@@ -403,7 +406,7 @@ export default {
 <style lang = "scss" scoped>
 @import '../scss/newssc.scss';
 .sscMain{
-  padding-top:6.8rem;
+  padding-top:6.5em;
   padding-bottom:6rem;
 }
 

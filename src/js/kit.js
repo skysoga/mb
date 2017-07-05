@@ -1,3 +1,8 @@
+/**
+ * 此js文件为工具函数的集合。建议根据功能进行分拆，避免过大难以维护
+ */
+
+
 import Vue from 'vue'
 var bus = new Vue()     //空vue用来做事件管理
 var DAY_TIME = 24 * 60 * 60 * 1000  //一天的毫秒值
@@ -12,7 +17,11 @@ var Max_Chase_Issue = 50  //追号最大期数
 var Max_Expect_Rate = 20000 //追号最大预期盈利率限制
 var BASE_ISSUE_1406 = 52586+1-7*89 //北京快三基准期
 
-//阶乘
+/**
+ * 阶乘
+ * @param  n    基数
+ * @return {[number]} [n!]
+ */
 var factorial = (function(){
   var cache = {};
   return function(n){
@@ -31,7 +40,11 @@ var factorial = (function(){
   }
 })()
 
-//分步计数
+/**
+ * mul [分步计数]
+ * @len 几个数
+ * @arr 要相乘起来的数组
+ */
 var mul = (function(){
   var cache = {};
   return function(len, arr){
@@ -52,7 +65,12 @@ var mul = (function(){
   }
 })()
 
-//组合
+/**
+ * C [组合]
+ * @param  [m] [底数：比较大的那个数]
+ * @param  [n] [选几：比较小的那个数]
+ */
+
 var C = (function(factorial){
   var cache = {};
   return function(m,n){
@@ -68,7 +86,9 @@ var C = (function(factorial){
   }
 })(factorial)
 
-//有去重要求的
+/**
+ * combNoRepeat [有去重要求的跨行求组合]
+ */
 function combNoRepeat(singleArr, combArr, n){
   var common = [], notcommon = [];
 
@@ -327,7 +347,7 @@ var combSum2 = (function(){
   }
 })()
 
-
+//将一个数组(arr)中的每个数，使用fn 进行运算，并将结果求和
 function accumulate(arr, fn){
   var s = 0;
   for(var i = 0;i < arr.length;i++){
@@ -647,7 +667,7 @@ function computeIssue(code, index, isChase){
   }
 }
 
-
+//时时彩的赔率处理函数
 function getSSCRebate(mode, Odds){
   //前三中三后三一样，前二后二一样
   switch(mode[0]){
@@ -664,7 +684,7 @@ function getSSCRebate(mode, Odds){
       break;
   }
 
-  // 一个彩种中有两个赔率的
+  // 一个玩法中有两个赔率的
   var specialMode = ['F21','F24','F25','E21','E24','E25','D21','D24','D25']
 
   var rebateSSC = Odds
@@ -694,6 +714,7 @@ function getSSCRebate(mode, Odds){
 //   }
 // }
 
+// 如果赔率中有逗号，说明是多赔率的玩法
 function getMultipleRebate(mode, Odds){
   for(var i = 0;i < Odds.length;i++){
     if(Odds[i].PlayCode === mode){
@@ -715,7 +736,7 @@ function getMultipleRebate(mode, Odds){
 //   }
 // }
 
-
+// 这个可能没有使用到--考虑删除
 function syx5_zx2(line1, line2){
   var count = 0
   for(var i = 0;i < line1.length;i++){
@@ -728,8 +749,9 @@ function syx5_zx2(line1, line2){
   return count
 }
 
+//单行计数
+var countSingle = (order,tmp)=>betSum(order,tmp)[0]
 
-var countSingle = (order,tmp)=>betSum(order,tmp)[0]  //单行计数
 //获得每个框的号码的数目
 function betSum(order, tmp){
   var arr = [];
@@ -739,6 +761,12 @@ function betSum(order, tmp){
   return arr;
 }
 
+/**
+ * [createStringArray 根据起始和结束数字来获得字符串数组]
+ * @param  {[number]} start [起始数，如1]
+ * @param  {[number]} end   [结束数，如3]
+ * @return {[array]}       [字符串数组,如['01','02','03']]
+ */
 function createStringArray(start, end){
   var result = []
   for(var i = start;i <= end;i++){
@@ -750,10 +778,10 @@ function createStringArray(start, end){
 
 /**
  * [_random 获得机选数组]
- * @param  {[type]} cfgArr    [配置数组]
- * @param  {[type]} canRepeat [是否允许跨行重复，单行肯定不能重复的]
- * @param  {[type]} baseArr   [基础数组]
- * @return {[type]}           [返回一个层级数组]
+ * @param  {[array]} cfgArr    [配置数组]
+ * @param  {[boolean]} canRepeat [是否允许跨行重复，单行肯定不能重复的]
+ * @param  {[array]} baseArr   [基础数组]
+ * @return {[array]}           [返回一个层级数组]
  */
 function _random(cfgArr, canRepeat, baseArr){
   var len = cfgArr.length,  //有几行
@@ -777,6 +805,7 @@ function _random(cfgArr, canRepeat, baseArr){
   return res
 }
 
+// 一些默认数组，可能没有用到了
 var _0to9 = [0,1,2,3,4,5,6,7,8,9],
     _dsds = ['大', '小', '单', '双'],
     // filters = ['全', '大', '小', '奇', '偶', '清'],
