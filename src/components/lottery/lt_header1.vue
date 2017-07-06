@@ -21,7 +21,6 @@
                     {{group}}
                   </li>
                 </ul>
-11111111111111111
                 <ul class="betFilterAnd"
                     :style = "{padding: isHideSubGroup ? '0.2rem' : ''}">
                   <div class="choosePlayType"><div>玩法选择</div></div>
@@ -29,7 +28,7 @@
                       v-for = "(subGroup, subGroupName) in config[mode.group]"
                       :class = "addSubGroupClass(subGroupName)">
                     <span v-show = "!isHideSubGroup">{{subGroupName}}</span>
-                    <div class="fix">
+                    <div class="lhc fix">
                       <a v-for = "modeItem in subGroup"
                           :class = "modeItem.mode === mode.mode? 'curr': ''"
                           @click = "changeMode(modeItem)">
@@ -170,6 +169,7 @@
   background: initial !important;
 }
 @import '../../scss/scssConfig','../../scss/mixin';
+
   .sscHeader{
   background: #000;
   color:white;
@@ -494,5 +494,12 @@
 }
 .playSortMoreCon{
   background: white;
+}
+
+.lhc{
+  a{
+    width: 3.5rem;
+
+  }
 }
 </style>

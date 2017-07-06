@@ -82,13 +82,11 @@ export default{
   a,span{
     display: block;
     text-align: center;
+    line-height: 1.44;
   }
 }
 
 .bet-item{
-  display:flex;
-  align-items:center;
-  justify-content:center;
   width:100%;
   padding-top:0.2em;
   color: #333;
@@ -96,9 +94,6 @@ export default{
 }
 
 .bet-item-award{
-  display:flex;
-  align-items:center;
-  justify-content:center;
   width:100%;
   color:#dc3b40;
   padding-top:.16em;
