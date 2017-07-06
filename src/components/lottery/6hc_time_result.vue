@@ -306,7 +306,7 @@ export default {
     color:#666;
   }
   td{
-    padding:0.4rem 0.4rem;
+    padding:0.2rem 0.4rem;
     &:first-child,&:last-child{
       width:5.6em;
       color:#666;
@@ -320,7 +320,7 @@ export default {
 }
 
 td.past-open-result{
-  padding:0.4rem 0.7rem;
+  padding:0.2rem 0.7rem;
   padding-right: .3rem;
 }
 

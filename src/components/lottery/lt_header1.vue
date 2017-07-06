@@ -21,7 +21,7 @@
                     {{group}}
                   </li>
                 </ul>
-
+11111111111111111
                 <ul class="betFilterAnd"
                     :style = "{padding: isHideSubGroup ? '0.2rem' : ''}">
                   <div class="choosePlayType"><div>玩法选择</div></div>
@@ -380,16 +380,14 @@
       background-image: -webkit-linear-gradient(90deg, #dfdfdf, #dfdfdf 50%, transparent 50%);
     }
     >div{
-      color:#999;
+      color: #999;
       margin: 0 auto;
-      float: inherit;
+      float: initial;
       width: 6.4em !important;
       padding: 0;
-      display: inline-block;
+      display: block;
       height: 1em;
       line-height: 1em;
-      text-align: center;
-      margin-left: calc((100% - 6.4em) / 2);
       background: white;
       position: relative;
       &:before,&:after{
