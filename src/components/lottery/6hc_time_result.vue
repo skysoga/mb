@@ -55,16 +55,14 @@
         <tr v-for = "item in pastOpen" >
           <td>{{item.IssueNo}}</td>
           <td class = "past-open-result">
-            <div v-for = "(numStr, index) in item.LotteryOpen" class = "past-open-result-box fix" v-if = "index < 6">
+            <div v-for = "(numStr, index) in item.LotteryOpen" class = "past-open-result-box" v-if = "index < 6">
               <em :class = "{red:inArray(red, numStr), blue:inArray(blue, numStr), green:inArray(green, numStr)}">{{numStr}}</em>
               <span>{{getAnimal(numStr)}}</span>
             </div>
 
-            <div class = "past-open-result-box fix"><span class = "symbol">+</span></div>
-            <div class = "past-open-result-box fix">
-              <em :class = "{red:inArray(red, item.LotteryOpen[6]), blue:inArray(blue, item.LotteryOpen[6]), green:inArray(green, item.LotteryOpen[6])}">
-                {{item.LotteryOpen[6]}}
-              </em>
+            <div class = "past-open-result-box"><span class = "symbol">+</span></div>
+            <div class = "past-open-result-box">
+              <em :class = "{red:inArray(red, item.LotteryOpen[6]), blue:inArray(blue, item.LotteryOpen[6]), green:inArray(green, item.LotteryOpen[6])}">{{item.LotteryOpen[6]}}</em>
               <span>{{getAnimal(item.LotteryOpen[6])}}</span>
             </div>
           </td>
@@ -317,9 +315,6 @@ export default {
 }
 
 .past-open-result{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
   position: relative;
   border-left: 1px solid #bdb48b;
 }

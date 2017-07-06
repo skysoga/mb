@@ -386,7 +386,7 @@
       width: 6.4em !important;
       padding: 0;
       display: inline-block;
-      height: 1.6em;
+      height: 1em;
       line-height: 1em;
       text-align: center;
       margin-left: calc((100% - 6.4em) / 2);
