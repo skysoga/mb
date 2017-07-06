@@ -22,23 +22,28 @@
 export default {
   data(){
     return{
-      Interval:null
+      // Interval:null
     }
   },
-  beforeRouteEnter:(to, from, next) => {
+  beforeCreate(){
+    _fetch({Action:"GetServerTimeMillisecond"}).then(json=>{
+        if (json.Code>-1) {
+          sessionStorage.removeItem('Maintain')
+          router.replace("/index")
+        }
+      })
     if(sessionStorage.getItem('Maintain')){
       state.Maintain=JSON.parse(sessionStorage.getItem('Maintain'))
     }else if(state.Maintain){
       sessionStorage.setItem('Maintain',JSON.stringify(state.Maintain))
     }
     if (state.Maintain) {
-      to.meta.title=`<img src="${state.Maintain.ImgUrl+'/logo/mobile_logo.png'}">`
+      this.$route.meta.title=`<img src="${state.Maintain.ImgUrl+'/logo/mobile_logo.png'}">`
     }else if(state.SiteConfig){
-      to.meta.title=`<img src="${state.constant.ImgHost+state.SiteConfig.MobileLogo}">`
+      this.$route.meta.title=`<img src="${state.constant.ImgHost+state.SiteConfig.MobileLogo}">`
     }else{
       router.replace('/index')
     }
-    next()
   },
   created:function(){
     var DSQ=setInterval(function(){
