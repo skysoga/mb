@@ -66,7 +66,7 @@ export default {
 
         if(typeof(QRCode)==="undefined"){
           var warn=document.createElement('script')
-          warn.src='https://cdn.rawgit.com/davidshimjs/qrcodejs/04f46c6a/qrcode.min.js'
+          warn.src='/static/public/qrcode.min.js'
           var first=document.body.firstChild
           document.body.insertBefore(warn,first)
         }
@@ -186,10 +186,18 @@ export default {
         '众宝WX':{
           'margin-top':2.5*em-250+'px',
           'left':'-226px',
-          '-webkit-transform':'scale(1)',
-          '-ms-transform':'scale(1)',
-          '-moz-transform':'scale(1)',
-          'transform':'scale(1)',
+        },
+        '云安付':{
+          'margin-top':2.5*em-100+'px',
+          'left':'-500px',
+        },
+        '元宝':{
+          'margin-top':2.5*em-80+'px',
+          'left':'-500px',
+        },
+        '高通':{
+          'margin-top':2.5*em-235+'px',
+          'left':'-490px',
         }
       }
     }
