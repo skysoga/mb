@@ -1,10 +1,10 @@
 <template>
 <div class="selectNumber fix">
-  <div class="numberContent">
+  <div class="numberContent" :class="(needAward && renderOdds && renderOdds.length)?'':'noaward'">
     <div v-for = "(item, index) in itemArr" class="bet-item-box-Con">
       <div class = "bet-item-box"  @click = "choose(item)" :class = "{curr: chosen.indexOf(item)>-1}">
         <a class = "bet-item">{{item}}</a>
-        <span class = "bet-item-award" v-if = "needAward && renderOdds && renderOdds.length">赔率{{renderOdds[index]}}</span>
+        <span class = "bet-item-award" v-if="needAward && renderOdds && renderOdds.length">赔率{{renderOdds[index]}}</span>
         <div class = "bet-item-eg-box fix" v-if = "egArr.length">
           <span v-for = "eg in egText[index]" class = "bet-item-eg">{{eg>9?eg:('0'+eg)}}</span>
         </div>
@@ -62,25 +62,31 @@ export default{
 
 .numberContent{
   margin:0 auto;
-  display: flex;
-  flex-wrap: wrap;
   width: 95%;
+  &.noaward{
+    .bet-item{
+      line-height: 2.6em;
+    }
+  }
 }
 .bet-item-box-Con{
-  width: calc(100% / 3);
+  width: 33.3333333%;
   font-size: .8em;
   padding: .48em;
+  float: left;
 }
 .bet-item-box{
   border:1px solid #dfdfdf;
   border-radius:.15rem;
   background: #faf9f6;
+  a,span{
+    display: block;
+    text-align: center;
+    line-height: 1.44;
+  }
 }
 
 .bet-item{
-  display:flex;
-  align-items:center;
-  justify-content:center;
   width:100%;
   padding-top:0.2em;
   color: #333;
@@ -88,9 +94,6 @@ export default{
 }
 
 .bet-item-award{
-  display:flex;
-  align-items:center;
-  justify-content:center;
   width:100%;
   color:#dc3b40;
   padding-top:.16em;
@@ -99,12 +102,16 @@ export default{
 }
 
 .bet-item-eg-box{
-  display:flex;
-  flex-wrap: wrap;
-  justify-content:center;
   width:100%;
   border-top:1px solid #dfdfdf;
-  padding:0 5%;
+  text-align: center;
+  line-height: 0;
+  padding: .1em;
+  span{
+    display: inline-block;
+    width: 1.6em;
+    line-height: 1.2em;
+  }
 }
 
 .bet-item-eg{

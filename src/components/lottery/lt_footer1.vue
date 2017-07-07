@@ -1,7 +1,7 @@
 <template>
 <div class = "sscFooter">
   <div class = "bet-money" v-if = "betCount">
-    当前选号
+    <em>当前选号</em>
     <span class = "text-ellipsis" @click = "showBetStr">{{betStr}}</span>
   </div>
 
@@ -10,7 +10,7 @@
     <span>{{value.length ? '元': '请输入投注金额'}}</span>
   </div>
 
-  <div class = "bet-info">
+  <div class = "bet-info fix">
     <div class = "bet-info-left">
       <a class = "bet-info-clear" @click = "clearBet"><i class="iconfont"></i>清空</a>
       <span class = "bet-info-count">共{{betCount}}注</span>
@@ -81,8 +81,8 @@ export default{
 
 $footer-left:0.5rem;
 .text-ellipsis{
-  display: block;
-  width:16em;
+  display: inline-block;
+  width:15em;
   overflow:hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -98,10 +98,9 @@ $footer-left:0.5rem;
 }
 
 .bet-money{
-  display: flex;
-  align-items: center;
   width:100%;
   height:2.5em;
+  line-height: 2.5em;
   padding-left:$footer-left;
   background: #fff;
   border-top:1px solid #dfdfdf;
@@ -121,27 +120,29 @@ $footer-left:0.5rem;
   span{
     margin-left:0.4em;
   }
+  em{
+    display: inline-block;
+  }
   .text-ellipsis{
     font-weight: bold;
   }
 }
 
 .bet-info{
-  display: flex;
-  align-items:center;
   width:100%;
-  height:2.3rem;
+  height:3.2em;
   background: #252525;
   color:#ddd;
+  padding: .5em;
 }
-
 .bet-info-left{
-  flex:1;
+  float: left;
 }
-
 .bet-info-right{
-  flex:1;
-  padding-right:0.5rem;
+  float: right;
+}
+.bet-info-right{
+  margin-right: .3em;
   text-align: right;
 }
 
@@ -166,7 +167,11 @@ $footer-left:0.5rem;
 .bet-info-confirm{
   background: #dc3b40;
   border:none;
-  padding:0.3rem 0.55rem;
+  display: block;
+  text-align: center;
+  height: 2.2em;
+  line-height: 2.2em;
+  width: 6em;
   border-radius: 0.26rem;
 }
 </style>

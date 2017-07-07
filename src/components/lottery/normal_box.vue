@@ -5,7 +5,7 @@
     <em><p>赔率</p></em>
   </div>
 
-  <div class="numberContent">
+  <div class="numberContent fix">
     <div v-for = "(item, index) in itemArr"
          class = "bet-item-box"
          @click = "choose(item)">
@@ -51,7 +51,7 @@ export default {
   .title{
     height: 1.85em;
     width: 2.6rem;
-    display: table-cell;
+    float: left;
     em{
       font-size: 0.65em;
       width:3.2em;
@@ -97,21 +97,23 @@ export default {
 }
 
 .numberContent{
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
+  float: left;
+  width: 12.9rem;
   /*号码项*/
   .bet-item-box{
+    float: left;
     font-size: .8em;
-    width: calc(13rem / 5);
-    width: -webkit-calc(13rem / 5);
+    width: 2.58rem;
     margin:0.2rem 0.3rem;
+    &:nth-child(4n+1){
+      margin-left: 0;
+    }
     .bet-item{
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      display: block;
+      text-align: center;
       width:100%;
       height:2.2em;
+      line-height: 2.2em;
       color: #333;
       background: #faf9f6;
       font-size:1em;
@@ -126,11 +128,11 @@ export default {
     }
 
     .bet-item-rate{
-      height:1.8em;
-      display:flex;
+      display: block;
+      text-align: center;
+      height:1.2em;
+      line-height: 1.2em;
       margin-top:0.3rem;
-      align-items:center;
-      justify-content:center;
       font-size:.6em;
       color: #666;
     }
