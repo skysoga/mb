@@ -151,12 +151,15 @@ var routes = [{
   component: betCenter,
   children:[{
     path:"",
+    name:"",
     redirect:"/betCenter/betRecord"
   },{
     path:"betRecord",
+    name:"投注记录",
     component:betRecord
   },{
     path:"seekOrder",
+    name:"追号记录",
     component:seekOrder
   }]
 }, {

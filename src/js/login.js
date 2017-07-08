@@ -20,30 +20,32 @@ export default {
   },
   methods:{
     $vaSubmit:function(e){
-      var vm = this
-      var ajax = {
-        Action:"Login",
-        UserName:this.UserName,
-        Password:this.Password
-      }
-      if(this.IcodeShow){
-        ajax['ImgCode']=this.ImgCode
-      }
-      layer.msgWait("正在登录")
-      _fetch(ajax).then((json)=>{
-        if (json.Code===1) {
-          RootApp.Logout()
-          RootApp.Login(this.UserName,function(){
-            router.replace(state.login2path||"/index")
-          })
-        }else if(json.Code===2){
-          vm.IcodeShow=true
-          vm.imgUrl()
-          layer.msgWarn(json.StrCode)
-        }else{
-          layer.msgWarn(json.StrCode)
+      //浏览器记住密码修正
+      this.UserName=this.$refs.UserName.value
+      this.Password=this.$refs.Password.value
+        var ajax = {
+          Action:"Login",
+          UserName:this.UserName,
+          Password:this.Password
         }
-      })
+        if(this.IcodeShow){
+          ajax['ImgCode']=this.ImgCode
+        }
+        layer.msgWait("正在登录")
+        _fetch(ajax).then((json)=>{
+          if (json.Code===1) {
+            RootApp.Logout()
+            RootApp.Login(this.UserName,function(){
+              router.replace(state.login2path||"/index")
+            })
+          }else if(json.Code===2){
+            this.IcodeShow=true
+            this.imgUrl()
+            layer.msgWarn(json.StrCode)
+          }else{
+            layer.msgWarn(json.StrCode)
+          }
+        })
     },
     bottomBox(key,val){
       if(key=='forgetPwd'){

@@ -4,11 +4,11 @@
       <tbody>
         <tr>
           <td>账号</td>
-          <td colspan="2"><input v-model.lazy="UserName" class="input" tag="帐号" type="email" v-va:UserName placeholder="请输入账号"/></td>
+          <td colspan="2"><input v-model.lazy="UserName" class="input" tag="帐号" type="email" ref="UserName" v-va:UserName placeholder="请输入账号"/></td>
         </tr>
         <tr>
           <td>密码</td>
-          <td colspan="2"><input v-model.lazy="Password"  class="input" tag="密码" type="password" v-va:Password placeholder="请输入密码" /></td>
+          <td colspan="2"><input v-model.lazy="Password"  class="input" tag="密码" type="password" ref="Password" v-va:Password placeholder="请输入密码" /></td>
         </tr>
         <tr v-if="IcodeShow">
           <td>验证码</td>
