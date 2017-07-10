@@ -84,6 +84,8 @@ export default{
             })
           }
         }else{
+          //提现未登录情况处理
+          if(FistCard===null)return;
           layer.open({
             shadeClose: false,
             className: "layerConfirm",
