@@ -124,6 +124,7 @@ table{
   height:3.2em;
   width:99%;
   padding:0 5%;
+  padding-left:3%;
   overflow: hidden;
   position: absolute;
   top:0;
@@ -136,6 +137,7 @@ table{
     img{
       float:left;
       margin:.1em .2em;
+      margin-left:0;
       width:2.6em;
       height:2.6em;
     }
