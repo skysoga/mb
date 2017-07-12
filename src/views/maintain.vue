@@ -28,15 +28,9 @@ export default {
   beforeCreate(){
     _fetch({Action:"GetServerTimeMillisecond"}).then(json=>{
         if (json.Code>-1) {
-          sessionStorage.removeItem('Maintain')
           router.replace("/index")
         }
       })
-    if(sessionStorage.getItem('Maintain')){
-      state.Maintain=JSON.parse(sessionStorage.getItem('Maintain'))
-    }else if(state.Maintain){
-      sessionStorage.setItem('Maintain',JSON.stringify(state.Maintain))
-    }
     if (state.Maintain) {
       this.$route.meta.title=`<img src="${state.Maintain.ImgUrl+'/logo/mobile_logo.png'}">`
     }else if(state.SiteConfig){
@@ -50,7 +44,6 @@ export default {
       _fetch({Action:"GetServerTimeMillisecond"}).then(json=>{
         if (json.Code>-1) {
           clearInterval(DSQ)
-          sessionStorage.removeItem('Maintain')
           router.replace("/index")
         }
       })
