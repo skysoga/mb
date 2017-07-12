@@ -122,6 +122,7 @@ $footer-left:0.5rem;
   }
   em{
     display: inline-block;
+    overflow: hidden;
   }
   .text-ellipsis{
     font-weight: bold;
