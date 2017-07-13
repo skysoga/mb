@@ -75,5 +75,10 @@ module.exports = {
   needVerify:sessionStorage.getItem("needVerify")||0,
   bankType:{
      Type:["久付","乐盈","闪付","通汇卡","易卡","银宝","摩宝","AUSTPAY","闪迅付","快支付","新摩宝","立刻付","众宝"]
+  },
+  Maintain:{
+    FinishTime:'',
+    ServiceUrl:'',
+    ImgUrl:''
   }
 }
