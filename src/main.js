@@ -948,6 +948,8 @@ window.RootApp={
   // 设置网页title
   setTitle(siteName, routeName){
     var title
+    siteName=siteName||''
+    routeName=routeName||''
     if(siteName){
       title = `${siteName}-${routeName}`
     }else{
