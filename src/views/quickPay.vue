@@ -198,6 +198,10 @@ export default {
         '高通':{
           'margin-top':2.5*em-235+'px',
           'left':'-490px',
+        },
+        '海鸥':{
+          'margin-top':2.5*em-160+'px',
+          'left':'-500px',
         }
       }
     }
