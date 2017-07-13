@@ -463,7 +463,7 @@ window._fetchT=function _fetchT(data){
 window._App=(function(host){
   //是否APP
   var a = localStorage.getItem("isApp")
-  if (a) {return a}
+  if (a!==null) {return a}
   console.log(host);
   var beginWithM = /^m\./.test(host)
   var hasDAFATEST = host.indexOf('dafatest') > -1
