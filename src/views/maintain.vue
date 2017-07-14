@@ -42,7 +42,7 @@ export default {
         }
       })
     if (state.Maintain) {
-      this.$route.meta.title=`<img src="${state.Maintain.ImgUrl+'/logo/mobile_logo.png'}">`
+      this.$route.meta.title=_App&&!state.UserName?'系统维护':`<img src="${state.Maintain.ImgUrl+'/logo/mobile_logo.png'}">`
     }else if(state.SiteConfig){
       this.$route.meta.title=`<img src="${state.constant.ImgHost+state.SiteConfig.MobileLogo}">`
     }else{
