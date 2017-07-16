@@ -138,6 +138,7 @@ $footer-left:0.5rem;
 }
 .bet-info-left{
   float: left;
+  line-height: 2.2em;
 }
 .bet-info-right{
   float: right;
@@ -150,7 +151,7 @@ $footer-left:0.5rem;
 .bet-info-clear{
   padding-left:$footer-left;
   color:#717271;
-  i{
+  /*i{
     &:before{
       content:'\e620';
       font-size: 1.6em;
@@ -158,7 +159,7 @@ $footer-left:0.5rem;
       transform: translateY(.12em);
       padding-right: .2em;
     }
-  }
+  }*/
 }
 
 .bet-info-count{
