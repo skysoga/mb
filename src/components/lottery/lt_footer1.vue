@@ -150,7 +150,8 @@ $footer-left:0.5em;
 
 .bet-info-clear{
   padding-left:0;
-  color:#717271;
+  /*color:#717271;*/
+  color:#ffaf36;
   font-size:1.4em;
   /*i{
     &:before{
@@ -165,6 +166,7 @@ $footer-left:0.5em;
 
 .bet-info-count{
   padding-left:0.5rem;
+  color:white;
 }
 
 .bet-info-confirm{
