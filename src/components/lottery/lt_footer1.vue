@@ -5,7 +5,8 @@
     <span class = "text-ellipsis" @click = "showBetStr">{{betStr}}</span>
   </div>
 
-  <div class = "bet-money" v-if = "betCount">每注金额<input type = "tel" maxlength="7" :value = "value" @input = "inputPerbet">
+  <div class = "bet-money" v-if = "betCount">
+    每注金额<input type = "tel" maxlength="7" :value = "value" @input = "inputPerbet">
     <span>{{value.length ? '元': '请输入投注金额'}}</span>
   </div>
 
@@ -78,7 +79,7 @@ export default{
 <style scoped lang = "scss">
 @import '../../scss/scssConfig','../../scss/mixin';
 
-$footer-left:0.1em;
+$footer-left:0.5em;
 .text-ellipsis{
   display: inline-block;
   width:15em;
@@ -148,7 +149,7 @@ $footer-left:0.1em;
 }
 
 .bet-info-clear{
-  padding-left:$footer-left;
+  padding-left:0;
   color:#717271;
   font-size:1.4em;
   /*i{
