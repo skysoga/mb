@@ -79,7 +79,7 @@ export default{
 <style scoped lang = "scss">
 @import '../../scss/scssConfig','../../scss/mixin';
 
-$footer-left:0.5rem;
+$footer-left:0.1em;
 .text-ellipsis{
   display: inline-block;
   width:15em;
@@ -151,6 +151,7 @@ $footer-left:0.5rem;
 .bet-info-clear{
   padding-left:$footer-left;
   color:#717271;
+  font-size:1.4em;
   /*i{
     &:before{
       content:'\e620';
