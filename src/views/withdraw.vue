@@ -46,7 +46,8 @@
     <div class="tips">
       今天还可以提现<ins>{{ReGetTime}}</ins>次<br/>
       可提现金额=有效投注×2(此项需达到充值金额的30%才计入)+奖金+活动礼金<br/>
-      单笔提现最低<ins>{{MinMoney}}</ins>元，最高<ins>{{MaxMoney}}</ins>元
+      单笔提现最低<ins>{{MinMoney}}</ins>元，最高<ins>{{MaxMoney}}</ins>元<br/>
+      大发云保障玩家资金绝对安全，监管举报：dafatousu@gmail.com
     </div>
   </div>
 </template>
