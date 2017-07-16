@@ -5,8 +5,7 @@
     <span class = "text-ellipsis" @click = "showBetStr">{{betStr}}</span>
   </div>
 
-  <div class = "bet-money" v-if = "betCount">
-    每注金额<input type = "tel" maxlength="7" :value = "value" @input = "inputPerbet">
+  <div class = "bet-money" v-if = "betCount">每注金额<input type = "tel" maxlength="7" :value = "value" @input = "inputPerbet">
     <span>{{value.length ? '元': '请输入投注金额'}}</span>
   </div>
 
