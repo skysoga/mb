@@ -293,11 +293,11 @@
           },
           lt_stopSell:(state, type)=>{
             if(type !== 1){
-              var timebar = '暂停销售' //0--前端监测到的，就暂停销售
+              var timebar = '暂停销售' //0--前端监测到的，就暂停购买
             }else{
-              var timebar = '停止销售' //1--后端返回的，就停止销售
+              var timebar = '暂停销售' //1--后端返回的，就暂停销售
             }
-            this.$store.commit('lt_updateTimeBar', timebar)    //暂停销售
+            this.$store.commit('lt_updateTimeBar', timebar)    //暂停购买
           },
           lt_setIssueNo:(state, IssueNo)=>{state.IssueNo = IssueNo},  //设置当前期号
           lt_displayResults:(state, bool)=>{                          //展示开奖结果或开奖动画
@@ -667,7 +667,7 @@
             var isStop = rootState.LotteryList[code].IsStop
             // var isStop = rootState.LotteryList[this.lcode].IsStop
             if(isStop === '1'){
-              commit('lt_stopSell', 1)    //停止销售
+              commit('lt_stopSell', 1)    //暂停销售
               return
             }
 
@@ -825,14 +825,11 @@
                     interval=30
                 }
                 if (wait4Results>(5+randomFeed) && wait4Results%interval===randomFeed) {
-                  console.log('获取开奖结果')
                   dispatch('lt_getResults', state.lottery.LotteryCode)    //获取开奖结果
                 }
               }else if(Results[0].IssueNo*1 >= state.NowIssue*1){
-                console.log('暂停销售', Results[0].IssueNo, state.NowIssue)
-                commit('lt_stopSell', 0)    //暂停销售
+                commit('lt_stopSell', 0)    //暂停购买
               }else{
-                // console.log('开奖', Results[0].IssueNo, state.OldIssue)
                 commit('lt_displayResults', true)
                 //开奖
                 if(wait4Results){
