@@ -64,7 +64,7 @@ import normal_box from '../components/lottery/normal_box'
 import combobox from '../components/lottery/combobox'
 import time_result from '../components/lottery/6hc_time_result'
 import lt_footer1 from '../components/lottery/lt_footer1'
-import {numColor,colorDictionary,lmItemArr,tmbbItemArr,renderConfig, animals, getAnimal,getAnimalIndex} from '../js/page_config/lt_6hc'
+import {numFeature,lmItemArr,tmbbItemArr,renderConfig, animals, getAnimal,getAnimalIndex} from '../js/page_config/lt_6hc'
 import {C} from '../js/kit'
 export default {
   created(){
@@ -90,7 +90,7 @@ export default {
     return {
       // 彩种的显示文本
       bonusText: {
-        '6HCC02':['中二','中特'],
+        '6HCC02':['中二','中三'],
         '6HCC04':['二中','中特'],
         '6HCE03':['含本命','不含本命'],
         '6HCE04':['含本命','不含本命'],
@@ -276,42 +276,140 @@ export default {
         //号码直选玩法
         console.log('号码直选玩法');
         return this.award*1
-      }else if(['A02','B09','B10','B11','B12','B13','B14'].indexOf(this.mode)!==-1){
+      }else if(['A02','B09','B10','B11','B12','B13','B14','D01','F01'].indexOf(this.mode)!==-1){
         //两面玩法
-        console.log('两面玩法')
-        var thisAward,dx,ds,h,hdx,hds,w,wdx,c,kind,maxAward=0
+        console.log('两面或半波')
+        var isBB = this.mode==='D01'  //是不是半波
+        var isTWS = (!isBB)&&this.mode==='F01'
+        var thisAward,dx,ds,h,hdx,hds,w,wdx,c,kind,iFeature,maxAward=0
         var betStr = this.betStr.split(',')
         var renderOdds=this.renderOdds
+        var itemArr=(isBB?tmbbItemArr:lmItemArr)
         function getObb(s){
           if (betStr.indexOf(s)>-1) {
-            return renderOdds[lmItemArr.indexOf(s)]*1
+            if (isTWS) {
+              //头尾数处理方式
+              var index=0
+              if(s[1]==='尾'){
+                index=5
+              }
+              if(s[0]!=='0'){
+                index++
+              }
+              console.log(renderOdds[index]*1);
+              return renderOdds[index]*1
+            }else{
+              //两面或半波处理方式
+              return renderOdds[itemArr.indexOf(s)]*1
+            }
           }
           return 0
         }
-        for (var i = 1; i < 49; i++) {
+        for (var i = 1; i <= 49; i++) {
+          iFeature=numFeature[i]
           thisAward=0
-          dx=i<25?'小':'大'
-          w=i%10
-          h=Math.floor(i/10)+w
-          ds=i%2?'单':'双'
-          thisAward += getObb(dx)
-          thisAward += getObb(ds)
-          thisAward += getObb(dx+ds)
-          hdx=h<=6?'合小':'合大'
-          hds=h%2?'合单':'合双'
-          wdx=w<=4?'尾大':'尾小'
-          thisAward += getObb(hdx)
-          thisAward += getObb(hds)
-          thisAward += getObb(wdx)
-          c=colorDictionary[numColor[i]]
-          thisAward += getObb(c+'波')
-          kind = this.wild.indexOf(i%12)===-1?'家禽':'野兽'
-          thisAward += getObb(kind)
+          if (isBB) {
+            if (i===49) {
+              thisAward=0
+            }else{
+              thisAward += getObb(iFeature.c+iFeature.dx)
+              thisAward += getObb(iFeature.c+iFeature.ds)
+              thisAward += getObb(iFeature.c+iFeature.hds)
+            }
+          }else if(isTWS){
+            thisAward += getObb(iFeature.t+'头')
+            thisAward += getObb(iFeature.w+'尾')
+            console.log(thisAward);
+          }else{
+            if (i===49) {
+              thisAward=0
+            }else{
+              thisAward += getObb(iFeature.dx)
+              thisAward += getObb(iFeature.ds)
+              thisAward += getObb(iFeature.dx+iFeature.ds)
+              thisAward += getObb(iFeature.hdx)
+              thisAward += getObb(iFeature.hds)
+              thisAward += getObb(iFeature.wdx)
+            }
+            thisAward += getObb(iFeature.c+'波')
+            kind = this.wild.indexOf(i%12)===-1?'家禽':'野兽'
+            thisAward += getObb(kind)
+          }
+          console.log(thisAward);
           if (thisAward>maxAward) {
             maxAward=thisAward.toFixed(2)*1
           }
         }
+        console.log(maxAward);
         return maxAward
+      }else if(['E01','E02'].indexOf(this.mode)!==-1){
+        console.log('特肖')
+        if(this.betStr.length===1&&this.betStr===this.natal){
+          return this.award[0]*1
+        }else{
+          return this.award[1]*1
+        }
+      }else if(['E03','E04','E05'].indexOf(this.mode)!==-1){
+        console.log('连肖');
+        var n = ['E03','E04','E05'].indexOf(this.mode)+2
+        if(this.betStr.length>13){
+          //超过7生肖
+          return C(7,n)*this.award[1]
+        }else{
+          //7生肖以内,分含不含本命
+          var betStr=this.betStr.split(',')
+          var natal = betStr.indexOf(this.natal)===-1 ? 0:1 //本命生肖数
+          betStr=betStr.length-natal  //非本命生肖数
+          console.log(betStr);
+          return natal*betStr*this.award[0]+C(betStr,n)*this.award[1]
+        }
+      }else if(['C01','C02'].indexOf(this.mode)!==-1){
+        console.log('三全中|三中二');
+        var award= this.mode==='C01'?this.award:this.award[1]
+        var l= this.betStr.split(',').length
+        if(l>6){l=6}
+        return award*C(l,3)
+      }else if(this.mode==='C03'){
+        console.log('二全中');
+        var l= this.betStr.split(',').length
+        if(l>6){l=6}
+        return this.award*C(l,2)
+      }else if(this.mode==='C05'){
+        console.log('特串');
+        var l= this.betStr.split(',').length
+        if(l>7){l=7}
+        return this.award*(l-1)
+      }else if(this.mode==='C04'){
+        console.log('二中特');
+        var l= this.betStr.split(',').length
+        if(l>7){l=7}
+        var award = this.award[1]*(l-1)
+        if(l>2){
+          award += C(l-1,2)*this.award[0]
+        }
+        return award
+      }else if(this.mode.charAt(0)==='G'){
+        console.log('不中');
+        var n = this.mode.charAt(2)*1+4
+        console.log(n);
+        var l= this.betStr.split(',').length
+        if(l>42){l=42}
+        return C(l,n)*this.award
+      }else if(this.mode.charAt(0)==='F'){
+        console.log('连尾');
+        var n = this.mode.charAt(2)*1
+        console.log(n);
+        if(this.betStr.length>20){
+          //超过7选号
+          return C(7,n)*this.award[1]
+        }else{
+          //7号以内,分含不含0
+          var betStr=this.betStr.split(',')
+          var natal = betStr.indexOf('0尾')===-1 ? 0:1 //0尾个数
+          betStr=betStr.length-natal  //非0尾数
+          console.log(betStr);
+          return natal*betStr*this.award[0]+C(betStr,n)*this.award[1]
+        }
       }
       return -2
     }

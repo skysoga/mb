@@ -109,7 +109,7 @@ export default{
   padding: .1em;
   span{
     display: inline-block;
-    width: 1.6em;
+    width: .8rem;
     line-height: 1.2em;
   }
 }

@@ -17,7 +17,7 @@
   <div class = "bet-info fix">
     <div class = "bet-info-left">
       <a class = "bet-info-clear" @click = "clearBet"><i class="iconfont"></i>清空</a>
-      <span class = "bet-info-count">共{{betCount}}注</span>
+      <span v-show="betCount" class = "bet-info-count">共{{betCount}}注<template v-if="value.length">,{{betCount*value}}元</template></span>
     </div>
     <div class = "bet-info-right">
       <button class = "bet-info-confirm" @click = "confirmBet">马上投注</button>

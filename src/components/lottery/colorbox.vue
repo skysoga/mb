@@ -8,8 +8,7 @@
     <a v-for = "(item,i) in itemArr"
        @click = "choose(item)"
        :class = "{curr: chosen.indexOf(item) > -1}">
-
-       <span :class = "numColor[i+1]">{{item}}</span>
+       <span :class = "numFeature[i+1].color">{{item}}</span>
     </a>
   </div>
 </div>
@@ -17,7 +16,7 @@
 
 <script>
 import {createStringArray} from '../../js/kit'
-import {numColor} from '../../js/page_config/lt_6hc'
+import {numFeature} from '../../js/page_config/lt_6hc'
 export default {
   props:{
     chosen:{
@@ -28,7 +27,7 @@ export default {
   data(){
     return {
       itemArr:createStringArray(1,49),
-      numColor
+      numFeature
     }
   },
   methods:{

@@ -23,6 +23,38 @@ var numColor = (function(){
   }
   return num
 })()
+var numFeature = (function(){
+  var num={},t,w,h
+  for (var i = 1; i < 50; i++) {
+    w=i%10
+    t=Math.floor(i/10)
+    h=t+w
+    num[i]={
+      t,w,h,
+      dx:i<25?'小':'大',
+      ds:i%2?'单':'双',
+      hdx:h<=6?'合小':'合大',
+      hds:h%2?'合单':'合双',
+      wdx:w<=4?'尾大':'尾小',
+    }
+    if(49===i){
+      delete num.dx
+      delete num.ds
+      delete num.hdx
+      delete num.wdx
+      delete num.hds
+    }
+    for(var k in color){
+      if (color[k].indexOf(i)>=0) {
+        num[i].color=k
+        num[i].c=colorDictionary[k]
+        break
+      }
+    }
+  }
+  console.log(num);
+  return num
+})()
 
 function getAnimal(numStr, natal){
   if(!natal){
@@ -253,7 +285,7 @@ var hcConfig = {
       {
         "name": "特码半波",
         "mode": "D01",
-        "tip": "根据特码对应的特性来区分。分为红蓝绿三个波色，以及号码大于或等于25为大，小于或等于24为小；奇数为单，偶数为双；合单合双为开奖号的十位与个位相加后得数的单双。下注内容与号码特性完全吻合即为中奖。",
+        "tip": "根据特码对应的特性来区分。分为红蓝绿三个波色，以及号码大于或等于25为大，小于或等于24为小；奇数为单，偶数为双；合单合双为开奖号的十位与个位相加后得数的单双。下注内容与号码特性完全吻合即为中奖。特码为49时为和，不算任何大小单双.",
         "group": "半波",
         "subGroup": "半波",
         "tag": "特码半波",
@@ -421,12 +453,12 @@ const lmItemArr = ['大','小','单','双','大单','大双','小单','小双','
 const tmbbItemArr = ['红大','红小','红单','红双','红合单','红合双','绿大','绿小','绿单','绿双','绿合单','绿合双','蓝大','蓝小','蓝单','蓝双','蓝合单','蓝合双']
 const tmbbEgArr = [
     //红
-    '29,30,34,35,40,45,46',
-    '1,2,7,8,12,13,18,19,23,24',
-    '1,7,13,19,23,29,35,45',
-    '2,8,12,18,24,30,34,40,46',
-    '1,7,12,18,23,29,30,34,45',
-    '2,8,13,19,24,35,40,46',
+    '29,30,34,35,40,45,46',//红大
+    '1,2,7,8,12,13,18,19,23,24',//红小
+    '1,7,13,19,23,29,35,45',//红单
+    '2,8,12,18,24,30,34,40,46',//红双
+    '1,7,12,18,23,29,30,34,45',//红合单
+    '2,8,13,19,24,35,40,46',//红合双
     // 绿
     '27,28,32,33,38,39,43,44',
     '5,6,11,16,17,21,22',
@@ -491,4 +523,4 @@ var renderConfig = {
   'G06':{box:'colorbox', alg:10}
 }
 
-export {numColor,colorDictionary,lmItemArr,tmbbItemArr,hcConfig, renderConfig, animals, getAnimal, getAnimalIndex}
+export {numColor,colorDictionary,numFeature,lmItemArr,tmbbItemArr,hcConfig, renderConfig, animals, getAnimal, getAnimalIndex}

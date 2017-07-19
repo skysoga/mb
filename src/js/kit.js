@@ -71,21 +71,31 @@ var mul = (function(){
  * @param  [n] [选几：比较小的那个数]
  */
 
-var C = (function(factorial){
+var C = (function(){
   var cache = {};
   return function(m,n){
-    if(m < n){return 0};
     if(m === n){return 1};
+    if(m < n){
+      return 0
+      //互换顺序
+      // m ^= n;
+      // n ^= m;
+      // m ^= n;
+    };
     var index = [m,n].join(' ');
     if(cache[index]){
       return cache[index]
     }else{
-      cache[index] = factorial(m)/(factorial(n) * factorial(m - n))
+      var a=1,b=1
+      for (var i = 0; i < n; i++) {
+        a *= m-i
+        b *= i+1
+      }
+      cache[index] = Math.round(a/b)
       return cache[index];
     }
   }
-})(factorial)
-
+})()
 /**
  * combNoRepeat [有去重要求的跨行求组合]
  */
