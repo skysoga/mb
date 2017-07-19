@@ -43,6 +43,7 @@
 
         <lt-footer1 :betStr = "betStr"
                     :betCount = "betCount"
+                    :maxAward = "maxAward"
                     v-model = "perbet"
                     @clearBet = "clearBet"
                     @confirmBet = "confirmBet"></lt-footer1>
@@ -63,11 +64,13 @@ import normal_box from '../components/lottery/normal_box'
 import combobox from '../components/lottery/combobox'
 import time_result from '../components/lottery/6hc_time_result'
 import lt_footer1 from '../components/lottery/lt_footer1'
-import {renderConfig, animals, getAnimalIndex} from '../js/page_config/lt_6hc'
+import {numColor,colorDictionary,lmItemArr,tmbbItemArr,renderConfig, animals, getAnimal,getAnimalIndex} from '../js/page_config/lt_6hc'
 import {C} from '../js/kit'
-
 export default {
   created(){
+    var annimal2Index = (arr)=>arr.map(char=>getAnimalIndex(char, this.natal)).sort((a,b)=>a-b)
+    this.poultry=annimal2Index(this.poultry)
+    this.wild=annimal2Index(this.wild)
     this.$store.commit({
       type:'lt_updateTmp',
       alias: '6HC',
@@ -116,9 +119,9 @@ export default {
     renderAward(){
       var award = this.award
       if(Array.isArray(award)){
-        return award.map(item=>(+item/2).toString())
+        return award.map(item=>(+item).toString())
       }else{
-        return  (+award/2).toString()
+        return  (+award).toString()
       }
     },
     tipDisplayFlag:()=>state.lt.tipDisplayFlag,
@@ -141,14 +144,15 @@ export default {
         return null
       }
       var mode = this.mode
-      var award = this.award.map(item=>item/2)
+      var award = this.award//.map(item=>item/2)
       var odds = []
 
-      var arrayHandler = {
+      /*var arrayHandler = {
         'A02':()=>{
           var res = []
           // 野兽家禽（哪个含本命）
-          if(this.wild.indexOf(this.natal) > -1){
+          // if(this.wild.indexOf(this.natal) > -1){
+          if(this.poultry.indexOf(1) === -1){
             // 如果含本命的是野兽
             var tmp = award[4]
             award[4] = award[5]
@@ -163,13 +167,15 @@ export default {
           }
           return res
         }
-      }
+      }*/
 
       // 两面（特码和正特）
       var liangmian = ()=>{
         var res = []
         // 野兽家禽（哪个含本命）
-        if(this.wild.indexOf(this.natal) > -1){
+        console.log(this.wild);
+        // if(this.wild.indexOf(this.natal) > -1){
+        if(this.poultry.indexOf(1) === -1){
           // 如果含本命的是野兽
           var tmp = award[4]
           award[4] = award[5]
@@ -239,7 +245,6 @@ export default {
             odds = award
         }
       }
-
       return odds
     },
     mode:()=>state.lt.mode.mode,
@@ -260,6 +265,56 @@ export default {
     betCount(){
       return Math.round(C(this.chosen.length, this.renderItem.alg))
     },
+    maxAward(){
+      //每注金额为1时候的最高奖金
+      console.log(this.mode);
+      if(this.betCount===0){
+        // 注数为0的时候直接返回
+        return 0;
+      }
+      if(['A01','B01','B03','B04','B05','B06','B07','B08'].indexOf(this.mode)!==-1){
+        //号码直选玩法
+        console.log('号码直选玩法');
+        return this.award*1
+      }else if(['A02','B09','B10','B11','B12','B13','B14'].indexOf(this.mode)!==-1){
+        //两面玩法
+        console.log('两面玩法')
+        var thisAward,dx,ds,h,hdx,hds,w,wdx,c,kind,maxAward=0
+        var betStr = this.betStr.split(',')
+        var renderOdds=this.renderOdds
+        function getObb(s){
+          if (betStr.indexOf(s)>-1) {
+            return renderOdds[lmItemArr.indexOf(s)]*1
+          }
+          return 0
+        }
+        for (var i = 1; i < 49; i++) {
+          thisAward=0
+          dx=i<25?'小':'大'
+          w=i%10
+          h=Math.floor(i/10)+w
+          ds=i%2?'单':'双'
+          thisAward += getObb(dx)
+          thisAward += getObb(ds)
+          thisAward += getObb(dx+ds)
+          hdx=h<=6?'合小':'合大'
+          hds=h%2?'合单':'合双'
+          wdx=w<=4?'尾大':'尾小'
+          thisAward += getObb(hdx)
+          thisAward += getObb(hds)
+          thisAward += getObb(wdx)
+          c=colorDictionary[numColor[i]]
+          thisAward += getObb(c+'波')
+          kind = this.wild.indexOf(i%12)===-1?'家禽':'野兽'
+          thisAward += getObb(kind)
+          if (thisAward>maxAward) {
+            maxAward=thisAward.toFixed(2)*1
+          }
+        }
+        return maxAward
+      }
+      return -2
+    }
   }),
   methods:{
     //获取各个生肖的示例文字
@@ -344,9 +399,8 @@ export default {
         chosen = chosen.map(char=>getAnimalIndex(char, this.natal))
       }else if(poultryWild.indexOf(lotteryMode) > -1){
          //转成数字，排序，再以空格为分隔拼起
-        var annimal2Index = (arr)=>arr.map(char=>getAnimalIndex(char, this.natal)).sort((a,b)=>a-b).join(' ')
-        var poultryStr = annimal2Index(this.poultry)
-        var wildStr = annimal2Index(this.wild)
+        var poultryStr = this.poultry.join(' ')
+        var wildStr = this.wild.join(' ')
         chosen = chosen.map(char=>{
           var item = char;
           if(char === '家禽'){

@@ -6,7 +6,12 @@
   </div>
 
   <div class = "bet-money" v-if = "betCount">每注金额<input type = "tel" maxlength="7" :value = "value" @input = "inputPerbet">
-    <span>{{value.length ? '元': '请输入投注金额'}}</span>
+    <template v-if=value.length>
+      最高可中<span>{{(value*maxAward).toFixed(2)}}</span>元
+    </template>
+    <template v-else>
+      请输入要投注金额
+    </template>
   </div>
 
   <div class = "bet-info fix">
@@ -35,6 +40,10 @@ export default{
     value:{
       type:String,
       requied:true
+    },
+    maxAward:{
+      type:Number,
+      required:true
     }
   },
   data(){

@@ -5,6 +5,24 @@ var getBZStr = (numStr)=>`至少选择${numStr}个号码，每${numStr}个号码
 var getZMLMStr = (numStr)=>`开奖号码第${numStr}位，大于或等于25为大，小于或等于24为小；奇数为单，偶数为双；和单和双为两个数相加后得数的单双；尾大尾小即看个位数值，小于等于4为小，大于4为大；为49时为和，不算任何大小单双，但算波色。`
 
 var animals = ['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪']
+var color = {
+  red:[1,2,7,8,12,13,18,19,23,24,29,30,34,35,40,45,46],
+  blue:[3,4,9,10,14,15,20,25,26,31,36,37,41,42,47,48],
+  green:[5,6,11,16,17,21,22,27,28,32,33,38,39,43,44,49]
+}
+var colorDictionary = {red:'红',blue:'蓝',green:'绿'}
+var numColor = (function(){
+  var num={}
+  for (var i = 1; i < 50; i++) {
+    for(var k in color){
+      if (color[k].indexOf(i)>=0) {
+        num[i]=k
+        break
+      }
+    }
+  }
+  return num
+})()
 
 function getAnimal(numStr, natal){
   if(!natal){
@@ -44,7 +62,7 @@ var hcConfig = {
     },{
       "name": "两面",
       "mode": "A02",
-      "tip": "开奖号码最后一位为特码。大于或等于25为特码大，小于或等于24为特码小；奇数为单，偶数为双；特码两个数相加后得数，奇数为合单，偶数为合双，小于等于6为合小，大于6为合大；尾大尾小即看特码个位数值，小于等于4为小，大于4为大；特码为49时为和，不算任何大小单双，但算波色。",
+      "tip": "开奖号码最后一位为特码。大于或等于25为特码大，小于或等于24为特码小；奇数为单，偶数为双；特码两个数相加后得数，奇数为合单，偶数为合双，小于等于6为合小，大于6为合大；尾大尾小即看特码个位数值，小于等于4为小，大于4为大；特码为49时为和，不算任何大小单双，但算家禽/野兽/波色。",
       "group": "特码",
       "subGroup": "特码",
       "eg":["01 02","01 02 03 04 05 06 07 08 21 22 71 72 73 74 75 76 77 78 79 80"],
@@ -473,4 +491,4 @@ var renderConfig = {
   'G06':{box:'colorbox', alg:10}
 }
 
-export {hcConfig, renderConfig, animals, getAnimal, getAnimalIndex}
+export {numColor,colorDictionary,lmItemArr,tmbbItemArr,hcConfig, renderConfig, animals, getAnimal, getAnimalIndex}
