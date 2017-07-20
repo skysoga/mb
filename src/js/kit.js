@@ -395,8 +395,9 @@ function BaseBet(state,count, betStr){
   }else{
     this.betting_money = +(lt.perbet * _count * bet.betting_model * bet.graduation_count).toFixed(2)
   }
-
-  this.betting_point = lt.lottery.LotteryType!=='K3'?(lt.award.split(',')[0] + '-' + lt.Rebate[lt.lottery.LotteryType]):(lt.award + '-' + lt.Rebate[lt.lottery.LotteryType])           //赔率
+  //this.betting_point = lt.lottery.LotteryType!=='K3'?(lt.award.split(',')[0] + '-' + lt.Rebate[lt.lottery.LotteryType]):(lt.award + '-' + lt.Rebate[lt.lottery.LotteryType])           //赔率
+  // this.betting_point = ('object'===typeof(lt.award)?lt.award[0]:lt.award) + '-' + lt.Rebate[lt.lottery.LotteryType]
+  this.betting_point = 0 + '-' + lt.Rebate[lt.lottery.LotteryType]
 
   this.betting_model = bet.betting_model                   //元角分
   this.betting_issuseNo = lt.NowIssue                      //当前期号
