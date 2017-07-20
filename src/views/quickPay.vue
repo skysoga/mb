@@ -202,6 +202,10 @@ export default {
         '海鸥':{
           'margin-top':2.5*em-160+'px',
           'left':'-500px',
+        },
+        '长城':{
+          'margin-top':2.5*em+20+'px',
+          'left':'-145px',
         }
       }
     }
