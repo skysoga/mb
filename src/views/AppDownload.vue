@@ -1,22 +1,57 @@
 <template>
   <div class="main">
     <div class="intro">
-      <a></a>
-      <h1>彩神争霸</h1>
+      <a :style="`background:url(${$store.state.constant.ImgHost}${data.AppImg});`"></a>
+      <h1>{{data.AppName}}</h1>
       <p>下载APP 再也无需输入网址</p>
     </div>
     <div class="downLink">
-      <a href="https://itunes.apple.com/cn/app/caishen/id1226328248" target="_blink"><i class="iconfont">&#xe64b;</i>点击下载iOS版</a>
-      <a href="http://imagess-google.com/system/app/caishen170503.apk" download="cszb170120_206.apk"><i class="iconfont">&#xe653;</i>点击下载安卓版</a>
+      <a :href="data.AppleUrl" target="_blink"><i class="iconfont">&#xe64b;</i>点击下载iOS版</a>
+      <a id="android" :href="data.AndroidUrl"><i class="iconfont">&#xe653;</i>点击下载安卓版</a>
     </div>
   </div>
 </template>
 <script>
   export default {
+    data:()=>{
+      return{
+        data:{},
+        AndroidIsFile:false,
+        AppleIsFile:false
+      }
+    },
+    beforeRouteEnter:(to, from, next) => {
+      _fetch({Action:'GetAPPInfo'})
+      .then(d=>{
+        if (d.Code==1) {
+          next(vm=>{
+            vm.data = d.BackData
+            var android = d.BackData.AppleUrl.match(/.apk$/) || false
+            var apple = d.BackData.AppleUrl.match(/.ipa$/) || false
+            if (android) {
+              vm.AndroidIsFile = true
+            }
+            if (apple) {
+              vm.AppleIsFile = true
+            }
+          })
+        }else{
+          layer.msgWarn(d.StrCode)
+        }
+      })
+    },
     beforeCreate(){
       if (_App) {
         router.go(-1)
       }
+    },
+    created(){
+      if (this.AndroidIsFile) {
+        setTimeout(()=>{
+          document.getElementById('android').setAttribute('download',this.data.AppName+'.apk')
+        },100)
+      }
+      
     }
   }
 </script>
@@ -59,7 +94,6 @@
   .intro{
     a{
       display: block;
-      background: unquote("url(" + $imgurl + "/system/app/appIcon.png)");
       background-size: 100%;
       width: 5em;
       height: 5em;
