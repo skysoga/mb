@@ -7,7 +7,7 @@
     </div>
     <div class="downLink">
       <a :href="data.AppleUrl" target="_blink"><i class="iconfont">&#xe64b;</i>点击下载iOS版</a>
-      <a id="android" :href="data.AndroidUrl"><i class="iconfont">&#xe653;</i>点击下载安卓版</a>
+      <a id="android" :href="data.AndroidUrl" target="_blink"><i class="iconfont">&#xe653;</i>点击下载安卓版</a>
     </div>
   </div>
 </template>
@@ -26,7 +26,7 @@
         if (d.Code==1) {
           next(vm=>{
             vm.data = d.BackData
-            var android = d.BackData.AppleUrl.match(/.apk$/) || false
+            var android = d.BackData.AndroidUrl.match(/.apk$/) || false
             var apple = d.BackData.AppleUrl.match(/.ipa$/) || false
             if (android) {
               vm.AndroidIsFile = true
@@ -45,13 +45,12 @@
         router.go(-1)
       }
     },
-    created(){
-      if (this.AndroidIsFile) {
-        setTimeout(()=>{
+    watch:{
+      AndroidIsFile:function(n,o){
+        if (n) {
           document.getElementById('android').setAttribute('download',this.data.AppName+'.apk')
-        },100)
+        }
       }
-      
     }
   }
 </script>
