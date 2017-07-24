@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="intro">
-      <a :style="`background:url(${$store.state.constant.ImgHost}${data.AppImg});`"></a>
+      <a :style="`background:url(${$store.state.constant.ImgHost}${data.AppImg});background-size:100%;`"></a>
       <h1>{{data.AppName}}</h1>
       <p>下载APP 再也无需输入网址</p>
     </div>
