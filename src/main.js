@@ -364,6 +364,7 @@ window._fetch = function (data, option = {}){
             try{
               RootApp.SaveInitData(Data)
               if(JSON.stringify(json.CacheData) !== "{}"){
+                console.log(CacheData)
                 localStorage.setItem('CacheData',JSON.stringify(Object.assign(CacheData,json.CacheData)))
               }
             }catch(error){
@@ -1015,13 +1016,15 @@ window.RootApp={
     }
     if (_App&&!state.UserName) {
       //app未登录的时候将部分项目移出版本校验
-      ajax.CacheData=Object.assign(CacheData)
+      // ajax.CacheData=Object.assign(CacheData)
+      // 请注意不要像上一行那样使用Object.assign拷贝对象.因为不是拷贝成新对象而是直接用的就是那个对象.导致下方的delete会把原Cache里的内容直接删掉
+      ajax.CacheData=JSON.parse(JSON.stringify(CacheData))
       for (var i = AppArr.length - 1; i >= 0; i--) {
         delete ajax.CacheData[AppArr[i]]
       }
-      delete ajax.CacheData.LotteryHot
-      delete ajax.CacheData.LotteryConfig
-      delete ajax.CacheData.LotteryList
+      // delete ajax.CacheData.LotteryHot
+      // delete ajax.CacheData.LotteryConfig
+      // delete ajax.CacheData.LotteryList
     }else{
       ajax.CacheData=CacheData
     }

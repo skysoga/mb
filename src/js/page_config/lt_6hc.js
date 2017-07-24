@@ -52,7 +52,7 @@ var numFeature = (function(){
       }
     }
   }
-  console.log(num);
+  // console.log(num);
   return num
 })()
 
