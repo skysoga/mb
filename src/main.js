@@ -638,50 +638,50 @@ function setState(key){
     }*/
     return s;
   }
-  var value
+  var k,value
   for (var i = key.length - 1; i >= 0; i--) {
-    value=getLocalDate(key[i])
-    // state[key[i]]=getLocalDate(key[i])
-    if((VerifyArr.indexOf(key[i])>-1)&&
-      (Boolean(CacheData[key[i]])^(value!=null))){
-      //检验是否存在版本号与实际储存值是否非同步存在或不存在
-      console.log(state[key[i]]);
-      delete state[key[i]]
-      delete CacheData[key[i]]
+    k=key[i]
+    // state[k]=getLocalDate(k)
+    if (VerifyArr.indexOf(k)!==-1) {
+      // console.log('需要检验是否存在版本号与实际储存值是否非同步存在或不存在')
+      value=getLocalDate(k)
+      if((Boolean(CacheData[k])^(value!=null))){
+        //检验是否存在版本号与实际储存值是否非同步存在或不存在
+        console.log(state[k]);
+        value=null
+        // delete state[k]
+        delete CacheData[k]
+      }
     }
     if (value!==null) {
       // 进行localStorage数据的合法化验证，不符合目前要求的数据进行剔除
-      switch(key[i]){
+      switch(k){
         case 'SiteConfig':
           console.log(value);
           if(!value.Style || (value.Style.Id !== 0 && !value.Style.Id)){
-            value = ''
+            value = null
           }
-
-          // if (!(value.Style&&value.Style.Id)) {
-          //   value=''
-          // }
         break;
         default:
-          if(LocalCacheArr.indexOf(key[i])>-1){
+          if(LocalCacheArr.indexOf(k)>-1){
             // 判断与LocalCacheData的同步
             var cache = value
-            // console.log('存在localCache的字段',key[i])
-            var hasVersion = !!LocalCacheData[key[i]]
+            // console.log('存在localCache的字段',k)
+            var hasVersion = !!LocalCacheData[k]
             var hasCache = !!cache
             var needDelete = hasVersion ^ hasCache  //异或
             // console.log(needDelete, hasVersion, hasCache)
             if(needDelete){
-              localStorage.removeItem(key[i])  //删除对应的缓存
-              delete LocalCacheData[key[i]]
+              localStorage.removeItem(k)  //删除对应的缓存
+              delete LocalCacheData[k]
               localStorage.setItem("LocalCacheData",JSON.stringify(LocalCacheData))
             }
           }
         break
       }
-      localState[key[i]]=value
+      localState[k]=value
     }
-    state[key[i]]=value
+    state[k]=value
   }
   console.log(localState);
 };
