@@ -271,6 +271,9 @@ window._fetch = function (data, option = {}){
     if(user){
       fetchUrl+='&U='+user
     }
+    if (data.Action==='AddBetting'||data.Action==='AddChaseBetting') {
+      fetchUrl+='&T='+new Date(now-state.Difftime).format('ddhhmmss')
+    }
 
     fetch(fetchUrl, {
       credentials:'same-origin',
@@ -642,14 +645,15 @@ function setState(key){
   for (var i = key.length - 1; i >= 0; i--) {
     k=key[i]
     // state[k]=getLocalDate(k)
+    value=getLocalDate(k)
     if (VerifyArr.indexOf(k)!==-1) {
       // console.log('需要检验是否存在版本号与实际储存值是否非同步存在或不存在')
-      value=getLocalDate(k)
       if((Boolean(CacheData[k])^(value!=null))){
         //检验是否存在版本号与实际储存值是否非同步存在或不存在
         console.log(state[k]);
         value=null
-        // delete state[k]
+        localStorage.removeItem(k)
+        delete state[k]
         delete CacheData[k]
       }
     }
@@ -659,16 +663,18 @@ function setState(key){
         case 'SiteConfig':
           console.log(value);
           if(!value.Style || (value.Style.Id !== 0 && !value.Style.Id)){
-            value = null
+            value=null
+            delete state[k]
+            delete CacheData[k]
           }
         break;
         default:
           if(LocalCacheArr.indexOf(k)>-1){
             // 判断与LocalCacheData的同步
-            var cache = value
+            // var cache = value
             // console.log('存在localCache的字段',k)
             var hasVersion = !!LocalCacheData[k]
-            var hasCache = !!cache
+            var hasCache = !!value
             var needDelete = hasVersion ^ hasCache  //异或
             // console.log(needDelete, hasVersion, hasCache)
             if(needDelete){
@@ -1239,6 +1245,7 @@ router.beforeEach((to, from, next) => {
     document.body.scrollTop = 0
   }
   if(state.UserName&&state.UserName!==localStorage.getItem('UserName')){
+    // 用户变更后要重新使用本地localStorage来修改本地State数据
     setState(UserArr)
   }
   state.turning=true
