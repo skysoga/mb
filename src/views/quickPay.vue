@@ -206,6 +206,10 @@ export default {
         '长城':{
           'margin-top':2.5*em+20+'px',
           'left':'-145px',
+        },
+        '路德':{
+          'margin-top':2.5*em+20+'px',
+          'left':'-145px',
         }
       }
     }
