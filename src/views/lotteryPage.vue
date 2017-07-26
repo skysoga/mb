@@ -600,9 +600,8 @@
             function checkPlan(code){
               var refer = rootState.LotteryList[code]
                   ,_EndTime1 = LotteryPlan[refer.VerifyIssue*1-1].EndTime
-                  ,_EndTime2 = refer.VerifyEndTime.split(' ')[1]
-
-              if(refer && _EndTime1 !== _EndTime2){
+                  ,_EndTime2 = refer.VerifyEndTime
+              if(refer && -1 === _EndTime2.search(_EndTime1)){
                 //校验没通过，就删除旧计划，重新拉一遍计划
                 localStorage.removeItem("lotteryPlan"+code);
                 getPlan(code)
