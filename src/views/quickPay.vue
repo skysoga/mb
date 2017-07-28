@@ -214,6 +214,10 @@ export default {
         '优畅':{
           'margin-top':2.5*em+20+'px',
           'left':'-145px',
+        },
+        '新码':{
+          'margin-top':2.5*em+20+'px',
+          'left':'-145px',
         }
       }
     }
