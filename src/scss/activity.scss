@@ -159,7 +159,8 @@
     font-size: 0.8em !important;
     margin: 0.5rem !important;
     line-height: 1.6 !important;
-    overflow: hidden;
+    overflow-x: scroll;
+    overflow-y: hidden;
     *{
       font-family:"微软雅黑" !important;
       font-size:1em !important;
