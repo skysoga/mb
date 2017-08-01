@@ -517,13 +517,16 @@ export default {
       var bet = {
         lottery_code: lotteryCode,
         play_detail_code: lotteryCode + this.mode,
-        betting_number: betStr + `@${this.natal}`,
+        betting_number: betStr,
         betting_count: this.betCount,
         betting_money: betMoney,
         betting_point: '0-' + rebate,
         betting_model: 1,
         betting_issuseNo: nowIssue,
         graduation_count:1
+      }
+      if (this.mode.charAt(0)==='E') {
+        bet.betting_number += `@${this.natal}`
       }
       var basket = [bet]
 

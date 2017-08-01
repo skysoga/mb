@@ -25,7 +25,12 @@
         ID: this.$route.query.ID
       }).then((data) => {
         if (data.Code === 1) {
-          this.initData = this.isNotice?data.BackData[0]:data.BackData
+          var initData = this.isNotice?data.BackData[0]:data.BackData
+          if (!initData) {
+            router.replace('/notfount')
+          }else{
+            this.initData=initData
+          }
         } else {
           layer.msgWarn(data.StrCode)
         }
