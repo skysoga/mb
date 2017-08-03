@@ -222,6 +222,18 @@ export default {
         '优畅招行':{
           'margin-top':2.5*em+20+'px',
           'left':'-145px',
+        },
+        '瞬付':{
+          'margin-top':2.5*em+20+'px',
+          'left':'-145px',
+        },
+        '智汇付':{
+          'margin-top':2.5*em+20+'px',
+          'left':'-145px',
+        },
+        '多宝':{
+          'margin-top':2.5*em+20+'px',
+          'left':'-145px',
         }
       }
     }
