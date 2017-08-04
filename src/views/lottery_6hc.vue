@@ -532,7 +532,7 @@ export default {
 
       var msg = `${lotteryName}: ${nowIssue}期<br>
                     投注金额: <span style = "color:red">${betMoney}元</span><br>
-                    投注内容: <br>${this.betStr}`
+                    投注内容: ${this.betStr}`
       var that = this
       layer.open({
         title:"投注确认",
