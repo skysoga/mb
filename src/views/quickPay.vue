@@ -143,7 +143,7 @@ export default {
           'left':'-300px'
         },
         'AUSTPAY':{
-          'margin-top':'px',
+          // 'margin-top':'px',
           'left':'-156px'
         },
         '闪讯付':{
