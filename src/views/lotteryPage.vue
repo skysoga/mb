@@ -203,16 +203,18 @@
           //counter或flag
           displayResults: false,  //false显示等待开奖的动画， true显示开奖结果
           tipDisplayFlag: false,  //是否省略玩法
+          natal:getNatal(new Date()),
           perbet: PERBET
-
         },
         getters: {
           // 本命
           lt_natal(state, getters, rootState){
-            var Difftime = rootState.Difftime || 0
+            //这个方法错误,要按开奖日计算
+            /*var Difftime = rootState.Difftime || 0
             var serverTime = new Date().getTime() - Difftime
             var natal = getNatal(new Date(serverTime));  //本命 9-鸡
-            return natal
+            return natal*/
+            return state.natal
           }
         },
         mutations:{
@@ -529,6 +531,7 @@
               var Month = monthPlan.Month
               var Schedule = monthPlan.Schedule.split(',')
               var cursor = new Date()
+              cursor.setYear(state.Todaystr.slice(0,4))
               cursor.setMonth(Month - 1)
               cursor.setHours(21,30,0)
 
@@ -681,6 +684,7 @@
             function get6HCCountdown(){
               var serverTimeStamp = new Date().getTime() - rootState.Difftime
               var {BeforeIssue, Month, NextFirst, Schedule, ScheduleStamp} = state.LotteryPlan
+              var Countdown
               if(!BeforeIssue || !Month || !NextFirst || !Schedule || !ScheduleStamp){
                 console.log('方案尚未加载到')
                 return
@@ -688,8 +692,9 @@
               var cursor = new Date(serverTimeStamp)
 
               // 每月将缓存清楚掉重新拉取---月头
-              var _12to1 = (cursor.getMonth() + 1 === 1) &&  Month === 12 //防止过年出问题
-              var outOfDate = cursor.getMonth() + 1 > Month  && _12to1  //过期了
+              // var _12to1 = (cursor.getMonth() + 1 === 1) &&  Month === 12 //防止过年出问题
+              // var outOfDate = cursor.getMonth() + 1 > Month  && _12to1  //过期了
+              var outOfDate = (cursor.getMonth() + 1) != Month
               if(outOfDate){
                 var hour = cursor.getHours()
                 var minute = cursor.getMinutes()
@@ -702,19 +707,28 @@
                   dispatch('lt_get6HCPlan', code)
                 }
               }
-
               var _issue = 1
-              for(var i = 0;i < ScheduleStamp.length;i++){
+              var NowIssue=state.NowIssue&&state.NowIssue.slice(4)*1
+              if(NowIssue){
+                Countdown = ScheduleStamp[NowIssue-BeforeIssue-1] - serverTimeStamp
+                if (Countdown>0){
+                  //当前期,更新倒计时即可
+                  // console.log(Countdown)
+                  return Countdown
+                }
+              }
+              console.log('下一期')
+              for(var i = NowIssue?(NowIssue-BeforeIssue-1):0;i < ScheduleStamp.length;i++){
                 if(ScheduleStamp[i] > serverTimeStamp){
-                  _issue = _issue + i
+                  _issue += i
                   break
                 }
               }
 
-
+              var nextIssueTime
               // 如果有值说明还在期号表内
               if(Schedule[i] !== undefined){
-                var Countdown = ScheduleStamp[i] - serverTimeStamp
+                nextIssueTime = ScheduleStamp[i]
               }else{
                 //月尾
                 console.log('一个月的结束，先用nextFirst')
@@ -723,10 +737,16 @@
                 cursor.setHours(21,30,0)
                 cursor.setMilliseconds(0)
                 _issue = Schedule.length + 1
-                var Countdown = cursor.getTime() - serverTimeStamp
+                nextIssueTime = cursor.getTime()
               }
-
+              // Vue.set(window.state, 'natal', getNatal(new Date(nextIssueTime)))
+              //按照下一期的时间来计算本命
+              state.natal=getNatal(new Date(nextIssueTime))
+              console.log(state.natal)
+              Countdown = nextIssueTime - serverTimeStamp
+              // console.log(Countdown)
               var issue = BeforeIssue + _issue
+              // console.log(issue,state.NowIssue)
               // 设置期号
               commit('lt_setIssueNo', issue)
               var code = state.lottery.LotteryCode   //当前彩种号
