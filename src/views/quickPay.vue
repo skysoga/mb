@@ -33,12 +33,12 @@
           温馨提示：支付成功后，会在一分钟内为您添加额度，请刷新您的账户余额!
         </div>
       </div>
-      <iframe id="ifra" :src="QrImg" frameborder="0" :style="css[(method=='Weixin'&&PayType=='众宝')?'众宝WX':PayType]" v-show="!QrSvg"></iframe>
+      <iframe id="ifra" :src="QrImg" frameborder="0" :style="css[(method=='Weixin'&&PayType=='众宝')?'众宝WX':(method=='Alipay'&&PayType=='智汇付')?'智汇付':PayType]" v-show="!QrSvg&&QrImg"></iframe>
     </div>
   </div>
 </template>
 <script>
-var OType=['金付卡']//新开窗口数组
+var OType=['金付卡','智汇付']//新开窗口数组
 export default {
   beforeRouteEnter(to, from, next){
     var title = {
@@ -104,15 +104,15 @@ export default {
       Money: '',
       css:{
         '通汇卡':{
-          'margin-top':2.5*em-100+'px',
+          'margin-top':'-100px',
           'left':'-500px'
         },
         '银宝':{
-          'margin-top':2.5*em-235+'px',
+          'margin-top':'-235px',
           'left':'-499px'
         },
         '闪付':{
-          'margin-top':2.5*em-40+'px',
+          'margin-top':'-40px',
           'left':'-500px',
           '-webkit-transform':'scale(.4)',
           '-ms-transform':'scale(.4)',
@@ -124,31 +124,30 @@ export default {
           'transform-origin':'center 100px'
         },
         '乐盈':{
-          'margin-top':2.5*em+'px',
           'left':'-574px'
         },
         '摩宝':{
-          'margin-top':2.5*em-100+'px',
+          'margin-top':'-100px',
           'left':'-500px'
         },
         '易卡':{
-          'margin-top':2.5*em-140+'px',
+          'margin-top':'-140px',
           'left':'-500px'
         },
         '久付':{
-          'margin-top':2.5*em-140+'px',
+          'margin-top':'-140px',
           'left':'-500px'
         },
         '仁信':{
-          'margin-top':2.5*em-140+'px',
+          'margin-top':'-140px',
           'left':'-300px'
         },
         'AUSTPAY':{
-          'margin-top':2.5*em+'px',
+          'margin-top':'px',
           'left':'-156px'
         },
         '闪讯付':{
-          'margin-top':2.5*em-290+'px',
+          'margin-top':'-290px',
           'left':'-500px',
           '-webkit-transform':'scale(.5)',
           '-ms-transform':'scale(.5)',
@@ -156,7 +155,7 @@ export default {
           'transform':'scale(.5)',
         },
         '快支付':{
-          'margin-top':2.5*em-290+'px',
+          'margin-top':'-290px',
           'left':'-500px',
           '-webkit-transform':'scale(.5)',
           '-ms-transform':'scale(.5)',
@@ -164,11 +163,11 @@ export default {
           'transform':'scale(.5)',
         },
         '新摩宝':{
-          'margin-top':2.5*em-100+'px',
+          'margin-top':'-100px',
           'left':'-500px'
         },
         '立刻付':{
-          'margin-top':2.5*em-290+'px',
+          'margin-top':'-290px',
           'left':'-500px',
           '-webkit-transform':'scale(.7)',
           '-ms-transform':'scale(.7)',
@@ -176,7 +175,7 @@ export default {
           'transform':'scale(.7)',
         },
         '众宝':{
-          'margin-top':2.5*em-225+'px',
+          'margin-top':'-225px',
           'left':'-200px',
           '-webkit-transform':'scale(1.1)',
           '-ms-transform':'scale(1.1)',
@@ -184,44 +183,60 @@ export default {
           'transform':'scale(1.1)',
         },
         '众宝WX':{
-          'margin-top':2.5*em-250+'px',
+          'margin-top':'-250px',
           'left':'-226px',
         },
         '云安付':{
-          'margin-top':2.5*em-100+'px',
+          'margin-top':'-100px',
           'left':'-500px',
         },
         '元宝':{
-          'margin-top':2.5*em-80+'px',
+          'margin-top':'-80px',
           'left':'-500px',
         },
         '高通':{
-          'margin-top':2.5*em-235+'px',
+          'margin-top':'-235px',
           'left':'-490px',
         },
         '海鸥':{
-          'margin-top':2.5*em-160+'px',
+          'margin-top':'-160px',
           'left':'-500px',
         },
         '长城':{
-          'margin-top':2.5*em+20+'px',
+          'margin-top':'+20px',
           'left':'-145px',
         },
         '路德':{
-          'margin-top':2.5*em+20+'px',
+          'margin-top':'+20px',
           'left':'-145px',
         },
         '优畅':{
-          'margin-top':2.5*em+20+'px',
+          'margin-top':'+20px',
           'left':'-145px',
         },
         '新码':{
-          'margin-top':2.5*em+20+'px',
+          'margin-top':'+20px',
           'left':'-145px',
         },
         '优畅招行':{
-          'margin-top':2.5*em+20+'px',
+          'margin-top':'+20px',
           'left':'-145px',
+        },
+        '瞬付':{
+          'margin-top':'+20px',
+          'left':'-145px',
+        },
+        '智汇付':{
+          'margin-top':'+20px',
+          'left':'-145px',
+        },
+        '多宝':{
+          'margin-top':'+20px',
+          'left':'-145px',
+        },
+        '多得宝':{
+          'margin-top': '50px',
+          'left': '-144px'
         }
       }
     }
@@ -265,24 +280,24 @@ export default {
       nowAjax.ID = this.nowRender.Id
       nowAjax.BankCode =this.nowRender.PayType
 
-      if(OType.indexOf(nowAjax.BankCode)!==-1&&!YDB){
-        var newTab=window.open('about:blank')
+      if(OType.indexOf(nowAjax.BankCode)!==-1){
+        if(nowAjax.BankCode!=='智汇付'||nowAjax.Qort===6){
+          var newTab=YDB?true:window.open('about:blank')
+          console.log('新开窗口');
+        }
       }
 
       layer.msgWait("正在提交")
       _fetch(nowAjax).then((json)=>{
         if(json.Code === 1){
           var OpenType=json.OpenType
-          this.QrImg=json.BackUrl
           layer.closeAll()
-          if(OType.indexOf(nowAjax.BankCode)>-1){
-            OpenType=4
-          }
-          if(OpenType===1){
-            this.Money = ''
-          }else if(OpenType===4){
+          if(newTab){
             this.QrBg=false
             RootApp.OpenWin(json.BackUrl, newTab)
+            this.Money = ''
+          }else if(OpenType===1){
+            this.QrImg=json.BackUrl
             this.Money = ''
           }else{
             this.QrSvg=true
@@ -331,6 +346,7 @@ export default {
   }
   iframe{
     position:relative;
+    padding-top:2.5em;
     margin-left:8rem;
     width:1000px;
     height:920px

@@ -6,7 +6,7 @@ import BottomBox from '../components/bottom-box';
         BottomBoxShow:false,
         BottomBoxList:{K3:"快3",SSC:"时时彩",SYX5:"11选5",FC3D:"福彩3D",PL3:"排列3",KL8:"北京快乐8",PK10:"北京PK10",LHC:"六合彩"},
         AgentRebate:'',//自身返点数组
-        setObj:{Max:'8.0',Min:'0.0'},//最大返点
+        setObj:{Max:8.0,Min:0.0},//最大返点
         ArrObj:'',//当前总数据
         reeData:{},
         theWidth:'',//当前列表宽度
@@ -15,11 +15,8 @@ import BottomBox from '../components/bottom-box';
       }
     },
     created(){
-      if(this.$route&&this.$route.params.id){
-        this.BetweenType=this.$route.params.id
-      }else{
-        this.BetweenType="K3"
-      }
+      this.BetweenType=this.$route&&this.$route.params.id||"K3"
+
       var isLaw=!this.BottomBoxList[this.BetweenType]
       if(isLaw){
         return router.replace('/manageInvite')
@@ -312,18 +309,19 @@ import BottomBox from '../components/bottom-box';
       },
       setListDate(key){
           this.reeData=this.ListArr[key]
+          key=key=='LHC'?'6HC':key
           var i=0;
           for(;i<this.AgentRebate.length;i++){
               var iCode=this.AgentRebate[i].LotteryType;
               if(iCode==key){
                   var Max=this.AgentRebate[i].Point
                   var Min=this.AgentRebate[i].MinPoint
-                  this.reeData.Rebate[0]=Max
-                  this.reeData.Rebate[1]=Min
+                  this.reeData.Rebate[0]=+Max
+                  this.reeData.Rebate[1]=+Min
               }
 
           }
-          if(key!=='LHC'){
+          if(key!=='6HC'){
             if(key=='K3'){
               this.setObj.Max=7.5
               this.setObj.Min=0.0
@@ -342,19 +340,17 @@ import BottomBox from '../components/bottom-box';
             this.ArrObj=""
             return
           }
-          var Mode=this.ReMode().Mode
-          var Data=this.ReMode().Data
+          var {Mode,Data}=this.ReMode()
           var isArr=[],
                 reArr=this.Rebate(this.setObj.Max,this.setObj.Min),
-                ModeArr=this.ReMode().Data,
                 i=0;
             for(;i<reArr.length;i++){
                 var nArr=[],
                     Onum=reArr[i],
                         j=0;
                 nArr.push(reArr[i]);
-                for(;j<ModeArr.length;j++){
-                    nArr.push(ModeArr[j][i]);
+                for(;j<Data.length;j++){
+                    nArr.push(Data[j][i]);
                 }
               if(Onum<=this.reeData.Rebate[0]&&Onum>=this.reeData.Rebate[1]){
                 isArr.push(nArr)
@@ -387,9 +383,10 @@ import BottomBox from '../components/bottom-box';
           return Arr;
       },
       ReMode(){//玩法序列和赔率
-          var isArr=new Object();
-              isArr.Mode=[];
-              isArr.Data=[];
+          var isArr={
+            Mode:[],
+            Data:[]
+          }
           var isMode= this.reeData['List'];
           for(var i=0;i<isMode.length;i++){
               isArr.Mode.push(isMode[i].Mode);
@@ -397,8 +394,9 @@ import BottomBox from '../components/bottom-box';
                   Mode=isMode[i].Mode,
                   iMo
               if (this.BetweenType==="LHC") {
-                iMo = Mode.split('-')[1]
-                set = iMo==="两面"||iMo==="一肖"
+                var Mname=Mode.substr(0,2),
+                    iMo=Mode.substr(2)
+                set = Mname==="半波"||Mname==="一肖"||Mname==="特码"&&iMo!=="直选"||Mname==="正码"&&iMo!=="任选"&&iMo!=="正特"
               }else{
                 iMo=Mode.substr(Mode.length-2);
                 set = iMo=='三星'||iMo=='二星'||iMo=='/双'
