@@ -222,6 +222,8 @@
           //设置Todaystr
           lt_updateDate:(state)=>{
             var nowSerTime = new Date().getTime()- this.$store.state.Difftime;   //当前的服务器时间
+            nowSerTime=nowSerTime+new Date().getTimezoneOffset()*60*1000-GMT_DIF
+            console.log(new Date(nowSerTime).format("yyyyMMddhhmmss"));
             state.Todaystr = new Date(nowSerTime).format("yyyyMMdd");           //今天
           },
           // 设置LotteryPlan
