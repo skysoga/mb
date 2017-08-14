@@ -24,6 +24,7 @@ import App from './App'
 import routes from './routes/routes'
 import Va from './plugins/va'
 import {DAY_TIME, GMT_DIF} from './js/kit'
+var md5=require('./plugins/md5.min')
 var localState={}
 window.Vue=Vue
 Vue.use(Va)
@@ -127,6 +128,17 @@ window._Tool = {
   }
 }
 
+//获取cookie
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+    }
+    return "";
+}
 
 // 修改默认配置XSS 添加STYLE
 var XssList=filterXSS.whiteList
@@ -273,6 +285,21 @@ window._fetch = function (data, option = {}){
     }
     if (data.Action==='AddBetting'||data.Action==='AddChaseBetting') {
       fetchUrl+='&T='+new Date(now-state.Difftime).format('ddhhmmss')
+    }
+
+    var IVK=getCookie('IVK')
+    if(IVK!=null){
+      //密码特殊处理
+      if(str.indexOf('Password')>-1){
+        var obj=str.split('&')
+        str=obj.map(v=>{
+          if(v.indexOf('Password')>-1){
+            var xtr=v.split('=')
+            v=xtr[0]+'='+md5(md5(user+md5(xtr[1]))+IVK)
+          }
+          return v
+        }).join('&')+'&LoginType=Hash'
+      }
     }
 
     fetch(fetchUrl, {
