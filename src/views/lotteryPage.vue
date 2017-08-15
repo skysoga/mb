@@ -712,15 +712,18 @@
               var _issue = 1
               var NowIssue=state.NowIssue&&state.NowIssue.slice(4)*1
               if(NowIssue){
-                Countdown = ScheduleStamp[NowIssue-BeforeIssue-1] - serverTimeStamp
-                if (Countdown>0){
+                NowIssue=NowIssue-BeforeIssue-1
+                Countdown = ScheduleStamp[NowIssue]||0 - serverTimeStamp
+                if (Countdown>0&&Countdown<72*3600000){
                   //当前期,更新倒计时即可
                   // console.log(Countdown)
                   return Countdown
+                }else{
+                  //避免从别的彩种过来时候受到Issue影响,所以要清零
+                  NowIssue=0
                 }
               }
-              console.log('下一期')
-              for(var i = NowIssue?(NowIssue-BeforeIssue-1):0;i < ScheduleStamp.length;i++){
+              for(var i = NowIssue||0;i < ScheduleStamp.length;i++){
                 if(ScheduleStamp[i] > serverTimeStamp){
                   _issue += i
                   break
