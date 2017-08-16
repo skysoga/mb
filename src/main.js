@@ -295,7 +295,7 @@ window._fetch = function (data, option = {}){
         str=obj.map(v=>{
           if(v.indexOf('Password')>-1){
             var xtr=v.split('='),
-            pwArr=['SetPwd','SetSafePass','register']
+            pwArr=['SetPwd','SetSafePass','Register']
             v=xtr[0]+'='+(pwArr.indexOf(data.Action)>-1?md5(user+md5(xtr[1])):md5(md5(user+md5(xtr[1]))+IVK))
           }
           return v
