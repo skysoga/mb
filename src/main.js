@@ -296,7 +296,7 @@ window._fetch = function (data, option = {}){
           if(v.indexOf('Password')>-1){
             var xtr=v.split('='),
             pwArr=['SetPwd','SetSafePass']
-            v=xtr[0]+'='+pwArr.indexOf(data.Action)>-1?(md5(user+md5(xtr[1]))+IVK):md5(md5(user+md5(xtr[1]))+IVK)
+            v=xtr[0]+'='+(pwArr.indexOf(data.Action)>-1?(md5(user+md5(xtr[1]))+IVK):md5(md5(user+md5(xtr[1]))+IVK))
           }
           return v
         }).join('&')+'&Type=Hash'
