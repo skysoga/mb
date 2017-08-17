@@ -283,6 +283,8 @@ window._fetch = function (data, option = {}){
     if(user){
       fetchUrl+='&U='+user
     }
+    var ForgetArr=['SetPassForget','VerifySafePwdForget']
+    user=(ForgetArr.indexOf(data.Action)>-1&&sessionStorage.getItem('UserName'))||user//解决找回密码 加密问题
     if (data.Action==='AddBetting'||data.Action==='AddChaseBetting') {
       fetchUrl+='&T='+new Date(now-state.Difftime).format('ddhhmmss')
     }
@@ -295,7 +297,7 @@ window._fetch = function (data, option = {}){
         str=obj.map(v=>{
           if(v.indexOf('Password')>-1){
             var xtr=v.split('='),
-            pwArr=['SetPwd','SetSafePass','Register']
+            pwArr=['SetPwd','SetSafePass','Register','SetPassForget']
             v=xtr[0]+'='+(pwArr.indexOf(data.Action)>-1?md5(user+md5(xtr[1])):md5(md5(user+md5(xtr[1]))+IVK))
           }
           return v
