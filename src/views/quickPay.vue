@@ -300,9 +300,7 @@ export default {
             this.Money = ''
           }else if(OpenType===1){
             this.QrImg=str.BackUrl
-            this.Styles="margin-top:-100px;left:-500px"//str.Style
-            // this.Styles=eval('(' +str.Style+')')
-            console.log(typeof this.Styles,typeof str.Style)
+            this.Styles=str.Style
             this.Money = ''
           }else{
             this.QrSvg=true
