@@ -535,7 +535,7 @@
               var cursor = new Date()
               cursor.setYear(state.Todaystr.slice(0,4))
               cursor.setMonth(Month - 1)
-              cursor.setHours(21,30,0)
+              cursor.setHours(21,15,0)//设置开奖日的封单时间
 
               monthPlan.BeforeIssue = +monthPlan.BeforeIssue
               monthPlan.NextFirst = +monthPlan.NextFirst
@@ -739,7 +739,7 @@
                 console.log('一个月的结束，先用nextFirst')
                 cursor.setMonth(Month)
                 cursor.setDate(NextFirst)
-                cursor.setHours(21,30,0)
+                cursor.setHours(21,15,0)  //开奖日21:15封盘
                 cursor.setMilliseconds(0)
                 _issue = Schedule.length + 1
                 nextIssueTime = cursor.getTime()
