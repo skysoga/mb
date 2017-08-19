@@ -529,22 +529,21 @@
 
             //对6HC的计划进行一些变换并报错到vuex中
             function use6HCPlan(monthPlan){
-              // 将对应的当月期号表变成毫秒值
+              //保证转为数字类型
+              monthPlan.BeforeIssue *= 1
+              monthPlan.NextFirst *= 1
+              monthPlan.Month *=1
+              var year = state.Todaystr.slice(0,4)
               var Month = monthPlan.Month
               var Schedule = monthPlan.Schedule.split(',')
-              var cursor = new Date()
-              cursor.setYear(state.Todaystr.slice(0,4))
-              cursor.setMonth(Month - 1)
-              cursor.setHours(21,15,0)//设置开奖日的封单时间
-
-              monthPlan.BeforeIssue = +monthPlan.BeforeIssue
-              monthPlan.NextFirst = +monthPlan.NextFirst
               monthPlan.Schedule = monthPlan.Schedule.split(',').map(str=>+str)
+              // 将对应的当月期号表变成毫秒值
               monthPlan.ScheduleStamp = monthPlan.Schedule.map(num=>{
-                cursor.setDate(num)
-                return cursor.getTime()
+                return new Date(year,Month-1,num,21,30,0).getTime()
               })
-
+              monthPlan.ScheduleStamp.push((function(){
+                return new Date(year,Month,monthPlan.NextFirst,21,30,0).getTime()
+              })())
               commit('lt_setPlan', monthPlan)
               dispatch('lt_refresh')
             }
@@ -713,7 +712,8 @@
               var NowIssue=state.NowIssue&&state.NowIssue.slice(4)*1
               if(NowIssue){
                 NowIssue=NowIssue-BeforeIssue-1
-                Countdown = ScheduleStamp[NowIssue]||0 - serverTimeStamp
+                //括号不能删除
+                Countdown = (ScheduleStamp[NowIssue]||0) - serverTimeStamp
                 if (Countdown>0&&Countdown<72*3600000){
                   //当前期,更新倒计时即可
                   // console.log(Countdown)
@@ -735,14 +735,17 @@
               if(Schedule[i] !== undefined){
                 nextIssueTime = ScheduleStamp[i]
               }else{
+                //超过plan
+                layer.msgWarn('期号错误...')
+                return
                 //月尾
-                console.log('一个月的结束，先用nextFirst')
-                cursor.setMonth(Month)
-                cursor.setDate(NextFirst)
-                cursor.setHours(21,15,0)  //开奖日21:15封盘
-                cursor.setMilliseconds(0)
-                _issue = Schedule.length + 1
-                nextIssueTime = cursor.getTime()
+                // console.log('一个月的结束，先用nextFirst')
+                // cursor.setMonth(Month)
+                // cursor.setDate(NextFirst)
+                // cursor.setHours(21,30,0)  //开奖日21:15封盘
+                // cursor.setMilliseconds(0)
+                // _issue = Schedule.length + 1
+                // nextIssueTime = cursor.getTime()
               }
               // Vue.set(window.state, 'natal', getNatal(new Date(nextIssueTime)))
               //按照下一期的时间来计算本命
@@ -888,6 +891,13 @@
 
             // 更新倒计时文字
             function updateTimeBar(Countdown, code){
+              if (code==1301) {
+                Countdown-=900
+                if (Countdown<0) {
+                  commit('lt_updateTimeBar', '已封单')
+                  return
+                }
+              }
               if(Countdown>600 && code !== '1301'){
                 commit('lt_updateTimeBar', '预售中')//如果Countdown大于10分钟，则进入预售
               }else{

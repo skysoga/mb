@@ -42,9 +42,8 @@
     },
     methods:{
       clickLottery:function(x){
-        console.log(state.UserName)
-        console.log(x)
         if (state.UserName&&x.code) {
+          //登录且有code的情况下跳转对应彩种页面
           router.push('/lottery/'+x.name+'/'+x.code)
         }
       },
