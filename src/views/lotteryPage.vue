@@ -296,12 +296,8 @@
             Vue.set(state.LotteryResults, code, results)
           },
           lt_stopSell:(state, type)=>{
-            if(type !== 1){
-              var timebar = '暂停销售' //0--前端监测到的，就暂停购买
-            }else{
-              var timebar = '暂停销售' //1--后端返回的，就暂停销售
-            }
-            this.$store.commit('lt_updateTimeBar', timebar)    //暂停购买
+            this.$store.commit('lt_updateTimeBar', ['期号有误','暂停销售','当期封单'][type])    //暂停销售
+            return
           },
           lt_setIssueNo:(state, IssueNo)=>{state.IssueNo = IssueNo},  //设置当前期号
           lt_displayResults:(state, bool)=>{                          //展示开奖结果或开奖动画
@@ -894,7 +890,7 @@
               if (code==1301) {
                 Countdown-=900
                 if (Countdown<0) {
-                  commit('lt_updateTimeBar', '已封单')
+                  commit('lt_stopSell', 2)   //当期封单
                   return
                 }
               }
@@ -964,6 +960,9 @@
           //投注
           lt_confirmBet:({state, rootState, commit, dispatch})=>{
             var _basket = deleteCompress(state.basket)
+            if(this.IsStop){
+              return
+            }
             layer.msgWait('正在投注')
 
             _fetch({
@@ -1006,6 +1005,9 @@
           },
           // 新彩种的投注接口
           lt_confirmBet1:({state, rootState, commit, dispatch}, {basket, success})=>{
+            if(this.IsStop){
+              return
+            }
             layer.msgWait('正在投注')
             _fetch({
               'Action':'AddBetting',
@@ -1067,6 +1069,9 @@
           },
           // 追号投注
           lt_chase:({state, rootState, commit, dispatch})=>{
+            if(this.IsStop){
+              return
+            }
             layer.msgWait('正在投注')
             _fetch({
               Action: 'AddChaseBetting',
@@ -1149,6 +1154,12 @@
         timer4:null,
         baseLoop:null
       }
+    },
+    computed:{
+      IsStop(){
+        //判断是否不可提交订单,并弹出警告
+        return ('0123456789预'.search(state.lt.TimeBar[0])===-1)&&layer.msgWarn(state.lt.TimeBar)
+      },
     },
     methods:{
       //点击页面其他部分关闭所有盒子
