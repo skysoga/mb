@@ -17,7 +17,7 @@
     <div class="cardIcon">
         <p>Ta喜欢的彩票</p>
         <ul class="cardIconList fix">
-            <li v-for="x in lottery_type"><a href="javascript:;"><i class="iconfont" :class="'text'+x.name+' '+x.state"></i></a></li>
+            <li v-for="x in lottery_type"><a @click="clickLottery(x)"><i class="iconfont" :class="'L_'+x.name+' '+x.state"></i></a></li>
         </ul>
     </div>
   </div>
@@ -29,18 +29,25 @@
       return {
         initData:{},
         lottery_type:[
-          {name:"K3",state:"noActive"},
-          {name:"XYNC",state:"noActive"},
-          {name:"PK10",state:"noActive"},
-          {name:"KL8",state:"noActive"},
+          {name:"K3",state:"noActive",code:1407},
+          {name:"SSC",state:"noActive",code:1008},
+          {name:"SYX5",state:"noActive",code:1100},
+          {name:"6HC",state:"noActive",code:1301},
+          {name:"PK10",state:"noActive",code:1303},
+          {name:"KL8",state:"noActive",code:1302},
           {name:"PL35",state:"noActive"},
           {name:"FC3D",state:"noActive"},
-          {name:"SSC",state:"noActive"},
-          {name:"SYX5",state:"noActive"}
         ]
       }
     },
     methods:{
+      clickLottery:function(x){
+        console.log(state.UserName)
+        console.log(x)
+        if (state.UserName&&x.code) {
+          router.push('/lottery/'+x.name+'/'+x.code)
+        }
+      },
       sort_lotteryType:function(arr){
         for (var i = 0; i < this.lottery_type.length; i++) {
           for (var j = 0; j < arr.length; j++) {
