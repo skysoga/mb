@@ -491,6 +491,9 @@
           lt_get6HCPlan:({state, rootState, commit, dispatch}, code)=>{
             var LotteryPlan = localStorage.getItem("lotteryPlan"+ code)
             LotteryPlan = LotteryPlan&&JSON.parse(LotteryPlan)
+            if(LotteryPlan.NextFirst<0){
+              LotteryPlan=null
+            }
             if(LotteryPlan){
               console.log('使用缓存')
               var month = new Date(new Date().getTime()- rootState.Difftime).getMonth() + 1
@@ -548,7 +551,7 @@
           lt_updatePlan:({state, rootState, commit, dispatch}, code)=>{
             if(code === '1301'){
               dispatch('lt_get6HCPlan', code)
-            }else if(code === '1008' || code === '1407'){
+            }else if(['1407','1008','1300','1304'].indexOf(code)!==-1){
               createDFPlan()        //大发系列的，自行计算计划
             }else{
               //不是大发系列的
@@ -888,7 +891,7 @@
             // 更新倒计时文字
             function updateTimeBar(Countdown, code){
               if (code==1301) {
-                Countdown-=900
+                Countdown-=300 //封单时长5分钟
                 if (Countdown<0) {
                   commit('lt_stopSell', 2)   //当期封单
                   return
