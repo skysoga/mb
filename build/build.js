@@ -23,6 +23,8 @@ var assetsPath = path.join(config.build.assetsRoot, config.build.assetsSubDirect
 rm('-rf', assetsPath)
 /* 创建此文件夹 */
 mkdir('-p', assetsPath)
+var time = (new Date().getTime()+'').slice(4,9)
+echo(time).to(config.build.assetsRoot+'/iver')
 /* 复制 static 文件夹到我们的编译输出目录 */
 cp('-R', 'static/*', assetsPath)
 
