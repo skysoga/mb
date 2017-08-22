@@ -30,7 +30,7 @@ var getIver = (function(){
         return
       }
     }
-    fetch('iver').then(res=>{
+    fetch('/iver',{credentials: "same-origin"}).then(res=>{
       time=new Date().getTime()
       res.text().then(iver=>{
         if (iver&&iver!==localStorage.getItem('iver')) {
