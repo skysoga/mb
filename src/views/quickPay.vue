@@ -44,7 +44,8 @@ export default {
   beforeRouteEnter(to, from, next){
     var title = {
       Weixin:'微信支付',
-      Alipay: '支付宝'
+      Alipay: '支付宝',
+      QQpay: 'QQ支付'
     }
     var method = to.query.method       //'Bank', 'Weixin', 'Alipay'
     var rechargeWay = 'RechargeWay' + method
@@ -53,7 +54,8 @@ export default {
     var rechargeWay = 'RechargeWay' + method
     var limitName = {
       Weixin: '微信快捷',
-      Alipay: '支付宝快捷'
+      Alipay: '支付宝快捷',
+      QQpay: 'QQ快捷'
     }
 
     //获取数据
@@ -247,7 +249,8 @@ export default {
     pageName () {
       var _name= {
         Weixin: '微信支付',
-        Alipay: '支付宝充值'
+        Alipay: '支付宝充值',
+        QQpay: 'QQ钱包'
       }
       return _name[this.method]
     }
@@ -271,6 +274,15 @@ export default {
         Alipay:{
           Action:'Recharge',
           Qort:6,
+          PayUser:'',
+          Money:0,
+          ID:1,
+          BankCode:0
+        },
+        //QQ
+        QQpay:{
+          Action:'Recharge',
+          Qort:7,
           PayUser:'',
           Money:0,
           ID:1,
