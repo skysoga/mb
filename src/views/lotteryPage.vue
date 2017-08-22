@@ -491,10 +491,7 @@
           lt_get6HCPlan:({state, rootState, commit, dispatch}, code)=>{
             var LotteryPlan = localStorage.getItem("lotteryPlan"+ code)
             LotteryPlan = LotteryPlan&&JSON.parse(LotteryPlan)
-            if(LotteryPlan.NextFirst<0){
-              LotteryPlan=null
-            }
-            if(LotteryPlan){
+            if(LotteryPlan&&LotteryPlan.NextFirst>0){
               console.log('使用缓存')
               var month = new Date(new Date().getTime()- rootState.Difftime).getMonth() + 1
               // var _12to1 = (month === 1) &&  LotteryPlan.Month === 12
