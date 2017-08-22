@@ -203,16 +203,18 @@
           //counter或flag
           displayResults: false,  //false显示等待开奖的动画， true显示开奖结果
           tipDisplayFlag: false,  //是否省略玩法
+          natal:getNatal(new Date()),
           perbet: PERBET
-
         },
         getters: {
           // 本命
           lt_natal(state, getters, rootState){
-            var Difftime = rootState.Difftime || 0
+            //这个方法错误,要按开奖日计算
+            /*var Difftime = rootState.Difftime || 0
             var serverTime = new Date().getTime() - Difftime
             var natal = getNatal(new Date(serverTime));  //本命 9-鸡
-            return natal
+            return natal*/
+            return state.natal
           }
         },
         mutations:{
@@ -220,6 +222,8 @@
           //设置Todaystr
           lt_updateDate:(state)=>{
             var nowSerTime = new Date().getTime()- this.$store.state.Difftime;   //当前的服务器时间
+            nowSerTime=nowSerTime+new Date().getTimezoneOffset()*60*1000-GMT_DIF
+            console.log(new Date(nowSerTime).format("yyyyMMddhhmmss"));
             state.Todaystr = new Date(nowSerTime).format("yyyyMMdd");           //今天
           },
           // 设置LotteryPlan
@@ -292,12 +296,8 @@
             Vue.set(state.LotteryResults, code, results)
           },
           lt_stopSell:(state, type)=>{
-            if(type !== 1){
-              var timebar = '暂停销售' //0--前端监测到的，就暂停购买
-            }else{
-              var timebar = '暂停销售' //1--后端返回的，就暂停销售
-            }
-            this.$store.commit('lt_updateTimeBar', timebar)    //暂停购买
+            this.$store.commit('lt_updateTimeBar', ['期号有误','暂停销售','当期封单'][type])    //暂停销售
+            return
           },
           lt_setIssueNo:(state, IssueNo)=>{state.IssueNo = IssueNo},  //设置当前期号
           lt_displayResults:(state, bool)=>{                          //展示开奖结果或开奖动画
@@ -491,6 +491,9 @@
           lt_get6HCPlan:({state, rootState, commit, dispatch}, code)=>{
             var LotteryPlan = localStorage.getItem("lotteryPlan"+ code)
             LotteryPlan = LotteryPlan&&JSON.parse(LotteryPlan)
+            if(LotteryPlan.NextFirst<0){
+              LotteryPlan=null
+            }
             if(LotteryPlan){
               console.log('使用缓存')
               var month = new Date(new Date().getTime()- rootState.Difftime).getMonth() + 1
@@ -525,21 +528,21 @@
 
             //对6HC的计划进行一些变换并报错到vuex中
             function use6HCPlan(monthPlan){
-              // 将对应的当月期号表变成毫秒值
+              //保证转为数字类型
+              monthPlan.BeforeIssue *= 1
+              monthPlan.NextFirst *= 1
+              monthPlan.Month *=1
+              var year = state.Todaystr.slice(0,4)
               var Month = monthPlan.Month
               var Schedule = monthPlan.Schedule.split(',')
-              var cursor = new Date()
-              cursor.setMonth(Month - 1)
-              cursor.setHours(21,30,0)
-
-              monthPlan.BeforeIssue = +monthPlan.BeforeIssue
-              monthPlan.NextFirst = +monthPlan.NextFirst
               monthPlan.Schedule = monthPlan.Schedule.split(',').map(str=>+str)
+              // 将对应的当月期号表变成毫秒值
               monthPlan.ScheduleStamp = monthPlan.Schedule.map(num=>{
-                cursor.setDate(num)
-                return cursor.getTime()
+                return new Date(year,Month-1,num,21,30,0).getTime()
               })
-
+              monthPlan.ScheduleStamp.push((function(){
+                return new Date(year,Month,monthPlan.NextFirst,21,30,0).getTime()
+              })())
               commit('lt_setPlan', monthPlan)
               dispatch('lt_refresh')
             }
@@ -548,7 +551,7 @@
           lt_updatePlan:({state, rootState, commit, dispatch}, code)=>{
             if(code === '1301'){
               dispatch('lt_get6HCPlan', code)
-            }else if(code === '1008' || code === '1407'){
+            }else if(['1407','1008','1300','1304'].indexOf(code)!==-1){
               createDFPlan()        //大发系列的，自行计算计划
             }else{
               //不是大发系列的
@@ -681,6 +684,7 @@
             function get6HCCountdown(){
               var serverTimeStamp = new Date().getTime() - rootState.Difftime
               var {BeforeIssue, Month, NextFirst, Schedule, ScheduleStamp} = state.LotteryPlan
+              var Countdown
               if(!BeforeIssue || !Month || !NextFirst || !Schedule || !ScheduleStamp){
                 console.log('方案尚未加载到')
                 return
@@ -688,8 +692,9 @@
               var cursor = new Date(serverTimeStamp)
 
               // 每月将缓存清楚掉重新拉取---月头
-              var _12to1 = (cursor.getMonth() + 1 === 1) &&  Month === 12 //防止过年出问题
-              var outOfDate = cursor.getMonth() + 1 > Month  && _12to1  //过期了
+              // var _12to1 = (cursor.getMonth() + 1 === 1) &&  Month === 12 //防止过年出问题
+              // var outOfDate = cursor.getMonth() + 1 > Month  && _12to1  //过期了
+              var outOfDate = (cursor.getMonth() + 1) != Month
               if(outOfDate){
                 var hour = cursor.getHours()
                 var minute = cursor.getMinutes()
@@ -702,31 +707,53 @@
                   dispatch('lt_get6HCPlan', code)
                 }
               }
-
               var _issue = 1
-              for(var i = 0;i < ScheduleStamp.length;i++){
+              var NowIssue=state.NowIssue&&state.NowIssue.slice(4)*1
+              if(NowIssue){
+                NowIssue=NowIssue-BeforeIssue-1
+                //括号不能删除
+                Countdown = (ScheduleStamp[NowIssue]||0) - serverTimeStamp
+                if (Countdown>0&&Countdown<72*3600000){
+                  //当前期,更新倒计时即可
+                  // console.log(Countdown)
+                  return Countdown
+                }else{
+                  //避免从别的彩种过来时候受到Issue影响,所以要清零
+                  NowIssue=0
+                }
+              }
+              for(var i = NowIssue||0;i < ScheduleStamp.length;i++){
                 if(ScheduleStamp[i] > serverTimeStamp){
-                  _issue = _issue + i
+                  _issue += i
                   break
                 }
               }
 
-
+              var nextIssueTime
               // 如果有值说明还在期号表内
               if(Schedule[i] !== undefined){
-                var Countdown = ScheduleStamp[i] - serverTimeStamp
+                nextIssueTime = ScheduleStamp[i]
               }else{
+                //超过plan
+                layer.msgWarn('期号错误...')
+                return
                 //月尾
-                console.log('一个月的结束，先用nextFirst')
-                cursor.setMonth(Month)
-                cursor.setDate(NextFirst)
-                cursor.setHours(21,30,0)
-                cursor.setMilliseconds(0)
-                _issue = Schedule.length + 1
-                var Countdown = cursor.getTime() - serverTimeStamp
+                // console.log('一个月的结束，先用nextFirst')
+                // cursor.setMonth(Month)
+                // cursor.setDate(NextFirst)
+                // cursor.setHours(21,30,0)  //开奖日21:15封盘
+                // cursor.setMilliseconds(0)
+                // _issue = Schedule.length + 1
+                // nextIssueTime = cursor.getTime()
               }
-
+              // Vue.set(window.state, 'natal', getNatal(new Date(nextIssueTime)))
+              //按照下一期的时间来计算本命
+              state.natal=getNatal(new Date(nextIssueTime))
+              console.log(state.natal)
+              Countdown = nextIssueTime - serverTimeStamp
+              // console.log(Countdown)
               var issue = BeforeIssue + _issue
+              // console.log(issue,state.NowIssue)
               // 设置期号
               commit('lt_setIssueNo', issue)
               var code = state.lottery.LotteryCode   //当前彩种号
@@ -863,6 +890,13 @@
 
             // 更新倒计时文字
             function updateTimeBar(Countdown, code){
+              if (code==1301) {
+                Countdown-=300 //封单时长5分钟
+                if (Countdown<0) {
+                  commit('lt_stopSell', 2)   //当期封单
+                  return
+                }
+              }
               if(Countdown>600 && code !== '1301'){
                 commit('lt_updateTimeBar', '预售中')//如果Countdown大于10分钟，则进入预售
               }else{
@@ -929,6 +963,9 @@
           //投注
           lt_confirmBet:({state, rootState, commit, dispatch})=>{
             var _basket = deleteCompress(state.basket)
+            if(this.IsStop){
+              return
+            }
             layer.msgWait('正在投注')
 
             _fetch({
@@ -971,6 +1008,9 @@
           },
           // 新彩种的投注接口
           lt_confirmBet1:({state, rootState, commit, dispatch}, {basket, success})=>{
+            if(this.IsStop){
+              return
+            }
             layer.msgWait('正在投注')
             _fetch({
               'Action':'AddBetting',
@@ -1032,6 +1072,9 @@
           },
           // 追号投注
           lt_chase:({state, rootState, commit, dispatch})=>{
+            if(this.IsStop){
+              return
+            }
             layer.msgWait('正在投注')
             _fetch({
               Action: 'AddChaseBetting',
@@ -1114,6 +1157,12 @@
         timer4:null,
         baseLoop:null
       }
+    },
+    computed:{
+      IsStop(){
+        //判断是否不可提交订单,并弹出警告
+        return ('0123456789预'.search(state.lt.TimeBar[0])===-1)&&layer.msgWarn(state.lt.TimeBar)
+      },
     },
     methods:{
       //点击页面其他部分关闭所有盒子

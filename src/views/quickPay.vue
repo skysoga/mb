@@ -33,7 +33,8 @@
           温馨提示：支付成功后，会在一分钟内为您添加额度，请刷新您的账户余额!
         </div>
       </div>
-      <iframe id="ifra" :src="QrImg" frameborder="0" :style="css[(method=='Weixin'&&PayType=='众宝')?'众宝WX':(method=='Alipay'&&PayType=='智汇付')?'智汇付':PayType]" v-show="!QrSvg&&QrImg"></iframe>
+      <!-- <iframe id="ifra" :src="QrImg" frameborder="0" :style="css[(method=='Weixin'&&PayType=='众宝')?'众宝WX':(method=='Alipay'&&PayType=='智汇付')?'智汇付':PayType]" v-show="!QrSvg&&QrImg"></iframe> -->
+      <iframe id="ifra" :src="QrImg" frameborder="0" :style="Styles" v-show="!QrSvg&&QrImg"></iframe>
     </div>
   </div>
 </template>
@@ -43,7 +44,8 @@ export default {
   beforeRouteEnter(to, from, next){
     var title = {
       Weixin:'微信支付',
-      Alipay: '支付宝'
+      Alipay: '支付宝',
+      QQpay: 'QQ支付'
     }
     var method = to.query.method       //'Bank', 'Weixin', 'Alipay'
     var rechargeWay = 'RechargeWay' + method
@@ -52,7 +54,8 @@ export default {
     var rechargeWay = 'RechargeWay' + method
     var limitName = {
       Weixin: '微信快捷',
-      Alipay: '支付宝快捷'
+      Alipay: '支付宝快捷',
+      QQpay: 'QQ快捷'
     }
 
     //获取数据
@@ -102,150 +105,152 @@ export default {
       limit:'',
       //ajax
       Money: '',
-      css:{
-        '通汇卡':{
-          'margin-top':'-100px',
-          'left':'-500px'
-        },
-        '银宝':{
-          'margin-top':'-235px',
-          'left':'-499px'
-        },
-        '闪付':{
-          'margin-top':'-40px',
-          'left':'-500px',
-          '-webkit-transform':'scale(.4)',
-          '-ms-transform':'scale(.4)',
-          '-moz-transform':'scale(.4)',
-          'transform':'scale(.4)',
-          '-webkit-transform-origin':'center 100px',
-          '-moz-transform-origin':'center 100px',
-          '-ms-transform-origin':'center 100px',
-          'transform-origin':'center 100px'
-        },
-        '乐盈':{
-          'left':'-574px'
-        },
-        '摩宝':{
-          'margin-top':'-100px',
-          'left':'-500px'
-        },
-        '易卡':{
-          'margin-top':'-140px',
-          'left':'-500px'
-        },
-        '久付':{
-          'margin-top':'-140px',
-          'left':'-500px'
-        },
-        '仁信':{
-          'margin-top':'-140px',
-          'left':'-300px'
-        },
-        'AUSTPAY':{
-          'margin-top':'px',
-          'left':'-156px'
-        },
-        '闪讯付':{
-          'margin-top':'-290px',
-          'left':'-500px',
-          '-webkit-transform':'scale(.5)',
-          '-ms-transform':'scale(.5)',
-          '-moz-transform':'scale(.5)',
-          'transform':'scale(.5)',
-        },
-        '快支付':{
-          'margin-top':'-290px',
-          'left':'-500px',
-          '-webkit-transform':'scale(.5)',
-          '-ms-transform':'scale(.5)',
-          '-moz-transform':'scale(.5)',
-          'transform':'scale(.5)',
-        },
-        '新摩宝':{
-          'margin-top':'-100px',
-          'left':'-500px'
-        },
-        '立刻付':{
-          'margin-top':'-290px',
-          'left':'-500px',
-          '-webkit-transform':'scale(.7)',
-          '-ms-transform':'scale(.7)',
-          '-moz-transform':'scale(.7)',
-          'transform':'scale(.7)',
-        },
-        '众宝':{
-          'margin-top':'-225px',
-          'left':'-200px',
-          '-webkit-transform':'scale(1.1)',
-          '-ms-transform':'scale(1.1)',
-          '-moz-transform':'scale(1.1)',
-          'transform':'scale(1.1)',
-        },
-        '众宝WX':{
-          'margin-top':'-250px',
-          'left':'-226px',
-        },
-        '云安付':{
-          'margin-top':'-100px',
-          'left':'-500px',
-        },
-        '元宝':{
-          'margin-top':'-80px',
-          'left':'-500px',
-        },
-        '高通':{
-          'margin-top':'-235px',
-          'left':'-490px',
-        },
-        '海鸥':{
-          'margin-top':'-160px',
-          'left':'-500px',
-        },
-        '长城':{
-          'margin-top':'+20px',
-          'left':'-145px',
-        },
-        '路德':{
-          'margin-top':'+20px',
-          'left':'-145px',
-        },
-        '优畅':{
-          'margin-top':'+20px',
-          'left':'-145px',
-        },
-        '新码':{
-          'margin-top':'+20px',
-          'left':'-145px',
-        },
-        '优畅招行':{
-          'margin-top':'+20px',
-          'left':'-145px',
-        },
-        '瞬付':{
-          'margin-top':'+20px',
-          'left':'-145px',
-        },
-        '智汇付':{
-          'margin-top':'+20px',
-          'left':'-145px',
-        },
-        '多宝':{
-          'margin-top':'+20px',
-          'left':'-145px',
-        },
-        '多得宝':{
-          'margin-top': '50px',
-          'left': '-144px'
-        }
-      }
+      Styles:''
+      // css:{
+      //   '通汇卡':{
+      //     'margin-top':'-100px',
+      //     'left':'-500px'
+      //   },
+      //   '银宝':{
+      //     'margin-top':'-235px',
+      //     'left':'-499px'
+      //   },
+      //   '闪付':{
+      //     'margin-top':'-40px',
+      //     'left':'-500px',
+      //     '-webkit-transform':'scale(.4)',
+      //     '-ms-transform':'scale(.4)',
+      //     '-moz-transform':'scale(.4)',
+      //     'transform':'scale(.4)',
+      //     '-webkit-transform-origin':'center 100px',
+      //     '-moz-transform-origin':'center 100px',
+      //     '-ms-transform-origin':'center 100px',
+      //     'transform-origin':'center 100px'
+      //   },
+      //   '乐盈':{
+      //     'left':'-574px'
+      //   },
+      //   '摩宝':{
+      //     'margin-top':'-100px',
+      //     'left':'-500px'
+      //   },
+      //   '易卡':{
+      //     'margin-top':'-140px',
+      //     'left':'-500px'
+      //   },
+      //   '久付':{
+      //     'margin-top':'-140px',
+      //     'left':'-500px'
+      //   },
+      //   '仁信':{
+      //     'margin-top':'-140px',
+      //     'left':'-300px'
+      //   },
+      //   'AUSTPAY':{
+      //     'margin-top':'px',
+      //     'left':'-156px'
+      //   },
+      //   '闪讯付':{
+      //     'margin-top':'-290px',
+      //     'left':'-500px',
+      //     '-webkit-transform':'scale(.5)',
+      //     '-ms-transform':'scale(.5)',
+      //     '-moz-transform':'scale(.5)',
+      //     'transform':'scale(.5)',
+      //   },
+      //   '快支付':{
+      //     'margin-top':'-290px',
+      //     'left':'-500px',
+      //     '-webkit-transform':'scale(.5)',
+      //     '-ms-transform':'scale(.5)',
+      //     '-moz-transform':'scale(.5)',
+      //     'transform':'scale(.5)',
+      //   },
+      //   '新摩宝':{
+      //     'margin-top':'-100px',
+      //     'left':'-500px'
+      //   },
+      //   '立刻付':{
+      //     'margin-top':'-290px',
+      //     'left':'-500px',
+      //     '-webkit-transform':'scale(.7)',
+      //     '-ms-transform':'scale(.7)',
+      //     '-moz-transform':'scale(.7)',
+      //     'transform':'scale(.7)',
+      //   },
+      //   '众宝':{
+      //     'margin-top':'-225px',
+      //     'left':'-200px',
+      //     '-webkit-transform':'scale(1.1)',
+      //     '-ms-transform':'scale(1.1)',
+      //     '-moz-transform':'scale(1.1)',
+      //     'transform':'scale(1.1)',
+      //   },
+      //   '众宝WX':{
+      //     'margin-top':'-250px',
+      //     'left':'-226px',
+      //   },
+      //   '云安付':{
+      //     'margin-top':'-100px',
+      //     'left':'-500px',
+      //   },
+      //   '元宝':{
+      //     'margin-top':'-80px',
+      //     'left':'-500px',
+      //   },
+      //   '高通':{
+      //     'margin-top':'-235px',
+      //     'left':'-490px',
+      //   },
+      //   '海鸥':{
+      //     'margin-top':'-160px',
+      //     'left':'-500px',
+      //   },
+      //   '长城':{
+      //     'margin-top':'+20px',
+      //     'left':'-145px',
+      //   },
+      //   '路德':{
+      //     'margin-top':'+20px',
+      //     'left':'-145px',
+      //   },
+      //   '优畅':{
+      //     'margin-top':'+20px',
+      //     'left':'-145px',
+      //   },
+      //   '新码':{
+      //     'margin-top':'+20px',
+      //     'left':'-145px',
+      //   },
+      //   '优畅招行':{
+      //     'margin-top':'+20px',
+      //     'left':'-145px',
+      //   },
+      //   '瞬付':{
+      //     'margin-top':'+20px',
+      //     'left':'-145px',
+      //   },
+      //   '智汇付':{
+      //     'margin-top':'+20px',
+      //     'left':'-145px',
+      //   },
+      //   '多宝':{
+      //     'margin-top':'+20px',
+      //     'left':'-145px',
+      //   },
+      //   '多得宝':{
+      //     'margin-top': '50px',
+      //     'left': '-144px'
+      //   }
+      // }
     }
   },
   computed:{
     pageName () {
       var _name= {
         Weixin: '微信支付',
-        Alipay: '支付宝充值'
+        Alipay: '支付宝充值',
+        QQpay: 'QQ钱包'
       }
       return _name[this.method]
     }
@@ -269,6 +274,15 @@ export default {
         Alipay:{
           Action:'Recharge',
           Qort:6,
+          PayUser:'',
+          Money:0,
+          ID:1,
+          BankCode:0
+        },
+        //QQ
+        QQpay:{
+          Action:'Recharge',
+          Qort:7,
           PayUser:'',
           Money:0,
           ID:1,
@@ -298,6 +312,7 @@ export default {
             this.Money = ''
           }else if(OpenType===1){
             this.QrImg=json.BackUrl
+			this.Styles=json.Style
             this.Money = ''
           }else{
             this.QrSvg=true

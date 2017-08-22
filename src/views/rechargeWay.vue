@@ -47,6 +47,23 @@
         </a>
       </div>
 
+      <div class="surperise active" v-show="!qqMsg">
+        <a class = "wrap" @click = "setUrl(qqType,'QQpay',qqMsg)">
+          <img class="img" :src="imgServer + '/../system/common/bank/pay/qqpay.png'">
+          <div class="text">
+            <strong>QQ支付</strong>
+            <p v-if="!qqMsg">
+              单笔最低<ins>{{qqType === '一般' ? payLimit['QQ支付'][0]: payLimit['QQ快捷'][0] | num}}</ins>元，
+              最高<ins>{{qqType === '一般' ? payLimit['QQ支付'][1]: payLimit['QQ快捷'][1] | num}}</ins>元。
+            </p>
+            <p v-else>
+            {{qqMsg}}
+            </p>
+          </div>
+          <i class="iconfont right fr"></i>
+        </a>
+      </div>
+
     </div>
   </div>
 </template>
@@ -58,13 +75,15 @@ export default {
       imgServer: state.constant.ImgHost,
       wechatType: '一般',
       aliType: '一般',
+      qqType: '一般',
       payLimit:{},
       weixMsg:'',
-      aliMsg:''
+      aliMsg:'',
+      qqMsg:''
     }
   },
   beforeRouteEnter(to,from,next){
-    RootApp.AjaxGetInitData(['PayLimit','RechargeWayWeixin', 'RechargeWayAlipay','RechargeWayBank'], state=>{
+    RootApp.AjaxGetInitData(['PayLimit','RechargeWayWeixin', 'RechargeWayAlipay','RechargeWayBank','RechargeWayQQpay'], state=>{
       next()
     })
   },
@@ -83,6 +102,14 @@ export default {
       this.wechatType=''
       this.aliMsg="支付宝支付维护中..."
       this.wechatType=''
+    }
+    if(state.RechargeWayQQpay){
+      this.qqMsg=false
+      this.qqType = state.RechargeWayQQpay[0].PayType || '一般'
+    }else{
+      this.qqType=''
+      this.qqMsg="QQ支付维护中..."
+      this.qqType=''
     }
     this.payLimit = state.PayLimit
   },
