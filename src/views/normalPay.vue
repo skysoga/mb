@@ -160,18 +160,24 @@
 </template>
 
 <script>
+var payTitle = {
+  Bank: '银行转账',
+  Weixin:'微信支付',
+  Alipay: '支付宝',
+  QQpay: 'QQ钱包'
+}
 export default{
   beforeRouteEnter(to, from, next){
-    var title = {
+    /*var title = {
       Bank: '银行转账',
       Weixin:'微信支付',
       Alipay: '支付宝',
-      QQpay: 'QQ支付'
-    }
+      QQpay: 'QQ钱包'
+    }*/
     var shouldCheck = ['Weixin', 'Alipay','QQpay']
     var method = to.query.method      //'Bank', 'Weixin', 'Alipay' ,'QQpay'
     var rechargeWay = 'RechargeWay' + method
-    to.meta.title = title[method]   //标题
+    to.meta.title = payTitle[method]   //标题
 
     RootApp.GetInitData([rechargeWay], state=>{
       if(shouldCheck.indexOf(method) > -1){
@@ -238,32 +244,32 @@ export default{
       return this.nowRender.Id
     },
     pageName () {
-      var _name= {
+      /*var _name= {
         Bank: '银行转账',
         Weixin: '微信支付',
         Alipay: '支付宝充值',
-        QQpay: 'QQ支付'
-      }
-      return _name[this.method]
+        QQpay: 'QQ钱包'
+      }*/
+      return payTitle[this.method]
     }
   },
   created (){
     var method = this.$route.query.method       //'Bank', 'Weixin', 'Alipay','QQpay'
     this.method = method
-    var limitName = {
+    /*var limitName = {
       Bank: '银行转账',
       Weixin: '微信支付',
       Alipay: '支付宝',
-      QQpay: 'QQ支付'
-    }
+      QQpay: 'QQ钱包'
+    }*/
 
     //获取数据
     RootApp.AjaxGetInitData(['PayLimit'], state=>{
       //设置金额的限制
       this.vaConfig ||(this.vaConfig = {})
       this.vaConfig['Money'] || (this.vaConfig['Money'] = [])
-      var limit=state.PayLimit[limitName[method]];
-      this.vaConfig['Money'].push(new this.VaConfig('limit', limit, '', 'Money', limitName[method]))
+      var limit=state.PayLimit[payTitle[method]];
+      this.vaConfig['Money'].push(new this.VaConfig('limit', limit, '', 'Money', payTitle[method]))
     })
   },
   methods:{
@@ -305,8 +311,8 @@ export default{
           ID:1,
           BankCode:0
         },
-        //QQ支付
-        Alipay:{
+        //QQ钱包
+        QQpay:{
           Action:'Recharge',
           Qort:7,
           PayUser:'',

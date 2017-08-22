@@ -296,7 +296,7 @@ export default {
               if(s[0]!=='0'){
                 index++
               }
-              console.log(renderOdds[index]*1);
+              // console.log(renderOdds[index]*1);
               return renderOdds[index]*1
             }else{
               //两面或半波处理方式
@@ -319,7 +319,7 @@ export default {
           }else if(isTWS){
             thisAward += getObb(iFeature.t+'头')
             thisAward += getObb(iFeature.w+'尾')
-            console.log(thisAward);
+            // console.log(thisAward);
           }else{
             if (i===49) {
               thisAward=0
@@ -335,22 +335,22 @@ export default {
             kind = this.wild.indexOf(i%12)===-1?'家禽':'野兽'
             thisAward += getObb(kind)
           }
-          console.log(thisAward);
+          // console.log(thisAward);
           if (thisAward>maxAward) {
             maxAward=thisAward.toFixed(2)*1
           }
         }
-        console.log(maxAward);
+        // console.log(maxAward);
         return maxAward
       }else if(['E01','E02'].indexOf(this.mode)!==-1){
-        console.log('特肖')
+        // console.log('特肖')
         if(this.betStr.length===1&&this.betStr===this.natal){
           return this.award[0]*1
         }else{
           return this.award[1]*1
         }
       }else if(['E03','E04','E05'].indexOf(this.mode)!==-1){
-        console.log('连肖');
+        // console.log('连肖');
         var n = ['E03','E04','E05'].indexOf(this.mode)+2
         if(this.betStr.length>13){
           //超过7生肖
@@ -360,27 +360,26 @@ export default {
           var betStr=this.betStr.split(',')
           var natal = betStr.indexOf(this.natal)===-1 ? 0:1 //本命生肖数
           betStr=betStr.length-natal  //非本命生肖数
-          console.log(betStr);
-          return natal*betStr*this.award[0]+C(betStr,n)*this.award[1]
+          return natal*C(betStr,n-1)*this.award[0]+C(betStr,n)*this.award[1]
         }
       }else if(['C01','C02'].indexOf(this.mode)!==-1){
-        console.log('三全中|三中二');
+        // console.log('三全中|三中二');
         var award= this.mode==='C01'?this.award:this.award[1]
         var l= this.betStr.split(',').length
         if(l>6){l=6}
         return award*C(l,3)
       }else if(this.mode==='C03'){
-        console.log('二全中');
+        // console.log('二全中');
         var l= this.betStr.split(',').length
         if(l>6){l=6}
         return this.award*C(l,2)
       }else if(this.mode==='C05'){
-        console.log('特串');
+        // console.log('特串');
         var l= this.betStr.split(',').length
         if(l>7){l=7}
         return this.award*(l-1)
       }else if(this.mode==='C04'){
-        console.log('二中特');
+        // console.log('二中特');
         var l= this.betStr.split(',').length
         if(l>7){l=7}
         var award = this.award[1]*(l-1)
@@ -389,16 +388,16 @@ export default {
         }
         return award
       }else if(this.mode.charAt(0)==='G'){
-        console.log('不中');
+        // console.log('不中');
         var n = this.mode.charAt(2)*1+4
-        console.log(n);
+        // console.log(n);
         var l= this.betStr.split(',').length
         if(l>42){l=42}
         return C(l,n)*this.award
       }else if(this.mode.charAt(0)==='F'){
-        console.log('连尾');
+        // console.log('连尾');
         var n = this.mode.charAt(2)*1
-        console.log(n);
+        // console.log(n);
         if(this.betStr.length>20){
           //超过7选号
           return C(7,n)*this.award[1]
@@ -407,7 +406,7 @@ export default {
           var betStr=this.betStr.split(',')
           var natal = betStr.indexOf('0尾')===-1 ? 0:1 //0尾个数
           betStr=betStr.length-natal  //非0尾数
-          console.log(betStr);
+          // console.log(betStr);
           return natal*betStr*this.award[0]+C(betStr,n)*this.award[1]
         }
       }

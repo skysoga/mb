@@ -51,10 +51,10 @@
         <a class = "wrap" @click = "setUrl(qqType,'QQpay',qqMsg)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/qqpay.png'">
           <div class="text">
-            <strong>QQ支付</strong>
+            <strong>QQ钱包</strong>
             <p v-if="!qqMsg">
-              单笔最低<ins>{{qqType === '一般' ? payLimit['QQ支付'][0]: payLimit['QQ快捷'][0] | num}}</ins>元，
-              最高<ins>{{qqType === '一般' ? payLimit['QQ支付'][1]: payLimit['QQ快捷'][1] | num}}</ins>元。
+              单笔最低<ins>{{qqType === '一般' ? payLimit['QQ钱包'][0]: payLimit['QQ快捷'][0] | num}}</ins>元，
+              最高<ins>{{qqType === '一般' ? payLimit['QQ钱包'][1]: payLimit['QQ快捷'][1] | num}}</ins>元。
             </p>
             <p v-else>
             {{qqMsg}}
@@ -108,7 +108,7 @@ export default {
       this.qqType = state.RechargeWayQQpay[0].PayType || '一般'
     }else{
       this.qqType=''
-      this.qqMsg="QQ支付维护中..."
+      this.qqMsg="QQ钱包维护中..."
       this.qqType=''
     }
     this.payLimit = state.PayLimit
