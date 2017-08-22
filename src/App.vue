@@ -42,12 +42,12 @@
 <style lang='scss'>
 @import './scss/public.scss';
 @font-face {
-  font-family: 'iconfont';  /* project id 107431 */
-  src: url('//at.alicdn.com/t/font_eotbpyomcqt49529.eot');
-  src: url('//at.alicdn.com/t/font_eotbpyomcqt49529.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_eotbpyomcqt49529.woff') format('woff'),
-  url('//at.alicdn.com/t/font_eotbpyomcqt49529.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_eotbpyomcqt49529.svg#iconfont') format('svg');
+  font-family: 'iconfont';  /* project id 380333 */
+  src: url('//at.alicdn.com/t/font_380333_yyz5y3b3e301wcdi.eot');
+  src: url('//at.alicdn.com/t/font_380333_yyz5y3b3e301wcdi.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_380333_yyz5y3b3e301wcdi.woff') format('woff'),
+  url('//at.alicdn.com/t/font_380333_yyz5y3b3e301wcdi.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_380333_yyz5y3b3e301wcdi.svg#iconfont') format('svg');
 }
 html{
   height: 100%;

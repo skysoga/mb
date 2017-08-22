@@ -302,17 +302,17 @@ export default {
       }
 
       layer.msgWait("正在提交")
-      _fetch(nowAjax).then((str)=>{
-        if(str.Code === 1){
-          var OpenType=str.OpenType
+      _fetch(nowAjax).then((json)=>{
+        if(json.Code === 1){
+          var OpenType=json.OpenType
           layer.closeAll()
           if(newTab){
             this.QrBg=false
-            RootApp.OpenWin(str.BackUrl, newTab)
+            RootApp.OpenWin(json.BackUrl, newTab)
             this.Money = ''
           }else if(OpenType===1){
-            this.QrImg=str.BackUrl
-            this.Styles=str.Style
+            this.QrImg=json.BackUrl
+			this.Styles=json.Style
             this.Money = ''
           }else{
             this.QrSvg=true
@@ -323,13 +323,13 @@ export default {
               img.width='260'
               qrcode.appendChild(img)
             }else if(OpenType===2){
-              this.setQrCode(str.BackUrl)
+              this.setQrCode(json.BackUrl)
             }
           }
         }else{
           this.QrBg=false
           this.Money=''
-          layer.msgWarn(str.StrCode)
+          layer.msgWarn(json.StrCode)
         }
       })
     },
