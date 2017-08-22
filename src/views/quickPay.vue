@@ -282,7 +282,7 @@ export default {
         //QQ
         QQpay:{
           Action:'Recharge',
-          Qort:7,
+          Qort:8,
           PayUser:'',
           Money:0,
           ID:1,

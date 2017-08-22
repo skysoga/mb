@@ -306,7 +306,7 @@ export default{
           BankCode:0
         },
         //QQ支付
-        Alipay:{
+        QQpay:{
           Action:'Recharge',
           Qort:7,
           PayUser:'',
