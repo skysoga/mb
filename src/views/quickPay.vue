@@ -45,7 +45,7 @@ export default {
     var title = {
       Weixin:'微信支付',
       Alipay: '支付宝',
-      QQpay: 'QQ支付'
+      QQpay: 'QQ钱包'
     }
     var method = to.query.method       //'Bank', 'Weixin', 'Alipay'
     var rechargeWay = 'RechargeWay' + method
