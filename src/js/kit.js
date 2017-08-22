@@ -653,9 +653,10 @@ function computeIssue(code, index, isChase){
     //排列3：每天一期
     '1202':oneDayOneIssue(33, "2017/2/9"),
     '1301':function(){
-      var dateStr = new Date().getFullYear().toString()
-      var issueNo = ('0' + index).slice(0,3)
-      return dateStr + issueNo
+      // var dateStr = new Date().getFullYear().toString()
+      var issueNo =  index < 100 ? '0'+index : index
+      // console.log(state.Todaystr.slice(0,4) + issueNo)
+      return state.lt.Todaystr.slice(0,4) + issueNo
     }
   }
 

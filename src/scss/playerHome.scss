@@ -114,13 +114,17 @@
         .noActive:before{
             color:#999;
         }
+        i:before{
+            /*抵消L_彩排的position*/
+            position: static;
+        }
     }
 }
 
 
 
 /** 彩种logo */
-.textK3:before { content: "\e635"; color: #e01506;
+/* .textK3:before { content: "\e635"; color: #e01506;
  }
 
 .textXYNC:before { content: "\e63b"; color: #009944; }
@@ -135,4 +139,6 @@
 
 .textSSC:before { content: "\e634"; color: #fa7e00; }
 
-.textSYX5:before { content: "\e636"; color: #38b39e; }
+.textSYX5:before { content: "\e636"; color: #38b39e; } */
+
+

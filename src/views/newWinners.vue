@@ -3,7 +3,7 @@
     <loading v-show="isDataNot"></loading>
     <ul ref="ul">
        <transition-group name="list">
-         <li :data-thisid="item.UserId" class="active" v-for="item in bonu_list_data2"  @click="jump(item.UserId)" :key='item'>
+         <li :data-thisid="item.UserId" class="active" v-for="item in bonu_list_data2"  @click="jump(item.UserId)" :key='item.Id'>
            <div>
              <a class="headImg" href="#">
                <img :src="$store.getters.PhotoPath+item.UserPhoto" alt="">
