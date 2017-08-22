@@ -49,7 +49,7 @@
 
       <div class="surperise active">
         <a class = "wrap" @click = "setUrl(qqType,'QQpay',qqMsg)">
-          <img class="img" :src="imgServer + '/../system/common/bank/pay/alipay.png'">
+          <img class="img" :src="imgServer + '/../system/common/bank/pay/qqpay.png'">
           <div class="text">
             <strong>QQ支付</strong>
             <p v-if="!qqMsg">
