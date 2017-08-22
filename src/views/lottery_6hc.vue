@@ -360,8 +360,7 @@ export default {
           var betStr=this.betStr.split(',')
           var natal = betStr.indexOf(this.natal)===-1 ? 0:1 //本命生肖数
           betStr=betStr.length-natal  //非本命生肖数
-          console.log(betStr);
-          return natal*betStr*this.award[0]+C(betStr,n)*this.award[1]
+          return natal*C(betStr,n-1)*this.award[0]+C(betStr,n)*this.award[1]
         }
       }else if(['C01','C02'].indexOf(this.mode)!==-1){
         console.log('三全中|三中二');
