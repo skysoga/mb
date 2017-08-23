@@ -1,7 +1,3 @@
-//layer 、filterXSS引入失败，刷新
-if((typeof(layer)||typeof(filterXSS))=='undefined'){
-  location.href=location.href
-}
 ;(function(){
   try {
     sessionStorage.setItem('TextLocalStorage', 'hello world');
@@ -13,6 +9,42 @@ if((typeof(layer)||typeof(filterXSS))=='undefined'){
     sessionStorage={setItem:function(d){},getItem:function(d){}};
   }
 })()
+//layer 、filterXSS引入失败，刷新
+if((typeof(layer)||typeof(filterXSS))=='undefined'){
+  var _HT_ = (sessionStorage.getItem('_HT_')||0)*1+1
+  if(_HT_<3){
+    sessionStorage.setItem('_HT_',_HT_)
+    location.href=location.href
+  }else{
+    sessionStorage.removeItem('_HT_')
+  }
+}else{
+  sessionStorage.removeItem('_HT_')
+}
+var getIver = (function(){
+  var time
+  return function(s){
+    if (!s) {
+      var thist=new Date().getTime()
+      if (thist-time<1800000) {
+        return
+      }
+    }
+    fetch('/iver',{credentials: "same-origin"}).then(res=>{
+      time=new Date().getTime()
+      res.text().then(iver=>{
+        if (iver&&iver!==localStorage.getItem('iver')) {
+          console.log(iver)
+          localStorage.setItem('iver',iver)
+          if (!s) {
+            location.href=location.href
+          }
+        }
+      })
+    })
+  }
+})()
+getIver(1)
 
 if(!localStorage.getItem("console")){
   console.log=function(){return}
@@ -1258,6 +1290,7 @@ router.afterEach((to, from) => {
   layer.closeAll()
   state.needVerify++
   sessionStorage.setItem("needVerify",state.needVerify)
+  getIver()
 });
 
 //全局指令
