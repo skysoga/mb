@@ -168,20 +168,15 @@ var payTitle = {
 }
 export default{
   beforeRouteEnter(to, from, next){
-    /*var title = {
-      Bank: '银行转账',
-      Weixin:'微信支付',
-      Alipay: '支付宝',
-      QQpay: 'QQ钱包'
-    }*/
     var shouldCheck = ['Weixin', 'Alipay','QQpay']
     var method = to.query.method      //'Bank', 'Weixin', 'Alipay' ,'QQpay'
     var rechargeWay = 'RechargeWay' + method
     to.meta.title = payTitle[method]   //标题
 
     RootApp.GetInitData([rechargeWay], state=>{
+      var json=state[rechargeWay]
       if(shouldCheck.indexOf(method) > -1){
-        var PayType = state[rechargeWay]&&state[rechargeWay][0].PayType
+        var PayType = json&&json[0].PayType
         //假如充值方式为快捷充值了，就跳转至快捷充值
         if(PayType && PayType !== '一般'){
           router.replace('/quickPay?method=' + method)
@@ -190,7 +185,7 @@ export default{
 
       next(vm=>{
         //如果没数据进维护页
-        if(!state[rechargeWay] || !state[rechargeWay][0]){
+        if(!json || !json[0]){
           vm.underMaintain = true
           return
         }
@@ -199,22 +194,27 @@ export default{
         vm.underMaintain = false
         //银行转账
         if(method === 'Bank'){
-          vm[method] = Object.freeze(state[rechargeWay])
-          var BankCode = state[rechargeWay][0].BankCode
-          vm.BankCode = BankCode;
-          vm.nowRender = state[rechargeWay][0]
+          vm[method] = Object.freeze(json)
+          vm.BankCode = json[0].BankCode;
+          vm.nowRender = json[0]
           // console.log(vm.nowRender)
         }else{
-          vm.nowRender = state[rechargeWay][0]
-          vm.ID = state[rechargeWay][0].Id
+          vm.nowRender = json[0]
+          vm.ID = json[0].Id
           var xurl = ''
-          if(state[rechargeWay][0].CodeImg === '0' || !state[rechargeWay][0].CodeImg){
+          if(json[0].CodeImg === '0' || !json[0].CodeImg){
             xurl = '/../system/common/other/noQRcode.png'
           }else{
-            xurl = state[rechargeWay][0].CodeImg
+            xurl = json[0].CodeImg
           }
           vm.nowRender.CodeImg =  state.constant.ImgHost + xurl
         }
+
+        vm.vaConfig ||(vm.vaConfig = {})
+        vm.vaConfig['Money'] || (vm.vaConfig['Money'] = [])
+        var Min=json[0].MinMoney,
+            Max=json[0].MaxMoney
+        vm.vaConfig['Money'].push(new vm.VaConfig('limit', [Min,Max], '', 'Money', payTitle[method]))
 
       })
 
@@ -244,33 +244,20 @@ export default{
       return this.nowRender.Id
     },
     pageName () {
-      /*var _name= {
-        Bank: '银行转账',
-        Weixin: '微信支付',
-        Alipay: '支付宝充值',
-        QQpay: 'QQ钱包'
-      }*/
       return payTitle[this.method]
     }
   },
   created (){
-    var method = this.$route.query.method       //'Bank', 'Weixin', 'Alipay','QQpay'
-    this.method = method
-    /*var limitName = {
-      Bank: '银行转账',
-      Weixin: '微信支付',
-      Alipay: '支付宝',
-      QQpay: 'QQ钱包'
-    }*/
-
+    // var method = this.$route.query.method       //'Bank', 'Weixin', 'Alipay','QQpay'
+    this.method = this.$route.query.method
     //获取数据
-    RootApp.AjaxGetInitData(['PayLimit'], state=>{
-      //设置金额的限制
-      this.vaConfig ||(this.vaConfig = {})
-      this.vaConfig['Money'] || (this.vaConfig['Money'] = [])
-      var limit=state.PayLimit[payTitle[method]];
-      this.vaConfig['Money'].push(new this.VaConfig('limit', limit, '', 'Money', payTitle[method]))
-    })
+    // RootApp.AjaxGetInitData(['PayLimit'], state=>{
+    //   //设置金额的限制
+    //   this.vaConfig ||(this.vaConfig = {})
+    //   this.vaConfig['Money'] || (this.vaConfig['Money'] = [])
+    //   var limit=state.PayLimit[payTitle[method]];
+    //   this.vaConfig['Money'].push(new this.VaConfig('limit', limit, '', 'Money', payTitle[method]))
+    // })
   },
   methods:{
     //切换充值银行

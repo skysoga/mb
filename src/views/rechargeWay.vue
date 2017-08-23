@@ -7,7 +7,8 @@
           <img class="img" :src="imgServer + '/../system/common/bank/pay/card.png'">
           <div class="text">
             <strong>银行转账</strong>
-            <p>单笔最低<ins>{{payLimit['银行转账'][0] | num}}</ins>元，最高<ins>{{payLimit['银行转账'][1] | num}}</ins>元。</p>
+            <p>单笔最低<ins>{{payLimit['bank'][0] | num}}</ins>元，
+            最高<ins>{{payLimit['bank'][1] | num}}</ins>元。</p>
           </div>
           <i class="iconfont right fr"></i>
         </router-link>
@@ -19,8 +20,8 @@
           <div class="text">
             <strong>微信支付</strong>
             <p v-if="!weixMsg">
-              单笔最低<ins>{{wechatType === '一般' ? payLimit['微信支付'][0]: payLimit['微信快捷'][0] | num}}</ins>元，
-                  最高<ins>{{wechatType === '一般' ? payLimit['微信支付'][1]: payLimit['微信快捷'][1] | num}}</ins>元。
+              单笔最低<ins>{{payLimit['wechat'][0] | num}}</ins>元，
+                  最高<ins>{{payLimit['wechat'][1] | num}}</ins>元。
             </p>
             <p v-else>
             {{weixMsg}}
@@ -36,8 +37,8 @@
           <div class="text">
             <strong>支付宝支付</strong>
             <p v-if="!aliMsg">
-              单笔最低<ins>{{aliType === '一般' ? payLimit['支付宝'][0]: payLimit['支付宝快捷'][0] | num}}</ins>元，
-              最高<ins>{{aliType === '一般' ? payLimit['支付宝'][1]: payLimit['支付宝快捷'][1] | num}}</ins>元。
+              单笔最低<ins>{{payLimit['alipay'][0] | num}}</ins>元，
+              最高<ins>{{payLimit['alipay'][1] | num}}</ins>元。
             </p>
             <p v-else>
             {{aliMsg}}
@@ -53,8 +54,8 @@
           <div class="text">
             <strong>QQ钱包</strong>
             <p v-if="!qqMsg">
-              单笔最低<ins>{{qqType === '一般' ? payLimit['QQ钱包'][0]: payLimit['QQ快捷'][0] | num}}</ins>元，
-              最高<ins>{{qqType === '一般' ? payLimit['QQ钱包'][1]: payLimit['QQ快捷'][1] | num}}</ins>元。
+              单笔最低<ins>{{payLimit['qqpay'][0]|num}}</ins>元，
+              最高<ins>{{payLimit['qqpay'][1]|num}}</ins>元。
             </p>
             <p v-else>
             {{qqMsg}}
@@ -83,35 +84,58 @@ export default {
     }
   },
   beforeRouteEnter(to,from,next){
-    RootApp.AjaxGetInitData(['PayLimit','RechargeWayWeixin', 'RechargeWayAlipay','RechargeWayBank','RechargeWayQQpay'], state=>{
+    RootApp.AjaxGetInitData(['RechargeWayWeixin', 'RechargeWayAlipay','RechargeWayBank','RechargeWayQQpay'], state=>{
       next()
     })
   },
   created () {
+    var obj={}
+    if(state.RechargeWayBank){
+      let arr=[],
+          json=state.RechargeWayBank[0]
+          arr.push(json.MinMoney)
+          arr.push(json.MaxMoney)
+      obj.bank=arr
+    }
     if(state.RechargeWayWeixin){
+      let arr=[],
+        json=state.RechargeWayWeixin[0]
+        arr.push(json.MinMoney)
+        arr.push(json.MaxMoney)
       this.weixMsg=false
-      this.wechatType = state.RechargeWayWeixin[0].PayType || '一般'
+      this.wechatType = json.PayType || '一般'
+      obj.wechat=arr
     }else{
       this.wechatType=''
       this.weixMsg="微信支付维护中..."
     }
     if(state.RechargeWayAlipay){
+      let arr=[],
+        json=state.RechargeWayAlipay[0]
+        arr.push(json.MinMoney)
+        arr.push(json.MaxMoney)
       this.aliMsg=false
-      this.aliType = state.RechargeWayAlipay[0].PayType || '一般'
+      this.aliType = json.PayType || '一般'
+      obj.alipay=arr
     }else{
       this.wechatType=''
       this.aliMsg="支付宝支付维护中..."
       this.wechatType=''
     }
     if(state.RechargeWayQQpay){
+      let arr=[],
+        json=state.RechargeWayQQpay[0]
+        arr.push(json.MinMoney)
+        arr.push(json.MaxMoney)
       this.qqMsg=false
-      this.qqType = state.RechargeWayQQpay[0].PayType || '一般'
+      this.qqType = json.PayType || '一般'
+      obj.qqpay=arr
     }else{
       this.qqType=''
       this.qqMsg="QQ钱包维护中..."
       this.qqType=''
     }
-    this.payLimit = state.PayLimit
+    this.payLimit = obj
   },
   methods:{
     setUrl(key,name,bool){

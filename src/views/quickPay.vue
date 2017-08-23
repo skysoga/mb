@@ -57,10 +57,10 @@ export default {
     }
 
     //获取数据
-    RootApp.GetInitData([rechargeWay,'PayLimit'], state=>{
+    RootApp.GetInitData([rechargeWay], state=>{
       //如果数据不对要跳到普通充值去
-      var PayType =state[rechargeWay]&&state[rechargeWay][0].PayType
-
+      var json=state[rechargeWay]
+      var PayType =json&&json[0].PayType
       if(PayType && PayType === '一般'){
         router.replace('/normalPay?method=' + method)
       }else{
@@ -75,16 +75,17 @@ export default {
           //如果没数据进维护页
           vm.method = method
           vm.PayType=PayType
-          if(!state[rechargeWay] || !state[rechargeWay][0]){
+          if(!json || !json[0]){
             vm.underMaintain = true
             return
           }
           vm.underMaintain = false
-          vm.nowRender = state[rechargeWay][0]
+          vm.nowRender = json[0]
           vm.vaConfig ||(vm.vaConfig = {})
           vm.vaConfig['Money'] || (vm.vaConfig['Money'] = [])
-          var limit=state['PayLimit'][limitName[method]]
-          vm.vaConfig['Money'].push(new vm.VaConfig('limit', limit, '', 'Money', limitName[method]))
+            var Min=json[0].MinMoney,
+                Max=json[0].MaxMoney
+          vm.vaConfig['Money'].push(new vm.VaConfig('limit', [Min,Max], '', 'Money', limitName[method]))
         })
       }
     })
