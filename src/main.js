@@ -272,12 +272,22 @@ function FetchCatch({msg, error}){
 
 var fetchArr=[]
 window._fetch = function (data, option = {}){
+  var user = data.Action!=='Register'&&state.UserName||data.UserName
   data = Xss(data)
   if (data[1]) {
     //可能有xss
     console.log(data[1]);
   }
   data=data[0]
+  if(data.Password){
+    var IVK=getCookie('IVK')
+    if(IVK){
+      var usr = user.toLocaleLowerCase()
+      console.log(usr);
+      data.Password=(['SetPwd','SetSafePass','Register','SetPassForget'].indexOf(data.Action)===-1)?md5(md5(usr+md5(data.Password))+IVK):md5(usr+md5(data.Password))
+      data.Type='Hash'
+    }
+  }
   data.SourceName=_App?"APP":"MB"
   var str=[],k;
   for(var i in data){
@@ -311,7 +321,6 @@ window._fetch = function (data, option = {}){
     if(window.site){
       fetchUrl+='&S='+site
     }
-    var user = data.Action!=='Register'&&state.UserName||data.UserName
     if(user){
       fetchUrl+='&U='+user
     }
@@ -321,7 +330,7 @@ window._fetch = function (data, option = {}){
       fetchUrl+='&T='+new Date(now-state.Difftime).format('ddhhmmss')
     }
 
-    var IVK=getCookie('IVK')
+    /*var IVK=getCookie('IVK')
     if(IVK!=null){
       //密码特殊处理
       if(str.indexOf('Password')>-1){
@@ -335,7 +344,7 @@ window._fetch = function (data, option = {}){
           return v
         }).join('&')+'&Type=Hash'
       }
-    }
+    }*/
 
     fetch(fetchUrl, {
       credentials:'same-origin',
