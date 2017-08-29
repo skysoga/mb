@@ -279,12 +279,13 @@ window._fetch = function (data, option = {}){
     console.log(data[1]);
   }
   data=data[0]
-  if(data.Password){
+  if(data.Password||data.SafePassword){
+    var keys=data.Password&&"Password"||data.SafePassword&&"SafePassword"
     var IVK=getCookie('IVK')
     if(IVK){
       var usr = user.toLocaleLowerCase()
       console.log(usr);
-      data.Password=(['SetPwd','SetSafePass','Register','SetPassForget'].indexOf(data.Action)===-1)?md5(md5(usr+md5(data.Password))+IVK):md5(usr+md5(data.Password))
+      data[keys]=(['SetPwd','SetSafePass','Register','SetPassForget'].indexOf(data.Action)===-1)?md5(md5(usr+md5(data[keys]))+IVK):md5(usr+md5(data[keys]))
       data.Type='Hash'
     }
   }
