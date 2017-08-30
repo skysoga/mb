@@ -7,8 +7,13 @@
           <img class="img" :src="imgServer + '/../system/common/bank/pay/card.png'">
           <div class="text">
             <strong>银行转账</strong>
-            <p>单笔最低<ins>{{payLimit['bank'][0] | num}}</ins>元，
-            最高<ins>{{payLimit['bank'][1] | num}}</ins>元。</p>
+            <p v-if="!bankMsg">
+              单笔最低<ins>{{payLimit['bank'][0] | num}}</ins>元，
+              最高<ins>{{payLimit['bank'][1] | num}}</ins>元。
+            </p>
+            <p v-else>
+              {{bankMsg}}
+            </p>
           </div>
           <i class="iconfont right fr"></i>
         </router-link>
@@ -90,14 +95,17 @@ export default {
   },
   created () {
     var obj={}
-    if(state.RechargeWayBank){
+    if(state.RechargeWayBank&&state.RechargeWayBank[0]){
       let arr=[],
           json=state.RechargeWayBank[0]
           arr.push(json.MinMoney)
           arr.push(json.MaxMoney)
       obj.bank=arr
+    }else{
+      this.RechargeWayBank=''
+      this.bankMsg="银行转账维护中..."
     }
-    if(state.RechargeWayWeixin){
+    if(state.RechargeWayWeixin&&state.RechargeWayWeixin[0]){
       let arr=[],
         json=state.RechargeWayWeixin[0]
         arr.push(json.MinMoney)
@@ -109,7 +117,7 @@ export default {
       this.wechatType=''
       this.weixMsg="微信支付维护中..."
     }
-    if(state.RechargeWayAlipay){
+    if(state.RechargeWayAlipay&&state.RechargeWayAlipay[0]){
       let arr=[],
         json=state.RechargeWayAlipay[0]
         arr.push(json.MinMoney)
@@ -122,7 +130,7 @@ export default {
       this.aliMsg="支付宝支付维护中..."
       this.wechatType=''
     }
-    if(state.RechargeWayQQpay){
+    if(state.RechargeWayQQpay&&state.RechargeWayQQpay[0]){
       let arr=[],
         json=state.RechargeWayQQpay[0]
         arr.push(json.MinMoney)
