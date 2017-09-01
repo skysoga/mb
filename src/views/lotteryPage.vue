@@ -728,7 +728,7 @@
 
               var nextIssueTime
               // 如果有值说明还在期号表内
-              if(Schedule[i] !== undefined){
+              if(ScheduleStamp[i] !== undefined){
                 nextIssueTime = ScheduleStamp[i]
               }else{
                 //超过plan
