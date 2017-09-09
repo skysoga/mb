@@ -18,6 +18,11 @@ export default {
       BottomBoxList
     }
   },
+  beforeRouteEnter:(to,from,next)=>{
+    let arr={Action:"GetInitData"}//修正IVK获取问题
+    _fetch(arr)
+    next()
+  },
   methods:{
     $vaSubmit:function(e){
       //浏览器记住密码修正
