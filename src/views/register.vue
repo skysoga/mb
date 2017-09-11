@@ -23,7 +23,7 @@
                  @change="checkUser"
                  regMsg = "账号应为4-16个字符，可使用字母、数字"
                  v-model.lazy="UserName"
-                 :placeholder="existed?'帐号已存在':'请输入账号'"/>
+                 :placeholder="existed?exUserName+' 帐号已存在':'请输入账号'"/>
         </td>
       </tr>
 
@@ -70,7 +70,8 @@ export default {
       ImgCode: '',
       YzmSrc: '',         //邀请码图片地址
       YqmReadOnly: false,  //邀请码框是否只读
-      existed:''
+      existed:'',
+      exUserName:''
     }
   },
   beforeRouteLeave: (to, from,next)=>{
@@ -157,6 +158,7 @@ export default {
         this.existed=''
         setTimeout(()=>{
           var uname=this.UserName
+          this.exUserName=uname
             //进行校验
             var ajax = {
               Action:"CheckUser",
