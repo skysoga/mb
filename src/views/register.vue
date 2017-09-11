@@ -156,21 +156,24 @@ export default {
     },
     checkUser(){//校验帐号是否存在
         this.existed=''
-        setTimeout(()=>{
-          var uname=this.UserName
-          this.exUserName=uname
-            //进行校验
-            var ajax = {
-              Action:"CheckUser",
-              UserName: uname
-            }
-            _fetch(ajax).then((json)=>{
-              if (json.Code!==-1) {
-                this.existed=json.Exist
-                this.UserName=this.existed?"":uname
+        var regObj=/^[a-zA-Z\d]{4,16}$/
+        if(regObj.test(this.UserName)){
+          setTimeout(()=>{
+            var uname=this.UserName
+            this.exUserName=uname
+              //进行校验
+              var ajax = {
+                Action:"CheckUser",
+                UserName: uname
               }
-            })
-        },10)
+              _fetch(ajax).then((json)=>{
+                if (json.Code!==-1) {
+                  this.existed=json.Exist
+                  this.UserName=this.existed?"":uname
+                }
+              })
+          },10)
+        }
       }
   }
 }
