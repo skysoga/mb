@@ -36,7 +36,9 @@
         <tr>
           <td>安全密码</td>
           <td>
-            <input type="password" v-va:SafePassword.Password tag="安全密码" v-model="ArrData.SafePassword" placeholder="请输入您的安全密码">
+            <form action="" autocomplete="off">
+              <input type="password" v-va:SafePassword.Password tag="安全密码" v-model="ArrData.SafePassword" placeholder="请输入您的安全密码">
+            </form>
           </td>
         </tr>
         <tr></tr>
