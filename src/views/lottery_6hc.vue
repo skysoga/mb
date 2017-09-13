@@ -272,10 +272,12 @@ export default {
         // 注数为0的时候直接返回
         return 0;
       }
-      if(['A01','B01','B03','B04','B05','B06','B07','B08'].indexOf(this.mode)!==-1){
+      if(['A01','B03','B04','B05','B06','B07','B08'].indexOf(this.mode)!==-1){
         //号码直选玩法
         console.log('号码直选玩法');
         return this.award*1
+      }else if(this.mode==='B01'){
+        return (this.betCount>6)?(6*this.award):(this.betCount*this.award)
       }else if(['A02','B09','B10','B11','B12','B13','B14','D01','F01'].indexOf(this.mode)!==-1){
         //两面玩法
         console.log('两面或半波')
