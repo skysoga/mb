@@ -106,7 +106,8 @@ export default{
     $vaSubmit(){
       var vm=this
       layer.msgWait("正在提交")
-      _fetch(this.ArrData).then(json=>{
+      let {...Obj}=this.ArrData
+      _fetch(Obj).then(json=>{
         if(json.Code==1){
           layer.open({
             className: "layerConfirm",
