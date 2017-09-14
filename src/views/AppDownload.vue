@@ -16,7 +16,7 @@
     <div v-if="AppleIsPlist" class="appledetail" :class="curr=='detail'?'active':''">
       <img :src="$store.state.constant.ImgHost
       +'/system/app/appleapp/apple-down-head.png'" alt="" width="100%">
-      <a @click="download" class="detail-downbtn" :href="data.AppleUrl"><img v-if="text!='点击安装'" class="loading" src="/static/img/rolling.svg" alt="">{{text}}</a>
+      <a @click="download" class="detail-downbtn" :class="{nochange:text=='请到桌面查看进度'}" :href="data.AppleUrl"><img v-if="text!='点击安装'" class="loading" src="/static/img/rolling.svg" alt="">{{text}}</a>
       <img :src="$store.state.constant.ImgHost
       +'/system/app/appleapp/apple-down.png'" alt="" width="100%">
     </div>
@@ -188,6 +188,12 @@
       text-align: center;
       font-size: .6em;
       line-height: 2em;
+    }
+  }
+  .nochange{
+    &:active{
+      background:white;
+      color:#eb0002;
     }
   }
 </style>
