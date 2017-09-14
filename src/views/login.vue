@@ -4,7 +4,10 @@
       <tbody>
         <tr>
           <td>账号</td>
-          <td colspan="2"><input v-model.lazy="UserName" class="input" tag="帐号" type="email" ref="UserName" v-va:UserName placeholder="请输入账号"/></td>
+          <td colspan="2" class="username">
+            <input v-model.lazy="UserName" class="input" tag="帐号" type="email" ref="UserName" v-va:UserName placeholder="请输入账号"/>
+            <span @click="UserShow = true"></span>
+          </td>
         </tr>
         <tr>
           <td>密码</td>
@@ -35,6 +38,7 @@
     <bottom-box v-show = "BottomBoxShow"
                  :list = "BottomBoxList"
                  ></bottom-box>
+    <bottom-box v-show="UserShow" :list="UserList"></bottom-box>
 
   </div>
 </template>
@@ -44,4 +48,28 @@
 <script src="../js/login.js"></script>
 <style lang="scss" scoped>
   @import '../scss/login.scss';
+  .username{
+    position:relative;
+    span{
+      position:absolute;
+      right:.5em;
+      top:0;
+      width:2em;
+      height:2em;
+      line-height:2em;
+      border-radius:.2em;
+      margin-top:.25em;
+      color:#ccc;
+      &:active{
+        background:#efefef;
+        color:#333;
+      }
+      &:before{
+        content:'\e64c';
+        font-family:'iconfont';
+        display:block;
+        text-align:center;
+      }
+    }
+  }
 </style>

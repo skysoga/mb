@@ -37,6 +37,7 @@
       <ul>
         <li v-for = "(value,key) in list" @click = "$parent.bottomBox(key,value)">
           <a v-html="value" :class="addUserLogo(key)"></a>
+          <span></span>
         </li>
       </ul>
       <ul>
@@ -62,3 +63,26 @@ export default{
   }
 }
 </script>
+<style lang='scss' scoped>
+  .moreLayer{
+    li{
+      position:relative;
+      span{
+        position:absolute;
+        right:0;
+        top:0;
+        margin:.5em;
+        margin-right:.8em;
+        color:#ccc;
+        &:active{
+          color:#333;
+        }
+        &:after{
+          content:'\e61d';
+          font-family:'iconfont';
+          display:block;
+        }
+      }
+    }
+  }
+</style>

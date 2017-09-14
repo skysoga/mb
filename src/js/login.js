@@ -7,6 +7,10 @@ export default {
       'forgetPwd': '忘记密码',
       'pc': '电脑版'
     }
+    var UserList={
+      'user1': '123123',
+      'user2': '123123'
+    }
     if(_App) delete  BottomBoxList.pc
     return{
       UserName:'',
@@ -15,7 +19,9 @@ export default {
       imgSrc:'',
       IcodeShow:false,
       BottomBoxShow: false,
-      BottomBoxList
+      BottomBoxList,
+      UserShow: false,
+      UserList
     }
   },
   methods:{
