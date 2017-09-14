@@ -1309,7 +1309,7 @@ Vue.directive('copyBtn', {
 document.addEventListener('copy', function(e){
   var el = e.target
   var btn = [].filter.call(el.parentNode.children, child=>(child !== el))[0]
-  if(btn.className.indexOf('copy') > -1){
+  if(btn&&btn.className.indexOf('copy') > -1){
     layer.msgWarn('已将内容复制到剪切板')
   }
 })
