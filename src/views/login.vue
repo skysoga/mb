@@ -6,7 +6,7 @@
           <td>账号</td>
           <td colspan="2" class="username">
             <input v-model.lazy="UserName" class="input" tag="帐号" type="email" ref="UserName" v-va:UserName placeholder="请输入账号"/>
-            <span @click="UserShow = true"></span>
+            <span v-show="UserList" @click="setType(true)"></span>
           </td>
         </tr>
         <tr>
@@ -31,14 +31,13 @@
     </div>
 
     <ul id="usedList"></ul>
-    <div class="sevice" @click = "BottomBoxShow=true">
+    <div class="sevice" @click = "setType(false)">
         <a>登录遇到问题?</a>
     </div>
-
+    <!-- 区分是否登录记录数据 -->
     <bottom-box v-show = "BottomBoxShow"
-                 :list = "BottomBoxList"
+                 :list = "isLogin?UserList:BottomBoxList"
                  ></bottom-box>
-    <bottom-box v-show="UserShow" :list="UserList"></bottom-box>
 
   </div>
 </template>
