@@ -65,9 +65,9 @@
       })
     },
     beforeCreate(){
-      // if (_App) {
-      //   router.go(-1)
-      // }
+      if (_App) {
+        router.go(-1)
+      }
     },
     methods:{
       showDetail(){
