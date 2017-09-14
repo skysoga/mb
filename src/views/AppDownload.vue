@@ -16,7 +16,7 @@
     <div v-if="AppleIsPlist" class="appledetail" :class="curr=='detail'?'active':''">
       <img :src="$store.state.constant.ImgHost
       +'/system/app/appleapp/apple-down-head.png'" alt="" width="100%">
-      <a @click="download" class="detail-downbtn" :href="data.AppleUrl">下载安装</a>
+      <a @click="download" class="detail-downbtn" :href="data.AppleUrl"><img v-if="text!='点击安装'" class="loading" src="/static/img/rolling.svg" alt="">{{text}}</a>
       <img :src="$store.state.constant.ImgHost
       +'/system/app/appleapp/apple-down.png'" alt="" width="100%">
     </div>
@@ -30,7 +30,8 @@
         AndroidIsFile:false,
         AppleIsFile:false,
         AppleIsPlist:false,
-        curr:'main'
+        curr:'main',
+        text:'点击安装'
       }
     },
     beforeRouteEnter:(to, from, next) => {
@@ -60,16 +61,19 @@
       })
     },
     beforeCreate(){
-      if (_App) {
-        router.go(-1)
-      }
+      // if (_App) {
+      //   router.go(-1)
+      // }
     },
     methods:{
-      showDetail(){
+      showDetail(e){
         this.curr = "detail"
       },
       download(){
-        layer.alert('可按home键到手机桌面查看安装进度，如未安装请使用Safari浏览器')
+        this.text="请到桌面查看进度"
+        setTimeout(()=>{
+          this.data.AppleUrl = "javascript:;"
+        },100)
       }
     },
     watch:{
@@ -83,6 +87,12 @@
 </script>
 <style lang='scss' scoped>
   @import "../scss/_variable";
+  .loading{
+    width: 1em;
+    margin-right: .3em;
+    display: inline-block;
+    transform: translateY(-2px);
+  }
   .detail-downbtn{
     color:#eb0002;
     background:white;
