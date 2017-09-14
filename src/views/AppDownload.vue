@@ -1,13 +1,22 @@
 <template>
-  <div class="main">
-    <div class="intro">
-      <a :style="`background-image:url(${$store.state.constant.ImgHost}${data.AppImg});`"></a>
-      <h1>{{data.AppName}}</h1>
-      <p>下载APP 再也无需输入网址</p>
+  <div>
+    <div class="container" :class="curr=='main'?'active':''">
+      <div class="main">
+        <div class="intro">
+          <a :style="`background-image:url(${$store.state.constant.ImgHost}${data.AppImg});`"></a>
+          <h1>{{data.AppName}}</h1>
+          <p>下载APP 再也无需输入网址</p>
+        </div>
+        <div class="downLink">
+          <a :href="AppleIsPlist?'javascript:;':data.AppleUrl" target="_blink" @click="showDetail"><i class="iconfont">&#xe64b;</i>点击下载iOS版</a>
+          <a id="android" :href="data.AndroidUrl" target="_blink"><i class="iconfont">&#xe653;</i>点击下载安卓版</a>
+        </div>
+      </div>
     </div>
-    <div class="downLink">
-      <a :href="data.AppleUrl" target="_blink"><i class="iconfont">&#xe64b;</i>点击下载iOS版</a>
-      <a id="android" :href="data.AndroidUrl" target="_blink"><i class="iconfont">&#xe653;</i>点击下载安卓版</a>
+    <div v-if="AppleIsPlist" class="appledetail" :class="curr=='detail'?'active':''">
+      <img src="/static/img/apple-down-head.png" alt="" width="100%">
+      <a @click="download" class="detail-downbtn" :href="data.AppleUrl">下载安装</a>
+      <img src="/static/img/apple-down.png" alt="" width="100%">
     </div>
   </div>
 </template>
@@ -17,7 +26,16 @@
       return{
         data:{},
         AndroidIsFile:false,
-        AppleIsFile:false
+        AppleIsFile:false,
+        tempy:0,
+        movey:0,
+        card:0,
+        top:'top',
+        clientHeight:document.documentElement.clientHeight,
+        transition:'0',
+        maxCard:3,
+        AppleIsPlist:false,
+        curr:'main'
       }
     },
     beforeRouteEnter:(to, from, next) => {
@@ -33,6 +51,12 @@
             }
             if (apple) {
               vm.AppleIsFile = true
+            }else{
+              var result = d.BackData.AppleUrl.match(/.plist$/) || false
+              if(result){
+                //这个文件是plist形
+                vm.AppleIsPlist = true
+              }
             }
           })
         }else{
@@ -41,8 +65,16 @@
       })
     },
     beforeCreate(){
-      if (_App) {
-        router.go(-1)
+      // if (_App) {
+      //   router.go(-1)
+      // }
+    },
+    methods:{
+      showDetail(){
+        this.curr = "detail"
+      },
+      download(){
+        layer.alert('可按home键到手机桌面查看安装进度，如未安装请使用Safari浏览器')
       }
     },
     watch:{
@@ -56,6 +88,49 @@
 </script>
 <style lang='scss' scoped>
   @import "../scss/_variable";
+  .detail-downbtn{
+    color:#eb0002;
+    background:white;
+    display:block;
+    width:11em;
+    text-align:center;
+    border:1px solid;
+    border-radius:.35em;
+    padding:.6em 0;
+    font-size:.75em;
+    margin:.4em auto;
+    &:active{
+      background:#eb0002;
+      color:white;
+    }
+  }
+  .active{
+    display:block !important;
+  }
+  .container{
+    height:100%;
+    position:fixed;
+    width:100%;
+    top:0;
+    left:0;
+    display:none;
+    >div{
+      width:100%;
+      height:100%;
+    }
+  }
+  .card2{
+    top:-100%;
+  }
+  .apple{
+    background:black;
+  }
+  .appledetail{
+    background:white;
+    display:none;
+    margin-top:2.3em;
+    position:relative;
+  }
   .downLink{
     margin-top: 3em;
     width: 100%;
