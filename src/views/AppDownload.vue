@@ -14,9 +14,11 @@
       </div>
     </div>
     <div v-if="AppleIsPlist" class="appledetail" :class="curr=='detail'?'active':''">
-      <img src="/static/img/apple-down-head.png" alt="" width="100%">
+      <img :src="$store.state.constant.ImgHost
+      +'/system/app/appleapp/apple-down-head.png'" alt="" width="100%">
       <a @click="download" class="detail-downbtn" :href="data.AppleUrl">下载安装</a>
-      <img src="/static/img/apple-down.png" alt="" width="100%">
+      <img :src="$store.state.constant.ImgHost
+      +'/system/app/appleapp/apple-down.png'" alt="" width="100%">
     </div>
   </div>
 </template>
