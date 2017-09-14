@@ -19,8 +19,11 @@ export default {
     }
   },
   beforeRouteEnter:(to,from,next)=>{
-    let arr={Action:"GetInitData"}//修正IVK获取问题
-    _fetch(arr)
+    var IVK=getCookie('IVK')
+    if(!IVK){
+      let arr={Action:"GetInitData"}//修正IVK获取问题
+      _fetch(arr)
+    }
     next()
   },
   methods:{
