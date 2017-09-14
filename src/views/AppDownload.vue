@@ -27,13 +27,6 @@
         data:{},
         AndroidIsFile:false,
         AppleIsFile:false,
-        tempy:0,
-        movey:0,
-        card:0,
-        top:'top',
-        clientHeight:document.documentElement.clientHeight,
-        transition:'0',
-        maxCard:3,
         AppleIsPlist:false,
         curr:'main'
       }
@@ -118,9 +111,6 @@
       width:100%;
       height:100%;
     }
-  }
-  .card2{
-    top:-100%;
   }
   .apple{
     background:black;
