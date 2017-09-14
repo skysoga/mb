@@ -1,7 +1,7 @@
 <template>
   <div class="footerContainer">
     <div v-if="betshow" class="info">
-      <div class="selected"><span>当前选号</span><em v-for="d in chosen">{{d}}</em></div>
+      <!-- <div class="selected"><span>当前选号</span><em v-for="d in chosen">{{d}}</em></div> -->
       <div class="money"><span>每注金额</span><input type="tel"><p>请输入要投注的金额<em>20</em>元</p></div>
     </div>
     <div class="betnow fix">
@@ -30,14 +30,14 @@
 <style lang="scss" scoped>
   .footerContainer{
     position:fixed;
-    height:5.7em;
+    height:4.1em;
     width:100%;
     bottom:0;
     left:0;
     z-index:30;
   }
   .info{
-    height:3.2em;
+    height:1.6em;
     background:rgba(34, 86, 63, 0.5);
     bottom:2.5em;
     > div{

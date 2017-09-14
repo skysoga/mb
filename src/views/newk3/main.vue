@@ -3,7 +3,8 @@
     <div class="betContainer">
       <div class="video"></div>
       <mainheader></mainheader>
-      <div class="betbox">
+      <div :style="'min-height:'+mainHight+'px'" class="betbox">
+        <div class="space"></div>
         <div class="topshadow"></div>
         <div class="newmain">
           <ul class="buttonList fix">
@@ -30,8 +31,9 @@
           </ul>
         </div>
         <div class="bottomshadow"></div>
+        <div class="space2"></div>
       </div>
-      <mainfooter :betshow="betshow" :chosen="chosen"></mainfooter>
+      <mainfooter ref="footer" :betshow="betshow" :chosen="chosen"></mainfooter>
     </div>
   </div>
 </template>
@@ -42,13 +44,15 @@
     data:()=>{
       return{
         chosen:[],
-        betshow:0
+        betshow:0,
+        mainHight:0
       }
     },
     created(){
     },
     methods:{
       addNum(num){
+        // alert(document.body.offsetWidth+'+'+document.body.offsetHeight)
         var where = this.chosen.indexOf(num)
         if(where > -1){
           delete this.chosen[where]
@@ -63,6 +67,9 @@
         }
       }
     },
+    mounted(){
+      this.mainHight = document.documentElement.clientHeight - this.$refs.footer.$el.offsetHeight + 1.6*em
+    },
     components: {
       mainheader,
       mainfooter
@@ -70,6 +77,14 @@
   }
 </script>
 <style lang="scss" scoped>
+  .space{
+    height:2.3em;
+    width:100%;
+  }
+  .space2{
+    height:2.15em;
+    width:100%;
+  }
   .video{
     background:url('/static/img/newk3-bg.jpg') no-repeat;
     position:fixed;
@@ -82,23 +97,15 @@
   .newContainer{
     position:relative;
     z-index:20;
-    min-height:100%;
   }
   .topshadow{
     height:1em;
     background:rgba(0,0,0,.6);
-    position:absolute;
-    top:0;
-    left:0;
     width:100%;
+    position: relative;
   }
   .betbox{
-    height: calc(100% - 2.3em - 1em);
-    padding-bottom:5.7em;
-    overflow:auto;
-    padding-top:1em;
-    margin-top:2.3em;
-    position:absolute;
+    padding-bottom:3em;
     width:100%;
   }
   .newmain{
@@ -157,7 +164,7 @@
   .bottomshadow{
     position:absolute;
     width:100%;
-    height:5.7em;
+    height:3.4em;
     background:rgba(0,0,0,.6);
   }
 </style>
