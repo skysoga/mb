@@ -18,8 +18,10 @@
       <div class="loginBtn BTN"><a v-va-check>确定</a></div>
       <div class="tips">
         1、扫一扫弹出的二维码进行充值。
-        <br> 2、可以使用其他手机扫二维码进行充值，也可以将二维码保存到相册再使用{{this.$route.meta.title}}识别相册中的二维码进行充值，该二维码仅当次有效，每次充值前务必重新保存最新的二维码。
+        <br>2、单笔充值金额最低<ins>{{this.nowRender.MinMoney}}</ins>元，最高<ins>{{this.nowRender.MaxMoney}}</ins>元。
+        <br> 3、可以使用其他手机扫二维码进行充值，也可以将二维码保存到相册再使用{{this.$route.meta.title}}识别相册中的二维码进行充值，该二维码仅当次有效，每次充值前务必重新保存最新的二维码。
         <br>
+        4、为了更准确核对您的金额，系统会随机为整数金额添加小数点。
       </div>
     </template>
     <div id="iframeWrap" v-show="QrBg">
@@ -256,7 +258,6 @@ export default {
   },
   methods:{
     $vaSubmit () {
-      this.QrBg=true
       var vm=this
       //ajax数据
       var ajax = {
@@ -289,6 +290,30 @@ export default {
         }
       }
       var nowAjax = ajax[this.method]
+      //判断是否小数
+      function isDic(n){
+        n=n*1
+        console.log(n);
+        if(Math.floor(n)===n){
+          // return n+0.12
+          return (Math.random()/20+0.01+n).toFixed(2)*1
+        }else{
+          return false
+        }
+      }
+      var DIC=isDic(this.vaVal.Money)
+      if(DIC){
+        if(DIC>this.nowRender.MaxMoney){
+          DIC=2*this.nowRender.MaxMoney-DIC
+        }
+        this.Money=DIC
+        this.vaVal.Money=DIC
+        layer.confirm('为了更准确核对您的金额，<br>系统已将充值金额调整为:<br><span style="color:red">'+DIC+'</span>',['确定','取消'],function(){
+          vm.$vaSubmit()
+        })
+        return
+      }
+      console.log('提交');
       nowAjax.Money = this.vaVal.Money
       nowAjax.ID = this.nowRender.Id
       nowAjax.BankCode =this.nowRender.PayType
@@ -300,6 +325,7 @@ export default {
         }
       }
 
+      this.QrBg=true
       layer.msgWait("正在提交")
       _fetch(nowAjax).then((json)=>{
         if(json.Code === 1){

@@ -53,7 +53,7 @@
         </a>
       </div>
 
-      <div class="surperise active" v-show="!qqMsg">
+      <div class="surperise active">
         <a class = "wrap" @click = "setUrl(qqType,'QQpay',qqMsg)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/qqpay.png'">
           <div class="text">

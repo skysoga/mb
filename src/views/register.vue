@@ -20,9 +20,10 @@
                  type="url"
                  v-va:UserName="[{reg:/^[a-zA-Z\d]{4,16}$/}]"
                  tag="帐号"
+                 @change="checkUser"
                  regMsg = "账号应为4-16个字符，可使用字母、数字"
                  v-model.lazy="UserName"
-                 placeholder="请输入账号"/>
+                 :placeholder="existed?exUserName+' 帐号已存在':'请输入账号'"/>
         </td>
       </tr>
 
@@ -68,7 +69,9 @@ export default {
       checkPassword: '',
       ImgCode: '',
       YzmSrc: '',         //邀请码图片地址
-      YqmReadOnly: false  //邀请码框是否只读
+      YqmReadOnly: false,  //邀请码框是否只读
+      existed:'',
+      exUserName:''
     }
   },
   beforeRouteLeave: (to, from,next)=>{
@@ -150,8 +153,29 @@ export default {
           that.refreshYzm()
         }
       })
-    }
-  },
+    },
+    checkUser(){//校验帐号是否存在
+        this.existed=''
+        var regObj=/^[a-zA-Z\d]{4,16}$/
+        if(regObj.test(this.UserName)){
+          setTimeout(()=>{
+            var uname=this.UserName
+            this.exUserName=uname
+              //进行校验
+              var ajax = {
+                Action:"CheckUser",
+                UserName: uname
+              }
+              _fetch(ajax).then((json)=>{
+                if (json.Code!==-1) {
+                  this.existed=json.Exist
+                  this.UserName=this.existed?"":uname
+                }
+              })
+          },10)
+        }
+      }
+  }
 }
 </script>
 
