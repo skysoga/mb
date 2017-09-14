@@ -22,8 +22,8 @@ export default {
   },
   created(){
     // 判断是否有缓存帐号记录
-    var obj=this.getLocalStorage();    
-    this.UserList=_App&&obj?(this.isNull(JSON.parse(obj))?JSON.parse(obj):''):''
+    var obj=this.getLocalStorage();
+    this.UserList=(obj&&obj.length)?this.ArrToObj(obj):''
     
   },
   methods:{
@@ -44,9 +44,7 @@ export default {
           if (json.Code===1) {
             RootApp.Logout()
             RootApp.Login(this.UserName,()=>{
-              if(_App){
-                this.addLogin(this.UserName.toLowerCase(),this.Password)
-              }
+              this.addLogin(this.UserName.toLowerCase(),this.Password)
               router.replace(state.login2path||"/index")
             })
           }else if(json.Code===2){
@@ -60,7 +58,7 @@ export default {
     },
     bottomBox(key,val){
       // 判断是否APP
-      if(_App&&this.isLogin){
+      if(this.isLogin){
         this.BottomBoxShow=false
         this.autoLogin(key,val)
       }else{
@@ -87,12 +85,15 @@ export default {
       // 添加登录记录
       var getArr=this.getLocalStorage()
       if(!getArr){
-        var setVal={}
-        setVal[key]=val
+        var setVal=[]
+        setVal.push(key+'@'+val)
         this.setLocalStorage(setVal)
       }else{
-        var Arr=JSON.parse(getArr)
-        Arr[key]=val
+        var Arr=getArr
+        Arr.unshift(key+'@'+val)
+        if(Arr.length>5){
+          Arr.pop()
+        }
         this.setLocalStorage(Arr)
       }
     },
@@ -105,20 +106,28 @@ export default {
     },
     getLocalStorage(){
       // 获取缓存帐号
-      return localStorage.getItem('Logined')
+      return JSON.parse(localStorage.getItem('Logined'))
     },
     setLocalStorage(val){
       localStorage.setItem('Logined',JSON.stringify(val))
     },
     removeLogin(key){
-      var obj=JSON.parse(this.getLocalStorage())
-      delete obj[key]
+      var obj=this.getLocalStorage()
+      obj.splice(key,1)
       this.setLocalStorage(obj)
-      this.UserList=this.isNull(obj)?obj:''
+      this.UserList=obj.length?this.ArrToObj(obj):''
       this.BottomBoxShow=false      
     },
     isNull(val){
-      return JSON.stringify(val).length>2
+      return val&&val.length
+    },
+    ArrToObj(Arr){
+      let Obj={}
+      for(var i=0;i<Arr.length;i++){
+        var val=Arr[i].split("@")
+        Obj[val[0]]=val[1]
+      }
+      return Obj
     },
     autoLogin(user,pwd){
       // 从记录自动登录
