@@ -7,7 +7,7 @@ export default {
       'pc': '电脑版'
     }
     if(_App) delete  BottomBoxList.pc
-    
+
     return{
       UserName:'',
       Password:'',
@@ -24,7 +24,7 @@ export default {
     // 判断是否有缓存帐号记录
     var obj=this.getLocalStorage();
     this.UserList=(obj&&obj.length)?this.ArrToObj(obj):''
-    
+
   },
   methods:{
     $vaSubmit:function(e){
@@ -86,11 +86,11 @@ export default {
       var getArr=this.getLocalStorage()
       if(!getArr){
         var setVal=[]
-        setVal.push(key+'@'+val)
+        setVal.push(key+'&'+val)
         this.setLocalStorage(setVal)
       }else{
         var Arr=getArr
-        Arr.unshift(key+'@'+val)
+        Arr.unshift(key+'&'+val)
         if(Arr.length>5){
           Arr.pop()
         }
@@ -116,7 +116,7 @@ export default {
       obj.splice(key,1)
       this.setLocalStorage(obj)
       this.UserList=obj.length?this.ArrToObj(obj):''
-      this.BottomBoxShow=false      
+      this.BottomBoxShow=false
     },
     isNull(val){
       return val&&val.length
@@ -124,7 +124,7 @@ export default {
     ArrToObj(Arr){
       let Obj={}
       for(var i=0;i<Arr.length;i++){
-        var val=Arr[i].split("@")
+        var val=Arr[i].split("&")
         Obj[val[0]]=val[1]
       }
       return Obj
@@ -135,7 +135,7 @@ export default {
         Action:"Login",
         UserName:user,
         Password:pwd
-      }      
+      }
       layer.msgWait("正在登录")
       _fetch(ajax).then((json)=>{
         if (json.Code===1) {
