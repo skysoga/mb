@@ -16,6 +16,7 @@
     <div v-if="AppleIsPlist" class="appledetail" :class="curr=='detail'?'active':''">
       <img :src="$store.state.constant.ImgHost
       +'/system/app/appleapp/apple-down-head.png'" alt="" width="100%">
+      <span class="logo" :style="`background-image:url(${$store.state.constant.ImgHost}${data.AppImg});`"></span>
       <a @click="download" class="detail-downbtn" :class="{nochange:text=='请到桌面查看进度'}" :href="data.AppleUrl"><img v-if="text!='点击安装'" class="loading" src="/static/img/rolling.svg" alt="">{{text}}</a>
       <img :src="$store.state.constant.ImgHost
       +'/system/app/appleapp/apple-down.png'" alt="" width="100%">
@@ -87,6 +88,15 @@
 </script>
 <style lang='scss' scoped>
   @import "../scss/_variable";
+  .logo{
+    position: absolute;
+    display: block;
+    width: 5em;
+    height: 5em;
+    background-size: cover;
+    margin-top: -6.3em;
+    margin-left: calc((100% - 5em)/2);
+  }
   .loading{
     width: 1em;
     margin-right: .3em;
