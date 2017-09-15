@@ -69,7 +69,7 @@
           <td>安全密码</td>
           <td>
             <form action="" autocomplete="off">
-            <input type="password" v-va:SafePassword.Password v-model.trim="SafePassword" tag="安全密码"  placeholder="请输入您的安全密码">
+              <input type="password" v-va:SafePassword.Password v-model.trim="SafePassword" tag="安全密码"  placeholder="请输入您的安全密码">
             </form>
           </td>
         </tr>
