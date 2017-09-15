@@ -1,9 +1,9 @@
 <template>
-  <div class="newContainer" @touchend="touchend">
-    <div class="betContainer">
+  <div class="newContainer" @touchend="touchendForHeight">
+    <div class="betContainer" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend">
       <div class="video"></div>
-      <mainheader></mainheader>
-      <div class="betbox">
+      <mainheader :style="{ transform: 'translate3d('+movey+'px, 0px, 0px)',transition:transition+'s'}"></mainheader>
+      <div class="betbox" :style="{ transform: 'translate3d('+movey+'px, 0px, 0px)',transition:transition+'s'}" @touchmove.stop="betboxScroll">
         <div class="space"></div>
         <div class="topshadow"></div>
         <div ref="buttonList" class="newmain">
@@ -33,7 +33,7 @@
         <div class="bottomshadow" :style="{height:mainHeight+'px'}"></div>
         <div class="space2"></div>
       </div>
-      <mainfooter ref="footer" :betshow="betshow" :chosen="chosen"></mainfooter>
+      <mainfooter :style="{ transform: 'translate3d('+movey+'px, 0px, 0px)',transition:transition+'s'}" ref="footer" :betshow="betshow" :chosen="chosen"></mainfooter>
     </div>
   </div>
 </template>
@@ -47,6 +47,12 @@
         betshow:0,
         mainHeight:0,
         beforeScreenHeight:0,
+        tempy:0,
+        movey:0,
+        card:0,
+        clientWidth:document.documentElement.clientWidth,
+        transition:0,
+        maxCard:1
       }
     },
     created(){
@@ -80,10 +86,54 @@
         console.log('footerHeight:'+footerHeight)
         console.log(this.mainHeight)
       },
-      touchend(e){
+      touchendForHeight(e){
         setTimeout(()=>{
           this.setHeight()
         },100)
+      },
+      touchstart(e){
+        this.tempy = e.touches[0].clientX
+        console.log('开始触摸:'+this.tempy)
+      },
+      touchmove(e){
+        this.moving(e)
+        e.preventDefault()
+      },
+      moving(e){
+        var newpoint = e.touches[0].clientX
+        // alert(`起始点：${this.tempy}，校对点：${newpoint}`)
+        if(this.tempy+40<newpoint || this.tempy>newpoint+40){
+          this.movey = e.touches[0].clientX-this.tempy-this.card*this.clientWidth
+        }else{
+          // e.preventDefault()
+        }
+      },
+      touchend(e){
+        this.tempy = 0
+        if(this.movey > -this.clientWidth * this.card + 40 && this.card > -1){
+          this.transition = .3
+          this.movey = -this.clientWidth * (this.card-1)
+          this.card -=1
+          setTimeout(()=>{
+            this.transition = 0
+          },500)
+        }else if(this.movey < -this.clientWidth * this.card - 40 && this.card < this.maxCard-1){
+          this.transition = .3
+          this.movey = -this.clientWidth * (this.card+1)
+          this.card +=1
+          setTimeout(()=>{
+            this.transition = 0
+          },500)
+        }else{
+          this.transition = .2
+          this.movey = -this.clientWidth * this.card
+          setTimeout(()=>{
+            this.transition = 0
+          },200)
+        }
+      },
+      betboxScroll(e){
+        this.moving(e)
       }
     },
     mounted(){
@@ -183,7 +233,7 @@
   .bottomshadow{
     position:absolute;
     width:100%;
-    min-height:2.6em;
+    min-height:2.64em;
     background:rgba(0,0,0,.6);
   }
 </style>
