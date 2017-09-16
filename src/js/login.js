@@ -84,18 +84,24 @@ export default {
     addLogin(key,val){
       // 添加登录记录
       var getArr=this.getLocalStorage()
-      if(!getArr){
-        var setVal=[]
-        setVal.push(key+'&'+val)
-        this.setLocalStorage(this.setArrUN(setVal))
-      }else{
+      if(getArr&&getArr.length){
         var Arr=getArr
+        Arr.forEach((i,n)=>{
+          var obj=i.split('&')[0]
+          if(obj==key){
+            Arr.splice(n,1)
+          }
+        })
         Arr.unshift(key+'&'+val)
         Arr=this.setArrUN(Arr)
         if(Arr.length>5){
           Arr.pop()
         }
         this.setLocalStorage(Arr)
+      }else{
+        var setVal=[]
+        setVal.push(key+'&'+val)
+        this.setLocalStorage(this.setArrUN(setVal))
       }
     },
     delLogin(val){
