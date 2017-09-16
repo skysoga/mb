@@ -87,10 +87,11 @@ export default {
       if(!getArr){
         var setVal=[]
         setVal.push(key+'&'+val)
-        this.setLocalStorage(setVal)
+        this.setLocalStorage(this.setArrUN(setVal))
       }else{
         var Arr=getArr
         Arr.unshift(key+'&'+val)
+        Arr=this.setArrUN(Arr)
         if(Arr.length>5){
           Arr.pop()
         }
@@ -107,6 +108,9 @@ export default {
     getLocalStorage(){
       // 获取缓存帐号
       return JSON.parse(localStorage.getItem('Logined'))
+    },
+    setArrUN(val){
+      return Array.from(new Set(val))
     },
     setLocalStorage(val){
       localStorage.setItem('Logined',JSON.stringify(val))
