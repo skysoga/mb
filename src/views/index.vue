@@ -9,7 +9,14 @@
           <template v-else>
             <router-link v-if="i.Url && i.Url[0]==='/'" :to="setUrl(i.Url,true)"><img :src="s.constant.ImgHost+i.Image"></router-link>
             <a v-else @click="setUrl(i.Url)"><img :src="s.constant.ImgHost+i.Image"></a>
-          </template>
+          </template><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        </swiper-slide>
+        <swiper-slide v-for="i in s.BannerList||s.SysBanner">
+          <a v-if="i.Url==null||i.Url=='null'"><img :src="s.constant.ImgHost+i.Image"></a>
+          <template v-else>
+            <router-link v-if="i.Url && i.Url[0]==='/'" :to="setUrl(i.Url,true)"><img :src="s.constant.ImgHost+i.Image"></router-link>
+            <a v-else @click="setUrl(i.Url)"><img :src="s.constant.ImgHost+i.Image"></a>
+          </template><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
         </swiper-slide>
       </swiper>
     </div>
@@ -48,5 +55,9 @@
 #HotLottery ul {
   -webkit-transform-origin: 0 0;
   -webkit-transform: scale(0.33333, 0.33333);
+}
+.swiper-wrapper{
+  overflow:auto;
+  height:130px !important;
 }
 </style>
