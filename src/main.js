@@ -922,7 +922,7 @@ window.RootApp={
       }
     })(data.SiteConfig)*/
     ;(function(arr){
-      if(arr){
+      if(arr&&arr.length){
         var el = {};
         arr.forEach(item => {
           el[item.PayName] = [item.MinMoney, item.MaxMoney];
@@ -956,10 +956,12 @@ window.RootApp={
     }
 
     ;(function(a){
-      if (!a) {return}
-      for (var i = a.length - 1; i >= 0; i--) {
-        if (typeof(a[i].Img)=="object") {
-          a[i].Img=a[i].Img&&a[i].Img[0];
+      // if (!a) {return}
+      if(a&&a.length){
+        for (var i = a.length - 1; i >= 0; i--) {
+          if (typeof(a[i].Img)=="object") {
+            a[i].Img=a[i].Img&&a[i].Img[0];
+          }
         }
       }
     })(data.ActivityConfig)
