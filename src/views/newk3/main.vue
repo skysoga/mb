@@ -18,7 +18,7 @@
       </div>
       <div class="userContent"></div>
     </div>
-    <div :style="{opacity:getBetShow?1:0,'z-index':getBetShow?20:0}" @touchstart="touchstart" class="betContainer">
+    <div :style="{opacity:getBetShow?1:0,'z-index':getBetShow?20:0}" @touchstart="touchChangeHeight" class="betContainer">
       <div class="header">
         <div class="info fix">
           <div @click="changeShow" class="back"></div>
@@ -30,20 +30,18 @@
       <ul class="playtype fix" v-show="playtypeShow == 'playtype'">
         <li v-for="(d,i) in playtype" @click="toPlay(i)"><em>{{d}}</em></li>
       </ul>
-      <swiper ref="mySwiper" :options="swiperOption" v-show="playtypeShow == ''">
-      <swiper-slide v-for="(d,i,j) in cfg">
-      <div class="betbox" :class="i">
-        <div class="topshadow"></div>
-        <div ref="buttonList" class="newmain">
-          <ul class="buttonList fix">
-            <li v-for="e in d.itemArr" :class = "{curr:chosen.indexOf(e) > -1,bgnone:e==0}"><span v-if="!(e==0)" @click="addNum(e)" class="fix"><em><i>{{e}}</i></em></span></li>
-          </ul>
+      <div class="betboxContainer fix"  @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend" :style="{ transform: 'translate3d('+movey+'px, 0px, 0px)',transition:transition+'s',width:8*clientWidth+'px'}">
+        <div class="betbox" :class="i" v-for="(d,i,j) in cfg" :style="{width:clientWidth+'px'}">
+          <div class="topshadow"></div>
+          <div ref="buttonList" class="newmain">
+            <ul class="buttonList fix">
+              <li v-for="e in d.itemArr" :class = "{curr:chosen.indexOf(e) > -1,bgnone:e==0}"><span v-if="!(e==0)" @click="addNum(e)" class="fix"><em><i>{{e}}</i></em></span></li>
+            </ul>
+          </div>
+          <div class="topshadow"></div>
+          <div class="bottomshadow" :style="{height:heightArr[j]+'px'}"></div>
         </div>
-        <div class="topshadow"></div>
-        <div class="bottomshadow" :style="{height:heightArr[j]+'px'}"></div>
       </div>
-      </swiper-slide>
-      </swiper>
       <mainfooter ref="footer" :betshow="betshow" :chosen="chosen"></mainfooter>
     </div>
   </div>
@@ -114,6 +112,11 @@
         mainHeight:0,
         beforeScreenHeight:0,
         clientWidth:document.documentElement.clientWidth,
+        tempy:0,
+        movey:0,
+        card:0,
+        maxCard:8,
+        transition:0,
         cfg:cfg,
         heightArr:[],
         swiperOption:{
@@ -177,7 +180,7 @@
           this.heightArr[i] += temp
         }
       },
-      touchstart(){
+      touchChangeHeight(){
         this.changeHeight()
       },
       changeShow(){
@@ -194,7 +197,48 @@
           this.swiper.slideTo(witch+1, 1000, false)
         },100)
         
-      }
+      },
+      touchstart(e){
+        this.tempy = e.touches[0].clientX
+        console.log('开始触摸:'+this.tempy)
+      },
+      touchmove(e){
+        this.moving(e)
+        e.preventDefault()
+      },
+      moving(e){
+        var newpoint = e.touches[0].clientX
+        // alert(`起始点：${this.tempy}，校对点：${newpoint}`)
+        if(this.tempy+40<newpoint || this.tempy>newpoint+40){
+          this.movey = e.touches[0].clientX-this.tempy-this.card*this.clientWidth
+        }else{
+          // e.preventDefault()
+        }
+      },
+      touchend(e){
+        this.tempy = 0
+        if(this.movey > -this.clientWidth * this.card + 40 && this.card > 0){
+          this.transition = .3
+          this.movey = -this.clientWidth * (this.card-1)
+          this.card -=1
+          setTimeout(()=>{
+            this.transition = 0
+          },500)
+        }else if(this.movey < -this.clientWidth * this.card - 40 && this.card < this.maxCard-1){
+          this.transition = .3
+          this.movey = -this.clientWidth * (this.card+1)
+          this.card +=1
+          setTimeout(()=>{
+            this.transition = 0
+          },500)
+        }else{
+          this.transition = .2
+          this.movey = -this.clientWidth * this.card
+          setTimeout(()=>{
+            this.transition = 0
+          },200)
+        }
+      },
     },
     mounted(){
       this.setHeight()
@@ -348,6 +392,7 @@
   .betbox{
     padding-bottom:2.5em;
     width:100%;
+    float:left;
   }
   .newmain{
     position:relative;
