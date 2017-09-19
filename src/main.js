@@ -283,8 +283,7 @@ window._fetch = function (data, option = {}){
     var keys=data.Password&&"Password"||data.SafePassword&&"SafePassword"
     var IVK=getCookie('IVK')
     if(IVK){
-      var usr = user.toLocaleLowerCase()
-      console.log(usr);
+      var usr = (user+"").toLocaleLowerCase()
       data[keys]=(['SetPwd','SetSafePass','Register','SetPassForget'].indexOf(data.Action)===-1)?md5(md5(usr+md5(data[keys]))+IVK):md5(usr+md5(data[keys]))
       data.Type='Hash'
     }
