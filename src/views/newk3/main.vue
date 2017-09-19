@@ -1,14 +1,38 @@
 <template>
-  <div class="newContainer" @touchend="touchend">
-    <div class="betContainer">
-      <div class="video">
-        <img src="/static/img/newk3-bg.jpg" alt="" width="100%">
+  <div class="newContainer">
+    <div class="video">
+      <img src="/static/img/newk3-bg.jpg" alt="" width="100%">
+    </div>
+    <div v-show="show == 'main'" @click="changeShow" class="mainPage">
+      <div class="result">
+        <table>
+          <tr>
+            <td><span>开奖号码 3,5,6</span></td>
+            <td><span>截止 01:00:35</span></td>
+            <td><span>期号 20870808</span></td>
+          </tr>
+        </table>
+        <div class="sound" @click.stop="">
+          <em></em>
+        </div>
       </div>
-      <mainheader></mainheader>
-      <swiper :options="swiperOption">
+      <div class="userContent"></div>
+    </div>
+    <div :style="{opacity:getBetShow?1:0,'z-index':getBetShow?20:0}" @touchstart="touchstart" class="betContainer">
+      <div class="header">
+        <div class="info fix">
+          <div @click="changeShow" class="back"></div>
+          <div class="title" @click="playtypeShow='playtype'">和值</div>
+          <div class="help"></div>
+        </div>
+      </div>
+      <div class="space"></div>
+      <ul class="playtype fix" v-show="playtypeShow == 'playtype'">
+        <li v-for="(d,i) in playtype" @click="toPlay(i)"><em>{{d}}</em></li>
+      </ul>
+      <swiper ref="mySwiper" :options="swiperOption" v-show="playtypeShow == ''">
       <swiper-slide v-for="(d,i,j) in cfg">
       <div class="betbox" :class="i">
-        <div class="space"></div>
         <div class="topshadow"></div>
         <div ref="buttonList" class="newmain">
           <ul class="buttonList fix">
@@ -25,7 +49,6 @@
   </div>
 </template>
 <script>
-  import mainheader from './header'
   import mainfooter from './footer'
   import { swiper, swiperSlide, swiperPlugins } from 'vue-awesome-swiper'
   var cfg = {
@@ -80,7 +103,6 @@
   }
   export default {
     components: {
-      mainheader,
       mainfooter,
       swiper,
       swiperSlide
@@ -97,10 +119,19 @@
         swiperOption:{
           autoplay:0,
           loop:true
-        }
+        },
+        show:'main',
+        playtype:['和值','三同号通选','三同号单选','三不同号','三连号通选','二同号复选','二同号单选','二不同号'],
+        playtypeShow:''
       }
     },
-    created(){
+    computed:{
+      getBetShow(){
+        return (this.show == 'bet')
+      },
+      swiper() {
+        return this.$refs.mySwiper.swiper
+      }
     },
     methods:{
       addNum(num){
@@ -124,6 +155,7 @@
         if (this.beforeScreenHeight == screenHeight) {
           return
         }
+        console.log('高度变化')
         this.beforeScreenHeight = screenHeight
         var footerHeight = this.$refs.footer.$el.offsetHeight
         var buttonList = document.getElementsByClassName('buttonList')
@@ -132,21 +164,157 @@
           var mainHeight = screenHeight - (2.3+1+1+2.5)*em - buttonList[i].offsetHeight
           temp.push(mainHeight)
         }
+        // temp.unshift(temp[temp.length-1])
         this.heightArr = temp
         console.log(this.heightArr)
         console.log('继续检测高度结束')
       },
-      touchend(){
-        console.log('检测高度')
-        this.setHeight()
+      changeHeight(){
+        var screenHeight = document.documentElement.clientHeight
+        var temp = screenHeight - this.beforeScreenHeight
+        this.beforeScreenHeight = screenHeight
+        for (var i = 0; i < this.heightArr.length; i++) {
+          this.heightArr[i] += temp
+        }
+      },
+      touchstart(){
+        this.changeHeight()
+      },
+      changeShow(){
+        if (this.show == 'main') {
+          this.show = 'bet'
+          this.changeHeight()
+          return
+        }
+        return this.show = 'main'
+      },
+      toPlay(witch){
+        this.playtypeShow=''
+        setTimeout(()=>{
+          this.swiper.slideTo(witch+1, 1000, false)
+        },100)
+        
       }
     },
     mounted(){
       this.setHeight()
+      setTimeout(()=>{
+        this.changeHeight()
+      },200)
     }
   }
 </script>
 <style lang="scss" scoped>
+  .mainPage{
+    height:100%;
+    position:fixed;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    z-index:20;
+  }
+  .result{
+    color:white;
+    position:relative;
+    table{
+      width:100%;
+      text-align:center;
+      background:rgba(0, 0, 0, 0.2);
+      border-bottom:1px solid rgba(0, 0, 0, 0.12);
+
+    }
+    span{
+      font-size:.7em;
+      display:block;
+      width:100%;
+      line-height:1.4em;
+      margin:.8em 0;
+      border-right:1px solid rgba(0,0,0,.12);
+    }
+  }
+  .sound{
+    position:absolute;
+    width:2em;
+    height:2em;
+    line-height:2em;
+    text-align:center;
+    right:.3em;
+    em{
+      display:block;
+      &:before{
+        content:'\e64b';
+        font-family:'iconfont';
+        display:block;
+      }
+    }
+  }
+
+  //header样式
+  .header{
+    height:2.3em;
+    position:fixed;
+    z-index:50;
+    top:0;
+    left:0;
+    width:100%;
+  }
+  .info{
+    background: rgba(0, 0, 0, 0.6);
+    height:2.3em;
+    line-height:2.3em;
+    width:100%;
+    > div{
+      float:left;
+      height:2.3em;
+    }
+    .back,.help{
+      width:15%;
+    }
+    .title{
+      color:white;
+      width:70%;
+      text-align:center;
+    }
+  }
+  .back:before,.help:before{
+    font-family:'iconfont';
+    color:rgba(255, 255, 255, 0.3);
+    display:block;
+    text-align:center;
+  }
+  .back:before{
+    content:'\e64b';
+  }
+  .help:before{
+    content:'\e64b';
+  }
+  //header样式结束
+
+  
+  .playtype{
+    position:fixed;
+    z-index:50;
+    height:calc(100% - 2.3em - 2.5em);
+    background:rgba(0, 0, 0, 0.6);
+    padding:0 .35rem;
+    li{
+      color:white;
+      float:left;
+      width:4.4rem;
+      border:1px solid #aaa;
+      border-radius:.25rem;
+      margin:.35rem;
+      em{
+        font-size:.75em;
+        display:block;
+        text-align:center;
+        line-height:2.6em;
+      }
+    }
+  }
+
+
   .space{
     height:2.3em;
     width:100%;
@@ -169,6 +337,7 @@
   }
   .betContainer{
     height:100%;
+    transition:.2s;
   }
   .topshadow{
     height:1em;
@@ -278,6 +447,19 @@
           display:block;
           height:3em;
           background:url('/static/img/button-text-center-bg.svg')
+        }
+      }
+      .curr{
+        span{
+          &:before{
+            background:url('/static/img/button-text-left-bg-curr.svg') no-repeat left;
+          }
+          &:after{
+            background:url('/static/img/button-text-right-bg-curr.svg') no-repeat left;
+          }
+          em{
+          background:url('/static/img/button-text-center-bg-curr.svg')
+          }
         }
       }
     }
