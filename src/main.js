@@ -283,6 +283,8 @@ window._fetch = function (data, option = {}){
     var keys=data.Password&&"Password"||data.SafePassword&&"SafePassword"
     var IVK=getCookie('IVK')
     if(IVK){
+      var ForgetArr=['SetPassForget','VerifySafePwdForget']
+      user=(ForgetArr.indexOf(data.Action)>-1&&sessionStorage.getItem('UserName'))||user//解决找回密码 加密问题
       var usr = (user+"").toLocaleLowerCase()
       data[keys]=(['SetPwd','SetSafePass','Register','SetPassForget'].indexOf(data.Action)===-1)?md5(md5(usr+md5(data[keys]))+IVK):md5(usr+md5(data[keys]))
       data.Type='Hash'
@@ -324,8 +326,7 @@ window._fetch = function (data, option = {}){
     if(user){
       fetchUrl+='&U='+user
     }
-    var ForgetArr=['SetPassForget','VerifySafePwdForget']
-    user=(ForgetArr.indexOf(data.Action)>-1&&sessionStorage.getItem('UserName'))||user//解决找回密码 加密问题
+    
     if (data.Action==='AddBetting'||data.Action==='AddChaseBetting') {
       fetchUrl+='&T='+new Date(now-state.Difftime).format('ddhhmmss')
     }
