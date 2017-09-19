@@ -214,16 +214,17 @@ window._catch = function(data){
     str.push(i+'='+k)
   }
   str=str.join('&')
-  var fetchUrl = state.UserName||data.UserName
-  fetchUrl = fetchUrl?'/catch?U='+fetchUrl:'/catch'
+  // var fetchUrl = state.UserName||data.UserName
+  // fetchUrl = '/catch?'+(fetchUrl&&('U='+fetchUrl+'&'))+str
+  var fetchUrl = '/catch?'+str
   fetch(fetchUrl, {
     credentials:'same-origin',
-    method: 'POST',
+    method: 'GET',
     cache: 'no-store',
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     },
-    body: str
+    // body: str
   })
 }
 
@@ -272,7 +273,7 @@ function FetchCatch({msg, error}){
 
 var fetchArr=[]
 window._fetch = function (data, option = {}){
-  var user = data.Action!=='Register'&&state.UserName||data.UserName
+  var user = /*data.Action!=='Register'&&*/state.UserName||data.UserName
   data = Xss(data)
   if (data[1]) {
     //可能有xss
@@ -282,11 +283,19 @@ window._fetch = function (data, option = {}){
   if(data.Password||data.SafePassword){
     var keys=data.Password&&"Password"||data.SafePassword&&"SafePassword"
     var IVK=getCookie('IVK')
-    if(IVK){
-      var usr = user.toLocaleLowerCase()
-      console.log(usr);
-      data[keys]=(['SetPwd','SetSafePass','Register','SetPassForget'].indexOf(data.Action)===-1)?md5(md5(usr+md5(data[keys]))+IVK):md5(usr+md5(data[keys]))
-      data.Type='Hash'
+    try{
+      if(IVK){
+        var usr = (user+'').toLocaleLowerCase()
+        // console.log(usr);
+        data[keys]=(['SetPwd','SetSafePass','Register','SetPassForget'].indexOf(data.Action)===-1)?md5(md5(usr+md5(data[keys]))+IVK):md5(usr+md5(data[keys]))
+        data.Type='Hash'
+      }
+    }catch(e){
+      _catch({msg:e.message,UserName:user,UserType:typeof(user),IVK})
+      /*return {then:function(f){
+        f({Code:-1,StrCode:'密码处理错误'})
+        // FetchCatch('密码处理错误',e)
+      }}*/
     }
   }
   data.SourceName=_App?"APP":"MB"

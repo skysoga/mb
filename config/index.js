@@ -4,8 +4,8 @@ var Usercfg = require('./usercfg.js')
 module.exports = {
   build: { // production 环境
     env: require('./prod.env'),    // 使用 config/prod.env.js 中定义的编译环境
-    index: path.resolve(__dirname, '../dist/index.html'),  // 编译输入的 index.html 文件
-    assetsRoot: path.resolve(__dirname, '../dist'),  // 编译输出的静态资源路径
+    index: path.resolve(__dirname, '../MB/index.html'),  // 编译输入的 index.html 文件
+    assetsRoot: path.resolve(__dirname, '../MB'),  // 编译输出的静态资源路径
     assetsSubDirectory: 'static',                    // 编译输出的二级目录
     assetsPublicPath:Usercfg.assetsPublicPath||'/',
     // assetsPublicPath: Usercfg.assetsPublicPath||'/',   // 编译发布的根目录，可配置为资源服务器域名或 CDN 域名
