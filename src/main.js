@@ -282,6 +282,8 @@ window._fetch = function (data, option = {}){
   data=data[0]
   if(data.Password||data.SafePassword){
     var keys=data.Password&&"Password"||data.SafePassword&&"SafePassword"
+    var ForgetArr=['SetPassForget','VerifySafePwdForget']
+    user=(ForgetArr.indexOf(data.Action)>-1&&sessionStorage.getItem('UserName'))||user//解决找回密码 加密问题
     var IVK=getCookie('IVK')
     try{
       if(IVK){
