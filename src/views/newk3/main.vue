@@ -30,8 +30,8 @@
       <ul class="playtype fix" v-show="playtypeShow == 'playtype'">
         <li v-for="(d,i) in playtype" @click="toPlay(i)"><em>{{d}}</em></li>
       </ul>
-      <div class="betboxContainer fix"  @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend" :style="{ transform: 'translate3d('+movey+'px, 0px, 0px)',transition:transition+'s',width:8*clientWidth+'px'}" v-show="playtypeShow == ''">
-        <div class="betbox" :class="i" v-for="(d,i,j) in cfg" :style="{width:clientWidth+'px'}">
+      <div class="betboxContainer fix" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend" :style="{ transform: 'translate3d('+movey+'px, 0px, 0px)',transition:transition+'s',width:8*clientWidth+'px'}" v-show="playtypeShow == ''">
+        <div class="betbox" @touchmove.stop="scrollList" :class="i" v-for="(d,i,j) in cfg" :style="{width:clientWidth+'px'}">
           <div class="topshadow"></div>
           <div ref="buttonList" class="newmain">
             <ul class="buttonList fix">
@@ -246,6 +246,9 @@
           },200)
         }
       },
+      scrollList(e){
+        this.moving(e)
+      }
     },
     mounted(){
       this.setHeight()
@@ -384,10 +387,11 @@
   .newContainer{
     position:relative;
     z-index:20;
-    height:100%;
+    width:100%;
   }
   .betContainer{
-    height:100%;
+    width:100%;
+    overflow:hidden;
     transition:.2s;
   }
   .topshadow{
