@@ -60,10 +60,11 @@ export default {
         XYNC:"幸运农场",
         PK10:"北京PK10",
         KL8:"北京快乐8",
-        PL35:"排列3/5",
+        PL35:"排列3",
         FC3D:"福彩3D",
         SYX5:"11选5",
-        K3:"快3"
+        K3:"快3",
+        "6HC":"六合彩"
       },
       BetweenType: 0,
       res_data: [],
@@ -149,7 +150,7 @@ export default {
       _fetch(ajaxData_obj).then((json) => {
         if (json.Code === 1) {
           let code_arr = []
-          let StrCode = json.StrCode
+          let StrCode = json.Data||json.StrCode
           code_arr = StrCode.split("@")
           for (var i = 0; i < code_arr.length; i++) {
             let temp_obj = code_arr[i].split("#")

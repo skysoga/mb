@@ -24,7 +24,15 @@ export default {
     // 判断是否有缓存帐号记录
     var obj=this.getLocalStorage();
     this.UserList=(obj&&obj.length)?this.ArrToObj(obj):''
-
+  },
+  beforeRouteEnter:(to,from,next)=>{
+    next(v=>{
+      var IVK=getCookie('IVK')
+      if(!IVK){
+        let arr={Action:"GetInitData"}//修正IVK获取问题
+        _fetch(arr).then()
+      }
+    })
   },
   methods:{
     $vaSubmit:function(e){
@@ -44,7 +52,7 @@ export default {
           if (json.Code===1) {
             RootApp.Logout()
             RootApp.Login(this.UserName,()=>{
-              this.addLogin(this.UserName.toLowerCase(),this.Password)
+              this.addLogin(this.UserName.toLowerCase(),md5(this.UserName+md5(this.Password)))
               router.replace(state.login2path||"/index")
             })
           }else if(json.Code===2){
@@ -164,3 +172,4 @@ export default {
     'bottom-box': BottomBox
   }
 }
+
