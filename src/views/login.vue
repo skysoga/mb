@@ -6,7 +6,7 @@
           <td>账号</td>
           <td colspan="2" class="username">
             <input v-model.lazy="UserName" class="input" tag="帐号" type="email" ref="UserName" v-va:UserName placeholder="请输入账号"/>
-            <span v-show="UserList" @click="setType(true)"></span>
+            <span v-if="$store.state.constant._App && UserList" @click="setType(true)"></span>
           </td>
         </tr>
         <tr>
