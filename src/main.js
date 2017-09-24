@@ -56,6 +56,7 @@ import App from './App'
 import routes from './routes/routes'
 import Va from './plugins/va'
 import {DAY_TIME, GMT_DIF} from './js/kit'
+var md5=require('./plugins/md5.min')
 var localState={}
 window.Vue=Vue
 Vue.use(Va)
@@ -159,6 +160,17 @@ window._Tool = {
   }
 }
 
+//获取cookie
+window.getCookie=function(cname){
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+    }
+    return "";
+}
 
 // 修改默认配置XSS 添加STYLE
 var XssList=filterXSS.whiteList
@@ -202,16 +214,17 @@ window._catch = function(data){
     str.push(i+'='+k)
   }
   str=str.join('&')
-  var fetchUrl = state.UserName||data.UserName
-  fetchUrl = fetchUrl?'/catch?U='+fetchUrl:'/catch'
+  // var fetchUrl = state.UserName||data.UserName
+  // fetchUrl = '/catch?'+(fetchUrl&&('U='+fetchUrl+'&'))+str
+  var fetchUrl = '/catch?'+str
   fetch(fetchUrl, {
     credentials:'same-origin',
-    method: 'POST',
+    method: 'GET',
     cache: 'no-store',
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     },
-    body: str
+    // body: str
   })
 }
 
@@ -260,12 +273,33 @@ function FetchCatch({msg, error}){
 
 var fetchArr=[]
 window._fetch = function (data, option = {}){
+  var user = /*data.Action!=='Register'&&*/state.UserName||data.UserName
   data = Xss(data)
   if (data[1]) {
     //可能有xss
     console.log(data[1]);
   }
   data=data[0]
+  if(data.Password||data.SafePassword){
+    var keys=data.Password&&"Password"||data.SafePassword&&"SafePassword"
+    var ForgetArr=['SetPassForget','VerifySafePwdForget']
+    user=(ForgetArr.indexOf(data.Action)>-1&&sessionStorage.getItem('UserName'))||user//解决找回密码 加密问题
+    var IVK=getCookie('IVK')
+    try{
+      if(IVK){
+        var usr = (user+'').toLocaleLowerCase()
+        // console.log(usr);
+        data[keys]=(['SetPwd','SetSafePass','Register','SetPassForget'].indexOf(data.Action)===-1)?md5(md5(usr+md5(data[keys]))+IVK):md5(usr+md5(data[keys]))
+        data.Type='Hash'
+      }
+    }catch(e){
+      _catch({msg:e.message,UserName:user,UserType:typeof(user),IVK})
+      /*return {then:function(f){
+        f({Code:-1,StrCode:'密码处理错误'})
+        // FetchCatch('密码处理错误',e)
+      }}*/
+    }
+  }
   data.SourceName=_App?"APP":"MB"
   var str=[],k;
   for(var i in data){
@@ -299,13 +333,29 @@ window._fetch = function (data, option = {}){
     if(window.site){
       fetchUrl+='&S='+site
     }
-    var user = data.Action!=='Register'&&state.UserName||data.UserName
     if(user){
       fetchUrl+='&U='+user
     }
+    
     if (data.Action==='AddBetting'||data.Action==='AddChaseBetting') {
       fetchUrl+='&T='+new Date(now-state.Difftime).format('ddhhmmss')
     }
+
+    /*var IVK=getCookie('IVK')
+    if(IVK!=null){
+      //密码特殊处理
+      if(str.indexOf('Password')>-1){
+        var obj=str.split('&')
+        str=obj.map(v=>{
+          if(v.indexOf('Password')>-1){
+            var xtr=v.split('='),
+            pwArr=['SetPwd','SetSafePass','Register','SetPassForget']
+            v=xtr[0]+'='+(pwArr.indexOf(data.Action)>-1?md5(user+md5(xtr[1])):md5(md5(user+md5(xtr[1]))+IVK))
+          }
+          return v
+        }).join('&')+'&Type=Hash'
+      }
+    }*/
 
     fetch(fetchUrl, {
       credentials:'same-origin',

@@ -20,13 +20,20 @@ export default {
       UserList:''
     }
   },
-  created(){
+  beforeRouteEnter:(to,from,next)=>{    
+    next(v=>{
+      var IVK=getCookie('IVK')
+      if(!IVK){
+        let arr={Action:"GetInitData"}//修正IVK获取问题
+        _fetch(arr).then()
+      }
+    })
+  },  created(){
     // 判断是否有缓存帐号记录
     var obj=this.getLocalStorage();
     this.UserList=(obj&&obj.length)?this.ArrToObj(obj):''
     
-  },
-  methods:{
+  },  methods:{
     $vaSubmit:function(e){
       //浏览器记住密码修正
       this.UserName=this.$refs.UserName.value

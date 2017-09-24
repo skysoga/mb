@@ -110,7 +110,6 @@ export default {
       }
       var that = this
       _fetch(ajax).then((json)=>{
-        console.log(json)
         if(json.Code===1||json.Code===0) {
          layer.open({
             shadeClose: false,
@@ -124,6 +123,7 @@ export default {
               layer.close(index);
               var ajax1 = ajax;
               ajax1.Action="Login";
+              ajax1.Password=that.Password;
               _fetch(ajax1).then((json)=>{
                 if(json.Code === 1){
                   RootApp.Login(that.UserName,function(){
