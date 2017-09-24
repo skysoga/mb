@@ -56,7 +56,7 @@ import App from './App'
 import routes from './routes/routes'
 import Va from './plugins/va'
 import {DAY_TIME, GMT_DIF} from './js/kit'
-var md5=require('./plugins/md5.min')
+window.md5=require('./plugins/md5.min')
 var localState={}
 window.Vue=Vue
 Vue.use(Va)
@@ -271,6 +271,20 @@ function FetchCatch({msg, error}){
   }
 }
 
+/**
+ * [判断是否已加密]
+ * setLoginPass(), u 用户名，p 密码,i IVK
+ */
+function setLoginPass(u,p,i){
+  console.log(p,p.length)
+  if(p.length==32){
+    return md5(p+i)
+  }else{
+    return md5(md5(u+md5(p))+i)
+  }
+  return
+}
+
 var fetchArr=[]
 window._fetch = function (data, option = {}){
   var user = /*data.Action!=='Register'&&*/state.UserName||data.UserName
@@ -289,7 +303,7 @@ window._fetch = function (data, option = {}){
       if(IVK){
         var usr = (user+'').toLocaleLowerCase()
         // console.log(usr);
-        data[keys]=(['SetPwd','SetSafePass','Register','SetPassForget'].indexOf(data.Action)===-1)?md5(md5(usr+md5(data[keys]))+IVK):md5(usr+md5(data[keys]))
+        data[keys]=(['SetPwd','SetSafePass','Register','SetPassForget'].indexOf(data.Action)===-1)?setLoginPass(usr,data[keys],IVK):md5(usr+md5(data[keys]))
         data.Type='Hash'
       }
     }catch(e){
@@ -336,7 +350,7 @@ window._fetch = function (data, option = {}){
     if(user){
       fetchUrl+='&U='+user
     }
-    
+
     if (data.Action==='AddBetting'||data.Action==='AddChaseBetting') {
       fetchUrl+='&T='+new Date(now-state.Difftime).format('ddhhmmss')
     }
@@ -972,7 +986,7 @@ window.RootApp={
       }
     })(data.SiteConfig)*/
     ;(function(arr){
-      if(arr){
+      if(arr&&arr.length){
         var el = {};
         arr.forEach(item => {
           el[item.PayName] = [item.MinMoney, item.MaxMoney];
@@ -1006,10 +1020,12 @@ window.RootApp={
     }
 
     ;(function(a){
-      if (!a) {return}
-      for (var i = a.length - 1; i >= 0; i--) {
-        if (typeof(a[i].Img)=="object") {
-          a[i].Img=a[i].Img&&a[i].Img[0];
+      // if (!a) {return}
+      if(a&&a.length){
+        for (var i = a.length - 1; i >= 0; i--) {
+          if (typeof(a[i].Img)=="object") {
+            a[i].Img=a[i].Img&&a[i].Img[0];
+          }
         }
       }
     })(data.ActivityConfig)

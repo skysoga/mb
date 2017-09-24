@@ -7,7 +7,7 @@ export default {
       'pc': '电脑版'
     }
     if(_App) delete  BottomBoxList.pc
-    
+
     return{
       UserName:'',
       Password:'',
@@ -20,7 +20,12 @@ export default {
       UserList:''
     }
   },
-  beforeRouteEnter:(to,from,next)=>{    
+  created(){
+    // 判断是否有缓存帐号记录
+    var obj=this.getLocalStorage();
+    this.UserList=(obj&&obj.length)?this.ArrToObj(obj):''
+  },
+  beforeRouteEnter:(to,from,next)=>{
     next(v=>{
       var IVK=getCookie('IVK')
       if(!IVK){
@@ -28,12 +33,8 @@ export default {
         _fetch(arr).then()
       }
     })
-  },  created(){
-    // 判断是否有缓存帐号记录
-    var obj=this.getLocalStorage();
-    this.UserList=(obj&&obj.length)?this.ArrToObj(obj):''
-    
-  },  methods:{
+  },
+  methods:{
     $vaSubmit:function(e){
       //浏览器记住密码修正
       this.UserName=this.$refs.UserName.value
@@ -51,7 +52,7 @@ export default {
           if (json.Code===1) {
             RootApp.Logout()
             RootApp.Login(this.UserName,()=>{
-              this.addLogin(this.UserName.toLowerCase(),this.Password)
+              this.addLogin(this.UserName.toLowerCase(),md5(this.UserName+md5(this.Password)))
               router.replace(state.login2path||"/index")
             })
           }else if(json.Code===2){
@@ -91,17 +92,24 @@ export default {
     addLogin(key,val){
       // 添加登录记录
       var getArr=this.getLocalStorage()
-      if(!getArr){
-        var setVal=[]
-        setVal.push(key+'@'+val)
-        this.setLocalStorage(setVal)
-      }else{
+      if(getArr&&getArr.length){
         var Arr=getArr
-        Arr.unshift(key+'@'+val)
+        Arr.forEach((i,n)=>{
+          var obj=i.split('&')[0]
+          if(obj==key){
+            Arr.splice(n,1)
+          }
+        })
+        Arr.unshift(key+'&'+val)
+        Arr=this.setArrUN(Arr)
         if(Arr.length>5){
           Arr.pop()
         }
         this.setLocalStorage(Arr)
+      }else{
+        var setVal=[]
+        setVal.push(key+'&'+val)
+        this.setLocalStorage(this.setArrUN(setVal))
       }
     },
     delLogin(val){
@@ -115,6 +123,9 @@ export default {
       // 获取缓存帐号
       return JSON.parse(localStorage.getItem('Logined'))
     },
+    setArrUN(val){
+      return Array.from(new Set(val))
+    },
     setLocalStorage(val){
       localStorage.setItem('Logined',JSON.stringify(val))
     },
@@ -123,7 +134,7 @@ export default {
       obj.splice(key,1)
       this.setLocalStorage(obj)
       this.UserList=obj.length?this.ArrToObj(obj):''
-      this.BottomBoxShow=false      
+      this.BottomBoxShow=false
     },
     isNull(val){
       return val&&val.length
@@ -131,7 +142,7 @@ export default {
     ArrToObj(Arr){
       let Obj={}
       for(var i=0;i<Arr.length;i++){
-        var val=Arr[i].split("@")
+        var val=Arr[i].split("&")
         Obj[val[0]]=val[1]
       }
       return Obj
@@ -142,7 +153,7 @@ export default {
         Action:"Login",
         UserName:user,
         Password:pwd
-      }      
+      }
       layer.msgWait("正在登录")
       _fetch(ajax).then((json)=>{
         if (json.Code===1) {
@@ -161,3 +172,4 @@ export default {
     'bottom-box': BottomBox
   }
 }
+
