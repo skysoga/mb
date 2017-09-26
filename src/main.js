@@ -1018,9 +1018,7 @@ window.RootApp={
             data.GradeList[i].JumpBonus=Number(data.GradeList[i].JumpBonus);
         }
     }
-
     ;(function(a){
-      // if (!a) {return}
       if(a&&a.length){
         for (var i = a.length - 1; i >= 0; i--) {
           if (typeof(a[i].Img)=="object") {

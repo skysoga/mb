@@ -25,7 +25,7 @@
         <div class="headImgListCon fix">
             <span class="nomore"><i class="iconfont"></i></span>
             <div class="headImgList">
-                <div class="fixedHeadImgWidth fix" style="width:75rem">
+                <div class="fixedHeadImgWidth fix" :style="'width:'+List.length*3+'rem'">
                   <img v-for="n in List"
                       :data-id="n.ID"
                       :title="n.ImageName"
