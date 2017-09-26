@@ -64,3 +64,23 @@ table{
   font-size:$fz+em;
   line-height: 2.5em/$fz;
 }
+// 密码眼睛图标
+.passwordICO{
+  // position: relative;
+  span{
+    position: absolute;
+    z-index: 5;
+    padding: 0 1em;
+    right: 0;
+  }
+  span.close:after{
+    font-family:"iconfont";
+    color:#c6c6c6;
+    content:"\e602"
+  }
+  span.open:after{
+    font-family:"iconfont";
+    color: #ff2c55;
+    content:"\e603"
+  }
+}

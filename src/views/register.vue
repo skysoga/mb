@@ -29,14 +29,12 @@
 
       <tr>
         <td>设置密码</td>
-        <td colspan="2"><input class="input fl mL15" type="password" v-va:Password tag="设置密码" v-model.lazy="Password" placeholder="请输入密码" /></td>
+        <td colspan="2" class="passwordICO">
+          <input v-show="Eyes=='close'" type="password" class="input fl mL15" maxlength="16" v-va:Password tag="设置密码" v-model.lazy="Password" placeholder="请输入您要设置的密码" />
+          <input v-show="Eyes=='open'" type="text" class="input fl mL15" maxlength="16" v-va:Password tag="设置密码" v-model="Password" placeholder="请输入您要设置的密码" />
+          <span @click="setEyes()" :class="['iconfont',Eyes]"></span>
+        </td>
       </tr>
-
-      <tr>
-        <td>确认密码</td>
-        <td colspan="2"><input class="input fl mL15" type="password" v-va:checkPassword.Password="[{'equal':'Password'}]" tag="确认密码" v-model.lazy="checkPassword" placeholder="请再次输入密码" /></td>
-      </tr>
-
       <tr>
         <td>验证码</td>
         <td ><input class="input" type="email" v-va:ImgCode tag="验证码" v-model.lazy="ImgCode" placeholder="请输入验证码" autocomplete="off"></td>
@@ -71,7 +69,8 @@ export default {
       YzmSrc: '',         //邀请码图片地址
       YqmReadOnly: false,  //邀请码框是否只读
       existed:'',
-      exUserName:''
+      exUserName:'',
+      Eyes:'open'
     }
   },
   beforeRouteLeave: (to, from,next)=>{
@@ -174,7 +173,10 @@ export default {
               })
           },10)
         }
-      }
+      },
+    setEyes(){
+      this.Eyes=this.Eyes=='open'?'close':'open'
+    }
   }
 }
 </script>

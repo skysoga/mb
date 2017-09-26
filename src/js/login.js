@@ -17,7 +17,8 @@ export default {
       IcodeShow:false,
       BottomBoxShow: false,
       BottomBoxList,
-      UserList:''
+      UserList:'',
+      Eyes:'close'
     }
   },
   created(){
@@ -165,6 +166,9 @@ export default {
           layer.msgWarn(json.StrCode)
         }
       })
+    },
+    setEyes(){
+      this.Eyes=this.Eyes=='open'?'close':'open'
     }
   },
   //子组件

@@ -16,7 +16,11 @@
         </tr>
         <tr>
           <td>密码</td>
-          <td colspan="2"><input v-model.lazy="Password"  class="input" tag="密码" type="password" ref="Password" v-va:Password placeholder="请输入密码" /></td>
+          <td colspan="2" class="passwordICO">
+            <input v-show="Eyes=='open'" v-model.lazy="Password" maxlength="16" class="input" tag="密码" type="text" ref="Password" v-va:Password placeholder="请输入密码" />
+            <input v-show="Eyes=='close'" v-model.lazy="Password" maxlength="16"  class="input" tag="密码" type="password" ref="Password" v-va:Password placeholder="请输入密码" />
+            <span @click="setEyes()" :class="['iconfont',Eyes]"></span>
+          </td>
         </tr>
         <tr v-if="IcodeShow">
           <td>验证码</td>
