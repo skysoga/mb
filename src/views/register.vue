@@ -37,7 +37,7 @@
       </tr>
       <tr>
         <td>验证码</td>
-        <td ><input class="input" type="email" v-va:ImgCode tag="验证码" v-model.lazy="ImgCode" placeholder="请输入验证码" autocomplete="off"></td>
+        <td ><input class="input" type="email" maxlength="4" v-va:ImgCode tag="验证码" v-model.lazy="ImgCode" placeholder="请输入验证码" autocomplete="off"></td>
         <td @click = 'refreshYzm'>
           <img class="yzm" :src="YzmSrc">
         </td>

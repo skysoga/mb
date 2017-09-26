@@ -24,7 +24,7 @@
         </tr>
         <tr v-if="IcodeShow">
           <td>验证码</td>
-          <td><input type="text" v-va:ImgCode tag="验证码" v-model="ImgCode" placeholder="请输入验证码">
+          <td><input type="text" maxlength="4" v-va:ImgCode tag="验证码" v-model="ImgCode" placeholder="请输入验证码">
           </td>
           <td>
             <img class="yzm" :src="imgSrc" @click="imgUrl">
