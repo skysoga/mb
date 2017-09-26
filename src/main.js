@@ -73,7 +73,7 @@ Vue.directive('x', {
     })
   },
   unbind:function(el,binding){
-    el.removeEventListener("input")
+    el.removeEventListener("input",function (){})
   }
 })
 /**
