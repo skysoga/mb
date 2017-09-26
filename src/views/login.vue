@@ -1,5 +1,10 @@
 <template>
   <div class="main">
+    <div class="header">
+      <div class="headImg">
+        <img src="http://imagess-google.com/system/common/headimg/0A472675E5E5AF50.jpg" width="100%" height="100%" alt="">
+      </div>
+    </div>
     <table>
       <tbody>
         <tr>
@@ -25,9 +30,12 @@
       </tbody>
     </table>
 
-    <router-link class='forget fr' to = "/register">没有账号? 立即注册</router-link>
     <div class="loginBtn BTN" v-va-check>
       <a>立即登录</a>
+    </div>
+    <div class="otherBtn">
+      <router-link class='signup' to = "/register">立即注册</router-link>
+      <router-link class='forget' to = "/register">忘记密码</router-link>
     </div>
 
     <ul id="usedList"></ul>
@@ -41,12 +49,24 @@
 
   </div>
 </template>
-
-
-
 <script src="../js/login.js"></script>
 <style lang="scss" scoped>
   @import '../scss/login.scss';
+  .main{
+    background: #fafafa;
+    height: 100%;
+    padding-top: 2.3em;
+  }
+  .headImg{
+    width:4rem;
+    height: 4rem;
+    margin:1.2em auto;
+    img{
+      border-radius: 50%;
+      display: block;
+      border:3px solid #e2e0e0;
+    }
+  }
   .username{
     position:relative;
     span{
@@ -69,6 +89,22 @@
         display:block;
         text-align:center;
       }
+    }
+  }
+  .otherBtn{
+    text-align: center;
+    margin-top:.7em;
+    a{
+      font-size: .7em;
+      color: #bbb;
+      margin: 0 .5em;
+      line-height: 1.5em;
+    }
+    >a{
+      display: inline-block;
+    }
+    .signup{
+      color: #dc3b40;
     }
   }
 </style>
