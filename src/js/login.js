@@ -9,6 +9,9 @@ export default {
     if(_App) delete  BottomBoxList.pc
 
     return{
+      x:{
+        username:0
+      },
       UserName:'',
       Password:'',
       ImgCode:'',

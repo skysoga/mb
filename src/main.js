@@ -65,6 +65,17 @@ Vue.use(Vuex)
 //全局过滤器
 Vue.filter('num', v=>+v) // 转成数字类型
 Vue.filter('filNum',v=>String(Math.floor(v)).length>7?Math.floor(v):v)//数字整数长度大于7位去掉小数点部分
+Vue.directive('x', {
+  bind: function (el,binding,vnode) {
+    el.addEventListener("input",function(){
+      console.log(this)
+      vnode.context.x[binding.expression] = (this.value!='')?1:0
+    })
+  },
+  unbind:function(el,binding){
+    el.removeEventListener("input")
+  }
+})
 /**
  * [format 为Date对象追加format方法]
  * @param  {[string]} format [设置要输出的目标格式 如"yyyy-MM-dd hh:mm:ss" ]
