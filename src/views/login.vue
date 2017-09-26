@@ -34,14 +34,10 @@
       <a>立即登录</a>
     </div>
     <div class="otherBtn">
-      <router-link class='signup' to = "/register">立即注册</router-link>
-      <router-link class='forget' to = "/register">忘记密码</router-link>
+      <router-link class='signup' to = "/register">立即注册</router-link><router-link class='forget' to = "/forgetPwd?Q=ResetPwd">忘记密码</router-link>
     </div>
 
     <ul id="usedList"></ul>
-    <div class="sevice" @click = "setType(false)">
-        <a>登录遇到问题?</a>
-    </div>
     <!-- 区分是否登录记录数据 -->
     <bottom-box v-show = "BottomBoxShow"
                  :list = "isLogin?UserList:BottomBoxList"
@@ -97,14 +93,15 @@
     a{
       font-size: .7em;
       color: #bbb;
-      margin: 0 .5em;
-      line-height: 1.5em;
+      padding: 0 .6em;
+      line-height: 1em;
     }
     >a{
       display: inline-block;
     }
     .signup{
       color: #dc3b40;
+      border-right:1px solid #e5e5e5;
     }
   }
 </style>
