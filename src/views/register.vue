@@ -49,7 +49,7 @@
     </tbody>
   </table>
 
-  <router-link class='forget fr' to = "/login">已有账号? 立即登录</router-link>
+  <router-link class='tologin fr' to = "/login">已有账号? 立即登录</router-link>
   <div class="loginBtn BTN mt30" v-va-check>
     <a>立即注册</a>
   </div>
@@ -184,4 +184,14 @@ export default {
 
 <style lang = "scss" scoped>
   @import '../scss/login.scss';
+  .main{
+    background: #fafafa;
+    height: 100%;
+    padding-top: 3em;
+  }
+  .tologin{
+    font-size:.7em;
+    color:#dc2e2e;
+    margin: 1em 1rem;
+  }
 </style>

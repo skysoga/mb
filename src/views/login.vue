@@ -8,7 +8,7 @@
     <table>
       <tbody>
         <tr>
-          <td>账号</td>
+          <td class="username-icon"></td>
           <td colspan="2" class="username">
             <input v-model="UserName" class="input" tag="帐号" v-x="username" type="email" ref="UserName" v-va:UserName placeholder="请输入账号"/>
             <span v-if="x.username">X</span>
@@ -16,7 +16,7 @@
           </td>
         </tr>
         <tr>
-          <td>密码</td>
+          <td class="password-icon"></td>
           <td colspan="2" class="passwordICO">
             <input v-show="Eyes=='open'" v-model.lazy="Password" maxlength="16" class="input" tag="密码" type="text" ref="Password" v-va:Password placeholder="请输入密码" />
             <input v-show="Eyes=='close'" v-model.lazy="Password" maxlength="16"  class="input" tag="密码" type="password" ref="Password" v-va:Password placeholder="请输入密码" />
@@ -53,6 +53,17 @@
 <script src="../js/login.js"></script>
 <style lang="scss" scoped>
   @import '../scss/login.scss';
+  table{
+    table-layout: fixed;
+    tr{
+      td:first-child{
+        width: 3em;
+      }
+      td:last-child{
+        width: 100%;
+      }
+    }
+  }
   .main{
     background: #fafafa;
     height: 100%;
@@ -67,6 +78,22 @@
       display: block;
       border:3px solid #e2e0e0;
     }
+  }
+  .username-icon,.password-icon{
+    &:before{
+      font-family: 'iconfont';
+      display: block;
+      color:#c6c6c6;
+      font-size:1.2em;
+      line-height: 1em;
+      text-align: center;
+    }
+  }
+  .username-icon:before{
+    content:'\e605';
+  }
+  .password-icon:before{
+    content:'\e604';
   }
   .username{
     position:relative;
