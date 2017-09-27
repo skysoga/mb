@@ -8,15 +8,15 @@
     <table>
       <tbody>
         <tr>
-          <td class="username-icon"></td>
-          <td colspan="2" class="username">
-            <input v-model="UserName" class="input" tag="帐号" v-x="username" type="email" ref="UserName" v-va:UserName placeholder="请输入账号"/>
-            <em v-if="x.username" class="closebtn"></em>
+          <td>账号</td>
+          <td colspan="2" class="username passwordICO">
+            <input v-model="UserName" class="input" tag="帐号" type="email" ref="UserName" v-va:UserName placeholder="请输入账号"/>
+            <em v-show="UserName&&vas.UserName" class="inbtn closebtn" v-va-clear:UserName></em>
             <span v-if="UserList" @click="setType(true)"></span>
           </td>
         </tr>
         <tr>
-          <td class="password-icon"></td>
+          <td>密码</td>
           <td colspan="2" class="passwordICO">
             <input v-show="Eyes=='open'" v-model.lazy="Password" maxlength="16" class="input" tag="密码" type="text" ref="Password" v-va:Password placeholder="请输入密码" />
             <input v-show="Eyes=='close'" v-model.lazy="Password" maxlength="16"  class="input" tag="密码" type="password" ref="Password" v-va:Password placeholder="请输入密码" />
@@ -97,22 +97,6 @@
       display: block;
       border:3px solid #e2e0e0;
     }
-  }
-  .username-icon,.password-icon{
-    &:before{
-      font-family: 'iconfont';
-      display: block;
-      color:#c6c6c6;
-      font-size:1.2em;
-      line-height: 1em;
-      text-align: center;
-    }
-  }
-  .username-icon:before{
-    content:'\e605';
-  }
-  .password-icon:before{
-    content:'\e604';
   }
   .username{
     position:relative;
