@@ -22,12 +22,14 @@ export default {
       BottomBoxShow: false,
       BottomBoxList,
       UserList:'',
-      Eyes:'close'
+      Eyes:'close',
+      lastLoginImage:''
     }
   },
   created(){
     // 判断是否有缓存帐号记录
-    var obj=this.getLocalStorage();
+    var obj=this.getLocalStorage()
+        this.lastLoginImage=localStorage.getItem('lastLoginImage');
     this.UserList=(obj&&obj.length)?this.ArrToObj(obj):''
   },
   beforeRouteEnter:(to,from,next)=>{
@@ -58,6 +60,7 @@ export default {
             RootApp.Logout()
             RootApp.Login(this.UserName,()=>{
               this.addLogin(this.UserName.toLowerCase(),md5(this.UserName+md5(this.Password)))
+              this.setFace()
               router.replace(state.login2path||"/index")
             })
           }else if(json.Code===2){
@@ -152,6 +155,13 @@ export default {
       }
       return Obj
     },
+    setFace(){
+      var arr=['UserPhoto']
+      RootApp.GetInitData(arr, state=>{
+        this.lastLoginImage=state.UserPhoto
+        localStorage.setItem('lastLoginImage',state.UserPhoto)
+      })
+    },
     autoLogin(user,pwd){
       // 从记录自动登录
       var ajax = {
@@ -164,6 +174,7 @@ export default {
         if (json.Code===1) {
           RootApp.Logout()
           RootApp.Login(user,()=>{
+            this.setFace()
             router.replace(state.login2path||"/index")
           })
         }else{

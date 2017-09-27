@@ -2,7 +2,8 @@
   <div class="main">
     <div class="header">
       <div class="headImg">
-        <img src="http://imagess-google.com/system/common/headimg/0A472675E5E5AF50.jpg" width="100%" height="100%" alt="">
+        <img v-if="lastLoginImage" :src="'http://imagess-google.com/system/common/headimg/'+lastLoginImage" width="100%" height="100%" alt="">
+        <img v-else src="/static/img/face.png" width="100%" height="100%" alt="">
       </div>
     </div>
     <table>
