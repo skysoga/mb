@@ -9,9 +9,9 @@
       <tbody>
         <tr>
           <td>账号</td>
-          <td colspan="2" class="username">
-            <input v-model="UserName" class="input" tag="帐号" v-x="username" type="email" ref="UserName" v-va:UserName placeholder="请输入账号"/>
-            <span v-if="x.username">X</span>
+          <td colspan="2" class="username passwordICO">
+            <input v-model="UserName" class="input" tag="帐号" type="email" ref="UserName" v-va:UserName placeholder="请输入账号"/>
+            <span v-show="UserName&&vas.UserName" class="inbtn" v-va-clear:UserName>X</span>
             <span v-if="UserList" @click="setType(true)"></span>
           </td>
         </tr>
