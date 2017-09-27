@@ -11,7 +11,7 @@
         <tr>
           <td class="username-icon"></td>
           <td colspan="2" class="username">
-            <input v-model="UserName" class="input" tag="帐号" type="email" ref="UserName" v-va:UserName placeholder="请输入账号"/>
+            <input v-model="UserName" class="input" tag="帐号" type="email" ref="UserName" v-va:UserName.clear placeholder="请输入账号"/>
             <em v-show="UserName&&vas.UserName" class="closebtn" v-va-clear:UserName></em>
             <span class="downico" v-if="UserList" @click="setType(true)"></span>
           </td>
@@ -20,8 +20,8 @@
           <td class="password-icon"></td>
           <td colspan="2" class="username passwordICO">
           <form autocomplete="off">
-            <input v-if="Eyes=='open'" v-model="Password" maxlength="16" class="input" autocomplete="off" tag="密码" type="text" ref="Password" v-va:Password placeholder="请输入密码" />
-            <input v-if="Eyes=='close'" v-model="Password" maxlength="16"  class="input" autocomplete="off" tag="密码" type="password" ref="Password" v-va:Password placeholder="请输入密码" />
+            <input v-if="Eyes=='open'" v-model="Password" maxlength="16" class="input" autocomplete="off" tag="密码" type="text" ref="Password" v-va:Password.clear placeholder="请输入密码" />
+            <input v-if="Eyes=='close'" v-model="Password" maxlength="16"  class="input" autocomplete="off" tag="密码" type="password" ref="Password" v-va:Password.clear placeholder="请输入密码" />
             <em v-show="Password&&vas.Password" class="closebtn" v-va-clear:Password></em>
             <span @click="setEyes()" :class="['iconfont',Eyes]"></span>
           </form>

@@ -200,7 +200,8 @@ va.install = function(Vue, options){
           vm.$check()
         })        
       }
-      if(binding.arg !== 'EXTEND'){
+      
+      if(binding.modifiers.clear&&binding.arg !== 'EXTEND'){
         // 清除内容
         el.addEventListener('blur',function(){
           // 解决消失后小标无法点击问题

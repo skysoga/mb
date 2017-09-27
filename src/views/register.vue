@@ -18,7 +18,7 @@
         <td  colspan="2" class="username">
           <input class="input fl mL15"
                  type="url"
-                 v-va:UserName.vaUsname="[{reg:/^[a-zA-Z\d]{4,16}$/}]"
+                 v-va:UserName.vaUsname.clear="[{reg:/^[a-zA-Z\d]{4,16}$/}]"
                  tag="帐号"
                  regMsg = "账号应为4-16个字符，可使用字母、数字"
                  v-model="UserName"
@@ -30,8 +30,8 @@
       <tr>
         <td>设置密码</td>
         <td colspan="2" class="username passwordICO">
-          <input v-if="Eyes=='close'" type="password" class="input fl mL15" maxlength="16" v-va:Password tag="设置密码" v-model="Password" placeholder="请输入您要设置的密码" />
-          <input v-if="Eyes=='open'" type="text" class="input fl mL15" maxlength="16" v-va:Password tag="设置密码" v-model="Password" placeholder="请输入您要设置的密码" />
+          <input v-if="Eyes=='close'" type="password" class="input fl mL15" maxlength="16" v-va:Password.clear tag="设置密码" v-model="Password" placeholder="请输入您要设置的密码" />
+          <input v-if="Eyes=='open'" type="text" class="input fl mL15" maxlength="16" v-va:Password.clear tag="设置密码" v-model="Password" placeholder="请输入您要设置的密码" />
           <em v-show="Password&&vas.Password" class="closebtn" v-va-clear:Password></em>
           <span @click="setEyes()" :class="['iconfont',Eyes]"></span>
         </td>
