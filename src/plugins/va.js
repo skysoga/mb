@@ -207,7 +207,7 @@ va.install = function(Vue, options){
           setTimeout(function() {
             vm.vas[el.getAttribute('name')]=false
             vm.vas[binding.arg]=false
-          }, 10);
+          }, 200);
         })
         el.addEventListener('focus',function(){
           vm.vas[el.getAttribute('name')]=true
