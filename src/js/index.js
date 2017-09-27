@@ -17,11 +17,8 @@ export default {
   beforeRouteEnter:(to, from, next) => {
     var search=location.search
     if(location.pathname==="/"&&search&&(search.search(/^\?id=\d{8}/)===0)){
-      //必须是从根路径来的且带着id=邀请码
-      //如果是注册
-      next(vm=>{
-        router.replace("/register"+search)
-      })
+      localStorage.setItem("InvitationCode",search.split("=")[1])
+      next();
     }
     //是APP且未登录
     var NologApp = _App&&!state.UserName
