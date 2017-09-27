@@ -207,12 +207,10 @@ va.install = function(Vue, options){
           // 解决消失后小标无法点击问题
           setTimeout(function() {
             vm.vas[el.getAttribute('name')]=false
-            vm.vas[binding.arg]=false
           }, 200);
         })
         el.addEventListener('focus',function(){
           vm.vas[el.getAttribute('name')]=true
-          vm.vas[binding.arg]=true
         })
       }
 
