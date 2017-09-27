@@ -194,6 +194,16 @@ va.install = function(Vue, options){
         })
       }
 
+      // 清除内容
+      el.addEventListener('blur',function(){
+        setTimeout(function() {
+          vm.vas[el.getAttribute('name')]=false          
+        }, 100);
+      })
+      el.addEventListener('focus',function(){
+        vm.vas[el.getAttribute('name')]=true
+      })
+
       //不能重复的
       if(option.unique){
         optionalConfig.push(eazyNew('unique', name))
@@ -295,6 +305,21 @@ va.install = function(Vue, options){
         vm.vaVal[name] = value
         var callback = Object.keys(binding.modifiers)[0]
         vm[callback]()
+      })
+    }
+  })
+  // 删除INPUT内容功能
+  Vue.directive('va-clear',{
+    bind:function(el,binding,vnode){
+      var vm=vnode.context
+      var dom=vnode.context.$refs[binding.arg].parentNode
+      console.dir(dom.className)
+      // pernode=dom.parentNode.getAttribute('class')
+      // if(pernode.indexOf('passwordICO')==-1){
+        // dom.parentNode.className=pernode+' passwordICO'
+      // }
+      el.addEventListener('click',function(){
+        vm[binding.arg]=""
       })
     }
   })
