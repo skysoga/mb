@@ -194,16 +194,24 @@ va.install = function(Vue, options){
         })
       }
 
+      // 需要特殊处理的如登录用户
+      if(option.vaUsname){
+        el.addEventListener('change',function(){
+          vm.$check()
+        })        
+      }
       if(binding.arg !== 'EXTEND'){
         // 清除内容
         el.addEventListener('blur',function(){
           // 解决消失后小标无法点击问题
           setTimeout(function() {
-            vm.vas[el.getAttribute('name')]=false            
-          }, 100);
+            vm.vas[el.getAttribute('name')]=false
+            vm.vas[binding.arg]=false
+          }, 10);
         })
         el.addEventListener('focus',function(){
           vm.vas[el.getAttribute('name')]=true
+          vm.vas[binding.arg]=true
         })
       }
 
@@ -319,7 +327,6 @@ va.install = function(Vue, options){
       if(next){
         el.style.right='.5em'
       }
-      console.log(binding)
       el.addEventListener('click',function(){
         vm[binding.arg]=""
       })

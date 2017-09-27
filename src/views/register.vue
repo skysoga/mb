@@ -18,9 +18,8 @@
         <td  colspan="2" class="username">
           <input class="input fl mL15"
                  type="url"
-                 v-va:UserName="[{reg:/^[a-zA-Z\d]{4,16}$/}]"
+                 v-va:UserName.vaUsname="[{reg:/^[a-zA-Z\d]{4,16}$/}]"
                  tag="帐号"
-                 @change="checkUser"
                  regMsg = "账号应为4-16个字符，可使用字母、数字"
                  v-model.lazy="UserName"
                  :placeholder="existed?exUserName+' 帐号已存在':'请输入账号'"/>
@@ -158,28 +157,26 @@ export default {
           that.refreshYzm()
         }
       })
-    },
-    checkUser(){//校验帐号是否存在
-        this.existed=''
-        var regObj=/^[a-zA-Z\d]{4,16}$/
-        if(regObj.test(this.UserName)){
-          setTimeout(()=>{
-            var uname=this.UserName
-            this.exUserName=uname
-              //进行校验
-              var ajax = {
-                Action:"CheckUser",
-                UserName: uname
-              }
-              _fetch(ajax).then((json)=>{
-                if (json.Code!==-1) {
-                  this.existed=json.Exist
-                  this.UserName=this.existed?"":uname
-                }
-              })
-          },10)
+    },    
+    $check(){//校验帐号是否存在
+      this.existed=''
+      var regObj=/^[a-zA-Z\d]{4,16}$/
+      if(regObj.test(this.UserName)){
+        var uname=this.UserName
+        this.exUserName=uname
+          //进行校验
+          var ajax = {
+            Action:"CheckUser",
+            UserName: uname
+          }
+          _fetch(ajax).then((json)=>{
+            if (json.Code!==-1) {
+              this.existed=json.Exist
+              this.UserName=this.existed?"":uname
+            }
+          })
         }
-      },
+    },
     setEyes(){
       this.Eyes=this.Eyes=='open'?'close':'open'
     }
