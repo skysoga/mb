@@ -11,7 +11,7 @@
           <td class="username-icon"></td>
           <td colspan="2" class="username">
             <input v-model="UserName" class="input" tag="帐号" v-x="username" type="email" ref="UserName" v-va:UserName placeholder="请输入账号"/>
-            <span v-if="x.username">X</span>
+            <em v-if="x.username" class="closebtn"></em>
             <span v-if="UserList" @click="setType(true)"></span>
           </td>
         </tr>
@@ -53,6 +53,25 @@
 <script src="../js/login.js"></script>
 <style lang="scss" scoped>
   @import '../scss/login.scss';
+  /**
+  * 关闭样式开始
+  */
+  .closebtn{
+    position:absolute;
+    top:0;
+    right:2em;
+    width:2em;
+    text-align:center;
+    color:#ccc;
+    &:before{
+      content:'\e607';
+      font-family:'iconfont';
+      font-size:.7em;
+    }
+  }
+  /**
+  * 关闭样式开始
+  */
   table{
     table-layout: fixed;
     tr{
