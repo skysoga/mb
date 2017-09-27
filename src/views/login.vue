@@ -20,8 +20,8 @@
           <td class="password-icon"></td>
           <td colspan="2" class="username passwordICO">
           <form autocomplete="off">
-            <input v-if="Eyes=='open'" v-model.lazy="Password" maxlength="16" class="input" autocomplete="off" tag="密码" type="text" ref="Password" v-va:Password placeholder="请输入密码" />
-            <input v-if="Eyes=='close'" v-model.lazy="Password" maxlength="16"  class="input" autocomplete="off" tag="密码" type="password" ref="Password" v-va:Password placeholder="请输入密码" />
+            <input v-if="Eyes=='open'" v-model="Password" maxlength="16" class="input" autocomplete="off" tag="密码" type="text" ref="Password" v-va:Password placeholder="请输入密码" />
+            <input v-if="Eyes=='close'" v-model="Password" maxlength="16"  class="input" autocomplete="off" tag="密码" type="password" ref="Password" v-va:Password placeholder="请输入密码" />
             <em v-show="Password&&vas.Password" class="closebtn" v-va-clear:Password></em>
             <span @click="setEyes()" :class="['iconfont',Eyes]"></span>
           </form>
