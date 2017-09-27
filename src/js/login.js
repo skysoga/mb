@@ -9,11 +9,9 @@ export default {
     if(_App) delete  BottomBoxList.pc
 
     return{
-      // x:{
-      //   username:0
-      // },
       vas:{
-        UserName:false
+        UserName:false,
+        Password:false
       },//清除内容开关
       UserName:'',
       Password:'',

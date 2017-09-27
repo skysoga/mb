@@ -67,26 +67,63 @@ table{
 // 密码眼睛图标
 .passwordICO{
   // position: relative;
-  span{
+  .iconfont{
     position: absolute;
     z-index: 5;
-    padding: 0 1em;
+    padding:.1em 1em 0 .5em;
     right: 0;
   }
-  span.close:after{
+  .iconfont.close:after{
     font-family:"iconfont";
     color:#c6c6c6;
     content:"\e602"
   }
-  span.open:after{
+  .iconfont.open:after{
     font-family:"iconfont";
     color: #ff2c55;
     content:"\e603"
-  }
-  span.inbtn{
-    right: 55px;
-  }
-  span.inbtn:after,
-  span.inbtn::before{content: ""
-  }
+  }  
 }
+/**
+  * 关闭样式开始
+  */
+  .closebtn{
+    position:absolute;
+    top:0;
+    right:2em;
+    width:2em;
+    text-align:center;
+    color:#ccc;
+    &:before{
+      content:'\e607';
+      font-family:'iconfont';
+      font-size:.7em;
+    }
+  }
+  /**
+  * 关闭样式开始
+  */
+  .username{
+    position:relative;
+    span.downico{
+      position:absolute;
+      right:.5em;
+      top:0;
+      width:2em;
+      height:2em;
+      line-height:2em;
+      border-radius:.2em;
+      margin-top:.25em;
+      color:#ccc;
+      &:active{
+        background:#efefef;
+        color:#333;
+      }
+      &:before{
+        content:'\e64c';
+        font-family:'iconfont';
+        display:block;
+        text-align:center;
+      }
+    }
+  }

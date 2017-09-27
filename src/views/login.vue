@@ -9,18 +9,21 @@
       <tbody>
         <tr>
           <td class="username-icon"></td>
-          <td colspan="2" class="username passwordICO">
+          <td colspan="2" class="username">
             <input v-model="UserName" class="input" tag="帐号" type="email" ref="UserName" v-va:UserName placeholder="请输入账号"/>
-            <em v-show="UserName&&vas.UserName" class="inbtn closebtn" v-va-clear:UserName></em>
-            <span v-if="UserList" @click="setType(true)"></span>
+            <em v-show="UserName&&vas.UserName" class="closebtn" v-va-clear:UserName></em>
+            <span class="downico" v-if="UserList" @click="setType(true)"></span>
           </td>
         </tr>
         <tr>
           <td class="password-icon"></td>
-          <td colspan="2" class="passwordICO">
-            <input v-show="Eyes=='open'" v-model.lazy="Password" maxlength="16" class="input" tag="密码" type="text" ref="Password" v-va:Password placeholder="请输入密码" />
-            <input v-show="Eyes=='close'" v-model.lazy="Password" maxlength="16"  class="input" tag="密码" type="password" ref="Password" v-va:Password placeholder="请输入密码" />
+          <td colspan="2" class="username passwordICO">
+          <form autocomplete="off">
+            <input v-if="Eyes=='open'" v-model.lazy="Password" maxlength="16" class="input" autocomplete="off" tag="密码" type="text" ref="Password" v-va:Password placeholder="请输入密码" />
+            <input v-if="Eyes=='close'" v-model.lazy="Password" maxlength="16"  class="input" autocomplete="off" tag="密码" type="password" ref="Password" v-va:Password placeholder="请输入密码" />
+            <em v-show="Password&&vas.Password" class="closebtn" v-va-clear:Password></em>
             <span @click="setEyes()" :class="['iconfont',Eyes]"></span>
+          </form>
           </td>
         </tr>
         <tr v-if="IcodeShow">
@@ -52,26 +55,7 @@
 </template>
 <script src="../js/login.js"></script>
 <style lang="scss" scoped>
-  @import '../scss/login.scss';
-  /**
-  * 关闭样式开始
-  */
-  .closebtn{
-    position:absolute;
-    top:0;
-    right:2em;
-    width:2em;
-    text-align:center;
-    color:#ccc;
-    &:before{
-      content:'\e607';
-      font-family:'iconfont';
-      font-size:.7em;
-    }
-  }
-  /**
-  * 关闭样式开始
-  */
+  @import '../scss/login.scss';  
   table{
     table-layout: fixed;
     tr{
@@ -114,31 +98,7 @@
   .password-icon:before{
     content:'\e604';
   }
-
-  .username{
-    position:relative;
-    span{
-      position:absolute;
-      right:.5em;
-      top:0;
-      width:2em;
-      height:2em;
-      line-height:2em;
-      border-radius:.2em;
-      margin-top:.25em;
-      color:#ccc;
-      &:active{
-        background:#efefef;
-        color:#333;
-      }
-      &:before{
-        content:'\e64c';
-        font-family:'iconfont';
-        display:block;
-        text-align:center;
-      }
-    }
-  }
+  
   .otherBtn{
     text-align: center;
     margin-top:.7em;

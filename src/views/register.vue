@@ -15,7 +15,7 @@
 
       <tr>
         <td>账号</td>
-        <td  colspan="2">
+        <td  colspan="2" class="username">
           <input class="input fl mL15"
                  type="url"
                  v-va:UserName="[{reg:/^[a-zA-Z\d]{4,16}$/}]"
@@ -24,14 +24,16 @@
                  regMsg = "账号应为4-16个字符，可使用字母、数字"
                  v-model.lazy="UserName"
                  :placeholder="existed?exUserName+' 帐号已存在':'请输入账号'"/>
+          <em v-show="UserName&&vas.UserName" class="closebtn" v-va-clear:UserName.noright></em>
         </td>
       </tr>
 
       <tr>
         <td>设置密码</td>
-        <td colspan="2" class="passwordICO">
-          <input v-show="Eyes=='close'" type="password" class="input fl mL15" maxlength="16" v-va:Password tag="设置密码" v-model.lazy="Password" placeholder="请输入您要设置的密码" />
-          <input v-show="Eyes=='open'" type="text" class="input fl mL15" maxlength="16" v-va:Password tag="设置密码" v-model="Password" placeholder="请输入您要设置的密码" />
+        <td colspan="2" class="username passwordICO">
+          <input v-if="Eyes=='close'" type="password" class="input fl mL15" maxlength="16" v-va:Password tag="设置密码" v-model.lazy="Password" placeholder="请输入您要设置的密码" />
+          <input v-if="Eyes=='open'" type="text" class="input fl mL15" maxlength="16" v-va:Password tag="设置密码" v-model="Password" placeholder="请输入您要设置的密码" />
+          <em v-show="Password&&vas.Password" class="closebtn" v-va-clear:Password></em>
           <span @click="setEyes()" :class="['iconfont',Eyes]"></span>
         </td>
       </tr>
@@ -49,7 +51,7 @@
     </tbody>
   </table>
 
-  <router-link class='forget fr' to = "/login">已有账号? 立即登录</router-link>
+  <router-link class='tologin fr' to = "/login">已有账号? 立即登录</router-link>
   <div class="loginBtn BTN mt30" v-va-check>
     <a>立即注册</a>
   </div>
@@ -59,8 +61,12 @@
 <script>
 
 export default {
-  data () {
+  data:()=>{
     return {
+      vas:{
+        UserName:false,
+        Password:false
+      },
       InvitationCode: '',
       UserName: '',
       Password: '',
@@ -184,4 +190,14 @@ export default {
 
 <style lang = "scss" scoped>
   @import '../scss/login.scss';
+  .main{
+    background: #fafafa;
+    height: 100%;
+    padding-top: 3em;
+  }
+  .tologin{
+    font-size:.7em;
+    color:#dc2e2e;
+    margin: 1em 1rem;
+  }
 </style>

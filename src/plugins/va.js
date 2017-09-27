@@ -311,13 +311,12 @@ va.install = function(Vue, options){
   // 删除INPUT内容功能
   Vue.directive('va-clear',{
     bind:function(el,binding,vnode){
-      var vm=vnode.context
-      var dom=vnode.context.$refs[binding.arg].parentNode
-      console.dir(dom.className)
-      // pernode=dom.parentNode.getAttribute('class')
-      // if(pernode.indexOf('passwordICO')==-1){
-        // dom.parentNode.className=pernode+' passwordICO'
-      // }
+      var vm=vnode.context,
+          next=binding.modifiers.noright
+      if(next){
+        el.style.right='.5em'
+      }
+      console.log(binding)
       el.addEventListener('click',function(){
         vm[binding.arg]=""
       })
