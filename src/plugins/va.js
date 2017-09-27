@@ -194,15 +194,15 @@ va.install = function(Vue, options){
         })
       }
 
-      // 清除内容
-      el.addEventListener('blur',function(){
-        setTimeout(function() {
-          vm.vas[el.getAttribute('name')]=false          
-        }, 100);
-      })
-      el.addEventListener('focus',function(){
-        vm.vas[el.getAttribute('name')]=true
-      })
+      if(binding.arg !== 'EXTEND'){
+        // 清除内容
+        el.addEventListener('blur',function(){
+          vm.vas[el.getAttribute('name')]=false
+        })
+        el.addEventListener('focus',function(){
+          vm.vas[el.getAttribute('name')]=true
+        })
+      }
 
       //不能重复的
       if(option.unique){
