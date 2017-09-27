@@ -83,4 +83,10 @@ table{
     color: #ff2c55;
     content:"\e603"
   }
+  span.inbtn{
+    right: 55px;
+  }
+  span.inbtn:after,
+  span.inbtn::before{content: ""
+  }
 }
