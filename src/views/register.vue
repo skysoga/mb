@@ -160,22 +160,19 @@ export default {
     },    
     $check(){//校验帐号是否存在
       this.existed=''
-      var regObj=/^[a-zA-Z\d]{4,16}$/
-      if(regObj.test(this.UserName)){
-        var uname=this.UserName
-        this.exUserName=uname
-          //进行校验
-          var ajax = {
-            Action:"CheckUser",
-            UserName: uname
-          }
-          _fetch(ajax).then((json)=>{
-            if (json.Code!==-1) {
-              this.existed=json.Exist
-              this.UserName=this.existed?"":uname
-            }
-          })
+      var uname=this.UserName
+      this.exUserName=uname
+        //进行校验
+        var ajax = {
+          Action:"CheckUser",
+          UserName: uname
         }
+        _fetch(ajax).then((json)=>{
+          if (json.Code!==-1) {
+            this.existed=json.Exist
+            this.UserName=this.existed?"":uname
+          }
+        })
     },
     setEyes(){
       this.Eyes=this.Eyes=='open'?'close':'open'
