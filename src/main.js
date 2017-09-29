@@ -299,20 +299,27 @@ window._fetch = function (data, option = {}){
     var ForgetArr=['SetPassForget','VerifySafePwdForget']
     user=(ForgetArr.indexOf(data.Action)>-1&&sessionStorage.getItem('UserName'))||user//解决找回密码 加密问题
     var IVK=getCookie('IVK')
-    try{
+    // try{
       if(IVK){
         var usr = (user+'').toLocaleLowerCase()
         // console.log(usr);
         data[keys]=(['SetPwd','SetSafePass','Register','SetPassForget'].indexOf(data.Action)===-1)?setLoginPass(usr,data[keys],IVK):md5(usr+md5(data[keys]))
         data.Type='Hash'
+      }else{
+        //获取IVK
+        RootApp.getServerTime()
+        return {then:function(f){
+          f({Code:-1,StrCode:'请重试'})
+          // FetchCatch('密码处理错误',e)
+        }}
       }
-    }catch(e){
-      _catch({msg:e.message,UserName:user,UserType:typeof(user),IVK})
+    // }catch(e){
+      // _catch({msg:e.message,UserName:user,UserType:typeof(user),IVK})
       /*return {then:function(f){
         f({Code:-1,StrCode:'密码处理错误'})
         // FetchCatch('密码处理错误',e)
       }}*/
-    }
+    // }
   }
   data.SourceName=_App?"APP":"MB"
   var str=[],k;
@@ -325,18 +332,20 @@ window._fetch = function (data, option = {}){
   }
   str=str.join('&')
   // 防止一秒内的完全相同请求
-  var now = new Date().getTime()
-  for (var i = 0; i < fetchArr.length; i++) {
-    if(fetchArr[i][0]+1000<now){
-      fetchArr.length=i
-      break
-    }else if(fetchArr[i][1]===str){
-      return {then:function(){
-        console.log('重复发送')
-      }}
+  if(data.Action!=='GetServerTimeMillisecond'){
+    var now = new Date().getTime()
+    for (var i = 0; i < fetchArr.length; i++) {
+      if(fetchArr[i][0]+1000<now){
+        fetchArr.length=i
+        break
+      }else if(fetchArr[i][1]===str){
+        return {then:function(){
+          console.log('重复发送'+str)
+        }}
+      }
     }
+    fetchArr.unshift([now,str])
   }
-  fetchArr.unshift([now,str])
   return new Promise(function(resolve, reject){
     var st = state.turning&&setTimeout(function(){
       var msg = '网络请求超时，请重试'
