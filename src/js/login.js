@@ -114,7 +114,7 @@ export default {
       var getArr=this.getLocalStorage() || []
       if(getArr.length){
         var Arr=getArr
-        var n=getLoginedIndex(key,Arr)
+        var n=this.getLoginedIndex(key,Arr)
         this.removeLogin(n)
         Arr.unshift(key+'&'+val)
         // console.log(Arr)
