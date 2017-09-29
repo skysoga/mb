@@ -8,6 +8,7 @@
           <input v-va:InvitationCode="[{'reg':/^\d{8}$/}]" regMsg="您输入的邀请码错误或者已过期" tag="邀请码" class="input fl mL15"
                  type="url"
                  placeholder="请输入邀请码"
+                 maxlength="8"
                  :readonly  = "YqmReadOnly"
                  v-model.lazy = "InvitationCode"/>
         </td>
@@ -21,6 +22,7 @@
                  v-va:UserName.vaUsname.clear="[{reg:/^[a-zA-Z\d]{4,16}$/}]"
                  tag="帐号"
                  regMsg = "账号应为4-16个字符，可使用字母、数字"
+                 maxlength="16"
                  v-model="UserName"
                  :placeholder="existed?exUserName+' 帐号已存在':'请输入账号'"/>
           <em v-show="UserName&&vas.UserName" class="closebtn" v-va-clear:UserName.noright></em>
@@ -160,22 +162,19 @@ export default {
     },    
     $check(){//校验帐号是否存在
       this.existed=''
-      var regObj=/^[a-zA-Z\d]{4,16}$/
-      if(regObj.test(this.UserName)){
-        var uname=this.UserName
-        this.exUserName=uname
-          //进行校验
-          var ajax = {
-            Action:"CheckUser",
-            UserName: uname
-          }
-          _fetch(ajax).then((json)=>{
-            if (json.Code!==-1) {
-              this.existed=json.Exist
-              this.UserName=this.existed?"":uname
-            }
-          })
+      var uname=this.UserName
+      this.exUserName=uname
+        //进行校验
+        var ajax = {
+          Action:"CheckUser",
+          UserName: uname
         }
+        _fetch(ajax).then((json)=>{
+          if (json.Code!==-1) {
+            this.existed=json.Exist
+            this.UserName=this.existed?"":uname
+          }
+        })
     },
     setEyes(){
       this.Eyes=this.Eyes=='open'?'close':'open'

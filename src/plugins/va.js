@@ -194,9 +194,16 @@ va.install = function(Vue, options){
         })
       }
 
-      // 需要特殊处理的如登录用户
+      // 检测用户是否已存在
       if(option.vaUsname){
         el.addEventListener('change',function(){
+          vm.vaResult || (vm.vaResult = {})
+          vm.vaVal || (vm.vaVal = {})
+          var value = el.value,
+              conditions = vm.vaConfig[name]
+          vm.vaResult[name] = check(value, conditions);
+          var _result = vm.vaResult[name]
+          if(_result)return;
           vm.$check()
         })        
       }
