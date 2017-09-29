@@ -29,8 +29,9 @@ export default {
     next(v=>{
       var IVK=getCookie('IVK')
       if(!IVK){
-        let arr={Action:"GetInitData"}//修正IVK获取问题
-        _fetch(arr).then()
+        // let arr={Action:"GetInitData"}//修正IVK获取问题
+        // _fetch(arr).then()
+        RootApp.getServerTime()
       }
     })
   },
@@ -89,43 +90,67 @@ export default {
       this.isLogin=val
       this.BottomBoxShow=true
     },
+    getLoginedIndex(key,Arr){
+      Arr=Arr||this.getLocalStorage()
+      var m
+      Arr.some(function(i,n){
+        if(i.split('&')[0]===key){
+          m=n;
+          return true;
+        }
+      })
+      /*Arr.forEach((i,n)=>{
+        var obj=i.split('&')[0]
+        if(obj==key){
+          m=n;
+          break;
+          // Arr.splice(n,1)
+        }
+      })*/
+      return m
+    },
     addLogin(key,val){
       // 添加登录记录
-      var getArr=this.getLocalStorage()
-      if(getArr&&getArr.length){
+      var getArr=this.getLocalStorage() || []
+      if(getArr.length){
         var Arr=getArr
-        Arr.forEach((i,n)=>{
-          var obj=i.split('&')[0]
-          if(obj==key){
-            Arr.splice(n,1)
-          }
-        })
+        var n=getLoginedIndex(key,Arr)
+        this.removeLogin(n)
         Arr.unshift(key+'&'+val)
-        Arr=this.setArrUN(Arr)
-        if(Arr.length>5){
-          Arr.pop()
-        }
+        // console.log(Arr)
+        // Arr=this.setArrUN(Arr)
+        // console.log(Arr)
+        // if(Arr.length>5){
+        //   Arr.length=5
+        // }
         this.setLocalStorage(Arr)
       }else{
-        var setVal=[]
-        setVal.push(key+'&'+val)
-        this.setLocalStorage(this.setArrUN(setVal))
+        // var setVal=[]
+        getArr.push(key+'&'+val)
+        this.setLocalStorage(getArr)
+        // this.setLocalStorage(this.setArrUN(setVal))
       }
     },
-    delLogin(val){
+    delLogin(n){
       // 删除登录记录
       layer.confirm('是否删除登录记录',()=>{
-        this.removeLogin(val)
+        this.removeLogin(n)
         layer.alert('记录删除成功')
       })
     },
     getLocalStorage(){
       // 获取缓存帐号
-      return JSON.parse(localStorage.getItem('Logined'))
+      var Logined=localStorage.getItem('Logined')
+      try{
+        Logined=JSON.parse(Logined)
+      }catch(e){
+        Logined=null
+      }
+      return Logined
     },
-    setArrUN(val){
+    /*setArrUN(val){
       return Array.from(new Set(val))
-    },
+    },*/
     setLocalStorage(val){
       localStorage.setItem('Logined',JSON.stringify(val))
     },
@@ -163,6 +188,11 @@ export default {
           })
         }else{
           layer.msgWarn(json.StrCode)
+          if (json.StrCode.search('密码错误')!==1) {
+            //密码错误要删除记录
+            var n=this.getLoginedIndex(user)
+            this.removeLogin(n)
+          }
         }
       })
     }
