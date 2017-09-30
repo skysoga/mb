@@ -1,5 +1,5 @@
 <template>
-  <div class="newContainer">
+  <div class="newContainer" :style="{height:containerHeight}">
     <div class="video">
       <img src="/static/img/newk3-bg.jpg" alt="" width="100%">
     </div>
@@ -18,7 +18,7 @@
       </div>
       <div class="userContent"></div>
     </div>
-    <div :style="{opacity:getBetShow?1:0,'z-index':getBetShow?20:0}" @touchstart="touchChangeHeight" class="betContainer">
+    <div :style="{opacity:getBetShow?1:0,'z-index':getBetShow?20:0,height:containerHeight}" @touchstart="touchChangeHeight" class="betContainer">
       <div class="header">
         <div class="info fix">
           <div @click="changeShow" class="back"></div>
@@ -30,7 +30,7 @@
       <ul class="playtype fix" v-show="playtypeShow == 'playtype'">
         <li v-for="(d,i) in playtype" @click="toPlay(i)"><em>{{d}}</em></li>
       </ul>
-      <div class="betboxContainer fix" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend" :style="{ transform: 'translate3d('+movey+'px, 0px, 0px)',transition:transition+'s',width:8*clientWidth+'px'}" v-show="playtypeShow == ''">
+      <div ref="betboxContainer" class="betboxContainer fix" :class="{noscroll:canScorll}" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend" :style="{ transform: 'translate3d('+movey+'px, 0px, 0px)',transition:transition+'s',width:8*clientWidth+'px'}" v-show="playtypeShow == ''">
         <div class="betbox" @touchmove.stop="scrollList" :class="i" v-for="(d,i,j) in cfg" :style="{width:clientWidth+'px'}">
           <div class="topshadow"></div>
           <div ref="buttonList" class="newmain">
@@ -107,21 +107,22 @@
     },
     data:()=>{
       return{
-        chosen:[],
-        betshow:0,
-        mainHeight:0,
-        beforeScreenHeight:0,
+        show:'main',                                      //main:直播，bet:投注
+        playtypeShow:'',                                  //玩法显示
+        tempy:0,                                          //touchstart的位置
+        movey:0,                                          //移动中的y位置
+        transition:0,                                     //左右切换面板的动画速度
+        card:0,                                           //当前处于哪一块投注面板
+        maxCard:8,                                        //最多有几块投注面板
         clientWidth:document.documentElement.clientWidth,
-        tempy:0,
-        movey:0,
-        card:0,
-        maxCard:8,
-        transition:0,
+        beforeScreenHeight:0,                             //窗口变化前的高度
+        heightArr:[],                                     //补缺高度数组
+        canScorll:0,                                      //投注面板是否能滚动
+        containerHeight:'auto',                           //当投注面板不能滚动时，newContainer和betContainer需要100%高度来撑起高度
+        betshow:0,                                        //footer是否显示
+        chosen:[],
         cfg:cfg,
-        heightArr:[],
-        show:'main',
         playtype:['和值','三同号通选','三同号单选','三不同号','三连号通选','二同号复选','二同号单选','二不同号'],
-        playtypeShow:''
       }
     },
     computed:{
@@ -165,6 +166,10 @@
             mainHeight-=temp[0]
           }
           temp.push(mainHeight)
+          if(temp[0]>=0){
+            this.canScorll = 1
+            this.containerHeight = '100%'
+          }
         }
         // temp.unshift(temp[temp.length-1])
         this.heightArr = temp
@@ -402,6 +407,9 @@
   }
   .betboxContainer{
     padding-bottom:2.5em;
+  }
+  .noscroll{
+    position:fixed;
   }
   .betbox{
     width:100%;
