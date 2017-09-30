@@ -1,11 +1,11 @@
 <template>
   <div class="main userCenter">
-      <div class="topInfo" @click.stop="getBalance">
+      <div class="topInfo">
           <router-link to="/personalInfo"><img v-bind:src="$store.getters.PhotoPath+$store.state.UserPhoto||$store.state.constant.DefPhoto"></router-link>
           <p>账&nbsp;号：<ins id="UserName">{{$store.state.UserName}}</ins></p>
           <span v-if="balShow">余&nbsp;额：<ins id="UserBalance" v-text="UserBalance"></ins>元 </span>
-          <span v-else>余&nbsp;额：<i>已隐藏 <ins :style="{color:$store.state.color.red}">显示</ins></i></span>
-          <div v-show="balShow" :class="refreshClass"><i class="iconfont">&#xe62f;</i></div>
+          <span v-else>余&nbsp;额：<i>已隐藏 <ins :style="{color:$store.state.color.red}"  @click="getBalance">显示</ins></i></span>
+          <div v-show="balShow" :class="refreshClass"  @click="getBalance"><i class="iconfont">&#xe62f;</i></div>
       </div>
 
       <div class="topMoney">
