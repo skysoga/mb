@@ -40,7 +40,7 @@
           <a>选择登录帐号</a>
         </li>
         <li v-for="(value,key,index) in list">
-          <a v-html="$parent.isLogin?key:value" :class="addUserLogo(key)" @click = "$parent.bottomBox(key,value)"></a>
+          <a v-html="$parent.isLogin?value[0]:value" :class="addUserLogo(key)" @click = "$parent.bottomBox(key,value)"></a>
           <span v-show="$parent.isLogin" @click="$parent.delLogin(index)"></span>
         </li>
       </ul>

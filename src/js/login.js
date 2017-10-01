@@ -22,8 +22,21 @@ export default {
   },
   created(){
     // 判断是否有缓存帐号记录
-    var obj=this.getLocalStorage();
-    this.UserList=(obj&&obj.length)?this.ArrToObj(obj):''
+    // var obj=this.getLocalStorage();
+    // this.UserList=(obj&&obj.length)?this.ArrToObj(obj):''
+    var UserList=localStorage.getItem('Logined')
+    try{
+      UserList=JSON.parse(UserList)
+      if (typeof(UserList[0])==='string') {
+        UserList.forEach(function(v,i,thisArr){
+          UserList[i]=v.split('&')
+        })
+      }
+      console.log(UserList)
+    }catch(e){
+      UserList=''
+    }
+    this.UserList=UserList
   },
   beforeRouteEnter:(to,from,next)=>{
     next(v=>{
@@ -90,7 +103,7 @@ export default {
       this.isLogin=val
       this.BottomBoxShow=true
     },
-    getLoginedIndex(key,Arr){
+    /*getLoginedIndex(key,Arr){
       Arr=Arr||this.getLocalStorage()
       var m
       Arr.some(function(i,n){
@@ -99,19 +112,25 @@ export default {
           return true;
         }
       })
-      /*Arr.forEach((i,n)=>{
-        var obj=i.split('&')[0]
-        if(obj==key){
-          m=n;
-          break;
-          // Arr.splice(n,1)
-        }
-      })*/
       return m
-    },
+    },*/
     addLogin(key,val){
       // 添加登录记录
-      var getArr=this.getLocalStorage() || []
+      var thisUser=[key,val]
+      console.log(this.UserList)
+      if (!this.UserList) {
+        this.UserList=[thisUser]
+      }else{
+        for (var i = this.UserList.length - 1; i >= 0; i--) {
+          if(this.UserList[i][0]===key){
+            console.log(i,'已存在')
+            this.removeLogin(i)
+          }
+        }
+        this.UserList.unshift([key,val])
+      }
+      this.saveLogined()
+      /*var getArr=this.getLocalStorage() || []
       if(getArr.length){
         var Arr=getArr
         var n=this.getLoginedIndex(key,Arr)
@@ -129,7 +148,7 @@ export default {
         getArr.push(key+'&'+val)
         this.setLocalStorage(getArr)
         // this.setLocalStorage(this.setArrUN(setVal))
-      }
+      }*/
     },
     delLogin(n){
       // 删除登录记录
@@ -138,7 +157,7 @@ export default {
         layer.alert('记录删除成功')
       })
     },
-    getLocalStorage(){
+    /*getLocalStorage(){
       // 获取缓存帐号
       var Logined=localStorage.getItem('Logined')
       try{
@@ -147,21 +166,25 @@ export default {
         Logined=null
       }
       return Logined
-    },
+    },*/
     /*setArrUN(val){
       return Array.from(new Set(val))
     },*/
-    setLocalStorage(val){
-      localStorage.setItem('Logined',JSON.stringify(val))
+    saveLogined(){
+      if(this.UserList.length>5){
+        this.UserList.length=5
+      }
+      localStorage.setItem('Logined',JSON.stringify(this.UserList))
     },
     removeLogin(key){
-      var obj=this.getLocalStorage()
-      obj.splice(key,1)
+      this.UserList.splice(key,1)
+      this.saveLogined()
+      /*var obj=this.getLocalStorage()
       this.setLocalStorage(obj)
       this.UserList=obj.length?this.ArrToObj(obj):''
-      this.BottomBoxShow=false
+      this.BottomBoxShow=false*/
     },
-    isNull(val){
+    /*isNull(val){
       return val&&val.length
     },
     ArrToObj(Arr){
@@ -171,27 +194,29 @@ export default {
         Obj[val[0]]=val[1]
       }
       return Obj
-    },
-    autoLogin(user,pwd){
+    },*/
+    autoLogin(index,userData){
       // 从记录自动登录
       var ajax = {
         Action:"Login",
-        UserName:user,
-        Password:pwd
+        UserName:userData[0],
+        Password:userData[1]
       }
       layer.msgWait("正在登录")
       _fetch(ajax).then((json)=>{
         if (json.Code===1) {
           RootApp.Logout()
-          RootApp.Login(user,()=>{
+          RootApp.Login(userData[0],()=>{
             router.replace(state.login2path||"/index")
           })
+          this.addLogin(userData[0],userData[1])
         }else{
-          layer.msgWarn(json.StrCode)
           if (json.StrCode.search('密码错误')!==1) {
+            this.removeLogin(index)
+            layer.msgWarn('由于您近期修改过密码<br/>请重新手动输入密码进行登录')
             //密码错误要删除记录
-            var n=this.getLoginedIndex(user)
-            this.removeLogin(n)
+          }else{
+            layer.msgWarn(json.StrCode)
           }
         }
       })
