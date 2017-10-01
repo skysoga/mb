@@ -276,7 +276,7 @@ function FetchCatch({msg, error}){
  * setLoginPass(), u 用户名，p 密码,i IVK
  */
 function setLoginPass(u,p,i){
-  console.log(p,p.length)
+  console.log(u,p,i)
   if(p.length==32){
     return md5(p+i)
   }else{
@@ -287,7 +287,7 @@ function setLoginPass(u,p,i){
 
 var fetchArr=[]
 window._fetch = function (data, option = {}){
-  var user = /*data.Action!=='Register'&&*/state.UserName||data.UserName
+  var user = /*data.Action!=='Register'&&*/data.UserName||state.UserName
   data = Xss(data)
   if (data[1]) {
     //可能有xss
@@ -308,6 +308,12 @@ window._fetch = function (data, option = {}){
       }else{
         //获取IVK
         RootApp.getServerTime()
+        return {then:function(f){
+          f({Code:-1,StrCode:'请重试'})
+          // FetchCatch('密码处理错误',e)
+        }}
+      }
+      if (data[keys].length!==32) {
         return {then:function(f){
           f({Code:-1,StrCode:'请重试'})
           // FetchCatch('密码处理错误',e)
