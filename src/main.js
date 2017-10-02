@@ -50,6 +50,7 @@ if(!localStorage.getItem("console")){
   console.log=function(){return}
 }
 import Vue from 'vue'
+const isDebug_mode = process.env.NODE_ENV !== 'production'; Vue.config.debug = isDebug_mode; Vue.config.devtools = isDebug_mode; Vue.config.productionTip = isDebug_mode;
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import App from './App'
