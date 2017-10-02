@@ -54,41 +54,6 @@ table{
   border-bottom: 1px solid #d0d0d0;
 }
 
-
-.sevice{
-  position: absolute;
-  display: block;
-  text-align: center;
-  padding: 1em;
-  margin: 0 auto;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  color: $font-gray;
-  line-height: 1em;
-  span{
-    font-size: .6em;
-    display: inline-block;
-    vertical-align: middle;
-    /*margin-top: 1px;*/
-    /*font-style: normal;*/
-  }
-  a{
-    font-size: .7em;
-    color: inherit;
-    display: inline-block;
-    vertical-align: middle;
-    padding:0 .5em;
-  }
-}
-.forget{
-  margin-top:1em;
-  margin-bottom:1em;
-  span{
-    color:#000;
-  }
-}
-
 .BTN+.BTN{
   margin-top:.5rem;
   background:#fff;
@@ -99,3 +64,28 @@ table{
   font-size:$fz+em;
   line-height: 2.5em/$fz;
 }
+
+  /*.username{*/
+    /*position:relative;*/
+    span.downico{
+      position:absolute;
+      right:.5em;
+      top:0;
+      width:2em;
+      height:2em;
+      line-height:2em;
+      border-radius:.2em;
+      margin-top:.25em;
+      color:#ccc;
+      &:active{
+        background:#efefef;
+        color:#333;
+      }
+      &:before{
+        content:'\e64c';
+        font-family:'iconfont';
+        display:block;
+        text-align:center;
+      }
+    }
+  /*}*/

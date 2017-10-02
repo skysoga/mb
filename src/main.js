@@ -56,7 +56,7 @@ import App from './App'
 import routes from './routes/routes'
 import Va from './plugins/va'
 import {DAY_TIME, GMT_DIF} from './js/kit'
-var md5=require('./plugins/md5.min')
+window.md5=require('./plugins/md5.min')
 var localState={}
 window.Vue=Vue
 Vue.use(Va)
@@ -271,9 +271,23 @@ function FetchCatch({msg, error}){
   }
 }
 
+/**
+ * [判断是否已加密]
+ * setLoginPass(), u 用户名，p 密码,i IVK
+ */
+function setLoginPass(u,p,i){
+  console.log(u,p,i)
+  if(p.length==32){
+    return md5(p+i)
+  }else{
+    return md5(md5(u+md5(p))+i)
+  }
+  return
+}
+
 var fetchArr=[]
 window._fetch = function (data, option = {}){
-  var user = /*data.Action!=='Register'&&*/state.UserName||data.UserName
+  var user = /*data.Action!=='Register'&&*/data.UserName||state.UserName
   data = Xss(data)
   if (data[1]) {
     //可能有xss
@@ -285,20 +299,33 @@ window._fetch = function (data, option = {}){
     var ForgetArr=['SetPassForget','VerifySafePwdForget']
     user=(ForgetArr.indexOf(data.Action)>-1&&sessionStorage.getItem('UserName'))||user//解决找回密码 加密问题
     var IVK=getCookie('IVK')
-    try{
+    // try{
       if(IVK){
         var usr = (user+'').toLocaleLowerCase()
         // console.log(usr);
-        data[keys]=(['SetPwd','SetSafePass','Register','SetPassForget'].indexOf(data.Action)===-1)?md5(md5(usr+md5(data[keys]))+IVK):md5(usr+md5(data[keys]))
+        data[keys]=(['SetPwd','SetSafePass','Register','SetPassForget'].indexOf(data.Action)===-1)?setLoginPass(usr,data[keys],IVK):md5(usr+md5(data[keys]))
         data.Type='Hash'
+      }else{
+        //获取IVK
+        RootApp.getServerTime()
+        return {then:function(f){
+          f({Code:-1,StrCode:'请重试'})
+          // FetchCatch('密码处理错误',e)
+        }}
       }
-    }catch(e){
-      _catch({msg:e.message,UserName:user,UserType:typeof(user),IVK})
+      if (data[keys].length!==32) {
+        return {then:function(f){
+          f({Code:-1,StrCode:'请重试'})
+          // FetchCatch('密码处理错误',e)
+        }}
+      }
+    // }catch(e){
+      // _catch({msg:e.message,UserName:user,UserType:typeof(user),IVK})
       /*return {then:function(f){
         f({Code:-1,StrCode:'密码处理错误'})
         // FetchCatch('密码处理错误',e)
       }}*/
-    }
+    // }
   }
   data.SourceName=_App?"APP":"MB"
   var str=[],k;
@@ -311,18 +338,20 @@ window._fetch = function (data, option = {}){
   }
   str=str.join('&')
   // 防止一秒内的完全相同请求
-  var now = new Date().getTime()
-  for (var i = 0; i < fetchArr.length; i++) {
-    if(fetchArr[i][0]+1000<now){
-      fetchArr.length=i
-      break
-    }else if(fetchArr[i][1]===str){
-      return {then:function(){
-        console.log('重复发送')
-      }}
+  if(data.Action!=='GetServerTimeMillisecond'){
+    var now = new Date().getTime()
+    for (var i = 0; i < fetchArr.length; i++) {
+      if(fetchArr[i][0]+1000<now){
+        fetchArr.length=i
+        break
+      }else if(fetchArr[i][1]===str){
+        return {then:function(){
+          console.log('重复发送'+str)
+        }}
+      }
     }
+    fetchArr.unshift([now,str])
   }
-  fetchArr.unshift([now,str])
   return new Promise(function(resolve, reject){
     var st = state.turning&&setTimeout(function(){
       var msg = '网络请求超时，请重试'
@@ -336,7 +365,7 @@ window._fetch = function (data, option = {}){
     if(user){
       fetchUrl+='&U='+user
     }
-    
+
     if (data.Action==='AddBetting'||data.Action==='AddChaseBetting') {
       fetchUrl+='&T='+new Date(now-state.Difftime).format('ddhhmmss')
     }
@@ -928,6 +957,7 @@ function TimeItem(interval, timeBegin, timeEnd, SerTime){
 
 window.RootApp={
   Logout:function(){
+    localStorage.setItem('lastLoginImage',state.UserPhoto)
     store.commit('ClearInitData', UserArr)
     sessionStorage.clear()
   },
@@ -972,7 +1002,7 @@ window.RootApp={
       }
     })(data.SiteConfig)*/
     ;(function(arr){
-      if(arr){
+      if(arr&&arr.length){
         var el = {};
         arr.forEach(item => {
           el[item.PayName] = [item.MinMoney, item.MaxMoney];
@@ -1004,12 +1034,12 @@ window.RootApp={
             data.GradeList[i].JumpBonus=Number(data.GradeList[i].JumpBonus);
         }
     }
-
     ;(function(a){
-      if (!a) {return}
-      for (var i = a.length - 1; i >= 0; i--) {
-        if (typeof(a[i].Img)=="object") {
-          a[i].Img=a[i].Img&&a[i].Img[0];
+      if(a&&a.length){
+        for (var i = a.length - 1; i >= 0; i--) {
+          if (typeof(a[i].Img)=="object") {
+            a[i].Img=a[i].Img&&a[i].Img[0];
+          }
         }
       }
     })(data.ActivityConfig)

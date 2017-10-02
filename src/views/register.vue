@@ -7,9 +7,11 @@
         <td colspan="2">
           <input v-va:InvitationCode="[{'reg':/^\d{8}$/}]" regMsg="您输入的邀请码错误或者已过期" tag="邀请码" class="input fl mL15"
                  type="url"
-                 placeholder="请输入邀请码"
+                 placeholder="请输入8位数字邀请码"
+                 maxlength="8"
                  :readonly  = "YqmReadOnly"
                  v-model.lazy = "InvitationCode"/>
+          <clearInput inputName="InvitationCode"></clearInput>
         </td>
       </tr>
 
@@ -22,24 +24,26 @@
                  tag="帐号"
                  @change="checkUser"
                  regMsg = "账号应为4-16个字符，可使用字母、数字"
-                 v-model.lazy="UserName"
-                 :placeholder="existed?exUserName+' 帐号已存在':'请输入账号'"/>
+                 maxlength="16"
+                 v-model="UserName"
+                 :placeholder="existed?exUserName+' 帐号已存在':'请输入您要注册的账号'"/>
+          <!-- <em v-show="UserName&&vas.UserName" class="closebtn" v-va-clear:UserName.noright></em> -->
+          <clearInput inputName="UserName"></clearInput>
         </td>
       </tr>
 
       <tr>
         <td>设置密码</td>
-        <td colspan="2"><input class="input fl mL15" type="password" v-va:Password tag="设置密码" v-model.lazy="Password" placeholder="请输入密码" /></td>
+        <td colspan="2">
+          <input v-if="!Eyes" type="password" class="input fl mL15" maxlength="16" tag="设置密码" v-model="Password" v-va:Password placeholder="请输入您要设置的密码" />
+          <input v-else type="text" class="input fl mL15" maxlength="16" v-model="Password" v-va:Password placeholder="请输入您要设置的密码" />
+          <pwdEye></pwdEye>
+          <clearInput inputName="Password"></clearInput>
+        </td>
       </tr>
-
-      <tr>
-        <td>确认密码</td>
-        <td colspan="2"><input class="input fl mL15" type="password" v-va:checkPassword.Password="[{'equal':'Password'}]" tag="确认密码" v-model.lazy="checkPassword" placeholder="请再次输入密码" /></td>
-      </tr>
-
       <tr>
         <td>验证码</td>
-        <td ><input class="input" type="email" v-va:ImgCode tag="验证码" v-model.lazy="ImgCode" placeholder="请输入验证码" autocomplete="off"></td>
+        <td ><input class="input" type="email" maxlength="4" v-va:ImgCode tag="验证码" v-model.lazy="ImgCode" placeholder="请输入验证码" autocomplete="off"></td>
         <td @click = 'refreshYzm'>
           <img class="yzm" :src="YzmSrc">
         </td>
@@ -51,7 +55,7 @@
     </tbody>
   </table>
 
-  <router-link class='forget fr' to = "/login">已有账号? 立即登录</router-link>
+  <router-link class='tologin fr' to = "/login">已有账号? 立即登录</router-link>
   <div class="loginBtn BTN mt30" v-va-check>
     <a>立即注册</a>
   </div>
@@ -59,10 +63,19 @@
 </template>
 
 <script>
-
+import pwdEye from '../components/pwdEye';
+import clearInput from '../components/clearInput';
 export default {
-  data () {
+  components:{
+    clearInput,
+    pwdEye
+  },
+  data:()=>{
     return {
+      /*vas:{
+        UserName:false,
+        Password:false
+      },*/
       InvitationCode: '',
       UserName: '',
       Password: '',
@@ -71,7 +84,8 @@ export default {
       YzmSrc: '',         //邀请码图片地址
       YqmReadOnly: false,  //邀请码框是否只读
       existed:'',
-      exUserName:''
+      exUserName:'',
+      Eyes:'open'
     }
   },
   beforeRouteLeave: (to, from,next)=>{
@@ -155,26 +169,27 @@ export default {
       })
     },
     checkUser(){//校验帐号是否存在
-        this.existed=''
-        var regObj=/^[a-zA-Z\d]{4,16}$/
-        if(regObj.test(this.UserName)){
-          setTimeout(()=>{
-            var uname=this.UserName
-            this.exUserName=uname
-              //进行校验
-              var ajax = {
-                Action:"CheckUser",
-                UserName: uname
-              }
-              _fetch(ajax).then((json)=>{
-                if (json.Code!==-1) {
-                  this.existed=json.Exist
-                  this.UserName=this.existed?"":uname
-                }
-              })
-          },10)
+      this.existed=''
+      var regObj=/^[a-zA-Z\d]{4,16}$/
+      if(regObj.test(this.UserName)){
+        var uname=this.UserName
+        this.exUserName=uname
+          //进行校验
+          var ajax = {
+            Action:"CheckUser",
+            UserName: uname
+          }
+          _fetch(ajax).then((json)=>{
+            if (json.Code!==-1) {
+              this.existed=json.Exist
+              this.UserName=this.existed?"":uname
+            }
+          })
         }
-      }
+    },
+    setEyes(){
+      this.Eyes=this.Eyes=='open'?'close':'open'
+    }
   }
 }
 </script>
@@ -182,4 +197,14 @@ export default {
 
 <style lang = "scss" scoped>
   @import '../scss/login.scss';
+  .main{
+    background: #fafafa;
+    height: 100%;
+    padding-top: 3em;
+  }
+  .tologin{
+    font-size:.7em;
+    color:#dc2e2e;
+    margin: 1em 1rem;
+  }
 </style>

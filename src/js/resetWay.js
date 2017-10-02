@@ -27,6 +27,8 @@ export default {
       }
       if(F){
         to.meta.link='/forgetPwd'
+      }else{
+        to.meta.link='/securityCenter'
       }
     })
   },
