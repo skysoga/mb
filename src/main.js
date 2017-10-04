@@ -51,8 +51,6 @@ if(!localStorage.getItem("console")){
 }
 import Vue from 'vue'
 const isDebug_mode = process.env.NODE_ENV !== 'production'; Vue.config.debug = isDebug_mode; Vue.config.devtools = isDebug_mode; Vue.config.productionTip = isDebug_mode;
-// Vue.config.debug=false;
-// Vue.config.devtools=false;
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import App from './App'
@@ -552,7 +550,7 @@ window._fetch = function (data, option = {}){
       }
 
       // var msg = "网络错误，请检查网络状态"
-      FetchCatch({msg,error})
+      FetchCatch({msg})
     })
   })
 }
