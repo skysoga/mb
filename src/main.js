@@ -550,7 +550,7 @@ window._fetch = function (data, option = {}){
       }
 
       // var msg = "网络错误，请检查网络状态"
-      FetchCatch({msg,error})
+      FetchCatch({msg})
     })
   })
 }
