@@ -8,15 +8,15 @@ body{
   position: relative;
 }
 table{
-  td{
+  /* td{
     width: 8rem;
-  }
+  } */
   td:first-of-type{
     width: 4rem;
     text-indent: .5em;
   }
   td:last-of-type{
-    width: 4rem;
+    width: 4em;
   }
   .yzm{
     float: right;

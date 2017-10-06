@@ -5,13 +5,13 @@
       <tr>
         <td>邀请码</td>
         <td colspan="2">
-          <input v-va:InvitationCode="[{'reg':/^\d{8}$/}]" regMsg="您输入的邀请码错误或者已过期" tag="邀请码" class="input fl mL15"
-                 type="url"
+          <input v-va:InvitationCode="[{'reg':/^\d{8}$/}]" regMsg="您输入的邀请码错误" tag="邀请码" class="input fl mL15"
+                 type="tel"
                  placeholder="请输入8位数字邀请码"
                  maxlength="8"
                  :readonly  = "YqmReadOnly"
-                 v-model.lazy = "InvitationCode"/>
-          <clearInput inputName="InvitationCode"></clearInput>
+                 v-model = "InvitationCode"/>
+          <clearInput></clearInput>
         </td>
       </tr>
 
@@ -28,21 +28,21 @@
                  v-model="UserName"
                  :placeholder="existed?exUserName+' 帐号已存在':'请输入您要注册的账号'"/>
           <!-- <em v-show="UserName&&vas.UserName" class="closebtn" v-va-clear:UserName.noright></em> -->
-          <clearInput inputName="UserName"></clearInput>
+          <clearInput></clearInput>
         </td>
       </tr>
 
       <tr>
         <td>设置密码</td>
         <td colspan="2">
-          <input type="text" class="input fl mL15" maxlength="16" tag="设置密码" v-model="Password" v-va:Password placeholder="请输入您要设置的密码" />
+          <input type="url" class="input fl mL15" maxlength="16" tag="设置密码" v-model="Password" v-va:Password placeholder="请输入您要设置的密码" />
           <pwdEye></pwdEye>
-          <clearInput inputName="Password"></clearInput>
+          <clearInput></clearInput>
         </td>
       </tr>
       <tr>
         <td>验证码</td>
-        <td ><input class="input" type="email" maxlength="4" v-va:ImgCode tag="验证码" v-model.lazy="ImgCode" placeholder="请输入验证码" autocomplete="off"></td>
+        <td ><input class="input" type="email" maxlength="4" v-va:ImgCode tag="验证码" v-model="ImgCode" placeholder="请输入验证码" autocomplete="off"><clearInput></clearInput></td>
         <td @click = 'refreshYzm'>
           <img class="yzm" :src="YzmSrc">
         </td>

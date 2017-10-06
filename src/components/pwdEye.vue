@@ -18,7 +18,7 @@
       closeOrOpen(){
         // this.$parent.Eyes=!this.$parent.Eyes
         this.type=!this.type
-        this.inputNode.type=this.type?'password':'text'
+        this.inputNode.type=this.type?'password':'url'
         this.inputNode.focus()
       }
     }
