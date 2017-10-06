@@ -1,12 +1,51 @@
 <template>
-  <em v-show="$parent[inputName]" class="clearInput" @click="$parent[inputName]=''" ref='em'></em>
+  <em v-show="$parent[inputName]" class="clearInput" @click="clear" ref='em'></em>
 </template>
 <script>
   export default{
+    data(){
+      return {
+        inputNode:null,
+        parentNode:null,
+        // show:0  //用数字累加  已达到focus和blur的共同作用可以按想要的情况进行变化
+      }
+    },
     props:['inputName'],
     mounted(){
       //元素产生后去修改父级元素的style
-      this.$el.parentNode.style.position='relative'
+      this.parentNode=this.inputNode=this.$el.parentNode
+      this.inputNode.style.position='relative'
+      this.inputNode=this.$el.parentNode.getElementsByTagName('input')[0]
+      this.inputNode.required='required'
+      this.inputNode.style.position='relative'
+      this.inputNode.style.zIndex=1
+      this.inputNode.style.background='rgba(0,0,0,0)'
+      /*this.inputNode.onfocus=()=>{
+        this.show+=1
+      }
+      this.inputNode.onblur=(e)=>{
+        setTimeout(()=>{
+          this.show-=1
+        },50)
+      }*/
+
+      /*this.inputNode.onmousedown=(e)=>{
+        console.log(e.pageX)
+        if (e.clientX>13*rem) {
+          this.clear()
+        }
+      }*/
+      this.inputNode.ontouchstart=(e)=>{
+        if (e.touches[0].clientX>13*rem) {
+          this.clear()
+        }
+      }
+    },
+    methods:{
+      clear(){
+        this.$parent[this.inputName]=''
+        // this.inputNode.focus()
+      },
     }
   }
 </script>

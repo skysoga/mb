@@ -6,6 +6,7 @@
         <!-- <img v-else src="/static/img/face.png" width="100%" height="100%" alt=""> -->
       </div>
     </div>
+    <form autocomplete="off">
     <table>
       <tbody>
         <tr>
@@ -20,13 +21,9 @@
         <tr>
           <td class="password-icon"></td>
           <td colspan="2">
-          <form autocomplete="off">
-            <input v-if="Eyes" v-model="Password" maxlength="16" class="input" autocomplete="off" tag="密码" type="text" ref="Password"  v-va:Password placeholder="请输入密码" />
-            <input v-else v-model="Password" maxlength="16"  class="input" autocomplete="off" tag="密码" type="password" ref="Password" v-va:Password placeholder="请输入密码" />
-            <!-- <span @click="Eyes=!Eyes"  class="iconfont" :class="Eyes?'open':'close'"></span> -->
-            <pwdEye></pwdEye>
+            <input v-model="Password" maxlength="16" class="input" autocomplete="off" tag="密码" type="text" ref="Password"  v-va:Password placeholder="请输入密码" />
+            <pwdEye type="close"></pwdEye>
             <clearInput inputName="Password"></clearInput>
-          </form>
           </td>
         </tr>
         <tr v-if="IcodeShow">
@@ -40,6 +37,7 @@
         <tr></tr>
       </tbody>
     </table>
+    </form>
 
     <div class="loginBtn BTN" v-va-check>
       <a>立即登录</a>
@@ -82,7 +80,7 @@
         BottomBoxShow: false,
         // BottomBoxList,
         UserList:'',
-        Eyes:false,
+        // Eyes:false,
         lastLoginImage:localStorage.getItem('lastLoginImage')||''
       }
     },

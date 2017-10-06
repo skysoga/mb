@@ -35,8 +35,7 @@
       <tr>
         <td>设置密码</td>
         <td colspan="2">
-          <input v-if="!Eyes" type="password" class="input fl mL15" maxlength="16" tag="设置密码" v-model="Password" v-va:Password placeholder="请输入您要设置的密码" />
-          <input v-else type="text" class="input fl mL15" maxlength="16" v-model="Password" v-va:Password placeholder="请输入您要设置的密码" />
+          <input type="text" class="input fl mL15" maxlength="16" tag="设置密码" v-model="Password" v-va:Password placeholder="请输入您要设置的密码" />
           <pwdEye></pwdEye>
           <clearInput inputName="Password"></clearInput>
         </td>

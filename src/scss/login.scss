@@ -69,6 +69,7 @@ table{
     /*position:relative;*/
     span.downico{
       position:absolute;
+      z-index: 5;
       right:.5em;
       top:0;
       width:2em;
@@ -76,7 +77,7 @@ table{
       line-height:2em;
       border-radius:.2em;
       margin-top:.25em;
-      color:#ccc;
+      color:#dc3b40;
       &:active{
         background:#efefef;
         color:#333;
