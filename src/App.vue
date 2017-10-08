@@ -24,7 +24,7 @@
       return{
       }
     },
-    watch:{
+    /*watch:{
       $route(to,from){
         //RootApp.beforEnter(to)
         if (this.$store.state.needVerify>5) {
@@ -35,7 +35,7 @@
           localStorage.setItem('LastPath',to.fullPath)
         }
       }
-    }
+    }*/
   }
 </script>
 

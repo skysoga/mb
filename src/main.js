@@ -388,7 +388,7 @@ window._fetch = function (data, option = {}){
         }).join('&')+'&Type=Hash'
       }
     }*/
-
+    _App && ga && ga('send','event','fetch',data.Action)
     fetch(fetchUrl, {
       credentials:'same-origin',
       method: 'POST',
@@ -651,10 +651,15 @@ window._App=(function(host){
         }
       },100)
     })
-    addScript("https://www.googletagmanager.com/gtag/js?id=UA-107734696-1",function(){
+    /*addScript("https://www.googletagmanager.com/gtag/js?id=UA-107734696-1",function(){
       window.gtag=function(){(window.dataLayer || []).push(arguments);}
       gtag('js', new Date());
       gtag('config', 'UA-107734696-1');
+    })*/
+    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+    addScript("https://www.google-analytics.com/analytics.js",function(){
+      ga('create', 'UA-107734696-1', 'auto');
+      ga('send', 'even','刷新');
     })
   }
   if (!versions.android) {
@@ -1331,8 +1336,15 @@ window.RootApp = new Vue({
   },
   watch:{
     $route(newRoute, oldRoute){
-      console.log(newRoute,name)
+      // console.log(newRoute,name)
       this.setTitle(this.title, newRoute.name)
+      if (this.$store.state.needVerify>5) {
+        console.log("强制踩点功能");
+        RootApp.AjaxGetInitData(["CloudUrl"])
+      }
+      if (_App) {
+        localStorage.setItem('LastPath',newRoute.fullPath)
+      }
     }
   },
   created:function(){
@@ -1358,6 +1370,11 @@ window.RootApp = new Vue({
       //   break
       // }
     }
+    /*_App && ga('send', {
+      hitType: 'pageview',
+      page:routes[i].path,
+      title: routes[i].name
+    });*/
   },
   render: h => h(App),
 });
@@ -1375,11 +1392,7 @@ router.beforeEach((to, from, next) => {
   }
   state.turning=true
   RootApp.beforEnter(to)
-  next((v)=>{
-    console.log(v)
-    alert(1)
-  });
-  _App && gtag('config', 'UA-107734696-1'); //Google分析
+  next();
 });
 
 router.afterEach((to, from) => {
@@ -1388,6 +1401,11 @@ router.afterEach((to, from) => {
   state.needVerify++
   sessionStorage.setItem("needVerify",state.needVerify)
   getIver()
+  _App && ga('send', {
+    hitType: 'pageview',
+    page:to.path,
+    title: to.name
+  });
 });
 
 //全局指令
