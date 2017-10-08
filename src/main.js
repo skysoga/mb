@@ -21,6 +21,7 @@ if((typeof(layer)||typeof(filterXSS))=='undefined'){
 }else{
   sessionStorage.removeItem('_HT_')
 }
+window._iver=localStorage.getItem('iver')
 var getIver = (function(){
   var time
   return function(s){
@@ -33,8 +34,9 @@ var getIver = (function(){
     fetch('/iver',{credentials: "same-origin"}).then(res=>{
       time=new Date().getTime()
       res.text().then(iver=>{
-        if (iver&&iver!==localStorage.getItem('iver')) {
-          console.log(iver)
+        iver=iver&&iver.slice(0,5)
+        if (iver&&iver!==_iver) {
+          window._iver=iver
           localStorage.setItem('iver',iver)
           if (!s) {
             location.href=location.href
@@ -359,7 +361,7 @@ window._fetch = function (data, option = {}){
       FetchCatch({msg})
       reject()
     },10000)
-    var fetchUrl = '/tools/ssc_ajax.ashx?A='+data.Action
+    var fetchUrl = '/tools/ssc_ajax.ashx?V='+_iver+'&A='+data.Action
     if(window.site){
       fetchUrl+='&S='+site
     }
@@ -587,7 +589,8 @@ window._App=(function(host){
   //是否APP
   var a = localStorage.getItem("isApp")
   if (a!==null) {return a}
-  console.log(host);
+  if (host.split('.').length===4){return false}
+  // console.log(host);
   var beginWithM = /^m\./.test(host)
   var hasDAFATEST = host.indexOf('dafatest') > -1
 
@@ -624,12 +627,17 @@ window._App=(function(host){
   }()
   if (_App) {
     //iosApp专用代码
-    var img=document.createElement("img")
-    img.src="//static.ydbimg.com/API/YdbOnline.js"
-    img.onerror=function(){
-      var script = document.createElement("script");
-      script.src=img.src
-      document.body.appendChild(script);
+    function addScript(url,fun){
+      var img=document.createElement("img")
+      img.src=url
+      img.onerror=function(){
+        var script = document.createElement("script");
+        script.src=img.src
+        document.body.appendChild(script);
+        fun()
+      }
+    }
+    addScript("//static.ydbimg.com/API/YdbOnline.js",function(){
       var count=0
       var inter=setInterval(function(){
         if(typeof YDBOBJ!=='undefined'){
@@ -642,7 +650,12 @@ window._App=(function(host){
           clearInterval(inter)
         }
       },100)
-    }
+    })
+    addScript("https://www.googletagmanager.com/gtag/js?id=UA-107734696-1",function(){
+      window.gtag=function(){(window.dataLayer || []).push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-107734696-1');
+    })
   }
   if (!versions.android) {
     document.body.oncontextmenu=function(){ return false;}//防止右键
@@ -1362,7 +1375,11 @@ router.beforeEach((to, from, next) => {
   }
   state.turning=true
   RootApp.beforEnter(to)
-  next();
+  next((v)=>{
+    console.log(v)
+    alert(1)
+  });
+  _App && gtag('config', 'UA-107734696-1'); //Google分析
 });
 
 router.afterEach((to, from) => {
