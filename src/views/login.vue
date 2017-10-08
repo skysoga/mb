@@ -13,7 +13,7 @@
           <td class="username-icon"></td>
           <td colspan="2">
             <input v-model="UserName" class="input" tag="帐号" type="email" ref="UserName" v-va:UserName placeholder="请输入账号"/>
-            <span class="downico" v-if="UserList" @click="BottomBoxShow=true"></span>
+            <span class="downico" :class="{show:BottomBoxShow}" v-if="UserList" @click="BottomBoxShow=true"></span>
             <!-- <em v-show="UserName&&vas.UserName" class="clearInput" v-va-clear:UserName></em> -->
             <clearInput inputName="UserName"></clearInput>
           </td>

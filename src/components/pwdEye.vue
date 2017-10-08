@@ -31,7 +31,7 @@
     padding:.1em 1em 0 .5em;
     top:0;
     right: 0;
-    color: #dc3b40;
+    color: #c3c3c3;
     //color: #ff2c55;
   }
   .eye:after{
