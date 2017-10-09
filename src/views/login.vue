@@ -21,7 +21,7 @@
         <tr>
           <td class="password-icon"></td>
           <td colspan="2">
-            <input v-model="Password" maxlength="16" class="input" autocomplete="off" tag="密码" type="text" ref="Password"  v-va:Password placeholder="请输入密码" />
+            <input v-model="Password" maxlength="16" class="input" autocomplete="off" tag="密码" type="Password" ref="Password"  v-va:Password placeholder="请输入密码" />
             <pwdEye type="close"></pwdEye>
             <clearInput></clearInput>
           </td>
