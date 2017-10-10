@@ -27,7 +27,7 @@
           </td>
         </tr>
         <tr v-if="IcodeShow">
-          <td>验证码</td>
+          <td class="img-code"></td>
           <td><input type="text" maxlength="4" v-va:ImgCode tag="验证码" v-model="ImgCode" placeholder="请输入验证码">
           </td>
           <td>
@@ -293,7 +293,7 @@
       border:3px solid #e2e0e0;
     }
   }
-  .username-icon,.password-icon{
+  .username-icon,.password-icon,.img-code{
     &:before{
       font-family: 'iconfont';
       display: block;
@@ -308,6 +308,9 @@
   }
   .password-icon:before{
     content:'\e604';
+  }
+  .img-code:before{
+    content:'\e60b';
   }
 
   .otherBtn{
