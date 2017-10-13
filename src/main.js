@@ -433,8 +433,16 @@ window._fetch = function (data, option = {}){
               resolve(json)
             })
           }else{
-            var msg = "数据解析错误" + json
-            FetchCatch({msg})
+            var msg = data.Action+"数据解析错误"// + json
+            FetchCatch({msg,error})
+            var catchData={A:data.Action,data:json,E:error.toString()}
+            if (window.site) {
+              catchData.S=site
+            }
+            if (user) {
+              catchData.U=user
+            }
+            _catch(catchData)
           }
         }
 
