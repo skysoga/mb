@@ -4,7 +4,7 @@ import BottomBox from '../components/bottom-box';
       return{
         BetweenType:'',
         BottomBoxShow:false,
-        BottomBoxList:{K3:"快3",SSC:"时时彩",SYX5:"11选5",FC3D:"福彩3D",PL3:"排列3",KL8:"北京快乐8",PK10:"北京PK10",LHC:"六合彩"},
+        BottomBoxList:{K3:"快3",SSC:"时时彩",SYX5:"11选5",FC3D:"福彩3D",PL35:"排列3",KL8:"北京快乐8",PK10:"北京PK10",LHC:"六合彩"},
         AgentRebate:'',//自身返点数组
         setObj:{Max:8.0,Min:0.0},//最大返点
         ArrObj:'',//当前总数据
@@ -137,7 +137,7 @@ import BottomBox from '../components/bottom-box';
           {"Mode":"三星-一码不定位","Odd":[271,1000]},
           {"Mode":"三星-二码不定位","Odd":[54,1000]},
         ],
-        "PL3":[
+        "PL35":[
           {"Mode":"大小单双-二星","Odd":[1,4]},
           {"Mode":"一星-复式","Odd":[1,10]},
           {"Mode":"后二-直选","Odd":[1,100]},
@@ -193,7 +193,7 @@ import BottomBox from '../components/bottom-box';
         ]
       }
       this.ListArr={
-          "K3":{"Rebate":[7.5,0.0],"List":[{"Mode":"\u5927/\u5C0F/\u5355/\u53CC","Odd":["1.95","1.80"]},{"Mode":"\u548C\u503C3/18","Odd":["189.00","172.80"]},{"Mode":"\u548C\u503C4/17","Odd":["63.00","57.60"]},{"Mode":"\u548C\u503C5/16","Odd":["31.50","28.80"]},{"Mode":"\u548C\u503C6/15","Odd":["18.90","17.28"]},{"Mode":"\u548C\u503C7/14","Odd":["12.60","11.52"]},{"Mode":"\u548C\u503C8/13","Odd":["9.00","8.228"]},{"Mode":"\u548C\u503C9/12","Odd":["7.56","6.912"]},{"Mode":"\u548C\u503C10/11","Odd":["7.00","6.40"]},{"Mode":"\u4E09\u540C\u53F7\u901A\u9009","Odd":["31.50","28.80"]},{"Mode":"\u4E09\u540C\u53F7\u5355\u9009","Odd":["189.00","172.80"]},{"Mode":"\u4E09\u4E0D\u540C\u53F7","Odd":["31.50","28.80"]},{"Mode":"\u4E09\u8FDE\u53F7\u901A\u9009","Odd":["7.87","7.20"]},{"Mode":"\u4E8C\u540C\u53F7\u590D\u9009","Odd":["12.60","11.52"]},{"Mode":"\u4E8C\u540C\u53F7\u5355\u9009","Odd":["63.00","57.60"]},{"Mode":"\u4E8C\u4E0D\u540C\u53F7","Odd":["6.30","5.76"]}]},
+          "K3":{"Rebate": [8.5, 0.0], "List": [{"Mode": "\u5927/\u5C0F/\u5355/\u53CC", "Odd": [1.97, 1.80] }, {"Mode": "\u548C\u503C3/18", "Odd": [191.16, 172.80] }, {"Mode": "\u548C\u503C4/17", "Odd": [63.72, 57.60] }, {"Mode": "\u548C\u503C5/16", "Odd": [31.86, 28.80] }, {"Mode": "\u548C\u503C6/15", "Odd": [19.11, 17.28] }, {"Mode": "\u548C\u503C7/14", "Odd": [12.74, 11.52] }, {"Mode": "\u548C\u503C8/13", "Odd": [9.1, 8.228] }, {"Mode": "\u548C\u503C9/12", "Odd": [7.64, 6.912] }, {"Mode": "\u548C\u503C10/11", "Odd": [7.08, 6.40] }, {"Mode": "\u4E09\u540C\u53F7\u901A\u9009", "Odd": [31.86, 28.80] }, {"Mode": "\u4E09\u540C\u53F7\u5355\u9009", "Odd": [191.16, 172.80] }, {"Mode": "\u4E09\u4E0D\u540C\u53F7", "Odd": [31.86, 28.80] }, {"Mode": "\u4E09\u8FDE\u53F7\u901A\u9009", "Odd": [7.96, 7.20] }, {"Mode": "\u4E8C\u540C\u53F7\u590D\u9009", "Odd": [12.74, 11.52] }, {"Mode": "\u4E8C\u540C\u53F7\u5355\u9009", "Odd": [63.72, 57.60] }, {"Mode": "\u4E8C\u4E0D\u540C\u53F7", "Odd": [6.37, 5.76] }] },
           "LHC":{
             "Rebate":[10.0,0.00],
             "List":[
@@ -287,7 +287,7 @@ import BottomBox from '../components/bottom-box';
           "SSC":{"Rebate":[8.0,0.00],"List":[]},
           "SYX5":{"Rebate":[8.0,0.00],"List":[]},
           "FC3D":{"Rebate":[8.0,0.00],"List":[]},
-          "PL3":{"Rebate":[8.0,0.00],"List":[]},
+          "PL35":{"Rebate":[8.0,0.00],"List":[]},
           "KL8":{"Rebate":[8.0,0.00],"List":[]},
           "PK10":{"Rebate":[8.0,0.00],"List":[]}
       }
@@ -323,7 +323,7 @@ import BottomBox from '../components/bottom-box';
           }
           if(key!=='6HC'){
             if(key=='K3'){
-              this.setObj.Max=7.5
+              this.setObj.Max=8.5
               this.setObj.Min=0.0
             }else{
               this.setObj.Max=8.0
