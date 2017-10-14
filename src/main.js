@@ -449,7 +449,7 @@ window._fetch = function (data, option = {}){
 
           // 对StrCode 加上一些前后缀来表明后端的信息
           if(notChangeStrCode.indexOf(data.Action) === -1){
-            json.StrCode = `·${json.StrCode}·`
+            json.StrCode = `${json.StrCode}·`
           }
           state.turning && clearTimeout(st)
         }catch(error){
