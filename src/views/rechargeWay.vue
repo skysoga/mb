@@ -70,28 +70,18 @@
         </a>
       </div>
       <!-- 第四方支付 暂定名：多功能支付-->
-      <template v-if="FourUrl.length">
-        <div class="surperise active" v-for="(item,index) in FourUrl" v-if="index<1">
-          <a class = "wrap" @click = "toFourUrl(item.PayUrl)">
-            <img class="img" :src="imgServer + '/../system/common/bank/pay/qqpay.png'">
-            <div class="text">
-              <strong>多功能支付</strong>
-              <p>{{item.PayType||'多功能支付'}}</p>
-            </div>
-            <i class="iconfont right fr"></i>
-          </a>
-        </div>
-      </template>
-      <div class="surperise active" v-else>
-        <a class = "wrap">
+
+      <div class="surperise active">
+        <a class = "wrap" @click = "toFourUrl(FourUrl.PayUrl||'')">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/qqpay.png'">
           <div class="text">
             <strong>多功能支付</strong>
-            <p>多功能支付维护中...</p>
+            <p>{{FourUrl.PayType||'多功能支付维护中'}}</p>
           </div>
           <i class="iconfont right fr"></i>
         </a>
       </div>
+
 
     </div>
   </div>
@@ -109,7 +99,7 @@ export default {
       weixMsg:'',
       aliMsg:'',
       qqMsg:'',
-      FourUrl:[{PayType:'淘宝支付',PayUrl:'http://www.taobao.com'},{PayType:'京东支付',PayUrl:'http://www.jd.com'}]
+      FourUrl:{}
     }
   },
   beforeRouteEnter(to,from,next){
@@ -167,8 +157,8 @@ export default {
       this.qqMsg="QQ钱包维护中..."
       this.qqType=''
     }
-    if(state.RechargeFourthParty&&state.RechargeFourthParty.length){
-      this.FourUrl=state.RechargeFourthParty
+    if(state.RechargeFourthParty&&state.RechargeFourthParty[0]){
+      this.FourUrl=state.RechargeFourthParty[0]
     }
     this.payLimit = obj
   },
@@ -178,7 +168,9 @@ export default {
       !bool&&router.push(Url)
     },
     toFourUrl(url){
-      RootApp.OpenWin(url,_App)
+      if(url){
+        RootApp.OpenWin(url,_App)
+      }
     }
   }
 }
