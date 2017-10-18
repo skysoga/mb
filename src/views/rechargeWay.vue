@@ -73,10 +73,10 @@
 
       <div class="surperise active">
         <a class = "wrap" @click = "toFourUrl(FourUrl.PayUrl||'')">
-          <img class="img" :src="imgServer + '/../system/common/other/dafayun.png'">
+          <img class="img" :src="imgServer + '/../system/common/bank/pay/fourthpay.png'">
           <div class="text">
             <strong>多功能支付</strong>
-            <p>{{FourUrl.PayType||'多功能支付维护中'}}</p>
+            <p>{{FourUrl.PayUrl&&'内含支付宝微信QQ银行等渠道'||'多功能支付维护中'}}</p>
           </div>
           <i class="iconfont right fr"></i>
         </a>
