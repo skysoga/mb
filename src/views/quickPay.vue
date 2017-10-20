@@ -47,7 +47,8 @@ export default {
     var title = {
       Weixin:'微信支付',
       Alipay: '支付宝',
-      QQpay: 'QQ钱包'
+      QQpay: 'QQ钱包',
+      UnionPay: '银联快捷'
     }
     var method = to.query.method       //'Bank', 'Weixin', 'Alipay'
     var rechargeWay = 'RechargeWay' + method
@@ -55,7 +56,8 @@ export default {
     var limitName = {
       Weixin: '微信快捷',
       Alipay: '支付宝快捷',
-      QQpay: 'QQ快捷'
+      QQpay: 'QQ快捷',
+      UnionPay: '银联快捷'
     }
 
     //获取数据
@@ -283,6 +285,15 @@ export default {
         QQpay:{
           Action:'Recharge',
           Qort:8,
+          PayUser:'',
+          Money:0,
+          ID:1,
+          BankCode:0
+        },
+        //UnionPay
+        UnionPay:{
+          Action:'Recharge',
+          Qort:9,
           PayUser:'',
           Money:0,
           ID:1,
