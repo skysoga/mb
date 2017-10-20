@@ -3,7 +3,7 @@
     <div class="container" :class="curr=='main'?'active':''">
       <div class="main">
         <div class="intro">
-          <a :style="`background-image:url(${$store.state.constant.ImgHost}${data.AppImg});`"></a>
+          <a :style="`background-image:url(${$store.state.constant.ImgHost}${data.AppImg});border-radius: 1em;`"></a>
           <h1>{{data.AppName}}</h1>
           <p>下载APP 再也无需输入网址</p>
         </div>
@@ -16,7 +16,7 @@
     <div v-if="AppleIsPlist" class="appledetail" :class="curr=='detail'?'active':''">
       <img :src="$store.state.constant.ImgHost
       +'/system/app/appleapp/apple-down-head.png'" alt="" width="100%">
-      <span class="logo" :style="`background-image:url(${$store.state.constant.ImgHost}${data.AppImg});`"></span>
+      <span class="logo" :style="`background-image:url(${$store.state.constant.ImgHost}${data.AppImg});border-radius: 1em;`"></span>
       <a @click="download" class="detail-downbtn" :class="{nochange:text=='请到桌面查看进度'}" :href="data.AppleUrl"><img v-if="text!='点击安装'" class="loading" src="/static/img/rolling.svg" alt="">{{text}}</a>
 			
 			<p class="installText">安装后请打开手机设置<br />
