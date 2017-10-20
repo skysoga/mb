@@ -225,6 +225,7 @@ window._catch = function(data){
   str=str.join('&')
   // var fetchUrl = state.UserName||data.UserName
   // fetchUrl = '/catch?'+(fetchUrl&&('U='+fetchUrl+'&'))+str
+  _App && ga && ga('send','event',msg,str)
   var fetchUrl = 'http://catch.imagess-google.com?'+str
   fetch(fetchUrl, {
     credentials:'same-origin',
@@ -397,7 +398,12 @@ window._fetch = function (data, option = {}){
         }).join('&')+'&Type=Hash'
       }
     }*/
-    _App && ga && ga('send','event','fetch',data.Action)
+    if(_App && ga){
+      //减少发送量
+      if(['GetLotteryOpen','GetInitData','GetServerTimeMillisecond'].indexOf(data.Action)===-1){
+        ga('send','event','fetch',data.Action)
+      }
+    }
     fetch(fetchUrl, {
       credentials:'same-origin',
       method: 'POST',
@@ -428,7 +434,7 @@ window._fetch = function (data, option = {}){
         return
       }
       if(T>10){
-        _catch({msg:'timeout'+T,A:data.Action,U:user})
+        _catch({msg:'timeout',T,A:data.Action,U:user})
       }
       res.text().then(json=>{
         if (data.Action==='GetImageCode') {
