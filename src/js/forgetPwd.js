@@ -32,6 +32,7 @@ export default {
           if(json.Code==1||json.Code==0){
             RootApp.SaveInitData(json.BackData)
             sessionStorage.setItem('isFind',true)
+            sessionStorage.setItem('UserName',this.UserName)
            RootApp.$router.replace({path:'resetWay',query:{Q:'ResetPwd'}})
           }else{
             layer.msgWarn(json.StrCode)

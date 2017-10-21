@@ -27,6 +27,7 @@
         pc:function(){
           location.href="http://"+location.host.replace('m.','www.')+"/index.html?CanPc";
         },
+  4.增加父组件 delLogin方法和 isLogin 标志位来判断是否登录相关，且单独处理
  -->
 
 <template>
@@ -35,8 +36,12 @@
     <div class="blackBg" @click = "close"></div>
     <div class="moreLayer">
       <ul>
-        <li v-for = "(value,key) in list" @click = "$parent.bottomBox(key,value)">
-          <a v-html="value" :class="addUserLogo(key)"></a>
+        <li v-show="$parent.isLogin">
+          <a>选择登录帐号</a>
+        </li>
+        <li v-for="(value,key,index) in list">
+          <a v-html="$parent.isLogin?value[0]:value" :class="addUserLogo(key)" @click = "$parent.bottomBox(key,value)"></a>
+          <span v-show="$parent.isLogin" @click="$parent.delLogin(index)"></span>
         </li>
       </ul>
       <ul>
@@ -62,3 +67,31 @@ export default{
   }
 }
 </script>
+<style lang='scss' scoped>
+  .moreLayer{
+    li{
+      position:relative;
+      span{
+        position:absolute;
+        right:0;
+        top:0;
+        /*margin:.5em;
+        margin-right:.8em;*/
+        height: 2em;
+        width: 2.5em;
+        z-index: 5;
+        color:#ccc;
+        &:active{
+          color:#333;
+        }
+        &:after{
+          content:'\e61d';
+          font-family:'iconfont';
+          display:block;
+          margin-top:.5em;
+          margin-left:.6em;
+        }
+      }
+    }
+  }
+</style>

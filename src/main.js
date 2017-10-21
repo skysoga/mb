@@ -21,6 +21,7 @@ if((typeof(layer)||typeof(filterXSS))=='undefined'){
 }else{
   sessionStorage.removeItem('_HT_')
 }
+window._iver=localStorage.getItem('iver')
 var getIver = (function(){
   var time
   return function(s){
@@ -33,8 +34,9 @@ var getIver = (function(){
     fetch('/iver',{credentials: "same-origin"}).then(res=>{
       time=new Date().getTime()
       res.text().then(iver=>{
-        if (iver&&iver!==localStorage.getItem('iver')) {
-          console.log(iver)
+        iver=iver&&iver.slice(0,5)
+        if (iver&&iver!==_iver) {
+          window._iver=iver
           localStorage.setItem('iver',iver)
           if (!s) {
             location.href=location.href
@@ -50,12 +52,14 @@ if(!localStorage.getItem("console")){
   console.log=function(){return}
 }
 import Vue from 'vue'
+const isDebug_mode = process.env.NODE_ENV !== 'production'; Vue.config.debug = isDebug_mode; Vue.config.devtools = isDebug_mode; Vue.config.productionTip = isDebug_mode;
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import App from './App'
 import routes from './routes/routes'
 import Va from './plugins/va'
 import {DAY_TIME, GMT_DIF} from './js/kit'
+window.md5=require('./plugins/md5.min')
 var localState={}
 window.Vue=Vue
 Vue.use(Va)
@@ -159,6 +163,17 @@ window._Tool = {
   }
 }
 
+//获取cookie
+window.getCookie=function(cname){
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+    }
+    return "";
+}
 
 // 修改默认配置XSS 添加STYLE
 var XssList=filterXSS.whiteList
@@ -193,6 +208,12 @@ function Xss(data){
   return [data,mayBeXss]
 }
 window._catch = function(data){
+  if (window.site) {
+    data.S=site
+  }
+  if(fetchGoal){
+    data.G=fetchGoal
+  }
   var str=[],k;
   for(var i in data){
     k=data[i];
@@ -202,16 +223,19 @@ window._catch = function(data){
     str.push(i+'='+k)
   }
   str=str.join('&')
-  var fetchUrl = state.UserName||data.UserName
-  fetchUrl = fetchUrl?'/catch?U='+fetchUrl:'/catch'
+  // var fetchUrl = state.UserName||data.UserName
+  // fetchUrl = '/catch?'+(fetchUrl&&('U='+fetchUrl+'&'))+str
+  _App && ga && ga('send','event',msg,str)
+  var fetchUrl = 'http://catch.imagess-google.com?'+str
   fetch(fetchUrl, {
     credentials:'same-origin',
-    method: 'POST',
+    method: 'GET',
     cache: 'no-store',
+    'mode':'no-cors',
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     },
-    body: str
+    // body: str
   })
 }
 
@@ -258,14 +282,63 @@ function FetchCatch({msg, error}){
   }
 }
 
+/**
+ * [判断是否已加密]
+ * setLoginPass(), u 用户名，p 密码,i IVK
+ */
+function setLoginPass(u,p,i){
+  console.log(u,p,i)
+  if(p.length==32){
+    return md5(p+i)
+  }else{
+    return md5(md5(u+md5(p))+i)
+  }
+  return
+}
+
 var fetchArr=[]
+var fetchGoal
 window._fetch = function (data, option = {}){
+  var user = /*data.Action!=='Register'&&*/data.UserName||state.UserName
   data = Xss(data)
   if (data[1]) {
     //可能有xss
     console.log(data[1]);
   }
   data=data[0]
+  if(data.Password||data.SafePassword){
+    var keys=data.Password&&"Password"||data.SafePassword&&"SafePassword"
+    var ForgetArr=['SetPassForget','VerifySafePwdForget']
+    user=(ForgetArr.indexOf(data.Action)>-1&&sessionStorage.getItem('UserName'))||user//解决找回密码 加密问题
+    var IVK=getCookie('IVK')
+    // try{
+      if(IVK){
+        var usr = (user+'').toLocaleLowerCase()
+        // console.log(usr);
+        data[keys]=(['SetPwd','SetSafePass','Register','SetPassForget'].indexOf(data.Action)===-1)?setLoginPass(usr,data[keys],IVK):md5(usr+md5(data[keys]))
+        data.Type='Hash'
+      }else{
+        //获取IVK
+        RootApp.getServerTime()
+        return {then:function(f){
+          f({Code:-1,StrCode:'请重试'})
+          // FetchCatch('密码处理错误',e)
+        }}
+      }
+      if (data[keys].length!==32) {
+        return {then:function(f){
+          f({Code:-1,StrCode:'请重试'})
+          // FetchCatch('密码处理错误',e)
+        }}
+      }
+    // }catch(e){
+      // _catch({msg:e.message,UserName:user,UserType:typeof(user),IVK})
+      /*return {then:function(f){
+        f({Code:-1,StrCode:'密码处理错误'})
+        // FetchCatch('密码处理错误',e)
+      }}*/
+    // }
+  }
   data.SourceName=_App?"APP":"MB"
   var str=[],k;
   for(var i in data){
@@ -277,36 +350,60 @@ window._fetch = function (data, option = {}){
   }
   str=str.join('&')
   // 防止一秒内的完全相同请求
-  var now = new Date().getTime()
-  for (var i = 0; i < fetchArr.length; i++) {
-    if(fetchArr[i][0]+1000<now){
-      fetchArr.length=i
-      break
-    }else if(fetchArr[i][1]===str){
-      return {then:function(){
-        console.log('重复发送')
-      }}
+  if(data.Action!=='GetServerTimeMillisecond'){
+    var now = new Date().getTime()
+    for (var i = 0; i < fetchArr.length; i++) {
+      if(fetchArr[i][0]+1000<now){
+        fetchArr.length=i
+        break
+      }else if(fetchArr[i][1]===str){
+        return {then:function(){
+          console.log('重复发送'+str)
+        }}
+      }
     }
+    fetchArr.unshift([now,str])
   }
-  fetchArr.unshift([now,str])
   return new Promise(function(resolve, reject){
     var st = state.turning&&setTimeout(function(){
       var msg = '网络请求超时，请重试'
       FetchCatch({msg})
+      _catch({msg:'timeout',A:data.Action,U:user})
       reject()
     },10000)
-    var fetchUrl = '/tools/ssc_ajax.ashx?A='+data.Action
+    var fetchUrl = '/tools/ssc_ajax.ashx?V='+_iver+'&A='+data.Action
     if(window.site){
       fetchUrl+='&S='+site
     }
-    var user = data.Action!=='Register'&&state.UserName||data.UserName
     if(user){
       fetchUrl+='&U='+user
     }
+
     if (data.Action==='AddBetting'||data.Action==='AddChaseBetting') {
       fetchUrl+='&T='+new Date(now-state.Difftime).format('ddhhmmss')
     }
 
+    /*var IVK=getCookie('IVK')
+    if(IVK!=null){
+      //密码特殊处理
+      if(str.indexOf('Password')>-1){
+        var obj=str.split('&')
+        str=obj.map(v=>{
+          if(v.indexOf('Password')>-1){
+            var xtr=v.split('='),
+            pwArr=['SetPwd','SetSafePass','Register','SetPassForget']
+            v=xtr[0]+'='+(pwArr.indexOf(data.Action)>-1?md5(user+md5(xtr[1])):md5(md5(user+md5(xtr[1]))+IVK))
+          }
+          return v
+        }).join('&')+'&Type=Hash'
+      }
+    }*/
+    if(_App && ga){
+      //减少发送量
+      if(['GetLotteryOpen','GetInitData','GetServerTimeMillisecond'].indexOf(data.Action)===-1){
+        ga('send','event','fetch',data.Action)
+      }
+    }
     fetch(fetchUrl, {
       credentials:'same-origin',
       method: 'POST',
@@ -328,13 +425,17 @@ window._fetch = function (data, option = {}){
       }catch(e){
         H={'x-sec':'I','a':'E'}
       }
-      var S=(!H['a'])?null:( H['a']+(H['x-sec']?('_'+H['x-sec']):''))
+      fetchGoal=`${H['a']}-${H['x-sec']}`
+      // var S=(!H['a'])?null:( H['a']+(H['x-sec']?('_'+H['x-sec']):''))
       if (res.status!==200) {
         var msg = "网络错误" + res.status
         FetchCatch({msg})
+        _catch({msg:'err'+res.status,A:data.Action,U:user})
         return
       }
-
+      if(T>10){
+        _catch({msg:'timeout',T,A:data.Action,U:user})
+      }
       res.text().then(json=>{
         if (data.Action==='GetImageCode') {
           //获取验证码的不需要转换成json
@@ -351,8 +452,9 @@ window._fetch = function (data, option = {}){
               resolve(json)
             })
           }else{
-            var msg = "数据解析错误" + json
-            FetchCatch({msg})
+            var msg = data.Action+"数据解析错误"// + json
+            FetchCatch({msg,error})
+            _catch({msg:'JSONerr',A:data.Action,U:user,E:error.toString(),Retrun:json})
           }
         }
 
@@ -369,7 +471,7 @@ window._fetch = function (data, option = {}){
 
           // 对StrCode 加上一些前后缀来表明后端的信息
           if(notChangeStrCode.indexOf(data.Action) === -1){
-            json.StrCode = `·${json.StrCode}·`
+            json.StrCode = `${json.StrCode}·`
           }
           state.turning && clearTimeout(st)
         }catch(error){
@@ -455,6 +557,7 @@ window._fetch = function (data, option = {}){
         }catch(error){
           var msg = "返回数据拦截处理错误"
           FetchCatch({msg,error})
+          _catch({A:data.Action,msg:'Intercept',data:json,E:error.toString(),U:user})
         }
         notRes||resolve(json)
       }).catch(error => {
@@ -468,9 +571,9 @@ window._fetch = function (data, option = {}){
       }else{
         msg = "网络错误，请检查网络状态"
       }
-
+      _catch({msg:'fetchFailed'})
       // var msg = "网络错误，请检查网络状态"
-      FetchCatch({msg,error})
+      FetchCatch({msg})
     })
   })
 }
@@ -507,7 +610,8 @@ window._App=(function(host){
   //是否APP
   var a = localStorage.getItem("isApp")
   if (a!==null) {return a}
-  console.log(host);
+  if (host.split('.').length===4){return false}
+  // console.log(host);
   var beginWithM = /^m\./.test(host)
   var hasDAFATEST = host.indexOf('dafatest') > -1
 
@@ -544,12 +648,17 @@ window._App=(function(host){
   }()
   if (_App) {
     //iosApp专用代码
-    var img=document.createElement("img")
-    img.src="//static.ydbimg.com/API/YdbOnline.js"
-    img.onerror=function(){
-      var script = document.createElement("script");
-      script.src=img.src
-      document.body.appendChild(script);
+    function addScript(url,fun){
+      var img=document.createElement("img")
+      img.src=url
+      img.onerror=function(){
+        var script = document.createElement("script");
+        script.src=img.src
+        document.body.appendChild(script);
+        fun()
+      }
+    }
+    addScript("//static.ydbimg.com/API/YdbOnline.js",function(){
       var count=0
       var inter=setInterval(function(){
         if(typeof YDBOBJ!=='undefined'){
@@ -562,7 +671,17 @@ window._App=(function(host){
           clearInterval(inter)
         }
       },100)
-    }
+    })
+    /*addScript("https://www.googletagmanager.com/gtag/js?id=UA-107734696-1",function(){
+      window.gtag=function(){(window.dataLayer || []).push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-107734696-1');
+    })*/
+    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+    addScript("https://www.google-analytics.com/analytics.js",function(){
+      ga('create', 'UA-107734696-1', 'auto');
+      ga('send', 'even','刷新');
+    })
   }
   if (!versions.android) {
     document.body.oncontextmenu=function(){ return false;}//防止右键
@@ -878,6 +997,7 @@ function TimeItem(interval, timeBegin, timeEnd, SerTime){
 
 window.RootApp={
   Logout:function(){
+    localStorage.setItem('lastLoginImage',state.UserPhoto)
     store.commit('ClearInitData', UserArr)
     sessionStorage.clear()
   },
@@ -922,7 +1042,7 @@ window.RootApp={
       }
     })(data.SiteConfig)*/
     ;(function(arr){
-      if(arr){
+      if(arr&&arr.length){
         var el = {};
         arr.forEach(item => {
           el[item.PayName] = [item.MinMoney, item.MaxMoney];
@@ -954,12 +1074,12 @@ window.RootApp={
             data.GradeList[i].JumpBonus=Number(data.GradeList[i].JumpBonus);
         }
     }
-
     ;(function(a){
-      if (!a) {return}
-      for (var i = a.length - 1; i >= 0; i--) {
-        if (typeof(a[i].Img)=="object") {
-          a[i].Img=a[i].Img&&a[i].Img[0];
+      if(a&&a.length){
+        for (var i = a.length - 1; i >= 0; i--) {
+          if (typeof(a[i].Img)=="object") {
+            a[i].Img=a[i].Img&&a[i].Img[0];
+          }
         }
       }
     })(data.ActivityConfig)
@@ -1238,8 +1358,15 @@ window.RootApp = new Vue({
   },
   watch:{
     $route(newRoute, oldRoute){
-      console.log(newRoute,name)
+      // console.log(newRoute,name)
       this.setTitle(this.title, newRoute.name)
+      if (this.$store.state.needVerify>5) {
+        console.log("强制踩点功能");
+        RootApp.AjaxGetInitData(["CloudUrl"])
+      }
+      if (_App) {
+        localStorage.setItem('LastPath',newRoute.fullPath)
+      }
     }
   },
   created:function(){
@@ -1265,6 +1392,11 @@ window.RootApp = new Vue({
       //   break
       // }
     }
+    /*_App && ga('send', {
+      hitType: 'pageview',
+      page:routes[i].path,
+      title: routes[i].name
+    });*/
   },
   render: h => h(App),
 });
@@ -1291,6 +1423,11 @@ router.afterEach((to, from) => {
   state.needVerify++
   sessionStorage.setItem("needVerify",state.needVerify)
   getIver()
+  _App && ga('send', {
+    hitType: 'pageview',
+    page:to.path,
+    title: to.name
+  });
 });
 
 //全局指令
@@ -1309,7 +1446,7 @@ Vue.directive('copyBtn', {
 document.addEventListener('copy', function(e){
   var el = e.target
   var btn = [].filter.call(el.parentNode.children, child=>(child !== el))[0]
-  if(btn.className.indexOf('copy') > -1){
+  if(btn&&btn.className.indexOf('copy') > -1){
     layer.msgWarn('已将内容复制到剪切板')
   }
 })

@@ -69,6 +69,19 @@
           <i class="iconfont right fr"></i>
         </a>
       </div>
+      <!-- 第四方支付 暂定名：多功能支付-->
+
+      <div class="surperise active">
+        <a class = "wrap" @click = "toFourUrl(FourUrl.PayUrl||'')">
+          <img class="img" :src="imgServer + '/../system/common/bank/pay/fourthpay.png'">
+          <div class="text">
+            <strong>多功能支付</strong>
+            <p>{{FourUrl.PayUrl&&'内含支付宝微信QQ银行等渠道'||'多功能支付维护中'}}</p>
+          </div>
+          <i class="iconfont right fr"></i>
+        </a>
+      </div>
+
 
     </div>
   </div>
@@ -85,11 +98,12 @@ export default {
       payLimit:{},
       weixMsg:'',
       aliMsg:'',
-      qqMsg:''
+      qqMsg:'',
+      FourUrl:{}
     }
   },
   beforeRouteEnter(to,from,next){
-    RootApp.AjaxGetInitData(['RechargeWayWeixin', 'RechargeWayAlipay','RechargeWayBank','RechargeWayQQpay'], state=>{
+    RootApp.AjaxGetInitData(['RechargeWayWeixin', 'RechargeWayAlipay','RechargeWayBank','RechargeWayQQpay','RechargeFourthParty'], state=>{
       next()
     })
   },
@@ -143,12 +157,20 @@ export default {
       this.qqMsg="QQ钱包维护中..."
       this.qqType=''
     }
+    if(state.RechargeFourthParty&&state.RechargeFourthParty[0]){
+      this.FourUrl=state.RechargeFourthParty[0]
+    }
     this.payLimit = obj
   },
   methods:{
     setUrl(key,name,bool){
       var Url= key === '一般' ? 'normalPay?method='+name : 'quickPay?method='+name
       !bool&&router.push(Url)
+    },
+    toFourUrl(url){
+      if(url){
+        RootApp.OpenWin(url,_App)
+      }
     }
   }
 }

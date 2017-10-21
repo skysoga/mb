@@ -18,5 +18,14 @@
 </template>
 <script src="../js/verifySafePwd.js"></script>
 <style lang="scss" scoped>
+  .forget{
+    display: block;
+    margin: 0 1rem;
+    text-align: right;
+    color: #dc2e2e;
+    line-height: 1.5em;
+    font-size: .7em;
+    width: 10rem;
+  }
   @import '../scss/SecurityCenter.scss';
 </style>
