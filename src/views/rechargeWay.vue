@@ -71,12 +71,12 @@
       </div>
       <!-- 第四方支付 暂定名：多功能支付-->
 
-      <div class="surperise active">
-        <a class = "wrap" @click = "toFourUrl(FourUrl.PayUrl||'')">
+      <div class="surperise active" v-if="FourUrl.PayUrl">
+        <a class = "wrap" @click = "toFourUrl(FourUrl.PayUrl)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/fourthpay.png'">
           <div class="text">
-            <strong>多功能支付</strong>
-            <p>{{FourUrl.PayUrl&&'内含支付宝微信QQ银行等渠道'||'多功能支付维护中'}}</p>
+            <strong>{{FourUrl.PayType}}</strong>
+            <p>内含支付宝微信QQ银行等渠道</p>
           </div>
           <i class="iconfont right fr"></i>
         </a>
