@@ -525,6 +525,10 @@
 
             //对6HC的计划进行一些变换并报错到vuex中
             function use6HCPlan(monthPlan){
+              //2017-10-15 通知本月15日不开奖
+              if (monthPlan.Month==10) {
+                monthPlan.Schedule=monthPlan.Schedule.replace('15,','')
+              }
               //保证转为数字类型
               monthPlan.BeforeIssue *= 1
               monthPlan.NextFirst *= 1

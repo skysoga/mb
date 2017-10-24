@@ -14,17 +14,17 @@ export default {
     if(!(U||F)){
       router.replace('/login')
     }
-    RootApp.GetInitData(['UserMobile'],state=>{
-      if(state.UserMobile){
-        next()
-      }else{
-        layer.alert('暂停使用手机绑定',function(){
-          router.push('/securityCenter')
-          state.turning=false
-        })
-      }
-    })
-    // next()
+    // RootApp.GetInitData(['UserMobile'],state=>{
+    //   if(state.UserMobile){
+    //     next()
+    //   }else{
+    //     layer.alert('暂停使用手机绑定',function(){
+    //       router.push('/securityCenter')
+    //       state.turning=false
+    //     })
+    //   }
+    // })
+    next()
   },
   methods:{
     $vaSubmit(){

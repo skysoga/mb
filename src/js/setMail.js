@@ -14,17 +14,17 @@ export default {
     if(!(U||F)){
       router.replace('/login')
     }
-    RootApp.GetInitData(['UserMail'],state=>{
-      if(state.UserMail){
-        next()
-      }else{
-        layer.alert('暂停使用邮箱绑定',function(){
-          router.push('/securityCenter')
-          state.turning=false
-        })
-      }
-    })
-    // next()
+    // RootApp.GetInitData(['UserMail'],state=>{
+    //   if(state.UserMail){
+    //     next()
+    //   }else{
+    //     layer.alert('暂停使用邮箱绑定',function(){
+    //       router.push('/securityCenter')
+    //       state.turning=false
+    //     })
+    //   }
+    // })
+    next()
   },
   methods:{
     $vaSubmit(){

@@ -66,7 +66,7 @@
     </div>
     <div class="options">
         <a id="loginOut" class="active" @click="loginOut">
-          <span>退出登录</span>
+          <span class="logout">退出登录</span>
           <i class="fr"><span class="iconfont right"></span></i>
         </a>
     </div>
@@ -77,5 +77,8 @@
   @import '../scss/personalinfo.scss';
   .icon{
     margin: 0 5px;
+  }
+  .logout{
+    color:#dc3b40;
   }
 </style>

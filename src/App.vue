@@ -24,7 +24,7 @@
       return{
       }
     },
-    watch:{
+    /*watch:{
       $route(to,from){
         //RootApp.beforEnter(to)
         if (this.$store.state.needVerify>5) {
@@ -35,7 +35,7 @@
           localStorage.setItem('LastPath',to.fullPath)
         }
       }
-    }
+    }*/
   }
 </script>
 
@@ -43,11 +43,11 @@
 @import './scss/public.scss';
 @font-face {
   font-family: 'iconfont';  /* project id 380333 */
-  src: url('//at.alicdn.com/t/font_380333_yyz5y3b3e301wcdi.eot');
-  src: url('//at.alicdn.com/t/font_380333_yyz5y3b3e301wcdi.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_380333_yyz5y3b3e301wcdi.woff') format('woff'),
-  url('//at.alicdn.com/t/font_380333_yyz5y3b3e301wcdi.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_380333_yyz5y3b3e301wcdi.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_380333_uk7foduxe3h4zpvi.eot');
+  src: url('//at.alicdn.com/t/font_380333_uk7foduxe3h4zpvi.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_380333_uk7foduxe3h4zpvi.woff') format('woff'),
+  url('//at.alicdn.com/t/font_380333_uk7foduxe3h4zpvi.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_380333_uk7foduxe3h4zpvi.svg#iconfont') format('svg');
 }
 html{
   height: 100%;
