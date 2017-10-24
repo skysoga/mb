@@ -44,7 +44,7 @@
     </div>
     <div class="otherBtn">
       <router-link class='signup' to = "/register">立即注册</router-link><router-link class='forget' to = "/forgetPwd?Q=ResetPwd">忘记密码</router-link>
-      <span class="downUrl" v-show="isAPP=='ios'">APP下载与修复网址：<a href="https://fa777.com">fa777.com</a></span>
+      <span class="downUrl" v-show="isAPP=='ios'">APP下载与修复网址：<a target="_blank" href="https://fa777.com">fa777.com</a></span>
     </div>
     <ul id="usedList"></ul>
     <!-- 区分是否登录记录数据 -->
