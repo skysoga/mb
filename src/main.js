@@ -618,8 +618,6 @@ window._App=(function(host){
   if(!beginWithM && !hasDAFATEST){
     return true
   }
-
-
   // host = host.split('.')
   // host = host[host.length-2]
   // if (['csz8','caishen01','caishenzhengba','app1daiasd','app2jskahs'].indexOf(host)>-1) {
@@ -647,6 +645,7 @@ window._App=(function(host){
     };
   }()
   if (_App) {
+    _App=versions.android?'android':(versions.ios?'ios':'app')//判断是安卓还是IOS
     //iosApp专用代码
     function addScript(url,fun){
       var img=document.createElement("img")

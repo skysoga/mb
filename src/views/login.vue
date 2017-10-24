@@ -44,8 +44,8 @@
     </div>
     <div class="otherBtn">
       <router-link class='signup' to = "/register">立即注册</router-link><router-link class='forget' to = "/forgetPwd?Q=ResetPwd">忘记密码</router-link>
+      <span class="downUrl" v-show="isAPP=='ios'">APP下载与修复网址：<a href="https://fa777.com">fa777.com</a></span>
     </div>
-
     <ul id="usedList"></ul>
     <!-- 区分是否登录记录数据 -->
     <bottom-box v-show = "BottomBoxShow"
@@ -78,6 +78,7 @@
         imgSrc:'',
         IcodeShow:false,
         BottomBoxShow: false,
+        isAPP:_App,
         // BottomBoxList,
         UserList:'',
         // Eyes:false,
@@ -328,6 +329,16 @@
     .signup{
       color: #dc3b40;
       border-right:1px solid #e5e5e5;
+    }
+    .downUrl{
+      display: block;
+      color: #bbb;
+      padding: .5em 0;
+      font-size: .7em;
+      a{
+        color: #0e7ffe;
+        text-decoration: underline;
+      }
     }
   }
 </style>
