@@ -8,8 +8,11 @@
         <table>
           <tr>
             <td><span>开奖号码 3,5,6</span></td>
-            <td><span>截止 01:00:35</span></td>
-            <td><span>期号 20870808</span></td>
+            <td><span>截止 {{stopTime}}</span></td>
+            <td><span>期号 {{nowIssue?nowIssue:'0000000000'}}</span></td>
+          </tr>
+          <tr>
+            <td>{{TimeBar}}</td>
           </tr>
         </table>
         <div class="sound" @click.stop="">
@@ -49,6 +52,7 @@
 <script>
   import mainfooter from './footer'
   import { swiper, swiperSlide, swiperPlugins } from 'vue-awesome-swiper'
+  import {mapState} from 'vuex'
   var cfg = {
     'A10':{
       itemArr:['大','小','单','双',3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
@@ -125,14 +129,107 @@
         playtype:['和值','三同号通选','三同号单选','三不同号','三连号通选','二同号复选','二同号单选','二不同号'],
       }
     },
-    computed:{
+    // computed:{
+    //   getBetShow(){
+    //     return (this.show == 'bet')
+    //   },
+    //   swiper() {
+    //     return this.$refs.mySwiper.swiper
+    //   }
+    // },
+    computed:mapState({
+      //header部分
+      ifShowTypeSelect (){
+        return this.$store.state.lt.box === 'typeSelect'
+      },
+      ifShowModeSelect (){
+        return this.$store.state.lt.box === 'modeSelect'
+      },
+      LotteryName: ()=>state.lt.lottery.LotteryName,
+      config:()=>state.lt.config,
+      award:()=>state.lt.award,
+      odds:()=>state.lt.Odds['K3'],
+      nowModeName:()=>state.lt.mode.name,
+      nowModeIndex:()=>cfg[state.lt.mode.mode].index,
+      //开奖结果部分
+      oldIssue(){
+        return state.lt.lottery.LotteryCode === '1406' ? state.lt.OldIssue : state.lt.OldIssue.slice(4)
+      },
+      nowIssue(){
+        return state.lt.NowIssue
+      },
+      stopTime(){
+        var dd = new Date(state.lt.StopTime)
+        var hour = (dd.getHours().toString().length<2)?'0'+dd.getHours():dd.getHours()
+        var minute = (dd.getMinutes().toString().length<2)?'0'+dd.getMinutes():dd.getMinutes()
+        var second = dd.getSeconds().toString().length<2?'0'+dd.getSeconds():dd.getSeconds()
+        return hour+':'+minute+':'+second
+      },
+      TimeBar:()=>state.lt.TimeBar,
+      results(){
+        var _results = state.lt.LotteryResults[this.lcode]
+        if(!_results || !_results.length){
+          return []
+        }else{
+          return _results[0].LotteryOpen.split(',')
+        }
+      },
+      display(){
+        return state.lt.displayResults ? this.results : this.wait4Results
+      },
+      displayClass(){
+        return state.lt.displayResults ? 'Dice' : 'rDice'
+      },
+      ifShowPastOpen(){
+        return this.$store.state.lt.box === 'pastOpen'
+      },
+      ifShowBetRecord(){
+        return this.$store.state.lt.box === 'BetRecord'
+      },
+      pastOpen(){
+        var pastOpen = state.lt.LotteryResults[this.lcode].map(item=>{
+          var el = {}
+          el.IssueNo = item.IssueNo.length < 7 ? item.IssueNo :item.IssueNo.slice(4)        //把年份砍掉
+          var results = item.LotteryOpen.split(',')
+          el.LotteryOpen = results
+          el.sum = results.reduce((a,b)=>(+a)+(+b))
+          el.bigOrSmall = el.sum > 10 ? '大' : '小'
+          el.singleOrDouble = el.sum % 2 === 1 ? '单' : '双'
+          return el
+        })
+        return pastOpen
+      },
+      BetRecord(){
+        var Record = state.lt.BetRecord
+        if(!Record || Record.length === 0){
+          var emptyObj = {issueNo:'xxxx', normal_money:'', openState:''}
+          Record = [0,0,0].map(item=>emptyObj)
+        }
+        return Record
+      },
+      tip:()=>state.lt.mode.tip,
+      //玩法区
+      itemArr:()=>cfg[state.lt.mode.mode].itemArr,
+      mode:()=>state.lt.mode.mode,
+      award:()=>state.lt.award,
+      tipRebate(){
+        return typeof this.award === 'string' ? `赔率${this.award}倍。` : ''
+      },
+      chosen:()=>state.lt.tmp['K3'],
+      bet:()=>state.lt.bet,
+      betStr:()=>state.lt.bet.betting_number,
+      betCountStr:()=>state.lt.bet.betting_number ? `共${state.lt.bet.betting_count}注`:'',
+      betMoneyStr(){
+        return (state.lt.bet.betting_money && this.showPrice)  ? `，${state.lt.bet.betting_money}元` : ''
+      },
+      basket:()=>state.lt.basket,
       getBetShow(){
         return (this.show == 'bet')
       },
       swiper() {
         return this.$refs.mySwiper.swiper
       }
-    },
+    }),
     methods:{
       addNum(num){
         // alert(document.body.offsetWidth+'+'+document.body.offsetHeight)
