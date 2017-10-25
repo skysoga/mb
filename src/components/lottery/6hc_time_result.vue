@@ -10,7 +10,7 @@
     <!-- <div class="openNumber"  v-if="displayResults"> -->
       <template v-for="(numStr, index) in results">
           <div class="number-box plus" v-if="index === 6"><em class="symbol">+</em></div>
-          <div class="number-box">
+          <div :class="['number-box',!displayResults&&'nocolor']">
             <em :class="numColor[numStr*1]">{{numStr}}</em>
             <span class="number-box-text">{{getAnimal(numStr)}}</span>
           </div>
@@ -256,6 +256,13 @@ export default {
   }
   span{
     line-height: 1em;
+  }
+
+  &.nocolor{
+  em{
+    background: linear-gradient(to top, #bbb59c 0%,#bbb59c 75%);
+    background: -webkit-linear-gradient(top, #bbb59c 0%,#bbb59c 75%);
+  }
   }
 }
 
