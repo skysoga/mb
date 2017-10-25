@@ -354,7 +354,7 @@
             Vue.set(state.LotteryResults, code, results)
           },
           lt_stopSell:(state, type)=>{
-            this.$store.commit('lt_updateTimeBar', ['期号有误','暂停销售','当期封单'][type])    //暂停销售
+            this.$store.commit('lt_updateTimeBar', ['期号有误','暂停销售','当期封单','等待开局'][type])    //暂停销售
             return
           },
           lt_setIssueNo:(state, IssueNo)=>{state.IssueNo = IssueNo},  //设置当前期号
@@ -827,7 +827,8 @@
 
             if(code !== '1301'){
               if(!state.PlanLen){
-                var newest = this.WS.Newest
+                if (this.Status !== 'NewGame') return
+                var newest = this.WS.NewGame
                 if (this.WS.TimeLeft === 0) {
                   this.WS.TimeLeft = newest.end*1 - newest.start*1
                 }else{
@@ -1234,7 +1235,8 @@
           Newest:null,
           NewGame:null,
           GameResult:null,
-          TimeLeft:0
+          TimeLeft:0,
+          Status:''
         }
       }
     },
@@ -1283,6 +1285,10 @@
       'WS.Newest'(n,o){
         store.commit('lt_updateIssue',n)
         Vue.set(state.lt, 'StopTime', n.end)
+      },
+      'WS.GameStatus'(n,o){
+        this.WS.Status = 'GameStatus'
+        store.commit('lt_stopSell', 3)
       }
 		},
 	  beforeRouteLeave(to, from, next){
