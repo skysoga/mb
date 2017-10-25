@@ -6,7 +6,8 @@
       {{oldIssue}}期开奖号码 <i class="iconfont">&#xe601;</i>
     </span>
 
-    <div class="openNumber"  v-if="displayResults">
+    <div class="openNumber" >
+    <!-- <div class="openNumber"  v-if="displayResults"> -->
       <template v-for="(numStr, index) in results">
           <div class="number-box plus" v-if="index === 6"><em class="symbol">+</em></div>
           <div class="number-box">
@@ -115,11 +116,11 @@ export default {
     },
     results(){
       var code = this.$route.params.code
-      var _results = this.$store.state.lt.LotteryResults[code]
+      var _results = this.$store.state.lt.LotteryResults[code]      
       if(!_results || !_results.length){
         return []
       }else{
-        return _results[0].LotteryOpen.split(',').slice(0,20)
+        return this.displayResults?_results[0].LotteryOpen.split(',').slice(0,20):this.wait4Results
       }
     },
     pastOpen(){
