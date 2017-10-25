@@ -335,13 +335,16 @@
       border-right:1px solid #e5e5e5;
     }
     .downUrl{
+      position: fixed;
+      bottom: 1em;
+      width: 100%;      
       display: block;
       color: #bbb;
       padding: .5em 0;
       font-size: .7em;
       em{
-        color: #0e7ffe;
-        text-decoration: underline;
+        color: #dc3b40;
+        // text-decoration: underline;
       }
     }
   }
