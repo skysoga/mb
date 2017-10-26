@@ -71,8 +71,8 @@
       </div>
       <!-- 第四方支付 暂定名：多功能支付-->
 
-      <div class="surperise active" v-if="FourUrl.PayUrl">
-        <a class = "wrap" @click = "toFourUrl(FourUrl.PayUrl)">
+      <div class="surperise active" v-show="FourUrl.PayUrl">
+        <a class="wrap" @click="toFourUrl()">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/fourthpay.png'">
           <div class="text">
             <strong>{{FourUrl.PayType}}</strong>
@@ -167,10 +167,16 @@ export default {
       var Url= key === '一般' ? 'normalPay?method='+name : 'quickPay?method='+name
       !bool&&router.push(Url)
     },
-    toFourUrl(url){
-      if(url){
-        RootApp.OpenWin(url,_App)
-      }
+    toFourUrl(){
+      RootApp.AjaxGetInitData(['RechargeFourthParty'], state=>{
+        var json=state.RechargeFourthParty
+        if(json&&json.length){
+          this.FourUrl=json[0]
+          RootApp.OpenWin(json[0].PayUrl)          
+        }else{
+          layer.alert(this.FourUrl.PayType+'功能已关闭')
+        }
+      })
     }
   }
 }
