@@ -357,6 +357,9 @@ window._fetch = function (data, option = {}){
         fetchArr.length=i
         break
       }else if(fetchArr[i][1]===str){
+        if(layerIndex||layerIndex=='0'){
+          layer.close(layerIndex)
+        }
         return {then:function(){
           console.log('重复发送'+str)
         }}
@@ -422,10 +425,11 @@ window._fetch = function (data, option = {}){
             H[pair[0]]=pair[1]
           }
         }
+        fetchGoal=`${H['a']}-${H['x-sec']}`
       }catch(e){
-        H={'x-sec':'I','a':'E'}
+        H={'x-sec':'E','a':'I'}
+        fetchGoal=null
       }
-      fetchGoal=`${H['a']}-${H['x-sec']}`
       // var S=(!H['a'])?null:( H['a']+(H['x-sec']?('_'+H['x-sec']):''))
       if (res.status!==200) {
         var msg = "网络错误" + res.status
@@ -618,8 +622,6 @@ window._App=(function(host){
   if(!beginWithM && !hasDAFATEST){
     return true
   }
-
-
   // host = host.split('.')
   // host = host[host.length-2]
   // if (['csz8','caishen01','caishenzhengba','app1daiasd','app2jskahs'].indexOf(host)>-1) {
@@ -647,6 +649,7 @@ window._App=(function(host){
     };
   }()
   if (_App) {
+    _App=versions.android?'android':(versions.ios?'ios':'app')//判断是安卓还是IOS
     //iosApp专用代码
     function addScript(url,fun){
       var img=document.createElement("img")
