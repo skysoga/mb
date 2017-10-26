@@ -12,7 +12,7 @@
             <td><span>期号 {{nowIssue?nowIssue:'0000000000'}}</span></td>
           </tr>
           <tr>
-            <td>{{TimeBar}}</td>
+            <td colspan="3" style="font-size: .7em;">{{TimeBar}}</td>
           </tr>
         </table>
         <div class="sound" @click.stop="">
@@ -378,6 +378,7 @@
       text-align:center;
       background:rgba(0, 0, 0, 0.2);
       border-bottom:1px solid rgba(0, 0, 0, 0.12);
+      table-layout: fixed;
 
     }
     span{

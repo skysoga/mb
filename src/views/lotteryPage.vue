@@ -93,13 +93,15 @@
       //打开ws
       var ws = null
       var ws1 = null
-      var getWs = new Promise(function(resolve, reject){
-        ws = new WebSocket('ws://47.52.109.168:8002')
-        ws.onmessage = e =>{
-          ws1 = e.data
-          resolve()
-        }
-      })
+      if (ptype === 'live') {
+        var getWs = new Promise(function(resolve, reject){
+          ws = new WebSocket('ws://47.52.109.168:8002')
+          ws.onmessage = e =>{
+            ws1 = e.data
+            resolve()
+          }
+        })
+      }
       var checkws = (vm,data)=>{
         console.log(data)
         var json
