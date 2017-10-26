@@ -71,12 +71,12 @@
       </div>
       <!-- 第四方支付 暂定名：多功能支付-->
 
-      <div class="surperise active">
-        <a class = "wrap" @click = "toFourUrl(FourUrl.PayUrl||'')">
+      <div class="surperise active" v-show="FourUrl.PayUrl">
+        <a class="wrap" @click="toFourUrl()">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/fourthpay.png'">
           <div class="text">
-            <strong>多功能支付</strong>
-            <p>{{FourUrl.PayUrl&&'内含支付宝微信QQ银行等渠道'||'多功能支付维护中'}}</p>
+            <strong>{{FourUrl.PayType}}</strong>
+            <p>内含支付宝微信QQ银行等渠道</p>
           </div>
           <i class="iconfont right fr"></i>
         </a>
@@ -167,10 +167,20 @@ export default {
       var Url= key === '一般' ? 'normalPay?method='+name : 'quickPay?method='+name
       !bool&&router.push(Url)
     },
-    toFourUrl(url){
-      if(url){
-        RootApp.OpenWin(url,_App)
+    toFourUrl(){
+      if(!_App){
+        var newtab=window.open('about:blank')
       }
+      RootApp.AjaxGetInitData(['RechargeFourthParty'], state=>{
+        var json=state.RechargeFourthParty
+        if(json&&json.length){
+          this.FourUrl=json[0]
+          RootApp.OpenWin(json[0].PayUrl,!_App&&newtab)
+        }else{
+          !_App&&newtab.close()
+          layer.alert(this.FourUrl.PayType+'功能已关闭')
+        }
+      })
     }
   }
 }
