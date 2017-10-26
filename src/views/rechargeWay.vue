@@ -168,12 +168,16 @@ export default {
       !bool&&router.push(Url)
     },
     toFourUrl(){
+      if(!_App){
+        var newtab=window.open('about:blank')
+      }
       RootApp.AjaxGetInitData(['RechargeFourthParty'], state=>{
         var json=state.RechargeFourthParty
         if(json&&json.length){
           this.FourUrl=json[0]
-          RootApp.OpenWin(json[0].PayUrl)          
+          RootApp.OpenWin(json[0].PayUrl,!_App&&newtab)
         }else{
+          !_App&&newtab.close()
           layer.alert(this.FourUrl.PayType+'功能已关闭')
         }
       })
