@@ -2,11 +2,14 @@
   <div class="footerContainer">
     <div v-if="betshow" class="info">
       <div class="selected"><span>当前选号</span><em v-for="d in chosen">{{d}}</em></div>
-      <div class="money"><span>每注金额</span><input maxlength="7" v-model="showPrice" @input="changeShowPrice" type="tel"><p>请输入要投注的金额<em>20</em>元</p></div>
+      <div class="money"><span>每注金额</span><input maxlength="7" v-model="showPrice" @input="changeShowPrice" type="tel">
+        <p v-show = "!showPrice">请输入要投注的金额</p>
+        <p v-show = "showPrice">最高可中<em>{{mode === 'A10' ? getMaxAwardA10() : (+this.showPrice * this.award).toFixed(2)}}</em>元</p>
+      </div>
     </div>
     <div class="betnow fix">
       <div class="clear" @click="clear">清空</div>
-      <div class="total">共0注</div>
+      <div class="total">{{betCountStr}}{{betMoneyStr}}</div>
       <div class="betbutton" @click="confirmBet">马上投注</div>
     </div>
   </div>
@@ -23,15 +26,22 @@
     created(){
     },
     computed:mapState({
+      mode:()=>state.lt.mode.mode,
       LotteryName: ()=>state.lt.lottery.LotteryName,
       bet:()=>state.lt.bet,
       nowIssue(){
         return state.lt.NowIssue
       },
+      betCountStr:()=>state.lt.bet.betting_number ? `共${state.lt.bet.betting_count}注`:'',
+      betMoneyStr(){
+        return (state.lt.bet.betting_money && this.showPrice)  ? `，${state.lt.bet.betting_money}元` : ''
+      },
+      award:()=>state.lt.award,
     }),
     methods:{
       clear(){
-        this.$parent.chosen = []
+        this.showPrice = ''
+        this.$store.commit('lt_clearBet')
       },
       confirmBet(){
         if(!this.bet.betting_count){
@@ -51,6 +61,7 @@
             content: msg,
             btn: ['确定', '取消'],
             yes: ()=>{
+              return layer.msgWarn('接口还未通！')
               var basebet = new BaseBet(this.$store.state)
               if(this.mode === 'A10'){
                 basebet.setRebate('180', this.$store.state)
@@ -111,6 +122,41 @@
           this.$store.commit('lt_setPerbet', +this.showPrice)
           this.$store.commit('lt_setMoney')
         }
+      },
+      //获得和值的最大获奖
+      getMaxAwardA10(){
+        var maxAward
+        var dsdsRebate = this.award ? this.award[8] : ''  //大小单双的返点在和值的最后一个
+        //大小单双选择情况
+        var dsds = [
+          this.chosen.indexOf('大') > -1,
+          this.chosen.indexOf('小') > -1,
+          this.chosen.indexOf('单') > -1,
+          this.chosen.indexOf('双') > -1
+        ]
+
+        var numPart = [], numMax = 0
+        this.chosen.forEach(item=>{
+          if(['大','小','单','双'].indexOf(item)===-1){
+            var award1 = item >= 11 ? this.award[18-item] : this.award[item - 3]
+            var award2 = ((item >= 11 && dsds[0]) || (item < 11 && dsds[1])) ? dsdsRebate : 0
+            var award3 = (((item % 2 ===1) && dsds[2]) || ((item % 2 ===0) && dsds[3])) ? dsdsRebate : 0
+            var award = ((+award1) + (+award2) + (+award3)).toFixed(2)
+            numPart.push(award)
+          }
+        })
+
+        //如果选择的数组中含有数字
+        //未考虑完全没有选择任何一个按钮的选项，因为不选不会进入这个程序
+        if(this.chosen.some(item=>typeof item === 'number')){
+          numMax = Math.max.apply({}, numPart)
+          maxAward = numMax
+        }else if((dsds[0] || dsds[1]) && (dsds[2] || dsds[3])){
+          maxAward = 2 * dsdsRebate
+        }else{
+          maxAward = dsdsRebate
+        }
+        return (+this.showPrice * maxAward).toFixed(2)
       },
     }
   }
