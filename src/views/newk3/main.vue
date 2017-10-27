@@ -21,7 +21,7 @@
       </div>
       <div class="userContent"></div>
     </div>
-    <div :style="{opacity:getBetShow?1:0,'z-index':getBetShow?20:0,height:containerHeight}" @touchstart="touchChangeHeight" class="betContainer">
+    <div :style="{opacity:getBetShow?1:0,'z-index':getBetShow?20:0,height:containerHeight}" class="betContainer">
       <div class="header">
         <div class="info fix">
           <div @click="changeShow" class="back"></div>
@@ -33,7 +33,7 @@
       <ul class="playtype fix" v-show="playtypeShow == 'playtype'">
         <li v-for="(d,i) in config" @click="toPlay(d,i)"><em>{{d.name}}</em></li>
       </ul>
-      <div ref="betboxContainer" class="betboxContainer fix" :class="{noscroll:canScorll}" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend" :style="{ transform: 'translate3d('+movey+'px, 0px, 0px)',transition:transition+'s',width:8*clientWidth+'px'}" v-show="playtypeShow == ''">
+      <!-- <div ref="betboxContainer" class="betboxContainer fix" :class="{noscroll:canScorll}" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend" :style="{ transform: 'translate3d('+movey+'px, 0px, 0px)',transition:transition+'s',width:8*clientWidth+'px'}" v-show="playtypeShow == ''">
         <div class="betbox" @touchmove.stop="scrollList" :class="i" v-for="(d,i,j) in cfg" :style="{width:clientWidth+'px'}">
           <div class="topshadow"></div>
           <div ref="buttonList" class="newmain">
@@ -44,12 +44,34 @@
           <div class="topshadow"></div>
           <div class="bottomshadow" :style="{height:heightArr[j]+'px'}"></div>
         </div>
+      </div> -->
+      <div class="betboxContainer" v-show="playtypeShow == ''">
+        <div class="slider" ref="slider">
+          <div class="slider-group" ref="sliderGroup">
+            <div v-for="(d,i,j) in cfg">
+              <div :ref="'wrapperCon'+j" class="betbox" :class="i" :style="{height:heightArrCon[j]?heightArrCon[j]+'px':'inherit'}">
+                <div class="scrollCon">
+                  <div class="topshadow"></div>
+                  <div ref="buttonList" class="newmain">
+                    <ul class="buttonList fix">
+                      <li v-for="e in d.itemArr" :class = "{curr:chosen.indexOf(e) > -1,bgnone:e==0}"><span v-if="!(e==0)" @touchstart="choose(e)" class="fix"><em><i>{{e}}</i></em></span></li>
+                    </ul>
+                  </div>
+                  <div class="topshadow"></div>
+                  <div class="bottomshadow" :style="{height:heightArr[j]+'px'}"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <mainfooter ref="footer" :betshow="bet.betting_count" :chosen="chosen"></mainfooter>
     </div>
   </div>
 </template>
 <script>
+  import BScroll from 'better-scroll'
+  import {addClass} from './dom'
   import mainfooter from './footer'
   import {unique,C,mul,BaseBet,deleteCompress,PERBET} from '../../js/kit'
   import {mapState} from 'vuex'
@@ -127,11 +149,23 @@
         maxCard:8,                                        //最多有几块投注面板
         clientWidth:document.documentElement.clientWidth,
         beforeScreenHeight:0,                             //窗口变化前的高度
+        heightArrCon:[],                                  //投注面板容器的高度
         heightArr:[],                                     //补缺高度数组
         canScorll:0,                                      //投注面板是否能滚动
         containerHeight:'auto',                           //当投注面板不能滚动时，newContainer和betContainer需要100%高度来撑起高度
         betshow:0,                                        //footer是否显示
         cfg:cfg,
+        sliderArr: [
+          {url: 'http://upload-images.jianshu.io/upload_images/7932253-54c81df0beed405b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1080/q/50'},
+          {url: 'https://y.gtimg.cn/music/photo_new/T003R720x288M000004ERTpn1UBu2f.jpg?max_age=2592000&max_age=2592000'},
+          {url: 'https://y.gtimg.cn/music/photo_new/T003R720x288M00000077s7P0HaZpc.jpg?max_age=2592000&max_age=2592000'},
+          {url: 'https://y.gtimg.cn/music/photo_new/T003R720x288M000001QL1Si05yMPq.jpg?max_age=2592000&max_age=2592000'},
+          {url: 'https://y.gtimg.cn/music/photo_new/T003R720x288M000001QL1Si05yMPq.jpg?max_age=2592000&max_age=2592000'},
+        ],
+        currentPageIndex: 0,
+        loop:false,
+        autoPlay:false,
+        interval:4000,
       }
     },
     // computed:{
@@ -311,12 +345,19 @@
         for (var i = 0; i < buttonList.length; i++) {
           var mainHeight = screenHeight - (2.3+1+1+2.5)*em - buttonList[i].offsetHeight
           if (temp[0]<0) {
+            console.log('高度不够，需要滚动')
             mainHeight-=temp[0]
-          }
-          temp.push(mainHeight)
-          if(temp[0]>=0){
+            var dom = document.getElementsByClassName('scrollCon')[0].offsetHeight
+            this.heightArrCon[0]=dom+temp[0]
+          }else{
             this.canScorll = 1
             this.containerHeight = '100%'
+          }
+          temp.push(mainHeight)
+        }
+        if (temp[0]<0) {
+          for (var i = 0; i < temp.length; i++) {
+            temp[i] = temp[i]+2.6*em
           }
         }
         // temp.unshift(temp[temp.length-1])
@@ -333,7 +374,9 @@
         }
       },
       touchChangeHeight(){
-        this.changeHeight()
+        this.heightArr = []
+        this.heightArrCon = []
+        this.setHeight()
       },
       changeShow(){
         if (this.show == 'main') {
@@ -347,72 +390,152 @@
         this.$store.commit('lt_changeMode', mode)
         this.playtypeShow=''
         this.transition = .5
-        setTimeout(()=>{
-          this.movey = this.clientWidth * -witch
-          this.card = witch
-          setTimeout(()=>{
-            this.transition = 0
-          },500)
-        },20)
-        
+        this.slider.goToPage(witch, 0, 400)
       },
-      touchstart(e){
-        this.tempy = e.touches[0].clientX
-      },
-      touchmove(e){
-        this.moving(e)
-        e.preventDefault()
-      },
-      moving(e){
-        var dragWidth = 20
-        var newpoint = e.touches[0].clientX
-        // alert(`起始点：${this.tempy}，校对点：${newpoint}`)
-        if(this.tempy+dragWidth<newpoint){
-          this.movey = e.touches[0].clientX-this.tempy-this.card*this.clientWidth - dragWidth
-        }else if(this.tempy>newpoint+dragWidth){
-          this.movey = e.touches[0].clientX-this.tempy-this.card*this.clientWidth + dragWidth
-        }
-        else{
-          // e.preventDefault()
-        }
-      },
-      touchend(e){
-        this.tempy = 0
-        if(this.movey > -this.clientWidth * this.card + 40 && this.card > 0){
-          this.transition = .3
-          this.movey = -this.clientWidth * (this.card-1)
-          this.card -=1
-          setTimeout(()=>{
-            this.transition = 0
-          },500)
-        }else if(this.movey < -this.clientWidth * this.card - 40 && this.card < this.maxCard-1){
-          this.transition = .3
-          this.movey = -this.clientWidth * (this.card+1)
-          this.card +=1
-          setTimeout(()=>{
-            this.transition = 0
-          },500)
-        }else{
-          this.transition = .2
-          this.movey = -this.clientWidth * this.card
-          setTimeout(()=>{
-            this.transition = 0
-          },200)
-        }
-      },
+      // touchstart(e){
+      //   this.tempy = e.touches[0].clientX
+      // },
+      // touchmove(e){
+      //   this.moving(e)
+      //   e.preventDefault()
+      // },
+      // moving(e){
+      //   var dragWidth = 20
+      //   var newpoint = e.touches[0].clientX
+      //   // alert(`起始点：${this.tempy}，校对点：${newpoint}`)
+      //   if(this.tempy+dragWidth<newpoint){
+      //     this.movey = e.touches[0].clientX-this.tempy-this.card*this.clientWidth - dragWidth
+      //   }else if(this.tempy>newpoint+dragWidth){
+      //     this.movey = e.touches[0].clientX-this.tempy-this.card*this.clientWidth + dragWidth
+      //   }
+      //   else{
+      //     // e.preventDefault()
+      //   }
+      // },
+      // touchend(e){
+      //   this.tempy = 0
+      //   if(this.movey > -this.clientWidth * this.card + 40 && this.card > 0){
+      //     this.transition = .3
+      //     this.movey = -this.clientWidth * (this.card-1)
+      //     this.card -=1
+      //     setTimeout(()=>{
+      //       this.transition = 0
+      //     },500)
+      //   }else if(this.movey < -this.clientWidth * this.card - 40 && this.card < this.maxCard-1){
+      //     this.transition = .3
+      //     this.movey = -this.clientWidth * (this.card+1)
+      //     this.card +=1
+      //     setTimeout(()=>{
+      //       this.transition = 0
+      //     },500)
+      //   }else{
+      //     this.transition = .2
+      //     this.movey = -this.clientWidth * this.card
+      //     setTimeout(()=>{
+      //       this.transition = 0
+      //     },200)
+      //   }
+      // },
       scrollList(e){
         this.moving(e)
       },
       changeMode(mode){
         this.$store.commit('lt_changeMode', mode)
       },
+      _setSliderWidth(isResize) {
+        this.children = this.$refs.sliderGroup.children
+        let width = 0
+        // slider 可见宽度
+        let sliderWidth = this.$refs.slider.clientWidth
+        for (let i = 0; i < this.children.length; i++) {
+          let child = this.children[i]
+          // 设置每个子元素的样式及高度
+          addClass(child, 'slider-item')
+          child.style.width = sliderWidth + 'px'
+          // 计算总宽度
+          width += sliderWidth
+        }
+        // 循环播放首尾各加一个,因此总宽度还要加两倍的宽度
+        if (this.loop && !isResize) {
+          width += 2 * sliderWidth
+        }
+        this.$refs.sliderGroup.style.width = width + 'px'
+      },
+      _initSlider() {
+        this.slider = new BScroll(this.$refs.slider, {
+          scrollX: true,
+          scrollY: false,
+          momentum: false,
+          snap: true,
+          snapLoop: this.loop,
+          snapThreshold: 0.3,
+          snapSpeed: 400,
+          // click:true
+        })
+        // 监听滚动结束时间获取pageX
+        this.slider.on('scrollEnd', () => {
+          let pageIndex = this.slider.getCurrentPage().pageX
+          // console.log(this.config)
+          this.$store.commit('lt_changeMode', this.config[pageIndex])
+          if (this.loop) {
+            // 由于bscroll循环播放首尾各加一个,因此索引-1
+            pageIndex -= 1
+          }
+          this.currentPageIndex = pageIndex
+          if (this.autoPlay) {
+            this._play()
+          }
+        })
+        this.slider.on('beforeScrollStart', () => {
+          if (this.autoPlay) {
+            clearTimeout(this.timer)
+          }
+        })
+      },
+      _play() {
+        // currentPageIndex为不含首尾副本的索引，因此若有循环要+2
+        let pageIndex = this.currentPageIndex + 1
+        if (this.loop) {
+          pageIndex += 1
+        }
+        this.timer = setTimeout(() => {
+          this.slider.goToPage(pageIndex, 0, 400)
+        }, this.interval)
+      }
     },
     mounted(){
       this.setHeight()
       setTimeout(()=>{
         this.changeHeight()
       },200)
-    }
+
+      this._setSliderWidth()
+      setTimeout(() => {
+        this._initSlider()
+        if (this.autoPlay) {
+          this._play()
+        }
+      }, 20)
+      // 监听窗口大小改变时间
+      window.addEventListener('resize', () => {
+        if (!this.slider) {
+          return
+        }
+        this._setSliderWidth(true)
+        this.slider.refresh()
+      })
+      console.log(this.$refs.wrapperCon0[0])
+      this.$nextTick(() => {
+        this.scroll = new BScroll(this.$refs.wrapperCon0[0], {})
+        // this.scroll = new BScroll(this.$refs.wrapperCon1, {})
+        // this.scroll = new BScroll(this.$refs.wrapperCon2, {})
+        // this.scroll = new BScroll(this.$refs.wrapperCon3, {})
+      })
+    },
+    // 生命周期destroyed销毁清除定时器，有利于内存释放
+    destroyed() {
+      clearTimeout(this.timer)
+    },
   }
 </script>
 <style lang="scss" scoped>
@@ -560,6 +683,7 @@
   }
   .betboxContainer{
     padding-bottom:2.5em;
+    height:calc(100% - 2.3em);
   }
   .noscroll{
     position:fixed;
@@ -712,5 +836,49 @@
     &:after{
       background:rgba(0,0,0,.6) !important;
     }
+  }
+</style>
+<style>
+.slider-wrapper{
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.scroll{
+  height: 500px;
+}
+  .slider{
+    min-height: 1px;
+    position: relative;
+    height:100%;
+  }
+
+  .slider-group{
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    height:100%;
+  }
+
+  .slider-item{
+    float: left;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-align: center;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .slider-item a{
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    text-decoration: none;
+  }
+
+
+  .slider-item img{
+    display: block;
+    width: 100%;
   }
 </style>
