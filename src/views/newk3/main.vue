@@ -155,13 +155,6 @@
         containerHeight:'auto',                           //当投注面板不能滚动时，newContainer和betContainer需要100%高度来撑起高度
         betshow:0,                                        //footer是否显示
         cfg:cfg,
-        sliderArr: [
-          {url: 'http://upload-images.jianshu.io/upload_images/7932253-54c81df0beed405b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1080/q/50'},
-          {url: 'https://y.gtimg.cn/music/photo_new/T003R720x288M000004ERTpn1UBu2f.jpg?max_age=2592000&max_age=2592000'},
-          {url: 'https://y.gtimg.cn/music/photo_new/T003R720x288M00000077s7P0HaZpc.jpg?max_age=2592000&max_age=2592000'},
-          {url: 'https://y.gtimg.cn/music/photo_new/T003R720x288M000001QL1Si05yMPq.jpg?max_age=2592000&max_age=2592000'},
-          {url: 'https://y.gtimg.cn/music/photo_new/T003R720x288M000001QL1Si05yMPq.jpg?max_age=2592000&max_age=2592000'},
-        ],
         currentPageIndex: 0,
         loop:false,
         autoPlay:false,
@@ -330,6 +323,7 @@
 
         this.$store.commit('lt_setBetCount', betCount)
         this.$store.commit('lt_setBetStr', getBetStr(_data, this.mode))
+        document.activeElement.blur()
       },
       setHeight(){
         console.log('继续检测高度')
@@ -475,8 +469,9 @@
         // 监听滚动结束时间获取pageX
         this.slider.on('scrollEnd', () => {
           let pageIndex = this.slider.getCurrentPage().pageX
-          // console.log(this.config)
-          this.$store.commit('lt_changeMode', this.config[pageIndex])
+          if (pageIndex !== this.currentPageIndex) {
+            this.$store.commit('lt_changeMode', this.config[pageIndex])
+          }
           if (this.loop) {
             // 由于bscroll循环播放首尾各加一个,因此索引-1
             pageIndex -= 1
@@ -527,9 +522,6 @@
       console.log(this.$refs.wrapperCon0[0])
       this.$nextTick(() => {
         this.scroll = new BScroll(this.$refs.wrapperCon0[0], {})
-        // this.scroll = new BScroll(this.$refs.wrapperCon1, {})
-        // this.scroll = new BScroll(this.$refs.wrapperCon2, {})
-        // this.scroll = new BScroll(this.$refs.wrapperCon3, {})
       })
     },
     // 生命周期destroyed销毁清除定时器，有利于内存释放
