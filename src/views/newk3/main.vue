@@ -350,8 +350,9 @@
           temp.push(mainHeight)
         }
         if (temp[0]<0) {
+          var temp0 = temp[0] *-1
           for (var i = 0; i < temp.length; i++) {
-            temp[i] = temp[i]+2.6*em
+            temp[i] = temp[i]+3.2*em + temp0
           }
         }
         // temp.unshift(temp[temp.length-1])
@@ -373,6 +374,9 @@
         this.setHeight()
       },
       changeShow(){
+        if(document.activeElement.tagName === 'INPUT'){
+          return document.activeElement.blur()
+        }
         if (this.show == 'main') {
           this.show = 'bet'
           this.changeHeight()
@@ -465,6 +469,7 @@
           snapThreshold: 0.3,
           snapSpeed: 400,
           // click:true
+          bounce:false
         })
         // 监听滚动结束时间获取pageX
         this.slider.on('scrollEnd', () => {
@@ -521,7 +526,7 @@
       })
       console.log(this.$refs.wrapperCon0[0])
       this.$nextTick(() => {
-        this.scroll = new BScroll(this.$refs.wrapperCon0[0], {})
+        this.scroll = new BScroll(this.$refs.wrapperCon0[0], {bounce:false})
       })
     },
     // 生命周期destroyed销毁清除定时器，有利于内存释放
