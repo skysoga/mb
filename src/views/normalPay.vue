@@ -199,7 +199,7 @@ var payTitle = {
 }
 export default{
   beforeRouteEnter(to, from, next){
-    var shouldCheck = ['Weixin', 'Alipay','QQpay']
+    var shouldCheck = ['Weixin', 'Alipay','QQpay','UnionPay']
     var method = to.query.method      //'Bank', 'Weixin', 'Alipay' ,'QQpay'
     var rechargeWay = 'RechargeWay' + method
     to.meta.title = payTitle[method]   //标题
