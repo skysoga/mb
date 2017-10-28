@@ -74,7 +74,7 @@
         <a class = "wrap" @click = "setUrl(unionType,'UnionPay',UnionMsg)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/unionpay.png'">
           <div class="text">
-            <strong>银联快捷</strong>
+            <strong>银联扫码</strong>
             <p v-if="!UnionMsg">
               单笔最低<ins>{{payLimit['UnionPay'][0]|num}}</ins>元，
               最高<ins>{{payLimit['UnionPay'][1]|num}}</ins>元。
