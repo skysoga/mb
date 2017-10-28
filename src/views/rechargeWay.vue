@@ -1,3 +1,4 @@
+
 <template>
   <div class="main">
     <div class="innerWrap">
@@ -86,6 +87,19 @@
           <i class="iconfont right fr"></i>
         </a>
       </div>
+      <!-- 第四方支付 暂定名：多功能支付-->
+
+      <div class="surperise active" v-show="FourUrl.PayUrl">
+        <a class="wrap" @click="toFourUrl()">
+          <img class="img" :src="imgServer + '/../system/common/bank/pay/fourthpay.png'">
+          <div class="text">
+            <strong>{{FourUrl.PayType}}</strong>
+            <p>内含支付宝微信QQ银行等渠道</p>
+          </div>
+          <i class="iconfont right fr"></i>
+        </a>
+      </div>
+   
 
     </div>
   </div>
@@ -108,7 +122,7 @@ export default {
     }
   },
   beforeRouteEnter(to,from,next){
-    RootApp.AjaxGetInitData(['RechargeWayWeixin', 'RechargeWayAlipay','RechargeWayBank','RechargeWayQQpay','RechargeWayUnionPay'], state=>{
+    RootApp.AjaxGetInitData(['RechargeWayWeixin', 'RechargeWayAlipay','RechargeWayBank','RechargeWayQQpay','RechargeWayUnionPay','RechargeFourthParty'], state=>{
       next()
     })
   },
@@ -172,14 +186,33 @@ export default {
     }else{
       this.UnionMsg="银联扫码维护中..."
       this.unionType=''
+    }    
+
+    if(state.RechargeFourthParty&&state.RechargeFourthParty[0]){
+      this.FourUrl=state.RechargeFourthParty[0]
     }
-    
+
     this.payLimit = obj
   },
   methods:{
     setUrl(key,name,bool){
       var Url= key === '一般' ? 'normalPay?method='+name : 'quickPay?method='+name
       !bool&&router.push(Url)
+    },
+    toFourUrl(){
+      if(!_App){
+        var newtab=window.open('about:blank')
+      }
+      RootApp.AjaxGetInitData(['RechargeFourthParty'], state=>{
+        var json=state.RechargeFourthParty
+        if(json&&json.length){
+          this.FourUrl=json[0]
+          RootApp.OpenWin(json[0].PayUrl,!_App&&newtab)
+        }else{
+          !_App&&newtab.close()
+          layer.alert(this.FourUrl.PayType+'功能已关闭')
+        }
+      })
     }
   }
 }
