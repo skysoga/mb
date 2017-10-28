@@ -71,7 +71,7 @@
       </div>
 
       <div class="surperise active">
-        <a class = "wrap" @click = "setUrl(true,'UnionPay',UnionMsg)">
+        <a class = "wrap" @click = "setUrl(unionType,'UnionPay',UnionMsg)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/unionpay.png'">
           <div class="text">
             <strong>银联快捷</strong>
@@ -99,6 +99,7 @@ export default {
       wechatType: '一般',
       aliType: '一般',
       qqType: '一般',
+      unionType: '一般',
       payLimit:{},
       weixMsg:'',
       aliMsg:'',
@@ -166,9 +167,11 @@ export default {
         arr.push(json.MinMoney)
         arr.push(json.MaxMoney)
       this.UnionMsg=false
+      this.unionType=json.PayType||'一般'
       obj.UnionPay=arr
     }else{
-      this.UnionMsg="银联快捷维护中..."
+      this.UnionMsg="银联扫码维护中..."
+      this.unionType=''
     }
     
     this.payLimit = obj
