@@ -48,7 +48,7 @@ export default {
       Weixin:'微信支付',
       Alipay: '支付宝',
       QQpay: 'QQ钱包',
-      UnionPay: '银联快捷'
+      UnionPay: '银联扫码'
     }
     var method = to.query.method       //'Bank', 'Weixin', 'Alipay'
     var rechargeWay = 'RechargeWay' + method
