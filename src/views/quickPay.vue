@@ -264,7 +264,8 @@ export default {
       var _name= {
         Weixin: '微信支付',
         Alipay: '支付宝充值',
-        QQpay: 'QQ钱包'
+        QQpay: 'QQ钱包',
+        UnionPay: '银联扫码'
       }
       return _name[this.method]
     }
