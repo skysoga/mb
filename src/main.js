@@ -1449,3 +1449,47 @@ document.addEventListener('copy', function(e){
     layer.msgWarn('已将内容复制到剪切板')
   }
 })
+
+Vue.directive('touchtab', {
+  bind (el, binding, vnode) {
+    var x,y
+    function touchstart (e) {
+      x = e.changedTouches[0].clientX
+      y = e.changedTouches[0].clientY
+    }
+    function touchend (e) {
+      var offset = 10
+      if(e.changedTouches[0].clientX > x){
+        if (x+offset < e.changedTouches[0].clientX) {
+          return
+        }
+      }else{
+        if (x-offset > e.changedTouches[0].clientX) {
+          return
+        }
+      }
+      if(e.changedTouches[0].clientY > y){
+        if (y+offset < e.changedTouches[0].clientY) {
+          return
+        }
+      }else{
+        if (y-offset > e.changedTouches[0].clientY) {
+          return
+        }
+      }
+      if (binding.expression) {
+        binding.value(e)
+      }
+    }
+    el.__touchstart__ = touchstart
+    el.__touchend__ = touchend
+    el.addEventListener('touchstart', touchstart)
+    el.addEventListener('touchend', touchend)
+  },
+  unbind (el, binding) {
+    el.removeEventListener('touchstart', el.__touchstart__)
+    el.removeEventListener('touchend', el.__touchend__)
+    delete el.__touchstart__
+    delete el.__touchend__
+  }
+})

@@ -15,7 +15,7 @@
             <td colspan="3" style="font-size: .7em;">{{TimeBar}}</td>
           </tr>
         </table>
-        <div class="sound" @click.stop="">
+        <div class="sound">
           <em></em>
         </div>
       </div>
@@ -57,8 +57,8 @@
                       <li v-for="e in d.itemArr" :class = "{curr:chosen.indexOf(e) > -1,bgnone:e==0}"><span v-if="!(e==0)" @touchstart="choose(e)" class="fix"><em><i>{{e}}</i></em></span></li>
                     </ul>
                   </div>
-                  <div class="topshadow"></div>
-                  <div class="bottomshadow" :style="{height:heightArr[j]+'px'}"></div>
+                  <div class="topshadow" v-touchtab="changeShow"></div>
+                  <div class="bottomshadow" :style="{height:heightArr[j]+'px'}" v-touchtab="changeShow"></div>
                 </div>
               </div>
             </div>

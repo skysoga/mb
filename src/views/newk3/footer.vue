@@ -8,9 +8,9 @@
       </div>
     </div>
     <div class="betnow fix">
-      <div class="clear" @click="clear">清空</div>
+      <div class="clear" @click.stop="clear">清空</div>
       <div class="total">{{betCountStr}}{{betMoneyStr}}</div>
-      <div class="betbutton" @click="confirmBet">马上投注</div>
+      <div class="betbutton" @click.stop="confirmBet">马上投注</div>
     </div>
   </div>
 </template>
@@ -163,17 +163,14 @@
 </script>
 <style lang="scss" scoped>
   .footerContainer{
-    position:fixed;
-    height:5.7em;
     width:100%;
-    bottom:0;
-    left:0;
-    z-index:30;
   }
   .info{
     height:3.2em;
     background:rgba(34, 86, 63, 0.5);
-    bottom:4.1em;
+    position: fixed;
+    width:100%;
+    bottom: 2.5em;
     > div{
       height:1.6em;
       line-height:1.6em;
@@ -229,7 +226,7 @@
     height:2.5em;
     width:100%;
     background:black;
-    position:absolute;
+    position:fixed;
     bottom:0;
     left:0;
     padding:0 .4em;
