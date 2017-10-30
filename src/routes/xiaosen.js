@@ -29,6 +29,7 @@ const withdraw =require('../views/withdraw')//提现
 const rebateDes =require('../views/rebateDes')//返点赔率表
 const tool =require('../views/tool')//清缓存工具
 const ping =require('../views/ping')//线路检测
+const recharge =require('../views/recharge')//重构充值页
 var routes = [{
   path: '/manageBankcard',
   name: '银行卡管理',
@@ -377,5 +378,15 @@ var routes = [{
   user:true
   },
   component:ping
+},
+{
+  path:'/recharge/:ID',
+  name:'充值',
+  meta:{
+  title:'充值',
+  link:'/rechargeWay',
+  user:true
+  },
+  component:recharge
 }]
 module.exports = routes
