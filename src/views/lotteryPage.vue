@@ -822,9 +822,7 @@
 
             if(code !== '1301'){
               if(!state.PlanLen){
-                console.log('时间循环1')
                 if (this.WS.Status !== 'NewGame'){return}
-                console.log('时间循环2')
                 var NewGame = this.WS.NewGame
                 if (this.WS.TimeLeft === -1) {
                   this.WS.TimeLeft = NewGame.end*1 - NewGame.start*1
