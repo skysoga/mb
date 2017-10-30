@@ -95,7 +95,7 @@
       var ws1 = null
       if (ptype === 'live') {
         var getWs = new Promise(function(resolve, reject){
-          ws = new WebSocket('ws://47.52.109.168:8002')
+          ws = new WebSocket('ws://47.52.166.234:8002')
           ws.onmessage = e =>{
             ws1 = e.data
             resolve()
@@ -107,18 +107,7 @@
         var json
         try{
           json = JSON.parse(data)
-          vm.WS[json.Type] = json.result
-          /*
-           * 测试过程中的代码，到时候去掉
-           **/
-           if (json.Type === 'Newest') {
-            if (json.result.start === json.result.end) {
-              json.result.end=json.result.end*1+10000
-            }
-           }
-          /*
-           * 测试过程中的代码，到时候去掉 - 结束
-           **/
+          vm.WS[json.type] = json.result
         }catch(e){
           layer.msgWarn('服务器类型错误')
         }
@@ -247,7 +236,11 @@
           BetRecord:[],      //投注记录
           PlanLen:0,        //当前彩种的彩种计划长度
           IssueNo:0,        //期号索引:从0开始，到PlanLen-1
-          StopTime:0,
+          //新增的变量
+          StopTime:0,       //结束投注时间
+          WS:{
+            openNum:-1,
+          },
 
           //渲染用
           Todaystr:'',
@@ -356,7 +349,7 @@
             Vue.set(state.LotteryResults, code, results)
           },
           lt_stopSell:(state, type)=>{
-            this.$store.commit('lt_updateTimeBar', ['期号有误','暂停销售','当期封单','等待开局'][type])    //暂停销售
+            this.$store.commit('lt_updateTimeBar', ['期号有误','暂停销售','当期封单','等待开局','等待开奖'][type])    //暂停销售
             return
           },
           lt_setIssueNo:(state, IssueNo)=>{state.IssueNo = IssueNo},  //设置当前期号
@@ -829,13 +822,23 @@
 
             if(code !== '1301'){
               if(!state.PlanLen){
-                if (this.Status !== 'NewGame') return
-                var newest = this.WS.NewGame
-                if (this.WS.TimeLeft === 0) {
-                  this.WS.TimeLeft = newest.end*1 - newest.start*1
+                console.log('时间循环1')
+                if (this.WS.Status !== 'NewGame'){return}
+                console.log('时间循环2')
+                var NewGame = this.WS.NewGame
+                if (this.WS.TimeLeft === -1) {
+                  this.WS.TimeLeft = NewGame.end*1 - NewGame.start*1
+                }else if(this.WS.TimeLeft === 0){
+                  //状态改为等待开奖
+                  this.WS.Status = 'WaitResult'
+                  store.commit('lt_stopSell', 4)
+                  commit('lt_displayResults', false)
+                  this.WS.TimeLeft = -1
+                  return
                 }else{
                   this.WS.TimeLeft=this.WS.TimeLeft*1-1000
                 }
+                console.log('TimeLeft:'+this.WS.TimeLeft)
                 var Countdown = this.WS.TimeLeft
               }else{
                 var Countdown = computeCountdown(state.IssueNo, _SerTime)
@@ -1237,7 +1240,7 @@
           Newest:null,
           NewGame:null,
           GameResult:null,
-          TimeLeft:0,
+          TimeLeft:-1,
           Status:''
         }
       }
@@ -1285,12 +1288,26 @@
 				store.commit('lt_setChaseIssue', 1)
 			},
       'WS.Newest'(n,o){
+        this.WS.Status = 'Newest'
         store.commit('lt_updateIssue',n)
         Vue.set(state.lt, 'StopTime', n.end)
       },
       'WS.GameStatus'(n,o){
-        this.WS.Status = 'GameStatus'
         store.commit('lt_stopSell', 3)
+      },
+      'WS.NewGame'(n,o){
+        store.commit('lt_updateIssue',n)
+        Vue.set(state.lt, 'StopTime', n.end)
+        this.WS.Status = 'NewGame'
+        console.log('开局游戏')
+      },
+      'WS.GameResult'(n,o){
+        store.commit('lt_updateIssue',n)
+        Vue.set(state.lt.WS, 'openNum', n.record_result)
+        this.WS.Status = 'GameResult'
+        store.commit('lt_displayResults', false)
+        store.commit('lt_stopSell', 3)
+        console.log('已开奖')
       }
 		},
 	  beforeRouteLeave(to, from, next){

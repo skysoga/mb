@@ -1,6 +1,7 @@
 <template>
   <div class="newContainer" :style="{height:containerHeight}">
     <div class="video">
+      <canvas ref="videocanvas"></canvas>
       <img src="/static/img/newk3-bg.jpg" alt="" width="100%">
     </div>
     <div v-show="show == 'main'" @click="changeShow" class="mainPage">
@@ -159,6 +160,10 @@
         loop:false,
         autoPlay:false,
         interval:4000,
+        //新增字段
+        videoUrl:'ws://47.52.109.168:8082/',
+        option:null,
+        player:null
       }
     },
     // computed:{
@@ -191,7 +196,7 @@
         return state.lt.NowIssue
       },
       stopTime(){
-        var dd = new Date(state.lt.StopTime)
+        var dd = new Date(state.lt.StopTime/1000)
         var hour = (dd.getHours().toString().length<2)?'0'+dd.getHours():dd.getHours()
         var minute = (dd.getMinutes().toString().length<2)?'0'+dd.getMinutes():dd.getMinutes()
         var second = dd.getSeconds().toString().length<2?'0'+dd.getSeconds():dd.getSeconds()
@@ -199,14 +204,15 @@
       },
       TimeBar:()=>state.lt.TimeBar,
       results(){
-        var _results = state.lt.LotteryResults[this.lcode]
-        if(!_results || !_results.length){
+        var _results = state.lt.WS.openNum
+        if(!_results){
           return []
         }else{
-          return _results[0].LotteryOpen.split(',')
+          return _results.LotteryOpen.split(',')
         }
       },
       display(){
+        console.log(state.lt.displayResults)
         return state.lt.displayResults ? this.results : this.wait4Results
       },
       displayClass(){
@@ -504,6 +510,9 @@
       }
     },
     mounted(){
+      var canvas = this.$refs.videocanvas
+      this.option = {canvas: canvas, chunkSize:1};
+      this.player = new Live.Player(this.videoUrl, this.option);
       this.setHeight()
       setTimeout(()=>{
         this.changeHeight()
@@ -531,6 +540,7 @@
     },
     // 生命周期destroyed销毁清除定时器，有利于内存释放
     destroyed() {
+      this.player.destroy()
       clearTimeout(this.timer)
     },
   }
@@ -661,6 +671,20 @@
     left:0;
     height:100%;
     width:100%;
+    img{
+      position:absolute;
+      top:0;
+      left:0;
+      z-index: 9;
+    }
+    canvas{
+      position:absolute;
+      top:0;
+      left: 0;
+      z-index: 10;
+      width: 100%;
+      height:100%;
+    }
   }
   .newContainer{
     position:relative;
