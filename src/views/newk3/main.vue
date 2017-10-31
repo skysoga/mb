@@ -15,6 +15,9 @@
           <tr>
             <td colspan="3" style="font-size: .7em;">{{TimeBar}}</td>
           </tr>
+          <tr>
+            <td colspan="3" style="font-size: .7em;" @click.stop="changeVideo">点击<br>{{player===undefined?'开启':'关闭'}}视频</td>
+          </tr>
         </table>
         <div class="sound">
           <em></em>
@@ -269,6 +272,16 @@
       }
     }),
     methods:{
+      changeVideo(){
+        if(this.player === undefined){
+          this.player = new Live.Player(this.videoUrl, this.option);
+          console.log('开启')
+        }else{
+          this.player.destroy()
+          this.player = undefined
+          layer.alert('已关闭视频')
+        }
+      },
       choose(item){
         if(!this.award)return
         var _pos = this.chosen.indexOf(item),
