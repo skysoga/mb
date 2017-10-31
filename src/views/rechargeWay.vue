@@ -69,6 +69,23 @@
           <i class="iconfont right fr"></i>
         </a>
       </div>
+
+      <div class="surperise active">
+        <a class = "wrap" @click = "setUrl(unionType,'UnionPay',unionMsg)">
+          <img class="img" :src="imgServer + '/../system/common/bank/pay/card.png'">
+          <div class="text">
+            <strong>银联扫码</strong>
+            <p v-if="!unionMsg">
+              单笔最低<ins>{{payLimit['UnionPay'][0]|num}}</ins>元，
+              最高<ins>{{payLimit['UnionPay'][1]|num}}</ins>元。
+            </p>
+            <p v-else>
+            {{unionMsg}}
+            </p>
+          </div>
+          <i class="iconfont right fr"></i>
+        </a>
+      </div>
       <!-- 第四方支付 暂定名：多功能支付-->
 
       <div class="surperise active" v-show="FourUrl.PayUrl">
@@ -95,15 +112,17 @@ export default {
       wechatType: '一般',
       aliType: '一般',
       qqType: '一般',
+      unionType: '一般',
       payLimit:{},
       weixMsg:'',
       aliMsg:'',
       qqMsg:'',
+      unionMsg:'',
       FourUrl:{}
     }
   },
   beforeRouteEnter(to,from,next){
-    RootApp.AjaxGetInitData(['RechargeWayWeixin', 'RechargeWayAlipay','RechargeWayBank','RechargeWayQQpay','RechargeFourthParty'], state=>{
+    RootApp.AjaxGetInitData(['RechargeWayWeixin', 'RechargeWayAlipay','RechargeWayBank','RechargeWayQQpay','RechargeWayUnionPay','RechargeFourthParty'], state=>{
       next()
     })
   },
@@ -156,6 +175,19 @@ export default {
       this.qqType=''
       this.qqMsg="QQ钱包维护中..."
       this.qqType=''
+    }
+    if(state.RechargeWayUnionPay&&state.RechargeWayUnionPay[0]){
+      let arr=[],
+        json=state.RechargeWayUnionPay[0]
+        arr.push(json.MinMoney)
+        arr.push(json.MaxMoney)
+      this.unionMsg=false
+      this.unionType = json.PayType || '一般'
+      obj.unionpay=arr
+    }else{
+      this.unionType=''
+      this.unionMsg="银联扫码维护中..."
+      this.unionType=''
     }
     if(state.RechargeFourthParty&&state.RechargeFourthParty[0]){
       this.FourUrl=state.RechargeFourthParty[0]
