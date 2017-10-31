@@ -31,6 +31,8 @@
     <div id="HotLottery" v-if="s.LotteryList"
                          v-bind:style="{height:Math.ceil((nowDisplayList.length+1)/3)*5+'em'}">
       <ul>
+        <li data-v-e2cc3efa=""><a data-v-e2cc3efa="" href="/live/K3/1407" class="active L_K3"><p data-v-e2cc3efa="">新新新直播快3</p> <span data-v-e2cc3efa="">非iframe</span></a></li>
+        <li data-v-e2cc3efa=""><a data-v-e2cc3efa="" href="/live/K3/1401" class="active L_K3"><p data-v-e2cc3efa="">新新新直播快3</p> <span data-v-e2cc3efa="">iframe</span></a></li>
         <li v-for="l in nowDisplayList">
           <router-link :class="'active L_'+s.LotteryList[l].LotteryType"
                        :to="'/lottery/'+s.LotteryList[l].LotteryType+'/'+l">

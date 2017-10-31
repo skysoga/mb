@@ -2,6 +2,7 @@
   <div class="newContainer" :style="{height:containerHeight}">
     <div class="video">
       <canvas ref="videocanvas"></canvas>
+      <iframe v-if="showType" src="http://666666.caishen08.com/hk.html"></iframe>
       <img src="/static/img/newk3-bg.jpg" alt="" width="100%">
     </div>
     <div v-show="show == 'main'" @click="changeShow" class="mainPage">
@@ -139,6 +140,7 @@
     },
   }
   export default {
+    props:["showType"],
     components: {
       mainfooter,
     },
@@ -166,7 +168,8 @@
         //新增字段
         videoUrl:'ws://47.52.109.168:8082/',
         option:null,
-        player:null
+        player:null,
+        showType:''
       }
     },
     // computed:{
@@ -522,10 +525,21 @@
         }, this.interval)
       }
     },
+    watch:{
+      showType(n,o){
+        if (this.showType) {
+          if (this.player!==undefined) {
+            this.player.destroy()
+          }
+        }
+      }
+    },
     mounted(){
-      var canvas = this.$refs.videocanvas
-      this.option = {canvas: canvas, chunkSize:1};
-      this.player = new Live.Player(this.videoUrl, this.option);
+      if (!this.showType) {
+        var canvas = this.$refs.videocanvas
+        this.option = {canvas: canvas, chunkSize:1};
+        this.player = new Live.Player(this.videoUrl, this.option); 
+      }
       this.setHeight()
       setTimeout(()=>{
         this.changeHeight()
@@ -697,6 +711,13 @@
       z-index: 10;
       width: 100%;
       height:100%;
+    }
+    iframe{
+      position: absolute;
+      top:-100px;
+      z-index: 10;
+      height: 150%;
+      width: 100%;
     }
   }
   .newContainer{
