@@ -822,22 +822,34 @@
 
             if(code !== '1301'){
               if(!state.PlanLen){
-                if (this.WS.Status !== 'NewGame'){return}
-                var NewGame = this.WS.NewGame
-                if (this.WS.TimeLeft === -1) {
-                  this.WS.TimeLeft = NewGame.end*1 - NewGame.start*1
-                }else if(this.WS.TimeLeft === 0){
-                  //状态改为等待开奖
-                  this.WS.Status = 'WaitResult'
-                  store.commit('lt_stopSell', 4)
-                  commit('lt_displayResults', false)
-                  this.WS.TimeLeft = -1
-                  return
+                if (this.WS.Status === 'NewGame' || this.WS.Status === 'Newest'){
+                  var NewGame = this.WS[this.WS.Status]
+                  if (this.WS.TimeLeft === 'waiting') {
+                    //获取服务器的时间
+                    var serverTime = new Date().getTime() - this.$store.state.Difftime
+                    console.log(serverTime)
+                    console.log(NewGame.start)
+                    if (serverTime >= NewGame.start && NewGame.end >= serverTime) {
+                      this.WS.TimeLeft = NewGame.end*1 - serverTime*1
+                    }else{
+                      return
+                    }
+                  }else if(this.WS.TimeLeft <= 1000){
+                    //状态改为等待开奖
+                    this.WS.Status = 'WaitResult'
+                    store.commit('lt_stopSell', 4)
+                    commit('lt_displayResults', false)
+                    this.WS.TimeLeft = 'waiting'
+                    return
+                  }else{
+                    this.WS.TimeLeft=this.WS.TimeLeft*1-1000
+                  }
+                  console.log('TimeLeft:'+this.WS.TimeLeft)
+                  var Countdown = this.WS.TimeLeft
+
                 }else{
-                  this.WS.TimeLeft=this.WS.TimeLeft*1-1000
+                  return
                 }
-                console.log('TimeLeft:'+this.WS.TimeLeft)
-                var Countdown = this.WS.TimeLeft
               }else{
                 var Countdown = computeCountdown(state.IssueNo, _SerTime)
                 Countdown %= DAY_TIME;
@@ -1238,7 +1250,7 @@
           Newest:null,
           NewGame:null,
           GameResult:null,
-          TimeLeft:-1,
+          TimeLeft:'waiting',
           Status:''
         }
       }
