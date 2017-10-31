@@ -73,7 +73,7 @@
 
       <div class="surperise active">
         <a class = "wrap" @click = "setUrl(unionType,'UnionPay',UnionMsg)">
-          <img class="img" :src="imgServer + '/../system/common/bank/pay/unionpay.png'">
+          <img class="img" :src="imgServer + '/../system/common/bank/pay/card.png'">
           <div class="text">
             <strong>银联扫码</strong>
             <p v-if="!UnionMsg">
