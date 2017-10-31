@@ -239,12 +239,11 @@ export default {
                 vm.underMaintain = true
                 return
             }
+            vm.nowRender = json[0]
             if(method =='Bank'){
                 vm[method] = Object.freeze(json)
                 vm.BankCode = json[0].BankCode;
-                vm.nowRender = json[0]
             }else{
-              vm.nowRender = json[0]
               var xurl = ''
               if(json[0].CodeImg === '0' || !json[0].CodeImg){
                 xurl = '/../system/common/other/noQRcode.png'
@@ -253,11 +252,8 @@ export default {
               }
               vm.nowRender.CodeImg =  state.constant.ImgHost + xurl
             }            
-            if(PayType && PayType !=='一般'){                            
-              vm.underMaintain = false
-              vm.nowRender = json[0]
-              vm.Bank=json
-            }
+            vm.underMaintain = false
+            vm.Bank=json            
             vm.vaConfig ||(vm.vaConfig = {})
             vm.vaConfig['Money'] || (vm.vaConfig['Money'] = [])
             var Min=json[0].MinMoney,
@@ -352,7 +348,7 @@ export default {
           return
         }
         if(OType.indexOf(nowAjax.BankCode)>-1){
-          if(nowAjax.BankCode!=='智汇付'||nowAjax.Qort===6){
+          if(nowAjax.BankCode!=='智汇付'&&nowAjax.Qort===6){
             var newTab=YDB?true:window.open('about:blank')
             console.log('新开窗口');
           }
