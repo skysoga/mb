@@ -15,6 +15,15 @@
       <!-- 第四方支付-->
       <template v-if= "method =='Alipay'||method =='QQpay'||method =='Weixin'||method =='UnionPay'">
         <table>
+          <tr v-if="Bank.length>1">
+              <td>选择银行</td>
+              <td>
+                <select v-model = "PayType" @change = "changeBank">
+                  <option v-for = "option in Bank" :value = "option.PayType">{{option.PayType}}</option>
+                </select>
+                <i class="iconfont unfold"></i>
+              </td>
+            </tr>
         <template v-if="PayType=='一般'">
           <template v-if="method=='Alipay'">
               <tr>
@@ -57,16 +66,7 @@
           </template>
         </template>
         <template v-else>
-          <!-- 快捷支付 -->
-            <tr v-if="Bank.length>1">
-              <td>选择银行</td>
-              <td>
-                <select v-model = "PayType" @change = "changeBank">
-                  <option v-for = "option in Bank" :value = "option.PayType">{{option.PayType}}</option>
-                </select>
-                <i class="iconfont unfold"></i>
-              </td>
-            </tr>
+          <!-- 快捷 -->
             <tr>
               <td>充值金额</td>
               <td>
