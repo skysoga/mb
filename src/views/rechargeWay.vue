@@ -129,65 +129,47 @@ export default {
   created () {
     var obj={}
     if(state.RechargeWayBank&&state.RechargeWayBank[0]){
-      let arr=[],
-          json=state.RechargeWayBank[0]
-          arr.push(json.MinMoney)
-          arr.push(json.MaxMoney)
-      obj.bank=arr
+      let json=state.RechargeWayBank[0]
+      obj.bank=this.getLimit(json)
     }else{
       this.RechargeWayBank=''
       this.bankMsg="银行转账维护中..."
     }
     if(state.RechargeWayWeixin&&state.RechargeWayWeixin[0]){
-      let arr=[],
-        json=state.RechargeWayWeixin[0]
-        arr.push(json.MinMoney)
-        arr.push(json.MaxMoney)
+      let json=state.RechargeWayWeixin[0]
       this.weixMsg=false
       this.wechatType = json.PayType || '一般'
-      obj.wechat=arr
+      obj.wechat=this.getLimit(json)
     }else{
       this.wechatType=''
       this.weixMsg="微信支付维护中..."
     }
     if(state.RechargeWayAlipay&&state.RechargeWayAlipay[0]){
-      let arr=[],
-        json=state.RechargeWayAlipay[0]
-        arr.push(json.MinMoney)
-        arr.push(json.MaxMoney)
+      let json=state.RechargeWayAlipay[0]
       this.aliMsg=false
       this.aliType = json.PayType || '一般'
-      obj.alipay=arr
+      obj.alipay=this.getLimit(json)
     }else{
-      this.wechatType=''
+      this.aliType=''
       this.aliMsg="支付宝支付维护中..."
-      this.wechatType=''
     }
     if(state.RechargeWayQQpay&&state.RechargeWayQQpay[0]){
-      let arr=[],
-        json=state.RechargeWayQQpay[0]
-        arr.push(json.MinMoney)
-        arr.push(json.MaxMoney)
+      let json=state.RechargeWayQQpay[0]
       this.qqMsg=false
       this.qqType = json.PayType || '一般'
-      obj.qqpay=arr
+      obj.qqpay=this.getLimit(json)
     }else{
       this.qqType=''
       this.qqMsg="QQ钱包维护中..."
-      this.qqType=''
     }
     if(state.RechargeWayUnionPay&&state.RechargeWayUnionPay[0]){
-      let arr=[],
-        json=state.RechargeWayUnionPay[0]
-        arr.push(json.MinMoney)
-        arr.push(json.MaxMoney)
+      let json=state.RechargeWayUnionPay[0]
       this.unionMsg=false
       this.unionType = json.PayType || '一般'
-      obj.unionpay=arr
+      obj.UnionPay=this.getLimit(json)
     }else{
       this.unionType=''
       this.unionMsg="银联扫码维护中..."
-      this.unionType=''
     }
     if(state.RechargeFourthParty&&state.RechargeFourthParty[0]){
       this.FourUrl=state.RechargeFourthParty[0]
@@ -214,6 +196,12 @@ export default {
           layer.alert(this.FourUrl.PayType+'功能已关闭')
         }
       })
+    },
+    getLimit(obj){
+      let arr=[]
+        arr.push(obj.MinMoney)
+        arr.push(obj.MaxMoney)
+      return arr
     }
   }
 }
