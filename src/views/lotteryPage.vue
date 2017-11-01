@@ -823,33 +823,33 @@
 
               return Countdown
             }
-
+            var that = state.that
             if (ptype === 'live') {
-              console.log(this.WS.Status)
-              if (this.WS.Status === 'NewGame' || this.WS.Status === 'Newest'){
-                var NewGame = this.WS[this.WS.Status]
-                if (this.WS.TimeLeft === 'waiting') {
+              console.log(that.WS.Status)
+              if (that.WS.Status === 'NewGame' || that.WS.Status === 'Newest'){
+                var NewGame = that.WS[that.WS.Status]
+                if (that.WS.TimeLeft === 'waiting') {
                   //获取服务器的时间
-                  var serverTime = new Date().getTime() - this.$store.state.Difftime
+                  var serverTime = new Date().getTime() - that.$store.state.Difftime
                   console.log(serverTime)
                   console.log(NewGame.start)
                   if (serverTime >= NewGame.start && NewGame.end >= serverTime) {
-                    this.WS.TimeLeft = NewGame.end*1 - serverTime*1
+                    that.WS.TimeLeft = NewGame.end*1 - serverTime*1
                   }else{
                     return
                   }
-                }else if(this.WS.TimeLeft <= 1000){
+                }else if(that.WS.TimeLeft <= 1000){
                   //状态改为等待开奖
-                  this.WS.Status = 'WaitResult'
+                  that.WS.Status = 'WaitResult'
                   store.commit('lt_stopSell', 4)
                   commit('lt_displayResults', false)
-                  this.WS.TimeLeft = 'waiting'
+                  that.WS.TimeLeft = 'waiting'
                   return
                 }else{
-                  this.WS.TimeLeft=this.WS.TimeLeft*1-1000
+                  that.WS.TimeLeft=that.WS.TimeLeft*1-1000
                 }
-                console.log('TimeLeft:'+this.WS.TimeLeft)
-                var Countdown = this.WS.TimeLeft
+                console.log('TimeLeft:'+that.WS.TimeLeft)
+                var Countdown = that.WS.TimeLeft
 
               }else{
                 return
@@ -1209,6 +1209,7 @@
       //注册彩种模块 --lt
       this.$store.state.lt || this.$store.registerModule('lt', lt)
       Vue.set(store.state.lt,'ptype',this.ptype)
+      Vue.set(store.state.lt,'that',this)
       //生成昨天今天明天字符串
       this.$store.commit('lt_updateDate')
       //切换彩种
@@ -1315,6 +1316,7 @@
         store.commit('lt_updateIssue',n)
         Vue.set(state.lt, 'StopTime', n.end)
         this.WS.Status = 'NewGame'
+        this.$store.dispatch('lt_refresh')
         console.log('watch:开局游戏')
       },
       'WS.GameResult'(n,o){
