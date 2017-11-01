@@ -80,5 +80,6 @@ module.exports = {
     FinishTime:'',
     ServiceUrl:'',
     ImgUrl:''
-  }
+  },
+  URL:''
 }
