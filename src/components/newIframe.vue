@@ -26,9 +26,9 @@ export default {
     height: 100%;
     iframe{
       border: 0;
-      margin-top:3rem;
+      margin-top:2.555em;
       width: 16rem;
-      height:22rem;
+      height:26rem;
     }
   }
 }
