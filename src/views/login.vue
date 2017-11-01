@@ -44,7 +44,7 @@
     </div>
     <div class="otherBtn">
       <router-link class='signup' to = "/register">立即注册</router-link><router-link class='forget' to = "/forgetPwd?Q=ResetPwd">忘记密码</router-link>
-      <span class="downUrl" v-show="isAPP=='ios'">APP下载与修复网址：<a target="_blank" href="https://fa777.com">fa777.com</a></span>
+      <span class="downUrl" v-show="isAPP=='ios'">APP下载与修复网址：<em>fa777.com</em></span>
     </div>
     <ul id="usedList"></ul>
     <!-- 区分是否登录记录数据 -->
@@ -144,6 +144,10 @@
             }
           })
       },
+      /* gotoDown(){
+        var url='https://fa777.com'
+        RootApp.OpenWin(url)
+      }, */
       bottomBox(key,val){
         // 判断是否APP
         // if(this.isLogin){
@@ -331,13 +335,16 @@
       border-right:1px solid #e5e5e5;
     }
     .downUrl{
+      position: fixed;
+      bottom: 1em;
+      width: 100%;      
       display: block;
       color: #bbb;
       padding: .5em 0;
       font-size: .7em;
-      a{
-        color: #0e7ffe;
-        text-decoration: underline;
+      em{
+        color: #dc3b40;
+        // text-decoration: underline;
       }
     }
   }
