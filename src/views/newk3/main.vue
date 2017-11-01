@@ -1,7 +1,7 @@
 <template>
   <div class="newContainer" :style="{height:containerHeight}">
     <div class="video">
-      <iframe src="/static/video-k3.html"></iframe>
+      <iframe ref="iframe" src="/static/video-k3.html"></iframe>
       <img src="/static/img/newk3-bg.jpg" alt="" width="100%">
     </div>
     <div v-show="show == 'main'" @click="changeShow" class="mainPage">
@@ -16,7 +16,7 @@
             <td colspan="3" style="font-size: .7em;">{{TimeBar}}</td>
           </tr>
           <tr>
-            <td colspan="3" style="font-size: .7em;" @click.stop="changeVideo">点击<br>{{player===undefined?'开启':'关闭'}}视频</td>
+            <td colspan="3" style="font-size: .7em;" @click.stop="changeVideo">点击<br>关闭视频</td>
           </tr>
         </table>
         <div class="sound">
@@ -24,6 +24,15 @@
         </div>
       </div>
       <div class="userContent"></div>
+      <div class="control">
+        <ul class="con-btn fix">
+          <li><a href="javascript:;" @click="$router.go(-1)"></a></li>
+          <li><a href="javascript:;"></a></li>
+          <li><a href="javascript:;"></a></li>
+          <li><a href="javascript:;"></a></li>
+          <li><a href="javascript:;"></a></li>
+        </ul>
+      </div>
     </div>
     <div :style="{opacity:getBetShow?1:0,'z-index':getBetShow?20:0,height:containerHeight}" class="betContainer">
       <div class="header">
@@ -163,10 +172,6 @@
         loop:false,
         autoPlay:false,
         interval:4000,
-        //新增字段
-        videoUrl:'ws://47.52.109.168:8082/',
-        option:null,
-        player:null
       }
     },
     // computed:{
@@ -273,7 +278,7 @@
     }),
     methods:{
       changeVideo(){
-        layer.alert('视频控制测试中')
+        this.$refs.iframe.contentDocument.destroy()
       },
       choose(item){
         if(!this.award)return
@@ -543,7 +548,6 @@
     },
     // 生命周期destroyed销毁清除定时器，有利于内存释放
     destroyed() {
-      this.player.destroy()
       clearTimeout(this.timer)
     },
   }
@@ -680,20 +684,48 @@
       left:0;
       z-index: 9;
     }
-    canvas{
-      position:absolute;
-      top:0;
-      left: 0;
-      z-index: 10;
-      width: 100%;
-      height:100%;
-    }
     iframe{
       position: absolute;
       z-index: 10;
       height: 100%;
       width: 100%;
       border: none;
+    }
+  }
+  .control{
+    position: fixed;
+    width:100%;
+    left: 0;
+    top:calc(100vh - 2.4em);
+  }
+  .con-btn{
+    height: 2.4em;
+    padding:0 .24em;
+    li{
+      float: right;
+      a{
+        display:block;
+        width: 1.8em;
+        height: 1.8em;
+        line-height: 1.8em;
+        text-align: center;
+        background: rgba(0,0,0,0.3);
+        border-radius: 50%;
+        margin:0 .24em;
+      }
+      a:before{
+        content: '\E64B';
+        font-family: 'iconfont';
+        color:white;
+      }
+      &:first-child{
+        a:before{
+          content:'\e607';
+        }
+      }
+      &:last-child{
+        float: left;
+      }
     }
   }
   .newContainer{

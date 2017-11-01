@@ -143,6 +143,8 @@
             ws.onerror=e=>{
               layer.msgWarn('ws接口获取错误')
             }
+            vm.ws = ws
+            store.state.lt.TimeBar = 'waiting'
           }
         })
       }).catch((err)=>{
@@ -158,7 +160,6 @@
 		created(){
 		  //从url上获取彩种type和彩种code
 		  ;[this.ptype,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
-
       //如果有本地缓存的时间，则再更新一次
       if(haveGotTime){
 	      RootApp.getServerTime()
@@ -241,6 +242,7 @@
           WS:{
             openNum:-1,
           },
+          ptype:'',
 
           //渲染用
           Todaystr:'',
@@ -331,7 +333,8 @@
           },
           //更新期号时
           lt_updateIssue:(state,source)=>{
-            if (this.ptype === 'live') {
+            var ptype = state.ptype
+            if (ptype === 'live') {
               console.log(source)
               Vue.set(state, 'NowIssue', source.record_code)
             }else{
@@ -349,6 +352,7 @@
             Vue.set(state.LotteryResults, code, results)
           },
           lt_stopSell:(state, type)=>{
+            console.log('改变状态')
             this.$store.commit('lt_updateTimeBar', ['期号有误','暂停销售','当期封单','等待开局','等待开奖'][type])    //暂停销售
             return
           },
@@ -534,7 +538,7 @@
               })
             }
             commit('lt_changeLottery', code)  //变更彩种
-            if (this.ptype !== 'live') {
+            if (state.ptype !== 'live') {
               dispatch('lt_getResults', code)    //获得开奖结果
               wait4Results = 0
               wait4BetRecord = false
@@ -722,6 +726,7 @@
           //refresh
           lt_refresh:({state, rootState, commit, dispatch})=>{
             var code = state.lottery.LotteryCode
+            var ptype = state.ptype
             var isStop = rootState.LotteryList[code].IsStop
             // var isStop = rootState.LotteryList[this.lcode].IsStop
             if(isStop === '1'){
@@ -819,38 +824,39 @@
               return Countdown
             }
 
-
-            if(code !== '1301'){
-              if(!state.PlanLen){
-                if (this.WS.Status === 'NewGame' || this.WS.Status === 'Newest'){
-                  var NewGame = this.WS[this.WS.Status]
-                  if (this.WS.TimeLeft === 'waiting') {
-                    //获取服务器的时间
-                    var serverTime = new Date().getTime() - this.$store.state.Difftime
-                    console.log(serverTime)
-                    console.log(NewGame.start)
-                    if (serverTime >= NewGame.start && NewGame.end >= serverTime) {
-                      this.WS.TimeLeft = NewGame.end*1 - serverTime*1
-                    }else{
-                      return
-                    }
-                  }else if(this.WS.TimeLeft <= 1000){
-                    //状态改为等待开奖
-                    this.WS.Status = 'WaitResult'
-                    store.commit('lt_stopSell', 4)
-                    commit('lt_displayResults', false)
-                    this.WS.TimeLeft = 'waiting'
-                    return
+            if (ptype === 'live') {
+              console.log(this.WS.Status)
+              if (this.WS.Status === 'NewGame' || this.WS.Status === 'Newest'){
+                var NewGame = this.WS[this.WS.Status]
+                if (this.WS.TimeLeft === 'waiting') {
+                  //获取服务器的时间
+                  var serverTime = new Date().getTime() - this.$store.state.Difftime
+                  console.log(serverTime)
+                  console.log(NewGame.start)
+                  if (serverTime >= NewGame.start && NewGame.end >= serverTime) {
+                    this.WS.TimeLeft = NewGame.end*1 - serverTime*1
                   }else{
-                    this.WS.TimeLeft=this.WS.TimeLeft*1-1000
+                    return
                   }
-                  console.log('TimeLeft:'+this.WS.TimeLeft)
-                  var Countdown = this.WS.TimeLeft
-
-                }else{
+                }else if(this.WS.TimeLeft <= 1000){
+                  //状态改为等待开奖
+                  this.WS.Status = 'WaitResult'
+                  store.commit('lt_stopSell', 4)
+                  commit('lt_displayResults', false)
+                  this.WS.TimeLeft = 'waiting'
                   return
+                }else{
+                  this.WS.TimeLeft=this.WS.TimeLeft*1-1000
                 }
+                console.log('TimeLeft:'+this.WS.TimeLeft)
+                var Countdown = this.WS.TimeLeft
+
               }else{
+                return
+              }
+            }else{
+              if(code !== '1301'){
+                if(!state.PlanLen)return
                 var Countdown = computeCountdown(state.IssueNo, _SerTime)
                 Countdown %= DAY_TIME;
                 //如果倒计时小于0，则一直更新到最新期
@@ -889,39 +895,37 @@
                     btn: ["确定"]
                   });
                 }
-              }
 
-            }else{
-              // 获得6HC的倒计时
-              var Countdown = get6HCCountdown()
-              if(Countdown < 0){
-                // nextFirst的时间都到了。依然没有获取到开奖计划
-                commit('lt_stopSell', 0)    //暂停销售
-                console.log('本月计划未更新')
-                return
-              }else if(Countdown < 1000){
-                console.log('下一期了')
-                // var _year = new Date(new Date().getTime()- this.$store.state.Difftime - GMT_DIF).getFullYear()  //本年
-                var currIssue = computeIssue(code, state.IssueNo)
-                var nextIssue= computeIssue(code, state.IssueNo + 1)
-                layer.open({
-                  shadeClose: false,
-                  className: "layerConfirm layerCenter",
-                  content: `${currIssue}期已截止</br>当前期号<span style="color:red">${nextIssue}</span></br>投注时请注意期号`,
-                  title: "温馨提示",
-                  btn: ["确定"]
-                });
+              }else{
+                // 获得6HC的倒计时
+                var Countdown = get6HCCountdown()
+                if(Countdown < 0){
+                  // nextFirst的时间都到了。依然没有获取到开奖计划
+                  commit('lt_stopSell', 0)    //暂停销售
+                  console.log('本月计划未更新')
+                  return
+                }else if(Countdown < 1000){
+                  console.log('下一期了')
+                  // var _year = new Date(new Date().getTime()- this.$store.state.Difftime - GMT_DIF).getFullYear()  //本年
+                  var currIssue = computeIssue(code, state.IssueNo)
+                  var nextIssue= computeIssue(code, state.IssueNo + 1)
+                  layer.open({
+                    shadeClose: false,
+                    className: "layerConfirm layerCenter",
+                    content: `${currIssue}期已截止</br>当前期号<span style="color:red">${nextIssue}</span></br>投注时请注意期号`,
+                    title: "温馨提示",
+                    btn: ["确定"]
+                  });
+                }
               }
             }
-
 
             Countdown = Math.floor(Countdown/1000);   //转成以秒为单位
             updateTimeBar(Countdown, code)                  //更新倒计时文字
 
             var Results = state.LotteryResults[state.lottery.LotteryCode]
                 ,len = Results?Results.length:0;
-
-            if (this.ptype !== 'live') {
+            if (ptype !== 'live') {
               if(!wait4BetRecord){
                 //如果在获取我的投注/我的追号,则不进入
                 if(!len || Results[0].IssueNo*1 < state.OldIssue*1) {
@@ -1204,6 +1208,7 @@
 
       //注册彩种模块 --lt
       this.$store.state.lt || this.$store.registerModule('lt', lt)
+      Vue.set(store.state.lt,'ptype',this.ptype)
       //生成昨天今天明天字符串
       this.$store.commit('lt_updateDate')
       //切换彩种
@@ -1252,7 +1257,8 @@
           GameResult:null,
           TimeLeft:'waiting',
           Status:''
-        }
+        },
+        ws:null,
       }
     },
     computed:{
@@ -1309,15 +1315,16 @@
         store.commit('lt_updateIssue',n)
         Vue.set(state.lt, 'StopTime', n.end)
         this.WS.Status = 'NewGame'
-        console.log('开局游戏')
+        console.log('watch:开局游戏')
       },
       'WS.GameResult'(n,o){
         store.commit('lt_updateIssue',n)
         Vue.set(state.lt.WS, 'openNum', n.record_result)
         this.WS.Status = 'GameResult'
         store.commit('lt_displayResults', false)
+        console.log('准备改变状态')
         store.commit('lt_stopSell', 3)
-        console.log('已开奖')
+        console.log('watch:已开奖')
       }
 		},
 	  beforeRouteLeave(to, from, next){
@@ -1332,6 +1339,9 @@
 		    store.commit('lt_setChasePower', 1)		//清空追号配置
 				store.commit('lt_setChaseIssue', 1)
 	    }
+      if (this.ws !== null) {
+        this.ws.close()
+      }
 	    next()
 	  },
 		beforeDestroy(){
