@@ -305,7 +305,7 @@ export default {
         //UnionPay
         UnionPay:{
           Action:'Recharge',
-          Qort:9,
+          Qort:10,
           PayUser:'',
           Money:0,
           ID:1,
