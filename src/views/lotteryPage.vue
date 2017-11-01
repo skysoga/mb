@@ -6,7 +6,7 @@
     <LotteryK3 v-if = "ptype !== 'live' && $route.params.type === 'K3'"></LotteryK3>
 
     <Lottery6HC v-if = "$route.params.type === '6HC'"></Lottery6HC>
-    <NewK3 v-if = "ptype === 'live'" :showType="showType"></NewK3>
+    <NewK3 v-if = "ptype === 'live'" ></NewK3>
   </div>
 </template>
 <style lang='scss' scoped>
@@ -135,11 +135,6 @@
           }
         }
         next(vm=>{
-          if (lcode == '1407') {
-            vm.showType = true
-          }else{
-            vm.showType = false
-          }
           if (ws !== null) {
             checkws(vm,ws1)
             ws.onmessage =e=>{
@@ -1257,8 +1252,7 @@
           GameResult:null,
           TimeLeft:'waiting',
           Status:''
-        },
-        showType:''
+        }
       }
     },
     computed:{

@@ -1,8 +1,7 @@
 <template>
   <div class="newContainer" :style="{height:containerHeight}">
     <div class="video">
-      <canvas ref="videocanvas"></canvas>
-      <iframe v-if="showType" src="http://666666.caishen08.com/hk.html"></iframe>
+      <iframe src="/static/video-k3.html"></iframe>
       <img src="/static/img/newk3-bg.jpg" alt="" width="100%">
     </div>
     <div v-show="show == 'main'" @click="changeShow" class="mainPage">
@@ -140,7 +139,6 @@
     },
   }
   export default {
-    props:["showType"],
     components: {
       mainfooter,
     },
@@ -168,8 +166,7 @@
         //新增字段
         videoUrl:'ws://47.52.109.168:8082/',
         option:null,
-        player:null,
-        showType:''
+        player:null
       }
     },
     // computed:{
@@ -276,14 +273,7 @@
     }),
     methods:{
       changeVideo(){
-        if(this.player === undefined){
-          this.player = new Live.Player(this.videoUrl, this.option);
-          console.log('开启')
-        }else{
-          this.player.destroy()
-          this.player = undefined
-          layer.alert('已关闭视频')
-        }
+        layer.alert('视频控制测试中')
       },
       choose(item){
         if(!this.award)return
@@ -525,21 +515,7 @@
         }, this.interval)
       }
     },
-    watch:{
-      showType(n,o){
-        if (this.showType) {
-          if (this.player!==undefined) {
-            this.player.destroy()
-          }
-        }
-      }
-    },
     mounted(){
-      if (!this.showType) {
-        var canvas = this.$refs.videocanvas
-        this.option = {canvas: canvas, chunkSize:1};
-        this.player = new Live.Player(this.videoUrl, this.option); 
-      }
       this.setHeight()
       setTimeout(()=>{
         this.changeHeight()
@@ -714,10 +690,10 @@
     }
     iframe{
       position: absolute;
-      top:-100px;
       z-index: 10;
-      height: 150%;
+      height: 100%;
       width: 100%;
+      border: none;
     }
   }
   .newContainer{

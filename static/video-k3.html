@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style type="text/css">
+		html, body {
+			margin:0;
+			height: 100%;
+			width: 100%;
+		}
+		canvas{
+	    display: block;
+			height: 100%;
+			width: 100%;
+		}
+	</style>
+	
+</head>
+<body>
+	<canvas id="myCanvas"></canvas>
+	<script type="text/javascript" src="/static/public/live.min.js"></script>
+	<script>
+		var canvas = document.getElementById('myCanvas');
+		var url = 'ws://47.52.109.168:8082/';
+		var option = {canvas: canvas, chunkSize:1};
+		var player = new Live.Player(url, option);
+		
+		function flash(){
+			player.destroy();
+			player = new Live.Player(url, option);
+		}
+		function destroy(){
+			player.destroy();
+			document.body.removeChild(canvas);
+		}
+	</script>
+</body>
+</html>
