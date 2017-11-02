@@ -6,7 +6,8 @@
     <LotteryK3 v-if = "ptype !== 'live' && $route.params.type === 'K3'"></LotteryK3>
 
     <Lottery6HC v-if = "$route.params.type === '6HC'"></Lottery6HC>
-    <NewK3 v-if = "ptype === 'live'" ></NewK3>
+    <NewK3 v-if = "ptype === 'live' && !isSleep"></NewK3>
+    <sleeping v-if = "ptype === 'live' && isSleep"></sleeping>
   </div>
 </template>
 <style lang='scss' scoped>
@@ -20,6 +21,7 @@
   import LotteryK3 from './lottery_k3'
   import Lottery6HC from './lottery_6hc'
   import NewK3 from './newk3/main'
+  import sleeping from './newk3/sleeping'
 
   import {sscConfig} from '../js/page_config/lt_ssc'
   import {k3Config} from '../js/page_config/lt_k3'
@@ -44,7 +46,8 @@
       LotteryCommon,
       LotteryK3,
       Lottery6HC,
-      NewK3
+      NewK3,
+      sleeping
     },
     beforeRouteEnter(to, from, next){
       // 将滚动置顶
@@ -144,7 +147,7 @@
               layer.msgWarn('ws接口获取错误')
             }
             vm.ws = ws
-            store.state.lt.TimeBar = 'waiting'
+            store.state.lt.TimeBar = ''
           }
         })
       }).catch((err)=>{
@@ -827,7 +830,7 @@
               // console.log(that.WS.Status)
               if (that.WS.Status === 'NewGame' || that.WS.Status === 'Newest'){
                 var NewGame = that.WS[that.WS.Status]
-                if (that.WS.TimeLeft === 'waiting') {
+                if (that.WS.TimeLeft === '') {
                   //获取服务器的时间
                   var serverTime = new Date().getTime() - that.$store.state.Difftime
                   // console.log(serverTime)
@@ -835,6 +838,7 @@
                   if (serverTime >= NewGame.start && NewGame.end >= serverTime) {
                     that.WS.TimeLeft = NewGame.end*1 - serverTime*1
                   }else{
+                    store.commit('lt_stopSell', 3)
                     return
                   }
                 }else if(that.WS.TimeLeft <= 1000){
@@ -842,7 +846,7 @@
                   that.WS.Status = 'WaitResult'
                   store.commit('lt_stopSell', 4)
                   commit('lt_displayResults', false)
-                  that.WS.TimeLeft = 'waiting'
+                  that.WS.TimeLeft = ''
                   return
                 }else{
                   that.WS.TimeLeft=that.WS.TimeLeft*1-1000
@@ -1255,10 +1259,11 @@
           Newest:null,
           NewGame:null,
           GameResult:null,
-          TimeLeft:'waiting',
+          TimeLeft:'',
           Status:''
         },
         ws:null,
+        isSleep:0
       }
     },
     computed:{
@@ -1294,6 +1299,7 @@
 			},
       WSrefresh(json){
         this.WS[json.type] = json.result
+        this.WS.Status = json.type
         switch(json.type){
           case 'Newest':this.statusNewest(json.result);break;
           case 'GameStatus':this.statusGameStatus(json.result);break;
@@ -1302,7 +1308,6 @@
         }
       },
       statusNewest(n){
-        this.WS.Status = 'Newest'
         store.commit('lt_updateIssue',n)
         Vue.set(state.lt, 'StopTime', n.end)
       },
@@ -1310,20 +1315,21 @@
         store.commit('lt_stopSell', 3)
         var _status = n.status
         switch(_status){
-          case '':;break;
+          case 'readySleep':this.isSleep = 0;break;
+          case 'sleeping':this.isSleep = 1;break;
+          case 'readyRun':this.isSleep = 1;break;
+          case 'running':this.isSleep = 0;break;
         }
       },
       statusNewGame(n){
         store.commit('lt_updateIssue',n)
         Vue.set(state.lt, 'StopTime', n.end)
-        this.WS.Status = 'NewGame'
         this.$store.dispatch('lt_refresh')
         console.log('watch:开局游戏')
       },
       statusGameResult(n){
         store.commit('lt_updateIssue',n)
         Vue.set(state.lt.WS, 'openNum', n.record_result)
-        this.WS.Status = 'GameResult'
         store.commit('lt_displayResults', false)
         store.commit('lt_stopSell', 3)
         console.log('watch:已开奖')
