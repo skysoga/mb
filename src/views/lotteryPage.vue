@@ -107,7 +107,7 @@
         var json
         try{
           json = JSON.parse(data)
-          vm.WS[json.type] = json.result
+          vm.WSrefresh(json)
         }catch(e){
           layer.msgWarn('服务器类型错误')
         }
@@ -352,7 +352,6 @@
             Vue.set(state.LotteryResults, code, results)
           },
           lt_stopSell:(state, type)=>{
-            console.log('改变状态')
             this.$store.commit('lt_updateTimeBar', ['期号有误','暂停销售','当期封单','等待开局','等待开奖'][type])    //暂停销售
             return
           },
@@ -825,14 +824,14 @@
             }
             var that = state.that
             if (ptype === 'live') {
-              console.log(that.WS.Status)
+              // console.log(that.WS.Status)
               if (that.WS.Status === 'NewGame' || that.WS.Status === 'Newest'){
                 var NewGame = that.WS[that.WS.Status]
                 if (that.WS.TimeLeft === 'waiting') {
                   //获取服务器的时间
                   var serverTime = new Date().getTime() - that.$store.state.Difftime
-                  console.log(serverTime)
-                  console.log(NewGame.start)
+                  // console.log(serverTime)
+                  // console.log(NewGame.start)
                   if (serverTime >= NewGame.start && NewGame.end >= serverTime) {
                     that.WS.TimeLeft = NewGame.end*1 - serverTime*1
                   }else{
@@ -848,7 +847,7 @@
                 }else{
                   that.WS.TimeLeft=that.WS.TimeLeft*1-1000
                 }
-                console.log('TimeLeft:'+that.WS.TimeLeft)
+                // console.log('TimeLeft:'+that.WS.TimeLeft)
                 var Countdown = that.WS.TimeLeft
 
               }else{
@@ -1292,7 +1291,43 @@
 				}else{
 					store.commit('lt_changeMode', state.lt.config[0])
 				}
-			}
+			},
+      WSrefresh(json){
+        this.WS[json.type] = json.result
+        switch(json.type){
+          case 'Newest':this.statusNewest(json.result);break;
+          case 'GameStatus':this.statusGameStatus(json.result);break;
+          case 'NewGame':this.statusNewGame(json.result);break;
+          case 'GameResult':this.statusGameResult(json.result);break;
+        }
+      },
+      statusNewest(n){
+        this.WS.Status = 'Newest'
+        store.commit('lt_updateIssue',n)
+        Vue.set(state.lt, 'StopTime', n.end)
+      },
+      statusGameStatus(n){
+        store.commit('lt_stopSell', 3)
+        var _status = n.status
+        switch(_status){
+          case '':;break;
+        }
+      },
+      statusNewGame(n){
+        store.commit('lt_updateIssue',n)
+        Vue.set(state.lt, 'StopTime', n.end)
+        this.WS.Status = 'NewGame'
+        this.$store.dispatch('lt_refresh')
+        console.log('watch:开局游戏')
+      },
+      statusGameResult(n){
+        store.commit('lt_updateIssue',n)
+        Vue.set(state.lt.WS, 'openNum', n.record_result)
+        this.WS.Status = 'GameResult'
+        store.commit('lt_displayResults', false)
+        store.commit('lt_stopSell', 3)
+        console.log('watch:已开奖')
+      }
 		},
 		watch:{
 			$route(val){
@@ -1303,31 +1338,7 @@
 		    store.commit('lt_setScheme', [])
 		    store.commit('lt_setChasePower', 1)		//清空追号配置
 				store.commit('lt_setChaseIssue', 1)
-			},
-      'WS.Newest'(n,o){
-        this.WS.Status = 'Newest'
-        store.commit('lt_updateIssue',n)
-        Vue.set(state.lt, 'StopTime', n.end)
-      },
-      'WS.GameStatus'(n,o){
-        store.commit('lt_stopSell', 3)
-      },
-      'WS.NewGame'(n,o){
-        store.commit('lt_updateIssue',n)
-        Vue.set(state.lt, 'StopTime', n.end)
-        this.WS.Status = 'NewGame'
-        this.$store.dispatch('lt_refresh')
-        console.log('watch:开局游戏')
-      },
-      'WS.GameResult'(n,o){
-        store.commit('lt_updateIssue',n)
-        Vue.set(state.lt.WS, 'openNum', n.record_result)
-        this.WS.Status = 'GameResult'
-        store.commit('lt_displayResults', false)
-        console.log('准备改变状态')
-        store.commit('lt_stopSell', 3)
-        console.log('watch:已开奖')
-      }
+			}
 		},
 	  beforeRouteLeave(to, from, next){
 	    //离开页面前将每注金额重设为 PERBET (2元)

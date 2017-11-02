@@ -26,7 +26,7 @@
       <div class="userContent"></div>
       <div class="control">
         <ul class="con-btn fix">
-          <li><a href="javascript:;" @click="$router.go(-1)"></a></li>
+          <li><a href="javascript:;" @click.stop="$router.go(-1)"></a></li>
           <li><a href="javascript:;"></a></li>
           <li><a href="javascript:;"></a></li>
           <li><a href="javascript:;"></a></li>
