@@ -827,12 +827,32 @@
             }
             var that = state.that
             if (ptype === 'live') {
-              // console.log(that.WS.Status)
-              if (that.WS.Status === 'NewGame' || that.WS.Status === 'Newest'){
-                var NewGame = that.WS[that.WS.Status]
+              //获取服务器的时间
+              var serverTime = new Date().getTime() - that.$store.state.Difftime
+              var _status = that.WS.Status
+
+
+              //是否有维护计划
+              if (that.readySleep !== '' && that.isSleep === 0) {
+                if(serverTime*1 + 1000 >= that.readySleep){
+                  that.isSleep = 1
+                  that.readySleep = ''
+                }
+              }
+
+              //是否有开播计划
+              if (that.readyRun !== '' && that.isSleep === 1) {
+                if(serverTime*1 + 1000 >= that.readySleep *1 - 60 * 5 * 1000){
+                  that.isSleep = 0
+                  that.readyRun = ''
+                }
+              }
+
+
+              if (_status === 'NewGame' || _status === 'Newest'){
+                //正常倒计时
+                var NewGame = that.WS[_status]
                 if (that.WS.TimeLeft === '') {
-                  //获取服务器的时间
-                  var serverTime = new Date().getTime() - that.$store.state.Difftime
                   // console.log(serverTime)
                   // console.log(NewGame.start)
                   if (serverTime >= NewGame.start && NewGame.end >= serverTime) {
@@ -1263,7 +1283,9 @@
           Status:''
         },
         ws:null,
-        isSleep:0
+        isSleep:0,
+        readySleep:'',
+        readyRun:''
       }
     },
     computed:{
@@ -1315,9 +1337,9 @@
         store.commit('lt_stopSell', 3)
         var _status = n.status
         switch(_status){
-          case 'readySleep':this.isSleep = 0;break;
+          case 'readySleep':this.readySleep = n.ready_time;break;
           case 'sleeping':this.isSleep = 1;break;
-          case 'readyRun':this.isSleep = 1;break;
+          case 'readyRun':this.readyRun = n.ready_time;break;
           case 'running':this.isSleep = 0;break;
         }
       },
