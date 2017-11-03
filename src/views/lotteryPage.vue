@@ -354,6 +354,13 @@
           lt_setLotteryResult:(state, {code, results})=>{              //设置某一彩种的开奖结果
             Vue.set(state.LotteryResults, code, results)
           },
+          lt_setOnceLotteryResult:(state, {code, results})=>{          //设置一条开奖结果
+            if(state.LotteryResults[code].length >= 10){
+              state.LotteryResults[code].pop()
+            }
+            state.LotteryResults[code].unshift(results)
+            Vue.set(state.LotteryResults, code, state.LotteryResults[code])
+          },
           lt_stopSell:(state, type)=>{
             this.$store.commit('lt_updateTimeBar', ['期号有误','暂停销售','当期封单','等待开局','等待开奖'][type])    //暂停销售
             return
@@ -842,7 +849,7 @@
 
               //是否有开播计划
               if (that.readyRun !== '' && that.isSleep === 1) {
-                if(serverTime*1 + 1000 >= that.readySleep *1 - 60 * 5 * 1000){
+                if(serverTime*1 + 1000 >= that.readyRun *1 - 60 * 5 * 1000){
                   that.isSleep = 0
                   that.readyRun = ''
                 }
@@ -1352,6 +1359,20 @@
       statusGameResult(n){
         store.commit('lt_updateIssue',n)
         Vue.set(state.lt.WS, 'openNum', n.record_result)
+        let newresult = ''
+        for (var i = 0; i < n.record_result.length; i++) {
+          newresult +=n.record_result[i]+','
+        }
+        newresult = newresult.substring(0,newresult.length-1)
+        store.commit({
+          type:'lt_setOnceLotteryResult',
+          code:this.lcode,
+          results: {
+            IssueNo:n.record_code,
+            LotteryOpen:newresult,
+            OpenTime:''
+          }
+        })
         store.commit('lt_displayResults', false)
         store.commit('lt_stopSell', 3)
         console.log('watch:已开奖')
