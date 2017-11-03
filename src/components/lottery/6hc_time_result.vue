@@ -129,8 +129,8 @@ export default {
         el.IssueNo = item.IssueNo
         el.LotteryOpen = item.LotteryOpen.split(',').map(str=>('0' + str).slice(-2))
         var mdy = item.OpenTime.split(' ')[0] //开奖时间的年月日
-        var [month, date, year] = mdy.split('/')
-        // year = year.slice(-2)
+        var [year,month, date] = mdy.split('/')
+        year = year.slice(-2)
         month = ('0' + month).slice(-2)
         date = ('0' + date).slice(-2)
         el.OpenTime = `${year}.${month}.${date}`
