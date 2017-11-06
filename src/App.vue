@@ -8,17 +8,19 @@
     <transition name="fade"  mode="out-in">
       <router-view :s="$store.state"></router-view>
     </transition>
+    <newIframe :url="$store.state.URL" v-if="$store.state.URL"></newIframe>
   </div>
 </template>
 
 <script>
   import Navbar from './components/navbar';
   import TitleInfo from './components/title-info';
-
+  import newIframe from './components/newIframe';
   export default {
     components: {
       Navbar,
-      TitleInfo
+      TitleInfo,
+      newIframe
     },
     data:()=>{
       return{

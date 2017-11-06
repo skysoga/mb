@@ -99,7 +99,7 @@
           <i class="iconfont right fr"></i>
         </a>
       </div>
-   
+
 
     </div>
   </div>
@@ -118,6 +118,7 @@ export default {
       weixMsg:'',
       aliMsg:'',
       qqMsg:'',
+      FourUrl:{},
       UnionMsg:''
     }
   },
@@ -160,9 +161,9 @@ export default {
       obj.qqpay=this.getLimit(json)
     }else{
       this.qqMsg="QQ钱包维护中..."
-      this.qqType=''
+      this.qqType=""
     }
-    
+
     if(state.RechargeWayUnionPay&&state.RechargeWayUnionPay[0]){
       let json=state.RechargeWayUnionPay[0]
       this.UnionMsg=false
@@ -171,7 +172,7 @@ export default {
     }else{
       this.UnionMsg="银联扫码维护中..."
       this.unionType=''
-    }    
+    }
 
     if(state.RechargeFourthParty&&state.RechargeFourthParty[0]){
       this.FourUrl=state.RechargeFourthParty[0]
@@ -185,25 +186,26 @@ export default {
       !bool&&router.push(Url)
     },
     toFourUrl(){
-      if(!_App){
+      var selfapp=localStorage.getItem('isSelfApp')
+      if(!_App&&!selfapp){
         var newtab=window.open('about:blank')
       }
       RootApp.AjaxGetInitData(['RechargeFourthParty'], state=>{
         var json=state.RechargeFourthParty
         if(json&&json.length){
           this.FourUrl=json[0]
-          RootApp.OpenWin(json[0].PayUrl,!_App&&newtab)
+          RootApp.OpenWin(json[0].PayUrl,!_App&&!selfapp&&newtab)
         }else{
-          !_App&&newtab.close()
+          !_App&&!selfapp&&newtab.close()
           layer.alert(this.FourUrl.PayType+'功能已关闭')
         }
       })
     },
     getLimit(obj){
-      var arr=[]
+      let arr=[]
       arr.push(obj.MinMoney)
       arr.push(obj.MaxMoney)
-      return arr
+    return arr
     }
   }
 }
@@ -211,3 +213,4 @@ export default {
 <style lang = "scss" scoped>
   @import '../scss/activity.scss';
 </style>
+
