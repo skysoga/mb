@@ -6,22 +6,19 @@
     },
     beforeRouteEnter(to,from,next){
       var id = to.query.id
+      localStorage.setItem('isSelfApp','1')
       if (/^\d{8}$/.test(id)) {
-        var head = document.getElementsByTagName('head')[0]
-        var styleTag = document.createElement('style')
-        styleTag.textContent='#index .textMore{display: none; }'
         head.appendChild(styleTag)
         if (!localStorage.getItem('InvitationCode')) {
           localStorage.setItem('InvitationCode',id)
         }
-        if(!localStorage.getItem('isSelfApp')){
-          localStorage.setItem('isSelfApp','yes')
-        }
       }
-      next()
-    },
-    created(){
-      router.replace('/index')
+      next(vm=>{
+        // var head = document.getElementsByTagName('head')[0]
+        // var styleTag = document.createElement('style')
+        // styleTag.textContent='#index .textMore{display: none; }'
+        router.replace('/index')
+      })
     }
   }
 </script>

