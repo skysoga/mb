@@ -1,7 +1,7 @@
 <template>
   <!-- 是否用户打包APP -->
     <div class="newIframe">
-        <header class="top" @click="$store.state.URL=''"><span></span><a class="iconfont back"></a></header>
+        <header class="top" @click="$store.state.URL=''"><span>点击箭头返回</span><a class="iconfont back"></a></header>
         <div class="ifrmain">
           <iframe :src="url" frameborder="0" id="selfiframe"></iframe>
         </div>
