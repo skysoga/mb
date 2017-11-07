@@ -45,7 +45,10 @@
         this.$store.commit('lt_clearBet')
       },
       confirmBet(){
-        if(!this.bet.betting_count){
+        let checkTime = this.TimeBar.substring(0,2)
+        if (isNaN(checkTime)) {
+          layer.alert('当前还没有开局')
+        }else if(!this.bet.betting_count){
           layer.alert('请至少选择一注号码投注')
         }else if(!(+this.showPrice)){
           layer.alert('请填写您要投注的金额')
@@ -63,11 +66,8 @@
             btn: ['确定', '取消'],
             yes: ()=>{
               //判断当前是否已开局
-              if (true) {
-                let checkTime = this.TimeBar.substring(0,2)
-                if (isNaN(checkTime)) {
-                  return layer.alert('当前还没有开局')
-                }
+              if (isNaN(checkTime)) {
+                return layer.alert('当前还没有开局')
               }
               return layer.msgWarn('接口还未通！')
               var basebet = new BaseBet(this.$store.state)
