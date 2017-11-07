@@ -110,52 +110,38 @@ export default {
   created () {
     var obj={}
     if(state.RechargeWayBank&&state.RechargeWayBank[0]){
-      let arr=[],
-          json=state.RechargeWayBank[0]
-          arr.push(json.MinMoney)
-          arr.push(json.MaxMoney)
-      obj.bank=arr
+      let json=state.RechargeWayBank[0]
+      obj.bank=this.getLimit(json)
     }else{
       this.RechargeWayBank=''
       this.bankMsg="银行转账维护中..."
     }
     if(state.RechargeWayWeixin&&state.RechargeWayWeixin[0]){
-      let arr=[],
-        json=state.RechargeWayWeixin[0]
-        arr.push(json.MinMoney)
-        arr.push(json.MaxMoney)
+      let json=state.RechargeWayWeixin[0]
       this.weixMsg=false
       this.wechatType = json.PayType || '一般'
-      obj.wechat=arr
+      obj.wechat=this.getLimit(json)
     }else{
       this.wechatType=''
       this.weixMsg="微信支付维护中..."
     }
     if(state.RechargeWayAlipay&&state.RechargeWayAlipay[0]){
-      let arr=[],
-        json=state.RechargeWayAlipay[0]
-        arr.push(json.MinMoney)
-        arr.push(json.MaxMoney)
+      let json=state.RechargeWayAlipay[0]
       this.aliMsg=false
       this.aliType = json.PayType || '一般'
-      obj.alipay=arr
+      obj.alipay=this.getLimit(json)
     }else{
-      this.wechatType=''
+      this.aliType=''
       this.aliMsg="支付宝支付维护中..."
-      this.wechatType=''
     }
     if(state.RechargeWayQQpay&&state.RechargeWayQQpay[0]){
-      let arr=[],
-        json=state.RechargeWayQQpay[0]
-        arr.push(json.MinMoney)
-        arr.push(json.MaxMoney)
+      let json=state.RechargeWayQQpay[0]
       this.qqMsg=false
       this.qqType = json.PayType || '一般'
-      obj.qqpay=arr
+      obj.qqpay=this.getLimit(json)
     }else{
       this.qqType=''
       this.qqMsg="QQ钱包维护中..."
-      this.qqType=''
     }
     if(state.RechargeFourthParty&&state.RechargeFourthParty[0]){
       this.FourUrl=state.RechargeFourthParty[0]
@@ -168,19 +154,26 @@ export default {
       !bool&&router.push(Url)
     },
     toFourUrl(){
-      if(!_App){
+      var selfapp=localStorage.getItem('isSelfApp')
+      if(!_App&&!selfapp){
         var newtab=window.open('about:blank')
       }
       RootApp.AjaxGetInitData(['RechargeFourthParty'], state=>{
         var json=state.RechargeFourthParty
         if(json&&json.length){
           this.FourUrl=json[0]
-          RootApp.OpenWin(json[0].PayUrl,!_App&&newtab)
+          RootApp.OpenWin(json[0].PayUrl,!_App&&!selfapp&&newtab)
         }else{
-          !_App&&newtab.close()
+          !_App&&!selfapp&&newtab.close()
           layer.alert(this.FourUrl.PayType+'功能已关闭')
         }
       })
+    },
+    getLimit(obj){
+      let arr=[]
+      arr.push(obj.MinMoney)
+      arr.push(obj.MaxMoney)
+    return arr
     }
   }
 }

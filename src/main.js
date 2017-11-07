@@ -1011,6 +1011,10 @@ window.RootApp={
   },
   OpenWin:function(url, newTab){
     //app
+    if(localStorage.getItem('isSelfApp')){
+      state.URL=url
+      return
+    }
     if(YDB){
       YDB.OpenWithSafari(url)
     }else{
