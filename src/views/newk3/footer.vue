@@ -37,6 +37,7 @@
         return (state.lt.bet.betting_money && this.showPrice)  ? `，${state.lt.bet.betting_money}元` : ''
       },
       award:()=>state.lt.award,
+      TimeBar:()=>state.lt.TimeBar,
     }),
     methods:{
       clear(){
@@ -61,6 +62,13 @@
             content: msg,
             btn: ['确定', '取消'],
             yes: ()=>{
+              //判断当前是否已开局
+              if (true) {
+                let checkTime = this.TimeBar.substring(0,2)
+                if (isNaN(checkTime)) {
+                  return layer.alert('当前还没有开局')
+                }
+              }
               return layer.msgWarn('接口还未通！')
               var basebet = new BaseBet(this.$store.state)
               if(this.mode === 'A10'){
