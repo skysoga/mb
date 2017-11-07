@@ -132,36 +132,36 @@ window.em = Math.sqrt((rem-20)*.9)+20
 window.YDB = null
 document.querySelector("html").style.fontSize=rem+'px'
 document.body.style.fontSize=em+'px'
-window._Tool = {
-  Array: {
-    Unique: function (array) {
-      var n = []; //临时数组
-      for (var i = 0; i < array.length; i++) {
-        if (n.indexOf(array[i]) == -1) n.push(array[i]);
-      }
-      return n;
-    }
-  },
-  // 获得服务器的时间
-  Date: {
-    getTime:function(){
-      return new Date().getTime()-state.Difftime||0
-      /*if (state.Difftime) {
-        return {then:function(fun){
-          fun&&fun(new Date().getTime()-state.Difftime)
-        }}
-      }else{
-        return new Promise(function(resolve, reject) {
-          RootApp.getServerTime(function(){
-            if (state.Difftime) {
-              resolve(new Date().getTime()-state.Difftime)
-            }
-          })
-        })
-      }*/
-    }
-  }
-}
+// window._Tool = {
+//   Array: {
+//     Unique: function (array) {
+//       var n = []; //临时数组
+//       for (var i = 0; i < array.length; i++) {
+//         if (n.indexOf(array[i]) == -1) n.push(array[i]);
+//       }
+//       return n;
+//     }
+//   },
+//   // 获得服务器的时间
+//   Date: {
+//     getTime:function(){
+//       return new Date().getTime()-state.Difftime||0
+//       if (state.Difftime) {
+//         return {then:function(fun){
+//           fun&&fun(new Date().getTime()-state.Difftime)
+//         }}
+//       }else{
+//         return new Promise(function(resolve, reject) {
+//           RootApp.getServerTime(function(){
+//             if (state.Difftime) {
+//               resolve(new Date().getTime()-state.Difftime)
+//             }
+//           })
+//         })
+//       }
+//     }
+//   }
+// }
 
 //获取cookie
 window.getCookie=function(cname){
