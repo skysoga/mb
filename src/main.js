@@ -1458,46 +1458,47 @@ document.addEventListener('copy', function(e){
   }
 })
 
-Vue.directive('touchtab', {
-  bind (el, binding, vnode) {
-    var x,y
-    function touchstart (e) {
-      x = e.changedTouches[0].clientX
-      y = e.changedTouches[0].clientY
-    }
-    function touchend (e) {
-      var offset = 10
-      if(e.changedTouches[0].clientX > x){
-        if (x+offset < e.changedTouches[0].clientX) {
-          return
-        }
-      }else{
-        if (x-offset > e.changedTouches[0].clientX) {
-          return
-        }
-      }
-      if(e.changedTouches[0].clientY > y){
-        if (y+offset < e.changedTouches[0].clientY) {
-          return
-        }
-      }else{
-        if (y-offset > e.changedTouches[0].clientY) {
-          return
-        }
-      }
-      if (binding.expression) {
-        binding.value(e)
-      }
-    }
-    el.__touchstart__ = touchstart
-    el.__touchend__ = touchend
-    el.addEventListener('touchstart', touchstart)
-    el.addEventListener('touchend', touchend)
-  },
-  unbind (el, binding) {
-    el.removeEventListener('touchstart', el.__touchstart__)
-    el.removeEventListener('touchend', el.__touchend__)
-    delete el.__touchstart__
-    delete el.__touchend__
-  }
-})
+//用touchstart和touchend实现click功能，暂时没有用到，注释
+// Vue.directive('touchtab', {
+//   bind (el, binding, vnode) {
+//     var x,y
+//     function touchstart (e) {
+//       x = e.changedTouches[0].clientX
+//       y = e.changedTouches[0].clientY
+//     }
+//     function touchend (e) {
+//       var offset = 10
+//       if(e.changedTouches[0].clientX > x){
+//         if (x+offset < e.changedTouches[0].clientX) {
+//           return
+//         }
+//       }else{
+//         if (x-offset > e.changedTouches[0].clientX) {
+//           return
+//         }
+//       }
+//       if(e.changedTouches[0].clientY > y){
+//         if (y+offset < e.changedTouches[0].clientY) {
+//           return
+//         }
+//       }else{
+//         if (y-offset > e.changedTouches[0].clientY) {
+//           return
+//         }
+//       }
+//       if (binding.expression) {
+//         binding.value(e)
+//       }
+//     }
+//     el.__touchstart__ = touchstart
+//     el.__touchend__ = touchend
+//     el.addEventListener('touchstart', touchstart)
+//     el.addEventListener('touchend', touchend)
+//   },
+//   unbind (el, binding) {
+//     el.removeEventListener('touchstart', el.__touchstart__)
+//     el.removeEventListener('touchend', el.__touchend__)
+//     delete el.__touchstart__
+//     delete el.__touchend__
+//   }
+// })

@@ -46,18 +46,6 @@
       <ul class="playtype fix" v-show="playtypeShow == 'playtype'">
         <li v-for="(d,i) in config" @click="toPlay(d,i)"><em>{{d.name}}</em></li>
       </ul>
-      <!-- <div ref="betboxContainer" class="betboxContainer fix" :class="{noscroll:canScorll}" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend" :style="{ transform: 'translate3d('+movey+'px, 0px, 0px)',transition:transition+'s',width:8*clientWidth+'px'}" v-show="playtypeShow == ''">
-        <div class="betbox" @touchmove.stop="scrollList" :class="i" v-for="(d,i,j) in cfg" :style="{width:clientWidth+'px'}">
-          <div class="topshadow"></div>
-          <div ref="buttonList" class="newmain">
-            <ul class="buttonList fix">
-              <li v-for="e in d.itemArr" :class = "{curr:chosen.indexOf(e) > -1,bgnone:e==0}"><span v-if="!(e==0)" @click="choose(e)" class="fix"><em><i>{{e}}</i></em></span></li>
-            </ul>
-          </div>
-          <div class="topshadow"></div>
-          <div class="bottomshadow" :style="{height:heightArr[j]+'px'}"></div>
-        </div>
-      </div> -->
       <div class="betboxContainer" v-show="playtypeShow == ''">
         <div class="slider" ref="slider">
           <div class="slider-group" ref="sliderGroup">
@@ -67,11 +55,11 @@
                   <div class="topshadow"></div>
                   <div ref="buttonList" class="newmain">
                     <ul class="buttonList fix">
-                      <li v-for="e in d.itemArr" :class = "{curr:chosen.indexOf(e) > -1,bgnone:e==0}"><span v-if="!(e==0)" @touchstart="choose(e)" class="fix"><em><i>{{e}}</i></em></span></li>
+                      <li v-for="e in d.itemArr" :class = "{curr:chosen.indexOf(e) > -1,bgnone:e==0}"><span v-if="!(e==0)"  class="fix" @click="choose(e)"><em><i>{{e}}</i></em></span></li>
                     </ul>
                   </div>
-                  <div class="topshadow" v-touchtab="changeShow"></div>
-                  <div class="bottomshadow" :style="{height:heightArr[j]+'px'}" v-touchtab="changeShow"></div>
+                  <div class="topshadow" @click="changeShow"></div>
+                  <div class="bottomshadow" :style="{height:heightArr[j]+'px'}" @click="changeShow"></div>
                 </div>
               </div>
             </div>
@@ -485,7 +473,7 @@
           snapLoop: this.loop,
           snapThreshold: 0.3,
           snapSpeed: 400,
-          // click:true
+          click:true,
           bounce:false
         })
         // 监听滚动结束时间获取pageX
@@ -518,7 +506,7 @@
         this.timer = setTimeout(() => {
           this.slider.goToPage(pageIndex, 0, 400)
         }, this.interval)
-      }
+      },
     },
     mounted(){
       this.setHeight()
