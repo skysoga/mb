@@ -103,6 +103,9 @@
             ws1 = e.data
             resolve()
           }
+          ws.onerror = err =>{
+            reject(err)
+          }
         })
       }
       var checkws = (vm,data)=>{
@@ -339,6 +342,7 @@
             var ptype = state.ptype
             if (ptype === 'live') {
               console.log(source)
+              Vue.set(state, 'OldIssue', state.NowIssue)
               Vue.set(state, 'NowIssue', source.record_code)
             }else{
               var code = state.lottery.LotteryCode   //当前彩种号
@@ -355,11 +359,12 @@
             Vue.set(state.LotteryResults, code, results)
           },
           lt_setOnceLotteryResult:(state, {code, results})=>{          //设置一条开奖结果
-            if(state.LotteryResults[code].length >= 10){
-              state.LotteryResults[code].pop()
+            let _lresult = JSON.parse(JSON.stringify(state.LotteryResults[code]))
+            if(_lresult.length >= 10){
+              _lresult.pop()
             }
-            state.LotteryResults[code].unshift(results)
-            Vue.set(state.LotteryResults, code, state.LotteryResults[code])
+            _lresult.unshift(results)
+            Vue.set(state.LotteryResults, code, _lresult)
           },
           lt_stopSell:(state, type)=>{
             this.$store.commit('lt_updateTimeBar', ['期号有误','暂停销售','当期封单','等待开局','等待开奖'][type])    //暂停销售
@@ -835,7 +840,7 @@
             var that = state.that
             if (ptype === 'live') {
               //获取服务器的时间
-              var serverTime = new Date().getTime() - that.$store.state.Difftime
+              var serverTime = new Date().getTime() - rootState.Difftime
               var _status = that.WS.Status
 
 
@@ -1354,7 +1359,7 @@
         store.commit('lt_updateIssue',n)
         Vue.set(state.lt, 'StopTime', n.end)
         this.$store.dispatch('lt_refresh')
-        console.log('watch:开局游戏')
+        layer.alert(n.end)
       },
       statusGameResult(n){
         store.commit('lt_updateIssue',n)

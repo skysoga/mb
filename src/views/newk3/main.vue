@@ -6,22 +6,13 @@
     </div>
     <div v-show="show == 'main'" @click="changeShow" class="mainPage">
       <div class="result">
-        <table>
-          <tr>
-            <td><span>开奖号码 3,5,6</span></td>
-            <td><span>截止 {{stopTime}}</span></td>
-            <td><span>期号 {{nowIssue?nowIssue:'0000000000'}}</span></td>
-          </tr>
-          <tr>
-            <td colspan="3" style="font-size: .7em;">{{TimeBar}}</td>
-          </tr>
-          <tr>
-            <td colspan="3" style="font-size: .7em;" @click.stop="changeVideo">点击<br>关闭视频</td>
-          </tr>
-        </table>
-        <div class="sound">
-          <em></em>
+        <div class="timebar" @click.stop="changeVideo">
+          {{nowIssue}}投注：{{TimeBar}}
+        </div><br>
+        <div class="oldissue">
+          {{oldIssue}}开奖：{{results}}
         </div>
+        
       </div>
       <div class="userContent"></div>
       <div class="control">
@@ -186,26 +177,41 @@
       nowModeIndex:()=>cfg[state.lt.mode.mode].index,
       //开奖结果部分
       oldIssue(){
-        return state.lt.lottery.LotteryCode === '1406' ? state.lt.OldIssue : state.lt.OldIssue.slice(4)
+        return state.lt.OldIssue
       },
       nowIssue(){
-        return state.lt.NowIssue
-      },
-      stopTime(){
-        var dd = new Date(state.lt.StopTime/1000)
-        var hour = (dd.getHours().toString().length<2)?'0'+dd.getHours():dd.getHours()
-        var minute = (dd.getMinutes().toString().length<2)?'0'+dd.getMinutes():dd.getMinutes()
-        var second = dd.getSeconds().toString().length<2?'0'+dd.getSeconds():dd.getSeconds()
-        return hour+':'+minute+':'+second
-      },
-      TimeBar:()=>state.lt.TimeBar,
-      results(){
-        var _results = state.lt.WS.openNum
-        if(!_results){
-          return []
-        }else{
-          return _results.LotteryOpen.split(',')
+        let issue = ''+state.lt.NowIssue
+        if (issue) {
+          return issue.substring(2,issue.length)
         }
+        return '00000000'
+      },
+      // stopTime(){
+      //   var dd = new Date(state.lt.StopTime/1000)
+      //   var hour = (dd.getHours().toString().length<2)?'0'+dd.getHours():dd.getHours()
+      //   var minute = (dd.getMinutes().toString().length<2)?'0'+dd.getMinutes():dd.getMinutes()
+      //   var second = dd.getSeconds().toString().length<2?'0'+dd.getSeconds():dd.getSeconds()
+      //   return hour+':'+minute+':'+second
+      // },
+      TimeBar:()=>{
+        let time = state.lt.TimeBar
+        time = time.substring(time.length-2,time.length)
+        if (isNaN(time)) {
+          return state.lt.TimeBar
+        }
+        return time+'S'
+      },
+      results(){
+        // console.log(this.lcode)
+        // if (this.lcode === undefined) {
+        //   return ''
+        // }
+        // // console.log(state.lt.LotteryResults)
+        // // console.log(this.lcode)
+        // if(state.lt.LotteryResults[this.lcode].length<1){
+        //   return ''
+        // }
+        return state.lt.LotteryResults
       },
       display(){
         console.log(state.lt.displayResults)
@@ -541,51 +547,44 @@
   }
 </script>
 <style lang="scss" scoped>
-  .mainPage{
-    height:100%;
-    position:fixed;
-    top:0;
-    left:0;
-    bottom:0;
-    right:0;
-    z-index:20;
+.mainPage{
+  height:100%;
+  position:fixed;
+  top:0;
+  left:0;
+  bottom:0;
+  right:0;
+  z-index:20;
+}
+.result{
+  color:white;
+  position:relative;
+  top:.4em;
+  left: .4em;
+  span{
+    font-size:.7em;
+    display:block;
+    width:100%;
+    line-height:1.4em;
+    margin:.8em 0;
+    border-right:1px solid rgba(0,0,0,.12);
   }
-  .result{
-    color:white;
-    position:relative;
-    table{
-      width:100%;
-      text-align:center;
-      background:rgba(0, 0, 0, 0.2);
-      border-bottom:1px solid rgba(0, 0, 0, 0.12);
-      table-layout: fixed;
-
-    }
-    span{
-      font-size:.7em;
-      display:block;
-      width:100%;
-      line-height:1.4em;
-      margin:.8em 0;
-      border-right:1px solid rgba(0,0,0,.12);
-    }
-  }
-  .sound{
-    position:absolute;
-    width:2em;
-    height:2em;
-    line-height:2em;
-    text-align:center;
-    right:.3em;
-    em{
-      display:block;
-      &:before{
-        content:'\e64b';
-        font-family:'iconfont';
-        display:block;
-      }
-    }
-  }
+}
+.timebar,.oldissue{
+  background:rgba(0,0,0,.2);
+  display:inline-block;
+}
+.timebar{
+  font-size:.68em;
+  padding:.5em .8em;
+  border-radius: 1.4705em;
+}
+.oldissue{
+  margin-top:.7272em;
+  font-size:.55em;
+  padding:.35em 1.1em;
+  border-radius: 1.6666em;
+}
 
   //header样式
   .header{
