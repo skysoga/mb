@@ -7,7 +7,8 @@
     <div v-show="show == 'main'" @click="changeShow" class="mainPage">
       <div class="result">
         <div class="timebar" @click.stop="changeVideo">
-          {{nowIssue}}投注：{{TimeBar}}
+          <em v-show="/^\d/.test(TimeBar)">{{nowIssue}}投注：</em>
+          {{TimeBar}}
         </div><br>
         <div class="oldissue">
           {{oldIssue}}开奖：{{results}}
@@ -151,6 +152,7 @@
         loop:false,
         autoPlay:false,
         interval:4000,
+        lcode:'1407'
       }
     },
     // computed:{
@@ -202,16 +204,10 @@
         return time+'S'
       },
       results(){
-        // console.log(this.lcode)
-        // if (this.lcode === undefined) {
-        //   return ''
-        // }
-        // // console.log(state.lt.LotteryResults)
-        // // console.log(this.lcode)
-        // if(state.lt.LotteryResults[this.lcode].length<1){
-        //   return ''
-        // }
-        return state.lt.LotteryResults
+        if(state.lt.LotteryResults[this.lcode].length<1){
+          return ''
+        }
+        return state.lt.LotteryResults[this.lcode][0].LotteryOpen
       },
       display(){
         console.log(state.lt.displayResults)
@@ -578,6 +574,9 @@
   font-size:.68em;
   padding:.5em .8em;
   border-radius: 1.4705em;
+  em{
+    display:inline;
+  }
 }
 .oldissue{
   margin-top:.7272em;

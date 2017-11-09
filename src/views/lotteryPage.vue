@@ -341,8 +341,15 @@
           lt_updateIssue:(state,source)=>{
             var ptype = state.ptype
             if (ptype === 'live') {
-              console.log(source)
-              Vue.set(state, 'OldIssue', state.NowIssue)
+              if (state.NowIssue === '') {
+                if(state.TimeBar === '等待开局'){
+                  Vue.set(state, 'OldIssue', source.record_code)
+                }else{
+                  Vue.set(state, 'OldIssue', '上期期号')
+                }
+              }else{
+                Vue.set(state, 'OldIssue', state.NowIssue)
+              }
               Vue.set(state, 'NowIssue', source.record_code)
             }else{
               var code = state.lottery.LotteryCode   //当前彩种号
@@ -1342,6 +1349,30 @@
         }
       },
       statusNewest(n){
+        if ((new Date().getTime() - state.Difftime) > n.end) {
+          store.commit('lt_stopSell', 3)
+          store.commit({
+            type:'lt_setOnceLotteryResult',
+            code:this.lcode,
+            results: {
+              IssueNo:n.record_code,
+              LotteryOpen:'0,0,0',
+              OpenTime:''
+            }
+          })
+        }else{
+          console.log('正在投注')
+          //虚拟一个上期投注信息
+          store.commit({
+            type:'lt_setOnceLotteryResult',
+            code:this.lcode,
+            results: {
+              IssueNo:'测试期号',
+              LotteryOpen:'0,0,0',
+              OpenTime:''
+            }
+          })
+        }
         store.commit('lt_updateIssue',n)
         Vue.set(state.lt, 'StopTime', n.end)
       },
@@ -1359,7 +1390,7 @@
         store.commit('lt_updateIssue',n)
         Vue.set(state.lt, 'StopTime', n.end)
         this.$store.dispatch('lt_refresh')
-        layer.alert(n.end)
+        // layer.alert(n.end)
       },
       statusGameResult(n){
         store.commit('lt_updateIssue',n)
