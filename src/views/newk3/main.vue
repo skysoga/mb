@@ -201,6 +201,9 @@
         if (isNaN(time)) {
           return state.lt.TimeBar
         }
+        if (time === '') {
+          return ''
+        }
         return time+'S'
       },
       results(){
