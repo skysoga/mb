@@ -155,14 +155,6 @@
         lcode:'1407'
       }
     },
-    // computed:{
-    //   getBetShow(){
-    //     return (this.show == 'bet')
-    //   },
-    //   swiper() {
-    //     return this.$refs.mySwiper.swiper
-    //   }
-    // },
     computed:mapState({
       //header部分
       ifShowTypeSelect (){
@@ -378,18 +370,12 @@
           this.heightArr[i] += temp
         }
       },
-      touchChangeHeight(){
-        this.heightArr = []
-        this.heightArrCon = []
-        this.setHeight()
-      },
       changeShow(){
         if(document.activeElement.tagName === 'INPUT'){
           return document.activeElement.blur()
         }
         if (this.show == 'main') {
           this.show = 'bet'
-          this.changeHeight()
           return
         }
         return this.show = 'main'
@@ -399,53 +385,6 @@
         this.playtypeShow=''
         this.transition = .5
         this.slider.goToPage(witch, 0, 400)
-      },
-      // touchstart(e){
-      //   this.tempy = e.touches[0].clientX
-      // },
-      // touchmove(e){
-      //   this.moving(e)
-      //   e.preventDefault()
-      // },
-      // moving(e){
-      //   var dragWidth = 20
-      //   var newpoint = e.touches[0].clientX
-      //   // alert(`起始点：${this.tempy}，校对点：${newpoint}`)
-      //   if(this.tempy+dragWidth<newpoint){
-      //     this.movey = e.touches[0].clientX-this.tempy-this.card*this.clientWidth - dragWidth
-      //   }else if(this.tempy>newpoint+dragWidth){
-      //     this.movey = e.touches[0].clientX-this.tempy-this.card*this.clientWidth + dragWidth
-      //   }
-      //   else{
-      //     // e.preventDefault()
-      //   }
-      // },
-      // touchend(e){
-      //   this.tempy = 0
-      //   if(this.movey > -this.clientWidth * this.card + 40 && this.card > 0){
-      //     this.transition = .3
-      //     this.movey = -this.clientWidth * (this.card-1)
-      //     this.card -=1
-      //     setTimeout(()=>{
-      //       this.transition = 0
-      //     },500)
-      //   }else if(this.movey < -this.clientWidth * this.card - 40 && this.card < this.maxCard-1){
-      //     this.transition = .3
-      //     this.movey = -this.clientWidth * (this.card+1)
-      //     this.card +=1
-      //     setTimeout(()=>{
-      //       this.transition = 0
-      //     },500)
-      //   }else{
-      //     this.transition = .2
-      //     this.movey = -this.clientWidth * this.card
-      //     setTimeout(()=>{
-      //       this.transition = 0
-      //     },200)
-      //   }
-      // },
-      scrollList(e){
-        this.moving(e)
       },
       changeMode(mode){
         this.$store.commit('lt_changeMode', mode)
@@ -515,9 +454,6 @@
     },
     mounted(){
       this.setHeight()
-      setTimeout(()=>{
-        this.changeHeight()
-      },200)
 
       this._setSliderWidth()
       setTimeout(() => {
@@ -528,6 +464,7 @@
       }, 20)
       // 监听窗口大小改变时间
       window.addEventListener('resize', () => {
+        this.changeHeight()
         if (!this.slider) {
           return
         }
