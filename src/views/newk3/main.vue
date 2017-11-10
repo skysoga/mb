@@ -42,7 +42,7 @@
         <div class="slider" ref="slider">
           <div class="slider-group" ref="sliderGroup">
             <div v-for="(d,i,j) in cfg">
-              <div :ref="'wrapperCon'+j" class="betbox" :class="i" :style="{height:heightArrCon[j]?heightArrCon[j]+'px':'inherit'}">
+              <div :ref="'wrapperCon'+j" class="betbox" :class="i" :style="{height:j===0?heightArrCon[0]+'px':'inherit'}">
                 <div class="scrollCon">
                   <div class="topshadow"></div>
                   <div ref="buttonList" class="newmain">
@@ -51,7 +51,7 @@
                     </ul>
                   </div>
                   <div class="topshadow" @click="changeShow"></div>
-                  <div class="bottomshadow" :style="{height:heightArr[j]+'px'}" @click="changeShow"></div>
+                  <div class="bottomshadow" :style="{height:j===0?heightArr[0]+'px':'32em'}" @click="changeShow"></div>
                 </div>
               </div>
             </div>
@@ -328,20 +328,17 @@
         document.activeElement.blur()
       },
       setHeight(){
-        console.log('继续检测高度')
         var screenHeight = document.documentElement.clientHeight
         if (this.beforeScreenHeight == screenHeight) {
           return
         }
-        console.log('高度变化')
         this.beforeScreenHeight = screenHeight
         var footerHeight = this.$refs.footer.$el.offsetHeight
         var buttonList = document.getElementsByClassName('buttonList')
         var temp = []
         for (var i = 0; i < buttonList.length; i++) {
           var mainHeight = screenHeight - (2.3+1+1+2.5)*em - buttonList[i].offsetHeight
-          if (temp[0]<0) {
-            console.log('高度不够，需要滚动')
+          if (temp[0]<3.2*em) {
             mainHeight-=temp[0]
             var dom = document.getElementsByClassName('scrollCon')[0].offsetHeight
             this.heightArrCon[0]=dom+temp[0]
@@ -351,16 +348,14 @@
           }
           temp.push(mainHeight)
         }
-        if (temp[0]<0) {
+        if (temp[0]<3.2*em) {
           var temp0 = temp[0] *-1
           for (var i = 0; i < temp.length; i++) {
             temp[i] = temp[i]+3.2*em + temp0
           }
         }
-        // temp.unshift(temp[temp.length-1])
         this.heightArr = temp
         console.log(this.heightArr)
-        console.log('继续检测高度结束')
       },
       changeHeight(){
         var screenHeight = document.documentElement.clientHeight
