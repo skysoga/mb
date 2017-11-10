@@ -6,7 +6,7 @@ export default {
   props:["s"],
   data:()=>{
     return{
-      notApp:!window._APP&&!localStorage.getItem('isSelfApp'),
+      notApp:!window._App&&!localStorage.getItem('isSelfApp'),
       hotLottery:[],
       NologApp:''
     }

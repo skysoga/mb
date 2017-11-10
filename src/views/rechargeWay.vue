@@ -71,7 +71,7 @@
         </a>
       </div>
 
-      <div class="surperise active">
+      <div class="surperise active" v-if='!UnionMsg'>
         <a class = "wrap" @click = "setUrl(unionType,'UnionPay',UnionMsg)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/card.png'">
           <div class="text">

@@ -7,11 +7,9 @@
     beforeRouteEnter(to,from,next){
       var id = to.query.id
       localStorage.setItem('isSelfApp','1')
-      if (/^\d{8}$/.test(id)) {
-        head.appendChild(styleTag)
-        if (!localStorage.getItem('InvitationCode')) {
-          localStorage.setItem('InvitationCode',id)
-        }
+
+      if (!localStorage.getItem('InvitationCode')&&/^\d{8}$/.test(id)) {
+        localStorage.setItem('InvitationCode',id)
       }
       next(vm=>{
         // var head = document.getElementsByTagName('head')[0]
