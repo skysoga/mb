@@ -1,5 +1,5 @@
 <template>
-  <div class="newContainer" :style="{height:containerHeight}">
+  <div class="newContainer">
     <div class="video">
       <iframe ref="iframe" src="/static/video-k3.html"></iframe>
       <img src="/static/img/newk3-bg.jpg" alt="" width="100%">
@@ -26,7 +26,7 @@
         </ul>
       </div>
     </div>
-    <div :style="{opacity:getBetShow?1:0,'z-index':getBetShow?20:0,height:containerHeight}" class="betContainer">
+    <div :style="{opacity:getBetShow?1:0,'z-index':getBetShow?20:0}" class="betContainer">
       <div class="header">
         <div class="info fix">
           <div @click="changeShow" class="back"></div>
@@ -42,7 +42,7 @@
         <div class="slider" ref="slider">
           <div class="slider-group" ref="sliderGroup">
             <div v-for="(d,i,j) in cfg">
-              <div :ref="'wrapperCon'+j" class="betbox" :class="i" :style="{height:j===0?heightArrCon[0]+'px':'inherit'}">
+              <div :ref="'wrapperCon'+j" class="betbox" :class="i" :style="{height:heightArrCon+'px'}">
                 <div class="scrollCon">
                   <div class="topshadow"></div>
                   <div ref="buttonList" class="newmain">
@@ -51,7 +51,7 @@
                     </ul>
                   </div>
                   <div class="topshadow" @click="changeShow"></div>
-                  <div class="bottomshadow" :style="{height:j===0?heightArr[0]+'px':'32em'}" @click="changeShow"></div>
+                  <div class="bottomshadow" :style="{height:j===0?heightArr+'px':'32em'}" @click="changeShow"></div>
                 </div>
               </div>
             </div>
@@ -135,17 +135,10 @@
       return{
         show:'main',                                      //main:直播，bet:投注
         playtypeShow:'',                                  //玩法显示
-        tempy:0,                                          //touchstart的位置
-        movey:0,                                          //移动中的y位置
-        transition:0,                                     //左右切换面板的动画速度
-        card:0,                                           //当前处于哪一块投注面板
-        maxCard:8,                                        //最多有几块投注面板
         clientWidth:document.documentElement.clientWidth,
         beforeScreenHeight:0,                             //窗口变化前的高度
-        heightArrCon:[],                                  //投注面板容器的高度
-        heightArr:[],                                     //补缺高度数组
-        canScorll:0,                                      //投注面板是否能滚动
-        containerHeight:'auto',                           //当投注面板不能滚动时，newContainer和betContainer需要100%高度来撑起高度
+        heightArrCon:0,                                  //投注面板容器的高度
+        heightArr:0,                                     //补缺高度数组
         betshow:0,                                        //footer是否显示
         cfg:cfg,
         currentPageIndex: 0,
@@ -333,29 +326,16 @@
           return
         }
         this.beforeScreenHeight = screenHeight
-        var footerHeight = this.$refs.footer.$el.offsetHeight
-        var buttonList = document.getElementsByClassName('buttonList')
-        var temp = []
-        for (var i = 0; i < buttonList.length; i++) {
-          var mainHeight = screenHeight - (2.3+1+1+2.5)*em - buttonList[i].offsetHeight
-          if (temp[0]<3.2*em) {
-            mainHeight-=temp[0]
-            var dom = document.getElementsByClassName('scrollCon')[0].offsetHeight
-            this.heightArrCon[0]=dom+temp[0]
-          }else{
-            this.canScorll = 1
-            this.containerHeight = '100%'
-          }
-          temp.push(mainHeight)
+        var buttonListHeight = document.getElementsByClassName('buttonList')[0].offsetHeight
+
+        var mainHeight = screenHeight - (2.3+1+1+2.5)*em - buttonListHeight
+        if (mainHeight<3.2*em) {
+          this.heightArrCon=buttonListHeight+2*em+mainHeight
+          mainHeight = 3.2*em
+        }else{
+          this.heightArrCon = mainHeight+buttonListHeight+2*em
         }
-        if (temp[0]<3.2*em) {
-          var temp0 = temp[0] *-1
-          for (var i = 0; i < temp.length; i++) {
-            temp[i] = temp[i]+3.2*em + temp0
-          }
-        }
-        this.heightArr = temp
-        console.log(this.heightArr)
+        this.heightArr = mainHeight
       },
       changeHeight(){
         var screenHeight = document.documentElement.clientHeight
@@ -378,7 +358,6 @@
       toPlay(mode,witch){
         this.$store.commit('lt_changeMode', mode)
         this.playtypeShow=''
-        this.transition = .5
         this.slider.goToPage(witch, 0, 400)
       },
       changeMode(mode){
