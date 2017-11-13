@@ -94,6 +94,13 @@
               4、可以使用其他手机扫二维码进行充值，也可以将二维码保存到相册再使用QQ识别相册中的二维码进行充值，由于本二维码经常更换，充值前务必重新保存最新的二维码。<br>
               5、请务必转账后再提交订单,否则无法及时查到您的款项！
             </template>
+            <template v-if="method==='UnionPay'">
+              1、扫一扫以上二维码进行充值。<br>
+              2、请正确填写您的充值金额和姓名。<br>
+              3、姓名并非账号，请注意区分。<br>
+              4、可以使用其他手机扫二维码进行充值，也可以将二维码保存到相册再使用银联APP识别相册中的二维码进行充值，由于本二维码经常更换，充值前务必重新保存最新的二维码。<br>
+              5、请务必转账后再提交订单,否则无法及时查到您的款项！
+            </template>
             <template v-if="method==='Alipay'">
               1、请转账到以上支付宝或扫码支付。<br>
               2、若提供的是银行账号，请使用支付宝转账到银行卡的方式进行转账。<br>
@@ -109,7 +116,7 @@
           <br> 3、可以使用其他手机扫二维码进行充值，也可以将二维码保存到相册再使用{{this.$route.meta.title}}识别相册中的二维码进行充值，该二维码仅当次有效，每次充值前务必重新保存最新的二维码。
           <br>
           4、为了更准确核对您的金额，系统会随机为整数金额添加小数点。
-          </template>          
+          </template>
         </div>
       </template>
         <!-- 银行转帐Bank-->
@@ -192,7 +199,7 @@ var payTitle = {
 var payName={
   Weixin:'微信昵称',
   QQpay:'QQ昵称',
-  UnionPay:'银联昵称'
+  UnionPay:'银联姓名'
 }
 var OType=['金付卡','智汇付']//新开窗口数组
 export default {
@@ -219,12 +226,12 @@ export default {
       router.push('/notfound')
     }
     var method=to.params.ID
-    to.meta.title = payTitle[method]    
+    to.meta.title = payTitle[method]
     var rechargeWay = 'RechargeWay' + method
     //获取数据
     RootApp.GetInitData([rechargeWay], state=>{
       var json=state[rechargeWay]
-      var PayType =json&&json[0].PayType      
+      var PayType =json&&json[0].PayType
         if(typeof(QRCode)==="undefined"){
           var warn=document.createElement('script')
           warn.src='/static/public/qrcode.min.js'
@@ -251,9 +258,9 @@ export default {
                 xurl = json[0].CodeImg
               }
               vm.nowRender.CodeImg =  state.constant.ImgHost + xurl
-            }            
+            }
             vm.underMaintain = false
-            vm.Bank=json            
+            vm.Bank=json
             vm.vaConfig ||(vm.vaConfig = {})
             vm.vaConfig['Money'] || (vm.vaConfig['Money'] = [])
             var Min=json[0].MinMoney,
@@ -264,7 +271,7 @@ export default {
     //   请求结束
     })
   },
-  computed:{    
+  computed:{
     payName(){
       return payName[this.method]
     },
@@ -317,7 +324,7 @@ export default {
           Money:0,
           ID:1,
           BankCode:''
-        }      
+        }
       ajaxObj.Qort=ajax[this.method]
       var nowAjax = ajaxObj
       if(this.PayType=='一般'||this.method === 'Bank'){
@@ -377,9 +384,9 @@ export default {
           if(json.Code === 1){
             var OpenType=json.OpenType
             layer.closeAll()
-            if(newTab){
+            if(newTab||OpenType===4){
               this.QrBg=false
-              RootApp.OpenWin(json.BackUrl, newTab)
+              RootApp.OpenWin(json.BackUrl, OpenType!==4&&newTab)
               this.Money = ''
             }else if(OpenType===1){
               this.QrImg=json.BackUrl
