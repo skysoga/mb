@@ -16,6 +16,7 @@
         
       </div>
       <div class="userContent"></div>
+      <barrage class="barrage"></barrage>
       <div class="control">
         <ul class="con-btn fix">
           <li><a href="javascript:;" @click.stop="$router.go(-1)"></a></li>
@@ -65,6 +66,7 @@
 <script>
   import BScroll from 'better-scroll'
   import {addClass} from './dom'
+  import barrage from './barrage'
   import mainfooter from './footer'
   import {unique,C,mul,BaseBet,deleteCompress,PERBET} from '../../js/kit'
   import {mapState} from 'vuex'
@@ -130,6 +132,7 @@
   export default {
     components: {
       mainfooter,
+      barrage,
     },
     data:()=>{
       return{
@@ -592,11 +595,15 @@
       border: none;
     }
   }
-  .control{
+  .control,.barrage{
     position: fixed;
     width:100%;
     left: 0;
-    top:calc(100vh - 2.4em);
+    bottom:0;
+  }
+  .barrage{
+    top:initial;
+    bottom:2.8em;
   }
   .con-btn{
     height: 2.4em;
