@@ -6,6 +6,7 @@
     },
     beforeRouteEnter(to,from,next){
       var id = to.query.id
+      localStorage.setItem('isSelfApp','1')
       if (/^\d{8}$/.test(id)) {
         var head = document.getElementsByTagName('head')[0]
         var styleTag = document.createElement('style')
