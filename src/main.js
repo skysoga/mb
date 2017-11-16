@@ -357,6 +357,9 @@ window._fetch = function (data, option = {}){
         fetchArr.length=i
         break
       }else if(fetchArr[i][1]===str){
+        if(layerIndex||layerIndex=='0'){
+          layer.close(layerIndex)
+        }
         return {then:function(){
           console.log('重复发送'+str)
         }}
@@ -422,10 +425,11 @@ window._fetch = function (data, option = {}){
             H[pair[0]]=pair[1]
           }
         }
+        fetchGoal=`${H['a']}-${H['x-sec']}`
       }catch(e){
-        H={'x-sec':'I','a':'E'}
+        H={'x-sec':'E','a':'I'}
+        fetchGoal=null
       }
-      fetchGoal=`${H['a']}-${H['x-sec']}`
       // var S=(!H['a'])?null:( H['a']+(H['x-sec']?('_'+H['x-sec']):''))
       if (res.status!==200) {
         var msg = "网络错误" + res.status
@@ -618,8 +622,6 @@ window._App=(function(host){
   if(!beginWithM && !hasDAFATEST){
     return true
   }
-
-
   // host = host.split('.')
   // host = host[host.length-2]
   // if (['csz8','caishen01','caishenzhengba','app1daiasd','app2jskahs'].indexOf(host)>-1) {
@@ -647,6 +649,7 @@ window._App=(function(host){
     };
   }()
   if (_App) {
+    _App=versions.android?'android':(versions.ios?'ios':'app')//判断是安卓还是IOS
     //iosApp专用代码
     function addScript(url,fun){
       var img=document.createElement("img")
@@ -1008,6 +1011,10 @@ window.RootApp={
   },
   OpenWin:function(url, newTab){
     //app
+    if(localStorage.getItem('isSelfApp')){
+      state.URL=url
+      return
+    }
     if(YDB){
       YDB.OpenWithSafari(url)
     }else{
@@ -1450,3 +1457,48 @@ document.addEventListener('copy', function(e){
     layer.msgWarn('已将内容复制到剪切板')
   }
 })
+
+//用touchstart和touchend实现click功能，暂时没有用到，注释
+// Vue.directive('touchtab', {
+//   bind (el, binding, vnode) {
+//     var x,y
+//     function touchstart (e) {
+//       x = e.changedTouches[0].clientX
+//       y = e.changedTouches[0].clientY
+//     }
+//     function touchend (e) {
+//       var offset = 10
+//       if(e.changedTouches[0].clientX > x){
+//         if (x+offset < e.changedTouches[0].clientX) {
+//           return
+//         }
+//       }else{
+//         if (x-offset > e.changedTouches[0].clientX) {
+//           return
+//         }
+//       }
+//       if(e.changedTouches[0].clientY > y){
+//         if (y+offset < e.changedTouches[0].clientY) {
+//           return
+//         }
+//       }else{
+//         if (y-offset > e.changedTouches[0].clientY) {
+//           return
+//         }
+//       }
+//       if (binding.expression) {
+//         binding.value(e)
+//       }
+//     }
+//     el.__touchstart__ = touchstart
+//     el.__touchend__ = touchend
+//     el.addEventListener('touchstart', touchstart)
+//     el.addEventListener('touchend', touchend)
+//   },
+//   unbind (el, binding) {
+//     el.removeEventListener('touchstart', el.__touchstart__)
+//     el.removeEventListener('touchend', el.__touchend__)
+//     delete el.__touchstart__
+//     delete el.__touchend__
+//   }
+// })

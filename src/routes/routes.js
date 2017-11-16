@@ -16,7 +16,7 @@ const competition =require('../views/competition')
 const maintain = require('../views/maintain')
 const AppDownload = require('../views/AppDownload')
 const AppPackage = require('../views/AppPackage')
-const newK3 = require('../views/newk3/main')
+const lotteryPage = require('../views/lotteryPage')
 
 
 var publicRoute = [
@@ -160,14 +160,14 @@ var routes = [{
   },
   component: AppPackage
 },{
-  path: '/newk3',
-  name: '快3',
+  path: '/live/:type/:code',
+  name: '彩种',
   meta:{
-    title:"快3",
-    link:"/index",
-    hide:1
+    // title:"彩种",
+    user: true,
+    component:lotteryPage
   },
-  component: newK3
+  component: lotteryPage
 }]
 
 routes = routes.concat(lottery).concat(zhiming).concat(xiaosen).concat(publicRoute)

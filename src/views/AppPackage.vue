@@ -14,6 +14,9 @@
         if (!localStorage.getItem('InvitationCode')) {
           localStorage.setItem('InvitationCode',id)
         }
+        if(!localStorage.getItem('isSelfApp')){
+          localStorage.setItem('isSelfApp','yes')
+        }
       }
       next()
     },

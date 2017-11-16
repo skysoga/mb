@@ -1,54 +1,119 @@
 <template>
-  <div class="newContainer" :style="{height:containerHeight}">
+  <div class="newContainer">
+    <gift :activegift="activegift"></gift>
     <div class="video">
+      <iframe ref="iframe" src="/static/video-k3.html"></iframe>
       <img src="/static/img/newk3-bg.jpg" alt="" width="100%">
     </div>
     <div v-show="show == 'main'" @click="changeShow" class="mainPage">
       <div class="result">
-        <table>
-          <tr>
-            <td><span>开奖号码 3,5,6</span></td>
-            <td><span>截止 01:00:35</span></td>
-            <td><span>期号 20870808</span></td>
-          </tr>
-        </table>
-        <div class="sound" @click.stop="">
-          <em></em>
+        <div class="timebar" @click.stop="changeVideo">
+          <em v-show="/^\d/.test(TimeBar)">{{nowIssue}}投注：</em>
+          {{TimeBar}}
+        </div><br>
+        <div class="oldissue">
+          {{oldIssue}}开奖：{{results}}
         </div>
+        
       </div>
       <div class="userContent"></div>
+      <barrage class="barrage"></barrage>
+      <div class="control">
+        <ul class="con-btn fix">
+          <li><a href="javascript:;" @click.stop="$router.go(-1)"></a></li>
+          <li><a href="javascript:;"></a></li>
+          <li><a href="javascript:;" @click.stop="showHide(3)"></a></li>
+          <li><a href="javascript:;" @click.stop="activegift='boat'"></a></li>
+          <li><a href="javascript:;" @click.stop="showHide(1)"></a></li>
+        </ul>
+        <div class="hideCon" @click.stop="">
+          <div class="facetext" :class="{ined:activeHide === 1}">
+            <div class="title">
+              <div class="type">
+                <span>
+                  <em>弹</em>
+                </span>
+              </div>
+              <div class="content">
+                
+              </div>
+              <div class="btn">发送</div>
+            </div>
+            <div class="desktop">
+              
+            </div>
+          </div>
+          <div class="giving" :class="{ined:activeHide === 3}">
+            <div class="desktop">
+              <ul class="fix">
+                <li @click.stop="activegift='boat'">
+                  <em>皇家邮轮</em>
+                </li>
+                <li @click.stop="activegift='ferrari'">
+                  <em>法拉利</em>
+                </li>
+              </ul>
+            </div>
+            <div class="footer">
+              <div class="btn">发送</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div :style="{opacity:getBetShow?1:0,'z-index':getBetShow?20:0,height:containerHeight}" @touchstart="touchChangeHeight" class="betContainer">
+    <div :style="{opacity:getBetShow?1:0,'z-index':getBetShow?20:0}" class="betContainer">
       <div class="header">
         <div class="info fix">
           <div @click="changeShow" class="back"></div>
-          <div class="title" @click="playtypeShow='playtype'">和值</div>
+          <div class="title" @click.stop="playtypeShow='playtype'">{{nowModeName}}</div>
           <div class="help"></div>
         </div>
       </div>
       <div class="space"></div>
       <ul class="playtype fix" v-show="playtypeShow == 'playtype'">
-        <li v-for="(d,i) in playtype" @click="toPlay(i)"><em>{{d}}</em></li>
+        <li v-for="(d,i) in config" @click="toPlay(d,i)"><em>{{d.name}}</em></li>
       </ul>
-      <div ref="betboxContainer" class="betboxContainer fix" :class="{noscroll:canScorll}" @touchstart="touchstart" @touchmove="touchmove" @touchend="touchend" :style="{ transform: 'translate3d('+movey+'px, 0px, 0px)',transition:transition+'s',width:8*clientWidth+'px'}" v-show="playtypeShow == ''">
-        <div class="betbox" @touchmove.stop="scrollList" :class="i" v-for="(d,i,j) in cfg" :style="{width:clientWidth+'px'}">
-          <div class="topshadow"></div>
-          <div ref="buttonList" class="newmain">
-            <ul class="buttonList fix">
-              <li v-for="e in d.itemArr" :class = "{curr:chosen.indexOf(e) > -1,bgnone:e==0}"><span v-if="!(e==0)" @click="addNum(e)" class="fix"><em><i>{{e}}</i></em></span></li>
-            </ul>
+      <div class="betboxContainer" v-show="playtypeShow == ''">
+        <div class="slider" ref="slider">
+          <div class="slider-group" ref="sliderGroup">
+            <div v-for="(d,i,j) in cfg">
+              <div :ref="'wrapperCon'+j" class="betbox" :class="i" :style="{height:heightArrCon+'px'}">
+                <div class="scrollCon">
+                  <div class="topshadow"></div>
+                  <div ref="buttonList" class="newmain">
+                    <ul class="buttonList fix">
+                      <li v-for="e in d.itemArr" :class = "{curr:chosen.indexOf(e) > -1,bgnone:e==0}"><span v-if="!(e==0)"  class="fix" @click="choose(e)"><em><i>{{e}}</i></em></span></li>
+                    </ul>
+                  </div>
+                  <div class="topshadow" @click="changeShow"></div>
+                  <div class="bottomshadow" :style="{height:j===0?heightArr+'px':'32em'}" @click="changeShow"></div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="topshadow"></div>
-          <div class="bottomshadow" :style="{height:heightArr[j]+'px'}"></div>
         </div>
       </div>
-      <mainfooter ref="footer" :betshow="betshow" :chosen="chosen"></mainfooter>
+      <mainfooter ref="footer" :betshow="bet.betting_count" :chosen="chosen"></mainfooter>
     </div>
   </div>
 </template>
 <script>
+  import BScroll from 'better-scroll'
+  import {addClass} from './dom'
+  import barrage from './barrage'
   import mainfooter from './footer'
-  import { swiper, swiperSlide, swiperPlugins } from 'vue-awesome-swiper'
+  import {unique,C,mul,BaseBet,deleteCompress,PERBET} from '../../js/kit'
+  import {mapState} from 'vuex'
+  import gift from './gifts'
+  var eachLen = data=>data.map(arr=>arr.length)
+  var getBetStr = (data, mode)=>{
+    var line =  data.map(arr=>arr.join(' '))
+    if(mode === 'C10'){
+      return line.filter(str=>str).join(',')
+    }else{
+      return line.join(',')
+    }
+  }
   var cfg = {
     'A10':{
       itemArr:['大','小','单','双',3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
@@ -102,79 +167,216 @@
   export default {
     components: {
       mainfooter,
-      swiper,
-      swiperSlide
+      barrage,
+      gift,
     },
     data:()=>{
       return{
         show:'main',                                      //main:直播，bet:投注
         playtypeShow:'',                                  //玩法显示
-        tempy:0,                                          //touchstart的位置
-        movey:0,                                          //移动中的y位置
-        transition:0,                                     //左右切换面板的动画速度
-        card:0,                                           //当前处于哪一块投注面板
-        maxCard:8,                                        //最多有几块投注面板
         clientWidth:document.documentElement.clientWidth,
         beforeScreenHeight:0,                             //窗口变化前的高度
-        heightArr:[],                                     //补缺高度数组
-        canScorll:0,                                      //投注面板是否能滚动
-        containerHeight:'auto',                           //当投注面板不能滚动时，newContainer和betContainer需要100%高度来撑起高度
+        heightArrCon:0,                                  //投注面板容器的高度
+        heightArr:0,                                     //补缺高度数组
         betshow:0,                                        //footer是否显示
-        chosen:[],
         cfg:cfg,
-        playtype:['和值','三同号通选','三同号单选','三不同号','三连号通选','二同号复选','二同号单选','二不同号'],
+        currentPageIndex: 0,
+        loop:false,
+        autoPlay:false,
+        interval:4000,
+        lcode:'0101',
+        activegift:'',
+        activeHide:0,
       }
     },
-    computed:{
+    computed:mapState({
+      //header部分
+      ifShowTypeSelect (){
+        return this.$store.state.lt.box === 'typeSelect'
+      },
+      ifShowModeSelect (){
+        return this.$store.state.lt.box === 'modeSelect'
+      },
+      LotteryName: ()=>state.lt.lottery.LotteryName,
+      config:()=>state.lt.config,
+      award:()=>state.lt.award,
+      odds:()=>state.lt.Odds['K3'],
+      nowModeName:()=>state.lt.mode.name,
+      nowModeIndex:()=>cfg[state.lt.mode.mode].index,
+      //开奖结果部分
+      oldIssue(){
+        return state.lt.OldIssue
+      },
+      nowIssue(){
+        let issue = ''+state.lt.NowIssue
+        if (issue) {
+          return issue.substring(2,issue.length)
+        }
+        return '00000000'
+      },
+      // stopTime(){
+      //   var dd = new Date(state.lt.StopTime/1000)
+      //   var hour = (dd.getHours().toString().length<2)?'0'+dd.getHours():dd.getHours()
+      //   var minute = (dd.getMinutes().toString().length<2)?'0'+dd.getMinutes():dd.getMinutes()
+      //   var second = dd.getSeconds().toString().length<2?'0'+dd.getSeconds():dd.getSeconds()
+      //   return hour+':'+minute+':'+second
+      // },
+      TimeBar:()=>{
+        let time = state.lt.TimeBar
+        time = time.substring(time.length-2,time.length)
+        if (isNaN(time)) {
+          return state.lt.TimeBar
+        }
+        if (time === '') {
+          return ''
+        }
+        return time+'S'
+      },
+      results(){
+        if(state.lt.LotteryResults[this.lcode].length<1){
+          return ''
+        }
+        return state.lt.LotteryResults[this.lcode][0].LotteryOpen
+      },
+      display(){
+        console.log(state.lt.displayResults)
+        return state.lt.displayResults ? this.results : this.wait4Results
+      },
+      displayClass(){
+        return state.lt.displayResults ? 'Dice' : 'rDice'
+      },
+      ifShowPastOpen(){
+        return this.$store.state.lt.box === 'pastOpen'
+      },
+      ifShowBetRecord(){
+        return this.$store.state.lt.box === 'BetRecord'
+      },
+      pastOpen(){
+        var pastOpen = state.lt.LotteryResults[this.lcode].map(item=>{
+          var el = {}
+          el.IssueNo = item.IssueNo.length < 7 ? item.IssueNo :item.IssueNo.slice(4)        //把年份砍掉
+          var results = item.LotteryOpen.split(',')
+          el.LotteryOpen = results
+          el.sum = results.reduce((a,b)=>(+a)+(+b))
+          el.bigOrSmall = el.sum > 10 ? '大' : '小'
+          el.singleOrDouble = el.sum % 2 === 1 ? '单' : '双'
+          return el
+        })
+        return pastOpen
+      },
+      BetRecord(){
+        var Record = state.lt.BetRecord
+        if(!Record || Record.length === 0){
+          var emptyObj = {issueNo:'xxxx', normal_money:'', openState:''}
+          Record = [0,0,0].map(item=>emptyObj)
+        }
+        return Record
+      },
+      tip:()=>state.lt.mode.tip,
+      //玩法区
+      itemArr:()=>cfg[state.lt.mode.mode].itemArr,
+      mode:()=>state.lt.mode.mode,
+      award:()=>state.lt.award,
+      tipRebate(){
+        return typeof this.award === 'string' ? `赔率${this.award}倍。` : ''
+      },
+      chosen:()=>state.lt.tmp['K3']?state.lt.tmp['K3']:[],
+      bet:()=>state.lt.bet,
+      betStr:()=>state.lt.bet.betting_number,
+      betCountStr:()=>state.lt.bet.betting_number ? `共${state.lt.bet.betting_count}注`:'',
+      betMoneyStr(){
+        return (state.lt.bet.betting_money && this.showPrice)  ? `，${state.lt.bet.betting_money}元` : ''
+      },
+      basket:()=>state.lt.basket,
       getBetShow(){
         return (this.show == 'bet')
       },
       swiper() {
         return this.$refs.mySwiper.swiper
       }
-    },
+    }),
     methods:{
-      addNum(num){
-        // alert(document.body.offsetWidth+'+'+document.body.offsetHeight)
-        var where = this.chosen.indexOf(num)
-        if(where > -1){
-          delete this.chosen[where]
-          this.chosen.splice(where,1)
+      changeVideo(){
+        this.$refs.iframe.contentDocument.destroy()
+      },
+      choose(item){
+        if(!this.award)return
+        var _pos = this.chosen.indexOf(item),
+            _chosen = this.chosen.slice(0)
+
+        //如果已经存在，就删除该项
+        if(_pos > -1){
+          _chosen.splice(_pos, 1)
+          var tmp = _chosen
         }else{
-          this.chosen.push(num)
+          if(this.mode === 'G10'){
+            //如果是二同号单选
+            var firstChar = item.toString()[0]
+                ,_x = _chosen.indexOf(+firstChar)
+                ,_xx = _chosen.indexOf(+(firstChar + firstChar))
+                ,removeArr = [_x, _xx]
+
+            removeArr.forEach(pos=>{
+              if(pos > -1){
+                _chosen.splice(pos,1)
+              }
+            })
+          }
+
+          //不存在添加该项
+          _chosen.push(item)
+          //去重加排序
+          _chosen = unique(_chosen)
+          var tmp = []
+          for(var i = 0;i < this.itemArr.length;i++){
+            if(_chosen.indexOf(this.itemArr[i]) > -1){
+              tmp.push(this.itemArr[i])
+            }
+          }
         }
-        if (this.chosen.length > 0) {
-          this.betshow = 1
-        }else{
-          this.betshow = 0
-        }
+        this.$store.commit({
+          type:'lt_updateTmp',
+          alias: 'K3',
+          arr: tmp
+        })
+
+        //分行
+        var line = cfg[this.mode].line,
+            _data = []
+
+        line.forEach(lineArr=>{
+          var _l = []
+          for(var i = 0;i < lineArr.length;i++){
+            if(_chosen.indexOf(lineArr[i]) > -1){
+              _l.push(lineArr[i])
+            }
+          }
+          _data.push(_l)
+        })
+
+        console.log(cfg[this.mode])
+        var betCount = cfg[this.mode].alg(_data)
+
+        this.$store.commit('lt_setBetCount', betCount)
+        this.$store.commit('lt_setBetStr', getBetStr(_data, this.mode))
+        document.activeElement.blur()
       },
       setHeight(){
-        console.log('继续检测高度')
         var screenHeight = document.documentElement.clientHeight
         if (this.beforeScreenHeight == screenHeight) {
           return
         }
-        console.log('高度变化')
         this.beforeScreenHeight = screenHeight
-        var footerHeight = this.$refs.footer.$el.offsetHeight
-        var buttonList = document.getElementsByClassName('buttonList')
-        var temp = []
-        for (var i = 0; i < buttonList.length; i++) {
-          var mainHeight = screenHeight - (2.3+1+1+2.5)*em - buttonList[i].offsetHeight
-          if (temp[0]<0) {
-            mainHeight-=temp[0]
-          }
-          temp.push(mainHeight)
-          if(temp[0]>=0){
-            this.canScorll = 1
-            this.containerHeight = '100%'
-          }
+        var buttonListHeight = document.getElementsByClassName('buttonList')[0].offsetHeight
+
+        var mainHeight = screenHeight - (2.3+1+1+2.5)*em - buttonListHeight
+        if (mainHeight<3.2*em) {
+          this.heightArrCon=buttonListHeight+2*em+mainHeight
+          mainHeight = 3.2*em
+        }else{
+          this.heightArrCon = mainHeight+buttonListHeight+2*em
         }
-        // temp.unshift(temp[temp.length-1])
-        this.heightArr = temp
-        console.log(this.heightArr)
-        console.log('继续检测高度结束')
+        this.heightArr = mainHeight
       },
       changeHeight(){
         var screenHeight = document.documentElement.clientHeight
@@ -184,130 +386,169 @@
           this.heightArr[i] += temp
         }
       },
-      touchChangeHeight(){
-        this.changeHeight()
-      },
       changeShow(){
+        if(document.activeElement.tagName === 'INPUT'){
+          return document.activeElement.blur()
+        }
+        if (this.activeHide) {
+          return this.activeHide = 0
+        }
         if (this.show == 'main') {
           this.show = 'bet'
-          this.changeHeight()
           return
         }
         return this.show = 'main'
       },
-      toPlay(witch){
+      toPlay(mode,witch){
+        this.$store.commit('lt_changeMode', mode)
         this.playtypeShow=''
-        this.transition = .5
-        setTimeout(()=>{
-          this.movey = this.clientWidth * -witch
-          this.card = witch
-          setTimeout(()=>{
-            this.transition = 0
-          },500)
-        },20)
-        
+        this.slider.goToPage(witch, 0, 400)
       },
-      touchstart(e){
-        this.tempy = e.touches[0].clientX
+      changeMode(mode){
+        this.$store.commit('lt_changeMode', mode)
       },
-      touchmove(e){
-        this.moving(e)
-        e.preventDefault()
-      },
-      moving(e){
-        var dragWidth = 20
-        var newpoint = e.touches[0].clientX
-        // alert(`起始点：${this.tempy}，校对点：${newpoint}`)
-        if(this.tempy+dragWidth<newpoint){
-          this.movey = e.touches[0].clientX-this.tempy-this.card*this.clientWidth - dragWidth
-        }else if(this.tempy>newpoint+dragWidth){
-          this.movey = e.touches[0].clientX-this.tempy-this.card*this.clientWidth + dragWidth
+      _setSliderWidth(isResize) {
+        this.children = this.$refs.sliderGroup.children
+        let width = 0
+        // slider 可见宽度
+        let sliderWidth = this.$refs.slider.clientWidth
+        for (let i = 0; i < this.children.length; i++) {
+          let child = this.children[i]
+          // 设置每个子元素的样式及高度
+          addClass(child, 'slider-item')
+          child.style.width = sliderWidth + 'px'
+          // 计算总宽度
+          width += sliderWidth
         }
-        else{
-          // e.preventDefault()
+        // 循环播放首尾各加一个,因此总宽度还要加两倍的宽度
+        if (this.loop && !isResize) {
+          width += 2 * sliderWidth
         }
+        this.$refs.sliderGroup.style.width = width + 'px'
       },
-      touchend(e){
-        this.tempy = 0
-        if(this.movey > -this.clientWidth * this.card + 40 && this.card > 0){
-          this.transition = .3
-          this.movey = -this.clientWidth * (this.card-1)
-          this.card -=1
-          setTimeout(()=>{
-            this.transition = 0
-          },500)
-        }else if(this.movey < -this.clientWidth * this.card - 40 && this.card < this.maxCard-1){
-          this.transition = .3
-          this.movey = -this.clientWidth * (this.card+1)
-          this.card +=1
-          setTimeout(()=>{
-            this.transition = 0
-          },500)
+      _initSlider() {
+        this.slider = new BScroll(this.$refs.slider, {
+          scrollX: true,
+          scrollY: false,
+          momentum: false,
+          snap: true,
+          snapLoop: this.loop,
+          snapThreshold: 0.3,
+          snapSpeed: 400,
+          click:true,
+          bounce:false
+        })
+        // 监听滚动结束时间获取pageX
+        this.slider.on('scrollEnd', () => {
+          let pageIndex = this.slider.getCurrentPage().pageX
+          if (pageIndex !== this.currentPageIndex) {
+            this.$store.commit('lt_changeMode', this.config[pageIndex])
+          }
+          if (this.loop) {
+            // 由于bscroll循环播放首尾各加一个,因此索引-1
+            pageIndex -= 1
+          }
+          this.currentPageIndex = pageIndex
+          if (this.autoPlay) {
+            this._play()
+          }
+        })
+        this.slider.on('beforeScrollStart', () => {
+          if (this.autoPlay) {
+            clearTimeout(this.timer)
+          }
+        })
+      },
+      _play() {
+        // currentPageIndex为不含首尾副本的索引，因此若有循环要+2
+        let pageIndex = this.currentPageIndex + 1
+        if (this.loop) {
+          pageIndex += 1
+        }
+        this.timer = setTimeout(() => {
+          this.slider.goToPage(pageIndex, 0, 400)
+        }, this.interval)
+      },
+      showHide(witch){
+        if(this.activeHide){
+          this.activeHide = 0
         }else{
-          this.transition = .2
-          this.movey = -this.clientWidth * this.card
-          setTimeout(()=>{
-            this.transition = 0
-          },200)
+          this.activeHide = witch
         }
-      },
-      scrollList(e){
-        this.moving(e)
       }
     },
     mounted(){
       this.setHeight()
-      setTimeout(()=>{
+
+      this._setSliderWidth()
+      setTimeout(() => {
+        this._initSlider()
+        if (this.autoPlay) {
+          this._play()
+        }
+      }, 20)
+      // 监听窗口大小改变时间
+      window.addEventListener('resize', () => {
         this.changeHeight()
-      },200)
-    }
+        if (!this.slider) {
+          return
+        }
+        this._setSliderWidth(true)
+        this.slider.refresh()
+      })
+      console.log(this.$refs.wrapperCon0[0])
+      this.$nextTick(() => {
+        this.scroll = new BScroll(this.$refs.wrapperCon0[0], {bounce:false})
+      })
+    },
+    // 生命周期destroyed销毁清除定时器，有利于内存释放
+    destroyed() {
+      clearTimeout(this.timer)
+    },
   }
 </script>
 <style lang="scss" scoped>
-  .mainPage{
-    height:100%;
-    position:fixed;
-    top:0;
-    left:0;
-    bottom:0;
-    right:0;
-    z-index:20;
+.mainPage{
+  height:100%;
+  position:fixed;
+  top:0;
+  left:0;
+  bottom:0;
+  right:0;
+  z-index:20;
+}
+.result{
+  color:white;
+  position:relative;
+  top:.4em;
+  left: .4em;
+  span{
+    font-size:.7em;
+    display:block;
+    width:100%;
+    line-height:1.4em;
+    margin:.8em 0;
+    border-right:1px solid rgba(0,0,0,.12);
   }
-  .result{
-    color:white;
-    position:relative;
-    table{
-      width:100%;
-      text-align:center;
-      background:rgba(0, 0, 0, 0.2);
-      border-bottom:1px solid rgba(0, 0, 0, 0.12);
-
-    }
-    span{
-      font-size:.7em;
-      display:block;
-      width:100%;
-      line-height:1.4em;
-      margin:.8em 0;
-      border-right:1px solid rgba(0,0,0,.12);
-    }
+}
+.timebar,.oldissue{
+  background:rgba(0,0,0,.2);
+  display:inline-block;
+}
+.timebar{
+  font-size:.68em;
+  padding:.5em .8em;
+  border-radius: 1.4705em;
+  em{
+    display:inline;
   }
-  .sound{
-    position:absolute;
-    width:2em;
-    height:2em;
-    line-height:2em;
-    text-align:center;
-    right:.3em;
-    em{
-      display:block;
-      &:before{
-        content:'\e64b';
-        font-family:'iconfont';
-        display:block;
-      }
-    }
-  }
+}
+.oldissue{
+  margin-top:.7272em;
+  font-size:.55em;
+  padding:.35em 1.1em;
+  border-radius: 1.6666em;
+}
 
   //header样式
   .header{
@@ -388,6 +629,59 @@
     left:0;
     height:100%;
     width:100%;
+    img{
+      position:absolute;
+      top:0;
+      left:0;
+      z-index: 9;
+    }
+    iframe{
+      position: absolute;
+      z-index: 10;
+      height: 100%;
+      width: 100%;
+      border: none;
+    }
+  }
+  .control,.barrage{
+    position: fixed;
+    width:100%;
+    left: 0;
+    bottom:0;
+  }
+  .barrage{
+    top:initial;
+    bottom:2.8em;
+  }
+  .con-btn{
+    height: 2.4em;
+    padding:0 .24em;
+    li{
+      float: right;
+      a{
+        display:block;
+        width: 1.8em;
+        height: 1.8em;
+        line-height: 1.8em;
+        text-align: center;
+        background: rgba(0,0,0,0.3);
+        border-radius: 50%;
+        margin:0 .24em;
+      }
+      a:before{
+        content: '\E64B';
+        font-family: 'iconfont';
+        color:white;
+      }
+      &:first-child{
+        a:before{
+          content:'\e607';
+        }
+      }
+      &:last-child{
+        float: left;
+      }
+    }
   }
   .newContainer{
     position:relative;
@@ -407,6 +701,7 @@
   }
   .betboxContainer{
     padding-bottom:2.5em;
+    height:calc(100% - 2.3em);
   }
   .noscroll{
     position:fixed;
@@ -558,6 +853,151 @@
   .bgnone{
     &:after{
       background:rgba(0,0,0,.6) !important;
+    }
+  }
+</style>
+<style lang="scss" scoped>
+.slider-wrapper{
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.scroll{
+  height: 500px;
+}
+  .slider{
+    min-height: 1px;
+    position: relative;
+    height:100%;
+  }
+
+  .slider-group{
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    height:100%;
+  }
+
+  .slider-item{
+    float: left;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-align: center;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .slider-item a{
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    text-decoration: none;
+  }
+
+
+  .slider-item img{
+    display: block;
+    width: 100%;
+  }
+  .hideCon{
+    position:fixed;
+    top: 100%;
+    width:100%;
+    left:0;
+    >div{
+      position:absolute;
+    }
+  }
+  .facetext{
+    height:12em;
+    transition:.2s;
+    width:100%;
+    .title{
+      display:table;
+      width:100%;
+      border-bottom:1px solid #d4d4d4;
+      >div{
+      display:table-cell;
+      }
+      .type,.content,.btn{
+        height:2.4em;
+        line-height:2.4em;
+      }
+      .type{
+        width:3.4em;
+        background:#fdfdfd;
+        text-align:center;
+        position:relative;
+        span{
+          display:inline-block;
+          text-align:center;
+          background:#d1d0cc;
+          border-radius:.8em;
+          width: 2.4em;
+          height: 1.4em;
+          transform: translateY(.5em);
+          &:after{
+            content:'';
+            display:block;
+            position:absolute;
+            top:-.1em;
+            right:-.6em;
+            height:1.6em;
+            width:1px;
+            background:#d1d0cc;
+          }
+        }
+        em{
+          display: inline-block;
+          line-height: 1.5em;
+          transform: translate(-0.72em,-.9em);
+          font-size: .7em;
+          color: #b9b8b4;
+          background: #fdfdfd;
+          border-radius: 0.75em;
+          width: 1.5em;
+          height: 1.5em;
+          box-shadow: -1px 1px 4px rgba(0,0,0,.45);
+        }
+      }
+      .content{
+        background:#fdfdfd;
+      }
+      .btn{
+        width:4.25em;
+        background:#ee4a52;
+        text-align:center;
+        font-size:.8em;
+        color:white;
+      }
+    }
+    .desktop{
+      height:9.6em;
+      background:#fdfdfd;
+    }
+  }
+  .facetext.ined,.giving.ined{
+    transform:translateY(-12em);
+  }
+  .giving{
+    background:rgba(0, 0, 0, 0.5);
+    transition:.2s;
+    width:100%;
+    height:12em;
+    .desktop{
+      ul{
+        li{
+          color:white;
+          float:left;
+          width:4rem;
+          height:4.8em;
+          em{
+            display:block;
+            text-align:center;
+            font-size:.5em;
+          }
+        }
+      }
     }
   }
 </style>

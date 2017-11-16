@@ -1,3 +1,4 @@
+
 <template>
   <div class="main">
     <div class="innerWrap">
@@ -69,14 +70,31 @@
           <i class="iconfont right fr"></i>
         </a>
       </div>
-      <!-- 第四方支付 暂定名：多功能支付-->
 
       <div class="surperise active">
-        <a class = "wrap" @click = "toFourUrl(FourUrl.PayUrl||'')">
+        <a class = "wrap" @click = "setUrl(unionType,'UnionPay',UnionMsg)">
+          <img class="img" :src="imgServer + '/../system/common/bank/pay/card.png'">
+          <div class="text">
+            <strong>银联扫码</strong>
+            <p v-if="!UnionMsg">
+              单笔最低<ins>{{payLimit['UnionPay'][0]|num}}</ins>元，
+              最高<ins>{{payLimit['UnionPay'][1]|num}}</ins>元。
+            </p>
+            <p v-else>
+            {{UnionMsg}}
+            </p>
+          </div>
+          <i class="iconfont right fr"></i>
+        </a>
+      </div>
+      <!-- 第四方支付 暂定名：多功能支付-->
+
+      <div class="surperise active" v-show="FourUrl.PayUrl">
+        <a class="wrap" @click="toFourUrl()">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/fourthpay.png'">
           <div class="text">
-            <strong>多功能支付</strong>
-            <p>{{FourUrl.PayUrl&&'内含支付宝微信QQ银行等渠道'||'多功能支付维护中'}}</p>
+            <strong>{{FourUrl.PayType}}</strong>
+            <p>内含支付宝微信QQ银行等渠道</p>
           </div>
           <i class="iconfont right fr"></i>
         </a>
@@ -95,71 +113,71 @@ export default {
       wechatType: '一般',
       aliType: '一般',
       qqType: '一般',
+      unionType: '一般',
       payLimit:{},
       weixMsg:'',
       aliMsg:'',
       qqMsg:'',
-      FourUrl:{}
+      FourUrl:{},
+      UnionMsg:''
     }
   },
   beforeRouteEnter(to,from,next){
-    RootApp.AjaxGetInitData(['RechargeWayWeixin', 'RechargeWayAlipay','RechargeWayBank','RechargeWayQQpay','RechargeFourthParty'], state=>{
+    RootApp.AjaxGetInitData(['RechargeWayWeixin', 'RechargeWayAlipay','RechargeWayBank','RechargeWayQQpay','RechargeWayUnionPay','RechargeFourthParty'], state=>{
       next()
     })
   },
   created () {
     var obj={}
     if(state.RechargeWayBank&&state.RechargeWayBank[0]){
-      let arr=[],
-          json=state.RechargeWayBank[0]
-          arr.push(json.MinMoney)
-          arr.push(json.MaxMoney)
-      obj.bank=arr
+      let json=state.RechargeWayBank[0]
+      obj.bank=this.getLimit(json)
     }else{
       this.RechargeWayBank=''
       this.bankMsg="银行转账维护中..."
     }
     if(state.RechargeWayWeixin&&state.RechargeWayWeixin[0]){
-      let arr=[],
-        json=state.RechargeWayWeixin[0]
-        arr.push(json.MinMoney)
-        arr.push(json.MaxMoney)
+      let json=state.RechargeWayWeixin[0]
       this.weixMsg=false
       this.wechatType = json.PayType || '一般'
-      obj.wechat=arr
+      obj.wechat=this.getLimit(json)
     }else{
       this.wechatType=''
       this.weixMsg="微信支付维护中..."
     }
     if(state.RechargeWayAlipay&&state.RechargeWayAlipay[0]){
-      let arr=[],
-        json=state.RechargeWayAlipay[0]
-        arr.push(json.MinMoney)
-        arr.push(json.MaxMoney)
+      let json=state.RechargeWayAlipay[0]
       this.aliMsg=false
       this.aliType = json.PayType || '一般'
-      obj.alipay=arr
+      obj.alipay=this.getLimit(json)
     }else{
-      this.wechatType=''
       this.aliMsg="支付宝支付维护中..."
-      this.wechatType=''
+      this.aliType=''
     }
     if(state.RechargeWayQQpay&&state.RechargeWayQQpay[0]){
-      let arr=[],
-        json=state.RechargeWayQQpay[0]
-        arr.push(json.MinMoney)
-        arr.push(json.MaxMoney)
+      let json=state.RechargeWayQQpay[0]
       this.qqMsg=false
       this.qqType = json.PayType || '一般'
-      obj.qqpay=arr
+      obj.qqpay=this.getLimit(json)
     }else{
-      this.qqType=''
       this.qqMsg="QQ钱包维护中..."
-      this.qqType=''
+      this.qqType=""
     }
+
+    if(state.RechargeWayUnionPay&&state.RechargeWayUnionPay[0]){
+      let json=state.RechargeWayUnionPay[0]
+      this.UnionMsg=false
+      this.unionType=json.PayType||'一般'
+      obj.UnionPay=this.getLimit(json)
+    }else{
+      this.UnionMsg="银联扫码维护中..."
+      this.unionType=''
+    }
+
     if(state.RechargeFourthParty&&state.RechargeFourthParty[0]){
       this.FourUrl=state.RechargeFourthParty[0]
     }
+
     this.payLimit = obj
   },
   methods:{
@@ -167,10 +185,27 @@ export default {
       var Url= key === '一般' ? 'normalPay?method='+name : 'quickPay?method='+name
       !bool&&router.push(Url)
     },
-    toFourUrl(url){
-      if(url){
-        RootApp.OpenWin(url,_App)
+    toFourUrl(){
+      var selfapp=localStorage.getItem('isSelfApp')
+      if(!_App&&!selfapp){
+        var newtab=window.open('about:blank')
       }
+      RootApp.AjaxGetInitData(['RechargeFourthParty'], state=>{
+        var json=state.RechargeFourthParty
+        if(json&&json.length){
+          this.FourUrl=json[0]
+          RootApp.OpenWin(json[0].PayUrl,!_App&&!selfapp&&newtab)
+        }else{
+          !_App&&!selfapp&&newtab.close()
+          layer.alert(this.FourUrl.PayType+'功能已关闭')
+        }
+      })
+    },
+    getLimit(obj){
+      let arr=[]
+      arr.push(obj.MinMoney)
+      arr.push(obj.MaxMoney)
+    return arr
     }
   }
 }
@@ -178,3 +213,4 @@ export default {
 <style lang = "scss" scoped>
   @import '../scss/activity.scss';
 </style>
+
