@@ -22,10 +22,43 @@
         <ul class="con-btn fix">
           <li><a href="javascript:;" @click.stop="$router.go(-1)"></a></li>
           <li><a href="javascript:;"></a></li>
+          <li><a href="javascript:;" @click.stop="showHide(3)"></a></li>
           <li><a href="javascript:;" @click.stop="activegift='boat'"></a></li>
-          <li><a href="javascript:;"></a></li>
-          <li><a href="javascript:;"></a></li>
+          <li><a href="javascript:;" @click.stop="showHide(1)"></a></li>
         </ul>
+        <div class="hideCon" @click.stop="">
+          <div class="facetext" :class="{ined:activeHide === 1}">
+            <div class="title">
+              <div class="type">
+                <span>
+                  <em>弹</em>
+                </span>
+              </div>
+              <div class="content">
+                
+              </div>
+              <div class="btn">发送</div>
+            </div>
+            <div class="desktop">
+              
+            </div>
+          </div>
+          <div class="giving" :class="{ined:activeHide === 3}">
+            <div class="desktop">
+              <ul class="fix">
+                <li @click.stop="activegift='boat'">
+                  <em>皇家邮轮</em>
+                </li>
+                <li @click.stop="activegift='ferrari'">
+                  <em>法拉利</em>
+                </li>
+              </ul>
+            </div>
+            <div class="footer">
+              <div class="btn">发送</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div :style="{opacity:getBetShow?1:0,'z-index':getBetShow?20:0}" class="betContainer">
@@ -153,6 +186,7 @@
         interval:4000,
         lcode:'0101',
         activegift:'',
+        activeHide:0,
       }
     },
     computed:mapState({
@@ -356,6 +390,9 @@
         if(document.activeElement.tagName === 'INPUT'){
           return document.activeElement.blur()
         }
+        if (this.activeHide) {
+          return this.activeHide = 0
+        }
         if (this.show == 'main') {
           this.show = 'bet'
           return
@@ -432,6 +469,13 @@
           this.slider.goToPage(pageIndex, 0, 400)
         }, this.interval)
       },
+      showHide(witch){
+        if(this.activeHide){
+          this.activeHide = 0
+        }else{
+          this.activeHide = witch
+        }
+      }
     },
     mounted(){
       this.setHeight()
@@ -812,7 +856,7 @@
     }
   }
 </style>
-<style>
+<style lang="scss" scoped>
 .slider-wrapper{
   width: 100%;
   position: relative;
@@ -854,5 +898,106 @@
   .slider-item img{
     display: block;
     width: 100%;
+  }
+  .hideCon{
+    position:fixed;
+    top: 100%;
+    width:100%;
+    left:0;
+    >div{
+      position:absolute;
+    }
+  }
+  .facetext{
+    height:12em;
+    transition:.2s;
+    width:100%;
+    .title{
+      display:table;
+      width:100%;
+      border-bottom:1px solid #d4d4d4;
+      >div{
+      display:table-cell;
+      }
+      .type,.content,.btn{
+        height:2.4em;
+        line-height:2.4em;
+      }
+      .type{
+        width:3.4em;
+        background:#fdfdfd;
+        text-align:center;
+        position:relative;
+        span{
+          display:inline-block;
+          text-align:center;
+          background:#d1d0cc;
+          border-radius:.8em;
+          width: 2.4em;
+          height: 1.4em;
+          transform: translateY(.5em);
+          &:after{
+            content:'';
+            display:block;
+            position:absolute;
+            top:-.1em;
+            right:-.6em;
+            height:1.6em;
+            width:1px;
+            background:#d1d0cc;
+          }
+        }
+        em{
+          display: inline-block;
+          line-height: 1.5em;
+          transform: translate(-0.72em,-.9em);
+          font-size: .7em;
+          color: #b9b8b4;
+          background: #fdfdfd;
+          border-radius: 0.75em;
+          width: 1.5em;
+          height: 1.5em;
+          box-shadow: -1px 1px 4px rgba(0,0,0,.45);
+        }
+      }
+      .content{
+        background:#fdfdfd;
+      }
+      .btn{
+        width:4.25em;
+        background:#ee4a52;
+        text-align:center;
+        font-size:.8em;
+        color:white;
+      }
+    }
+    .desktop{
+      height:9.6em;
+      background:#fdfdfd;
+    }
+  }
+  .facetext.ined,.giving.ined{
+    transform:translateY(-12em);
+  }
+  .giving{
+    background:rgba(0, 0, 0, 0.5);
+    transition:.2s;
+    width:100%;
+    height:12em;
+    .desktop{
+      ul{
+        li{
+          color:white;
+          float:left;
+          width:4rem;
+          height:4.8em;
+          em{
+            display:block;
+            text-align:center;
+            font-size:.5em;
+          }
+        }
+      }
+    }
   }
 </style>

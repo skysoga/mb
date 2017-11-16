@@ -6,6 +6,10 @@
 			<div class="shadow" :style="'background: url('+imgbaseUrl+boat.url+')'"></div>
 			<div class="boatimg" :style="'background: url('+imgbaseUrl+boat.url+')'"></div>
 		</div>
+		<div class="ferrari" v-if="active === 'ferrari'">
+			<div class="car" :style="'background: url('+imgbaseUrl+ferrari.url+')'"></div>
+			<div class="wheel" :style="'background: url('+imgbaseUrl+ferrari.url+')'"></div>
+		</div>
 	</div>
 </template>
 <script>
@@ -21,6 +25,11 @@
     			url:'boat.png',
     			time:10000,
     		},
+    		ferrari:{
+    			url:'Ferrari.png',
+    			time:10000,
+    		},
+
     	}
     },
     methods:{
@@ -41,11 +50,11 @@
   			setTimeout(()=>{
 	  			this.moving = 1
   			},100)
-  			setTimeout(()=>{
-	  			this.active = ''
-	  			this.moving = 0
-	  			this.$parent.activegift = ''
-  			},this[this.activegift].time)
+  			// setTimeout(()=>{
+	  		// 	this.active = ''
+	  		// 	this.moving = 0
+	  		// 	this.$parent.activegift = ''
+  			// },this[this.activegift].time)
     	}
     },
     watch:{
@@ -70,7 +79,42 @@
 	width: 100%;
 	height: 100%;
 	bottom:0;
+	pointer-events:none;
 }
+//********** 法拉利 **********
+.ferrari-con{
+	
+}
+.ferrari{
+	position:relative;
+	>div{
+		position:absolute;
+	}
+	.car,.wheel{
+		background-size:22rem !important;
+	}
+	.car{
+    width: 41.2rem;
+    height: 14rem;
+	}
+	.wheel{
+    top: 1.9rem;
+    left: 8.5rem;
+    background-position: 4.75rem 12.82rem !important;
+    width: 3.22rem;
+    height: 3.22rem;
+    animation: ferrari-wheel 1s infinite linear;
+	}
+}
+@keyframes ferrari-wheel{
+	0%{
+		transform: rotate(360deg) scale(0.5);
+	}
+	100%{
+		transform: rotate(0deg) scale(0.5);
+	}
+}
+//********** 法拉利 end ******
 //********** 船 **********
 .boat-con{
 	height:16rem;
@@ -79,14 +123,14 @@
 	position:relative;
 	> div{
 		position:absolute;
-		background-size: 70em !important;
+		background-size: 70rem !important;
 		background-repeat:no-repeat !important;
 		transform: translate(0,0);
     transition:10s linear;
 	}
 	.sea{
-    width: 41.2em;
-    height: 14em;
+    width: 41.2rem;
+    height: 14rem;
 		background-repeat-x:repeat !important;
 	}
 	.sea1{
@@ -94,23 +138,23 @@
 	}
 	.sea2{
 		left:0;
-		top:.5em;
+		top:.5rem;
 	}
 	.boatimg,.shadow{
-		left:-16em;
-		top:-5em;
+		left:-16rem;
+		top:-5rem;
 	}
 	.boatimg{
-		width:16em;
-		height:9em;
-    background-position: -41.4em 0 !important;
+		width:16rem;
+		height:9rem;
+    background-position: -41.4rem 0 !important;
 	}
 	.shadow{
-		width:11.5em;
-		height:4.5em;
-		background-position:-58.1em 0 !important;
-    top: 2em;
-    left: -13.5em;
+		width:11.5rem;
+		height:4.5rem;
+		background-position:-58.1rem 0 !important;
+    top: 2rem;
+    left: -13.5rem;
 	}
 }
 .moving{
@@ -121,10 +165,10 @@
 	}
 	.boat{
 		.sea1{
-			transform:translate(22em,0);
+			transform:translate(22rem,0);
 		}
 		.sea2{
-			transform:translate(-22em,0);
+			transform:translate(-22rem,0);
 		}
 	}
 }
@@ -133,13 +177,13 @@
 		transform: translate(0,0);
 	}
 	30%{
-		transform: translate(13em, 6.5em);
+		transform: translate(13rem, 6.5rem);
 	}
 	70%{
-		transform: translate(17em, 8.5em);
+		transform: translate(17rem, 8.5rem);
 	}
 	100%{
-		transform: translate(32em, 14.5em);
+		transform: translate(32rem, 14.5rem);
 	}
 }
 //********** 船 end*******
