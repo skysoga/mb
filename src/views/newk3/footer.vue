@@ -16,6 +16,7 @@
 </template>
 <script>
   import {mapState} from 'vuex'
+  import {unique,C,mul,BaseBet,deleteCompress,PERBET} from '../../js/kit'
   export default {
     props:["betshow","chosen"],
     data:()=>{
@@ -69,7 +70,6 @@
               if (isNaN(checkTime)) {
                 return layer.alert('当前还没有开局')
               }
-              return layer.msgWarn('接口还未通！')
               var basebet = new BaseBet(this.$store.state)
               if(this.mode === 'A10'){
                 basebet.setRebate('180', this.$store.state)

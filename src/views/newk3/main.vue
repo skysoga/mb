@@ -1,5 +1,6 @@
 <template>
   <div class="newContainer">
+    <gift :activegift="activegift"></gift>
     <div class="video">
       <iframe ref="iframe" src="/static/video-k3.html"></iframe>
       <img src="/static/img/newk3-bg.jpg" alt="" width="100%">
@@ -21,7 +22,7 @@
         <ul class="con-btn fix">
           <li><a href="javascript:;" @click.stop="$router.go(-1)"></a></li>
           <li><a href="javascript:;"></a></li>
-          <li><a href="javascript:;"></a></li>
+          <li><a href="javascript:;" @click.stop="activegift='boat'"></a></li>
           <li><a href="javascript:;"></a></li>
           <li><a href="javascript:;"></a></li>
         </ul>
@@ -70,6 +71,7 @@
   import mainfooter from './footer'
   import {unique,C,mul,BaseBet,deleteCompress,PERBET} from '../../js/kit'
   import {mapState} from 'vuex'
+  import gift from './gifts'
   var eachLen = data=>data.map(arr=>arr.length)
   var getBetStr = (data, mode)=>{
     var line =  data.map(arr=>arr.join(' '))
@@ -133,6 +135,7 @@
     components: {
       mainfooter,
       barrage,
+      gift,
     },
     data:()=>{
       return{
@@ -148,7 +151,8 @@
         loop:false,
         autoPlay:false,
         interval:4000,
-        lcode:'1407'
+        lcode:'0101',
+        activegift:'',
       }
     },
     computed:mapState({
