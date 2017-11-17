@@ -6,7 +6,7 @@
     <LotteryK3 v-if = "ptype !== 'live' && $route.params.type === 'K3'"></LotteryK3>
 
     <Lottery6HC v-if = "$route.params.type === '6HC'"></Lottery6HC>
-    <NewK3 v-if = "ptype === 'live' && !isSleep"></NewK3>
+    <NewK3 v-if = "ptype === 'live' && !isSleep" :lcode="lcode"></NewK3>
     <sleeping v-if = "ptype === 'live' && isSleep"></sleeping>
   </div>
 </template>
@@ -1346,32 +1346,25 @@
           case 'GameStatus':this.statusGameStatus(json.result);break;
           case 'NewGame':this.statusNewGame(json.result);break;
           case 'GameResult':this.statusGameResult(json.result);break;
+          case 'Previous':this.statusPrevious(json.result);break;
         }
       },
       statusNewest(n){
         if ((new Date().getTime() - state.Difftime) > n.end) {
           store.commit('lt_stopSell', 3)
-          store.commit({
-            type:'lt_setOnceLotteryResult',
-            code:this.lcode,
-            results: {
-              IssueNo:n.record_code,
-              LotteryOpen:'0,0,0',
-              OpenTime:''
-            }
-          })
+          if (n.record_result) {
+            store.commit({
+              type:'lt_setOnceLotteryResult',
+              code:this.lcode,
+              results: {
+                IssueNo:n.record_code,
+                LotteryOpen:this.formatResult(n.record_result),
+                OpenTime:''
+              }
+            }) 
+          }
         }else{
           console.log('正在投注')
-          //虚拟一个上期投注信息
-          store.commit({
-            type:'lt_setOnceLotteryResult',
-            code:this.lcode,
-            results: {
-              IssueNo:'测试期号',
-              LotteryOpen:'0,0,0',
-              OpenTime:''
-            }
-          })
         }
         store.commit('lt_updateIssue',n)
         Vue.set(state.lt, 'StopTime', n.end)
@@ -1395,23 +1388,37 @@
       statusGameResult(n){
         store.commit('lt_updateIssue',n)
         Vue.set(state.lt.WS, 'openNum', n.record_result)
-        let newresult = ''
-        for (var i = 0; i < n.record_result.length; i++) {
-          newresult +=n.record_result[i]+','
-        }
-        newresult = newresult.substring(0,newresult.length-1)
         store.commit({
           type:'lt_setOnceLotteryResult',
           code:this.lcode,
           results: {
             IssueNo:n.record_code,
-            LotteryOpen:newresult,
+            LotteryOpen:this.formatResult(n.record_result),
             OpenTime:''
           }
         })
         store.commit('lt_displayResults', false)
         store.commit('lt_stopSell', 3)
         console.log('watch:已开奖')
+      },
+      statusPrevious(n){
+
+        store.commit({
+          type:'lt_setOnceLotteryResult',
+          code:this.lcode,
+          results: {
+            IssueNo:n.record_code,
+            LotteryOpen:this.formatResult(n.record_result),
+            OpenTime:''
+          }
+        })
+      },
+      formatResult(n){
+        let newresult = ''
+        for (var i = 0; i < n.length; i++) {
+          newresult +=n[i]+','
+        }
+        return newresult = newresult.substring(0,newresult.length-1)
       }
 		},
 		watch:{

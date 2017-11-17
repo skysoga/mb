@@ -1,11 +1,15 @@
 <template>
 	<div class="gifts" :class="{moving,[active+'-con']:active}" v-if="active !== ''">
+		<!-- ===== 船 boat ===== -->
 		<div class="boat" v-if="active === 'boat'">
 			<div class="sea sea1" :style="'background: url('+imgbaseUrl+boat.url+')'"></div>
 			<div class="sea sea2" :style="'background: url('+imgbaseUrl+boat.url+')'"></div>
 			<div class="shadow" :style="'background: url('+imgbaseUrl+boat.url+')'"></div>
 			<div class="boatimg" :style="'background: url('+imgbaseUrl+boat.url+')'"></div>
 		</div>
+		<!-- ===== 船 boat ===== -->
+
+		<!-- ===== 法拉利 ferrari ===== -->
 		<div class="ferrari" v-if="active === 'ferrari'">
 			<div class="car-con">
 				<div class="relative">
@@ -17,6 +21,7 @@
 				</div>
 			</div>
 		</div>
+		<!-- ===== 法拉利 ferrari ===== -->
 	</div>
 </template>
 <script>
@@ -88,7 +93,7 @@
 	bottom:0;
 	pointer-events:none;
 }
-//********** 法拉利 **********
+//========== 法拉利 ==========
 .ferrari-con{
 	height: 16rem;
 }
@@ -153,8 +158,9 @@
 		transform:translate(-16rem,8rem);
 	}
 }
-//********** 法拉利 end ******
-//********** 船 **********
+//========== 法拉利 end ======
+
+//========== 船 ==========
 .boat-con{
 	height:16rem;
 }
@@ -225,5 +231,5 @@
 		transform: translate(32rem, 14.5rem);
 	}
 }
-//********** 船 end*******
+//========== 船 end ======
 </style>
