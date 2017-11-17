@@ -29,7 +29,7 @@
         <div class="hideCon" @click.stop="">
           <div class="facetext" :class="{ined:activeHide === 1}">
             <div class="title">
-              <div class="type">
+              <div class="type" :class="{text:faceortext,face:!faceortext}" @click.stop="faceortext = !faceortext">
                 <span>
                   <em>弹</em>
                 </span>
@@ -40,7 +40,7 @@
               <div class="btn">发送</div>
             </div>
             <div class="desktop">
-              <div ref="face" class="facetext-face">
+              <div ref="face" class="facetext-face" v-show="faceortext">
                 <ul class="fix">
                   <li>😀</li>
                   <li>😁</li>
@@ -80,8 +80,21 @@
                   <li>😰</li>
                 </ul>
               </div>
-              <div class="text">
-                
+              <div ref="text" class="facetext-text" v-show="!faceortext">
+                <ul class="fix">
+                  <li><em>双手给主播点赞666+</em></li>
+                  <li><em>弹幕来护体</em></li>
+                  <li><em>希望有好运气！！！</em></li>
+                  <li><em>我只是围观群众</em></li>
+                  <li><em>新鲜、会玩666</em></li>
+                  <li><em>哈，今天中奖了！</em></li>
+                  <li><em>双手给主播点赞666+</em></li>
+                  <li><em>弹幕来护体</em></li>
+                  <li><em>希望有好运气！！！</em></li>
+                  <li><em>我只是围观群众</em></li>
+                  <li><em>新鲜、会玩666</em></li>
+                  <li><em>哈，今天中奖了！</em></li>
+                </ul>
               </div>
             </div>
           </div>
@@ -248,6 +261,8 @@
         activegift:'',
         activeHide:0,
         face:null,
+        text:null,
+        faceortext:true //默认表情true
       }
     },
     computed:mapState({
@@ -562,6 +577,7 @@
         this.scroll = new BScroll(this.$refs.wrapperCon0[0], {bounce:false})
 
         this.face = new BScroll(this.$refs.face)
+        this.text = new BScroll(this.$refs.text)
       })
     },
     // 生命周期destroyed销毁清除定时器，有利于内存释放
@@ -1068,18 +1084,46 @@
       background:#fdfdfd;
     }
   }
-  .facetext-face{
+  .facetext-face,.facetext-text{
     height:100%;
     overflow: hidden;
     ul{
       padding:.3em .5em;
       li{
         float:left;
+      }
+    }
+  }
+  .facetext-face{
+    ul{
+      li{
         width:14.2857%;
         text-align:center;
         font-size:1.4em;
         height: 1.4em;
         line-height: 1.4em;
+      }
+    }
+  }
+  .facetext-text{
+    ul{
+      li{
+        width:50%;
+        white-space:nowrap;
+        text-overflow:ellipsis;
+        overflow: hidden;
+        margin:.2em 0;
+        em{
+          font-size:.7em;
+          background:#f0f0f0;
+          color:#666;
+          display: inline-block;
+          border-radius: 1em;
+          padding:.2em .7em;
+          &:active{
+            color:#ee575d;
+          }
+        }
       }
     }
   }
