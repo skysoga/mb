@@ -558,6 +558,18 @@
     top:0;
     left:0;
     width:100%;
+    .back:before,.help:before{
+      font-family:'iconfont';
+      color:rgba(255, 255, 255, 0.3);
+      display:block;
+      text-align:center;
+    }
+    .back:before{
+      content:'\e614';
+    }
+    .help:before{
+      content:'\e613';
+    }
   }
   .info{
     background: rgba(0, 0, 0, 0.6);
@@ -576,18 +588,6 @@
       width:70%;
       text-align:center;
     }
-  }
-  .back:before,.help:before{
-    font-family:'iconfont';
-    color:rgba(255, 255, 255, 0.3);
-    display:block;
-    text-align:center;
-  }
-  .back:before{
-    content:'\e64b';
-  }
-  .help:before{
-    content:'\e64b';
   }
   //header样式结束
 
