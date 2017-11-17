@@ -342,11 +342,7 @@
             var ptype = state.ptype
             if (ptype === 'live') {
               if (state.NowIssue === '') {
-                if(state.TimeBar === '等待开局'){
                   Vue.set(state, 'OldIssue', source.record_code)
-                }else{
-                  Vue.set(state, 'OldIssue', '上期期号')
-                }
               }else{
                 Vue.set(state, 'OldIssue', state.NowIssue)
               }

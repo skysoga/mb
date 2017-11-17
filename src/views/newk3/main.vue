@@ -40,7 +40,49 @@
               <div class="btn">发送</div>
             </div>
             <div class="desktop">
-              
+              <div ref="face" class="facetext-face">
+                <ul class="fix">
+                  <li>😀</li>
+                  <li>😁</li>
+                  <li>😂</li>
+                  <li>😄</li>
+                  <li>😅</li>
+                  <li>😆</li>
+                  <li>😇</li>
+                  <li>😉</li>
+                  <li>😊</li>
+                  <li>😋</li>
+                  <li>😌</li>
+                  <li>😍</li>
+                  <li>😘</li>
+                  <li>😙</li>
+                  <li>😜</li>
+                  <li>😝</li>
+                  <li>😎</li>
+                  <li>😏</li>
+                  <li>😶</li>
+                  <li>😑</li>
+                  <li>😒</li>
+                  <li>😳</li>
+                  <li>😞</li>
+                  <li>😟</li>
+                  <li>😠</li>
+                  <li>😡</li>
+                  <li>😔</li>
+                  <li>😕</li>
+                  <li>😣</li>
+                  <li>😖</li>
+                  <li>😫</li>
+                  <li>😤</li>
+                  <li>😮</li>
+                  <li>😱</li>
+                  <li>😨</li>
+                  <li>😰</li>
+                </ul>
+              </div>
+              <div class="text">
+                
+              </div>
             </div>
           </div>
           <div class="giving" :class="{ined:activeHide === 3}">
@@ -205,6 +247,7 @@
         interval:4000,
         activegift:'',
         activeHide:0,
+        face:null,
       }
     },
     computed:mapState({
@@ -517,6 +560,8 @@
       console.log(this.$refs.wrapperCon0[0])
       this.$nextTick(() => {
         this.scroll = new BScroll(this.$refs.wrapperCon0[0], {bounce:false})
+
+        this.face = new BScroll(this.$refs.face)
       })
     },
     // 生命周期destroyed销毁清除定时器，有利于内存释放
@@ -1021,6 +1066,21 @@
     .desktop{
       height:9.6em;
       background:#fdfdfd;
+    }
+  }
+  .facetext-face{
+    height:100%;
+    overflow: hidden;
+    ul{
+      padding:.3em .5em;
+      li{
+        float:left;
+        width:14.2857%;
+        text-align:center;
+        font-size:1.4em;
+        height: 1.4em;
+        line-height: 1.4em;
+      }
     }
   }
   .facetext.ined,.giving.ined{
