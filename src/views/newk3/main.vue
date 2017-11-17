@@ -29,13 +29,16 @@
         <div class="hideCon" @click.stop="">
           <div class="facetext" :class="{ined:activeHide === 1}">
             <div class="title">
-              <div class="type" :class="{text:faceortext,face:!faceortext}" @click.stop="faceortext = !faceortext">
+              <div class="type">
                 <span>
                   <em>弹</em>
                 </span>
               </div>
               <div class="content">
-                
+                <div class="testing" contenteditable="true"></div>
+                <div class="faceortext" :class="{text:faceortext,face:!faceortext}" @click.stop="faceortext = !faceortext">
+                  切换
+                </div>
               </div>
               <div class="btn">发送</div>
             </div>
@@ -80,7 +83,7 @@
                   <li>😰</li>
                 </ul>
               </div>
-              <div ref="text" class="facetext-text" v-show="!faceortext">
+              <div ref="text" class="facetext-text">
                 <ul class="fix">
                   <li><em>双手给主播点赞666+</em></li>
                   <li><em>弹幕来护体</em></li>
@@ -1049,7 +1052,7 @@
             display:block;
             position:absolute;
             top:-.1em;
-            right:-.6em;
+            right:-.5em;
             height:1.6em;
             width:1px;
             background:#d1d0cc;
@@ -1070,6 +1073,25 @@
       }
       .content{
         background:#fdfdfd;
+        position:relative;
+      }
+      .testing{
+        position:absolute;
+        width:calc(100% - 3em);
+        padding:.3em .4em;
+        font-size:.7em;
+        height:3.4285em;
+        overflow: auto;
+        line-height: 1.5em;
+        -webkit-user-select: auto;
+        user-select: auto;
+        padding-top:1em;
+        outline: none;
+      }
+      .faceortext{
+        position:absolute;
+        top:0;
+        right:0;
       }
       .btn{
         width:4.25em;
