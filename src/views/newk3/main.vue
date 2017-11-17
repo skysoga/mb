@@ -20,11 +20,11 @@
       <barrage class="barrage"></barrage>
       <div class="control">
         <ul class="con-btn fix">
-          <li><a href="javascript:;" @click.stop="$router.go(-1)"></a></li>
-          <li><a href="javascript:;"></a></li>
-          <li><a href="javascript:;" @click.stop="showHide(3)"></a></li>
-          <li><a href="javascript:;" @click.stop="activegift='boat'"></a></li>
-          <li><a href="javascript:;" @click.stop="showHide(1)"></a></li>
+          <li><a class="back" href="javascript:;" @click.stop="$router.go(-1)"></a></li>
+          <li><a class="sound" href="javascript:;"></a></li>
+          <li><a class="gift" href="javascript:;" @click.stop="showHide(3)"></a></li>
+          <li><a class="anchor" href="javascript:;" @click.stop="activegift='boat'"></a></li>
+          <li><a class="facetext" href="javascript:;" @click.stop="showHide(1)"></a></li>
         </ul>
         <div class="hideCon" @click.stop="">
           <div class="facetext" :class="{ined:activeHide === 1}">
@@ -669,9 +669,38 @@
         margin:0 .24em;
       }
       a:before{
-        content: '\E64B';
+        display: block;
         font-family: 'iconfont';
         color:white;
+        font-size:.85em;
+        transform:translateY(1px);
+      }
+      .back{
+        &:before{
+          content:'\e60c';
+          transform:translateY(1px) scale(.9);
+        }
+      }
+      .sound{
+        &:before{
+          content:'\e60f';
+        }
+      }
+      .gift{
+        &:before{
+          content:'\e612';
+        }
+      }
+      .anchor{
+        &:before{
+          content:'\e611';
+          transform:translateY(1px) scale(1.1);
+        }
+      }
+      .facetext{
+        &:before{
+          content:'\e60d';
+        }
       }
       &:first-child{
         a:before{
