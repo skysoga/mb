@@ -1,5 +1,5 @@
 <template>
-	<div class="gifts" :class="{moving,[active+'-con']:active}">
+	<div class="gifts" v-if="giftArr[0] !== ''">
 		<boat 		v-if="giftArr[0] === 'boat'"			></boat>
 		<ferrari  v-if="giftArr[0] === 'ferrari'"		></ferrari>
 		<airplane v-if="giftArr[0] === 'airplane'"	></airplane>

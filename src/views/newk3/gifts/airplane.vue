@@ -10,7 +10,7 @@
     	return {
     		moving:0,
   			url:'airplane.png',
-  			time:10000000,
+  			time:10000,
     	}
     },
     created(){
