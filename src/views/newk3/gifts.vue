@@ -1,22 +1,26 @@
 <template>
 	<div class="gifts" :class="{moving,[active+'-con']:active}">
-		<boat v-if="activegift === 'boat'"></boat>
-		<ferrari v-if="activegift === 'ferrari'"></ferrari>
+		<boat 		v-if="giftArr[0] === 'boat'"			></boat>
+		<ferrari  v-if="giftArr[0] === 'ferrari'"		></ferrari>
+		<airplane v-if="giftArr[0] === 'airplane'"	></airplane>
 	</div>
 </template>
 <script>
   import boat 			from './gifts/boat'
   import ferrari  	from './gifts/ferrari'
+  import airplane  	from './gifts/airplane'
   export default {
     components: {
       boat,
       ferrari,
+      airplane,
     },
   	props:['activegift'],
     data:()=>{
     	return {
 	  		imgbaseUrl:'/static/img/gifts/',
 	  		imgDom:null,
+	  		giftArr:[],
     	}
     },
     methods:{
@@ -44,8 +48,17 @@
     		that.moving = 1
   			setTimeout(()=>{
 	  			that.moving = 0
-	  			this.$parent.activegift = ''
+	  			this.giftArr.splice(0,1)
   			},that.time)
+    	}
+    },
+    watch:{
+    	'activegift'(n){
+    		if (n === '') {
+    			return
+    		}
+    		this.giftArr.push(n)
+        this.$parent.activegift = ''
     	}
     }
   }

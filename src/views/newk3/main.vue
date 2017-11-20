@@ -110,8 +110,8 @@
                 <li @click.stop="activegift='ferrari'">
                   <em>法拉利</em>
                 </li>
-                <li @click.stop="activegift='boat'">
-                  <em>皇家邮轮</em>
+                <li @click.stop="activegift='airplane'">
+                  <em>飞机</em>
                 </li>
                 <li @click.stop="activegift='ferrari'">
                   <em>法拉利</em>
