@@ -14,10 +14,9 @@
         <div class="oldissue">
           {{oldIssue}}开奖：{{results}}
         </div>
-        
       </div>
       <div class="userContent"></div>
-      <barrage class="barrage"></barrage>
+      <barrage class="barrage" v-if="barrageIsOpen"></barrage>
       <div class="control">
         <ul class="con-btn fix">
           <li><a class="back" href="javascript:;" @click.stop="$router.go(-1)"></a></li>
@@ -30,7 +29,7 @@
           <div class="facetext" :class="{ined:activeHide === 1}">
             <div class="title">
               <div class="type">
-                <span>
+                <span @click="barrageIsOpen = !barrageIsOpen" :class="{open:barrageIsOpen}">
                   <em>弹</em>
                 </span>
               </div>
@@ -265,7 +264,8 @@
         activeHide:0,
         face:null,
         text:null,
-        faceortext:true //默认表情true
+        faceortext:true,                   //默认表情true
+        barrageIsOpen:true,                //但是是否开启
       }
     },
     computed:mapState({
@@ -1047,6 +1047,7 @@
           width: 2.4em;
           height: 1.4em;
           transform: translateY(.5em);
+          transition: .2s;
           &:after{
             content:'';
             display:block;
@@ -1058,7 +1059,15 @@
             background:#d1d0cc;
           }
         }
+        span.open{
+          background:#ef4b52;
+          em{
+            transform:translate(0.7em, -0.9em);
+            color:#ef4b52;
+          }
+        }
         em{
+          transition: .2s;
           display: inline-block;
           line-height: 1.5em;
           transform: translate(-0.72em,-.9em);
