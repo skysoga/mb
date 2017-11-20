@@ -6,6 +6,7 @@ export default {
   props:["s"],
   data:()=>{
     return{
+      notApp:!window._App&&!localStorage.getItem('isSelfApp'),
       hotLottery:[],
       NologApp:''
     }
@@ -82,8 +83,7 @@ export default {
     LotteryHot:'LotteryHot',
 		LotteryList:'LotteryList',
     nowDisplayList(){
-
-        var hotLottery = this.setDataHot()
+      var hotLottery = this.setDataHot()
       // 如果后台数据错误就返回默认的数组，如果热门超过11个，那么返回前11个
       if(Array.isArray(hotLottery) && hotLottery.length){
         if(hotLottery.length > 11){

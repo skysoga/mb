@@ -354,7 +354,7 @@ export default {
         if(json.Code === 1){
           var OpenType=json.OpenType
           layer.closeAll()
-          if(newTab){
+          if(newTab||OpenType===4){
             this.QrBg=false
             RootApp.OpenWin(json.BackUrl, newTab)
             this.Money = ''

@@ -186,17 +186,14 @@ export default {
       !bool&&router.push(Url)
     },
     toFourUrl(){
-      var selfapp=localStorage.getItem('isSelfApp')
-      if(!_App&&!selfapp){
-        var newtab=window.open('about:blank')
-      }
+      var newtab=!_App&&!localStorage.getItem('isSelfApp')&&window.open('about:blank')
       RootApp.AjaxGetInitData(['RechargeFourthParty'], state=>{
         var json=state.RechargeFourthParty
         if(json&&json.length){
           this.FourUrl=json[0]
-          RootApp.OpenWin(json[0].PayUrl,!_App&&!selfapp&&newtab)
+          RootApp.OpenWin(json[0].PayUrl,newtab)
         }else{
-          !_App&&!selfapp&&newtab.close()
+          newtab&&newtab.close()
           layer.alert(this.FourUrl.PayType+'功能已关闭')
         }
       })
