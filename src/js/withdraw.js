@@ -43,6 +43,11 @@ export default{
       }
     }
   },
+  computed:{
+    'WithdrawText':()=>{
+      return state.AgentRebate?'中奖所得奖金+代理返点':'中奖所得奖金'
+    }
+  },
   beforeRouteEnter(to,from,next){
     var bArr=["UserHasSafePwd","UserFirstCardInfo"]
     RootApp.GetInitData(bArr,ref=>{
