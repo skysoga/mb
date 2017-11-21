@@ -22,7 +22,7 @@
           <li><a class="back" href="javascript:;" @click.stop="$router.go(-1)"></a></li>
           <li><a class="sound" href="javascript:;"></a></li>
           <li><a class="gift" href="javascript:;" @click.stop="showHide(3)"></a></li>
-          <li><a class="anchor" href="javascript:;" @click.stop="activegift='boat'"></a></li>
+          <li><a class="anchor" href="javascript:;" @click.stop="giftPush('boat')"></a></li>
           <li><a class="facetext" href="javascript:;" @click.stop="showHide(1)"></a></li>
         </ul>
         <div class="hideCon" @click.stop="">
@@ -103,28 +103,28 @@
           <div class="giving" :class="{ined:activeHide === 3}">
             <div class="desktop">
               <ul class="fix">
-                <li @click.stop="activegift='boat'">
+                <li @click.stop="giftPush('boat')">
                   <em>皇家邮轮</em>
                 </li>
-                <li @click.stop="activegift='ferrari'">
+                <li @click.stop="giftPush('ferrari')">
                   <em>法拉利</em>
                 </li>
-                <li @click.stop="activegift='airplane'">
+                <li @click.stop="giftPush('airplane')">
                   <em>飞机</em>
                 </li>
-                <li @click.stop="activegift='ferrari'">
+                <li @click.stop="giftPush('ferrari')">
                   <em>法拉利</em>
                 </li>
-                <li @click.stop="activegift='boat'">
+                <li @click.stop="giftPush('boat')">
                   <em>皇家邮轮</em>
                 </li>
-                <li @click.stop="activegift='ferrari'">
+                <li @click.stop="giftPush('ferrari')">
                   <em>法拉利</em>
                 </li>
-                <li @click.stop="activegift='boat'">
+                <li @click.stop="giftPush('boat')">
                   <em>皇家邮轮</em>
                 </li>
-                <li @click.stop="activegift='ferrari'">
+                <li @click.stop="giftPush('ferrari')">
                   <em>法拉利</em>
                 </li>
               </ul>
@@ -260,7 +260,7 @@
         loop:false,
         autoPlay:false,
         interval:4000,
-        activegift:'',
+        activegift:null,
         activeHide:0,
         face:null,
         text:null,
@@ -553,6 +553,13 @@
           this.activeHide = 0
         }else{
           this.activeHide = witch
+        }
+      },
+      giftPush(giftType){
+        this.activegift = {
+          type:giftType,
+          name:'大锤',
+          img:'static/img/gifts/Ferrari.png',
         }
       }
     },
@@ -1108,6 +1115,9 @@
         text-align:center;
         font-size:.8em;
         color:white;
+        &:active{
+          background:red;
+        }
       }
     }
     .desktop{

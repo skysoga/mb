@@ -1,8 +1,8 @@
 <template>
-	<div class="gifts" v-if="giftArr[0] !== ''">
-		<boat 		v-if="giftArr[0] === 'boat'"			></boat>
-		<ferrari  v-if="giftArr[0] === 'ferrari'"		></ferrari>
-		<airplane v-if="giftArr[0] === 'airplane'"	></airplane>
+	<div class="gifts" v-if="giftArr.length > 0">
+		<boat 		v-if="giftArr[0].type === 'boat'"			></boat>
+		<ferrari  v-if="giftArr[0].type === 'ferrari'"		></ferrari>
+		<airplane v-if="giftArr[0].type === 'airplane'"	></airplane>
 	</div>
 </template>
 <script>
@@ -48,7 +48,10 @@
     		that.moving = 1
   			setTimeout(()=>{
 	  			that.moving = 0
-	  			this.giftArr.splice(0,1)
+          this.giftArr[0].type = 0
+          setTimeout(()=>{
+            this.giftArr.splice(0,1)
+          },100)
   			},that.time)
     	}
     },

@@ -31,6 +31,7 @@
 }
 .car-con{
   animation: ferrari-car 5s linear;
+	transform:translate(16rem,0rem);
 	.relative{
 		position:relative;
 	}
@@ -58,6 +59,7 @@
     width: 3.1rem;
     height: 3.1rem;
     animation: ferrari-wheel .8s infinite linear;
+		transform: rotate(360deg) scale(0.56);
 	}
 	.light{
 		position:absolute;
