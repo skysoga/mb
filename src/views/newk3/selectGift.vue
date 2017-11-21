@@ -47,6 +47,7 @@
 			send(){
 				this.$parent.giftPush(this.active)
 				this.active = null
+				this.$parent.activeHide = 0
 			},
 		}
 	}

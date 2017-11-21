@@ -7,8 +7,8 @@
         </span>
       </div>
       <div class="content">
-        <div class="testing" contenteditable="true"></div>
-        <div class="faceortext" :class="{text:faceortext,face:!faceortext}" @click.stop="faceortext = !faceortext">
+        <div class="testing" contenteditable="true" v-html="defaultContent" ref="content"></div>
+        <div class="faceortext" :class="{text:faceortext,face:!faceortext}" @click.stop="changeFaceText">
           切换
         </div>
       </div>
@@ -17,58 +17,12 @@
     <div class="desktop">
       <div ref="face" class="facetext-face" v-show="faceortext">
         <ul class="fix">
-          <li>😀</li>
-          <li>😁</li>
-          <li>😂</li>
-          <li>😄</li>
-          <li>😅</li>
-          <li>😆</li>
-          <li>😇</li>
-          <li>😉</li>
-          <li>😊</li>
-          <li>😋</li>
-          <li>😌</li>
-          <li>😍</li>
-          <li>😘</li>
-          <li>😙</li>
-          <li>😜</li>
-          <li>😝</li>
-          <li>😎</li>
-          <li>😏</li>
-          <li>😶</li>
-          <li>😑</li>
-          <li>😒</li>
-          <li>😳</li>
-          <li>😞</li>
-          <li>😟</li>
-          <li>😠</li>
-          <li>😡</li>
-          <li>😔</li>
-          <li>😕</li>
-          <li>😣</li>
-          <li>😖</li>
-          <li>😫</li>
-          <li>😤</li>
-          <li>😮</li>
-          <li>😱</li>
-          <li>😨</li>
-          <li>😰</li>
+          <li v-for="d in faceData" @click.stop="pushContent(d,0)">{{d}}</li>
         </ul>
       </div>
       <div ref="text" class="facetext-text">
         <ul class="fix">
-          <li><em>双手给主播点赞666+</em></li>
-          <li><em>弹幕来护体</em></li>
-          <li><em>希望有好运气！！！</em></li>
-          <li><em>我只是围观群众</em></li>
-          <li><em>新鲜、会玩666</em></li>
-          <li><em>哈，今天中奖了！</em></li>
-          <li><em>双手给主播点赞666+</em></li>
-          <li><em>弹幕来护体</em></li>
-          <li><em>希望有好运气！！！</em></li>
-          <li><em>我只是围观群众</em></li>
-          <li><em>新鲜、会玩666</em></li>
-          <li><em>哈，今天中奖了！</em></li>
+          <li v-for="d in textData" @click.stop="pushContent(d,1)"><em>{{d}}</em></li>
         </ul>
       </div>
     </div>
@@ -82,13 +36,40 @@
 				face:null,
 				text:null,
         faceortext:true,                   //默认表情true
+        faceData:['😀','😁','😂','😄','😅','😆','😇','😉','😊','😋','😌','😍','😘','😙','😜','😝','😎','😏','😶','😑','😒','😳','😞','😟','😠','😡','😔','😕','😣','😖','😫','😤','😮','😱','😨','😰'],
+        textData:[
+          '双手给主播点赞666+',
+          '弹幕来护体',
+          '希望有好运气！！！',
+          '我只是围观群众',
+          '新鲜、会玩666',
+          '哈，今天中奖了！',
+          '双手给主播点赞666+',
+          '弹幕来护体',
+          '希望有好运气！！！',
+          '我只是围观群众',
+          '新鲜、会玩666',
+          '哈，今天中奖了！',
+        ],
+        content:'',
 			}
 		},
 		mounted(){
-      this.face = new BScroll(this.$refs.face)
-      this.text = new BScroll(this.$refs.text)
+      this.face = new BScroll(this.$refs.face,{click:true})
+      this.text = new BScroll(this.$refs.text,{click:true})
 		},
 		methods:{
+			pushContent(msg,type){
+				if (!type) {
+					this.$refs.content.innerHTML += msg
+				}else{
+					this.$refs.content.innerHTML = msg
+				}
+			},
+			changeFaceText(){
+				this.faceortext = !this.faceortext
+				this.$refs.content.innerHTML = ''
+			},
 			select(v){
 				this.active = v
 			},
