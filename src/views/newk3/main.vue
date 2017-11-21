@@ -22,117 +22,12 @@
           <li><a class="back" href="javascript:;" @click.stop="$router.go(-1)"></a></li>
           <li><a class="sound" href="javascript:;"></a></li>
           <li><a class="gift" href="javascript:;" @click.stop="showHide(3)"></a></li>
-          <li><a class="anchor" href="javascript:;" @click.stop="giftPush('boat')"></a></li>
+          <li><a class="anchor" href="javascript:;" @click.stop=""></a></li>
           <li><a class="facetext" href="javascript:;" @click.stop="showHide(1)"></a></li>
         </ul>
         <div class="hideCon" @click.stop="">
-          <div class="facetext" :class="{ined:activeHide === 1}">
-            <div class="title">
-              <div class="type">
-                <span @click="barrageIsOpen = !barrageIsOpen" :class="{open:barrageIsOpen}">
-                  <em>弹</em>
-                </span>
-              </div>
-              <div class="content">
-                <div class="testing" contenteditable="true"></div>
-                <div class="faceortext" :class="{text:faceortext,face:!faceortext}" @click.stop="faceortext = !faceortext">
-                  切换
-                </div>
-              </div>
-              <div class="btn">发送</div>
-            </div>
-            <div class="desktop">
-              <div ref="face" class="facetext-face" v-show="faceortext">
-                <ul class="fix">
-                  <li>😀</li>
-                  <li>😁</li>
-                  <li>😂</li>
-                  <li>😄</li>
-                  <li>😅</li>
-                  <li>😆</li>
-                  <li>😇</li>
-                  <li>😉</li>
-                  <li>😊</li>
-                  <li>😋</li>
-                  <li>😌</li>
-                  <li>😍</li>
-                  <li>😘</li>
-                  <li>😙</li>
-                  <li>😜</li>
-                  <li>😝</li>
-                  <li>😎</li>
-                  <li>😏</li>
-                  <li>😶</li>
-                  <li>😑</li>
-                  <li>😒</li>
-                  <li>😳</li>
-                  <li>😞</li>
-                  <li>😟</li>
-                  <li>😠</li>
-                  <li>😡</li>
-                  <li>😔</li>
-                  <li>😕</li>
-                  <li>😣</li>
-                  <li>😖</li>
-                  <li>😫</li>
-                  <li>😤</li>
-                  <li>😮</li>
-                  <li>😱</li>
-                  <li>😨</li>
-                  <li>😰</li>
-                </ul>
-              </div>
-              <div ref="text" class="facetext-text">
-                <ul class="fix">
-                  <li><em>双手给主播点赞666+</em></li>
-                  <li><em>弹幕来护体</em></li>
-                  <li><em>希望有好运气！！！</em></li>
-                  <li><em>我只是围观群众</em></li>
-                  <li><em>新鲜、会玩666</em></li>
-                  <li><em>哈，今天中奖了！</em></li>
-                  <li><em>双手给主播点赞666+</em></li>
-                  <li><em>弹幕来护体</em></li>
-                  <li><em>希望有好运气！！！</em></li>
-                  <li><em>我只是围观群众</em></li>
-                  <li><em>新鲜、会玩666</em></li>
-                  <li><em>哈，今天中奖了！</em></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="giving" :class="{ined:activeHide === 3}">
-            <div class="desktop">
-              <ul class="fix">
-                <li @click.stop="giftPush('boat')">
-                  <em>皇家邮轮</em>
-                </li>
-                <li @click.stop="giftPush('ferrari')">
-                  <em>法拉利</em>
-                </li>
-                <li @click.stop="giftPush('airplane')">
-                  <em>飞机</em>
-                </li>
-                <li @click.stop="giftPush('ferrari')">
-                  <em>法拉利</em>
-                </li>
-                <li @click.stop="giftPush('boat')">
-                  <em>皇家邮轮</em>
-                </li>
-                <li @click.stop="giftPush('ferrari')">
-                  <em>法拉利</em>
-                </li>
-                <li @click.stop="giftPush('boat')">
-                  <em>皇家邮轮</em>
-                </li>
-                <li @click.stop="giftPush('ferrari')">
-                  <em>法拉利</em>
-                </li>
-              </ul>
-            </div>
-            <div class="footer fix">
-              <div class="btn">发送</div>
-            </div>
-          </div>
+          <facetext :class="{ined:activeHide === 1}"></facetext>
+          <selectGift :class="{ined:activeHide === 3}"></selectGift>
         </div>
       </div>
     </div>
@@ -180,6 +75,8 @@
   import {unique,C,mul,BaseBet,deleteCompress,PERBET} from '../../js/kit'
   import {mapState} from 'vuex'
   import gift from './gifts'
+  import selectGift from './selectGift'
+  import facetext from './facetext'
   var eachLen = data=>data.map(arr=>arr.length)
   var getBetStr = (data, mode)=>{
     var line =  data.map(arr=>arr.join(' '))
@@ -245,6 +142,8 @@
       mainfooter,
       barrage,
       gift,
+      selectGift,
+      facetext,
     },
     data:()=>{
       return{
@@ -264,7 +163,6 @@
         activeHide:0,
         face:null,
         text:null,
-        faceortext:true,                   //默认表情true
         barrageIsOpen:true,                //但是是否开启
       }
     },
@@ -559,7 +457,7 @@
         this.activegift = {
           type:giftType,
           name:'大锤',
-          img:'static/img/gifts/Ferrari.png',
+          img:'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2764371306,3467823016&fm=27&gp=0.jpg',
         }
       }
     },
@@ -585,9 +483,6 @@
       console.log(this.$refs.wrapperCon0[0])
       this.$nextTick(() => {
         this.scroll = new BScroll(this.$refs.wrapperCon0[0], {bounce:false})
-
-        this.face = new BScroll(this.$refs.face)
-        this.text = new BScroll(this.$refs.text)
       })
     },
     // 生命周期destroyed销毁清除定时器，有利于内存释放
@@ -1026,195 +921,7 @@
       position:absolute;
     }
   }
-  .facetext{
-    height:12em;
-    transition:.2s;
-    width:100%;
-    .title{
-      display:table;
-      width:100%;
-      border-bottom:1px solid #d4d4d4;
-      >div{
-      display:table-cell;
-      }
-      .type,.content,.btn{
-        height:2.4em;
-        line-height:2.4em;
-      }
-      .type{
-        width:3.4em;
-        background:#fdfdfd;
-        text-align:center;
-        position:relative;
-        span{
-          display:inline-block;
-          text-align:center;
-          background:#d1d0cc;
-          border-radius:.8em;
-          width: 2.4em;
-          height: 1.4em;
-          transform: translateY(.5em);
-          transition: .2s;
-          &:after{
-            content:'';
-            display:block;
-            position:absolute;
-            top:-.1em;
-            right:-.5em;
-            height:1.6em;
-            width:1px;
-            background:#d1d0cc;
-          }
-        }
-        span.open{
-          background:#ef4b52;
-          em{
-            transform:translate(0.7em, -0.9em);
-            color:#ef4b52;
-          }
-        }
-        em{
-          transition: .2s;
-          display: inline-block;
-          line-height: 1.5em;
-          transform: translate(-0.72em,-.9em);
-          font-size: .7em;
-          color: #b9b8b4;
-          background: #fdfdfd;
-          border-radius: 0.75em;
-          width: 1.5em;
-          height: 1.5em;
-          box-shadow: -1px 1px 4px rgba(0,0,0,.45);
-        }
-      }
-      .content{
-        background:#fdfdfd;
-        position:relative;
-      }
-      .testing{
-        position:absolute;
-        width:calc(100% - 3em);
-        padding:.3em .4em;
-        font-size:.7em;
-        height:3.4285em;
-        overflow: auto;
-        line-height: 1.5em;
-        -webkit-user-select: auto;
-        user-select: auto;
-        padding-top:1em;
-        outline: none;
-      }
-      .faceortext{
-        position:absolute;
-        top:0;
-        right:0;
-      }
-      .btn{
-        width:4.25em;
-        background:#ee4a52;
-        text-align:center;
-        font-size:.8em;
-        color:white;
-        &:active{
-          background:red;
-        }
-      }
-    }
-    .desktop{
-      height:9.6em;
-      background:#fdfdfd;
-    }
-  }
-  .facetext-face,.facetext-text{
-    height:100%;
-    overflow: hidden;
-    ul{
-      padding:.3em .5em;
-      li{
-        float:left;
-      }
-    }
-  }
-  .facetext-face{
-    ul{
-      li{
-        width:14.2857%;
-        text-align:center;
-        font-size:1.4em;
-        height: 1.4em;
-        line-height: 1.4em;
-      }
-    }
-  }
-  .facetext-text{
-    ul{
-      li{
-        width:50%;
-        white-space:nowrap;
-        text-overflow:ellipsis;
-        overflow: hidden;
-        margin:.2em 0;
-        em{
-          font-size:.7em;
-          background:#f0f0f0;
-          color:#666;
-          display: inline-block;
-          border-radius: 1em;
-          padding:.2em .7em;
-          &:active{
-            color:#ee575d;
-          }
-        }
-      }
-    }
-  }
   .facetext.ined,.giving.ined{
     transform:translateY(-12em);
-  }
-  .giving{
-    background:rgba(0, 0, 0, 0.5);
-    transition:.2s;
-    width:100%;
-    height:12em;
-    .desktop{
-      ul{
-        li{
-          color:white;
-          float:left;
-          width:4rem;
-          height:4.8em;
-          border-right:1px solid rgba(255, 255, 255, 0.1);
-          padding:.3em;
-          &:nth-child(1n+5){
-            border-top:1px solid rgba(255, 255, 255, 0.1);
-          }
-          &:nth-child(4n+4){
-            border-right:none
-          }
-          em{
-            display:block;
-            text-align:center;
-            font-size:.5em;
-          }
-        }
-      }
-    }
-    .footer{
-      height:2.4em;
-      line-height:2.4em;
-      background: rgba(0, 0, 0, 0.32);
-      .btn{
-        color:white;
-        float:right;
-        background:#9ec2da;
-        height: 2em;
-        line-height: 2em;
-        font-size: .7em;
-        padding:0 1.4em;
-        border-radius:1em;
-        margin-top:.76em;
-        margin-right:1em;
-      }
-    }
   }
 </style>

@@ -3,7 +3,10 @@
 		<div class="sea sea1" :style="'background: url('+$parent.imgbaseUrl+url+')'"></div>
 		<div class="sea sea2" :style="'background: url('+$parent.imgbaseUrl+url+')'"></div>
 		<div class="shadow" :style="'background: url('+$parent.imgbaseUrl+url+')'"></div>
-		<div class="boatimg" :style="'background: url('+$parent.imgbaseUrl+url+')'"></div>
+		<div class="boatimg" :style="'background: url('+$parent.imgbaseUrl+url+')'">
+			<div class="name">{{$parent.giftArr[0].name}}</div>
+			<img class="head" :src="$parent.giftArr[0].img">
+		</div>
 	</div>
 </template>
 <script>
@@ -54,6 +57,23 @@
 		width:16rem;
 		height:9rem;
     background-position: -41.4rem 0 !important;
+    .name{
+    	color:white;
+    	margin-left: 2rem;
+    	font-size: .8em;
+    	transform:rotate(12deg);
+    	width: 12rem;
+	    text-align: center;
+    }
+    .head{
+			border-radius: 50%;
+	    margin-top: 1rem;
+	    height: 2.2rem;
+	    width: 2.2rem;
+	    transform: rotateY(40deg) rotateX(-5deg);
+	    margin-left: 8.5rem;
+	    box-shadow: 0 0 6px 5px #ccc909;
+    }
 	}
 	.shadow{
 		width:11.5rem;

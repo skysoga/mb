@@ -1,0 +1,245 @@
+<template>
+	<div class="facetext">
+    <div class="title">
+      <div class="type">
+        <span @click="$parent.barrageIsOpen = !$parent.barrageIsOpen" :class="{open:$parent.barrageIsOpen}">
+          <em>弹</em>
+        </span>
+      </div>
+      <div class="content">
+        <div class="testing" contenteditable="true"></div>
+        <div class="faceortext" :class="{text:faceortext,face:!faceortext}" @click.stop="faceortext = !faceortext">
+          切换
+        </div>
+      </div>
+      <div class="btn">发送</div>
+    </div>
+    <div class="desktop">
+      <div ref="face" class="facetext-face" v-show="faceortext">
+        <ul class="fix">
+          <li>😀</li>
+          <li>😁</li>
+          <li>😂</li>
+          <li>😄</li>
+          <li>😅</li>
+          <li>😆</li>
+          <li>😇</li>
+          <li>😉</li>
+          <li>😊</li>
+          <li>😋</li>
+          <li>😌</li>
+          <li>😍</li>
+          <li>😘</li>
+          <li>😙</li>
+          <li>😜</li>
+          <li>😝</li>
+          <li>😎</li>
+          <li>😏</li>
+          <li>😶</li>
+          <li>😑</li>
+          <li>😒</li>
+          <li>😳</li>
+          <li>😞</li>
+          <li>😟</li>
+          <li>😠</li>
+          <li>😡</li>
+          <li>😔</li>
+          <li>😕</li>
+          <li>😣</li>
+          <li>😖</li>
+          <li>😫</li>
+          <li>😤</li>
+          <li>😮</li>
+          <li>😱</li>
+          <li>😨</li>
+          <li>😰</li>
+        </ul>
+      </div>
+      <div ref="text" class="facetext-text">
+        <ul class="fix">
+          <li><em>双手给主播点赞666+</em></li>
+          <li><em>弹幕来护体</em></li>
+          <li><em>希望有好运气！！！</em></li>
+          <li><em>我只是围观群众</em></li>
+          <li><em>新鲜、会玩666</em></li>
+          <li><em>哈，今天中奖了！</em></li>
+          <li><em>双手给主播点赞666+</em></li>
+          <li><em>弹幕来护体</em></li>
+          <li><em>希望有好运气！！！</em></li>
+          <li><em>我只是围观群众</em></li>
+          <li><em>新鲜、会玩666</em></li>
+          <li><em>哈，今天中奖了！</em></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+  import BScroll from 'better-scroll'
+	export default {
+		data:()=>{
+			return {
+				face:null,
+				text:null,
+        faceortext:true,                   //默认表情true
+			}
+		},
+		mounted(){
+      this.face = new BScroll(this.$refs.face)
+      this.text = new BScroll(this.$refs.text)
+		},
+		methods:{
+			select(v){
+				this.active = v
+			},
+			send(){
+				this.$parent.giftPush(this.active)
+				this.active = null
+			},
+		}
+	}
+</script>
+<style lang="scss" scoped>
+.facetext{
+  height:12em;
+  transition:.2s;
+  width:100%;
+  .title{
+    display:table;
+    width:100%;
+    border-bottom:1px solid #d4d4d4;
+    >div{
+    display:table-cell;
+    }
+    .type,.content,.btn{
+      height:2.4em;
+      line-height:2.4em;
+    }
+    .type{
+      width:3.4em;
+      background:#fdfdfd;
+      text-align:center;
+      position:relative;
+      span{
+        display:inline-block;
+        text-align:center;
+        background:#d1d0cc;
+        border-radius:.8em;
+        width: 2.4em;
+        height: 1.4em;
+        transform: translateY(.5em);
+        transition: .2s;
+        &:after{
+          content:'';
+          display:block;
+          position:absolute;
+          top:-.1em;
+          right:-.5em;
+          height:1.6em;
+          width:1px;
+          background:#d1d0cc;
+        }
+      }
+      span.open{
+        background:#ef4b52;
+        em{
+          transform:translate(0.7em, -0.9em);
+          color:#ef4b52;
+        }
+      }
+      em{
+        transition: .2s;
+        display: inline-block;
+        line-height: 1.5em;
+        transform: translate(-0.72em,-.9em);
+        font-size: .7em;
+        color: #b9b8b4;
+        background: #fdfdfd;
+        border-radius: 0.75em;
+        width: 1.5em;
+        height: 1.5em;
+        box-shadow: -1px 1px 4px rgba(0,0,0,.45);
+      }
+    }
+    .content{
+      background:#fdfdfd;
+      position:relative;
+    }
+    .testing{
+      position:absolute;
+      width:calc(100% - 3em);
+      padding:.3em .4em;
+      font-size:.7em;
+      height:3.4285em;
+      overflow: auto;
+      line-height: 1.5em;
+      -webkit-user-select: auto;
+      user-select: auto;
+      padding-top:1em;
+      outline: none;
+    }
+    .faceortext{
+      position:absolute;
+      top:0;
+      right:0;
+    }
+    .btn{
+      width:4.25em;
+      background:#ee4a52;
+      text-align:center;
+      font-size:.8em;
+      color:white;
+      &:active{
+        background:red;
+      }
+    }
+  }
+  .desktop{
+    height:9.6em;
+    background:#fdfdfd;
+  }
+}
+.facetext-face,.facetext-text{
+  height:100%;
+  overflow: hidden;
+  ul{
+    padding:.3em .5em;
+    li{
+      float:left;
+    }
+  }
+}
+.facetext-face{
+  ul{
+    li{
+      width:14.2857%;
+      text-align:center;
+      font-size:1.4em;
+      height: 1.4em;
+      line-height: 1.4em;
+    }
+  }
+}
+.facetext-text{
+  ul{
+    li{
+      width:50%;
+      white-space:nowrap;
+      text-overflow:ellipsis;
+      overflow: hidden;
+      margin:.2em 0;
+      em{
+        font-size:.7em;
+        background:#f0f0f0;
+        color:#666;
+        display: inline-block;
+        border-radius: 1em;
+        padding:.2em .7em;
+        &:active{
+          color:#ee575d;
+        }
+      }
+    }
+  }
+}
+</style>

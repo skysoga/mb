@@ -1308,6 +1308,7 @@
     },
     computed:{
       IsStop(){
+        console.log('============== 判断 ===============',state.lt.TimeBar[0])
         //判断是否不可提交订单,并弹出警告
         return ('0123456789预'.search(state.lt.TimeBar[0])===-1)&&layer.msgWarn(state.lt.TimeBar)
       },
