@@ -12,7 +12,7 @@
           切换
         </div>
       </div>
-      <div class="btn">发送</div>
+      <div class="btn" @click="send">发送</div>
     </div>
     <div class="desktop">
       <div ref="face" class="facetext-face" v-show="faceortext">
@@ -70,12 +70,8 @@
 				this.faceortext = !this.faceortext
 				this.$refs.content.innerHTML = ''
 			},
-			select(v){
-				this.active = v
-			},
 			send(){
-				this.$parent.giftPush(this.active)
-				this.active = null
+				layer.alert(this.$refs.content.innerHTML)
 			},
 		}
 	}
