@@ -2,7 +2,7 @@
   <div class="newContainer">
     <gift :activegift="activegift"></gift>
     <div class="video">
-      <!-- <iframe ref="iframe" src="/static/video-k3.html"></iframe> -->
+      <iframe ref="iframe" src="/static/video-k3.html"></iframe>
       <img src="/static/img/newk3-bg.jpg" alt="" width="100%">
     </div>
     <div v-show="show == 'main'" @click="changeShow" class="mainPage">

@@ -2,6 +2,8 @@
 	<div class="con gift" id="gift" :class="{moving}">
 		<div class="light" :style="'background: url('+$parent.imgbaseUrl+url+')'"></div>
 		<div class="airplane sea1" :style="'background: url('+$parent.imgbaseUrl+url+')'"></div>
+		<div class="star1" :style="'background: url('+$parent.imgbaseUrl+url+')'"></div>
+		<div class="star2" :style="'background: url('+$parent.imgbaseUrl+url+')'"></div>
 	</div>
 </template>
 <script>
@@ -19,6 +21,9 @@
   }
 </script>
 <style lang="scss" scoped>
+.star1{
+
+}
 #gift{
 	height: 13rem;
 	>div{
@@ -40,26 +45,27 @@
 .moving.gift{
 	.airplane{
 		animation: airplane 10s linear;
+		transform: translate(17rem,8rem);
 	}
 	.light{
 		animation: light 10s linear;
     transform-origin: 100% 50%;
-    transform: scale(0) translateY(9.1rem);
+    transform: translate(0,0) scale(0) rotate(16deg);
     top:6.5rem;
     left:2rem;
 	}
 }
 @keyframes light{
 	0%{
-    transform: scale(0) rotate(16deg);
-		opacity: 1;
+    transform: translate(0,0) scale(0) rotate(16deg);
+    opacity: 1;
 	}
 	25%{
 		opacity: 1;
 	}
 	50%{
-    transform: scale(1.3) rotate(16deg);
-		opacity: 0;
+    transform: translate(0,0) scale(1.3) rotate(16deg);
+    opacity: 0;
 	}
 	50.001%{
 		transform: translate(-24rem,-19.8rem) scale(0) rotate(16deg);
