@@ -12,7 +12,7 @@
     	return {
     		moving:0,
   			url:'airplane.png',
-  			time:10000,
+  			time:8000,
     	}
     },
     created(){
@@ -21,8 +21,20 @@
   }
 </script>
 <style lang="scss" scoped>
-.star1{
-
+.star1,.star2{
+  width: 16rem;
+  height: 8rem;
+  background-size: 30rem !important;
+  background-repeat: no-repeat !important;
+  background-position: -15rem 3.3rem !important;
+  transform: rotate(10deg);
+  animation: star 8s linear;
+  opacity: 0;
+}
+.star2{
+	left: 1rem;
+  top: 0.5rem;
+  animation-delay:.2s;
 }
 #gift{
 	height: 13rem;
@@ -44,15 +56,44 @@
 }
 .moving.gift{
 	.airplane{
-		animation: airplane 10s linear;
+		animation: airplane 8s linear;
 		transform: translate(17rem,8rem);
 	}
 	.light{
-		animation: light 10s linear;
+		animation: light 8s linear;
     transform-origin: 100% 50%;
     transform: translate(0,0) scale(0) rotate(16deg);
     top:6.5rem;
     left:2rem;
+	}
+}
+@keyframes star{
+	0%{
+		opacity: 0;
+	}
+	31%{
+		opacity: 0;
+	}
+	32%{
+		opacity: 1;
+	}
+	34%{
+		opacity: 1;
+	}
+	34%{
+		opacity: 0;
+	}
+	37%{
+		opacity: 0;
+	}
+	38%{
+		opacity: 1;
+	}
+	39%{
+		opacity: 1;
+	}
+	40%{
+		opacity: 0;
 	}
 }
 @keyframes light{
@@ -60,7 +101,7 @@
     transform: translate(0,0) scale(0) rotate(16deg);
     opacity: 1;
 	}
-	25%{
+	40%{
 		opacity: 1;
 	}
 	50%{
@@ -71,7 +112,7 @@
 		transform: translate(-24rem,-19.8rem) scale(0) rotate(16deg);
 		opacity: 1;
 	}
-	75%{
+	90%{
 		opacity: 1;
 	}
 	100%{
