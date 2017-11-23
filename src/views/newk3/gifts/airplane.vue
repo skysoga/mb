@@ -33,7 +33,6 @@
 .star2{
 	left: 1rem;
   top: 0.5rem;
-  animation-delay:.2s;
 }
 #gift{
 	height: 13rem;
@@ -67,6 +66,9 @@
 	}
 	.star1,.star2{
 		animation: star 8s linear;
+	}
+	.star2{
+		animation-delay:.2s;
 	}
 }
 @keyframes star{

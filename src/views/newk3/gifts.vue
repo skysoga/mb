@@ -52,7 +52,7 @@
           setTimeout(()=>{
             this.giftArr.splice(0,1)
           },100)
-  			},that.time-100)
+  			},that.time)
     	}
     },
     watch:{
