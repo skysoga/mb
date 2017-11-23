@@ -47,22 +47,22 @@
   height: 3.9rem;
   background-size: 18rem !important;
   background-repeat: no-repeat !important;
+	transform: translate(17rem,8rem);
 }
 .light{
   width: 17rem;
   height: 5rem;
   background-position: 17rem 13rem !important;
   background-size: 40rem !important;
+  transform-origin: 100% 50%;
+  transform: translate(0,0) scale(0) rotate(16deg);
 }
 .moving.gift{
 	.airplane{
 		animation: airplane 8s linear;
-		transform: translate(17rem,8rem);
 	}
 	.light{
 		animation: light 8s linear;
-    transform-origin: 100% 50%;
-    transform: translate(0,0) scale(0) rotate(16deg);
     top:6.5rem;
     left:2rem;
 	}
