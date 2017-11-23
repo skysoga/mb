@@ -22,12 +22,13 @@
 </script>
 <style lang="scss" scoped>
 .star1,.star2{
+	top:1rem;
   width: 16rem;
   height: 8rem;
   background-size: 30rem !important;
   background-repeat: no-repeat !important;
   background-position: -15rem 3.3rem !important;
-  transform: rotate(10deg);
+  transform: rotate(2deg);
   opacity: 0;
 }
 .star2{
@@ -53,7 +54,7 @@
   background-position: 17rem 13rem !important;
   background-size: 40rem !important;
   transform-origin: 100% 50%;
-  transform: translate(0,0) scale(0) rotate(16deg);
+  transform: translate(0,0) scale(0) rotate(12deg);
 }
 .moving.gift{
 	.airplane{
@@ -102,14 +103,14 @@
 }
 @keyframes light{
 	0%{
-    transform: translate(0,0) scale(0) rotate(16deg);
+    transform: translate(0,-1.8rem) scale(0) rotate(10deg);
     opacity: 1;
 	}
 	40%{
 		opacity: 1;
 	}
 	50%{
-    transform: translate(0,0) scale(1.3) rotate(16deg);
+    transform: translate(0,-.5rem) scale(1.3) rotate(10deg);
     opacity: 0;
 	}
 	50.001%{
@@ -126,19 +127,16 @@
 }
 @keyframes airplane{
 	0%{
-		transform: translate(17rem,8rem);
+		transform: translate(17rem,6rem) scale(.8) rotate(-4deg);
 	}
 	50%{
-		transform: translate(-11rem,-1rem);
+		transform: translate(-11rem,1rem) scale(1.5) rotate(-4deg);
 	}
 	51%{
-		transform: translate(-12rem,-13rem) scaleX(-1) rotate(-33deg);
-	}
-	75{
-		transform: translate(2rem,-2.5rem) scaleX(-1) rotate(-33deg);
+		transform: translate(-12rem,-13rem) scaleX(-.8) rotate(-33deg);
 	}
 	100%{
-		transform: translate(16rem,-6rem) scaleX(-1) rotate(-33deg);
+		transform: translate(16rem,-6rem) scaleX(-1.5) rotate(-33deg);
 	}
 }
 </style>
