@@ -9,7 +9,7 @@
       <div class="content">
         <div class="testing" contenteditable="true" v-html="defaultContent" ref="content"></div>
         <div class="faceortext" :class="{text:faceortext,face:!faceortext}" @click.stop="changeFaceText">
-          切换
+          <i class="iconfont">{{faceortext?'&#xe615;':'&#xe616;'}}</i>
         </div>
       </div>
       <div class="btn" @click="send">发送</div>
@@ -159,6 +159,10 @@
       position:absolute;
       top:0;
       right:0;
+      width:1.4em;
+      font-size:1.3em;
+      line-height: 1.9em;
+      color:#888;
     }
     .btn{
       width:4.25em;

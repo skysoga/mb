@@ -28,7 +28,6 @@
   background-repeat: no-repeat !important;
   background-position: -15rem 3.3rem !important;
   transform: rotate(10deg);
-  animation: star 8s linear;
   opacity: 0;
 }
 .star2{
@@ -65,6 +64,9 @@
 		animation: light 8s linear;
     top:6.5rem;
     left:2rem;
+	}
+	.star1,.star2{
+		animation: star 8s linear;
 	}
 }
 @keyframes star{

@@ -30,7 +30,6 @@
 	height: 16rem;
 }
 .car-con{
-  animation: ferrari-car 5s linear;
 	transform:translate(16rem,0rem);
 	.relative{
 		position:relative;
@@ -58,7 +57,6 @@
     background-position: 4.75rem 12.82rem !important;
     width: 3.1rem;
     height: 3.1rem;
-    animation: ferrari-wheel .8s infinite linear;
 		transform: rotate(360deg) scale(0.56);
 	}
 	.light{
@@ -68,6 +66,14 @@
     height: 5rem;
     left: 0;
     top: 2rem;
+	}
+}
+.moving.gift{
+	.car-con{
+	  animation: ferrari-car 5s linear;
+	}
+	.wheel{
+    animation: ferrari-wheel .8s infinite linear;
 	}
 }
 @keyframes ferrari-wheel{
