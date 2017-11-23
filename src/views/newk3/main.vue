@@ -9,11 +9,12 @@
       <div class="result">
         <div class="timebar" @click.stop="changeVideo">
           <em v-show="/^\d/.test(TimeBar)">{{nowIssue}}投注：</em>
-          {{TimeBar}}
+          {{TimeBar}}<i class="iconfont">&#xe60e;</i>
         </div><br>
-        <div class="oldissue">
-          {{oldIssue}}开奖：{{results}}
+        <div class="oldissue" @click.stop="history = 1">
+          {{oldIssue}}开奖：{{results}}<i class="iconfont">&#xe60e;</i>
         </div>
+        <history v-if="history"></history>
       </div>
       <div class="userContent"></div>
       <barrage class="barrage" v-if="barrageIsOpen"></barrage>
@@ -77,6 +78,7 @@
   import gift from './gifts'
   import selectGift from './selectGift'
   import facetext from './facetext'
+  import history from './history'
   var eachLen = data=>data.map(arr=>arr.length)
   var getBetStr = (data, mode)=>{
     var line =  data.map(arr=>arr.join(' '))
@@ -144,6 +146,7 @@
       gift,
       selectGift,
       facetext,
+      history,
     },
     data:()=>{
       return{
@@ -164,6 +167,7 @@
         face:null,
         text:null,
         barrageIsOpen:true,                //但是是否开启
+        history:0,
       }
     },
     computed:mapState({
@@ -514,6 +518,11 @@
     margin:.8em 0;
     border-right:1px solid rgba(0,0,0,.12);
   }
+  i{
+    display: inline-block;
+    margin-left:.2em;
+    font-size:.9em;
+  }
 }
 .timebar,.oldissue{
   background:rgba(0,0,0,.2);
@@ -530,7 +539,7 @@
 .oldissue{
   margin-top:.7272em;
   font-size:.55em;
-  padding:.35em 1.1em;
+  padding:.4em 1em;
   border-radius: 1.6666em;
 }
 
