@@ -9,7 +9,7 @@
       <tr class="active" :data-id="item.UserId" v-for='(item,index) in init_bonus_data' @click="jump(item.UserId)">
         <td>
           <img :src="$store.getters.PhotoPath+item.UserPhoto" alt="">
-            <p>账号昵称：<i style="color:#38f">{{item.NickName?item.NickName:item.UserName}}</i><br>昨日奖金：<span>￥{{item.Bonus}}</span></p>
+            <p>账号昵称：<i style="color:#38f">{{item.NickName?item.NickName:item.UserName}}</i><br>昨日盈利：<span>￥{{item.Bonus}}</span></p>
         </td>
         <td><em>{{index+1}}</em></td>
       </tr>
