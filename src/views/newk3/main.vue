@@ -32,7 +32,7 @@
         </div>
       </div>
     </div>
-    <div :style="{opacity:getBetShow?1:0,'z-index':getBetShow?20:0}" class="betContainer">
+    <div :class="{bet:(show === 'bet')?1:0}" class="betContainer">
       <div class="header">
         <div class="info fix">
           <div @click="changeShow" class="back"></div>
@@ -56,8 +56,8 @@
                       <li v-for="e in d.itemArr" :class = "{curr:chosen.indexOf(e) > -1,bgnone:e==0}"><span v-if="!(e==0)"  class="fix" @click="choose(e)"><em><i>{{e}}</i></em></span></li>
                     </ul>
                   </div>
-                  <div class="topshadow" @click="changeShow"></div>
-                  <div class="bottomshadow" :style="{height:j===0?heightArr+'px':'32em'}" @click="changeShow"></div>
+                  <div class="topshadow" @click.stop="changeShow"></div>
+                  <div class="bottomshadow" :style="{height:j===0?heightArr+'px':'32em'}" @click.stop="changeShow"></div>
                 </div>
               </div>
             </div>
@@ -269,9 +269,6 @@
         return (state.lt.bet.betting_money && this.showPrice)  ? `，${state.lt.bet.betting_money}元` : ''
       },
       basket:()=>state.lt.basket,
-      getBetShow(){
-        return (this.show == 'bet')
-      },
       swiper() {
         return this.$refs.mySwiper.swiper
       }
@@ -714,6 +711,12 @@
     width:100%;
     overflow:hidden;
     transition:.2s;
+    opacity: 0;
+    z-index: 0;
+  }
+  .betContainer.bet{
+    opacity: 1;
+    z-index: 20;
   }
   .topshadow{
     height:1em;
