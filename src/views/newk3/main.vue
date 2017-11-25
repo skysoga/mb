@@ -7,21 +7,21 @@
     </div>
     <div v-show="show == 'main'" @click="changeShow" class="mainPage">
       <div class="result">
-        <div class="timebar" @click.stop="changeVideo">
+        <div class="timebar" @click.stop="history = 1">
           <em v-show="/^\d/.test(TimeBar)">{{nowIssue}}投注：</em>
           {{TimeBar}}<i class="iconfont">&#xe60e;</i>
         </div><br>
-        <div class="oldissue" @click.stop="history = 1">
+        <div class="oldissue" @click.stop="history = 2">
           {{oldIssue}}开奖：{{results}}<i class="iconfont">&#xe60e;</i>
         </div>
-        <history v-if="history"></history>
+        <history v-if="history" :type="history"></history>
       </div>
       <div class="userContent"></div>
       <barrage class="barrage" v-if="barrageIsOpen"></barrage>
       <div class="control">
         <ul class="con-btn fix">
           <li><a class="back" href="javascript:;" @click.stop="$router.go(-1)"></a></li>
-          <li><a class="sound" href="javascript:;"></a></li>
+          <li><a class="sound" href="javascript:;" @click.stop="changeVideo"></a></li>
           <li><a class="gift" href="javascript:;" @click.stop="showHide(3)"></a></li>
           <li><a class="anchor" href="javascript:;" @click.stop=""></a></li>
           <li><a class="facetext" href="javascript:;" @click.stop="showHide(1)"></a></li>
