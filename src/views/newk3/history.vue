@@ -8,6 +8,10 @@
 		<div class="list">
 			<div class="opened" v-show="type === 2">
 				<div class="title">
+					<div class="issueNo">{{results[0].IssueNo}}期</div>
+					<div class="sum">和值 {{results[0].sum}}</div>
+					<div class="open">号码 {{results[0].LotteryOpen[0]}} {{results[0].LotteryOpen[1]}} {{results[0].LotteryOpen[2]}}</div>
+					<div class="other">{{results[0].bigOrSmall}}，{{results[0].singleOrDouble}}</div>
 				</div>
 				<table>
 					<tr>
@@ -17,89 +21,61 @@
 						<th width="15%">大小</th>
 						<th width="15%">单双</th>
 					</tr>
-					<tr>
-						<td>85060502</td>
-						<td>2 3 5</td>
-						<td>20</td>
-						<td>大</td>
-						<td>双</td>
-					</tr>
-					<tr>
-						<td>85060502</td>
-						<td>2 3 5</td>
-						<td>20</td>
-						<td>大</td>
-						<td>双</td>
-					</tr>
-					<tr>
-						<td>85060502</td>
-						<td>2 3 5</td>
-						<td>20</td>
-						<td>大</td>
-						<td>双</td>
-					</tr>
-					<tr>
-						<td>85060502</td>
-						<td>2 3 5</td>
-						<td>20</td>
-						<td>大</td>
-						<td>双</td>
-					</tr>
-					<tr>
-						<td>85060502</td>
-						<td>2 3 5</td>
-						<td>20</td>
-						<td>大</td>
-						<td>双</td>
-					</tr>
-					<tr>
-						<td>85060502</td>
-						<td>2 3 5</td>
-						<td>20</td>
-						<td>大</td>
-						<td>双</td>
-					</tr>
-					<tr>
-						<td>85060502</td>
-						<td>2 3 5</td>
-						<td>20</td>
-						<td>大</td>
-						<td>双</td>
-					</tr>
-					<tr>
-						<td>85060502</td>
-						<td>2 3 5</td>
-						<td>20</td>
-						<td>大</td>
-						<td>双</td>
-					</tr>
-					<tr>
-						<td>85060502</td>
-						<td>2 3 5</td>
-						<td>20</td>
-						<td>大</td>
-						<td>双</td>
+					<tr v-for="d in results">
+						<td>{{d.IssueNo}}</td>
+						<td>{{d.LotteryOpen[0] + ' ' + d.LotteryOpen[1] + ' ' + d.LotteryOpen[2]}}</td>
+						<td>{{d.sum}}</td>
+						<td>{{d.bigOrSmall}}</td>
+						<td>{{d.singleOrDouble}}</td>
 					</tr>
 				</table>
 			</div>
 			<div class="beted" v-show="type === 1">
-				投注记录区域
+				<div class="touchScroll">
+			    <div v-for="d in betData">
+			        <a class="active">
+			            <div>
+			                <p>大发快3<span>￥{{d.normal_money}}</span></p><span>2017-11-25 14:29:41</span></div> <strong>{{d.openState}}</strong></a>
+			        <div class="hr1px"></div>
+			    </div>
+			    <div class="msg noMore">更多投注记录请到 我的账户>投注记录 查看</div>
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 <script>
+  import {mapState} from 'vuex'
 	export default{
 		props:['type'],
+    computed:mapState({
+	    results(){
+	      var pastOpen = state.lt.LotteryResults[this.$parent.lcode].map(item=>{
+	        var el = {}
+	        el.IssueNo = item.IssueNo.length < 7 ? item.IssueNo :item.IssueNo.slice(4)        //把年份砍掉
+	        var results = item.LotteryOpen.split(',')
+	        el.LotteryOpen = results
+	        el.sum = results.reduce((a,b)=>(+a)+(+b))
+	        el.bigOrSmall = el.sum > 10 ? '大' : '小'
+	        el.singleOrDouble = el.sum % 2 === 1 ? '单' : '双'
+	        return el
+	      })
+	      return pastOpen
+	    },
+    }),
 		data:()=>{
 			return {
-				opened:0
+				opened:0,
+				betData:null,
 			}
 		},
 		created(){
 			setTimeout(()=>{
 				this.opened = 1
 			},10)
+			if (this.type === 1) {
+				this.getBet()
+			}
 		},
 		methods:{
 			close(){
@@ -108,10 +84,32 @@
 					this.$parent.history = 0
 				},200)
 			},
+			getBet(){
+				console.log('获取投注记录')
+				_fetch({
+					Action:'GetBetting',
+					SourceName:'PC'
+				})
+				.then(d=>{
+					if (d.Code === 1) {
+						this.betData = d.Data
+					}else{
+						layer.msgWarn(d.StrCode)
+					}
+				})
+			}
 		},
 	}
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+@import '../../scss/detailList.scss';
+.beted{
+	border-top:1px solid #d7d6d6;
+}
+.touchScroll{
+	position: inherit;
+	height: inherit !important;
+}
 	.history{
 		position: fixed;
 		width:100%;
@@ -160,6 +158,28 @@
 		background: url('/static/img/history-bg.png') no-repeat;
 		background-size: 16rem;
 		height:7.6rem;
+		color:white;
+		font-size:.6em;
+		position: relative;
+		>div{
+			position: absolute;
+		}
+		.issueNo{
+			top:1.6rem;
+			left:.9rem;
+		}
+		.sum{
+			top:3.3rem;
+			left:.94rem;
+		}
+		.open{
+			top:1.6rem;
+			right:1rem;
+		}
+		.other{
+			top:3.3rem;
+			right:1rem;
+		}
 	}
 	.opened{
 		table{

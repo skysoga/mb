@@ -362,6 +362,11 @@
             Vue.set(state.LotteryResults, code, results)
           },
           lt_setOnceLotteryResult:(state, {code, results})=>{          //设置一条开奖结果
+            if (state.LotteryResults[code].length > 0) {
+              if (results.IssueNo === state.LotteryResults[code][0].IssueNo) {
+                return
+              }
+            }
             let _lresult = JSON.parse(JSON.stringify(state.LotteryResults[code]))
             if(_lresult.length >= 10){
               _lresult.pop()
