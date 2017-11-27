@@ -35,7 +35,7 @@
 			    <div v-for="d in betData">
 			        <a class="active">
 			            <div>
-			                <p>大发快3<span>￥{{d.normal_money}}</span></p><span>2017-11-25 14:29:41</span></div> <strong>{{d.openState}}</strong></a>
+			                <p>{{d.lotteryName}}<span>￥{{d.normal_money}}</span></p><span>{{d.issueNo}} 期</span></div> <strong>{{d.openState}}</strong></a>
 			        <div class="hr1px"></div>
 			    </div>
 			    <div class="msg noMore">更多投注记录请到 我的账户>投注记录 查看</div>

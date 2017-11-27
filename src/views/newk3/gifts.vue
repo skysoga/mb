@@ -8,12 +8,14 @@
 <script>
   import boat 			from './gifts/boat'
   import ferrari  	from './gifts/ferrari'
-  import airplane  	from './gifts/airplane'
+  import airplane   from './gifts/airplane'
+  import cannon   from './gifts/cannon'
   export default {
     components: {
       boat,
       ferrari,
       airplane,
+      cannon,
     },
   	props:['activegift'],
     data:()=>{

@@ -387,6 +387,9 @@
       },
       _setSliderWidth(isResize) {
         this.children = this.$refs.sliderGroup.children
+        if (!this.children) {
+          return
+        }
         let width = 0
         // slider 可见宽度
         let sliderWidth = this.$refs.slider.clientWidth
