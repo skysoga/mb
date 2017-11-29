@@ -12,9 +12,11 @@
           {{TimeBar}}<i class="iconfont">&#xe60e;</i>
         </div><br>
         <div class="oldissue" @click.stop="history = 2">
-          {{oldIssue}}开奖：{{results}}<i class="iconfont">&#xe60e;</i>
-        </div>
-        <history v-if="history" :type="history"></history>
+          {{oldIssue.replace(/^.{2}/,'')}}开奖：<div class="DiceImg">
+            <div class="Dice" :class="displayClass+results[0]"></div><div class="Dice" :class="displayClass+results[1]"></div><div class="Dice" :class="displayClass+results[2]"></div>
+          </div>
+          <i class="iconfont">&#xe60e;</i>
+        </div><history v-if="history" :type="history"></history>
       </div>
       <div class="userContent"></div>
       <barrage class="barrage" v-if="barrageIsOpen"></barrage>
@@ -168,6 +170,9 @@
         text:null,
         barrageIsOpen:true,                //但是是否开启
         history:0,
+        wait4Results:[1,2,3],              //等待开奖的默认状态
+        wait4Resultst:null,
+        changeSize:null,                   //改变窗口大小执行的函数
       }
     },
     computed:mapState({
@@ -217,7 +222,12 @@
         if(state.lt.LotteryResults[this.lcode].length<1){
           return ''
         }
-        return state.lt.LotteryResults[this.lcode][0].LotteryOpen
+        if (state.lt.TimeBar === '等待开奖') {
+          this.$store.commit('lt_displayResults', false)
+          return this.wait4Results
+        }
+        this.$store.commit('lt_displayResults', true)
+        return state.lt.LotteryResults[this.lcode][0].LotteryOpen.split(',')
       },
       display(){
         console.log(state.lt.displayResults)
@@ -273,6 +283,21 @@
         return this.$refs.mySwiper.swiper
       }
     }),
+    created(){
+      function circle(num){
+        num ++
+        if(num > 3){
+          return 0
+        }else{
+          return num
+        }
+      }
+      var arr = [0,0,0]
+      this.wait4Resultst = setInterval(()=>{
+        arr = arr.map(circle)
+        this.wait4Results = arr
+      },80)
+    },
     methods:{
       changeVideo(){
         this.$refs.iframe.contentDocument.destroy()
@@ -476,14 +501,15 @@
         }
       }, 20)
       // 监听窗口大小改变时间
-      window.addEventListener('resize', () => {
+      this.changeSize = ()=>{
         this.changeHeight()
         if (!this.slider) {
           return
         }
         this._setSliderWidth(true)
         this.slider.refresh()
-      })
+      }
+      window.addEventListener('resize',this.changeSize)
       console.log(this.$refs.wrapperCon0[0])
       this.$nextTick(() => {
         this.scroll = new BScroll(this.$refs.wrapperCon0[0], {bounce:false})
@@ -492,10 +518,13 @@
     // 生命周期destroyed销毁清除定时器，有利于内存释放
     destroyed() {
       clearTimeout(this.timer)
+      clearTimeout(this.wait4Resultst)
+      window.removeEventListener('resize',this.changeSize)
     },
   }
 </script>
 <style lang="scss" scoped>
+@import "../../scss/dice";
 .mainPage{
   height:100%;
   position:fixed;
@@ -528,21 +557,23 @@
   background:rgba(0,0,0,.2);
   display:inline-block;
 }
-.timebar{
+.timebar,.oldissue{
   font-size:.68em;
   padding:.5em .8em;
   border-radius: 1.4705em;
+}
+.timebar{
   em{
     display:inline;
   }
 }
 .oldissue{
-  margin-top:.7272em;
-  font-size:.55em;
-  padding:.4em 1em;
-  border-radius: 1.6666em;
+  margin-top:.588em;
 }
 
+.DiceImg{
+  display: inline-block;
+}
   //header样式
   .header{
     height:2.3em;
@@ -716,10 +747,11 @@
     transition:.2s;
     opacity: 0;
     z-index: 0;
+    position: relative;
   }
   .betContainer.bet{
     opacity: 1;
-    z-index: 20;
+    z-index: 30;
   }
   .topshadow{
     height:1em;
