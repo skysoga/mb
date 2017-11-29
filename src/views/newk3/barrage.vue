@@ -101,9 +101,21 @@
         this.scroll.scrollTo(0,this.scroll.maxScrollY,.2)
       })
     },
+    methods:{
+    	refresh(){
+    		this.scroll.refresh()
+        this.scroll.scrollTo(0,this.scroll.maxScrollY,.2)
+    	},
+    },
     beforeDestroy(){
-    	console.log('准备摧毁弹幕')
-    }
+    },
+    watch:{
+    	'$parent.show'(n){
+    		if(n === 'main'){
+    			this.refresh()
+    		}
+    	}
+    },
   }
 </script>
 <style lang="scss" scoped>
