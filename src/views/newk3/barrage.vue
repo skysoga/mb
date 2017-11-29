@@ -103,8 +103,10 @@
     },
     methods:{
     	refresh(){
-    		this.scroll.refresh()
-        this.scroll.scrollTo(0,this.scroll.maxScrollY,.2)
+    		setTimeout(()=>{
+	    		this.scroll.refresh()
+	        this.scroll.scrollTo(0,this.scroll.maxScrollY,.2)
+    		},100)
     	},
     },
     beforeDestroy(){
