@@ -12,7 +12,7 @@
           {{TimeBar}}<i class="iconfont">&#xe60e;</i>
         </div><br>
         <div class="oldissue" @click.stop="history = 2">
-          {{oldIssue.replace(/^.{2}/,'')}}开奖：<div class="DiceImg">
+          {{oldIssue}}开奖：<div class="DiceImg">
             <div class="Dice" :class="displayClass+results[0]"></div><div class="Dice" :class="displayClass+results[1]"></div><div class="Dice" :class="displayClass+results[2]"></div>
           </div>
           <i class="iconfont">&#xe60e;</i>
@@ -191,7 +191,10 @@
       nowModeIndex:()=>cfg[state.lt.mode.mode].index,
       //开奖结果部分
       oldIssue(){
-        return state.lt.OldIssue
+        if (state.lt.TimeBar === '等待开奖') {
+          return this.nowIssue
+        }
+        return state.lt.OldIssue.replace(/^.{2}/,'')
       },
       nowIssue(){
         let issue = ''+state.lt.NowIssue
