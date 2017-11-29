@@ -386,7 +386,7 @@
         this.$store.commit('lt_changeMode', mode)
       },
       _setSliderWidth(isResize) {
-        this.children = this.$refs.sliderGroup.children
+        this.children = this.$refs.sliderGroup.children || 0
         if (!this.children) {
           return
         }

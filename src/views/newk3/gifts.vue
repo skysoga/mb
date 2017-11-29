@@ -1,15 +1,16 @@
 <template>
 	<div class="gifts" v-if="giftArr.length > 0">
 		<boat 		v-if="giftArr[0].type === 'boat'"			></boat>
-		<ferrari  v-if="giftArr[0].type === 'ferrari'"		></ferrari>
+		<ferrari  v-if="giftArr[0].type === 'ferrari'"	></ferrari>
 		<airplane v-if="giftArr[0].type === 'airplane'"	></airplane>
+    <cannon   v-if="giftArr[0].type === 'cannon'"   ></cannon>
 	</div>
 </template>
 <script>
   import boat 			from './gifts/boat'
   import ferrari  	from './gifts/ferrari'
   import airplane   from './gifts/airplane'
-  import cannon   from './gifts/cannon'
+  import cannon     from './gifts/cannon'
   export default {
     components: {
       boat,

@@ -35,7 +35,14 @@
 			    <div v-for="d in betData">
 			        <a class="active">
 			            <div>
-			                <p>{{d.lotteryName}}<span>￥{{d.normal_money}}</span></p><span>{{d.issueNo}} 期</span></div> <strong>{{d.openState}}</strong></a>
+			            	<p>{{d.lotteryName}}<span>￥{{d.normal_money}}</span></p><span>{{d.issueNo}} 期</span>
+			            </div>
+                  <div class="fr" v-if="Number(d.openState)">
+                  	<strong class="InMoney fr">+{{d.openState}}</strong>
+                  	<span class="InMoney fr">已中奖</span>
+                  </div>
+                  <strong class="" v-else>{{d.openState}}</strong>
+              </a>
 			        <div class="hr1px"></div>
 			    </div>
 			    <div class="msg noMore">更多投注记录请到 我的账户>投注记录 查看</div>
@@ -67,6 +74,7 @@
 			return {
 				opened:0,
 				betData:null,
+				loaedBetting:0,
 			}
 		},
 		created(){
@@ -75,6 +83,10 @@
 			},10)
 			if (this.type === 1) {
 				this.getBet()
+			}else{
+				if(this.results.length < 10){
+					console.log('需要重新获取期号')
+				}
 			}
 		},
 		methods:{
@@ -85,7 +97,6 @@
 				},200)
 			},
 			getBet(){
-				console.log('获取投注记录')
 				_fetch({
 					Action:'GetBetting',
 					SourceName:'PC'
@@ -93,10 +104,26 @@
 				.then(d=>{
 					if (d.Code === 1) {
 						this.betData = d.Data
+						this.loaedBetting = 1
 					}else{
 						layer.msgWarn(d.StrCode)
 					}
 				})
+			}
+		},
+		watch:{
+			'$parent.history'(n){
+				if (n === 1 && !this.loaedBetting) {
+					this.getBet()
+				}
+			},
+			'results'(n,o){
+				if (o.length === 0) {
+					return
+				}
+				if (n[0].IssueNo -1 !== o[0].IssueNo*1) {
+					console.log('watch期号不正常，需要重新获取')
+				}
 			}
 		},
 	}
