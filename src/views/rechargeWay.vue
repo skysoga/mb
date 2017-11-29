@@ -90,7 +90,7 @@
       <!-- 第四方支付 暂定名：多功能支付-->
 
       <div class="surperise active" v-show="FourUrl.PayUrl">
-        <a class="wrap" @click="toFourUrl()">
+        <a class="wrap" @click="!isSelfApp&&toFourUrl()" :href="isSelfApp&&FourUrl.PayUrl">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/fourthpay.png'">
           <div class="text">
             <strong>{{FourUrl.PayType}}</strong>
@@ -119,7 +119,7 @@ export default {
       aliMsg:'',
       qqMsg:'',
       FourUrl:{},
-      UnionMsg:''
+      UnionMsg:'',
     }
   },
   beforeRouteEnter(to,from,next){
@@ -180,13 +180,16 @@ export default {
 
     this.payLimit = obj
   },
+  computed:{
+    'isSelfApp':()=>Boolean(localStorage.getItem('isSelfApp'))
+  },
   methods:{
     setUrl(key,name,bool){
       var Url= key === '一般' ? 'normalPay?method='+name : 'quickPay?method='+name
       !bool&&router.push(Url)
     },
     toFourUrl(){
-      var newtab=!_App&&!localStorage.getItem('isSelfApp')&&window.open('about:blank')
+      var newtab=!_App&&!this.isSelfApp&&window.open('about:blank')
       RootApp.AjaxGetInitData(['RechargeFourthParty'], state=>{
         var json=state.RechargeFourthParty
         if(json&&json.length){
