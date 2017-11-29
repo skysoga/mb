@@ -42,6 +42,7 @@
           var Minute=isTime.getMinutes()
           if(Hours==0&&Minute<20){
             this.serverTime=true
+            store.commit('ClearInitData', ["RankingList"])
           }else{
             this.serverTime=false
           }
