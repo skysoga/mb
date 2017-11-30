@@ -1,18 +1,23 @@
 <template>
-	<div class="gifts" v-if="giftArr.length > 0">
-		<boat 		v-if="giftArr[0].type === 'boat'"			></boat>
-		<ferrari  v-if="giftArr[0].type === 'ferrari'"	></ferrari>
-		<airplane v-if="giftArr[0].type === 'airplane'"	></airplane>
-    <cannon   v-if="giftArr[0].type === 'cannon'"   ></cannon>
-	</div>
+  <div>
+    <smallgift></smallgift>
+  	<div class="gifts" v-if="giftArr.length > 0">
+  		<boat 		v-if="giftArr[0].type === 'boat'"			></boat>
+  		<ferrari  v-if="giftArr[0].type === 'ferrari'"	></ferrari>
+  		<airplane v-if="giftArr[0].type === 'airplane'"	></airplane>
+      <cannon   v-if="giftArr[0].type === 'cannon'"   ></cannon>
+  	</div>
+  </div>
 </template>
 <script>
-  import boat 			from './gifts/boat'
+  import smallgift  from './gifts/smallgift'
+  import boat       from './gifts/boat'
   import ferrari  	from './gifts/ferrari'
   import airplane   from './gifts/airplane'
   import cannon     from './gifts/cannon'
   export default {
     components: {
+      smallgift,
       boat,
       ferrari,
       airplane,

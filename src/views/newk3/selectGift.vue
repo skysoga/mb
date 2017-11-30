@@ -14,8 +14,8 @@
         <li @click.stop="select('cannon')" :class="{selected:active === 'cannon'}">
           <em>皇家礼炮</em>
         </li>
-        <li @click.stop="">
-          <em>未启用</em>
+        <li @click.stop="select('cuke')" :class="{selected:active === 'cuke'}">
+          <em>黄瓜</em>
         </li>
         <li @click.stop="">
           <em>未启用</em>
