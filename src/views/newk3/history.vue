@@ -12,6 +12,11 @@
 					<div class="sum">和值 {{results[0].sum}}</div>
 					<div class="open">号码 {{results[0].LotteryOpen[0]}} {{results[0].LotteryOpen[1]}} {{results[0].LotteryOpen[2]}}</div>
 					<div class="other">{{results[0].bigOrSmall}}，{{results[0].singleOrDouble}}</div>
+					<div class="imgResult">
+						<span :class="'dice'+results[0].LotteryOpen[0]" style="background: url('/static/img/history-dice.png'"></span>
+						<span :class="'dice'+results[0].LotteryOpen[1]" style="background: url('/static/img/history-dice.png'"></span>
+						<span :class="'dice'+results[0].LotteryOpen[2]" style="background: url('/static/img/history-dice.png'"></span>
+					</div>
 				</div>
 				<table>
 					<tr>
@@ -207,6 +212,46 @@
 			top:3.3rem;
 			right:1rem;
 		}
+	}
+	.imgResult{
+		position: relative;
+		width:3.6rem;
+		height: 6rem;
+		margin-left: 6.2rem;
+		span{
+			display: block;
+			height: 1.6rem;
+			width: 1.6rem;
+			background-size: 9.6rem !important;
+			background-repeat: no-repeat !important;
+			position:absolute;
+		}
+		span:nth-child(1){
+			left:1rem;
+			top:1.6rem;
+		}
+		span:nth-child(2){
+			top:3rem;
+		}
+		span:nth-child(3){
+			top:3rem;
+			left:2rem;
+		}
+	}
+	.dice2{
+		background-position: -1.6rem 0 !important;
+	}
+	.dice3{
+		background-position: -3.2rem 0 !important;
+	}
+	.dice4{
+		background-position: -4.8rem 0 !important;
+	}
+	.dice5{
+		background-position: -6.4rem 0 !important;
+	}
+	.dice6{
+		background-position: -8rem 0 !important;
 	}
 	.opened{
 		table{
