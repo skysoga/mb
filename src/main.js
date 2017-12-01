@@ -1075,7 +1075,7 @@ window.RootApp={
       var len = change.length
       console.log(len);
       if (len) {
-        var time = _Tool.Date.getTime()
+        var time = _Tool.Date.getTime()+8*3600000
         time/=DAY_TIME
         time=Math.floor(time)%366
         for (var i = len - 1; i >= 0; i--) {
