@@ -740,7 +740,7 @@ var AppArr=[
   'SiteConfig',
 ]
 var LocalCacheArr = [//本地控制缓存版本
-  'RankingList',//昨日奖金榜
+  'RankingList',//昨日盈利榜
 ]
 var VerifyArr=["LotteryConfig","LotteryHot","BannerList","LotteryList","ActivityConfig","FooterConfig","HelpConfig","SiteConfig","HallBanner","GradeList","DefaultPhotoList","RewardData","AbstractType","PayLimit","CloudUrl","NoticeData"]
 if (_App) {
@@ -982,10 +982,10 @@ window.RootApp={
   },
   OpenWin:function(url, newTab){
     //app
-    if(localStorage.getItem('isSelfApp')){
-      state.URL=url
-      return
-    }
+    // if(localStorage.getItem('isSelfApp')){
+      // state.URL=url
+    //   return
+    // }
     if(YDB){
       YDB.OpenWithSafari(url)
     }else{

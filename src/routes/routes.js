@@ -106,7 +106,7 @@ var routes = [{
       title:"中奖信息",
       to:"/center/newWinners",
     },{
-      title:"昨日奖金榜",
+      title:"昨日盈利榜",
       to:"/center/competition"
     }],
     nav:true,
@@ -122,7 +122,7 @@ var routes = [{
   },{
     path:"competition",
     component:competition,
-    name: '昨日奖金榜',
+    name: '昨日盈利榜',
   }]
 }, {
   path: '/userCenter',
