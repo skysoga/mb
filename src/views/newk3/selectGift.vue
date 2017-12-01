@@ -17,8 +17,8 @@
         <li @click.stop="select('cuke')" :class="{selected:active === 'cuke'}">
           <em>黄瓜</em>
         </li>
-        <li @click.stop="">
-          <em>未启用</em>
+        <li @click.stop="select('binary-porsche')" :class="{selected:active === 'binary-porsche'}">
+          <em>保时捷</em>
         </li>
         <li @click.stop="">
           <em>未启用</em>

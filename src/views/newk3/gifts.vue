@@ -6,6 +6,7 @@
   		<ferrari  v-if="giftArr[0].type === 'ferrari'"	></ferrari>
   		<airplane v-if="giftArr[0].type === 'airplane'"	></airplane>
       <cannon   v-if="giftArr[0].type === 'cannon'"   ></cannon>
+      <binary   v-if="giftArr[0].type.indexOf('binary') > -1"></binary>
   	</div>
   </div>
 </template>
@@ -15,6 +16,7 @@
   import ferrari  	from './gifts/ferrari'
   import airplane   from './gifts/airplane'
   import cannon     from './gifts/cannon'
+  import binary     from './gifts/binary'
   export default {
     components: {
       smallgift,
@@ -22,6 +24,7 @@
       ferrari,
       airplane,
       cannon,
+      binary,
     },
   	props:['activegift'],
     data:()=>{

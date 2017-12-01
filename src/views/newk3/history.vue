@@ -134,6 +134,14 @@
 	}
 </script>
 <style lang="scss" scoped>
+//test
+#demoCanvas{
+	position: fixed;
+	top:0;
+	width:100%;
+	pointer-events:none;
+}
+//test - end
 @import '../../scss/detailList.scss';
 .beted{
 	border-top:1px solid #d7d6d6;

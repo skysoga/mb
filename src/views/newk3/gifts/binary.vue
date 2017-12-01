@@ -1,0 +1,53 @@
+<template>
+	<div class="binary">
+		<div id="porsche"></div>新型礼物
+	</div>
+</template>
+<script>
+  export default {
+    data:()=>{
+			return {
+				data:{
+					porsche:['/static/img/porsche.c',1000],
+				},
+				removeT:null,
+			}
+		},
+		mounted(){
+			let name = this.$parent.giftArr[0].type.split('-')[1]
+			let isHas = 0
+			for(let [k,v] of Object.entries(this.data)){
+				if(k === name){
+					isHas = 1
+				}
+			}
+			this.start(name)
+		},
+		methods:{
+			start(name){
+				var player = new SVGA.Player('#'+name);
+				var parser = new SVGA.Parser('#'+name); // 如果你需要支持 IE6+，那么必须把同样的选择器传给 Parser。
+				parser.load(this.data[name][0], videoItem=> {
+					player.loops = 1
+					player.onFinished(()=>{
+            this.$parent.giftArr.splice(0,1)
+					})
+			    player.setVideoItem(videoItem);
+			    player.startAnimation();
+				})
+			}
+		},
+	}
+</script>
+<style lang='scss' scoped>
+.binary{
+	position: fixed;
+	z-index: 25;
+	width: 100%;
+	height:100%;
+	>div{
+		width:100%;
+		height:100%;
+	}
+}
+</style>
