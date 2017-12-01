@@ -50,14 +50,14 @@
           this.giftArr.splice(0,1)
           this.twoGift.gift1T = setTimeout(()=>{
             this.twoGift.gift1 = null
-          },2000)
+          },5000)
         }
         if (this.twoGift.gift2 === null && this.giftArr.length > 0) {
           this.twoGift.gift2 = this.giftArr[0]
           this.giftArr.splice(0,1)
           this.twoGift.gift2T = setTimeout(()=>{
             this.twoGift.gift2 = null
-          },2000)
+          },5000)
         }
       },
     },
@@ -74,6 +74,7 @@
   z-index: 22;
   bottom: 10em;
   left: .4em;
+  height:4.5em;
   >div{
     background: rgba(0, 0, 0, 0.15);
     height:2em;
@@ -97,6 +98,7 @@
     display:block;
     color:white;
     font-size:.68em;
+    line-height: 1.32em;
   }
   span{
     margin-top: .4em;
