@@ -10,20 +10,29 @@
 				data:{
 					porsche:['/static/img/porsche.c',1000],
 				},
-				removeT:null,
+				reStartT:null,
 			}
 		},
 		mounted(){
-			let name = this.$parent.giftArr[0].type.split('-')[1]
-			let isHas = 0
-			for(let [k,v] of Object.entries(this.data)){
-				if(k === name){
-					isHas = 1
-				}
-			}
-			this.start(name)
+			this.checkGift()
 		},
 		methods:{
+			checkGift(){
+				let gift = this.$parent.giftArr[0] || 0
+				if (!gift) {
+					return
+				}
+				let name = gift.type.split('-')[1]
+				let isHas = 0
+				for(let [k,v] of Object.entries(this.data)){
+					if(k === name){
+						isHas = 1
+					}
+				}
+				if (isHas) {
+					this.start(name)
+				}
+			},
 			start(name){
 				var player = new SVGA.Player('#'+name);
 				var parser = new SVGA.Parser('#'+name); // 如果你需要支持 IE6+，那么必须把同样的选择器传给 Parser。
@@ -31,12 +40,16 @@
 					player.loops = 1
 					player.onFinished(()=>{
             this.$parent.giftArr.splice(0,1)
+            this.reStartT = setTimeout(this.checkGift(),100)
 					})
 			    player.setVideoItem(videoItem);
 			    player.startAnimation();
 				})
 			}
 		},
+		distroyed(){
+			clearTimeout(this.reStartT)
+		}
 	}
 </script>
 <style lang='scss' scoped>
@@ -45,6 +58,8 @@
 	z-index: 25;
 	width: 100%;
 	height:100%;
+
+	pointer-events:none;
 	>div{
 		width:100%;
 		height:100%;
