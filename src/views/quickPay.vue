@@ -7,6 +7,15 @@
     </div>
     <template v-else>
       <table>
+        <tr v-if="Bank.length>1">
+          <td>选择银行</td>
+          <td>
+            <select v-model = "PayType" @change = "changeBank">
+              <option v-for = "option in Bank" :value = "option.PayType">{{option.PayType}}</option>
+            </select>
+            <i class="iconfont unfold"></i>
+          </td>
+        </tr>
         <tr>
           <td>充值金额</td>
           <td>
@@ -47,7 +56,8 @@ export default {
     var title = {
       Weixin:'微信支付',
       Alipay: '支付宝',
-      QQpay: 'QQ钱包'
+      QQpay: 'QQ钱包',
+      UnionPay: '银联扫码'
     }
     var method = to.query.method       //'Bank', 'Weixin', 'Alipay'
     var rechargeWay = 'RechargeWay' + method
@@ -55,7 +65,8 @@ export default {
     var limitName = {
       Weixin: '微信快捷',
       Alipay: '支付宝快捷',
-      QQpay: 'QQ快捷'
+      QQpay: 'QQ快捷',
+      UnionPay: '银联快捷'
     }
 
     //获取数据
@@ -83,6 +94,7 @@ export default {
           }
           vm.underMaintain = false
           vm.nowRender = json[0]
+          vm.Bank=json
           vm.vaConfig ||(vm.vaConfig = {})
           vm.vaConfig['Money'] || (vm.vaConfig['Money'] = [])
             var Min=json[0].MinMoney,
@@ -96,6 +108,7 @@ export default {
     return {
       method: '',                //什么充值方式
       PayType:null,
+      Bank:[],
       pageName: '',              //维护的名字
       underMaintain: false,      //是否维护
       QrImg:'',
@@ -251,7 +264,8 @@ export default {
       var _name= {
         Weixin: '微信支付',
         Alipay: '支付宝充值',
-        QQpay: 'QQ钱包'
+        QQpay: 'QQ钱包',
+        UnionPay: '银联扫码'
       }
       return _name[this.method]
     }
@@ -283,6 +297,15 @@ export default {
         QQpay:{
           Action:'Recharge',
           Qort:8,
+          PayUser:'',
+          Money:0,
+          ID:1,
+          BankCode:0
+        },
+        //UnionPay
+        UnionPay:{
+          Action:'Recharge',
+          Qort:10,
           PayUser:'',
           Money:0,
           ID:1,
@@ -331,7 +354,7 @@ export default {
         if(json.Code === 1){
           var OpenType=json.OpenType
           layer.closeAll()
-          if(newTab){
+          if(newTab||OpenType===4){
             this.QrBg=false
             RootApp.OpenWin(json.BackUrl, newTab)
             this.Money = ''
@@ -367,6 +390,13 @@ export default {
     setQrCode(url){
       var qrcode = new QRCode('qrcode');
       qrcode.makeCode(url)
+    },
+    changeBank(){
+      this.Bank.forEach(item=>{
+        if(item.PayType === this.PayType){
+          this.nowRender = item
+        }
+      })
     }
   }
 }

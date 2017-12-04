@@ -132,36 +132,6 @@ window.em = Math.sqrt((rem-20)*.9)+20
 window.YDB = null
 document.querySelector("html").style.fontSize=rem+'px'
 document.body.style.fontSize=em+'px'
-window._Tool = {
-  Array: {
-    Unique: function (array) {
-      var n = []; //临时数组
-      for (var i = 0; i < array.length; i++) {
-        if (n.indexOf(array[i]) == -1) n.push(array[i]);
-      }
-      return n;
-    }
-  },
-  // 获得服务器的时间
-  Date: {
-    getTime:function(){
-      return new Date().getTime()-state.Difftime||0
-      /*if (state.Difftime) {
-        return {then:function(fun){
-          fun&&fun(new Date().getTime()-state.Difftime)
-        }}
-      }else{
-        return new Promise(function(resolve, reject) {
-          RootApp.getServerTime(function(){
-            if (state.Difftime) {
-              resolve(new Date().getTime()-state.Difftime)
-            }
-          })
-        })
-      }*/
-    }
-  }
-}
 
 //获取cookie
 window.getCookie=function(cname){
@@ -225,7 +195,7 @@ window._catch = function(data){
   str=str.join('&')
   // var fetchUrl = state.UserName||data.UserName
   // fetchUrl = '/catch?'+(fetchUrl&&('U='+fetchUrl+'&'))+str
-  _App && ga && ga('send','event',msg,str)
+  // _App && ga && ga('send','event',msg,str)
   var fetchUrl = 'http://catch.imagess-google.com?'+str
   fetch(fetchUrl, {
     credentials:'same-origin',
@@ -769,7 +739,7 @@ var AppArr=[
   'SiteConfig',
 ]
 var LocalCacheArr = [//本地控制缓存版本
-  'RankingList',//昨日奖金榜
+  'RankingList',//昨日盈利榜
 ]
 var VerifyArr=["LotteryConfig","LotteryHot","BannerList","LotteryList","ActivityConfig","FooterConfig","HelpConfig","SiteConfig","HallBanner","GradeList","DefaultPhotoList","RewardData","AbstractType","PayLimit","CloudUrl","NoticeData"]
 if (_App) {
@@ -1011,6 +981,10 @@ window.RootApp={
   },
   OpenWin:function(url, newTab){
     //app
+    // if(localStorage.getItem('isSelfApp')){
+      // state.URL=url
+    //   return
+    // }
     if(YDB){
       YDB.OpenWithSafari(url)
     }else{
@@ -1101,7 +1075,7 @@ window.RootApp={
       var len = change.length
       console.log(len);
       if (len) {
-        var time = _Tool.Date.getTime()
+        var time = _Tool.Date.getTime()+8*3600000
         time/=DAY_TIME
         time=Math.floor(time)%366
         for (var i = len - 1; i >= 0; i--) {

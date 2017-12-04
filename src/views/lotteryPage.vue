@@ -529,6 +529,9 @@
               if (monthPlan.Month==10) {
                 monthPlan.Schedule=monthPlan.Schedule.replace('15,','')
               }
+              if (monthPlan.Month==11) {
+                monthPlan.BeforeIssue=127
+              }
               //保证转为数字类型
               monthPlan.BeforeIssue *= 1
               monthPlan.NextFirst *= 1
@@ -1172,7 +1175,7 @@
       },
       setDefaultMode(){
         var defaultMode = {
-          'SSC':['五星', '直选'],
+          'SSC':['一星','定位胆'],
           'SYX5':['三码', '三码'],
           'FC3D':['三星', '直选'],
           'PL35':['三星', '直选'],
