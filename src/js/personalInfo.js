@@ -95,6 +95,11 @@ export default {
           return
         }
       }
+    },
+    getUrl(str){
+      var obj=(str=='Mobile')
+      var route=obj?'/setMobile':'/setMail'
+      router.push(route)
     }
   },
   components:{
