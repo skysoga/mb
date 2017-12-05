@@ -194,7 +194,7 @@
         if (state.lt.TimeBar === '等待开奖') {
           return this.nowIssue
         }
-        return state.lt.OldIssue.replace(/^.{2}/,'')
+        return state.lt.OldIssue?state.lt.OldIssue.replace(/^.{2}/,''):''
       },
       nowIssue(){
         let issue = ''+state.lt.NowIssue
