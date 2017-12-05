@@ -341,9 +341,9 @@
           lt_updateIssue:(state,source)=>{
             var ptype = state.ptype
             if (ptype === 'live') {
-              if (state.LotteryResults['0101'][0] !== undefined) {
-                Vue.set(state, 'OldIssue', state.LotteryResults['0101'][0].IssueNo)
-              }
+              // if (state.LotteryResults['0101'][0] !== undefined) {
+              //   Vue.set(state, 'OldIssue', state.LotteryResults['0101'][0].IssueNo)
+              // }
             }else{
               var code = state.lottery.LotteryCode   //当前彩种号
               Vue.set(state, 'NowIssue', computeIssue(code, state.IssueNo))        //当前期 (可以下注的这一期)

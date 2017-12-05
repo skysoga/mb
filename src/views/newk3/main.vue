@@ -194,7 +194,8 @@
         if (state.lt.TimeBar === '等待开奖') {
           return this.nowIssue
         }
-        return state.lt.OldIssue?state.lt.OldIssue.replace(/^.{2}/,''):''
+        let newRecord = state.lt.LotteryResults[this.lcode][0]
+        return newRecord?newRecord.IssueNo.replace(/^.{2}/,''):''
       },
       nowIssue(){
         let issue = ''+state.lt.NowIssue
