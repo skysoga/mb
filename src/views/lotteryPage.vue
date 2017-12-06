@@ -95,12 +95,12 @@
 
       //打开ws
       var ws = null
-      var ws1 = null
+      var ws1 = []
       if (ptype === 'live') {
         var getWs = new Promise(function(resolve, reject){
           ws = new WebSocket('ws://47.52.166.234:8002')
           ws.onmessage = e =>{
-            ws1 = e.data
+            ws1.push(e.data)
             resolve()
           }
           ws.onerror = err =>{
@@ -142,7 +142,9 @@
         }
         next(vm=>{
           if (ws !== null) {
-            checkws(vm,ws1)
+            for(let a of ws1){
+              checkws(vm,a)
+            }
             ws.onmessage =e=>{
               checkws(vm,e.data)
             }
@@ -1344,6 +1346,7 @@
       WSrefresh(json){
         this.WS[json.type] = json.result
         this.WS.Status = json.type
+        console.log(json.type)
         switch(json.type){
           case 'Newest':this.statusNewest(json.result);break;
           case 'GameStatus':this.statusGameStatus(json.result);break;
@@ -1399,8 +1402,7 @@
         console.log('watch:已开奖')
       },
       statusPrevious(n){
-        // console.log('设置旧期号'+n.record_code)
-        // Vue.set(state, 'OldIssue', n.record_code)
+        console.log('once前一期的开奖记录',n)
         store.commit({
           type:'lt_setOnceLotteryResult',
           code:this.lcode,
