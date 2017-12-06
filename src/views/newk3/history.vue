@@ -37,6 +37,8 @@
 			</div>
 			<div class="beted" v-show="type === 1">
 				<div class="touchScroll">
+					<div class="nodata" v-if="betData === null">正在加载...</div>
+					<div class="nodata" v-if="betData !== null && betData.length<=0">暂无数据</div>
 			    <div v-for="d in betData">
 			        <a class="active">
 			            <div>
@@ -64,7 +66,7 @@
 	    results(){
 	      var pastOpen = state.lt.LotteryResults[this.$parent.lcode].map(item=>{
 	        var el = {}
-	        el.IssueNo = item.IssueNo.length < 7 ? item.IssueNo :item.IssueNo.slice(4)        //把年份砍掉
+	        el.IssueNo = item.IssueNo.length < 7 ? item.IssueNo :item.IssueNo.slice(2)        //把年份砍掉
 	        var results = item.LotteryOpen.split(',')
 	        el.LotteryOpen = results
 	        el.sum = results.reduce((a,b)=>(+a)+(+b))
@@ -134,15 +136,12 @@
 	}
 </script>
 <style lang="scss" scoped>
-//test
-#demoCanvas{
-	position: fixed;
-	top:0;
-	width:100%;
-	pointer-events:none;
-}
-//test - end
 @import '../../scss/detailList.scss';
+.nodata{
+	text-align: center;
+	font-size:.7em;
+	margin:3em 0;
+}
 .beted{
 	border-top:1px solid #d7d6d6;
 }
