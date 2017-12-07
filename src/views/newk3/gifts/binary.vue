@@ -8,6 +8,7 @@
     data:()=>{
 			return {
 				reStartT:null,
+				all:['porsche','money']
 			}
 		},
 		mounted(){
@@ -16,18 +17,19 @@
 		methods:{
 			checkGift(){
 				let name = this.$parent.giftArr[0] || 0
+				name = name.type
 				if (!name) {
 					return
 				}
-				// let isHas = 0
-				// for(let [k,v] of Object.entries(this.data)){
-				// 	if(k === name){
-				// 		isHas = 1
-				// 	}
-				// }
-				// if (isHas) {
-					this.start(name.type)
-				// }
+				let isHas = 0
+				for(let v of this.all){
+					if(v === name){
+						isHas = 1
+					}
+				}
+				if (isHas) {
+					this.start(name)
+				}
 			},
 			start(name){
 				var player = new SVGA.Player('#gift');

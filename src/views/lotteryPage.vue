@@ -1538,8 +1538,11 @@
 		    store.commit('lt_setChasePower', 1)		//清空追号配置
 				store.commit('lt_setChaseIssue', 1)
 	    }
-      if (this.ws !== null) {
-        this.ws.close()
+      if (this.GameWS !== null) {
+        this.GameWS.close()
+      }
+      if (this.GiftWS !== null) {
+        this.GiftWS.close()
       }
 	    next()
 	  },
