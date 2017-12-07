@@ -93,7 +93,7 @@
         }
       })
 
-      //打开ws
+      //设置请求的数组
       if (ptype === 'live') {
         var getGameConfig = new Promise(function(resolve, reject){
           let GameConfig = {
@@ -102,20 +102,6 @@
           }
           resolve(GameConfig)
         })
-      }
-      var checkws = (vm,data)=>{
-        console.log(data)
-        var json
-        try{
-          json = JSON.parse(data)
-          vm.WSrefresh(json)
-        }catch(e){
-          layer.msgWarn('服务器类型错误')
-        }
-      }
-
-      //设置请求的数组
-      if (ptype === 'live') {
         var reqArr = [getRebate, getLotteryList, getServerTime,getGameConfig]
       }else{
         var reqArr = [getRebate, getLotteryList, getServerTime]
