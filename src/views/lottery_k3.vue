@@ -351,7 +351,9 @@ export default {
     },
     //更改彩种
     changeLottery(code){
-      this.$store.dispatch('lt_updateLottery', code)
+      if(this.$route.params.code!=code){
+        this.$store.dispatch('lt_updateLottery', code)
+      }
     },
     renderRebate(mode){
       var rebate

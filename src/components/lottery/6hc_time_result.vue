@@ -116,7 +116,7 @@ export default {
     },
     results(){
       var code = this.$route.params.code
-      var _results = this.$store.state.lt.LotteryResults[code]      
+      var _results = this.$store.state.lt.LotteryResults[code]
       if(!_results || !_results.length){
         return []
       }else{
@@ -125,16 +125,18 @@ export default {
     },
     pastOpen(){
       var code = this.$route.params.code
+      var showTime=['1300'].indexOf(code)>-1
       return state.lt.LotteryResults[code].map(item=>{
         var el = {}
         el.IssueNo = item.IssueNo
         el.LotteryOpen = item.LotteryOpen.split(',').map(str=>('0' + str).slice(-2))
         var mdy = item.OpenTime.split(' ')[0] //开奖时间的年月日
+        var sTime= item.OpenTime.split(' ')[1]
         var [year,month, date] = mdy.split('/')
         year = year.slice(-2)
         month = ('0' + month).slice(-2)
         date = ('0' + date).slice(-2)
-        el.OpenTime = `${year}.${month}.${date}`
+        el.OpenTime =showTime?sTime:`${year}.${month}.${date}`
         return el
       })
     },

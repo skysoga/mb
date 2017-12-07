@@ -105,12 +105,14 @@
       },
       //更改彩种
       changeLottery(code){
-        this.LotteryList.forEach(item=>{
-          if(item.LotteryCode === code){
-            this.LotteryName = item.LotteryName
-          }
-        })
-        this.$store.dispatch('lt_updateLottery', code)
+        if(this.$route.params.code!=code){
+          this.LotteryList.forEach(item=>{
+            if(item.LotteryCode === code){
+              this.LotteryName = item.LotteryName
+            }
+          })
+          this.$store.dispatch('lt_updateLottery', code)
+        }
       },
       //玩法选择框，切换
       toggleModeSelect(){
