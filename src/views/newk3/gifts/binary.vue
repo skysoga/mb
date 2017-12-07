@@ -1,6 +1,6 @@
 <template>
 	<div class="binary">
-		<div id="porsche"></div>新型礼物
+		<div id="gift"></div>新型礼物
 	</div>
 </template>
 <script>
@@ -9,6 +9,7 @@
 			return {
 				data:{
 					porsche:['/static/img/porsche.c',1000],
+					money:['/static/img/gifts/money.c',1000],
 				},
 				reStartT:null,
 			}
@@ -34,8 +35,8 @@
 				}
 			},
 			start(name){
-				var player = new SVGA.Player('#'+name);
-				var parser = new SVGA.Parser('#'+name); // 如果你需要支持 IE6+，那么必须把同样的选择器传给 Parser。
+				var player = new SVGA.Player('#gift');
+				var parser = new SVGA.Parser('#gift'); // 如果你需要支持 IE6+，那么必须把同样的选择器传给 Parser。
 				parser.load(this.data[name][0], videoItem=> {
 					player.loops = 1
 					player.onFinished(()=>{

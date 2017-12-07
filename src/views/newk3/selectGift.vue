@@ -20,8 +20,8 @@
         <li @click.stop="select('binary-porsche')" :class="{selected:active === 'binary-porsche'}">
           <em>保时捷</em>
         </li>
-        <li @click.stop="">
-          <em>未启用</em>
+        <li @click.stop="select('binary-money')" :class="{selected:active === 'binary-money'}">
+          <em>钱钱钱</em>
         </li>
         <li @click.stop="">
           <em>未启用</em>
