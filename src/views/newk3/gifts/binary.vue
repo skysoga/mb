@@ -7,10 +7,6 @@
   export default {
     data:()=>{
 			return {
-				data:{
-					porsche:['/static/img/porsche.c',1000],
-					money:['/static/img/gifts/money.c',1000],
-				},
 				reStartT:null,
 			}
 		},
@@ -49,7 +45,12 @@
 		},
 		distroyed(){
 			clearTimeout(this.reStartT)
-		}
+		},
+    watch:{
+    	'$parent.giftArr'(n){
+    		this.checkGift()
+    	},
+    },
 	}
 </script>
 <style lang='scss' scoped>
