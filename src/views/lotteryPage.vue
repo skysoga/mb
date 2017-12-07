@@ -6,7 +6,7 @@
     <LotteryK3 v-if = "ptype !== 'live' && $route.params.type === 'K3'"></LotteryK3>
 
     <Lottery6HC v-if = "$route.params.type === '6HC'"></Lottery6HC>
-    <NewK3 v-if = "ptype === 'live' && !isSleep" :lcode="lcode"></NewK3>
+    <NewK3 ref="newk3" v-if = "ptype === 'live' && !isSleep" :lcode="lcode"></NewK3>
     <sleeping v-if = "ptype === 'live' && isSleep"></sleeping>
   </div>
 </template>
@@ -1338,13 +1338,103 @@
         this.GameWS.onerror = err =>{
           layer.msgWarn(err)
         }
-        // 创建giftws
+        //创建giftws
         this.GiftWS = new WebSocket(this.GameConfig.GiftWS)
         this.GiftWS.onmessage = e =>{
           console.log(e.data)
         }
         this.GiftWS.onerror = err =>{
           layer.msgWarn(err)
+        }
+        //自动提交礼物
+        this.autoTest()
+      },
+      autoTest(){
+        var getRedom = ()=>{
+          let num = 0
+          while(1){
+            num = Math.random()*10
+            if (num>=2 && num < 4) {
+              num = Math.round(num*10)
+              return num
+              break
+            }
+          }
+        }
+        var num = getRedom()*1000
+        setTimeout(()=>{
+          
+          // var fetchUrl = (url,data)=>{
+          //   var str=[],k
+          //   for(var i in data){
+          //     k=data[i];
+          //     if (typeof(k)==="object") {
+          //       k= encodeURIComponent(JSON.stringify(k));
+          //     }
+          //     str.push(i+'='+k)
+          //   }
+          //   str=str.join('&')
+          //   return new Promise(function(resolve, reject){
+          //     fetch(url,{
+          //       credentials:'same-origin',
+          //       method: 'POST',
+          //       headers: {
+          //         "Content-Type": "application/x-www-form-urlencoded"
+          //       },
+          //       body: str
+          //     })
+          //     .then(function (d){
+          //       if(d.status === 200){
+          //         console.log(d)
+          //         d.json().then(d=>{
+          //           if(d){
+          //             resolve(d)
+          //           }else{
+          //             resolve('数据获取失败！')
+          //           }
+          //         })
+          //         .catch(err=>{
+          //           alert("数据解析失败！"+err)
+          //         })
+          //       }else{
+          //         tool.catchFetch(d)
+          //       }
+          //     })
+          //     .catch(err=>{
+          //       alert('请求失败!'+err)
+          //     })
+          //   })
+          // }
+          // fetchUrl('http://47.52.166.234:38889/interactive/469D5742F4F09F35DA7E692D41BE11E3',{
+          //   content:{
+          //     "Target":"dafa-test",
+          //     "GameID":"0101",
+          //     "Data":{
+          //       "Type":"xxx",
+          //       "LV":-1,
+          //       "Interval":30
+          //     }
+          //   }
+          // })
+          //生成礼物
+          let gifts = ['airplane','boat','cannon','ferrari','cuke','porsche','money']
+          let who = null
+          while(1){
+            who = Math.random()*10
+            who = Math.floor(who)
+            if (who < 7) {
+              break
+            }
+          }
+
+          console.log('送出的礼物是：',gifts[who])
+          this.OnlineRefresh({type:'Gift',gift:gifts[who],username:'杨过',img:'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2764371306,3467823016&fm=27&gp=0.jpg'})
+          this.autoTest()
+        },num)
+      },
+      OnlineRefresh(json){
+        switch(json.type){
+          case 'Gift':this.$refs.newk3.giftPush(json);break;
         }
       },
       WSrefresh(json){

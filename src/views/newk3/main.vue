@@ -486,12 +486,9 @@
           this.activeHide = witch
         }
       },
-      giftPush(giftType){
-        this.activegift = {
-          type:giftType,
-          name:'大锤',
-          img:'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2764371306,3467823016&fm=27&gp=0.jpg',
-        }
+      giftPush(gift){
+        gift.type = gift.gift
+        this.activegift = gift
       }
     },
     mounted(){
