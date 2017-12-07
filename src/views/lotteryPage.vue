@@ -94,18 +94,13 @@
       })
 
       //打开ws
-      var ws = null
-      var ws1 = []
       if (ptype === 'live') {
-        var getWs = new Promise(function(resolve, reject){
-          ws = new WebSocket('ws://47.52.166.234:8002')
-          ws.onmessage = e =>{
-            ws1.push(e.data)
-            resolve()
+        var getGameConfig = new Promise(function(resolve, reject){
+          let GameConfig = {
+            GameWS:'ws://47.52.166.234:8002',
+            GiftWS:'ws://47.52.166.234:8003',
           }
-          ws.onerror = err =>{
-            reject(err)
-          }
+          resolve(GameConfig)
         })
       }
       var checkws = (vm,data)=>{
@@ -121,7 +116,7 @@
 
       //设置请求的数组
       if (ptype === 'live') {
-        var reqArr = [getRebate, getLotteryList, getServerTime,getWs]
+        var reqArr = [getRebate, getLotteryList, getServerTime,getGameConfig]
       }else{
         var reqArr = [getRebate, getLotteryList, getServerTime]
       }
@@ -141,18 +136,9 @@
           }
         }
         next(vm=>{
-          if (ws !== null) {
-            for(let a of ws1){
-              checkws(vm,a)
-            }
-            ws.onmessage =e=>{
-              checkws(vm,e.data)
-            }
-            ws.onerror=e=>{
-              layer.msgWarn('ws接口获取错误')
-            }
-            vm.ws = ws
-            store.state.lt.TimeBar = ''
+          if (values[3]) {
+            vm.GameConfig = values[3]
+            vm.createWS()
           }
         })
       }).catch((err)=>{
@@ -1305,7 +1291,9 @@
           TimeLeft:'',
           Status:''
         },
-        ws:null,
+        GameConfig:null,
+        GameWS:null,
+        GiftWS:null,
         isSleep:0,
         readySleep:'',
         readyRun:''
@@ -1343,6 +1331,30 @@
 					store.commit('lt_changeMode', state.lt.config[0])
 				}
 			},
+      createWS(){
+        //创建livews
+        this.GameWS = new WebSocket(this.GameConfig.GameWS)
+        this.GameWS.onmessage = e =>{
+          let json
+          try{
+            json = JSON.parse(e.data)
+          }catch(e){
+            layer.msgWarn('服务器类型错误')
+          }
+          this.WSrefresh(json)
+        }
+        this.GameWS.onerror = err =>{
+          layer.msgWarn(err)
+        }
+        // 创建giftws
+        this.GiftWS = new WebSocket(this.GameConfig.GiftWS)
+        this.GiftWS.onmessage = e =>{
+          console.log(e.data)
+        }
+        this.GiftWS.onerror = err =>{
+          layer.msgWarn(err)
+        }
+      },
       WSrefresh(json){
         this.WS[json.type] = json.result
         this.WS.Status = json.type
