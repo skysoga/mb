@@ -121,6 +121,9 @@ window._Tool = {
           })
         })
       }*/
+    },
+    getDay:function(){
+      return Math.floor(((_Tool.Date.getTime()-GMT_DIF-(20*60*1000))/DAY_TIME)%366)
     }
   }
 }
@@ -1075,9 +1078,10 @@ window.RootApp={
       var len = change.length
       console.log(len);
       if (len) {
-        var time = _Tool.Date.getTime()+8*3600000
+        var time = _Tool.Date.getDay()
+        /*var time = _Tool.Date.getTime()+8*3600000
         time/=DAY_TIME
-        time=Math.floor(time)%366
+        time=Math.floor(time)%366*/
         for (var i = len - 1; i >= 0; i--) {
           LocalCacheData[change[i]]=time
         }
@@ -1190,17 +1194,19 @@ window.RootApp={
           if (state[arr[i]]==null) {
             newArr.push(arr[i])
           }else if(LocalCacheArr.indexOf(arr[i])>-1){
-            var time = _Tool.Date.getTime()
+            var time = _Tool.Date.getDay()
+            /*var time = _Tool.Date.getTime()
             var todayms = time%DAY_TIME - GMT_DIF   //当天的毫秒值
             time/=DAY_TIME
-            time=Math.floor(time)%366
+            time=Math.floor(time)%366*/
+
             if (LocalCacheData[arr[i]]!=time) {
               console.log(arr[i]+"过期");
+              newArr.push(arr[i])
               //每天0点20分更新
-              if (todayms%DAY_TIME > 20 * 60 * 1000) {
+              /*if (todayms%DAY_TIME > 20 * 60 * 1000) {
                 console.log(arr[i]+"更新");
-                newArr.push(arr[i])
-              }
+              }*/
             }else{
               console.log(arr[i]+"没过期");
             }
