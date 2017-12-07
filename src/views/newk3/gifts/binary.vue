@@ -19,25 +19,24 @@
 		},
 		methods:{
 			checkGift(){
-				let gift = this.$parent.giftArr[0] || 0
-				if (!gift) {
+				let name = this.$parent.giftArr[0] || 0
+				if (!name) {
 					return
 				}
-				let name = gift.type.split('-')[1]
-				let isHas = 0
-				for(let [k,v] of Object.entries(this.data)){
-					if(k === name){
-						isHas = 1
-					}
-				}
-				if (isHas) {
-					this.start(name)
-				}
+				// let isHas = 0
+				// for(let [k,v] of Object.entries(this.data)){
+				// 	if(k === name){
+				// 		isHas = 1
+				// 	}
+				// }
+				// if (isHas) {
+					this.start(name.type)
+				// }
 			},
 			start(name){
 				var player = new SVGA.Player('#gift');
 				var parser = new SVGA.Parser('#gift'); // 如果你需要支持 IE6+，那么必须把同样的选择器传给 Parser。
-				parser.load(this.data[name][0], videoItem=> {
+				parser.load('/static/img/gifts/'+name+'.c', videoItem=> {
 					player.loops = 1
 					player.onFinished(()=>{
             this.$parent.giftArr.splice(0,1)

@@ -102,7 +102,11 @@
           }
           resolve(GameConfig)
         })
-        var reqArr = [getRebate, getLotteryList, getServerTime,getGameConfig]
+        var getGiftConfig = new Promise(function(resolve, reject){
+          let GiftConfig = [['airplane','飞机'],['boat','皇家游轮'],['cannon','皇家大炮'],['ferrari','法拉利'],['cuke','大黄瓜'],['porsche','保时捷'],['money','钱钱钱']]
+          resolve(GiftConfig)
+        })
+        var reqArr = [getRebate, getLotteryList, getServerTime,getGameConfig,getGiftConfig]
       }else{
         var reqArr = [getRebate, getLotteryList, getServerTime]
       }
@@ -124,6 +128,7 @@
         next(vm=>{
           if (values[3]) {
             vm.GameConfig = values[3]
+            vm.GiftConfig = values[4]
             vm.createWS()
           }
         })
@@ -1278,6 +1283,7 @@
           Status:''
         },
         GameConfig:null,
+        GiftConfig:null,
         GameWS:null,
         GiftWS:null,
         isSleep:0,
@@ -1289,7 +1295,7 @@
       IsStop(){
         console.log('============== 判断 ===============',state.lt.TimeBar[0])
         //判断是否不可提交订单,并弹出警告
-        return ('0123456789预'.search(state.lt.TimeBar[0])===-1)&&layer.msgWarn(state.lt.TimeBar)
+        return ('0123456789预等'.search(state.lt.TimeBar[0])===-1)&&layer.msgWarn(state.lt.TimeBar)
       },
     },
     methods:{

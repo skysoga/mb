@@ -6,7 +6,7 @@
   		<ferrari  v-if="giftArr[0].type === 'ferrari'"	></ferrari>
   		<airplane v-if="giftArr[0].type === 'airplane'"	></airplane>
       <cannon   v-if="giftArr[0].type === 'cannon'"   ></cannon>
-      <binary   v-if="checkBinary"></binary>
+      <binary></binary>
   	</div>
   </div>
 </template>
@@ -33,16 +33,6 @@
 	  		imgDom:null,
 	  		giftArr:[],
     	}
-    },
-    computed:{
-      checkBinary(){
-        let arr = this.giftArr[0] || 0
-        if (!arr || arr.type === 0) {
-          return 0
-        }
-        console.log(arr)
-        return arr.type.indexOf('binary') > -1
-      }
     },
     methods:{
     	giftcreated(that){

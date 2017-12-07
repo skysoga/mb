@@ -2,29 +2,8 @@
   <div class="giving">
     <div class="desktop">
       <ul class="fix">
-        <li @click.stop="select('boat')" :class="{selected:active === 'boat'}">
-          <em>皇家邮轮</em>
-        </li>
-        <li @click.stop="select('ferrari')" :class="{selected:active === 'ferrari'}">
-          <em>法拉利</em>
-        </li>
-        <li @click.stop="select('airplane')" :class="{selected:active === 'airplane'}">
-          <em>飞机</em>
-        </li>
-        <li @click.stop="select('cannon')" :class="{selected:active === 'cannon'}">
-          <em>皇家礼炮</em>
-        </li>
-        <li @click.stop="select('cuke')" :class="{selected:active === 'cuke'}">
-          <em>黄瓜</em>
-        </li>
-        <li @click.stop="select('binary-porsche')" :class="{selected:active === 'binary-porsche'}">
-          <em>保时捷</em>
-        </li>
-        <li @click.stop="select('binary-money')" :class="{selected:active === 'binary-money'}">
-          <em>钱钱钱</em>
-        </li>
-        <li @click.stop="">
-          <em>未启用</em>
+        <li v-for="d in $parent.$parent.GiftConfig" @click.stop="select(d[0])" :class="{selected:active === d[0]}">
+          <em>{{d[1]}}</em>
         </li>
       </ul>
     </div>
@@ -37,9 +16,13 @@
 	export default {
 		data:()=>{
 			return {
-				active:null
+				active:null,
+        giftArr:'',
 			}
 		},
+    created(){
+      this.giftArr = this.$parent.$parent.GiftConfig
+    },
 		methods:{
 			select(v){
 				this.active = v
