@@ -849,6 +849,7 @@
                 switch(state.lottery.LotteryCode){
                   case "1407":
                   case "1008":
+                  case "1300":
                     interval=5
                     break
                   default:
