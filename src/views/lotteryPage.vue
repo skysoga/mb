@@ -1482,7 +1482,7 @@
           }
 
           console.log('送出的礼物是：',gifts[who])
-          this.OnlineRefresh({type:'Gift',gift:gifts[who],username:'杨过',img:'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2764371306,3467823016&fm=27&gp=0.jpg'})
+          this.OnlineRefresh({type:'Gift',gift:gifts[who],name:'杨过',img:'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2764371306,3467823016&fm=27&gp=0.jpg'})
           this.OnlineRefresh(Object.assign({type:'Barrage'},barrages[barrageNum]))
           this.autoTest()
         },num)
