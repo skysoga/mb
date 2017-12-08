@@ -11,88 +11,7 @@
     data:()=>{
       return{
       	scroll:null,
-      	data:[
-		      {
-						call:'皇帝',
-						name:'突然想起你',
-						text:'现场灯光不错，刮的是七级的最炫民族风，我字体的故事之毛笔字',
-					},
-					{
-						call:'知府',
-						name:'ju***',
-						text:'新功能测试下效果',
-					},
-					{
-						call:'VIP5',
-						name:'沙漠皇帝',
-						text:'直播开奖新玩法',
-					},
-					{
-						call:'VIP1',
-						name:'香烟',
-						text:'弹幕内容',
-					},
-					{
-						call:'皇帝',
-						name:'突然想起你',
-						text:'现场灯光不错，刮的是七级的最炫民族风，我字体的故事之毛笔字',
-					},
-					{
-						call:'知府',
-						name:'ju***',
-						text:'新功能测试下效果',
-					},
-					{
-						call:'VIP5',
-						name:'沙漠皇帝',
-						text:'直播开奖新玩法',
-					},
-					{
-						call:'VIP1',
-						name:'香烟',
-						text:'弹幕内容',
-					},
-					{
-						call:'皇帝',
-						name:'突然想起你',
-						text:'现场灯光不错，刮的是七级的最炫民族风，我字体的故事之毛笔字',
-					},
-					{
-						call:'知府',
-						name:'ju***',
-						text:'新功能测试下效果',
-					},
-					{
-						call:'VIP5',
-						name:'沙漠皇帝',
-						text:'直播开奖新玩法',
-					},
-					{
-						call:'VIP1',
-						name:'香烟',
-						text:'弹幕内容',
-					},
-					{
-						call:'皇帝',
-						name:'突然想起你',
-						text:'现场灯光不错，刮的是七级的最炫民族风，我字体的故事之毛笔字',
-					},
-					{
-						call:'知府',
-						name:'ju***',
-						text:'新功能测试下效果',
-					},
-					{
-						call:'VIP5',
-						name:'沙漠皇帝',
-						text:'直播开奖新玩法',
-					},
-					{
-						call:'VIP1',
-						name:'香烟',
-						text:'弹幕内容',
-					},
-      	]
+      	data:[]
       }
     },
     mounted(){
@@ -116,7 +35,14 @@
     		if(n === 'main'){
     			this.refresh()
     		}
-    	}
+    	},
+    	'data'(n){
+    		if (n.length >= 100) {
+    			this.data = []
+    			this.data.push(n[n.length-1])
+    		}
+  			this.refresh()
+    	},
     },
   }
 </script>

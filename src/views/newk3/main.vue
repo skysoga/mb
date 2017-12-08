@@ -19,7 +19,7 @@
         </div><history v-if="history" :type="history"></history>
       </div>
       <div class="userContent"></div>
-      <barrage class="barrage" v-if="barrageIsOpen"></barrage>
+      <barrage ref="barrage" class="barrage" v-if="barrageIsOpen"></barrage>
       <div class="control">
         <ul class="con-btn fix">
           <li><a class="back" href="javascript:;" @click.stop="$router.go(-1)"></a></li>
@@ -485,7 +485,10 @@
       giftPush(gift){
         gift.type = gift.gift
         this.activegift = gift
-      }
+      },
+      barragePush(barrage){
+        this.$refs.barrage.data.push(barrage)
+      },
     },
     mounted(){
       this.setHeight()

@@ -98,7 +98,7 @@
         var getGameConfig = new Promise(function(resolve, reject){
           let GameConfig = {
             GameWS:'ws://47.52.166.234:8002',
-            GiftWS:'ws://47.52.166.234:8003',
+            OnlineWS:'ws://47.52.166.234:8003',
           }
           resolve(GameConfig)
         })
@@ -1285,7 +1285,7 @@
         GameConfig:null,
         GiftConfig:null,
         GameWS:null,
-        GiftWS:null,
+        OnlineWS:null,
         isSleep:0,
         readySleep:'',
         readyRun:''
@@ -1338,30 +1338,84 @@
         this.GameWS.onerror = err =>{
           layer.msgWarn(err)
         }
-        //创建giftws
-        this.GiftWS = new WebSocket(this.GameConfig.GiftWS)
-        this.GiftWS.onmessage = e =>{
+        //创建OnlineWS
+        this.OnlineWS = new WebSocket(this.GameConfig.OnlineWS)
+        this.OnlineWS.onmessage = e =>{
           console.log(e.data)
         }
-        this.GiftWS.onerror = err =>{
+        this.OnlineWS.onerror = err =>{
           layer.msgWarn(err)
         }
-        //自动提交礼物
+        //自动提交礼物和弹幕
         this.autoTest()
       },
       autoTest(){
+
+        var barrages = [
+          {
+            call:'皇帝',
+            name:'突然想起你',
+            text:'现场灯光不错，刮的是七级的最炫民族风，我字体的故事之毛笔字',
+          },
+          {
+            call:'知府',
+            name:'ju***',
+            text:'新功能测试下效果',
+          },
+          {
+            call:'VIP5',
+            name:'沙漠皇帝',
+            text:'直播开奖新玩法',
+          },
+          {
+            call:'VIP1',
+            name:'香烟',
+            text:'弹幕内容1',
+          },
+          {
+            call:'VIP2',
+            name:'邓紫棋',
+            text:'买定离手',
+          },
+          {
+            call:'VIP3',
+            name:'周杰伦',
+            text:'稳住，我们能赢',
+          },
+          {
+            call:'VIP4',
+            name:'杰森斯坦森',
+            text:'登顶盈利榜',
+          },
+          {
+            call:'VIP5',
+            name:'金三胖',
+            text:'这把一定中',
+          },
+          {
+            call:'VIP6',
+            name:'特朗普',
+            text:'中中中',
+          },
+          {
+            call:'VIP7',
+            name:'奥巴马',
+            text:'豹子 豹子',
+          },
+        ]
         var getRedom = ()=>{
           let num = 0
           while(1){
             num = Math.random()*10
             if (num>=2 && num < 4) {
-              num = Math.round(num*10)
+              num = Math.floor(num*10)
               return num
               break
             }
           }
         }
         var num = getRedom()*1000
+        var barrageNum = Math.floor(Math.random()*10)
         setTimeout(()=>{
           
           // var fetchUrl = (url,data)=>{
@@ -1429,12 +1483,15 @@
 
           console.log('送出的礼物是：',gifts[who])
           this.OnlineRefresh({type:'Gift',gift:gifts[who],username:'杨过',img:'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2764371306,3467823016&fm=27&gp=0.jpg'})
+          this.OnlineRefresh(Object.assign({type:'Barrage'},barrages[barrageNum]))
           this.autoTest()
         },num)
       },
       OnlineRefresh(json){
+        console.log(json)
         switch(json.type){
           case 'Gift':this.$refs.newk3.giftPush(json);break;
+          case 'Barrage':this.$refs.newk3.barragePush(json);break;
         }
       },
       WSrefresh(json){
@@ -1541,8 +1598,8 @@
       if (this.GameWS !== null) {
         this.GameWS.close()
       }
-      if (this.GiftWS !== null) {
-        this.GiftWS.close()
+      if (this.OnlineWS !== null) {
+        this.OnlineWS.close()
       }
 	    next()
 	  },
