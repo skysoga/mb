@@ -103,7 +103,7 @@
           resolve(GameConfig)
         })
         var getGiftConfig = new Promise(function(resolve, reject){
-          let GiftConfig = [['airplane','飞机'],['boat','皇家游轮'],['cannon','皇家大炮'],['ferrari','法拉利'],['cuke','大黄瓜'],['porsche','保时捷'],['money','钱钱钱']]
+          let GiftConfig = [['airplane','飞机'],['boat','皇家游轮'],['cannon','皇家大炮'],['ferrari','法拉利'],['cuke','大黄瓜'],['porsche','保时捷'],['money','发财树']]
           resolve(GiftConfig)
         })
         var reqArr = [getRebate, getLotteryList, getServerTime,getGameConfig,getGiftConfig]
