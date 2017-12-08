@@ -233,10 +233,6 @@
         this.$store.commit('lt_displayResults', true)
         return state.lt.LotteryResults[this.lcode][0].LotteryOpen.split(',')
       },
-      display(){
-        console.log(state.lt.displayResults)
-        return state.lt.displayResults ? this.results : this.wait4Results
-      },
       displayClass(){
         return state.lt.displayResults ? 'Dice' : 'rDice'
       },

@@ -8,7 +8,8 @@
     data:()=>{
 			return {
 				reStartT:null,
-				all:['porsche','money']
+				all:['porsche','money'],
+				moving:0,
 			}
 		},
 		mounted(){
@@ -16,8 +17,8 @@
 		},
 		methods:{
 			checkGift(){
-				let name = this.$parent.giftArr[0] || 0
-				name = name.type
+				let _giftArr0 = this.$parent.giftArr[0] || 0
+				name = _giftArr0.type
 				if (!name) {
 					return
 				}
@@ -27,18 +28,27 @@
 						isHas = 1
 					}
 				}
-				if (isHas) {
-					this.start(name)
+				if (isHas && !this.moving) {
+					this.start()
+					return true
+				}else{
+					return false
 				}
 			},
-			start(name){
+			start(){
 				var player = new SVGA.Player('#gift');
 				var parser = new SVGA.Parser('#gift'); // 如果你需要支持 IE6+，那么必须把同样的选择器传给 Parser。
-				parser.load('/static/img/gifts/'+name+'.c', videoItem=> {
+				parser.load('/static/img/gifts/'+this.$parent.giftArr[0].type+'.c', videoItem=> {
+					this.moving = 1
 					player.loops = 1
 					player.onFinished(()=>{
-            this.$parent.giftArr.splice(0,1)
-            this.reStartT = setTimeout(this.checkGift(),100)
+						this.$parent.giftArr.splice(0,1)
+            if (this.checkGift()) {
+            	this.start()
+            }else{
+	            this.moving = 0
+            }
+            // this.reStartT = setTimeout(this.checkGift(),100)
 					})
 			    player.setVideoItem(videoItem);
 			    player.startAnimation();
@@ -51,7 +61,7 @@
     watch:{
     	'$parent.giftArr'(n){
     		this.checkGift()
-    	},
+    	}
     },
 	}
 </script>

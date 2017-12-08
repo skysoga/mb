@@ -1,12 +1,12 @@
 <template>
   <div>
     <smallgift></smallgift>
+    <binary></binary>
   	<div class="gifts" v-if="giftArr.length > 0">
   		<boat 		v-if="giftArr[0].type === 'boat'"			></boat>
   		<ferrari  v-if="giftArr[0].type === 'ferrari'"	></ferrari>
   		<airplane v-if="giftArr[0].type === 'airplane'"	></airplane>
       <cannon   v-if="giftArr[0].type === 'cannon'"   ></cannon>
-      <binary></binary>
   	</div>
   </div>
 </template>
