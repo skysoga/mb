@@ -487,7 +487,10 @@
         this.activegift = gift
       },
       barragePush(barrage){
-        this.$refs.barrage.data.push(barrage)
+        let _barrage = this.$refs.barrage || 0
+        if (_barrage) {
+          _barrage.data.push(barrage)
+        }
       },
     },
     mounted(){
