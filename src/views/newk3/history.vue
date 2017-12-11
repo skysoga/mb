@@ -13,9 +13,9 @@
 					<div class="open">号码 {{results[0].LotteryOpen[0]}} {{results[0].LotteryOpen[1]}} {{results[0].LotteryOpen[2]}}</div>
 					<div class="other">{{results[0].bigOrSmall}}，{{results[0].singleOrDouble}}</div>
 					<div class="imgResult">
-						<span :class="'dice'+results[0].LotteryOpen[0]" style="background: url('/static/img/history-dice.png'"></span>
-						<span :class="'dice'+results[0].LotteryOpen[1]" style="background: url('/static/img/history-dice.png'"></span>
-						<span :class="'dice'+results[0].LotteryOpen[2]" style="background: url('/static/img/history-dice.png'"></span>
+						<span :class="'dice'+results[0].LotteryOpen[0]" style="background: url('/static/img/history-dice.png')"></span>
+						<span :class="'dice'+results[0].LotteryOpen[1]" style="background: url('/static/img/history-dice.png')"></span>
+						<span :class="'dice'+results[0].LotteryOpen[2]" style="background: url('/static/img/history-dice.png')"></span>
 					</div>
 				</div>
 				<table>

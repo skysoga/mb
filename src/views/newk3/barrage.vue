@@ -1,5 +1,5 @@
 <template>
-	<div class="barrage" ref="barrageCon">
+	<div class="barrage" ref="barrageCon" v-show="data.length > 0">
 		<ul>
 			<li v-for="d in data"><span>{{d.call}}</span><div><em>{{d.name}}：</em><ins>{{d.text}}</ins></div></li>
 		</ul>
