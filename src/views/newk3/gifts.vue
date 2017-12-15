@@ -32,9 +32,18 @@
 	  		imgbaseUrl:'/static/img/gifts/',
 	  		imgDom:null,
 	  		giftArr:[],
+        t1:null,
+        t2:null,
     	}
     },
+    created(){
+      document.addEventListener("visibilitychange", this.clearGift)
+    },
     methods:{
+      clearGift(){
+        this.giftArr = []
+        console.log('礼物清空')
+      },
     	giftcreated(that){
 	  		this.loadImg(that.url)
 	  		.then(()=>{
@@ -57,10 +66,10 @@
     	},
     	start(that){
     		that.moving = 1
-  			setTimeout(()=>{
+  			this.t1 = setTimeout(()=>{
 	  			that.moving = 0
           this.giftArr[0].type = 0
-          setTimeout(()=>{
+          this.t2 = setTimeout(()=>{
             this.giftArr.splice(0,1)
           },100)
   			},that.time)
@@ -74,7 +83,12 @@
     		this.giftArr.push(n)
         this.$parent.activegift = ''
     	}
-    }
+    },
+    beforeDestroy(){
+      document.removeEventListener("visibilitychange", this.clearGift)
+      clearTimeout(this.t1)
+      clearTimeout(this.t2)
+    },
   }
 </script>
 <style lang="scss" scoped>

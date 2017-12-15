@@ -95,15 +95,17 @@
 
       //设置请求的数组
       if (ptype === 'live') {
-        var getGameConfig = new Promise(function(resolve, reject){
-          let GameConfig = {
-            GameWS:'ws://47.52.166.234:8002',
-            OnlineWS:'ws://47.52.166.234:8003',
-          }
-          resolve(GameConfig)
-        })
+        var getGameConfig = _fetch({Action:'GameConfig',GameID:'0101'})
         var getGiftConfig = new Promise(function(resolve, reject){
-          let GiftConfig = [['airplane','飞机'],['boat','皇家游轮'],['cannon','皇家大炮'],['ferrari','法拉利'],['cuke','大黄瓜'],['porsche','保时捷'],['money','发财树']]
+          let GiftConfig = [
+            ['airplane','飞机'],
+            ['boat','皇家游轮'],
+            ['cannon','皇家大炮'],
+            ['ferrari','法拉利'],
+            ['cuke','大黄瓜',1],
+            ['porsche','保时捷'],
+            ['money','发财树']
+          ]
           resolve(GiftConfig)
         })
         var reqArr = [getRebate, getLotteryList, getServerTime,getGameConfig,getGiftConfig]
@@ -127,7 +129,7 @@
         }
         next(vm=>{
           if (values[3]) {
-            vm.GameConfig = values[3]
+            vm.GameConfig = values[3].BackData
             vm.GiftConfig = values[4]
             vm.createWS()
           }
@@ -1339,7 +1341,7 @@
           layer.msgWarn(err)
         }
         //创建OnlineWS
-        this.OnlineWS = new WebSocket(this.GameConfig.OnlineWS)
+        this.OnlineWS = new WebSocket(this.GameConfig.LiveWS)
         this.OnlineWS.onmessage = e =>{
           console.log(e.data)
         }
