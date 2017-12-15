@@ -128,10 +128,12 @@
           }
         }
         next(vm=>{
-          if (values[3]) {
+          if (values[3].Code === 1) {
             vm.GameConfig = values[3].BackData
             vm.GiftConfig = values[4]
             vm.createWS()
+          }else{
+            layer.msgWarn(values[3].StrCode)
           }
         })
       }).catch((err)=>{
