@@ -7,61 +7,34 @@
     </div>
     <div v-show="show == 'main'" @click="changeShow" class="mainPage">
       <div class="result">
-        <div class="timebar" @click.stop="changeVideo">
+        <div class="timebar" @click.stop="history = 1">
           <em v-show="/^\d/.test(TimeBar)">{{nowIssue}}投注：</em>
-          {{TimeBar}}
+          {{TimeBar}}<i class="iconfont">&#xe60e;</i>
         </div><br>
-        <div class="oldissue">
-          {{oldIssue}}开奖：{{results}}
-        </div>
-        
+        <div class="oldissue" @click.stop="history = 2">
+          {{oldIssue}}开奖：<div class="DiceImg">
+            <div class="Dice" :class="displayClass+results[0]"></div><div class="Dice" :class="displayClass+results[1]"></div><div class="Dice" :class="displayClass+results[2]"></div>
+          </div>
+          <i class="iconfont">&#xe60e;</i>
+        </div><history v-if="history" :type="history"></history>
       </div>
       <div class="userContent"></div>
-      <barrage class="barrage"></barrage>
+      <barrage ref="barrage" class="barrage" v-if="barrageIsOpen"></barrage>
       <div class="control">
         <ul class="con-btn fix">
-          <li><a href="javascript:;" @click.stop="$router.go(-1)"></a></li>
-          <li><a href="javascript:;"></a></li>
-          <li><a href="javascript:;" @click.stop="showHide(3)"></a></li>
-          <li><a href="javascript:;" @click.stop="activegift='boat'"></a></li>
-          <li><a href="javascript:;" @click.stop="showHide(1)"></a></li>
+          <li><a class="back" href="javascript:;" @click.stop="$router.go(-1)"></a></li>
+          <li><a class="sound" href="javascript:;" @click.stop="changeVideo"></a></li>
+          <li><a class="gift" href="javascript:;" @click.stop="showHide(3)"></a></li>
+          <li><a class="anchor" href="javascript:;" @click.stop=""></a></li>
+          <li><a class="facetext" href="javascript:;" @click.stop="showHide(1)"></a></li>
         </ul>
         <div class="hideCon" @click.stop="">
-          <div class="facetext" :class="{ined:activeHide === 1}">
-            <div class="title">
-              <div class="type">
-                <span>
-                  <em>弹</em>
-                </span>
-              </div>
-              <div class="content">
-                
-              </div>
-              <div class="btn">发送</div>
-            </div>
-            <div class="desktop">
-              
-            </div>
-          </div>
-          <div class="giving" :class="{ined:activeHide === 3}">
-            <div class="desktop">
-              <ul class="fix">
-                <li @click.stop="activegift='boat'">
-                  <em>皇家邮轮</em>
-                </li>
-                <li @click.stop="activegift='ferrari'">
-                  <em>法拉利</em>
-                </li>
-              </ul>
-            </div>
-            <div class="footer">
-              <div class="btn">发送</div>
-            </div>
-          </div>
+          <facetext :class="{ined:activeHide === 1}"></facetext>
+          <selectGift :class="{ined:activeHide === 3}"></selectGift>
         </div>
       </div>
     </div>
-    <div :style="{opacity:getBetShow?1:0,'z-index':getBetShow?20:0}" class="betContainer">
+    <div :class="{bet:(show === 'bet')?1:0}" class="betContainer">
       <div class="header">
         <div class="info fix">
           <div @click="changeShow" class="back"></div>
@@ -85,8 +58,8 @@
                       <li v-for="e in d.itemArr" :class = "{curr:chosen.indexOf(e) > -1,bgnone:e==0}"><span v-if="!(e==0)"  class="fix" @click="choose(e)"><em><i>{{e}}</i></em></span></li>
                     </ul>
                   </div>
-                  <div class="topshadow" @click="changeShow"></div>
-                  <div class="bottomshadow" :style="{height:j===0?heightArr+'px':'32em'}" @click="changeShow"></div>
+                  <div class="topshadow" @click.stop="changeShow"></div>
+                  <div class="bottomshadow" :style="{height:j===0?heightArr+'px':'32em'}" @click.stop="changeShow"></div>
                 </div>
               </div>
             </div>
@@ -105,6 +78,9 @@
   import {unique,C,mul,BaseBet,deleteCompress,PERBET} from '../../js/kit'
   import {mapState} from 'vuex'
   import gift from './gifts'
+  import selectGift from './selectGift'
+  import facetext from './facetext'
+  import history from './history'
   var eachLen = data=>data.map(arr=>arr.length)
   var getBetStr = (data, mode)=>{
     var line =  data.map(arr=>arr.join(' '))
@@ -165,10 +141,14 @@
     },
   }
   export default {
+    props:['lcode'],
     components: {
       mainfooter,
       barrage,
       gift,
+      selectGift,
+      facetext,
+      history,
     },
     data:()=>{
       return{
@@ -184,9 +164,15 @@
         loop:false,
         autoPlay:false,
         interval:4000,
-        lcode:'0101',
-        activegift:'',
+        activegift:null,
         activeHide:0,
+        face:null,
+        text:null,
+        barrageIsOpen:true,                //但是是否开启
+        history:0,
+        wait4Results:[1,2,3],              //等待开奖的默认状态
+        wait4Resultst:null,
+        changeSize:null,                   //改变窗口大小执行的函数
       }
     },
     computed:mapState({
@@ -205,7 +191,11 @@
       nowModeIndex:()=>cfg[state.lt.mode.mode].index,
       //开奖结果部分
       oldIssue(){
-        return state.lt.OldIssue
+        if (state.lt.TimeBar === '等待开奖') {
+          return this.nowIssue
+        }
+        let newRecord = state.lt.LotteryResults[this.lcode][0]
+        return newRecord?newRecord.IssueNo.replace(/^.{2}/,''):''
       },
       nowIssue(){
         let issue = ''+state.lt.NowIssue
@@ -236,11 +226,12 @@
         if(state.lt.LotteryResults[this.lcode].length<1){
           return ''
         }
-        return state.lt.LotteryResults[this.lcode][0].LotteryOpen
-      },
-      display(){
-        console.log(state.lt.displayResults)
-        return state.lt.displayResults ? this.results : this.wait4Results
+        if (state.lt.TimeBar === '等待开奖') {
+          this.$store.commit('lt_displayResults', false)
+          return this.wait4Results
+        }
+        this.$store.commit('lt_displayResults', true)
+        return state.lt.LotteryResults[this.lcode][0].LotteryOpen.split(',')
       },
       displayClass(){
         return state.lt.displayResults ? 'Dice' : 'rDice'
@@ -288,13 +279,25 @@
         return (state.lt.bet.betting_money && this.showPrice)  ? `，${state.lt.bet.betting_money}元` : ''
       },
       basket:()=>state.lt.basket,
-      getBetShow(){
-        return (this.show == 'bet')
-      },
       swiper() {
         return this.$refs.mySwiper.swiper
       }
     }),
+    created(){
+      function circle(num){
+        num ++
+        if(num > 3){
+          return 0
+        }else{
+          return num
+        }
+      }
+      var arr = [0,0,0]
+      this.wait4Resultst = setInterval(()=>{
+        arr = arr.map(circle)
+        this.wait4Results = arr
+      },80)
+    },
     methods:{
       changeVideo(){
         this.$refs.iframe.contentDocument.destroy()
@@ -408,7 +411,10 @@
         this.$store.commit('lt_changeMode', mode)
       },
       _setSliderWidth(isResize) {
-        this.children = this.$refs.sliderGroup.children
+        this.children = this.$refs.sliderGroup.children || 0
+        if (!this.children) {
+          return
+        }
         let width = 0
         // slider 可见宽度
         let sliderWidth = this.$refs.slider.clientWidth
@@ -475,7 +481,17 @@
         }else{
           this.activeHide = witch
         }
-      }
+      },
+      giftPush(gift){
+        gift.type = gift.gift
+        this.activegift = gift
+      },
+      barragePush(barrage){
+        let _barrage = this.$refs.barrage || 0
+        if (_barrage) {
+          _barrage.data.push(barrage)
+        }
+      },
     },
     mounted(){
       this.setHeight()
@@ -488,14 +504,15 @@
         }
       }, 20)
       // 监听窗口大小改变时间
-      window.addEventListener('resize', () => {
+      this.changeSize = ()=>{
         this.changeHeight()
         if (!this.slider) {
           return
         }
         this._setSliderWidth(true)
         this.slider.refresh()
-      })
+      }
+      window.addEventListener('resize',this.changeSize)
       console.log(this.$refs.wrapperCon0[0])
       this.$nextTick(() => {
         this.scroll = new BScroll(this.$refs.wrapperCon0[0], {bounce:false})
@@ -504,10 +521,13 @@
     // 生命周期destroyed销毁清除定时器，有利于内存释放
     destroyed() {
       clearTimeout(this.timer)
+      clearTimeout(this.wait4Resultst)
+      window.removeEventListener('resize',this.changeSize)
     },
   }
 </script>
 <style lang="scss" scoped>
+@import "../../scss/dice";
 .mainPage{
   height:100%;
   position:fixed;
@@ -530,26 +550,33 @@
     margin:.8em 0;
     border-right:1px solid rgba(0,0,0,.12);
   }
+  i{
+    display: inline-block;
+    margin-left:.2em;
+    font-size:.9em;
+  }
 }
 .timebar,.oldissue{
   background:rgba(0,0,0,.2);
   display:inline-block;
 }
-.timebar{
+.timebar,.oldissue{
   font-size:.68em;
   padding:.5em .8em;
   border-radius: 1.4705em;
+}
+.timebar{
   em{
     display:inline;
   }
 }
 .oldissue{
-  margin-top:.7272em;
-  font-size:.55em;
-  padding:.35em 1.1em;
-  border-radius: 1.6666em;
+  margin-top:.588em;
 }
 
+.DiceImg{
+  display: inline-block;
+}
   //header样式
   .header{
     height:2.3em;
@@ -558,6 +585,18 @@
     top:0;
     left:0;
     width:100%;
+    .back:before,.help:before{
+      font-family:'iconfont';
+      color:rgba(255, 255, 255, 0.3);
+      display:block;
+      text-align:center;
+    }
+    .back:before{
+      content:'\e614';
+    }
+    .help:before{
+      content:'\e613';
+    }
   }
   .info{
     background: rgba(0, 0, 0, 0.6);
@@ -576,18 +615,6 @@
       width:70%;
       text-align:center;
     }
-  }
-  .back:before,.help:before{
-    font-family:'iconfont';
-    color:rgba(255, 255, 255, 0.3);
-    display:block;
-    text-align:center;
-  }
-  .back:before{
-    content:'\e64b';
-  }
-  .help:before{
-    content:'\e64b';
   }
   //header样式结束
 
@@ -669,9 +696,38 @@
         margin:0 .24em;
       }
       a:before{
-        content: '\E64B';
+        display: block;
         font-family: 'iconfont';
         color:white;
+        font-size:.85em;
+        transform:translateY(1px);
+      }
+      .back{
+        &:before{
+          content:'\e60c';
+          transform:translateY(1px) scale(.9);
+        }
+      }
+      .sound{
+        &:before{
+          content:'\e60f';
+        }
+      }
+      .gift{
+        &:before{
+          content:'\e612';
+        }
+      }
+      .anchor{
+        &:before{
+          content:'\e611';
+          transform:translateY(1px) scale(1.1);
+        }
+      }
+      .facetext{
+        &:before{
+          content:'\e60d';
+        }
       }
       &:first-child{
         a:before{
@@ -692,6 +748,13 @@
     width:100%;
     overflow:hidden;
     transition:.2s;
+    opacity: 0;
+    z-index: 0;
+    position: relative;
+  }
+  .betContainer.bet{
+    opacity: 1;
+    z-index: 30;
   }
   .topshadow{
     height:1em;
@@ -908,96 +971,7 @@
       position:absolute;
     }
   }
-  .facetext{
-    height:12em;
-    transition:.2s;
-    width:100%;
-    .title{
-      display:table;
-      width:100%;
-      border-bottom:1px solid #d4d4d4;
-      >div{
-      display:table-cell;
-      }
-      .type,.content,.btn{
-        height:2.4em;
-        line-height:2.4em;
-      }
-      .type{
-        width:3.4em;
-        background:#fdfdfd;
-        text-align:center;
-        position:relative;
-        span{
-          display:inline-block;
-          text-align:center;
-          background:#d1d0cc;
-          border-radius:.8em;
-          width: 2.4em;
-          height: 1.4em;
-          transform: translateY(.5em);
-          &:after{
-            content:'';
-            display:block;
-            position:absolute;
-            top:-.1em;
-            right:-.6em;
-            height:1.6em;
-            width:1px;
-            background:#d1d0cc;
-          }
-        }
-        em{
-          display: inline-block;
-          line-height: 1.5em;
-          transform: translate(-0.72em,-.9em);
-          font-size: .7em;
-          color: #b9b8b4;
-          background: #fdfdfd;
-          border-radius: 0.75em;
-          width: 1.5em;
-          height: 1.5em;
-          box-shadow: -1px 1px 4px rgba(0,0,0,.45);
-        }
-      }
-      .content{
-        background:#fdfdfd;
-      }
-      .btn{
-        width:4.25em;
-        background:#ee4a52;
-        text-align:center;
-        font-size:.8em;
-        color:white;
-      }
-    }
-    .desktop{
-      height:9.6em;
-      background:#fdfdfd;
-    }
-  }
   .facetext.ined,.giving.ined{
     transform:translateY(-12em);
-  }
-  .giving{
-    background:rgba(0, 0, 0, 0.5);
-    transition:.2s;
-    width:100%;
-    height:12em;
-    .desktop{
-      ul{
-        li{
-          color:white;
-          float:left;
-          width:4rem;
-          height:4.8em;
-          em{
-            display:block;
-            text-align:center;
-            font-size:.5em;
-          }
-        }
-      }
-    }
   }
 </style>

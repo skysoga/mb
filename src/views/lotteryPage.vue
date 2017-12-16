@@ -6,7 +6,7 @@
     <LotteryK3 v-if = "ptype !== 'live' && $route.params.type === 'K3'"></LotteryK3>
 
     <Lottery6HC v-if = "$route.params.type === '6HC'"></Lottery6HC>
-    <NewK3 v-if = "ptype === 'live' && !isSleep"></NewK3>
+    <NewK3 ref="newk3" v-if = "ptype === 'live' && !isSleep" :lcode="lcode"></NewK3>
     <sleeping v-if = "ptype === 'live' && isSleep"></sleeping>
   </div>
 </template>
@@ -93,35 +93,22 @@
         }
       })
 
-      //打开ws
-      var ws = null
-      var ws1 = null
-      if (ptype === 'live') {
-        var getWs = new Promise(function(resolve, reject){
-          ws = new WebSocket('ws://47.52.166.234:8002')
-          ws.onmessage = e =>{
-            ws1 = e.data
-            resolve()
-          }
-          ws.onerror = err =>{
-            reject(err)
-          }
-        })
-      }
-      var checkws = (vm,data)=>{
-        console.log(data)
-        var json
-        try{
-          json = JSON.parse(data)
-          vm.WSrefresh(json)
-        }catch(e){
-          layer.msgWarn('服务器类型错误')
-        }
-      }
-
       //设置请求的数组
       if (ptype === 'live') {
-        var reqArr = [getRebate, getLotteryList, getServerTime,getWs]
+        var getGameConfig = _fetch({Action:'GameConfig',GameID:'0101'})
+        var getGiftConfig = new Promise(function(resolve, reject){
+          let GiftConfig = [
+            ['airplane','飞机'],
+            ['boat','皇家游轮'],
+            ['cannon','皇家大炮'],
+            ['ferrari','法拉利'],
+            ['cuke','大黄瓜',1],
+            ['porsche','保时捷'],
+            ['money','发财树']
+          ]
+          resolve(GiftConfig)
+        })
+        var reqArr = [getRebate, getLotteryList, getServerTime,getGameConfig,getGiftConfig]
       }else{
         var reqArr = [getRebate, getLotteryList, getServerTime]
       }
@@ -141,16 +128,12 @@
           }
         }
         next(vm=>{
-          if (ws !== null) {
-            checkws(vm,ws1)
-            ws.onmessage =e=>{
-              checkws(vm,e.data)
-            }
-            ws.onerror=e=>{
-              layer.msgWarn('ws接口获取错误')
-            }
-            vm.ws = ws
-            store.state.lt.TimeBar = ''
+          if (values[3].Code === 1) {
+            vm.GameConfig = values[3].BackData
+            vm.GiftConfig = values[4]
+            vm.createWS()
+          }else{
+            layer.msgWarn(values[3].StrCode)
           }
         })
       }).catch((err)=>{
@@ -341,16 +324,9 @@
           lt_updateIssue:(state,source)=>{
             var ptype = state.ptype
             if (ptype === 'live') {
-              if (state.NowIssue === '') {
-                if(state.TimeBar === '等待开局'){
-                  Vue.set(state, 'OldIssue', source.record_code)
-                }else{
-                  Vue.set(state, 'OldIssue', '上期期号')
-                }
-              }else{
-                Vue.set(state, 'OldIssue', state.NowIssue)
-              }
-              Vue.set(state, 'NowIssue', source.record_code)
+              // if (state.LotteryResults['0101'][0] !== undefined) {
+              //   Vue.set(state, 'OldIssue', state.LotteryResults['0101'][0].IssueNo)
+              // }
             }else{
               var code = state.lottery.LotteryCode   //当前彩种号
               Vue.set(state, 'NowIssue', computeIssue(code, state.IssueNo))        //当前期 (可以下注的这一期)
@@ -366,12 +342,18 @@
             Vue.set(state.LotteryResults, code, results)
           },
           lt_setOnceLotteryResult:(state, {code, results})=>{          //设置一条开奖结果
+            if (state.LotteryResults[code].length > 0) {
+              if (results.IssueNo === state.LotteryResults[code][0].IssueNo) {
+                return
+              }
+            }
             let _lresult = JSON.parse(JSON.stringify(state.LotteryResults[code]))
             if(_lresult.length >= 10){
               _lresult.pop()
             }
             _lresult.unshift(results)
             Vue.set(state.LotteryResults, code, _lresult)
+            this.$store.commit('lt_updateIssue')
           },
           lt_stopSell:(state, type)=>{
             this.$store.commit('lt_updateTimeBar', ['期号有误','暂停销售','当期封单','等待开局','等待开奖'][type])    //暂停销售
@@ -608,6 +590,9 @@
               //2017-10-15 通知本月15日不开奖
               if (monthPlan.Month==10) {
                 monthPlan.Schedule=monthPlan.Schedule.replace('15,','')
+              }
+              if (monthPlan.Month==11) {
+                monthPlan.BeforeIssue=127
               }
               //保证转为数字类型
               monthPlan.BeforeIssue *= 1
@@ -1301,7 +1286,10 @@
           TimeLeft:'',
           Status:''
         },
-        ws:null,
+        GameConfig:null,
+        GiftConfig:null,
+        GameWS:null,
+        OnlineWS:null,
         isSleep:0,
         readySleep:'',
         readyRun:''
@@ -1309,8 +1297,9 @@
     },
     computed:{
       IsStop(){
+        console.log('============== 判断 ===============',state.lt.TimeBar[0])
         //判断是否不可提交订单,并弹出警告
-        return ('0123456789预'.search(state.lt.TimeBar[0])===-1)&&layer.msgWarn(state.lt.TimeBar)
+        return ('0123456789预等'.search(state.lt.TimeBar[0])===-1)&&layer.msgWarn(state.lt.TimeBar)
       },
     },
     methods:{
@@ -1320,7 +1309,7 @@
       },
       setDefaultMode(){
         var defaultMode = {
-          'SSC':['五星', '直选'],
+          'SSC':['一星','定位胆'],
           'SYX5':['三码', '三码'],
           'FC3D':['三星', '直选'],
           'PL35':['三星', '直选'],
@@ -1338,42 +1327,208 @@
 					store.commit('lt_changeMode', state.lt.config[0])
 				}
 			},
+      createWS(){
+        //创建livews
+        this.GameWS = new WebSocket(this.GameConfig.GameWS)
+        this.GameWS.onmessage = e =>{
+          let json
+          try{
+            json = JSON.parse(e.data)
+          }catch(e){
+            layer.msgWarn('服务器类型错误')
+          }
+          this.WSrefresh(json)
+        }
+        this.GameWS.onerror = err =>{
+          layer.msgWarn(err)
+        }
+        //创建OnlineWS
+        this.OnlineWS = new WebSocket(this.GameConfig.LiveWS)
+        this.OnlineWS.onmessage = e =>{
+          console.log(e.data)
+        }
+        this.OnlineWS.onerror = err =>{
+          layer.msgWarn(err)
+        }
+        //自动提交礼物和弹幕
+        this.autoTest()
+      },
+      autoTest(){
+
+        var barrages = [
+          {
+            call:'皇帝',
+            name:'突然想起你',
+            text:'现场灯光不错，刮的是七级的最炫民族风，我字体的故事之毛笔字',
+          },
+          {
+            call:'知府',
+            name:'ju***',
+            text:'新功能测试下效果',
+          },
+          {
+            call:'VIP5',
+            name:'沙漠皇帝',
+            text:'直播开奖新玩法',
+          },
+          {
+            call:'VIP1',
+            name:'香烟',
+            text:'弹幕内容1',
+          },
+          {
+            call:'VIP2',
+            name:'邓紫棋',
+            text:'买定离手',
+          },
+          {
+            call:'VIP3',
+            name:'周杰伦',
+            text:'稳住，我们能赢',
+          },
+          {
+            call:'VIP4',
+            name:'杰森斯坦森',
+            text:'登顶盈利榜',
+          },
+          {
+            call:'VIP5',
+            name:'金三胖',
+            text:'这把一定中',
+          },
+          {
+            call:'VIP6',
+            name:'特朗普',
+            text:'中中中',
+          },
+          {
+            call:'VIP7',
+            name:'奥巴马',
+            text:'豹子 豹子',
+          },
+        ]
+        var getRedom = ()=>{
+          let num = 0
+          while(1){
+            num = Math.random()*10
+            if (num>=2 && num < 4) {
+              num = Math.floor(num*10)
+              return num
+              break
+            }
+          }
+        }
+        var num = getRedom()*1000
+        var barrageNum = Math.floor(Math.random()*10)
+        setTimeout(()=>{
+          
+          // var fetchUrl = (url,data)=>{
+          //   var str=[],k
+          //   for(var i in data){
+          //     k=data[i];
+          //     if (typeof(k)==="object") {
+          //       k= encodeURIComponent(JSON.stringify(k));
+          //     }
+          //     str.push(i+'='+k)
+          //   }
+          //   str=str.join('&')
+          //   return new Promise(function(resolve, reject){
+          //     fetch(url,{
+          //       credentials:'same-origin',
+          //       method: 'POST',
+          //       headers: {
+          //         "Content-Type": "application/x-www-form-urlencoded"
+          //       },
+          //       body: str
+          //     })
+          //     .then(function (d){
+          //       if(d.status === 200){
+          //         console.log(d)
+          //         d.json().then(d=>{
+          //           if(d){
+          //             resolve(d)
+          //           }else{
+          //             resolve('数据获取失败！')
+          //           }
+          //         })
+          //         .catch(err=>{
+          //           alert("数据解析失败！"+err)
+          //         })
+          //       }else{
+          //         tool.catchFetch(d)
+          //       }
+          //     })
+          //     .catch(err=>{
+          //       alert('请求失败!'+err)
+          //     })
+          //   })
+          // }
+          // fetchUrl('http://47.52.166.234:38889/interactive/469D5742F4F09F35DA7E692D41BE11E3',{
+          //   content:{
+          //     "Target":"dafa-test",
+          //     "GameID":"0101",
+          //     "Data":{
+          //       "Type":"xxx",
+          //       "LV":-1,
+          //       "Interval":30
+          //     }
+          //   }
+          // })
+          //生成礼物
+          let gifts = ['airplane','boat','cannon','ferrari','cuke','porsche','money']
+          let who = null
+          while(1){
+            who = Math.random()*10
+            who = Math.floor(who)
+            if (who < 7) {
+              break
+            }
+          }
+
+          console.log('送出的礼物是：',gifts[who])
+          this.OnlineRefresh({type:'Gift',gift:gifts[who],name:'杨过',img:'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2764371306,3467823016&fm=27&gp=0.jpg'})
+          this.OnlineRefresh(Object.assign({type:'Barrage'},barrages[barrageNum]))
+          this.autoTest()
+        },num)
+      },
+      OnlineRefresh(json){
+        console.log(json)
+        switch(json.type){
+          case 'Gift':this.$refs.newk3.giftPush(json);break;
+          case 'Barrage':this.$refs.newk3.barragePush(json);break;
+        }
+      },
       WSrefresh(json){
         this.WS[json.type] = json.result
         this.WS.Status = json.type
+        console.log(json.type)
         switch(json.type){
           case 'Newest':this.statusNewest(json.result);break;
           case 'GameStatus':this.statusGameStatus(json.result);break;
-          case 'NewGame':this.statusNewGame(json.result);break;
+          case 'NewGame':this.statusNewest(json.result);break;
           case 'GameResult':this.statusGameResult(json.result);break;
+          case 'Previous':this.statusPrevious(json.result);break;
         }
       },
       statusNewest(n){
         if ((new Date().getTime() - state.Difftime) > n.end) {
           store.commit('lt_stopSell', 3)
-          store.commit({
-            type:'lt_setOnceLotteryResult',
-            code:this.lcode,
-            results: {
-              IssueNo:n.record_code,
-              LotteryOpen:'0,0,0',
-              OpenTime:''
-            }
-          })
+          if (n.record_result) {
+            store.commit({
+              type:'lt_setOnceLotteryResult',
+              code:this.lcode,
+              results: {
+                IssueNo:n.record_code,
+                LotteryOpen:this.formatResult(n.record_result),
+                OpenTime:''
+              }
+            }) 
+          }
         }else{
           console.log('正在投注')
-          //虚拟一个上期投注信息
-          store.commit({
-            type:'lt_setOnceLotteryResult',
-            code:this.lcode,
-            results: {
-              IssueNo:'测试期号',
-              LotteryOpen:'0,0,0',
-              OpenTime:''
-            }
-          })
+          Vue.set(state.lt, 'NowIssue', n.record_code)
+          this.$store.dispatch('lt_refresh')
         }
-        store.commit('lt_updateIssue',n)
         Vue.set(state.lt, 'StopTime', n.end)
       },
       statusGameStatus(n){
@@ -1386,32 +1541,39 @@
           case 'running':this.isSleep = 0;break;
         }
       },
-      statusNewGame(n){
-        store.commit('lt_updateIssue',n)
-        Vue.set(state.lt, 'StopTime', n.end)
-        this.$store.dispatch('lt_refresh')
-        // layer.alert(n.end)
-      },
       statusGameResult(n){
-        store.commit('lt_updateIssue',n)
         Vue.set(state.lt.WS, 'openNum', n.record_result)
-        let newresult = ''
-        for (var i = 0; i < n.record_result.length; i++) {
-          newresult +=n.record_result[i]+','
-        }
-        newresult = newresult.substring(0,newresult.length-1)
         store.commit({
           type:'lt_setOnceLotteryResult',
           code:this.lcode,
           results: {
             IssueNo:n.record_code,
-            LotteryOpen:newresult,
+            LotteryOpen:this.formatResult(n.record_result),
             OpenTime:''
           }
         })
         store.commit('lt_displayResults', false)
         store.commit('lt_stopSell', 3)
         console.log('watch:已开奖')
+      },
+      statusPrevious(n){
+        console.log('once前一期的开奖记录',n)
+        store.commit({
+          type:'lt_setOnceLotteryResult',
+          code:this.lcode,
+          results: {
+            IssueNo:n.record_code,
+            LotteryOpen:this.formatResult(n.record_result),
+            OpenTime:''
+          }
+        })
+      },
+      formatResult(n){
+        let newresult = ''
+        for (var i = 0; i < n.length; i++) {
+          newresult +=n[i]+','
+        }
+        return newresult = newresult.substring(0,newresult.length-1)
       }
 		},
 		watch:{
@@ -1437,8 +1599,11 @@
 		    store.commit('lt_setChasePower', 1)		//清空追号配置
 				store.commit('lt_setChaseIssue', 1)
 	    }
-      if (this.ws !== null) {
-        this.ws.close()
+      if (this.GameWS !== null) {
+        this.GameWS.close()
+      }
+      if (this.OnlineWS !== null) {
+        this.OnlineWS.close()
       }
 	    next()
 	  },

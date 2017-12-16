@@ -1,190 +1,105 @@
 <template>
-	<div class="gifts" :class="{moving,[active+'-con']:active}" v-if="active !== ''">
-		<div class="boat" v-if="active === 'boat'">
-			<div class="sea sea1" :style="'background: url('+imgbaseUrl+boat.url+')'"></div>
-			<div class="sea sea2" :style="'background: url('+imgbaseUrl+boat.url+')'"></div>
-			<div class="shadow" :style="'background: url('+imgbaseUrl+boat.url+')'"></div>
-			<div class="boatimg" :style="'background: url('+imgbaseUrl+boat.url+')'"></div>
-		</div>
-		<div class="ferrari" v-if="active === 'ferrari'">
-			<div class="car" :style="'background: url('+imgbaseUrl+ferrari.url+')'"></div>
-			<div class="wheel" :style="'background: url('+imgbaseUrl+ferrari.url+')'"></div>
-		</div>
-	</div>
+  <div>
+    <smallgift></smallgift>
+    <binary></binary>
+  	<div class="gifts" v-if="giftArr.length > 0">
+  		<boat 		v-if="giftArr[0].type === 'boat'"			></boat>
+  		<ferrari  v-if="giftArr[0].type === 'ferrari'"	></ferrari>
+  		<airplane v-if="giftArr[0].type === 'airplane'"	></airplane>
+      <cannon   v-if="giftArr[0].type === 'cannon'"   ></cannon>
+  	</div>
+  </div>
 </template>
 <script>
+  import smallgift  from './gifts/smallgift'
+  import boat       from './gifts/boat'
+  import ferrari  	from './gifts/ferrari'
+  import airplane   from './gifts/airplane'
+  import cannon     from './gifts/cannon'
+  import binary     from './gifts/binary'
   export default {
+    components: {
+      smallgift,
+      boat,
+      ferrari,
+      airplane,
+      cannon,
+      binary,
+    },
   	props:['activegift'],
     data:()=>{
     	return {
-    		imgbaseUrl:'/static/img/gifts/',
-    		active:'',
-    		moving:0,
-    		imgDom:null,
-    		boat:{
-    			url:'boat.png',
-    			time:10000,
-    		},
-    		ferrari:{
-    			url:'Ferrari.png',
-    			time:10000,
-    		},
-
+	  		imgbaseUrl:'/static/img/gifts/',
+	  		imgDom:null,
+	  		giftArr:[],
+        t1:null,
+        t2:null,
     	}
     },
+    created(){
+      document.addEventListener("visibilitychange", this.clearGift)
+    },
     methods:{
-    	loadImg(){
+      clearGift(){
+        this.giftArr = []
+        console.log('礼物清空')
+      },
+    	giftcreated(that){
+	  		this.loadImg(that.url)
+	  		.then(()=>{
+	  			this.start(that)
+	  		},()=>{
+	  			layer.msgWarn('图片加载失败！')
+	  		})
+    	},
+    	loadImg(url){
     		return new Promise((resolve,reject)=>{
     			this.imgDom = document.createElement('img')
-    			this.imgDom.src = this.imgbaseUrl+this[this.activegift].url
+    			this.imgDom.src = this.imgbaseUrl+url
     			this.imgDom.onload = function(){
     				resolve(this.imgDom)
     			}
-    			this.imgDom.onerror = function(){
+    			this.imgDom.onerror = function(err){
     				reject(err)
     			}
     		})
     	},
-    	start(n){
-  			this.active = n
-  			setTimeout(()=>{
-	  			this.moving = 1
-  			},100)
-  			// setTimeout(()=>{
-	  		// 	this.active = ''
-	  		// 	this.moving = 0
-	  		// 	this.$parent.activegift = ''
-  			// },this[this.activegift].time)
-    	}
+    	start(that){
+    		that.moving = 1
+  			this.t1 = setTimeout(()=>{
+	  			that.moving = 0
+          this.giftArr[0].type = 0
+          this.t2 = setTimeout(()=>{
+            this.giftArr.splice(0,1)
+          },100)
+  			},that.time)
+    	},
     },
     watch:{
     	'activegift'(n){
     		if (n === '') {
     			return
     		}
-    		this.loadImg()
-    		.then(()=>{
-    			this.start(n)
-    		},()=>{
-    			layer.msgWarn('图片加载失败！')
-    		})
+    		this.giftArr.push(n)
+        this.$parent.activegift = ''
     	}
+    },
+    beforeDestroy(){
+      document.removeEventListener("visibilitychange", this.clearGift)
+      clearTimeout(this.t1)
+      clearTimeout(this.t2)
     },
   }
 </script>
 <style lang="scss" scoped>
 .gifts{
-	position: fixed;
-	z-index: 25;
-	width: 100%;
-	height: 100%;
-	bottom:0;
-	pointer-events:none;
-}
-//********** 法拉利 **********
-.ferrari-con{
-	
-}
-.ferrari{
-	position:relative;
-	>div{
-		position:absolute;
-	}
-	.car,.wheel{
-		background-size:22rem !important;
-	}
-	.car{
-    width: 41.2rem;
-    height: 14rem;
-	}
-	.wheel{
-    top: 1.9rem;
-    left: 8.5rem;
-    background-position: 4.75rem 12.82rem !important;
-    width: 3.22rem;
-    height: 3.22rem;
-    animation: ferrari-wheel 1s infinite linear;
+	.gift{
+		position: fixed;
+		z-index: 25;
+		width: 100%;
+		height: 100%;
+		bottom:0;
+		pointer-events:none;
 	}
 }
-@keyframes ferrari-wheel{
-	0%{
-		transform: rotate(360deg) scale(0.5);
-	}
-	100%{
-		transform: rotate(0deg) scale(0.5);
-	}
-}
-//********** 法拉利 end ******
-//********** 船 **********
-.boat-con{
-	height:16rem;
-}
-.boat{
-	position:relative;
-	> div{
-		position:absolute;
-		background-size: 70rem !important;
-		background-repeat:no-repeat !important;
-		transform: translate(0,0);
-    transition:10s linear;
-	}
-	.sea{
-    width: 41.2rem;
-    height: 14rem;
-		background-repeat-x:repeat !important;
-	}
-	.sea1{
-		right:0;
-	}
-	.sea2{
-		left:0;
-		top:.5rem;
-	}
-	.boatimg,.shadow{
-		left:-16rem;
-		top:-5rem;
-	}
-	.boatimg{
-		width:16rem;
-		height:9rem;
-    background-position: -41.4rem 0 !important;
-	}
-	.shadow{
-		width:11.5rem;
-		height:4.5rem;
-		background-position:-58.1rem 0 !important;
-    top: 2rem;
-    left: -13.5rem;
-	}
-}
-.moving{
-	.boat{
-		.boatimg,.shadow{
-	    animation: boatimg 10s linear;
-		}
-	}
-	.boat{
-		.sea1{
-			transform:translate(22rem,0);
-		}
-		.sea2{
-			transform:translate(-22rem,0);
-		}
-	}
-}
-@keyframes boatimg{
-	0%{
-		transform: translate(0,0);
-	}
-	30%{
-		transform: translate(13rem, 6.5rem);
-	}
-	70%{
-		transform: translate(17rem, 8.5rem);
-	}
-	100%{
-		transform: translate(32rem, 14.5rem);
-	}
-}
-//********** 船 end*******
 </style>

@@ -1,22 +1,7 @@
 <template>
-	<div class="barrage" ref="barrageCon">
+	<div class="barrage" ref="barrageCon" v-show="data.length > 0">
 		<ul>
-			<li><span>皇帝</span><div><em>突然想起你：</em><ins>现场灯光不错，刮的是七级的最炫民族风，我字体的故事之毛笔字</ins></div></li>
-			<li><span>知府</span><div><em>ju***li：</em><ins>新功能测试下效果~</ins></div></li>
-			<li><span>VIP5</span><div><em>沙漠皇帝：</em><ins>直播开奖新玩法</ins></div></li>
-			<li><span>VIP1</span><div><em>香烟：</em><ins>弹幕内容</ins></div></li>
-			<li><span>皇帝</span><div><em>突然想起你：</em><ins>现场灯光不错，刮的是七级的最炫民族风，我字体的故事之毛笔字</ins></div></li>
-			<li><span>知府</span><div><em>ju***li：</em><ins>新功能测试下效果~</ins></div></li>
-			<li><span>VIP5</span><div><em>沙漠皇帝：</em><ins>直播开奖新玩法</ins></div></li>
-			<li><span>VIP1</span><div><em>香烟：</em><ins>弹幕内容</ins></div></li>
-			<li><span>皇帝</span><div><em>突然想起你：</em><ins>现场灯光不错，刮的是七级的最炫民族风，我字体的故事之毛笔字</ins></div></li>
-			<li><span>知府</span><div><em>ju***li：</em><ins>新功能测试下效果~</ins></div></li>
-			<li><span>VIP5</span><div><em>沙漠皇帝：</em><ins>直播开奖新玩法</ins></div></li>
-			<li><span>VIP1</span><div><em>香烟：</em><ins>弹幕内容</ins></div></li>
-			<li><span>皇帝</span><div><em>突然想起你：</em><ins>现场灯光不错，刮的是七级的最炫民族风，我字体的故事之毛笔字</ins></div></li>
-			<li><span>知府</span><div><em>ju***li：</em><ins>新功能测试下效果~</ins></div></li>
-			<li><span>VIP5</span><div><em>沙漠皇帝：</em><ins>直播开奖新玩法</ins></div></li>
-			<li><span>VIP1</span><div><em>香烟：</em><ins>弹幕内容</ins></div></li>
+			<li v-for="d in data"><span>{{d.call}}</span><div><em>{{d.name}}：</em><ins>{{d.text}}</ins></div></li>
 		</ul>
 	</div>
 </template>
@@ -25,7 +10,8 @@
   export default {
     data:()=>{
       return{
-      	scroll:null
+      	scroll:null,
+      	data:[]
       }
     },
     mounted(){
@@ -33,6 +19,30 @@
         this.scroll = new BScroll(this.$refs.barrageCon, {})
         this.scroll.scrollTo(0,this.scroll.maxScrollY,.2)
       })
+    },
+    methods:{
+    	refresh(){
+    		setTimeout(()=>{
+	    		this.scroll.refresh()
+	        this.scroll.scrollTo(0,this.scroll.maxScrollY,.2)
+    		},100)
+    	},
+    },
+    beforeDestroy(){
+    },
+    watch:{
+    	'$parent.show'(n){
+    		if(n === 'main'){
+    			this.refresh()
+    		}
+    	},
+    	'data'(n){
+    		if (n.length >= 100) {
+    			this.data = []
+    			this.data.push(n[n.length-1])
+    		}
+  			this.refresh()
+    	},
     },
   }
 </script>

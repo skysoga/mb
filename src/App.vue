@@ -45,11 +45,11 @@
 @import './scss/public.scss';
 @font-face {
   font-family: 'iconfont';  /* project id 380333 */
-  src: url('//at.alicdn.com/t/font_380333_uk7foduxe3h4zpvi.eot');
-  src: url('//at.alicdn.com/t/font_380333_uk7foduxe3h4zpvi.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_380333_uk7foduxe3h4zpvi.woff') format('woff'),
-  url('//at.alicdn.com/t/font_380333_uk7foduxe3h4zpvi.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_380333_uk7foduxe3h4zpvi.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_380333_m5hlel9dad0u23xr.eot');
+  src: url('//at.alicdn.com/t/font_380333_m5hlel9dad0u23xr.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_380333_m5hlel9dad0u23xr.woff') format('woff'),
+  url('//at.alicdn.com/t/font_380333_m5hlel9dad0u23xr.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_380333_m5hlel9dad0u23xr.svg#iconfont') format('svg');
 }
 html{
   height: 100%;

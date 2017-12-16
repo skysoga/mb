@@ -119,8 +119,8 @@
           <td><input  type="tel" tag = "充值金额" v-va:Money  v-model = 'Money'  placeholder="请输入充值金额"></td>
         </tr>
         <tr>
-          <td>银联昵称</td>
-          <td><input type="text" tag = "QQ昵称" v-va:PayUser  v-model = 'PayUser'  placeholder="请输入您的银联昵称"></td>
+          <td>您的姓名</td>
+          <td><input type="text" tag = "QQ昵称" v-va:PayUser  v-model = 'PayUser'  placeholder="请输入您的您的姓名"></td>
         </tr>
         <tr>
           <td>扫码支付</td>
@@ -133,8 +133,8 @@
       <div class="loginBtn BTN"><a v-va-check>确定</a></div>
       <div class="tips">
         1、扫一扫以上二维码进行充值。<br>
-        2、请正确填写您的昵称和充值金额。<br>
-        3、银联昵称并非银联账号，请注意区分。<br>
+        2、请正确填写您的姓名和充值金额。<br>
+        3、姓名并非账号，请注意区分。<br>
         4、可以使用其他手机扫二维码进行充值，也可以将二维码保存到相册再使用银联APP识别相册中的二维码进行充值，由于本二维码经常更换，充值前务必重新保存最新的二维码。<br>
         5、请务必转账后再提交订单,否则无法及时查到您的款项！
       </div>
