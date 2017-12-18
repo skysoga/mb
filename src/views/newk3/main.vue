@@ -517,6 +517,9 @@
       this.$nextTick(() => {
         this.scroll = new BScroll(this.$refs.wrapperCon0[0], {bounce:false})
       })
+      this.$refs.iframe.contentWindow.onload = ()=>{
+        this.$refs.iframe.contentWindow.openlive('ws://47.52.157.51:8086/live?key=zhimakaimen')
+      }
     },
     // 生命周期destroyed销毁清除定时器，有利于内存释放
     destroyed() {

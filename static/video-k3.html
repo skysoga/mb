@@ -22,18 +22,20 @@
 	<canvas id="myCanvas"></canvas>
 	<script type="text/javascript" src="/static/public/live.min.js"></script>
 	<script>
-		var canvas = document.getElementById('myCanvas');
-		var url = 'ws://47.52.157.51:8086/live?key=zhimakaimen';
-		var option = {canvas: canvas, chunkSize:1};
-		var player = new Live.Player(url, option);
-		
-		document.refresh = function(){
-			player.destroy();
-			player = new Live.Player(url, option);
+		var canvas,url,option,player
+		var openlive = function(address){
+			canvas = document.getElementById('myCanvas')
+			url = address
+			option = {canvas: canvas, chunkSize:1}
+			player = new Live.Player(url, option)
 		}
-		document.destroy = function (){
-			player.destroy();
-			document.body.removeChild(canvas);
+		window.refresh = function(){
+			player.destroy()
+			player = new Live.Player(url, option)
+		}
+		window.destroy = function (){
+			player.destroy()
+			document.body.removeChild(canvas)
 		}
 	</script>
 </body>
