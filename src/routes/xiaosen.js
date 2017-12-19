@@ -29,6 +29,7 @@ const withdraw =require('../views/withdraw')//提现
 const rebateDes =require('../views/rebateDes')//返点赔率表
 const tool =require('../views/tool')//清缓存工具
 const ping =require('../views/ping')//线路检测
+const ArtificialAppeal =require('../views/ArtificialAppeal')//人工审诉
 var routes = [{
   path: '/manageBankcard',
   name: '银行卡管理',
@@ -369,12 +370,22 @@ var routes = [{
   component:tool
 },
 {
+  path:'/ArtificialAppeal',
+  name:'人工审诉',
+  meta:{
+    title:'人工审诉',
+    link:'/securityCenter',
+    user:true
+  },
+  component:ArtificialAppeal
+},
+{
   path:'/ping',
   name:'线路检测',
   meta:{
-  title:'线路检测',
-  link:'/index',
-  user:true
+    title:'线路检测',
+    link:'/index',
+    user:true
   },
   component:ping
 }]
