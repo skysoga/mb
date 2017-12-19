@@ -29,11 +29,11 @@
 			option = {canvas: canvas, chunkSize:1}
 			player = new Live.Player(url, option)
 		}
-		window.refresh = function(){
+		var refresh = function(){
 			player.destroy()
 			player = new Live.Player(url, option)
 		}
-		window.destroy = function (){
+		var destroy = function (){
 			player.destroy()
 			document.body.removeChild(canvas)
 		}

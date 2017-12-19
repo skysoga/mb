@@ -2,7 +2,7 @@
   <div class="newContainer">
     <gift :activegift="activegift"></gift>
     <div class="video">
-      <iframe ref="iframe" src="/static/video-k3.html"></iframe>
+      <div><iframe ref="iframe" src="/static/video.html"></iframe></div>
       <img src="/static/img/newk3-bg.jpg" alt="" width="100%">
     </div>
     <div v-show="show == 'main'" @click="changeShow" class="mainPage">
@@ -23,7 +23,7 @@
       <div class="control">
         <ul class="con-btn fix">
           <li><a class="back" href="javascript:;" @click.stop="$router.go(-1)"></a></li>
-          <li><a class="sound" href="javascript:;" @click.stop="changeVideo"></a></li>
+          <li><a class="sound" href="javascript:;" @click.stop=""></a></li>
           <li><a class="gift" href="javascript:;" @click.stop="showHide(3)"></a></li>
           <li><a class="anchor" href="javascript:;" @click.stop=""></a></li>
           <li><a class="facetext" href="javascript:;" @click.stop="showHide(1)"></a></li>
@@ -299,9 +299,6 @@
       },80)
     },
     methods:{
-      changeVideo(){
-        this.$refs.iframe.contentDocument.destroy()
-      },
       choose(item){
         if(!this.award)return
         var _pos = this.chosen.indexOf(item),
@@ -654,22 +651,29 @@
     width:100%;
   }
   .video{
-    position:fixed;
-    top:0;
-    left:0;
-    height:100%;
-    width:100%;
+    position: fixed;
+    top: -25%;
+    left: 0;
+    height: 150%;
+    width: 100%;
+    display: table;
     img{
       position:absolute;
-      top:0;
+      top:15%;
       left:0;
       z-index: 9;
     }
-    iframe{
-      position: absolute;
-      z-index: 10;
-      height: 100%;
+    >div{
+      display: table-cell;
+      vertical-align: middle;
       width: 100%;
+      height: 100%;
+    }
+    iframe{
+      position: relative;
+      z-index: 10;
+      height:32rem;
+      width:16rem;
       border: none;
     }
   }

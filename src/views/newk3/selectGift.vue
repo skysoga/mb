@@ -34,6 +34,9 @@
     },
 		methods:{
 			select(v){
+        if (this.showManyBtn) {
+          return
+        }
 				this.active = v
         if (this.t1 !== null) {
           clearInterval(this.t1)
