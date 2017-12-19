@@ -92,7 +92,8 @@
 				this.getBet()
 			}else{
 				if(this.results.length < 10){
-					console.log('需要重新获取期号')
+					this.$parent.getResults()
+					console.log('开奖结果数量不够，需要从接口获取')
 				}
 			}
 		},
@@ -128,8 +129,13 @@
 				if (o.length === 0) {
 					return
 				}
-				if (n[0].IssueNo -1 !== o[0].IssueNo*1) {
-					console.log('watch期号不正常，需要重新获取')
+				try{
+					if (n[0].IssueNo -1 !== o[0].IssueNo*1) {
+						this.$parent.getResults()
+						console.log('校验错误需要重新获取开奖列表')
+					}
+				}catch(e){
+
 				}
 			}
 		},

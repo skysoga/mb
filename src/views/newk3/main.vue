@@ -489,6 +489,9 @@
           _barrage.data.push(barrage)
         }
       },
+      getResults(){
+        this.$store.dispatch('lt_getResults', this.lcode)
+      },
     },
     mounted(){
       this.setHeight()
