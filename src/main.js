@@ -653,11 +653,12 @@ window._App=(function(host){
       gtag('js', new Date());
       gtag('config', 'UA-107734696-1');
     })*/
-    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+    /*window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
     addScript("https://www.google-analytics.com/analytics.js",function(){
       ga('create', 'UA-107734696-1', 'auto');
       ga('send', 'even','刷新');
-    })
+    })*/
+    window.ga=window.ga||function(){};
   }
   if (!versions.android) {
     document.body.oncontextmenu=function(){ return false;}//防止右键
