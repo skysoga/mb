@@ -484,6 +484,7 @@
         this.activegift = gift
       },
       barragePush(barrage){
+        console.log(barrage)
         let _barrage = this.$refs.barrage || 0
         if (_barrage) {
           _barrage.data.push(barrage)

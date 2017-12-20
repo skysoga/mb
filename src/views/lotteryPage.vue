@@ -1345,7 +1345,8 @@
         //创建OnlineWS
         this.OnlineWS = new WebSocket(this.GameConfig.Interactive)
         this.OnlineWS.onmessage = e =>{
-          console.log(e.data)
+          let json = JSON.parse(e.data)
+          this.OnlineRefresh(json)
         }
         this.OnlineWS.onerror = err =>{
           layer.msgWarn(err)
@@ -1487,13 +1488,13 @@
 
           console.log('送出的礼物是：',gifts[who])
           this.OnlineRefresh({type:'Gift',gift:gifts[who],name:'杨过',img:'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2764371306,3467823016&fm=27&gp=0.jpg'})
-          this.OnlineRefresh(Object.assign({type:'Barrage'},barrages[barrageNum]))
+          // this.OnlineRefresh(Object.assign({type:'Barrage'},barrages[barrageNum]))
           this.autoTest()
         },num)
       },
       OnlineRefresh(json){
         console.log(json)
-        switch(json.type){
+        switch(json.Type){
           case 'Gift':this.$refs.newk3.giftPush(json);break;
           case 'Barrage':this.$refs.newk3.barragePush(json);break;
         }

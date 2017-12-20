@@ -74,7 +74,18 @@
 				this.$refs.content.innerHTML = ''
 			},
 			send(){
-				layer.alert(this.$refs.content.innerHTML)
+        layer.alert('已发送！')
+        _fetch({
+          Action:'SendBarrage',
+          GameID:'0101',
+          Barrage:this.$refs.content.innerHTML,
+        })
+        .then(d=>{
+          if (d.Code === 1) {
+          }else{
+            layer.msgWarn(d.StrCode)
+          }
+        })
 			},
 		}
 	}
