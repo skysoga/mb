@@ -1343,7 +1343,7 @@
           layer.msgWarn(err)
         }
         //创建OnlineWS
-        this.OnlineWS = new WebSocket(this.GameConfig.LiveWS)
+        this.OnlineWS = new WebSocket(this.GameConfig.Interactive)
         this.OnlineWS.onmessage = e =>{
           console.log(e.data)
         }
