@@ -56,6 +56,23 @@
       <input name="GetMoneyUser" type="hidden" value="" readonly="readonly">
       <table>
         <tr>
+          <td>银行帐户</td>
+          <td>
+            <input class="cGold"  type="text" :value = "nowRender.RealName"  readonly="readonly">
+            <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i>
+          </td>
+        </tr>
+        <tr>
+          <td>银行帐号</td>
+          <td><input class="cGold" type="text"  :value = "nowRender.CardNum" readonly="readonly">
+          <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i></td>
+        </tr>
+        <tr>
+          <td>开户银行</td>
+          <td><input class="cGold" type="text"  :value = "nowRender.BankName" readonly="readonly">
+          <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i></td>
+        </tr>
+        <tr>
           <td>充值金额</td>
           <td><input  type="tel" tag = "充值金额" v-va:Money  v-model = 'Money'  placeholder="请输入充值金额"></td>
         </tr>
