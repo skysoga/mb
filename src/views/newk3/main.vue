@@ -480,7 +480,7 @@
         }
       },
       giftPush(gift){
-        gift.type = gift.gift
+        gift.type = gift.GiftID
         this.activegift = gift
       },
       barragePush(barrage){

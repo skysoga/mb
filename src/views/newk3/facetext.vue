@@ -82,6 +82,7 @@
         })
         .then(d=>{
           if (d.Code === 1) {
+            this.$refs.content.innerHTML = ''
           }else{
             layer.msgWarn(d.StrCode)
           }

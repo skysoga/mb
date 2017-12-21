@@ -51,12 +51,26 @@
         }else{
           console.log('非连击礼物')
         }
-				this.$parent.giftPush({gift:this.active[0],name:'杨过',img:'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2764371306,3467823016&fm=27&gp=0.jpg'})
+        this.sendGift()
 				this.active = []
 				this.$parent.activeHide = 0
 			},
-      sendManyGift(){
-        console.log('连送礼物提交')
+      sendGift(){
+        console.log('礼物提交')
+        // this.$parent.giftPush({gift:this.active[0],name:'杨过',img:'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2764371306,3467823016&fm=27&gp=0.jpg'})
+        _fetch({
+          Action:'SendGift',
+          GameID:'0101',
+          GiftName:this.active[0],
+          GiftNum:this.giftNum,
+        })
+        .then(d=>{
+          if (d.Code === 1) {
+            console.log(d)
+          }else{
+            layer.msgWarn(d.StrCode)
+          }
+        })
       },
       showMany(){
         this.t1 = setInterval(()=>{
