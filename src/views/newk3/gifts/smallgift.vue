@@ -1,9 +1,9 @@
 <template>
 	<div class="smallgift fix">
 		<div v-for="(d,i) in 2" v-if="twoGift['gift'+d]">
-      <img :src="twoGift['gift'+d].img">
+      <img :src="$store.getters.PhotoPath+twoGift['gift'+d].Avatar||$store.state.constant.DefPhoto">
       <div class="text">
-        <span>{{twoGift['gift'+d].name}}</span>
+        <span>{{twoGift['gift'+d].NickName}}</span>
         <em>送出小黄瓜</em>
       </div>
     </div>

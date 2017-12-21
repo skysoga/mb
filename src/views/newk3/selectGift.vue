@@ -76,7 +76,7 @@
         this.t1 = setInterval(()=>{
           this.time--
           if (this.time<=0) {
-            this.sendManyGift()
+            this.sendGift()
             clearInterval(this.t1)
             this.showManyBtn = 0
             this.time = 100
