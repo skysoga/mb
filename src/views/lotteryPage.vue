@@ -104,7 +104,8 @@
             ['ferrari','法拉利'],
             ['cuke','大黄瓜',1],
             ['porsche','保时捷'],
-            ['money','发财树']
+            ['money','发财树'],
+            ['cupidgirl','爱神之箭']
           ]
           resolve(GiftConfig)
         })

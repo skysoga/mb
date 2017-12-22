@@ -8,7 +8,7 @@
     data:()=>{
 			return {
 				reStartT:null,
-				all:['porsche','money'],
+				all:['porsche','money','cupidgirl'],
 				moving:0,
 			}
 		},
