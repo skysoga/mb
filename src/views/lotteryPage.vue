@@ -1575,7 +1575,14 @@
           newresult +=n[i]+','
         }
         return newresult = newresult.substring(0,newresult.length-1)
-      }
+      },
+      checkPermissionsLevel(wicth){ //Barrage、FreedomSpeak、Reward、SysSpeak
+        let block = this.GameConfig['LiveBroadcast'+wicth]
+        if (block.state === 0) {
+          return false
+        }
+        return (','+block.Level).search(','+state.UserUpGradeBonus.Grade+',')
+      },
 		},
 		watch:{
 			$route(val){

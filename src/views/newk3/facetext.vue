@@ -55,6 +55,7 @@
           '我要打赏',
         ],
         content:'',
+        lastTime:0,
 			}
 		},
 		mounted(){
@@ -73,7 +74,28 @@
 				this.faceortext = !this.faceortext
 				this.$refs.content.innerHTML = ''
 			},
+      checkPermissions(){
+        let freedomSpeakArr = this.$parent.$parent.GameConfig.LiveBroadcastFreedomSpeak
+        if (this.$refs.content.innerHTML.length <= 0) {
+          return [0,'请输入您要发表的弹幕！']
+        }
+        if (this.$refs.content.innerHTML.length > freedomSpeakArr.Length) {
+          return [0,'您最长能发表'+freedomSpeakArr.Length+'个字！']
+        }
+        if(this.$parent.$parent.checkPermissionsLevel('FreedomSpeak') === -1){
+          return [0,'您当前的等级无法发表弹幕！']
+        }
+        let time = new Date().getTime() - this.lastTime
+        if (this.lastTime !== 0 && time < freedomSpeakArr.Interval*1000) {
+          return [0,freedomSpeakArr.Interval+'秒内只能发送一次弹幕！']
+        }
+        return [1]
+      },
 			send(){
+        let permissions = this.checkPermissions()
+        if (!permissions[0]) {
+          return layer.msgWarn(permissions[1])
+        }
         layer.alert('已发送！')
         _fetch({
           Action:'SendBarrage',
@@ -83,6 +105,7 @@
         .then(d=>{
           if (d.Code === 1) {
             this.$refs.content.innerHTML = ''
+            this.lastTime = new Date().getTime()
           }else{
             layer.msgWarn(d.StrCode)
           }
