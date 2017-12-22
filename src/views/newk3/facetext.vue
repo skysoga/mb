@@ -86,8 +86,9 @@
           return [0,'您当前的等级无法发表弹幕！']
         }
         let time = new Date().getTime() - this.lastTime
-        if (this.lastTime !== 0 && time < freedomSpeakArr.Interval*1000) {
-          return [0,freedomSpeakArr.Interval+'秒内只能发送一次弹幕！']
+        let barrage =  this.$parent.$parent.GameConfig.LiveBroadcastBarrage
+        if (this.lastTime !== 0 && time < barrage.Interval*1000) {
+          return [0,barrage.Interval+'秒内只能发送一次弹幕！']
         }
         return [1]
       },
@@ -99,7 +100,7 @@
         layer.alert('已发送！')
         _fetch({
           Action:'SendBarrage',
-          GameID:'0101',
+          GameID:this.$parent.$parent.lcode,
           Barrage:this.$refs.content.innerHTML,
         })
         .then(d=>{
