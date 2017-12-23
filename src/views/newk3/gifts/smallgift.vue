@@ -77,7 +77,7 @@
 <style lang="scss" scoped>
 .smallgift{
   position: fixed;
-  z-index: 22;
+  z-index: 20;
   bottom: 10em;
   left: .4em;
   height:4.5em;

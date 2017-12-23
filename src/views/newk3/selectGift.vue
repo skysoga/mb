@@ -15,6 +15,9 @@
         <em>{{time}}</em>
       </div>
     </div>
+    <div class="showNum" :class="{ani_num:showScale}" v-show="giftNum!==1">
+      x{{giftNum}}
+    </div>
   </div>
 </template>
 <script>
@@ -24,6 +27,8 @@
 				active:[],
         giftArr:'',
         showManyBtn:0,
+        showScale:1,
+        showScaleT:null,
         time:100,
         t1:null,
         giftNum:1,
@@ -65,6 +70,7 @@
         .then(d=>{
           if (d.Code === 1) {
             console.log(d)
+            this.giftNum = 1
           }else{
             layer.msgWarn(d.StrCode)
           }
@@ -86,7 +92,28 @@
         this.giftNum++
         this.time = 100
       },
-		}
+		},
+    watch:{
+      'giftNum'(n,o){
+        var aa = ()=>{
+          this.showScale = 1
+          this.showScaleT = setTimeout(()=>{
+            this.showScale = 0
+            clearTimeout(this.showScaleT)
+          },300)
+        }
+        if (this.showScaleT) {
+          clearTimeout(this.showScaleT)
+        }
+        if(this.showScale === 1){
+          setTimeout(()=>{
+            aa()
+          },10)
+        }else{
+          aa()
+        }
+      }
+    }
 	}
 </script>
 <style lang="scss" scoped>
@@ -179,6 +206,32 @@
     text-align: center;
     border-radius: .2em;
     color:#333;
+  }
+}
+.showNum{
+  font-size: 2em;
+  position: absolute;
+  bottom:3em;
+  width: 100%;
+  text-align: center;
+  color:white;
+  font-style: italic;
+  color: #f9bc35;
+  text-shadow: 0px 3px 5px rgba(0, 0, 0, 0.64);
+}
+.ani_num{
+  animation: number .3s linear;
+  transform: scale(1);
+  opacity: 1;
+}
+@keyframes number{
+  0%{
+    transform: scale(3);
+    opacity: 0;
+  }
+  100%{
+    transform: scale(1);
+    opacity: 1;
   }
 }
 </style>
