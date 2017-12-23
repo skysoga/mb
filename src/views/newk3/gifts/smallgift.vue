@@ -4,14 +4,17 @@
       <img :src="$store.getters.PhotoPath+twoGift['gift'+d].Avatar||$store.state.constant.DefPhoto">
       <div class="text">
         <span>{{twoGift['gift'+d].NickName}}</span>
-        <em>送出小黄瓜</em>
+        <em>送出{{giftName[hasGift.indexOf(twoGift['gift'+d].GiftID)]}}</em>
       </div>
+      <cuke v-if="twoGift['gift'+d].GiftID === 'cuke'"></cuke>
     </div>
 	</div>
 </template>
 <script>
+  import cuke  from './cuke'
   export default {
     components: {
+      cuke,
     },
     data:()=>{
     	return {
@@ -60,6 +63,9 @@
           },5000)
         }
       },
+      // getName(id){
+      //   let num = this.
+      // },
     },
     watch:{
     	'$parent.giftArr'(n){
@@ -79,7 +85,7 @@
     background: rgba(0, 0, 0, 0.15);
     height:2em;
     border-radius: 2em;
-    width:10em;
+    width:9em;
     img{
       height:100%;
       border-radius: 50%;
