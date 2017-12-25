@@ -7,22 +7,25 @@
         <em>送出{{giftName[hasGift.indexOf(twoGift['gift'+d].GiftID)]}}</em>
       </div>
       <cuke v-if="twoGift['gift'+d].GiftID === 'cuke'"></cuke>
+      <injections v-if="twoGift['gift'+d].GiftID === 'injections'"></injections>
     </div>
 	</div>
 </template>
 <script>
   import cuke  from './cuke'
+  import injections  from './injections'
   export default {
     components: {
       cuke,
+      injections,
     },
     data:()=>{
     	return {
 	  		imgbaseUrl:'/static/img/gifts/',
 	  		imgDom:null,
 	  		giftArr:[],
-	  		hasGift: ['cuke'],
-        giftName:['小黄瓜'],
+	  		hasGift: ['cuke','injections'],
+        giftName:['小黄瓜','打针'],
         twoGift:{
           gift1:null,
           gift2:null,

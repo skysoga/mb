@@ -123,6 +123,8 @@
   width:100%;
   height:12em;
   .desktop{
+    height: 9.6em;
+    overflow: scroll;
     ul{
       li{
         color:white;
