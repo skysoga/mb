@@ -61,6 +61,7 @@
 				this.$parent.activeHide = 0
 			},
       sendGift(){
+        this.giftNum = 1
         _fetch({
           Action:'SendGift',
           GameID:this.$parent.$parent.lcode,
@@ -69,8 +70,6 @@
         })
         .then(d=>{
           if (d.Code === 1) {
-            console.log(d)
-            this.giftNum = 1
           }else{
             layer.msgWarn(d.StrCode)
           }

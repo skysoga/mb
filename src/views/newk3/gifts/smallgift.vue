@@ -8,24 +8,27 @@
       </div>
       <cuke v-if="twoGift['gift'+d].GiftID === 'cuke'"></cuke>
       <injections v-if="twoGift['gift'+d].GiftID === 'injections'"></injections>
+      <kiss v-if="twoGift['gift'+d].GiftID === 'kiss'"></kiss>
     </div>
 	</div>
 </template>
 <script>
   import cuke  from './cuke'
   import injections  from './injections'
+  import kiss  from './kiss'
   export default {
     components: {
       cuke,
       injections,
+      kiss,
     },
     data:()=>{
     	return {
 	  		imgbaseUrl:'/static/img/gifts/',
 	  		imgDom:null,
 	  		giftArr:[],
-	  		hasGift: ['cuke','injections'],
-        giftName:['小黄瓜','打针'],
+	  		hasGift: ['cuke','injections','kiss'],
+        giftName:['小黄瓜','打针','么么哒'],
         twoGift:{
           gift1:null,
           gift2:null,
@@ -56,14 +59,14 @@
           this.giftArr.splice(0,1)
           this.twoGift.gift1T = setTimeout(()=>{
             this.twoGift.gift1 = null
-          },5000)
+          },50000000)
         }
         if (this.twoGift.gift2 === null && this.giftArr.length > 0) {
           this.twoGift.gift2 = this.giftArr[0]
           this.giftArr.splice(0,1)
           this.twoGift.gift2T = setTimeout(()=>{
             this.twoGift.gift2 = null
-          },5000)
+          },50000000)
         }
       },
       // getName(id){
