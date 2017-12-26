@@ -9,6 +9,7 @@
       <cuke v-if="twoGift['gift'+d].GiftID === 'cuke'"></cuke>
       <injections v-if="twoGift['gift'+d].GiftID === 'injections'"></injections>
       <kiss v-if="twoGift['gift'+d].GiftID === 'kiss'"></kiss>
+      <durex v-if="twoGift['gift'+d].GiftID === 'durex'"></durex>
     </div>
 	</div>
 </template>
@@ -16,19 +17,21 @@
   import cuke  from './cuke'
   import injections  from './injections'
   import kiss  from './kiss'
+  import durex  from './durex'
   export default {
     components: {
       cuke,
       injections,
       kiss,
+      durex,
     },
     data:()=>{
     	return {
 	  		imgbaseUrl:'/static/img/gifts/',
 	  		imgDom:null,
 	  		giftArr:[],
-	  		hasGift: ['cuke','injections','kiss'],
-        giftName:['小黄瓜','打针','么么哒'],
+	  		hasGift: ['cuke','injections','kiss','durex'],
+        giftName:['小黄瓜','打针','么么哒','杜蕾斯'],
         twoGift:{
           gift1:null,
           gift2:null,

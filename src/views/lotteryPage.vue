@@ -105,6 +105,7 @@
             ['cuke','小黄瓜',1],
             ['injections','打针',1],
             ['kiss','么么哒',1],
+            ['durex','杜蕾斯',1],
             ['porsche','保时捷'],
             ['money','发财树'],
             ['cupidgirl','爱神之箭']
