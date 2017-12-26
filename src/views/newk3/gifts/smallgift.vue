@@ -62,6 +62,9 @@
           this.giftArr.splice(0,1)
           this.twoGift.gift1T = setTimeout(()=>{
             this.twoGift.gift1 = null
+            if (this.giftArr.length > 0) {
+              this.checkTwoGift()
+            }
           },5000)
         }
         if (this.twoGift.gift2 === null && this.giftArr.length > 0) {
@@ -69,6 +72,9 @@
           this.giftArr.splice(0,1)
           this.twoGift.gift2T = setTimeout(()=>{
             this.twoGift.gift2 = null
+            if (this.giftArr.length > 0) {
+              this.checkTwoGift()
+            }
           },5000)
         }
       },
