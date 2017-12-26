@@ -55,6 +55,7 @@
     <div class="main" v-if= "method === 'Weixin' && !underMaintain ">
       <input name="GetMoneyUser" type="hidden" value="" readonly="readonly">
       <table>
+        <template v-if="nowRender.BankName&&nowRender.CardNum&&nowRender.RealName">
         <tr>
           <td>银行帐户</td>
           <td>
@@ -72,6 +73,7 @@
           <td><input class="cGold" type="text"  :value = "nowRender.BankName" readonly="readonly">
           <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i></td>
         </tr>
+        </template>
         <tr>
           <td>充值金额</td>
           <td><input  type="tel" tag = "充值金额" v-va:Money  v-model = 'Money'  placeholder="请输入充值金额"></td>
@@ -80,7 +82,7 @@
           <td>微信昵称</td>
           <td><input type="text" tag = "微信昵称" v-va:PayUser  v-model = 'PayUser'  placeholder="请输入您的微信昵称"></td>
         </tr>
-        <tr>
+        <tr v-if="nowRender.CodeImg">
           <td>扫码支付</td>
           <td>
             <img class="barcode" :src="nowRender.CodeImg" alt="二维码">
@@ -159,6 +161,7 @@
 
     <div class="main" v-if= "method === 'Alipay' && !underMaintain ">
       <table>
+        <template v-if="nowRender.RealName&&nowRender.AliNo">
         <tr>
           <td>支付宝姓名</td>
           <td>
@@ -171,6 +174,7 @@
           <td><input class="cGold" type="text"  :value = "nowRender.AliNo" readonly="readonly">
           <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i></td>
         </tr>
+        </template>
         <tr>
           <td>充值金额</td>
           <td><input  type="tel" tag = "充值金额"  v-model.trim="Money" v-va:Money placeholder="请输入充值金额"></td>
@@ -179,7 +183,7 @@
           <td>支付宝姓名</td>
           <td><input type="text" tag = "支付宝姓名" v-model="PayUser" v-va:PayUser   placeholder="请输入您的支付宝姓名"></td>
         </tr>
-        <tr>
+        <tr v-if="nowRender.CodeImg">
           <td>扫码支付</td>
           <td>
             <img class="barcode" :src="nowRender.CodeImg" alt="">
@@ -251,11 +255,11 @@ export default{
           vm.ID = json[0].Id
           var xurl = ''
           if(json[0].CodeImg === '0' || !json[0].CodeImg){
-            xurl = '/../system/common/other/noQRcode.png'
+            xurl =''// '/../system/common/other/noQRcode.png'
           }else{
-            xurl = json[0].CodeImg
+            xurl = state.constant.ImgHost+json[0].CodeImg
           }
-          vm.nowRender.CodeImg =  state.constant.ImgHost + xurl
+          vm.nowRender.CodeImg =  xurl
         }
 
         vm.vaConfig ||(vm.vaConfig = {})
