@@ -98,17 +98,17 @@
         var getGameConfig = _fetch({Action:'GameConfig',GameID:'0101'})
         var getGiftConfig = new Promise(function(resolve, reject){
           let GiftConfig = [
-            ['airplane','飞机'],
-            ['boat','皇家游轮'],
-            ['cannon','皇家大炮'],
-            ['ferrari','法拉利'],
-            ['cuke','小黄瓜',1],
-            ['injections','打针',1],
-            ['kiss','么么哒',1],
-            ['durex','杜蕾斯',1],
-            ['porsche','保时捷'],
-            ['money','发财树'],
-            ['cupidgirl','爱神之箭']
+            ['airplane','飞机',888],
+            ['boat','皇家游轮',998],
+            ['cannon','皇家大炮',666],
+            ['ferrari','法拉利',1111],
+            ['cuke','小黄瓜',18],
+            ['injections','打针',88],
+            ['kiss','么么哒',1,1],
+            ['durex','杜蕾斯',58],
+            ['porsche','保时捷',1234],
+            ['money','发财树',1888],
+            ['cupidgirl','爱神之箭',520]
           ]
           resolve(GiftConfig)
         })

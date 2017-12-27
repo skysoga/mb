@@ -35,7 +35,7 @@
 	float: left;
 	width:3em;
 	height:2em;
-	margin-left: .5em;
+	margin-left: 1.3em;
 }
 .block{
 	position: relative;

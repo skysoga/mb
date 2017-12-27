@@ -3,7 +3,8 @@
     <div class="desktop">
       <ul class="fix">
         <li v-for="d in $parent.$parent.GiftConfig" @click.stop="select(d)" :class="{selected:active[0] === d[0]}" class="gift">
-          <span v-show="d[2]">连</span>
+          <span v-show="d[3]">连</span>
+          <i>￥{{d[2]}}</i>
           <em>{{d[1]}}</em>
         </li>
       </ul>
@@ -51,7 +52,7 @@
         }
 			},
 			send(){
-        // if (this.active[2]) {
+        // if (this.active[3]) {
         if (false) {
           this.showMany()
           return
@@ -68,6 +69,7 @@
           GameID:this.$parent.$parent.lcode,
           GiftName:this.active[0],
           GiftNum:this.giftNum,
+          GiftPrice:this.active[2]
         })
         .then(d=>{
           if (d.Code === 1) {
@@ -142,6 +144,13 @@
         }
         &:nth-child(4n+4){
           border-right:none
+        }
+        i{
+          display: block;
+          text-align: center;
+          font-size: .5em;
+          color:#d7da2b;
+          margin-bottom: .3em;
         }
         em{
           display:block;
