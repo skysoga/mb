@@ -10,7 +10,8 @@
     </div>
     <div class="footer fix">
       <div class="btn" @click="send">发送</div>
-      <div class="manyBtn" v-show="showManyBtn" @click="addGift">
+      <!-- <div class="manyBtn" v-show="showManyBtn" @click="addGift"> -->
+      <div class="manyBtn" v-show="false" @click="addGift">
         <span>连送</span>
         <em>{{time}}</em>
       </div>
@@ -50,7 +51,8 @@
         }
 			},
 			send(){
-        if (this.active[2]) {
+        // if (this.active[2]) {
+        if (false) {
           this.showMany()
           return
         }else{
@@ -61,7 +63,6 @@
 				this.$parent.activeHide = 0
 			},
       sendGift(){
-        this.giftNum = 1
         _fetch({
           Action:'SendGift',
           GameID:this.$parent.$parent.lcode,
@@ -74,6 +75,7 @@
             layer.msgWarn(d.StrCode)
           }
         })
+        this.giftNum = 1
       },
       showMany(){
         this.t1 = setInterval(()=>{
