@@ -592,12 +592,15 @@ window._App=(function(host){
   //是否APP
   var a = localStorage.getItem("isApp")
   if (a!==null) {return a}
-  if (host.split('.').length===4){return false}
+  // if (host.split('.').length===4){return false}
   // console.log(host);
-  var beginWithM = /^m\./.test(host)
-  var hasDAFATEST = host.indexOf('dafatest') > -1
-
-  if(!beginWithM && !hasDAFATEST){
+  if(host.indexOf('dafatest') > -1){
+    return false
+  }
+  if(host.indexOf('app2jsknacs') > -1){
+    return true
+  }
+  if(/^m\./.test(host)===-1){
     return true
   }
   // host = host.split('.')
