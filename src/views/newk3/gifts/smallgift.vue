@@ -3,7 +3,7 @@
 		<div v-for="(d,i) in 2" v-if="twoGift['gift'+d]" :class="'block'+d">
       <div class="fix">
         <div class="block" :class="{block_ani:twoGift['block_ani'+d]}">
-          <img :src="$store.getters.PhotoPath+twoGift['gift'+d].Avatar||$store.state.constant.DefPhoto">
+          <img :src="$store.getters.PhotoPath+twoGift['gift'+d].UserPhoto||$store.state.constant.DefPhoto">
           <div class="text">
             <span>{{twoGift['gift'+d].NickName}}</span>
             <em>送出{{giftName[hasGift.indexOf(twoGift['gift'+d].GiftID)]}}</em>

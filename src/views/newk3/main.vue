@@ -81,6 +81,7 @@
   import selectGift from './selectGift'
   import facetext from './facetext'
   import history from './history'
+  import {gifts} from '../../js/liveconfig'
   var eachLen = data=>data.map(arr=>arr.length)
   var getBetStr = (data, mode)=>{
     var line =  data.map(arr=>arr.join(' '))
@@ -149,6 +150,7 @@
       selectGift,
       facetext,
       history,
+      giftconfig:gifts
     },
     data:()=>{
       return{
@@ -480,6 +482,16 @@
         }
       },
       giftPush(gift){
+        //检验礼物是否存在并且价格是否正确
+        if (gifts[gift.GiftID]) {
+          if(gifts[gift.GiftID].price !== gift.GiftPrice){
+            console.log('礼物价格错误')
+            return
+          }
+        }else{
+          console.log('没有这个礼物')
+          return
+        }
         gift.type = gift.GiftID
         this.activegift = gift
       },

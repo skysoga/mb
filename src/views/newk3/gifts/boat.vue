@@ -5,7 +5,7 @@
 		<div class="shadow" :style="'background: url('+$parent.imgbaseUrl+url+')'"></div>
 		<div class="boatimg" :style="'background: url('+$parent.imgbaseUrl+url+')'">
 			<div class="name">{{$parent.giftArr[0].NickName}}</div>
-			<img class="head" :src="$store.getters.PhotoPath+$parent.giftArr[0].Avatar||$store.state.constant.DefPhoto">
+			<img class="head" :src="$store.getters.PhotoPath+$parent.giftArr[0].UserPhoto||$store.state.constant.DefPhoto">
 		</div>
 	</div>
 </template>
