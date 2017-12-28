@@ -592,7 +592,7 @@ window._App=(function(host){
   //是否APP
   var a = localStorage.getItem("isApp")
   if (a!==null) {return a}
-  // if (host.split('.').length===4){return false}
+  // if (host.split('.').leyyyyngth===4){return false}
   // console.log(host);
   if(host.indexOf('dafatest') > -1){
     return false
@@ -642,7 +642,7 @@ window._App=(function(host){
         fun()
       }
     }
-    addScript("//static.ydbimg.com/API/YdbOnline.js",function(){
+    addScript("/static/public/YdbOnline.js",function(){
       var count=0
       var inter=setInterval(function(){
         if(typeof YDBOBJ!=='undefined'){
