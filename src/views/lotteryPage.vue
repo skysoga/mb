@@ -95,7 +95,7 @@
 
       //设置请求的数组
       if (ptype === 'live') {
-        var getGameConfig = _fetch({Action:'GameConfig',GameID:'0101'})
+        var getGameConfig = _fetch({Action:'GameConfig',GameID:lcode})
         var reqArr = [getRebate, getLotteryList, getServerTime,getGameConfig]
       }else{
         var reqArr = [getRebate, getLotteryList, getServerTime]

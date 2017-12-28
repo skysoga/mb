@@ -36,7 +36,7 @@
 	  		imgDom:null,
 	  		giftArr:[],
 	  		hasGift: null,
-        giftName:['小黄瓜','打针','么么哒','杜蕾斯'],
+        giftName:null,
         twoGift:{
           gift1:null,
           gift2:null,
