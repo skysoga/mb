@@ -57,6 +57,11 @@
       <table>
         <template v-if="nowRender.BankName&&nowRender.CardNum&&nowRender.RealName">
         <tr>
+          <td>收款银行</td>
+          <td><input class="cGold" type="text"  :value = "nowRender.BankName" readonly="readonly">
+          <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i></td>
+        </tr>
+        <tr>
           <td>银行帐户</td>
           <td>
             <input class="cGold"  type="text" :value = "nowRender.RealName"  readonly="readonly">
@@ -67,12 +72,7 @@
           <td>银行帐号</td>
           <td><input class="cGold" type="text"  :value = "nowRender.CardNum" readonly="readonly">
           <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i></td>
-        </tr>
-        <tr>
-          <td>开户银行</td>
-          <td><input class="cGold" type="text"  :value = "nowRender.BankName" readonly="readonly">
-          <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i></td>
-        </tr>
+        </tr>        
         </template>
         <tr>
           <td>充值金额</td>
