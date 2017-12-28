@@ -96,23 +96,7 @@
       //设置请求的数组
       if (ptype === 'live') {
         var getGameConfig = _fetch({Action:'GameConfig',GameID:'0101'})
-        var getGiftConfig = new Promise(function(resolve, reject){
-          let GiftConfig = [
-            ['airplane','飞机',888],
-            ['boat','皇家游轮',998],
-            ['cannon','皇家大炮',666],
-            ['ferrari','法拉利',1111],
-            ['cuke','小黄瓜',18],
-            ['injections','打针',88],
-            ['kiss','么么哒',1,1],
-            ['durex','杜蕾斯',58],
-            ['porsche','保时捷',1234],
-            ['money','发财树',1888],
-            ['cupidgirl','爱神之箭',520]
-          ]
-          resolve(GiftConfig)
-        })
-        var reqArr = [getRebate, getLotteryList, getServerTime,getGameConfig,getGiftConfig]
+        var reqArr = [getRebate, getLotteryList, getServerTime,getGameConfig]
       }else{
         var reqArr = [getRebate, getLotteryList, getServerTime]
       }
@@ -134,7 +118,6 @@
         next(vm=>{
           if (values[3].Code === 1) {
             vm.GameConfig = values[3].BackData
-            vm.GiftConfig = values[4]
             vm.createWS()
           }else{
             layer.msgWarn(values[3].StrCode)
@@ -1291,7 +1274,6 @@
           Status:''
         },
         GameConfig:null,
-        GiftConfig:null,
         GameWS:null,
         OnlineWS:null,
         isSleep:0,

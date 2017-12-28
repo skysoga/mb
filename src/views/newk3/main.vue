@@ -81,7 +81,7 @@
   import selectGift from './selectGift'
   import facetext from './facetext'
   import history from './history'
-  import {gifts} from '../../js/liveconfig'
+  import {gifts,giftsList} from '../../js/liveconfig'
   var eachLen = data=>data.map(arr=>arr.length)
   var getBetStr = (data, mode)=>{
     var line =  data.map(arr=>arr.join(' '))
@@ -150,7 +150,6 @@
       selectGift,
       facetext,
       history,
-      giftconfig:gifts
     },
     data:()=>{
       return{
@@ -175,6 +174,7 @@
         wait4Results:[1,2,3],              //等待开奖的默认状态
         wait4Resultst:null,
         changeSize:null,                   //改变窗口大小执行的函数
+        giftsList:giftsList,
       }
     },
     computed:mapState({

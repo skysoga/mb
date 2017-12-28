@@ -1,3 +1,4 @@
+//接收礼物时验证正确性
 var gifts = {
   airplane:{
   	price:888
@@ -33,4 +34,18 @@ var gifts = {
   	price:520
   },
 }
-module.exports = {gifts}
+//礼物列表
+let giftsList = [
+  ['airplane','飞机',888],
+  ['boat','皇家游轮',998],
+  ['cannon','皇家大炮',666],
+  ['ferrari','法拉利',1111],
+  ['cuke','小黄瓜',18],
+  ['injections','打针',88],
+  ['kiss','么么哒',1,1],
+  ['durex','杜蕾斯',58],
+  ['porsche','保时捷',1234],
+  ['money','发财树',1888],
+  ['cupidgirl','爱神之箭',520]
+]
+module.exports = {gifts,giftsList}
