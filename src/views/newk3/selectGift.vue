@@ -3,7 +3,7 @@
     <div class="desktop">
       <ul class="fix">
         <li v-for="d in $parent.giftsList" @click.stop="select(d)" :class="{selected:active[0] === d[0]}" class="gift">
-          <span v-show="d[3]">连</span>
+          <span v-show="d[3] === 1">连</span>
           <i>￥{{d[2]}}</i>
           <em>{{d[1]}}</em>
         </li>

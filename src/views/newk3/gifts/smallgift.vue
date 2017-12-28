@@ -35,7 +35,7 @@
 	  		imgbaseUrl:'/static/img/gifts/',
 	  		imgDom:null,
 	  		giftArr:[],
-	  		hasGift: ['cuke','injections','kiss','durex'],
+	  		hasGift: null,
         giftName:['小黄瓜','打针','么么哒','杜蕾斯'],
         twoGift:{
           gift1:null,
@@ -52,6 +52,19 @@
           block_ani2:true,
         },
     	}
+    },
+    created(){
+      let _giftsList = this.$parent.$parent.giftsList
+      let _hasGift = []
+      let _giftName = []
+      for(let d of _giftsList){
+        if (d[3]) {
+          _hasGift.push(d[0])
+          _giftName.push(d[1])
+        }
+      }
+      this.hasGift = _hasGift
+      this.giftName = _giftName
     },
     mounted(){
     	let _giftArr = this.$parent.giftArr
