@@ -13,7 +13,7 @@
           <kiss v-if="twoGift['gift'+d].GiftID === 'kiss'"></kiss>
           <durex v-if="twoGift['gift'+d].GiftID === 'durex'"></durex>
         </div>
-        <div class="number" :class="{number_ani:(twoGift['show'+d]&&number_ani(twoGift['gift'+d],d))}">x{{twoGift['gift'+d].GiftNum}}</div>
+        <div class="number number_ani">x{{twoGift['gift'+d].GiftNum}}</div>
       </div>
   	</div>
   </div>
@@ -110,25 +110,6 @@
           },5000)
         }
       },
-      number_ani(d,witch){
-        if(this.twoGift['beforeGiftID'+witch] === null){
-          this.twoGift['beforeGiftID'+witch] = d.GiftID
-          this.twoGift['beforeNickName'+witch] = d.NickName
-          return true
-        }
-        if (this.twoGift['beforeGiftID'+witch] === d.GiftID && this.twoGift['beforeNickName'+witch] === d.NickName) {
-          console.log('只需增加礼物数量')
-        }else{
-          console.log('改变礼物种类或发送人')
-          this.twoGift['show'+witch] = false
-          setTimeout(()=>{
-            this.twoGift['show'+witch] = true
-          },50)
-        }
-        this.twoGift['beforeGiftID'+witch] = d.GiftID
-        this.twoGift['beforeNickName'+witch] = d.NickName
-        return true
-      },
     },
     watch:{
     	'$parent.giftArr'(n){
@@ -198,7 +179,7 @@
   padding-left: .2em;
 }
 .number_ani{
-  animation: number .2s linear;
+  animation: smallgift_number 5s linear;
 }
 .block{
   transform: translateX(0);
@@ -222,6 +203,27 @@
   }
   100%{
     transform: translateX(-9em);
+  }
+}
+@keyframes smallgift_number{
+  0%{
+    opacity: 0;
+  }
+  6%{
+    transform: scale(3);
+    opacity: 0;
+  }
+  12%{
+    transform: scale(1);
+    opacity: 1;
+  }
+  94%{
+    transform: scale(1);
+    opacity: 1;
+  }
+  100%{
+    transform: scale(1);
+    opacity: 0;
   }
 }
 </style>

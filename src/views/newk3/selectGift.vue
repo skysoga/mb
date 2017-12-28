@@ -52,7 +52,13 @@
         }
 			},
 			send(){
-        // if (this.active[3]) {
+        //检测是否有权限发送礼物
+        if(this.$parent.$parent.checkPermissionsLevel('Reward') === -1){
+          return layer.msgWarn('您的等级无法发送礼物！')
+        }
+        if(this.$parent.$parent.GameConfig.LiveBroadcastReward.State !== 1){
+          return layer.msgWarn('已关闭发送礼物！')
+        }
         if (false) {
           this.showMany()
           return
@@ -64,6 +70,9 @@
 				this.$parent.activeHide = 0
 			},
       sendGift(){
+        if(this.active.length <= 0){
+          return layer.msgWarn('请选择礼物！')
+        }
         _fetch({
           Action:'SendGift',
           GameID:this.$parent.$parent.lcode,

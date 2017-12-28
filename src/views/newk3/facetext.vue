@@ -71,6 +71,10 @@
 				}
 			},
 			changeFaceText(){
+        //检查系统弹幕的权限
+        if(this.$parent.$parent.checkPermissionsLevel('SysSpeak') === -1){
+          return
+        }
 				this.faceortext = !this.faceortext
 				this.$refs.content.innerHTML = ''
 			},
