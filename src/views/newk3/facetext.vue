@@ -2,7 +2,7 @@
 	<div class="facetext">
     <div class="title" :class="{tobottom:!sysSpeak}">
       <div class="type">
-        <span @click="$parent.barrageIsOpen = !$parent.barrageIsOpen" :class="{open:$parent.barrageIsOpen}">
+        <span @click="changeBarrage" :class="{open:$parent.barrageIsOpen}">
           <em>弹</em>
         </span>
       </div>
@@ -59,6 +59,7 @@
         checkText:0,
         checkFace:[],
         sysSpeak:1,//是否有内置弹幕的权限
+        barrageIsOpen:0//弹幕是否有权限
 			}
 		},
     created(){
@@ -67,6 +68,9 @@
         //检查系统弹幕的权限
         if(this.$parent.$parent.checkPermissionsLevel('SysSpeak') === -1){
           this.sysSpeak = 0
+        }
+        if(this.$parent.checkPermissionsLevel('Barrage') !== -1){
+          this.barrageIsOpen = 1
         }
       },50)
     },
@@ -136,6 +140,13 @@
           }
         })
 			},
+      changeBarrage(){
+        if (this.barrageIsOpen) {
+          this.$parent.barrageIsOpen = !this.$parent.barrageIsOpen
+        }else{
+          layer.msgWarn('您当前的等级无法打开弹幕！')
+        }
+      }
 		}
 	}
 </script>

@@ -169,7 +169,7 @@
         activeHide:0,
         face:null,
         text:null,
-        barrageIsOpen:0,                //但是是否开启
+        barrageIsOpen:0,                //弹幕是否开启
         history:0,
         wait4Results:[1,2,3],              //等待开奖的默认状态
         wait4Resultst:null,
