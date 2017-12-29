@@ -1,6 +1,6 @@
 <template>
 	<div class="facetext">
-    <div class="title">
+    <div class="title" :class="{tobottom:!sysSpeak}">
       <div class="type">
         <span @click="$parent.barrageIsOpen = !$parent.barrageIsOpen" :class="{open:$parent.barrageIsOpen}">
           <em>弹</em>
@@ -8,21 +8,21 @@
       </div>
       <div class="content">
         <div class="testing" contenteditable="true" v-html="defaultContent" ref="content"></div>
-        <div class="faceortext" :class="{text:faceortext,face:!faceortext}" @click.stop="changeFaceText">
+        <div v-show="sysSpeak" class="faceortext" :class="{text:faceortext,face:!faceortext}" @click.stop="changeFaceText">
           <i class="iconfont">{{faceortext?'&#xe615;':'&#xe616;'}}</i>
         </div>
       </div>
       <div class="btn" @click="send">发送</div>
     </div>
-    <div class="desktop">
-      <div ref="face" class="facetext-face" v-show="faceortext">
-        <ul class="fix">
-          <li v-for="(v,k,i) in faceData" @click.stop="pushContent(v,0,k)">{{v}}</li>
-        </ul>
-      </div>
-      <div ref="text" class="facetext-text">
+    <div class="desktop" :class="{tobottom:!sysSpeak}">
+      <div ref="text" class="facetext-text" v-show="sysSpeak && !faceortext">
         <ul class="fix">
           <li v-for="(d,i) in textData" @click.stop="pushContent(d,1,i)"><em>{{d.Content}}</em></li>
+        </ul>
+      </div>
+      <div ref="face" class="facetext-face" v-show="sysSpeak">
+        <ul class="fix">
+          <li v-for="(v,k,i) in faceData" @click.stop="pushContent(v,0,k)">{{v}}</li>
         </ul>
       </div>
     </div>
@@ -35,7 +35,7 @@
 			return {
 				face:null,
 				text:null,
-        faceortext:true,                   //默认表情true
+        faceortext:false,                   //默认表情true
         faceData:[],
         textData:[
           {Content:'买定离手',ID:1},
@@ -58,10 +58,17 @@
         lastTime:0,
         checkText:0,
         checkFace:[],
+        sysSpeak:1,//是否有内置弹幕的权限
 			}
 		},
     created(){
       this.faceData = this.$parent.faceData
+      setTimeout(()=>{
+        //检查系统弹幕的权限
+        if(this.$parent.$parent.checkPermissionsLevel('SysSpeak') === -1){
+          this.sysSpeak = 0
+        }
+      },50)
     },
 		mounted(){
       this.face = new BScroll(this.$refs.face,{click:true})
@@ -80,10 +87,6 @@
 				}
 			},
 			changeFaceText(){
-        //检查系统弹幕的权限
-        if(this.$parent.$parent.checkPermissionsLevel('SysSpeak') === -1){
-          return
-        }
 				this.faceortext = !this.faceortext
 				this.$refs.content.innerHTML = ''
 			},
@@ -141,10 +144,12 @@
   height:12em;
   transition:.2s;
   width:100%;
+  pointer-events: none;
   .title{
     display:table;
     width:100%;
     border-bottom:1px solid #d4d4d4;
+    pointer-events: initial;
     >div{
     display:table-cell;
     }
@@ -238,6 +243,7 @@
   .desktop{
     height:9.6em;
     background:#fdfdfd;
+    pointer-events: initial;
   }
 }
 .facetext-face,.facetext-text{
@@ -283,5 +289,9 @@
       }
     }
   }
+}
+.tobottom{
+  transform:translateY(9.6em);
+  pointer-events: initial;
 }
 </style>

@@ -507,6 +507,7 @@
               barrage.Message = barrage.Message.replace(arr[i],this.faceData[ID])
             }
           }
+          //替换内置弹幕
           _barrage.data.push(barrage)
         }
       },
