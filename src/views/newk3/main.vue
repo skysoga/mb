@@ -81,7 +81,7 @@
   import selectGift from './selectGift'
   import facetext from './facetext'
   import history from './history'
-  import {gifts,giftsList} from '../../js/liveconfig'
+  import {gifts,giftsList,faceData} from '../../js/liveconfig'
   var eachLen = data=>data.map(arr=>arr.length)
   var getBetStr = (data, mode)=>{
     var line =  data.map(arr=>arr.join(' '))
@@ -175,6 +175,7 @@
         wait4Resultst:null,
         changeSize:null,                   //改变窗口大小执行的函数
         giftsList:giftsList,
+        faceData:faceData,
       }
     },
     computed:mapState({
@@ -302,7 +303,7 @@
     },
     methods:{
       choose(item){
-        if(!this.award)return
+        if(!this.award)return 
         var _pos = this.chosen.indexOf(item),
             _chosen = this.chosen.slice(0)
 

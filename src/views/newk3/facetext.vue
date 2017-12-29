@@ -17,12 +17,12 @@
     <div class="desktop">
       <div ref="face" class="facetext-face" v-show="faceortext">
         <ul class="fix">
-          <li v-for="d in faceData" @click.stop="pushContent(d,0)">{{d}}</li>
+          <li v-for="(v,k,i) in faceData" @click.stop="pushContent(v,0,k)">{{v}}</li>
         </ul>
       </div>
       <div ref="text" class="facetext-text">
         <ul class="fix">
-          <li v-for="d in textData" @click.stop="pushContent(d,1)"><em>{{d}}</em></li>
+          <li v-for="(d,i) in textData" @click.stop="pushContent(d,1,i)"><em>{{d.Content}}</em></li>
         </ul>
       </div>
     </div>
@@ -36,38 +36,47 @@
 				face:null,
 				text:null,
         faceortext:true,                   //默认表情true
-        faceData:['😀','😁','😂','😄','😅','😆','😇','😉','😊','😋','😌','😍','😘','😙','😜','😝','😎','😏','😶','😑','😒','😳','😞','😟','😠','😡','😔','😕','😣','😖','😫','😤','😮','😱','😨','😰'],
+        faceData:[],
         textData:[
-          '买定离手',
-          '稳住，我们能赢',
-          '登顶盈利榜',
-          '这把一定中',
-          '中中中',
-          '大大大',
-          '小小小',
-          '单单单',
-          '双双双',
-          '豹子 豹子',
-          '天灵灵地灵灵 这把一定赢',
-          '吓得直哆嗦',
-          '赢钱娶老婆',
-          '赢钱就去～',
-          '我要打赏',
+          {Content:'买定离手',ID:1},
+          {Content:'稳住，我们能赢',ID:2},
+          {Content:'登顶盈利榜',ID:3},
+          {Content:'这把一定中',ID:4},
+          {Content:'中中中',ID:5},
+          {Content:'大大大',ID:6},
+          {Content:'小小小',ID:7},
+          {Content:'单单单',ID:8},
+          {Content:'双双双',ID:9},
+          {Content:'豹子 豹子',ID:10},
+          {Content:'天灵灵地灵灵 这把一定赢',ID:11},
+          {Content:'吓得直哆嗦',ID:12},
+          {Content:'赢钱娶老婆',ID:13},
+          {Content:'赢钱就去～',ID:14},
+          {Content:'我要打赏',ID:15}
         ],
         content:'',
         lastTime:0,
+        checkText:0,
+        checkFace:[],
 			}
 		},
+    created(){
+      this.faceData = this.$parent.faceData
+    },
 		mounted(){
       this.face = new BScroll(this.$refs.face,{click:true})
       this.text = new BScroll(this.$refs.text,{click:true})
 		},
 		methods:{
-			pushContent(msg,type){
+			pushContent(d,type,i){
 				if (!type) {
-					this.$refs.content.innerHTML += msg
+					this.$refs.content.innerHTML += d
+          if(this.checkFace.indexOf(i) === -1){
+            this.checkFace.push(i)
+          }
 				}else{
-					this.$refs.content.innerHTML = msg
+					this.$refs.content.innerHTML = d.Content
+          this.checkText = i
 				}
 			},
 			changeFaceText(){
@@ -97,20 +106,28 @@
         return [1]
       },
 			send(){
+        let content = this.$refs.content.innerHTML
+        //权限检测
         let permissions = this.checkPermissions()
         if (!permissions[0]) {
           return layer.msgWarn(permissions[1])
         }
-        layer.alert('已发送！')
+        //默认弹幕改为ID
+        content = content.replace(this.textData[this.checkText].Content,`##${this.textData[this.checkText].ID}##`)
+        for (var i = 0; i < this.checkFace.length; i++) {
+          content = content.replace(new RegExp(this.faceData[this.checkFace[i]],'g'),`[[${this.checkFace[i]}]]`)
+        }
+
         _fetch({
           Action:'SendBarrage',
           GameID:this.$parent.$parent.lcode,
-          Barrage:this.$refs.content.innerHTML,
+          Barrage:content,
         })
         .then(d=>{
           if (d.Code === 1) {
             this.$refs.content.innerHTML = ''
             this.lastTime = new Date().getTime()
+            this.checkFace = []
           }else{
             layer.msgWarn(d.StrCode)
           }
