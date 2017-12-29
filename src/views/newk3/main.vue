@@ -497,9 +497,16 @@
         this.activegift = gift
       },
       barragePush(barrage){
-        console.log(barrage)
         let _barrage = this.$refs.barrage || 0
         if (_barrage) {
+          //替换表情
+          let arr = barrage.Message.match(/\[\[[\d]{1,2}\]\]/g) || 0
+          if (arr) {
+            for (var i = 0; i < arr.length; i++) {
+              let ID = arr[i].replace(/\[\[/,'').replace(/\]\]/,'')
+              barrage.Message = barrage.Message.replace(arr[i],this.faceData[ID])
+            }
+          }
           _barrage.data.push(barrage)
         }
       },
