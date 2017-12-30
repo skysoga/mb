@@ -654,9 +654,13 @@ function computeIssue(code, index, isChase){
     '1202':oneDayOneIssue(33, "2017/2/9"),
     '1301':function(){
       // var dateStr = new Date().getFullYear().toString()
-      var issueNo =  index < 100 ? '0'+index : index
+      var year=state.lt.Todaystr.slice(0,4)
+      if(isChase){
+        year=year*1+isChase+''
+      }
+      var issueNo =  ('00'+index).slice(-3)
       // console.log(state.Todaystr.slice(0,4) + issueNo)
-      return state.lt.Todaystr.slice(0,4) + issueNo
+      return year + issueNo
     }
   }
 
