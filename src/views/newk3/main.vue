@@ -176,6 +176,23 @@
         changeSize:null,                   //改变窗口大小执行的函数
         giftsList:giftsList,
         faceData:faceData,
+        textData:[
+          {Content:'买定离手',ID:1},
+          {Content:'稳住，我们能赢',ID:2},
+          {Content:'登顶盈利榜',ID:3},
+          {Content:'这把一定中',ID:4},
+          {Content:'中中中',ID:5},
+          {Content:'大大大',ID:6},
+          {Content:'小小小',ID:7},
+          {Content:'单单单',ID:8},
+          {Content:'双双双',ID:9},
+          {Content:'豹子 豹子',ID:10},
+          {Content:'天灵灵地灵灵 这把一定赢',ID:11},
+          {Content:'吓得直哆嗦',ID:12},
+          {Content:'赢钱娶老婆',ID:13},
+          {Content:'赢钱就去～',ID:14},
+          {Content:'我要打赏',ID:15}
+        ],
       }
     },
     computed:mapState({

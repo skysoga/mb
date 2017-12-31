@@ -17,12 +17,12 @@
     <div class="desktop" :class="{tobottom:!sysSpeak}">
       <div ref="text" class="facetext-text" v-show="sysSpeak && !faceortext">
         <ul class="fix">
-          <li v-for="(d,i) in textData" @click.stop="pushContent(d,1,i)"><em>{{d.Content}}</em></li>
+          <li v-for="(v,k) in textData" @click.stop="pushContent(v,1,k)"><em>{{v}}</em></li>
         </ul>
       </div>
       <div ref="face" class="facetext-face" v-show="sysSpeak">
         <ul class="fix">
-          <li v-for="(v,k,i) in faceData" @click.stop="pushContent(v,0,k)">{{v}}</li>
+          <li v-for="(v,k) in faceData" @click.stop="pushContent(v,0,k)">{{v}}</li>
         </ul>
       </div>
     </div>
@@ -36,24 +36,8 @@
 				face:null,
 				text:null,
         faceortext:false,                   //默认表情true
-        faceData:[],
-        textData:[
-          {Content:'买定离手',ID:1},
-          {Content:'稳住，我们能赢',ID:2},
-          {Content:'登顶盈利榜',ID:3},
-          {Content:'这把一定中',ID:4},
-          {Content:'中中中',ID:5},
-          {Content:'大大大',ID:6},
-          {Content:'小小小',ID:7},
-          {Content:'单单单',ID:8},
-          {Content:'双双双',ID:9},
-          {Content:'豹子 豹子',ID:10},
-          {Content:'天灵灵地灵灵 这把一定赢',ID:11},
-          {Content:'吓得直哆嗦',ID:12},
-          {Content:'赢钱娶老婆',ID:13},
-          {Content:'赢钱就去～',ID:14},
-          {Content:'我要打赏',ID:15}
-        ],
+        faceData:null,
+        textData:null,
         content:'',
         lastTime:0,
         checkText:0,
@@ -64,12 +48,20 @@
 		},
     created(){
       this.faceData = this.$parent.faceData
+      //内置弹幕数组转对象
+      let _textData = this.$parent.textData
+      let textDataObj = {}
+      for (var i = 0; i < _textData.length; i++) {
+        textDataObj[_textData[i].ID] = _textData[i].Content
+      }
+      this.textData = textDataObj
+      //权限检查
       setTimeout(()=>{
         //检查系统弹幕的权限
         if(this.$parent.$parent.checkPermissionsLevel('SysSpeak') === -1){
           this.sysSpeak = 0
         }
-        if(this.$parent.checkPermissionsLevel('Barrage') !== -1){
+        if(this.$parent.$parent.checkPermissionsLevel('Barrage') !== -1){
           this.barrageIsOpen = 1
         }
       },50)
@@ -86,7 +78,7 @@
             this.checkFace.push(i)
           }
 				}else{
-					this.$refs.content.innerHTML = d.Content
+					this.$refs.content.innerHTML = d
           this.checkText = i
 				}
 			},
@@ -120,7 +112,7 @@
           return layer.msgWarn(permissions[1])
         }
         //默认弹幕改为ID
-        content = content.replace(this.textData[this.checkText].Content,`##${this.textData[this.checkText].ID}##`)
+        content = content.replace(this.textData[this.checkText],`##${this.checkText}##`)
         for (var i = 0; i < this.checkFace.length; i++) {
           content = content.replace(new RegExp(this.faceData[this.checkFace[i]],'g'),`[[${this.checkFace[i]}]]`)
         }
