@@ -48,13 +48,7 @@
 		},
     created(){
       this.faceData = this.$parent.faceData
-      //内置弹幕数组转对象
-      let _textData = this.$parent.textData
-      let textDataObj = {}
-      for (var i = 0; i < _textData.length; i++) {
-        textDataObj[_textData[i].ID] = _textData[i].Content
-      }
-      this.textData = textDataObj
+      this.textData = this.$parent.textData
       //权限检查
       setTimeout(()=>{
         //检查系统弹幕的权限

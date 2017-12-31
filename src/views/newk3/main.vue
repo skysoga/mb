@@ -176,7 +176,8 @@
         changeSize:null,                   //改变窗口大小执行的函数
         giftsList:giftsList,
         faceData:faceData,
-        textData:[
+        textData:null,
+        beforeTextData:[
           {Content:'买定离手',ID:1},
           {Content:'稳住，我们能赢',ID:2},
           {Content:'登顶盈利榜',ID:3},
@@ -304,6 +305,14 @@
       }
     }),
     created(){
+      //内置弹幕数组转对象
+      let _textData = this.beforeTextData
+      let textDataObj = {}
+      for (var i = 0; i < _textData.length; i++) {
+        textDataObj[_textData[i].ID] = _textData[i].Content
+      }
+      this.textData = textDataObj
+
       function circle(num){
         num ++
         if(num > 3){
@@ -525,6 +534,14 @@
             }
           }
           //替换内置弹幕
+          let arr2 = barrage.Message.match(/##[\d]{1,3}##/g) || 0
+          if (arr2) {
+            for (var i = 0; i < arr2.length; i++) {
+              let ID = arr2[i].replace(/##/,'').replace(/##/,'')
+              barrage.Message = barrage.Message.replace(arr2[i],this.textData[ID])
+            }
+          }
+
           _barrage.data.push(barrage)
         }
       },
