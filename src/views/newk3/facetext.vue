@@ -7,7 +7,7 @@
         </span>
       </div>
       <div class="content">
-        <div class="testing" contenteditable="true" v-html="defaultContent" ref="content"></div>
+        <div class="testing" :contenteditable="!checkText" v-html="defaultContent" ref="content"></div>
         <div v-show="sysSpeak" class="faceortext" :class="{text:faceortext,face:!faceortext}" @click.stop="changeFaceText">
           <i class="iconfont">{{faceortext?'&#xe615;':'&#xe616;'}}</i>
         </div>
@@ -79,6 +79,7 @@
 			changeFaceText(){
 				this.faceortext = !this.faceortext
 				this.$refs.content.innerHTML = ''
+        this.checkText = 0
 			},
       checkPermissions(content){
         let freedomSpeakArr = this.$parent.$parent.GameConfig.LiveBroadcastFreedomSpeak
@@ -124,6 +125,7 @@
             this.$refs.content.innerHTML = ''
             this.lastTime = new Date().getTime()
             this.checkFace = []
+            this.checkText = 0
           }else{
             layer.msgWarn(d.StrCode)
           }
