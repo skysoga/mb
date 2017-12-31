@@ -1,5 +1,5 @@
 <template>
-	<div class="barrage" ref="barrageCon" v-show="data.length > 0">
+	<div class="barrage" ref="barrageCon" v-show="data.length > 0" @click="clickContent">
 		<ul>
 			<li v-for="d in data"><span>{{getLevel(d.Level)}}</span><div><em>{{d.NickName}}：</em><ins>{{d.Message}}</ins></div></li>
 		</ul>
@@ -16,7 +16,7 @@
     },
     mounted(){
       this.$nextTick(() => {
-        this.scroll = new BScroll(this.$refs.barrageCon, {})
+        this.scroll = new BScroll(this.$refs.barrageCon, {click:true,})
         this.scroll.scrollTo(0,this.scroll.maxScrollY,.2)
       })
     },
@@ -38,6 +38,11 @@
             case 10:return '站长';break;
           }
         }
+      },
+      clickContent(){
+        if (this.$parent.activeHide === 1) {{
+          console.log('关闭弹幕发送器')
+        }}
       },
     },
     beforeDestroy(){

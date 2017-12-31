@@ -19,7 +19,7 @@
         </div><history v-if="history" :type="history"></history>
       </div>
       <div class="userContent"></div>
-      <barrage ref="barrage" class="barrage" v-if="barrageIsOpen"></barrage>
+      <barrage ref="barrage" class="barrage" :class="{toTop:(activeHide===1),toBottom:(activeHide===3)}" v-if="barrageIsOpen"></barrage>
       <div class="control">
         <ul class="con-btn fix">
           <li><a class="back" href="javascript:;" @click.stop="$router.go(-1)"></a></li>
@@ -587,6 +587,13 @@
         this.$refs.iframe.contentWindow.openlive(url)
       }
     },
+    watch:{
+      'activeHide'(n){
+        if(n === 1){
+          console.log('此时要上抬')
+        }
+      },
+    },
     // 生命周期destroyed销毁清除定时器，有利于内存释放
     destroyed() {
       clearTimeout(this.timer)
@@ -597,6 +604,15 @@
 </script>
 <style lang="scss" scoped>
 @import "../../scss/dice";
+.toTop{
+  transform: translateY(-9.6em);
+  transition: .3s;
+}
+.toBottom{
+  transform: translateY(9em);
+  transition: .3s;
+  opacity: 0;
+}
 .mainPage{
   height:100%;
   position:fixed;

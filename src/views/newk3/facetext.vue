@@ -80,13 +80,16 @@
 				this.faceortext = !this.faceortext
 				this.$refs.content.innerHTML = ''
 			},
-      checkPermissions(){
+      checkPermissions(content){
         let freedomSpeakArr = this.$parent.$parent.GameConfig.LiveBroadcastFreedomSpeak
         if (this.$refs.content.innerHTML.length <= 0) {
           return [0,'请输入您要发表的弹幕！']
         }
         if (this.$refs.content.innerHTML.length > freedomSpeakArr.Length) {
-          return [0,'您最长能发表'+freedomSpeakArr.Length+'个字！']
+          //验证是否内置弹幕
+          if(!/^##[\d]{1,3}##$/.test(content)){
+            return [0,'您最长能发表'+freedomSpeakArr.Length+'个字！']
+          }
         }
         if(this.$parent.$parent.checkPermissionsLevel('FreedomSpeak') === -1){
           return [0,'您当前的等级无法发表弹幕！']
@@ -100,15 +103,15 @@
       },
 			send(){
         let content = this.$refs.content.innerHTML
-        //权限检测
-        let permissions = this.checkPermissions()
-        if (!permissions[0]) {
-          return layer.msgWarn(permissions[1])
-        }
         //默认弹幕改为ID
         content = content.replace(this.textData[this.checkText],`##${this.checkText}##`)
         for (var i = 0; i < this.checkFace.length; i++) {
           content = content.replace(new RegExp(this.faceData[this.checkFace[i]],'g'),`[[${this.checkFace[i]}]]`)
+        }
+        //权限检测
+        let permissions = this.checkPermissions(content)
+        if (!permissions[0]) {
+          return layer.msgWarn(permissions[1])
         }
 
         _fetch({
