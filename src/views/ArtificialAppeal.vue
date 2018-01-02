@@ -49,6 +49,7 @@
     <div class="tips" v-show="isType=='Bank'">
       为确定是本人操作，人工审诉-找回安全密码时需要验证首张银行卡信息。
     </div>
+  </div>
 </template>
 <script src="../js/ArtificialAppeal.js"></script>
 <style lang="scss" scoped>
