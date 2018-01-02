@@ -756,12 +756,16 @@
               console.log(state.natal)
               Countdown = nextIssueTime - serverTimeStamp
               // console.log(Countdown)
+              if(Month===1){
+                BeforeIssue=0
+              }
               var issue = BeforeIssue + _issue
               // console.log(issue,state.NowIssue)
               // 设置期号
               commit('lt_setIssueNo', issue)
               var code = state.lottery.LotteryCode   //当前彩种号
-              if (state.IssueNo===1){
+              if (Month===1&&_issue===1){
+                commit('lt_setIssueNo', 1)
                 Vue.set(state, 'OldIssue', computeIssue(code, BeforeIssue,-1))   //上一期
               }else{
                 Vue.set(state, 'OldIssue', computeIssue(code, state.IssueNo - 1))   //上一期
