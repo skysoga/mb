@@ -11,11 +11,12 @@ export default{
       Password:'',
       CardList:'',
       isType:'Login',//Login,Bank,Photo
+      isLockCard:false,
       nextUrl:''
     }
   },
   beforeRouteEnter(to,from,next){
-    var Arr=['UserFirstCardInfo'],
+    var Arr=['UserFirstCardInfo','UserBankCardList'],
     Questions=localStorage.getItem('UserSafeQuestions')
     if(Questions||!to.query.F||!to.query.Q){
       router.replace('/resetWay?Q=ResetSafePwd')
@@ -23,6 +24,7 @@ export default{
     RootApp.AjaxGetInitData(Arr,ref=>{
       next(vm=>{
         vm.CardList=state.UserFirstCardInfo
+        vm.isLockCard=vm.getLockCard(state.UserBankCardList)
         vm.nextUrl=to.query.Q.replace(/Reset/,'set')
       })
     })
@@ -49,7 +51,7 @@ export default{
         layer.msgWarn('请上传图片')
         return
       }
-      
+
       layer.msgWait("正在提交")
       var iskey=this.isType
       _fetch(ajax[this.isType]).then(json=>{
@@ -59,8 +61,7 @@ export default{
             case 'Login':
               let obj=json.BackData
               if(obj&&obj.State){
-                let list=this.CardList
-                if(list&&list.length){
+                if(this.isLockCard){
                   this.isType='Bank'
                 }else{
                   layer.url(json.StrCode,'/'+this.nextUrl+'?Q=ResetSafePwd&F=Appeal')
@@ -75,7 +76,7 @@ export default{
             case 'Photo':
             layer.url(json.StrCode,'/securityCenter')
             break;
-          }          
+          }
         }else{
           layer.msgWarn(json.StrCode)
         }
@@ -87,6 +88,12 @@ export default{
         arr.push(obj[i])
       }
       return arr
+    },
+    getLockCard(arr){
+      if(!arr||!arr.length)return false;
+      return arr.some((v,i,a)=>{
+        return v.isLock==true
+      })
     }
   },
   components:{
