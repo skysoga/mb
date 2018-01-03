@@ -489,7 +489,7 @@
             dispatch('lt_updatePlan', code)    //更新计划
           },
           lt_get6HCPlan:({state, rootState, commit, dispatch}, code)=>{
-            var LotteryPlan = localStorage.getItem("lotteryPlan"+ code)
+            /*var LotteryPlan = localStorage.getItem("lotteryPlan"+ code)
             LotteryPlan = LotteryPlan&&JSON.parse(LotteryPlan)
             if(LotteryPlan&&LotteryPlan.NextFirst>0){
               console.log('使用缓存')
@@ -509,7 +509,7 @@
               fetch6HCPlan()
             }
 
-            function fetch6HCPlan(){
+            function fetch6HCPlan(){*/
               _fetch({Action:'GetLotteryPlan', Qort:'1301'}).then((json)=>{
                 if(json.Code === 1){
                   var monthPlan = json.Data
@@ -521,7 +521,7 @@
                   layer.msgWarn(json.StrCode);
                 }
               })
-            }
+            // }
 
             //对6HC的计划进行一些变换并报错到vuex中
             function use6HCPlan(monthPlan){
