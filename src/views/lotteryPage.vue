@@ -96,7 +96,7 @@
       //设置请求的数组
       if (ptype === 'live') {
         var getGameConfig = _fetch({Action:'GameConfig',GameID:lcode})
-        var reqArr = [getRebate, getLotteryList, getServerTime,getGameConfig]
+        var reqArr = [getRebate, getServerTime,getGameConfig]
       }else{
         var reqArr = [getRebate, getLotteryList, getServerTime]
       }
@@ -115,14 +115,19 @@
             RootApp.$router.replace(`./lottery/${LotteryType}/${lcode}`)
           }
         }
-        next(vm=>{
-          if (values[3].Code === 1) {
-            vm.GameConfig = values[3].BackData
-            vm.createWS()
+        if (ptype === 'live') {
+          if (values[2].Code === 1) {
+            next(vm=>{
+              vm.GameConfig = values[2].BackData
+              vm.createWS()
+            })
           }else{
-            layer.msgWarn(values[3].StrCode)
+            state.turning=false
+            layer.msgWarn(values[2].StrCode)
           }
-        })
+        }else{
+          next()
+        }
       }).catch((err)=>{
         //报错并返回
 
@@ -977,7 +982,7 @@
                     }, (11 + randomFeed) * 1000)
                   }
                 }
-              } 
+              }
             }
 
             // 计算倒计时
@@ -1408,7 +1413,7 @@
       //   var num = getRedom()*1000
       //   var barrageNum = Math.floor(Math.random()*10)
       //   setTimeout(()=>{
-          
+
       //     // var fetchUrl = (url,data)=>{
       //     //   var str=[],k
       //     //   for(var i in data){
@@ -1509,7 +1514,7 @@
                 LotteryOpen:this.formatResult(n.record_result),
                 OpenTime:''
               }
-            }) 
+            })
           }
         }else{
           console.log('正在投注')
