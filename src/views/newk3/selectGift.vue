@@ -2,18 +2,23 @@
   <div class="giving">
     <div class="desktop">
       <ul class="fix">
-        <li v-for="d in $parent.$parent.GiftConfig" @click.stop="select(d)" :class="{selected:active[0] === d[0]}" class="gift">
-          <span v-show="d[2]">连</span>
+        <li v-for="d in $parent.giftsList" @click.stop="select(d)" :class="{selected:active[0] === d[0]}" class="gift">
+          <span v-show="d[3] === 1">连</span>
+          <i>￥{{d[2]}}</i>
           <em>{{d[1]}}</em>
         </li>
       </ul>
     </div>
     <div class="footer fix">
       <div class="btn" @click="send">发送</div>
-      <div class="manyBtn" v-show="showManyBtn" @click="addGift">
+      <!-- <div class="manyBtn" v-show="showManyBtn" @click="addGift"> -->
+      <div class="manyBtn" v-show="false" @click="addGift">
         <span>连送</span>
         <em>{{time}}</em>
       </div>
+    </div>
+    <div class="showNum" :class="{ani_num:showScale}" v-show="giftNum!==1">
+      x{{giftNum}}
     </div>
   </div>
 </template>
@@ -24,6 +29,8 @@
 				active:[],
         giftArr:'',
         showManyBtn:0,
+        showScale:1,
+        showScaleT:null,
         time:100,
         t1:null,
         giftNum:1,
@@ -34,6 +41,9 @@
     },
 		methods:{
 			select(v){
+        if (this.showManyBtn) {
+          return
+        }
 				this.active = v
         if (this.t1 !== null) {
           clearInterval(this.t1)
@@ -42,24 +52,47 @@
         }
 			},
 			send(){
-        if (this.active[2]) {
+        //检测是否有权限发送礼物
+        if(this.$parent.$parent.checkPermissionsLevel('Reward') === -1){
+          return layer.msgWarn('您的等级无法发送礼物！')
+        }
+        if(this.$parent.$parent.GameConfig.LiveBroadcastReward.State !== 1){
+          return layer.msgWarn('已关闭发送礼物！')
+        }
+        if (false) {
           this.showMany()
           return
         }else{
           console.log('非连击礼物')
         }
-				this.$parent.giftPush({gift:this.active[0],name:'杨过',img:'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2764371306,3467823016&fm=27&gp=0.jpg'})
+        this.sendGift()
 				this.active = []
 				this.$parent.activeHide = 0
 			},
-      sendManyGift(){
-        console.log('连送礼物提交')
+      sendGift(){
+        if(this.active.length <= 0){
+          return layer.msgWarn('请选择礼物！')
+        }
+        _fetch({
+          Action:'SendGift',
+          GameID:this.$parent.$parent.lcode,
+          GiftName:this.active[0],
+          GiftNum:this.giftNum,
+          GiftPrice:this.active[2]
+        })
+        .then(d=>{
+          if (d.Code === 1) {
+          }else{
+            layer.msgWarn(d.StrCode)
+          }
+        })
+        this.giftNum = 1
       },
       showMany(){
         this.t1 = setInterval(()=>{
           this.time--
           if (this.time<=0) {
-            this.sendManyGift()
+            this.sendGift()
             clearInterval(this.t1)
             this.showManyBtn = 0
             this.time = 100
@@ -71,7 +104,28 @@
         this.giftNum++
         this.time = 100
       },
-		}
+		},
+    watch:{
+      'giftNum'(n,o){
+        var aa = ()=>{
+          this.showScale = 1
+          this.showScaleT = setTimeout(()=>{
+            this.showScale = 0
+            clearTimeout(this.showScaleT)
+          },300)
+        }
+        if (this.showScaleT) {
+          clearTimeout(this.showScaleT)
+        }
+        if(this.showScale === 1){
+          setTimeout(()=>{
+            aa()
+          },10)
+        }else{
+          aa()
+        }
+      }
+    }
 	}
 </script>
 <style lang="scss" scoped>
@@ -81,6 +135,8 @@
   width:100%;
   height:12em;
   .desktop{
+    height: 9.6em;
+    overflow: scroll;
     ul{
       li{
         color:white;
@@ -97,6 +153,13 @@
         }
         &:nth-child(4n+4){
           border-right:none
+        }
+        i{
+          display: block;
+          text-align: center;
+          font-size: .5em;
+          color:#d7da2b;
+          margin-bottom: .3em;
         }
         em{
           display:block;
@@ -164,6 +227,32 @@
     text-align: center;
     border-radius: .2em;
     color:#333;
+  }
+}
+.showNum{
+  font-size: 2em;
+  position: absolute;
+  bottom:3em;
+  width: 100%;
+  text-align: center;
+  color:white;
+  font-style: italic;
+  color: #f9bc35;
+  text-shadow: 0px 3px 5px rgba(0, 0, 0, 0.64);
+}
+.ani_num{
+  animation: number .3s linear;
+  transform: scale(1);
+  opacity: 1;
+}
+@keyframes number{
+  0%{
+    transform: scale(3);
+    opacity: 0;
+  }
+  100%{
+    transform: scale(1);
+    opacity: 1;
   }
 }
 </style>

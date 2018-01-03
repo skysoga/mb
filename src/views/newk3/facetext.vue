@@ -1,28 +1,28 @@
 <template>
 	<div class="facetext">
-    <div class="title">
+    <div class="title" :class="{tobottom:!sysSpeak}">
       <div class="type">
-        <span @click="$parent.barrageIsOpen = !$parent.barrageIsOpen" :class="{open:$parent.barrageIsOpen}">
+        <span @click="changeBarrage" :class="{open:$parent.barrageIsOpen}">
           <em>弹</em>
         </span>
       </div>
       <div class="content">
-        <div class="testing" contenteditable="true" v-html="defaultContent" ref="content"></div>
-        <div class="faceortext" :class="{text:faceortext,face:!faceortext}" @click.stop="changeFaceText">
+        <div class="testing" :contenteditable="!checkText" v-html="defaultContent" ref="content"></div>
+        <div v-show="sysSpeak" class="faceortext" :class="{text:faceortext,face:!faceortext}" @click.stop="changeFaceText">
           <i class="iconfont">{{faceortext?'&#xe615;':'&#xe616;'}}</i>
         </div>
       </div>
       <div class="btn" @click="send">发送</div>
     </div>
-    <div class="desktop">
-      <div ref="face" class="facetext-face" v-show="faceortext">
+    <div class="desktop" :class="{tobottom:!sysSpeak}">
+      <div ref="text" class="facetext-text" v-show="sysSpeak && !faceortext">
         <ul class="fix">
-          <li v-for="d in faceData" @click.stop="pushContent(d,0)">{{d}}</li>
+          <li v-for="(v,k) in textData" @click.stop="pushContent(v,1,k)"><em>{{v}}</em></li>
         </ul>
       </div>
-      <div ref="text" class="facetext-text">
+      <div ref="face" class="facetext-face" v-show="sysSpeak">
         <ul class="fix">
-          <li v-for="d in textData" @click.stop="pushContent(d,1)"><em>{{d}}</em></li>
+          <li v-for="(v,k) in faceData" @click.stop="pushContent(v,0,k)">{{v}}</li>
         </ul>
       </div>
     </div>
@@ -35,47 +35,109 @@
 			return {
 				face:null,
 				text:null,
-        faceortext:true,                   //默认表情true
-        faceData:['😀','😁','😂','😄','😅','😆','😇','😉','😊','😋','😌','😍','😘','😙','😜','😝','😎','😏','😶','😑','😒','😳','😞','😟','😠','😡','😔','😕','😣','😖','😫','😤','😮','😱','😨','😰'],
-        textData:[
-          '买定离手',
-          '稳住，我们能赢',
-          '登顶盈利榜',
-          '这把一定中',
-          '中中中',
-          '大大大',
-          '小小小',
-          '单单单',
-          '双双双',
-          '豹子 豹子',
-          '天灵灵地灵灵 这把一定赢',
-          '吓得直哆嗦',
-          '赢钱娶老婆',
-          '赢钱就去～',
-          '我要打赏',
-        ],
+        faceortext:false,                   //默认表情true
+        faceData:null,
+        textData:null,
         content:'',
+        lastTime:0,
+        checkText:0,
+        checkFace:[],
+        sysSpeak:1,//是否有内置弹幕的权限
+        barrageIsOpen:0//弹幕是否有权限
 			}
 		},
+    created(){
+      this.faceData = this.$parent.faceData
+      this.textData = this.$parent.textData
+      //权限检查
+      setTimeout(()=>{
+        //检查系统弹幕的权限
+        if(this.$parent.$parent.checkPermissionsLevel('SysSpeak') === -1){
+          this.sysSpeak = 0
+        }
+        if(this.$parent.$parent.checkPermissionsLevel('Barrage') !== -1){
+          this.barrageIsOpen = 1
+        }
+      },50)
+    },
 		mounted(){
       this.face = new BScroll(this.$refs.face,{click:true})
       this.text = new BScroll(this.$refs.text,{click:true})
 		},
 		methods:{
-			pushContent(msg,type){
+			pushContent(d,type,i){
 				if (!type) {
-					this.$refs.content.innerHTML += msg
+					this.$refs.content.innerHTML += d
+          if(this.checkFace.indexOf(i) === -1){
+            this.checkFace.push(i)
+          }
 				}else{
-					this.$refs.content.innerHTML = msg
+					this.$refs.content.innerHTML = d
+          this.checkText = i
 				}
 			},
 			changeFaceText(){
 				this.faceortext = !this.faceortext
 				this.$refs.content.innerHTML = ''
+        this.checkText = 0
 			},
+      checkPermissions(content){
+        let freedomSpeakArr = this.$parent.$parent.GameConfig.LiveBroadcastFreedomSpeak
+        if (this.$refs.content.innerHTML.length <= 0) {
+          return [0,'请输入您要发表的弹幕！']
+        }
+        if (this.$refs.content.innerHTML.length > freedomSpeakArr.Length) {
+          //验证是否内置弹幕
+          if(!/^##[\d]{1,3}##$/.test(content)){
+            return [0,'您最长能发表'+freedomSpeakArr.Length+'个字！']
+          }
+        }
+        if(this.$parent.$parent.checkPermissionsLevel('FreedomSpeak') === -1){
+          return [0,'您当前的等级无法发表弹幕！']
+        }
+        let time = new Date().getTime() - this.lastTime
+        let barrage =  this.$parent.$parent.GameConfig.LiveBroadcastBarrage
+        if (this.lastTime !== 0 && time < barrage.Interval*1000) {
+          return [0,barrage.Interval+'秒内只能发送一次弹幕！']
+        }
+        return [1]
+      },
 			send(){
-				layer.alert(this.$refs.content.innerHTML)
+        let content = this.$refs.content.innerHTML
+        //默认弹幕改为ID
+        content = content.replace(this.textData[this.checkText],`##${this.checkText}##`)
+        for (var i = 0; i < this.checkFace.length; i++) {
+          content = content.replace(new RegExp(this.faceData[this.checkFace[i]],'g'),`[[${this.checkFace[i]}]]`)
+        }
+        //权限检测
+        let permissions = this.checkPermissions(content)
+        if (!permissions[0]) {
+          return layer.msgWarn(permissions[1])
+        }
+
+        _fetch({
+          Action:'SendBarrage',
+          GameID:this.$parent.$parent.lcode,
+          Barrage:content,
+        })
+        .then(d=>{
+          if (d.Code === 1) {
+            this.$refs.content.innerHTML = ''
+            this.lastTime = new Date().getTime()
+            this.checkFace = []
+            this.checkText = 0
+          }else{
+            layer.msgWarn(d.StrCode)
+          }
+        })
 			},
+      changeBarrage(){
+        if (this.barrageIsOpen) {
+          this.$parent.barrageIsOpen = !this.$parent.barrageIsOpen
+        }else{
+          layer.msgWarn('您当前的等级无法打开弹幕！')
+        }
+      }
 		}
 	}
 </script>
@@ -84,10 +146,12 @@
   height:12em;
   transition:.2s;
   width:100%;
+  pointer-events: none;
   .title{
     display:table;
     width:100%;
     border-bottom:1px solid #d4d4d4;
+    pointer-events: initial;
     >div{
     display:table-cell;
     }
@@ -181,6 +245,7 @@
   .desktop{
     height:9.6em;
     background:#fdfdfd;
+    pointer-events: initial;
   }
 }
 .facetext-face,.facetext-text{
@@ -226,5 +291,9 @@
       }
     }
   }
+}
+.tobottom{
+  transform:translateY(9.6em);
+  pointer-events: initial;
 }
 </style>

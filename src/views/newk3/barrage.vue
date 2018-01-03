@@ -1,7 +1,7 @@
 <template>
-	<div class="barrage" ref="barrageCon" v-show="data.length > 0">
+	<div class="barrage" ref="barrageCon" v-show="data.length > 0" @click="clickContent">
 		<ul>
-			<li v-for="d in data"><span>{{d.call}}</span><div><em>{{d.name}}：</em><ins>{{d.text}}</ins></div></li>
+			<li v-for="d in data"><span>{{getLevel(d.Level)}}</span><div><em>{{d.NickName}}：</em><ins>{{d.Message}}</ins></div></li>
 		</ul>
 	</div>
 </template>
@@ -16,7 +16,7 @@
     },
     mounted(){
       this.$nextTick(() => {
-        this.scroll = new BScroll(this.$refs.barrageCon, {})
+        this.scroll = new BScroll(this.$refs.barrageCon, {click:true,})
         this.scroll.scrollTo(0,this.scroll.maxScrollY,.2)
       })
     },
@@ -27,6 +27,23 @@
 	        this.scroll.scrollTo(0,this.scroll.maxScrollY,.2)
     		},100)
     	},
+      getLevel(v){
+        if (v>0&&v<10) {
+          return 'VIP'+v
+        }
+        else{
+          switch(v){
+            case 0:return '黑名单';break;
+            case -1:return '测试组';break;
+            case 10:return '站长';break;
+          }
+        }
+      },
+      clickContent(){
+        if (this.$parent.activeHide === 1) {{
+          console.log('关闭弹幕发送器')
+        }}
+      },
     },
     beforeDestroy(){
     },
@@ -71,7 +88,7 @@
 				background: #00aafb;
 				display: inline-block;
 				border-radius: .2em;
-				width:2.8em;
+				width:3em;
 				text-align: center;
 				margin-right: .4em;
 				padding: .07em 0;

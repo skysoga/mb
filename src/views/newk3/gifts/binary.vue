@@ -8,7 +8,7 @@
     data:()=>{
 			return {
 				reStartT:null,
-				all:['porsche','money'],
+				all:['porsche','money','cupidgirl'],
 				moving:0,
 			}
 		},
@@ -68,7 +68,7 @@
 <style lang='scss' scoped>
 .binary{
 	position: fixed;
-	z-index: 25;
+	z-index: 20;
 	width: 100%;
 	height:100%;
 

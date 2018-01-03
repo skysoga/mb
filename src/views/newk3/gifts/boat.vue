@@ -4,8 +4,8 @@
 		<div class="sea sea2" :style="'background: url('+$parent.imgbaseUrl+url+')'"></div>
 		<div class="shadow" :style="'background: url('+$parent.imgbaseUrl+url+')'"></div>
 		<div class="boatimg" :style="'background: url('+$parent.imgbaseUrl+url+')'">
-			<div class="name">{{$parent.giftArr[0].name}}</div>
-			<img class="head" :src="$parent.giftArr[0].img">
+			<div class="name">{{$parent.giftArr[0].NickName}}</div>
+			<img class="head" :src="$store.getters.PhotoPath+$parent.giftArr[0].UserPhoto||$store.state.constant.DefPhoto">
 		</div>
 	</div>
 </template>

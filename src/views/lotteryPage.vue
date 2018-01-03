@@ -95,20 +95,8 @@
 
       //设置请求的数组
       if (ptype === 'live') {
-        var getGameConfig = _fetch({Action:'GameConfig',GameID:'0101'})
-        var getGiftConfig = new Promise(function(resolve, reject){
-          let GiftConfig = [
-            ['airplane','飞机'],
-            ['boat','皇家游轮'],
-            ['cannon','皇家大炮'],
-            ['ferrari','法拉利'],
-            ['cuke','大黄瓜',1],
-            ['porsche','保时捷'],
-            ['money','发财树']
-          ]
-          resolve(GiftConfig)
-        })
-        var reqArr = [getRebate, getLotteryList, getServerTime,getGameConfig,getGiftConfig]
+        var getGameConfig = _fetch({Action:'GameConfig',GameID:lcode})
+        var reqArr = [getRebate, getLotteryList, getServerTime,getGameConfig]
       }else{
         var reqArr = [getRebate, getLotteryList, getServerTime]
       }
@@ -130,7 +118,6 @@
         next(vm=>{
           if (values[3].Code === 1) {
             vm.GameConfig = values[3].BackData
-            vm.GiftConfig = values[4]
             vm.createWS()
           }else{
             layer.msgWarn(values[3].StrCode)
@@ -1287,7 +1274,6 @@
           Status:''
         },
         GameConfig:null,
-        GiftConfig:null,
         GameWS:null,
         OnlineWS:null,
         isSleep:0,
@@ -1343,158 +1329,159 @@
           layer.msgWarn(err)
         }
         //创建OnlineWS
-        this.OnlineWS = new WebSocket(this.GameConfig.LiveWS)
+        this.OnlineWS = new WebSocket(this.GameConfig.Interactive)
         this.OnlineWS.onmessage = e =>{
-          console.log(e.data)
+          let json = JSON.parse(e.data)
+          this.OnlineRefresh(json)
         }
         this.OnlineWS.onerror = err =>{
           layer.msgWarn(err)
         }
         //自动提交礼物和弹幕
-        this.autoTest()
+        // this.autoTest()
       },
-      autoTest(){
+      // autoTest(){
 
-        var barrages = [
-          {
-            call:'皇帝',
-            name:'突然想起你',
-            text:'现场灯光不错，刮的是七级的最炫民族风，我字体的故事之毛笔字',
-          },
-          {
-            call:'知府',
-            name:'ju***',
-            text:'新功能测试下效果',
-          },
-          {
-            call:'VIP5',
-            name:'沙漠皇帝',
-            text:'直播开奖新玩法',
-          },
-          {
-            call:'VIP1',
-            name:'香烟',
-            text:'弹幕内容1',
-          },
-          {
-            call:'VIP2',
-            name:'邓紫棋',
-            text:'买定离手',
-          },
-          {
-            call:'VIP3',
-            name:'周杰伦',
-            text:'稳住，我们能赢',
-          },
-          {
-            call:'VIP4',
-            name:'杰森斯坦森',
-            text:'登顶盈利榜',
-          },
-          {
-            call:'VIP5',
-            name:'金三胖',
-            text:'这把一定中',
-          },
-          {
-            call:'VIP6',
-            name:'特朗普',
-            text:'中中中',
-          },
-          {
-            call:'VIP7',
-            name:'奥巴马',
-            text:'豹子 豹子',
-          },
-        ]
-        var getRedom = ()=>{
-          let num = 0
-          while(1){
-            num = Math.random()*10
-            if (num>=2 && num < 4) {
-              num = Math.floor(num*10)
-              return num
-              break
-            }
-          }
-        }
-        var num = getRedom()*1000
-        var barrageNum = Math.floor(Math.random()*10)
-        setTimeout(()=>{
+      //   var barrages = [
+      //     {
+      //       call:'皇帝',
+      //       name:'突然想起你',
+      //       text:'现场灯光不错，刮的是七级的最炫民族风，我字体的故事之毛笔字',
+      //     },
+      //     {
+      //       call:'知府',
+      //       name:'ju***',
+      //       text:'新功能测试下效果',
+      //     },
+      //     {
+      //       call:'VIP5',
+      //       name:'沙漠皇帝',
+      //       text:'直播开奖新玩法',
+      //     },
+      //     {
+      //       call:'VIP1',
+      //       name:'香烟',
+      //       text:'弹幕内容1',
+      //     },
+      //     {
+      //       call:'VIP2',
+      //       name:'邓紫棋',
+      //       text:'买定离手',
+      //     },
+      //     {
+      //       call:'VIP3',
+      //       name:'周杰伦',
+      //       text:'稳住，我们能赢',
+      //     },
+      //     {
+      //       call:'VIP4',
+      //       name:'杰森斯坦森',
+      //       text:'登顶盈利榜',
+      //     },
+      //     {
+      //       call:'VIP5',
+      //       name:'金三胖',
+      //       text:'这把一定中',
+      //     },
+      //     {
+      //       call:'VIP6',
+      //       name:'特朗普',
+      //       text:'中中中',
+      //     },
+      //     {
+      //       call:'VIP7',
+      //       name:'奥巴马',
+      //       text:'豹子 豹子',
+      //     },
+      //   ]
+      //   var getRedom = ()=>{
+      //     let num = 0
+      //     while(1){
+      //       num = Math.random()*10
+      //       if (num>=2 && num < 4) {
+      //         num = Math.floor(num*10)
+      //         return num
+      //         break
+      //       }
+      //     }
+      //   }
+      //   var num = getRedom()*1000
+      //   var barrageNum = Math.floor(Math.random()*10)
+      //   setTimeout(()=>{
           
-          // var fetchUrl = (url,data)=>{
-          //   var str=[],k
-          //   for(var i in data){
-          //     k=data[i];
-          //     if (typeof(k)==="object") {
-          //       k= encodeURIComponent(JSON.stringify(k));
-          //     }
-          //     str.push(i+'='+k)
-          //   }
-          //   str=str.join('&')
-          //   return new Promise(function(resolve, reject){
-          //     fetch(url,{
-          //       credentials:'same-origin',
-          //       method: 'POST',
-          //       headers: {
-          //         "Content-Type": "application/x-www-form-urlencoded"
-          //       },
-          //       body: str
-          //     })
-          //     .then(function (d){
-          //       if(d.status === 200){
-          //         console.log(d)
-          //         d.json().then(d=>{
-          //           if(d){
-          //             resolve(d)
-          //           }else{
-          //             resolve('数据获取失败！')
-          //           }
-          //         })
-          //         .catch(err=>{
-          //           alert("数据解析失败！"+err)
-          //         })
-          //       }else{
-          //         tool.catchFetch(d)
-          //       }
-          //     })
-          //     .catch(err=>{
-          //       alert('请求失败!'+err)
-          //     })
-          //   })
-          // }
-          // fetchUrl('http://47.52.166.234:38889/interactive/469D5742F4F09F35DA7E692D41BE11E3',{
-          //   content:{
-          //     "Target":"dafa-test",
-          //     "GameID":"0101",
-          //     "Data":{
-          //       "Type":"xxx",
-          //       "LV":-1,
-          //       "Interval":30
-          //     }
-          //   }
-          // })
-          //生成礼物
-          let gifts = ['airplane','boat','cannon','ferrari','cuke','porsche','money']
-          let who = null
-          while(1){
-            who = Math.random()*10
-            who = Math.floor(who)
-            if (who < 7) {
-              break
-            }
-          }
+      //     // var fetchUrl = (url,data)=>{
+      //     //   var str=[],k
+      //     //   for(var i in data){
+      //     //     k=data[i];
+      //     //     if (typeof(k)==="object") {
+      //     //       k= encodeURIComponent(JSON.stringify(k));
+      //     //     }
+      //     //     str.push(i+'='+k)
+      //     //   }
+      //     //   str=str.join('&')
+      //     //   return new Promise(function(resolve, reject){
+      //     //     fetch(url,{
+      //     //       credentials:'same-origin',
+      //     //       method: 'POST',
+      //     //       headers: {
+      //     //         "Content-Type": "application/x-www-form-urlencoded"
+      //     //       },
+      //     //       body: str
+      //     //     })
+      //     //     .then(function (d){
+      //     //       if(d.status === 200){
+      //     //         console.log(d)
+      //     //         d.json().then(d=>{
+      //     //           if(d){
+      //     //             resolve(d)
+      //     //           }else{
+      //     //             resolve('数据获取失败！')
+      //     //           }
+      //     //         })
+      //     //         .catch(err=>{
+      //     //           alert("数据解析失败！"+err)
+      //     //         })
+      //     //       }else{
+      //     //         tool.catchFetch(d)
+      //     //       }
+      //     //     })
+      //     //     .catch(err=>{
+      //     //       alert('请求失败!'+err)
+      //     //     })
+      //     //   })
+      //     // }
+      //     // fetchUrl('http://47.52.166.234:38889/interactive/469D5742F4F09F35DA7E692D41BE11E3',{
+      //     //   content:{
+      //     //     "Target":"dafa-test",
+      //     //     "GameID":"0101",
+      //     //     "Data":{
+      //     //       "Type":"xxx",
+      //     //       "LV":-1,
+      //     //       "Interval":30
+      //     //     }
+      //     //   }
+      //     // })
+      //     //生成礼物
+      //     let gifts = ['airplane','boat','cannon','ferrari','cuke','porsche','money']
+      //     let who = null
+      //     while(1){
+      //       who = Math.random()*10
+      //       who = Math.floor(who)
+      //       if (who < 7) {
+      //         break
+      //       }
+      //     }
 
-          console.log('送出的礼物是：',gifts[who])
-          this.OnlineRefresh({type:'Gift',gift:gifts[who],name:'杨过',img:'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2764371306,3467823016&fm=27&gp=0.jpg'})
-          this.OnlineRefresh(Object.assign({type:'Barrage'},barrages[barrageNum]))
-          this.autoTest()
-        },num)
-      },
+      //     console.log('送出的礼物是：',gifts[who])
+      //     this.OnlineRefresh({Type:'Reward',gift:gifts[who],name:'杨过',img:'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2764371306,3467823016&fm=27&gp=0.jpg'})
+      //     // this.OnlineRefresh(Object.assign({type:'Barrage'},barrages[barrageNum]))
+      //     this.autoTest()
+      //   },num)
+      // },
       OnlineRefresh(json){
         console.log(json)
-        switch(json.type){
-          case 'Gift':this.$refs.newk3.giftPush(json);break;
+        switch(json.Type){
+          case 'Reward':this.$refs.newk3.giftPush(json);break;
           case 'Barrage':this.$refs.newk3.barragePush(json);break;
         }
       },
@@ -1574,7 +1561,14 @@
           newresult +=n[i]+','
         }
         return newresult = newresult.substring(0,newresult.length-1)
-      }
+      },
+      checkPermissionsLevel(wicth){ //Barrage、FreedomSpeak、Reward、SysSpeak
+        let block = this.GameConfig['LiveBroadcast'+wicth]
+        if (block.state === 0) {
+          return false
+        }
+        return (','+block.Level).search(','+state.UserUpGradeBonus.Grade+',')
+      },
 		},
 		watch:{
 			$route(val){

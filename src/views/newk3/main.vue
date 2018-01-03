@@ -2,7 +2,7 @@
   <div class="newContainer">
     <gift :activegift="activegift"></gift>
     <div class="video">
-      <iframe ref="iframe" src="/static/video-k3.html"></iframe>
+      <div><iframe ref="iframe" src="/static/video.html"></iframe></div>
       <img src="/static/img/newk3-bg.jpg" alt="" width="100%">
     </div>
     <div v-show="show == 'main'" @click="changeShow" class="mainPage">
@@ -19,11 +19,11 @@
         </div><history v-if="history" :type="history"></history>
       </div>
       <div class="userContent"></div>
-      <barrage ref="barrage" class="barrage" v-if="barrageIsOpen"></barrage>
+      <barrage ref="barrage" class="barrage" :class="{toTop:(activeHide===1),toBottom:(activeHide===3)}" v-if="barrageIsOpen"></barrage>
       <div class="control">
         <ul class="con-btn fix">
           <li><a class="back" href="javascript:;" @click.stop="$router.go(-1)"></a></li>
-          <li><a class="sound" href="javascript:;" @click.stop="changeVideo"></a></li>
+          <li><a class="sound" href="javascript:;" @click.stop=""></a></li>
           <li><a class="gift" href="javascript:;" @click.stop="showHide(3)"></a></li>
           <li><a class="anchor" href="javascript:;" @click.stop=""></a></li>
           <li><a class="facetext" href="javascript:;" @click.stop="showHide(1)"></a></li>
@@ -81,6 +81,7 @@
   import selectGift from './selectGift'
   import facetext from './facetext'
   import history from './history'
+  import {gifts,giftsList,faceData} from '../../js/liveconfig'
   var eachLen = data=>data.map(arr=>arr.length)
   var getBetStr = (data, mode)=>{
     var line =  data.map(arr=>arr.join(' '))
@@ -168,11 +169,31 @@
         activeHide:0,
         face:null,
         text:null,
-        barrageIsOpen:true,                //但是是否开启
+        barrageIsOpen:0,                //弹幕是否开启
         history:0,
         wait4Results:[1,2,3],              //等待开奖的默认状态
         wait4Resultst:null,
         changeSize:null,                   //改变窗口大小执行的函数
+        giftsList:giftsList,
+        faceData:faceData,
+        textData:null,
+        beforeTextData:[
+          {Content:'买定离手',ID:1},
+          {Content:'稳住，我们能赢',ID:2},
+          {Content:'登顶盈利榜',ID:3},
+          {Content:'这把一定中',ID:4},
+          {Content:'中中中',ID:5},
+          {Content:'大大大',ID:6},
+          {Content:'小小小',ID:7},
+          {Content:'单单单',ID:8},
+          {Content:'双双双',ID:9},
+          {Content:'豹子 豹子',ID:10},
+          {Content:'天灵灵地灵灵 这把一定赢',ID:11},
+          {Content:'吓得直哆嗦',ID:12},
+          {Content:'赢钱娶老婆',ID:13},
+          {Content:'赢钱就去～',ID:14},
+          {Content:'我要打赏',ID:15}
+        ],
       }
     },
     computed:mapState({
@@ -284,6 +305,14 @@
       }
     }),
     created(){
+      //内置弹幕数组转对象
+      let _textData = this.beforeTextData
+      let textDataObj = {}
+      for (var i = 0; i < _textData.length; i++) {
+        textDataObj[_textData[i].ID] = _textData[i].Content
+      }
+      this.textData = textDataObj
+
       function circle(num){
         num ++
         if(num > 3){
@@ -299,11 +328,8 @@
       },80)
     },
     methods:{
-      changeVideo(){
-        this.$refs.iframe.contentDocument.destroy()
-      },
       choose(item){
-        if(!this.award)return
+        if(!this.award)return 
         var _pos = this.chosen.indexOf(item),
             _chosen = this.chosen.slice(0)
 
@@ -483,17 +509,52 @@
         }
       },
       giftPush(gift){
-        gift.type = gift.gift
+        //检验礼物是否存在并且价格是否正确
+        if (gifts[gift.GiftID]) {
+          if(gifts[gift.GiftID].price !== gift.GiftPrice){
+            console.log('礼物价格错误')
+            return
+          }
+        }else{
+          console.log('没有这个礼物')
+          return
+        }
+        gift.type = gift.GiftID
         this.activegift = gift
       },
       barragePush(barrage){
         let _barrage = this.$refs.barrage || 0
         if (_barrage) {
+          //替换表情
+          let arr = barrage.Message.match(/\[\[[\d]{1,2}\]\]/g) || 0
+          if (arr) {
+            for (var i = 0; i < arr.length; i++) {
+              let ID = arr[i].replace(/\[\[/,'').replace(/\]\]/,'')
+              barrage.Message = barrage.Message.replace(arr[i],this.faceData[ID])
+            }
+          }
+          //替换内置弹幕
+          let arr2 = barrage.Message.match(/##[\d]{1,3}##/g) || 0
+          if (arr2) {
+            for (var i = 0; i < arr2.length; i++) {
+              let ID = arr2[i].replace(/##/,'').replace(/##/,'')
+              barrage.Message = barrage.Message.replace(arr2[i],this.textData[ID])
+            }
+          }
+
           _barrage.data.push(barrage)
         }
       },
+      getResults(){
+        this.$store.dispatch('lt_getResults', this.lcode)
+      },
     },
     mounted(){
+      setTimeout(()=>{
+        if(this.$parent.checkPermissionsLevel('Barrage') !== -1){
+          this.barrageIsOpen = 1
+        }
+      },100)
       this.setHeight()
 
       this._setSliderWidth()
@@ -517,6 +578,21 @@
       this.$nextTick(() => {
         this.scroll = new BScroll(this.$refs.wrapperCon0[0], {bounce:false})
       })
+      this.$refs.iframe.contentWindow.onload = ()=>{
+        let url = this.$parent.GameConfig.LiveWS
+        if(process.env.NODE_ENV !== 'production'){
+          url = url.replace(/key=.+/,'')+'key=zhimakaimen'
+        }
+        console.log('执行开启视频')
+        this.$refs.iframe.contentWindow.openlive(url)
+      }
+    },
+    watch:{
+      'activeHide'(n){
+        if(n === 1){
+          console.log('此时要上抬')
+        }
+      },
     },
     // 生命周期destroyed销毁清除定时器，有利于内存释放
     destroyed() {
@@ -528,6 +604,15 @@
 </script>
 <style lang="scss" scoped>
 @import "../../scss/dice";
+.toTop{
+  transform: translateY(-9.6em);
+  transition: .3s;
+}
+.toBottom{
+  transform: translateY(9em);
+  transition: .3s;
+  opacity: 0;
+}
 .mainPage{
   height:100%;
   position:fixed;
@@ -651,22 +736,29 @@
     width:100%;
   }
   .video{
-    position:fixed;
-    top:0;
-    left:0;
-    height:100%;
-    width:100%;
+    position: fixed;
+    top: -25%;
+    left: 0;
+    height: 150%;
+    width: 100%;
+    display: table;
     img{
       position:absolute;
-      top:0;
+      top:15%;
       left:0;
       z-index: 9;
     }
-    iframe{
-      position: absolute;
-      z-index: 10;
-      height: 100%;
+    >div{
+      display: table-cell;
+      vertical-align: middle;
       width: 100%;
+      height: 100%;
+    }
+    iframe{
+      position: relative;
+      z-index: 10;
+      height:32rem;
+      width:16rem;
       border: none;
     }
   }
