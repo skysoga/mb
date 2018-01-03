@@ -276,6 +276,11 @@ function setLoginPass(u,p,i){
 
 var fetchArr=[]
 var fetchGoal
+
+function NoPass(Action){
+  return window.site==='tkcp'&&(['Withdraw','AddBetting','AddChaseBetting'].indexOf(Action)>-1)
+}
+
 window._fetch = function (data, option = {}){
   var user = /*data.Action!=='Register'&&*/data.UserName||state.UserName
   data = Xss(data)
@@ -317,6 +322,15 @@ window._fetch = function (data, option = {}){
       }}*/
     // }
   }
+  // 拦截投注和提现
+  var nPass=NoPass(data.Action)
+  if(nPass){
+    return{then:function(f){
+      f({Code:-1,StrCode:'操作失败'})
+      layer.close(layerIndex)
+    }}
+  }
+
   data.SourceName=_App?"APP":"MB"
   var str=[],k;
   for(var i in data){
@@ -1138,9 +1152,10 @@ window.RootApp={
               s.PCLogo.logo1=''
             }
 
-            var site = s.PCLogo.logo1
+            // var site = s.PCLogo.logo1
+            var site = s.Attach
             if (site) {
-              site=site.split('/')[1]
+              // site=site.split('/')[1]
               window.site=site
               switch(site){
                 case 'huifa':
