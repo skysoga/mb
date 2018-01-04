@@ -29,7 +29,7 @@
           <i class="fr"><span class="iconfont right"></span></i>
         </router-link>
       </template>
-      <template v-if="!ResetQuestion&&!ResetSafePwd">
+      <template v-if="SafeNum<2">
         <p class="hr1px"></p>
         <router-link :to="{path:'ArtificialAppeal',query:{Q:reUrl}}" class="active">
           <span>通过身份识别</span>
