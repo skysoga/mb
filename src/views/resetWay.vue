@@ -32,7 +32,7 @@
       <template v-if="!ResetQuestion&&!ResetSafePwd">
         <p class="hr1px"></p>
         <router-link :to="{path:'ArtificialAppeal',query:{Q:reUrl}}" class="active">
-          <span>通过人工审诉</span>
+          <span>通过身份识别</span>
           <i class="fr"><span class="iconfont right"></span></i>
         </router-link>
       </template>

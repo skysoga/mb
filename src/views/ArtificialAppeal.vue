@@ -47,7 +47,7 @@
     </table>
     <div class="loginBtn BTN"><a v-va-check>确定</a></div>
     <div class="tips" v-show="isType=='Bank'">
-      为确定是本人操作，人工审诉-找回安全密码时需要验证首张银行卡信息。
+      为确定是本人操作，通过身份识别-找回安全密码时需要验证首张银行卡信息。
     </div>
   </div>
 </template>

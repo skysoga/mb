@@ -371,9 +371,9 @@ var routes = [{
 },
 {
   path:'/ArtificialAppeal',
-  name:'人工审诉',
+  name:'身份识别',
   meta:{
-    title:'人工审诉',
+    title:'身份识别',
     link:'/securityCenter',
     user:true
   },
