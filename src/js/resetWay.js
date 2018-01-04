@@ -5,7 +5,8 @@ export default {
       ResetSafePwd:'',
       ResetMobile:'',
       ResetQuestion:'',
-      ResetMail:''
+      ResetMail:'',
+      SafeNum:0
     }
   },
   beforeRouteEnter:(to, from, next) => {
@@ -44,6 +45,11 @@ export default {
         vm.reUrl=getUrl
         if(getUrl!='ResetPwd'){
           vm[getUrl]=false
+          var num=0
+          state.UserMobile&&(num+=1)
+          state.UserSafeQuestions&&(num+=1)
+          state.UserMail&&(num+=1)
+          vm.SafeNum=num
         }
       }
    },
