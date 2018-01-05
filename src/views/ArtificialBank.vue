@@ -67,8 +67,12 @@ export default{
       var iskey=this.isType
       _fetch(ajax).then(json=>{
         if(json.Code==1){
-          layer.msgWarn(json.StrCode);
-          router.replace('/ArtificialPhoto?Q=ResetSafePwd&F=Appeal')
+          // layer.msgWarn(json.StrCode);
+          if(sessionStorage.getItem('NeedPhoto')*1){
+            router.replace('/ArtificialPhoto?Q=ResetSafePwd&F=Appeal')
+          }else{
+            layer.url(json.StrCode,'/'+this.nextUrl+'?Q=ResetSafePwd&F=Appeal')
+          }
         }else{
           layer.msgWarn(json.StrCode)
         }

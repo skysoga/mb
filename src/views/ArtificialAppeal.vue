@@ -59,18 +59,15 @@ export default{
       var iskey=this.isType
       _fetch(ajax).then(json=>{
         if(json.Code==1){
-          layer.msgWarn(json.StrCode);
-              let obj=json.BackData
-              if(obj&&obj.State){
-                if(this.isLockCard){
-                  router.replace('/ArtificialBank?Q=ResetSafePwd&F=Appeal')
-                  // ='银行卡验证'
-                }else{
-                  layer.url(json.StrCode,'/'+this.nextUrl+'?Q=ResetSafePwd&F=Appeal')
-                }
-              }else{
-                layer.url(json.StrCode,'/'+this.nextUrl+'?Q=ResetSafePwd&F=Appeal')
-              }
+          // layer.msgWarn(json.StrCode);
+          if(this.isLockCard){
+            // ='银行卡验证'
+            let obj=json.BackData
+            router.replace('/ArtificialBank?Q=ResetSafePwd&F=Appeal')
+            sessionStorage.setItem('NeedPhoto',obj&&obj.State)
+          }else{
+            layer.url(json.StrCode,'/'+this.nextUrl+'?Q=ResetSafePwd&F=Appeal')
+          }
         }else{
           layer.msgWarn(json.StrCode)
         }
