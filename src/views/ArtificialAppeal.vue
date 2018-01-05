@@ -12,9 +12,9 @@
       </tbody>
     </table>
     <div class="loginBtn BTN"><a v-va-check>确定</a></div>
-    <div class="tips" >
+    <!-- <div class="tips" >
      未设置密保，可通过身份核实找回安全密码！<br>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
