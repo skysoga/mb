@@ -3,11 +3,27 @@
     <table>
       <tbody>
         <!-- 验证登录密码 -->
-          <tr>
-          <td>验证密码</td>
-          <td><input class="input" type="password" tag="登录密码" v-va:Password  v-model.trim="Password" placeholder="请输入当前所使用的登录密码" /></td>
-          </tr>
         <!-- 验证银行卡 -->
+        <tr>
+          <td>银行卡号</td>
+          <td class = "_bankcardNum">{{$store.state.UserFirstCardInfo[0].CardNum}}</td>
+        </tr>
+        <tr>
+          <td>银行账户</td>
+          <td class = "_realname">{{$store.state.UserFirstCardInfo[0].RealName}}</td>
+        </tr>
+        <tr>
+          <td>确认卡号</td>
+          <td>
+            <input type="tel" v-va:BankNum tag="确认卡号" value="" v-model.trim="BankNum" placeholder="请输入完整卡号">
+          </td>
+        </tr>
+        <tr>
+          <td>确认户名</td>
+          <td>
+            <input type="RealName" v-va:RealName tag="确认户名" v-model.trim="RealName" placeholder="请输入完整户名">
+          </td>
+        </tr>
         <tr></tr>
       </tbody>
     </table>
@@ -21,10 +37,6 @@
 export default{
   data(){
     return{
-      ajaxData:{
-        'Image1':'',
-        'Image2':''
-      },
       BankNum:'',
       RealName:'',
       Password:'',
@@ -36,41 +48,27 @@ export default{
   },
   beforeRouteEnter(to,from,next){
     var nervUrl=from.path||''
-    var Arr=['UserFirstCardInfo','UserBankCardList']
-    if(!to.query.F||!to.query.Q||nervUrl!=='/resetWay'){
+    if(!to.query.F||!to.query.Q||nervUrl!=='/ArtificialAppeal'){
       router.replace('/resetWay?Q=ResetSafePwd')
     }
-    RootApp.AjaxGetInitData(Arr,ref=>{
-      next(vm=>{
-        vm.CardList=state.UserFirstCardInfo
-        vm.isLockCard=vm.getLockCard(state.UserBankCardList)
-        vm.nextUrl=to.query.Q.replace(/Reset/,'set')
-      })
+    next(vm=>{
+      vm.CardList=state.UserFirstCardInfo
+      vm.nextUrl=to.query.Q.replace(/Reset/,'set')
     })
   },
   methods:{
     $vaSubmit(){
       var ajax={
-          Action:'VerifyPwd',
-          Password:this.Password,
-          Type:'Hash'
+          Action:'VerifyBankCard',
+          BankNum:this.BankNum,
+          RealName:this.RealName,
         }
       layer.msgWait("正在提交")
       var iskey=this.isType
       _fetch(ajax).then(json=>{
         if(json.Code==1){
           layer.msgWarn(json.StrCode);
-              let obj=json.BackData
-              if(obj&&obj.State){
-                if(this.isLockCard){
-                  router.replace('/ArtificialBank?Q=ResetSafePwd&F=Appeal')
-                  // ='银行卡验证'
-                }else{
-                  layer.url(json.StrCode,'/'+this.nextUrl+'?Q=ResetSafePwd&F=Appeal')
-                }
-              }else{
-                layer.url(json.StrCode,'/'+this.nextUrl+'?Q=ResetSafePwd&F=Appeal')
-              }
+          router.replace('/ArtificialPhoto?Q=ResetSafePwd&F=Appeal')
         }else{
           layer.msgWarn(json.StrCode)
         }
