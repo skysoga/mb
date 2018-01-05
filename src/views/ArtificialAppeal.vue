@@ -36,9 +36,8 @@ export default{
   },
   beforeRouteEnter(to,from,next){
     var nervUrl=from.path||''
-    var Arr=['UserFirstCardInfo','UserBankCardList'],
-    Questions=localStorage.getItem('UserSafeQuestions')
-    if(Questions||!to.query.F||!to.query.Q||nervUrl!=='/resetWay'){
+    var Arr=['UserFirstCardInfo','UserBankCardList']
+    if(!to.query.F||!to.query.Q||nervUrl!=='/resetWay'){
       router.replace('/resetWay?Q=ResetSafePwd')
     }
     RootApp.AjaxGetInitData(Arr,ref=>{

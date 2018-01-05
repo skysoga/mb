@@ -45,8 +45,7 @@ export default{
   },
   beforeRouteEnter(to,from,next){
     var nervUrl=from.path||''
-    var Questions=localStorage.getItem('UserSafeQuestions')
-    if(Questions||!to.query.F||!to.query.Q||nervUrl!=='/ArtificialBank'){
+    if(!to.query.F||!to.query.Q||nervUrl!=='/ArtificialBank'){
       router.replace('/resetWay?Q=ResetSafePwd')
     }
     next(vm=>{
