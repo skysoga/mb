@@ -10,7 +10,7 @@
 				<div class="title">
 					<div class="issueNo">{{results[0].IssueNo}}期</div>
 					<div class="sum">和值 {{results[0].sum}}</div>
-					<div class="open">号码 {{results[0].LotteryOpen[0]}} {{results[0].LotteryOpen[1]}} {{results[0].LotteryOpen[2]}}</div>
+					<div class="open">号码{{results[0].LotteryOpen[0]}} {{results[0].LotteryOpen[1]}} {{results[0].LotteryOpen[2]}}</div>
 					<div class="other">{{results[0].bigOrSmall}}，{{results[0].singleOrDouble}}</div>
 					<div class="imgResult">
 						<span :class="'dice'+results[0].LotteryOpen[0]" style="background: url('/static/img/history-dice.png')"></span>
@@ -211,15 +211,15 @@
 		}
 		.issueNo{
 			top:1.6rem;
-			left:.9rem;
+			left:.58rem;
 		}
 		.sum{
-			top:3.3rem;
-			left:.94rem;
-		}
-		.open{
 			top:1.6rem;
 			right:1rem;
+		}
+		.open{
+			top:3.3rem;
+			left:.5rem;
 		}
 		.other{
 			top:3.3rem;

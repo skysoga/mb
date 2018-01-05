@@ -1,6 +1,6 @@
 <template>
 	<div class="binary">
-		<div id="gift"></div>新型礼物
+		<div id="gift" :class="className"></div>新型礼物
 	</div>
 </template>
 <script>
@@ -10,6 +10,7 @@
 				reStartT:null,
 				all:['porsche','money','cupidgirl','aircraft'],
 				moving:0,
+				className:'',
 			}
 		},
 		mounted(){
@@ -39,6 +40,7 @@
 				var player = new SVGA.Player('#gift');
 				var parser = new SVGA.Parser('#gift'); // 如果你需要支持 IE6+，那么必须把同样的选择器传给 Parser。
 				parser.load('/static/img/gifts/'+this.$parent.giftArr[0].type+'.c', videoItem=> {
+					this.className = this.$parent.giftArr[0].type
 					this.moving = 1
 					player.loops = 1
 					player.onFinished(()=>{
@@ -85,6 +87,12 @@
 		width: 16rem !important;
     height: 28.44444rem !important;
     transform: initial !important;
+	}
+	&.porsche,&.cupidgirl{
+		canvas{
+			height: 16rem !important;
+			margin-top:6.22222rem;
+		}
 	}
 }
 </style>
