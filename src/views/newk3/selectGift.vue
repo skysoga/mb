@@ -54,7 +54,7 @@
 			send(){
         //检测是否有权限发送礼物
         if(this.$parent.$parent.checkPermissionsLevel('Reward') === -1){
-          return layer.msgWarn('您的等级无法发送礼物！')
+          // return layer.msgWarn('您的等级无法发送礼物！')
         }
         if(this.$parent.$parent.GameConfig.LiveBroadcastReward.State !== 1){
           return layer.msgWarn('已关闭发送礼物！')

@@ -1,7 +1,10 @@
 //接收礼物时验证正确性
 var gifts = {
-  airplane:{
-  	price:888
+  // airplane:{
+  // 	price:888
+  // },
+  aircraft:{
+    price:888
   },
   boat:{
   	price:998
@@ -40,7 +43,8 @@ let giftsList = [
    * 
    * 备注1：0：大礼物，1：连击礼物（属于小礼物），-1：非连击礼物（属于小礼物）
    */
-  ['airplane',  '飞机',   888, 0],
+  // ['airplane',  '飞机',   888, 0],
+  ['aircraft',  '飞机',   888, 0],
   ['boat',      '皇家游轮',998, 0],
   ['cannon',    '皇家大炮',666, 0],
   ['ferrari',   '法拉利',  1111,0],

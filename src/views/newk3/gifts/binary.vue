@@ -8,7 +8,7 @@
     data:()=>{
 			return {
 				reStartT:null,
-				all:['porsche','money','cupidgirl'],
+				all:['porsche','money','cupidgirl','aircraft'],
 				moving:0,
 			}
 		},
@@ -76,6 +76,15 @@
 	>div{
 		width:100%;
 		height:100%;
+	}
+}
+</style>
+<style lang="scss">
+#gift{
+	canvas{
+		width: 16rem !important;
+    height: 28.44444rem !important;
+    transform: initial !important;
 	}
 }
 </style>
