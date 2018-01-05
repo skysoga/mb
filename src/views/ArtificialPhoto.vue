@@ -14,6 +14,9 @@
         </tbody>
       </table>
     <div class="loginBtn BTN"><a v-va-check>确定</a></div>
+    <div v-if="!result" class="tips" >
+     未设置密保，可通过身份核实找回安全密码！<br>
+    </div>
     <div v-if="result" class="tips" >
       1、如果审核通过，安全密码会设为123456，届时请及时修改；<br>
       2、我们将在10个小时内审核您的资料，并通过站内信通知审核结果；<br>
@@ -41,9 +44,9 @@ export default{
     }
   },
   beforeRouteEnter(to,from,next){
-    var nerv=from.path||''
+    var nervUrl=from.path||''
     var Questions=localStorage.getItem('UserSafeQuestions')
-    if(Questions||!to.query.F||!to.query.Q||nerv!=='/ArtificialBank'){
+    if(Questions||!to.query.F||!to.query.Q||nervUrl!=='/ArtificialBank'){
       router.replace('/resetWay?Q=ResetSafePwd')
     }
     next(vm=>{

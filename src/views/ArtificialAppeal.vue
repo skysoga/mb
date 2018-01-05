@@ -12,6 +12,9 @@
       </tbody>
     </table>
     <div class="loginBtn BTN"><a v-va-check>确定</a></div>
+    <div class="tips" >
+     未设置密保，可通过身份核实找回安全密码！<br>
+    </div>
   </div>
 </template>
 <script>
@@ -32,10 +35,10 @@ export default{
     }
   },
   beforeRouteEnter(to,from,next){
+    var nervUrl=from.path||''
     var Arr=['UserFirstCardInfo','UserBankCardList'],
     Questions=localStorage.getItem('UserSafeQuestions')
-    // var isType=to.
-    if(Questions||!to.query.F||!to.query.Q){
+    if(Questions||!to.query.F||!to.query.Q||nervUrl!=='/resetWay'){
       router.replace('/resetWay?Q=ResetSafePwd')
     }
     RootApp.AjaxGetInitData(Arr,ref=>{
@@ -54,7 +57,6 @@ export default{
           Type:'Hash'
         }
       layer.msgWait("正在提交")
-      console.log('999')
       var iskey=this.isType
       _fetch(ajax).then(json=>{
         if(json.Code==1){

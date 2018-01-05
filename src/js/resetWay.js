@@ -35,23 +35,26 @@ export default {
   },
   created:function(){
     var getUrl=this.$route.query.Q
-    var vm=this
     var urlObj=this.getKey()
-      vm.ResetSafePwd=!!(store.state.UserHasSafePwd*1)
-      vm.ResetMobile=!!store.state.UserMobile
-      vm.ResetQuestion=!!store.state.UserSafeQuestions
-      vm.ResetMail=!!store.state.UserMail
-      if(urlObj[getUrl]){
-        vm.reUrl=getUrl
-        if(getUrl!='ResetPwd'){
-          vm[getUrl]=false
-          var num=0
-          state.UserMobile&&(num+=1)
-          state.UserSafeQuestions&&(num+=1)
-          state.UserMail&&(num+=1)
-          vm.SafeNum=num
+    var safePwd=!!(store.state.UserHasSafePwd*1)
+    this.ResetSafePwd=safePwd
+    this.ResetMobile=!!store.state.UserMobile
+    this.ResetQuestion=!!store.state.UserSafeQuestions
+    this.ResetMail=!!store.state.UserMail
+    if(urlObj[getUrl]){
+      this.reUrl=getUrl
+      if(getUrl!='ResetPwd'){
+        if(!safePwd){
+          router.replace('/securityCenter')
         }
+        this[getUrl]=false
+        var num=0
+        state.UserMobile&&(num+=1)
+        state.UserSafeQuestions&&(num+=1)
+        state.UserMail&&(num+=1)
+        this.SafeNum=num
       }
+    }
    },
    methods:{
     getKey(){

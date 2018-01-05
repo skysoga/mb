@@ -28,9 +28,9 @@
       </tbody>
     </table>
     <div class="loginBtn BTN"><a v-va-check>确定</a></div>
-    <!-- <div class="tips" v-show="isType=='Bank'">
-      为确定是本人操作，通过身份识别-找回安全密码时需要验证首张银行卡信息。
-    </div> -->
+    <div class="tips" >
+     未设置密保，可通过身份核实找回安全密码！<br>
+    </div>
   </div>
 </template>
 <script>
@@ -47,10 +47,9 @@ export default{
     }
   },
   beforeRouteEnter(to,from,next){
-    console.log(to,from)
-    var nerv=from.path||''
+    var nervUrl=from.path||''
     var Questions=localStorage.getItem('UserSafeQuestions')
-    if(Questions||!to.query.F||!to.query.Q||nerv!=='/ArtificialAppeal'){
+    if(Questions||!to.query.F||!to.query.Q||nervUrl!=='/ArtificialAppeal'){
       router.replace('/resetWay?Q=ResetSafePwd')
     }
     next(vm=>{
