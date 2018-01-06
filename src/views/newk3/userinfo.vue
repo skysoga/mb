@@ -1,0 +1,203 @@
+<template>
+  <div class="userinfo" :class="{opened}" @click="$parent.userinfoShow = 0">
+    <div class="content" @click.stop="">
+      <div class="loading" v-show="loading">正在加载...</div>
+      <div class="info" v-show="!loading">
+        <div class="head" :style="{background:'url('+$store.getters.PhotoPath+$store.state.UserPhoto||$store.state.constant.DefPhoto+')'}">
+          <img src="/static/img/crown.png">
+        </div>
+        <div class="name">
+          <template v-if="$store.state.UserNickName">{{$store.state.UserNickName}}</template>
+          <template v-else>匿名人士</template>
+          <em>{{getLevel($store.state.UserUpGradeBonus.Grade)}}</em>
+        </div>
+        <table>
+          <tr>
+            <td colspan="2" v-if="balShow">余额：{{UserBalance}} <ins @click="getBalance">刷新</ins></td>
+            <td colspan="2" v-else>余额：已隐藏 <ins @click="getBalance">显示</ins></td>
+          </tr>
+          <tr>
+            <td>账号：{{$store.state.UserName}}</td>
+            <td style="text-align: right"><router-link class="userCenter" to="/userCenter">我的账户</router-link></td>
+          </tr>
+        </table>
+      </div>
+      <div class="close" @click="$parent.userinfoShow = 0"></div>
+    </div>
+  </div>
+</template>
+<script>
+  export default {
+    data:()=>{
+      return {
+        loading:1,
+        balShow:false,
+        UserBalance:"",
+        opened:0,
+      }
+    },
+    created(){
+      this.UserBalance=store.state.UserBalance
+      var arr=['UserName','UserNickName','UserPhoto']
+      RootApp.GetInitData(arr,state=>{
+        this.loading = 0
+        setTimeout(()=>{
+          this.opened = 1
+        },10)
+      })
+    },
+    methods:{
+      getLevel(v){
+        if (v>0&&v<10) {
+          return 'VIP'+v
+        }
+        else{
+          switch(v){
+            case 0:return '黑名单';break;
+            case -1:return '测试组';break;
+            case 10:return '站长';break;
+          }
+        }
+      },
+      getBalance:function(){
+        RootApp.GetInitData(['UserBalance'],ref=>{
+          this.refreshClass+=" refreshMove"
+          this.balShow=true
+          this.UserBalance=""
+          setTimeout(()=>{
+            this.refreshClass="refresh"
+            this.UserBalance=store.state.UserBalance
+          },500)
+        })
+      }
+    },
+  }
+</script>
+<style lang="scss" scoped>
+.close{
+  &:before{
+    content:'\E607';
+    font-family: 'iconfont';
+    position: absolute;
+    top:0;
+    right:0;
+    font-size: .6em;
+    color:#ccc;
+    height: 2.6em;
+    width: 2.6em;
+    text-align: center;
+    line-height: 2.6em;
+  }
+}
+ins{
+  color:rgb(220, 59, 64);
+}
+.userCenter:before{
+  position: absolute;
+  margin-top: .5em;
+  content:'';
+  display: block;
+  width: 1px;
+  height: 1em;
+  background: #ccc;
+}
+.userCenter:after{
+  content: '\e60e';
+  position: absolute;
+  font-family: 'iconfont';
+  transform:scale(.75);
+  color:#a3a3a3;
+}
+table{
+  font-size: .65em;
+  margin:0 auto;
+  width: 15em;
+  color:#666;
+  td{
+    height: 2em;
+    line-height: 2em;
+  }
+}
+.name{
+  text-align:center;
+  font-size: .7em;
+  color:#333;
+  margin:1.2em 0;
+  em{
+    color:white;
+    background: #55a9f8;
+    font-size: .7em;
+    padding:0 .3em;
+    border-radius: .2em;
+  }
+}
+.head{
+  height: 3.5em;
+  width: 3.5em;
+  margin:0 auto;
+  background-repeat: no-repeat !important;
+  background-size: 100% !important;
+  border-radius: 50%;
+  margin-top: 1.7em;
+  img{
+    display: block;
+    width: 3.8em;
+    margin:0 auto;
+    transform:translate(-.1em,-.75em);
+  }
+}
+.userinfo{
+  top: 0;
+  width:100%;
+  height:100%;
+  position: fixed;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  z-index: 100;
+  transform: translateY(30em);
+  transition: .3s;
+}
+.opened{
+  transform: translateY(0);
+}
+.content{
+  position: relative;
+  display: -webkit-box; 
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  width: 13.4em;
+  border-radius: .22em;
+  background: white;
+  .loading{
+    width: 100%;
+    text-align: center;
+    font-size: .8em;
+    color:#666;
+  }
+  .info{
+    height: 100%;
+    width: 100%;
+    padding-bottom: 1em;
+  }
+}
+</style>

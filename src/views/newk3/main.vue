@@ -25,7 +25,7 @@
           <li><a class="back" href="javascript:;" @click.stop="$router.go(-1)"></a></li>
           <li><a class="sound" href="javascript:;" @click.stop=""></a></li>
           <li><a class="gift" href="javascript:;" @click.stop="showHide(3)"></a></li>
-          <li><a class="anchor" href="javascript:;" @click.stop=""></a></li>
+          <li><a class="anchor" href="javascript:;" @click.stop="userinfoShow = !userinfoShow"></a></li>
           <li><a class="facetext" href="javascript:;" @click.stop="showHide(1)"></a></li>
         </ul>
         <div class="hideCon" @click.stop="">
@@ -68,20 +68,22 @@
       </div>
       <mainfooter ref="footer" :betshow="bet.betting_count" :chosen="chosen"></mainfooter>
     </div>
+    <userinfo v-if="userinfoShow"></userinfo>
   </div>
 </template>
 <script>
-  import BScroll from 'better-scroll'
-  import {addClass} from './dom'
-  import barrage from './barrage'
-  import mainfooter from './footer'
+  import BScroll       from 'better-scroll'
+  import {addClass}    from './dom'
+  import barrage       from './barrage'
+  import mainfooter    from './footer'
   import {unique,C,mul,BaseBet,deleteCompress,PERBET} from '../../js/kit'
-  import {mapState} from 'vuex'
-  import gift from './gifts'
-  import selectGift from './selectGift'
-  import facetext from './facetext'
-  import history from './history'
+  import {mapState}    from 'vuex'
+  import gift          from './gifts'
+  import selectGift    from './selectGift'
+  import facetext      from './facetext'
+  import history       from './history'
   import {gifts,giftsList,faceData} from '../../js/liveconfig'
+  import userinfo      from './userinfo'
   var eachLen = data=>data.map(arr=>arr.length)
   var getBetStr = (data, mode)=>{
     var line =  data.map(arr=>arr.join(' '))
@@ -150,6 +152,7 @@
       selectGift,
       facetext,
       history,
+      userinfo,
     },
     data:()=>{
       return{
@@ -194,6 +197,7 @@
           {Content:'赢钱就去～',ID:14},
           {Content:'我要打赏',ID:15}
         ],
+        userinfoShow:0,
       }
     },
     computed:mapState({
