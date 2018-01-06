@@ -29,7 +29,7 @@ export default{
       RealName:'',
       Password:'',
       CardList:'',
-      isType:'Login',//Login,Bank,Photo
+      // isType:'Login',//Login,Bank,Photo
       isLockCard:false,
       nextUrl:''
     }
@@ -56,7 +56,7 @@ export default{
           Type:'Hash'
         }
       layer.msgWait("正在提交")
-      var iskey=this.isType
+      // var iskey=this.isType
       _fetch(ajax).then(json=>{
         if(json.Code==1){
           // layer.msgWarn(json.StrCode);
