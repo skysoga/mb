@@ -57,6 +57,7 @@
                     <ul class="buttonList fix">
                       <li v-for="(e,index) in d.itemArr" :class = "{curr:chosen.indexOf(e) > -1,bgnone:e==0}"><span v-if="!(e==0)"  class="fix" @click="choose(e)"><em><i>{{e}}</i></em><p v-if="A10Rebate[index]">{{index < 4 ? '赔率': '赔'}}{{A10Rebate[index]}}</p></span></li>
                     </ul>
+                    <p v-show="mode !== 'A10'" class="MethodMsg">{{tip}}{{tipRebate}}</p>
                   </div>
                   <div class="topshadow" @click.stop="changeShow"></div>
                   <div class="bottomshadow" :style="{height:j===0?heightArr+'px':'32em'}" @click.stop="changeShow"></div>
@@ -335,6 +336,7 @@
       for (var i = 0; i < cfg.A10.itemArr.length; i++) {
         this.A10Rebate.push(this.getSumRebate(i))
       }
+      //
     },
     methods:{
       getSumRebate(index){
@@ -706,7 +708,7 @@
     }
   }
   .info{
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0,0,0,.4);
     height:2.3em;
     line-height:2.3em;
     width:100%;
@@ -727,10 +729,10 @@
 
   
   .playtype{
-    position:fixed;
+    position:relative;
     z-index:50;
-    height:calc(100% - 2.3em - 2.5em);
-    background:rgba(0, 0, 0, 0.6);
+    height:calc(100vh - 2.3em;
+    background:rgba(0,0,0,.4);
     padding:0 .35rem;
     li{
       color:white;
@@ -872,7 +874,7 @@
   }
   .topshadow{
     height:1em;
-    background:rgba(0,0,0,.6);
+    background:rgba(0,0,0,.4);
     width:100%;
     position: relative;
   }
@@ -888,7 +890,7 @@
     float:left;
   }
   .newmain{
-    background:rgba(0,0,0,.6);
+    background:rgba(0,0,0,.4);
   }
   .buttonList{
     width:312px;
@@ -913,7 +915,7 @@
       span{
         position:absolute;
         z-index:20;
-        border:1px solid rgba(175, 166, 163,.8);
+        border:1px solid rgba(175, 166, 163,1);
         border-radius: .12em;
         em{
           height: .8em;
@@ -938,7 +940,7 @@
   }
   .bottomshadow{
     width:100%;
-    background:rgba(0,0,0,.6);
+    background:rgba(0,0,0,.4);
   }
   .betbox.A10{
     .buttonList{
@@ -982,7 +984,7 @@
   }
   .bgnone{
     &:after{
-      background:rgba(0,0,0,.6) !important;
+      background:rgba(0,0,0,.4) !important;
     }
   }
 </style>
