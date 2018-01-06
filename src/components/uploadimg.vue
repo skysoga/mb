@@ -40,10 +40,13 @@ export default {
           layer.msgWarn('图片文件过大，请上传5M以内的图片！')
           return false
         }
-        if(!(img.type.indexOf('image')==0 && img.type && /\.(?:jpg|png|gif|heic|jpeg)$/.test(img.name)) ){
-            alert('图片只能是jpg,gif,png');
-            return ;
+        if(!(img.type.indexOf('image')==0 && img.type)){
+          return layer.alert(`您上传的文件为${img.name.split('.')[1]}<br>非图片格式,请重新上传`)
         }
+        // if(!(img.type.indexOf('image')==0 && img.type && /\.(?:jpg|png|gif|heic|jpeg)$/.test(img.name)) ){
+        //     alert('图片只能是jpg,gif,png');
+        //     return ;
+        // }
         var reader = new FileReader();
         reader.readAsDataURL(img);
         reader.onload = (e)=>{
