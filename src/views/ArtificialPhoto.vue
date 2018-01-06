@@ -56,24 +56,24 @@ export default{
           Action:'VerifyPhoto',
           Images:this.getArr(this.ajaxData),
         }
-      if(this.isType=='Photo'&&(!this.ajaxData.Image1||!this.ajaxData.Image2)){
+      if(!this.ajaxData.Image1||!this.ajaxData.Image2){
         layer.msgWarn('请上传图片')
         return
       }
-
       layer.msgWait("正在提交")
-      var iskey=this.isType
-      _fetch(ajax).then(json=>{
-        if(json.Code==1){
-          layer.msgWarn(json.StrCode);
-          this.result=true
-          this.$refs.Image1.reset()
-          this.$refs.Image2.reset()
-          // layer.url(json.StrCode,'/securityCenter')
-        }else{
-          layer.msgWarn(json.StrCode)
-        }
-      })
+        var iskey=this.isType
+        _fetch(ajax).then(json=>{
+          if(json.Code==1){
+            layer.msgWarn(json.StrCode);
+            this.result=true
+            this.$refs.Image1.reset()
+            this.$refs.Image2.reset()
+            // layer.url(json.StrCode,'/securityCenter')
+          }else{
+            layer.msgWarn(json.StrCode)
+          }
+        })
+
     },
     getArr(obj){
       var arr=[]
