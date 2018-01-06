@@ -36,8 +36,8 @@ export default {
           return ;
         }
         //图片不超过1MB
-        if(img.size > 1048576){
-          layer.msgWarn('图片文件过大，请上传1M以内的图片！')
+        if(img.size > 1048576*5){
+          layer.msgWarn('图片文件过大，请上传5M以内的图片！')
           return false
         }
         if(!(img.type.indexOf('image')==0 && img.type && /\.(?:jpg|png|gif)$/.test(img.name)) ){
@@ -80,7 +80,7 @@ export default {
       let width = img.width;  
       let height = img.height;
       let ratio;  
-      if ((ratio = width * height / 4000000) > 1) {  
+      if ((ratio = width * height / 40000000) > 1) {  
         ratio = Math.sqrt(ratio);  
         width /= ratio;  
         height /= ratio;  
@@ -92,7 +92,7 @@ export default {
       ctx.fillStyle = "#fff";  
       ctx.fillRect(0, 0, canvas.width, canvas.height);  
       let count;  
-      if ((count = width * height / 1000000) > 1) {  
+      if ((count = width * height / 10000000) > 1) {
         count = ~~(Math.sqrt(count) + 1); 
         let nw = ~~(width / count);  
         let nh = ~~(height / count);  
