@@ -23,10 +23,9 @@
       <div class="control">
         <ul class="con-btn fix">
           <li><a class="back" href="javascript:;" @click.stop="$router.go(-1)"></a></li>
-          <li><a class="sound" href="javascript:;" @click.stop=""></a></li>
-          <li><a class="gift" href="javascript:;" @click.stop="showHide(3)"></a></li>
           <li><a class="anchor" href="javascript:;" @click.stop="userinfoShow = !userinfoShow"></a></li>
-          <li><a class="facetext" href="javascript:;" @click.stop="showHide(1)"></a></li>
+          <li><a class="gift" href="javascript:;" @click.stop="showHide(3)"></a></li>
+          <li><a class="facetext" href="javascript:;" @click.stop="showHide(1)"><em>发弹幕</em></a></li>
         </ul>
         <div class="hideCon" @click.stop="">
           <facetext :class="{ined:activeHide === 1}"></facetext>
@@ -810,15 +809,15 @@
     bottom:2.8em;
   }
   .con-btn{
-    height: 2.4em;
+    height: 2em;
     padding:0 .24em;
     li{
       float: right;
       a{
         display:block;
-        width: 1.8em;
-        height: 1.8em;
-        line-height: 1.8em;
+        width: 1.4em;
+        height: 1.4em;
+        line-height: 1.4em;
         text-align: center;
         background: rgba(0,0,0,0.3);
         border-radius: 50%;
@@ -854,8 +853,23 @@
         }
       }
       .facetext{
+        border-radius: .14em;
+        width: 7em;
+        text-align: left;
+        padding-left: .4em;
+        color: #8d93b9;
+        line-height: 1.2em;
         &:before{
           content:'\e60d';
+          display: inline;
+          color: #8d93b9;
+          font-size: .7em;
+        }
+        em{
+          display: inline-block;
+          transform:scale(.9);
+          font-size: .7em;
+          margin-left: .1em;
         }
       }
       &:first-child{

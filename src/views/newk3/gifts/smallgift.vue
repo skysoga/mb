@@ -139,8 +139,8 @@
     width:12em;
     position: relative;
     img{
-      height:2em;
-      width:2em;
+      height:1.9em;
+      width:1.9em;
       border-radius: 50%;
       display: block;
       float: left;
@@ -189,6 +189,7 @@
   width:9em;
   height:100%;
   float:left;
+  border: 1px solid #f9d66a;
 }
 
 @keyframes showgift{
