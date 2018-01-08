@@ -57,7 +57,7 @@
                     <ul class="buttonList fix">
                       <li v-for="(e,index) in d.itemArr" :class = "{curr:chosen.indexOf(e) > -1,bgnone:e==0}"><span v-if="!(e==0)"  class="fix" @click="choose(e)"><em><i>{{e}}</i></em><p v-if="A10Rebate[index]">{{index < 4 ? '赔率': '赔'}}{{A10Rebate[index]}}</p></span></li>
                     </ul>
-                    <p v-show="mode !== 'A10'" class="MethodMsg">{{tip}}{{tipRebate}}</p>
+                    <p v-show="i !== 'A10'" class="MethodMsg">{{tipsObj[i]}}赔率{{rebates[i]}}倍。</p>
                   </div>
                   <div class="topshadow" @click.stop="changeShow"></div>
                   <div class="bottomshadow" :style="{height:j===0?heightArr+'px':'32em'}" @click.stop="changeShow"></div>
@@ -200,6 +200,8 @@
         ],
         userinfoShow:0,
         A10Rebate:[],
+        tipsObj:{},//全部tip的对象
+        rebates:{},//全部返点值
       }
     },
     computed:mapState({
@@ -336,7 +338,18 @@
       for (var i = 0; i < cfg.A10.itemArr.length; i++) {
         this.A10Rebate.push(this.getSumRebate(i))
       }
-      //
+      //生成全部tip
+      var tipsObj = {}
+      for(var i = 0;i < state.lt.config.length;i++){
+        tipsObj[state.lt.config[i].mode] = state.lt.config[i].tip
+      }
+      this.tipsObj = tipsObj
+      //生成其它返点
+      var rebates = {}
+      for (var i = 0; i < state.lt.Odds['K3'].length; i++) {
+        rebates[state.lt.Odds['K3'][i].PlayCode] = state.lt.Odds['K3'][i].Bonus
+      }
+      this.rebates = rebates
     },
     methods:{
       getSumRebate(index){
@@ -891,6 +904,16 @@
   }
   .newmain{
     background:rgba(0,0,0,.4);
+    >p{
+      margin:0 auto;
+      margin-top: 1em;
+      padding: 0 1.2em;
+      color: white;
+      font-size:.6em;
+      width: 312px;
+      text-align: left;
+      white-space: normal;
+    }
   }
   .buttonList{
     width:312px;
