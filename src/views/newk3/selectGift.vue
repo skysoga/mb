@@ -11,8 +11,7 @@
     </div>
     <div class="footer fix">
       <div class="btn" @click="send">发送</div>
-      <!-- <div class="manyBtn" v-show="showManyBtn" @click="addGift"> -->
-      <div class="manyBtn" v-show="false" @click="addGift">
+      <div class="manyBtn" v-show="showManyBtn" @click="addGift">
         <span>连送</span>
         <em>{{time}}</em>
       </div>
@@ -41,9 +40,6 @@
     },
 		methods:{
 			select(v){
-        if (this.showManyBtn) {
-          return
-        }
 				this.active = v
         if (this.t1 !== null) {
           clearInterval(this.t1)
@@ -59,7 +55,7 @@
         if(this.$parent.$parent.GameConfig.LiveBroadcastReward.State !== 1){
           return layer.msgWarn('已关闭发送礼物！')
         }
-        if (false) {
+        if (this.active[3] === 1) {
           this.showMany()
           return
         }else{
@@ -101,7 +97,7 @@
         this.showManyBtn = 1
       },
       addGift(){
-        this.giftNum++
+        this.sendGift()
         this.time = 100
       },
 		},

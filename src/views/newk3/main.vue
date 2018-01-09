@@ -23,7 +23,7 @@
       <div class="control">
         <ul class="con-btn fix">
           <li><a class="back" href="javascript:;" @click.stop="$router.go(-1)"></a></li>
-          <li><a class="question" href="javascript:;" @click.stop="$router.go(-1)"></a></li>
+          <li><a class="question" href="javascript:;" @click.stop=""></a></li>
           <li><a class="anchor" href="javascript:;" @click.stop="userinfoShow = !userinfoShow"></a></li>
           <li><a class="gift" href="javascript:;" @click.stop="showHide(3)"></a></li>
           <li><a class="facetext" href="javascript:;" @click.stop="showHide(1)"><em>发弹幕</em></a></li>
@@ -42,7 +42,6 @@
               <em v-show="/^\d/.test(TimeBar)">投注：</em>{{TimeBar}}</span></div>
           </div>
           <div class="title" @click.stop="playtypeShow='playtype'"><span>{{nowModeName}}</span></div>
-          <div class="help"></div>
         </div>
       </div>
       <div class="space"></div>
@@ -711,15 +710,6 @@
     top:0;
     left:0;
     width:100%;
-    .help:before{
-      font-family:'iconfont';
-      color:rgba(255, 255, 255, 0.3);
-      display:block;
-      text-align:center;
-    }
-    .help:before{
-      content:'\e613';
-    }
   }
   .info{
     height:2.3em;

@@ -1,6 +1,6 @@
 <template>
 	<div class="smallgift fix">
-		<div v-for="(d,i) in 2" v-if="twoGift['gift'+d]" :class="'block'+d">
+		<div v-for="(d,i) in 2" v-if="twoGift['gift'+d]" :class="'block'+d+' '+twoGift['giftClass'+d]">
       <div class="fix">
         <div class="block" :class="{block_ani:twoGift['block_ani'+d]}">
           <img :src="$store.getters.PhotoPath+twoGift['gift'+d].UserPhoto||$store.state.constant.DefPhoto">
@@ -50,6 +50,8 @@
           beforeNickName2:null,
           block_ani1:true,
           block_ani2:true,
+          giftClass1:'default',
+          giftClass2:'default',
         },
     	}
     },
@@ -83,33 +85,35 @@
 	    	}
     	},
       checkTwoGift(){
-        if (this.twoGift.gift1 === null && this.giftArr.length > 0) {
-          this.twoGift.gift1 = this.giftArr[0]
-          this.giftArr.splice(0,1)
-          this.twoGift.gift1T = setTimeout(()=>{
-            this.twoGift.gift1 = null
-            this.twoGift.block_ani1 = false
-            if (this.giftArr.length > 0) {
-              setTimeout(()=>{
-                this.checkTwoGift()
-              },50)
-            }
-          },5000)
-        }
-        if (this.twoGift.gift2 === null && this.giftArr.length > 0) {
-          this.twoGift.gift2 = this.giftArr[0]
-          this.giftArr.splice(0,1)
-          this.twoGift.gift2T = setTimeout(()=>{
-            this.twoGift.gift2 = null
-            this.twoGift.block_ani2 = false
-            if (this.giftArr.length > 0) {
-              setTimeout(()=>{
-                this.checkTwoGift()
-              },50)
-            }
-          },5000)
-        }
+        this.checkMethods(1)
+        this.checkMethods(2)
       },
+      checkMethods(w){
+        var time = 5000
+        if (this.twoGift['gift'+w] === null && this.giftArr.length > 0) {
+          this.twoGift['gift'+w] = this.giftArr[0]
+          this.giftArr.splice(0,1)
+          //定时器1:结束时
+          this.twoGift['gift'+w+'T'] = setTimeout(()=>{
+            this.twoGift['gift'+w] = null
+            this.twoGift['block_ani'+w] = false
+            this.twoGift['giftClass'+w] = 'destoried'
+            if (this.giftArr.length > 0) {
+              setTimeout(()=>{
+                this.checkTwoGift()
+              },50)
+            }
+          },time)
+          //定时器2：50毫秒开始执行
+          setTimeout(()=>{
+            this.twoGift['giftClass'+w] = 'created'
+          },50)
+          //定时器2：结束前300ms
+          setTimeout(()=>{
+            this.twoGift['giftClass'+w] = 'beforeDestory'
+          },time-300)
+        }
+      }
     },
     watch:{
     	'$parent.giftArr'(n){
@@ -119,6 +123,7 @@
   }
 </script>
 <style lang="scss" scoped>
+
 .smallgift{
   position: fixed;
   z-index: 20;
@@ -183,27 +188,24 @@
 }
 .block{
   transform: translateX(0);
-  animation: showgift 5s linear;
+  // animation: showgift 5s linear;
   border-radius: 2em;
   background: rgba(0, 0, 0, 0.15);
   width:9em;
   height:100%;
   float:left;
   border: 1px solid #f9d66a;
+  transform: translateX(-12em);
+  transition:.3s;
 }
-
-@keyframes showgift{
-  0%{
-    transform: translateX(-9em);
-  }
-  6%{
+.created{
+  .block{
     transform: translateX(0);
   }
-  94%{
-    transform: translateX(0);
-  }
-  100%{
-    transform: translateX(-9em);
+}
+.beforeDestory{
+  .block{
+    transform: translateX(-12em);
   }
 }
 @keyframes smallgift_number{
