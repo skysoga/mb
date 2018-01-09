@@ -1,6 +1,7 @@
 <template>
-	<div class="barrage" ref="barrageCon" v-show="data.length > 0" @click="clickContent">
+	<div class="barrage" ref="barrageCon" v-show="1" @click="clickContent">
 		<ul>
+      <li class="default"><ins>温馨提示：严禁涉政、造谣、诽谤、广告等，发现一律封号！</ins></li>
 			<li v-for="d in data"><span>{{getLevel(d.Level)}}</span><div><em>{{d.NickName}}：</em><ins>{{d.Message}}</ins></div></li>
 		</ul>
 	</div>
@@ -64,6 +65,9 @@
   }
 </script>
 <style lang="scss" scoped>
+.default{
+  width: 11rem;
+}
 .barrage{
 	height: 6em;
 	overflow: hidden;

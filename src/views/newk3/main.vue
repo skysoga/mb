@@ -36,8 +36,8 @@
     <div :class="{bet:(show === 'bet')?1:0}" class="betContainer">
       <div class="header">
         <div class="info fix">
-          <div @click="changeShow" class="back"></div>
-          <div class="title" @click.stop="playtypeShow='playtype'">{{nowModeName}}</div>
+          <div @click="changeShow" class="status"></div>
+          <div class="title" @click.stop="playtypeShow='playtype'"><span>{{nowModeName}}</span></div>
           <div class="help"></div>
         </div>
       </div>
@@ -706,14 +706,11 @@
     top:0;
     left:0;
     width:100%;
-    .back:before,.help:before{
+    .help:before{
       font-family:'iconfont';
       color:rgba(255, 255, 255, 0.3);
       display:block;
       text-align:center;
-    }
-    .back:before{
-      content:'\e614';
     }
     .help:before{
       content:'\e613';
@@ -728,13 +725,28 @@
       float:left;
       height:2.3em;
     }
-    .back,.help{
+    .status,.help{
       width:15%;
     }
     .title{
       color:white;
       width:70%;
       text-align:center;
+      span{
+        display: inline-block;
+        border:1px solid white;
+        border-radius: 2.3em;
+        font-size: .8em;
+        height: 1.8em;
+        padding: 0 .6em;
+        line-height: 1.7em;
+        &:after{
+          display: inline-block;
+          content:"\E61E";
+          font-family: "iconfont";
+          transform:scale(.7) translateX(.1em);
+        }
+      }
     }
   }
   //header样式结束
@@ -813,6 +825,7 @@
     padding:0 .24em;
     li{
       float: right;
+      margin-left: .2em;
       a{
         display:block;
         width: 1.4em;
