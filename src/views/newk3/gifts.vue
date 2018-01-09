@@ -13,7 +13,6 @@
 <script>
   import smallgift  from './gifts/smallgift'
   import boat       from './gifts/boat'
-  import ferrari  	from './gifts/ferrari'
   import airplane   from './gifts/airplane'
   import cannon     from './gifts/cannon'
   import binary     from './gifts/binary'
@@ -21,7 +20,6 @@
     components: {
       smallgift,
       boat,
-      ferrari,
       airplane,
       cannon,
       binary,
