@@ -1,8 +1,17 @@
 <template>
 	<div class="barrage" ref="barrageCon" v-show="1" @click="clickContent">
 		<ul>
-      <li class="default"><ins>温馨提示：严禁涉政、造谣、诽谤、广告等，发现一律封号！</ins></li>
-			<li v-for="d in data"><span>{{getLevel(d.Level)}}</span><div><em>{{d.NickName}}：</em><ins>{{d.Message}}</ins></div></li>
+      <li class="default">
+        <div class="content">
+          <ins>温馨提示：严禁涉政、造谣、诽谤、广告等，发现一律封号！</ins>
+        </div>
+      </li>
+			<li v-for="d in data">
+        <div class="content">
+          <span>{{getLevel(d.Level)}}</span>
+          <div><em>{{d.NickName}}：</em><ins>{{d.Message}}</ins></div>
+        </div>
+      </li>
 		</ul>
 	</div>
 </template>
@@ -76,9 +85,15 @@
 		color:white;
 		margin: 0 .65em;
 		font-size:.7em;
-		li{
-			padding: .4em 0;
+    li{
+      padding:.2em 0;
+    }
+		.content{
+      // margin: .25em 0;
+      padding: .15em .4em;
 			display: table;
+      background: rgba(0,0,0,.2);
+      border-radius: .2em;
 			span,>div{
 				display: table-cell;
 			}

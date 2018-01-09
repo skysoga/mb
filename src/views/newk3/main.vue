@@ -23,6 +23,7 @@
       <div class="control">
         <ul class="con-btn fix">
           <li><a class="back" href="javascript:;" @click.stop="$router.go(-1)"></a></li>
+          <li><a class="question" href="javascript:;" @click.stop="$router.go(-1)"></a></li>
           <li><a class="anchor" href="javascript:;" @click.stop="userinfoShow = !userinfoShow"></a></li>
           <li><a class="gift" href="javascript:;" @click.stop="showHide(3)"></a></li>
           <li><a class="facetext" href="javascript:;" @click.stop="showHide(1)"><em>发弹幕</em></a></li>
@@ -36,7 +37,10 @@
     <div :class="{bet:(show === 'bet')?1:0}" class="betContainer">
       <div class="header">
         <div class="info fix">
-          <div @click="changeShow" class="status"></div>
+          <div @click="changeShow" class="status-con">
+            <div class="status"><span>
+              <em v-show="/^\d/.test(TimeBar)">投注：</em>{{TimeBar}}</span></div>
+          </div>
           <div class="title" @click.stop="playtypeShow='playtype'"><span>{{nowModeName}}</span></div>
           <div class="help"></div>
         </div>
@@ -56,7 +60,7 @@
                     <ul class="buttonList fix">
                       <li v-for="(e,index) in d.itemArr" :class = "{curr:chosen.indexOf(e) > -1,bgnone:e==0}"><span v-if="!(e==0)"  class="fix" @click="choose(e)"><em><i>{{e}}</i></em><p v-if="A10Rebate[index]">{{index < 4 ? '赔率': '赔'}}{{A10Rebate[index]}}</p></span></li>
                     </ul>
-                    <p v-show="i !== 'A10'" class="MethodMsg">{{tipsObj[i]}}赔率{{rebates[i]}}倍。</p>
+                    <p v-show="i !== 'A10'" @click.stop="changeShow" class="MethodMsg">{{tipsObj[i]}}赔率{{rebates[i]}}倍。</p>
                   </div>
                   <div class="topshadow" @click.stop="changeShow"></div>
                   <div class="bottomshadow" :style="{height:j===0?heightArr+'px':'32em'}" @click.stop="changeShow"></div>
@@ -579,6 +583,7 @@
           }
 
           _barrage.data.push(barrage)
+          console.log(_barrage)
         }
       },
       getResults(){
@@ -724,7 +729,7 @@
       float:left;
       height:2.3em;
     }
-    .status,.help{
+    .status-con,.help{
       width:15%;
     }
     .title{
@@ -746,6 +751,21 @@
           transform:scale(.7) translateX(.1em);
         }
       }
+    }
+  }
+  .status{
+    position: absolute;
+    background: rgba(0,0,0,.2);
+    height: 1.44em;
+    width: 3.7em;
+    line-height: 1.12em;
+    border-radius: 0 1.44em 1.44em 0;
+    margin-top:.43em;
+    border:1px solid rgba(0,0,0,0);
+    span{
+      font-size: .56em;
+      color:white;
+      padding-left:.9em;
     }
   }
   //header样式结束
@@ -843,23 +863,23 @@
       }
       .back{
         &:before{
-          content:'\e60c';
+          content:'\e61b';
           transform:translateY(1px) scale(.9);
         }
       }
-      .sound{
+      .question{
         &:before{
-          content:'\e60f';
+          content:'\e617';
         }
       }
       .gift{
         &:before{
-          content:'\e612';
+          content:'\E618';
         }
       }
       .anchor{
         &:before{
-          content:'\e611';
+          content:'\e641';
           transform:translateY(1px) scale(1.1);
         }
       }
@@ -871,7 +891,7 @@
         color: #8d93b9;
         line-height: 1.2em;
         &:before{
-          content:'\e60d';
+          content:'\e61a';
           display: inline;
           color: #8d93b9;
           font-size: .7em;
@@ -885,7 +905,7 @@
       }
       &:first-child{
         a:before{
-          content:'\e607';
+          content:'\e61b';
         }
       }
       &:last-child{
