@@ -717,7 +717,6 @@
     }
   }
   .info{
-    background: rgba(0,0,0,.4);
     height:2.3em;
     line-height:2.3em;
     width:100%;
@@ -734,7 +733,7 @@
       text-align:center;
       span{
         display: inline-block;
-        border:1px solid white;
+        border:1px solid #afa6a3;
         border-radius: 2.3em;
         font-size: .8em;
         height: 1.8em;
@@ -756,7 +755,6 @@
     position:relative;
     z-index:50;
     height:calc(100vh - 2.3em;
-    background:rgba(0,0,0,.4);
     padding:0 .35rem;
     li{
       color:white;
@@ -907,6 +905,7 @@
     opacity: 0;
     z-index: 0;
     position: relative;
+    background: rgba(0,0,0,.4);
   }
   .betContainer.bet{
     opacity: 1;
@@ -914,7 +913,6 @@
   }
   .topshadow{
     height:1em;
-    background:rgba(0,0,0,.4);
     width:100%;
     position: relative;
   }
@@ -930,7 +928,6 @@
     float:left;
   }
   .newmain{
-    background:rgba(0,0,0,.4);
     >p{
       margin:0 auto;
       margin-top: 1em;
@@ -990,7 +987,6 @@
   }
   .bottomshadow{
     width:100%;
-    background:rgba(0,0,0,.4);
   }
   .betbox.A10{
     .buttonList{
