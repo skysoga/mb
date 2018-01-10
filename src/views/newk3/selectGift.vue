@@ -10,8 +10,11 @@
       </ul>
     </div>
     <div class="footer fix">
-      <div class="btn" @click="send">发送</div>
-      <div class="manyBtn" v-show="showManyBtn" @click="addGift">
+      <div class="btn">
+        <span @click="send" v-show="!showManyBtn">{{active[3]===1?'连发':'发送'}}</span>
+        <em @click="addGift" v-show="showManyBtn">连发：{{time}}</em>
+      </div>
+      <div class="manyBtn" v-show="0">
         <span>连送</span>
         <em>{{time}}</em>
       </div>
@@ -55,13 +58,13 @@
         if(this.$parent.$parent.GameConfig.LiveBroadcastReward.State !== 1){
           return layer.msgWarn('已关闭发送礼物！')
         }
+        this.sendGift()
         if (this.active[3] === 1) {
           this.showMany()
           return
         }else{
           console.log('非连击礼物')
         }
-        this.sendGift()
 				this.active = []
 				this.$parent.activeHide = 0
 			},
@@ -88,7 +91,6 @@
         this.t1 = setInterval(()=>{
           this.time--
           if (this.time<=0) {
-            this.sendGift()
             clearInterval(this.t1)
             this.showManyBtn = 0
             this.time = 100
@@ -178,12 +180,17 @@
       float:right;
       background:#9ec2da;
       height: 2em;
+      width: 5.4em;
       line-height: 2em;
       font-size: .7em;
-      padding:0 1.4em;
+      text-align: center;
       border-radius:1em;
       margin-top:.76em;
       margin-right:1em;
+      span,em{
+        display: inline-block;
+        width: 100%;
+      }
     }
   }
 }
