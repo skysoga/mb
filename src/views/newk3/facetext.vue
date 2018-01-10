@@ -14,7 +14,7 @@
           <i class="iconfont">{{faceortext?'&#xe615;':'&#xe616;'}}</i>
         </div>
       </div>
-      <div class="btn" :class="{curr:sendIsActive}" @click="send">发送</div>
+      <div class="btn" :class="{curr:sendIsActive}" @click="send">发布</div>
     </div>
     <div class="desktop" :class="{tobottom:!sysSpeak}">
       <div ref="text" class="facetext-text" v-show="sysSpeak && !faceortext">
