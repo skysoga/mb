@@ -875,7 +875,7 @@
       }
       .facetext{
         border-radius: .14em;
-        width: 7em;
+        width: 6.5em;
         text-align: left;
         padding-left: .4em;
         color: #8d93b9;

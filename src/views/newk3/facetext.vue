@@ -7,17 +7,18 @@
         </span>
       </div>
       <div class="content">
-        <div class="testing" :contenteditable="!checkText" v-html="defaultContent" ref="content"></div>
+        <div class="testing" @focus="contentFocus" @keyup="keyup" contenteditable="true" @click="showDefaultText = 0" ref="content"></div>
+        <div class="defaultText" v-show="showDefaultText">点击输入可自由发言</div>
         <div v-show="sysSpeak" class="faceortext" :class="{text:faceortext,face:!faceortext}" @click.stop="changeFaceText">
           <i class="iconfont">{{faceortext?'&#xe615;':'&#xe616;'}}</i>
         </div>
       </div>
-      <div class="btn" @click="send">发送</div>
+      <div class="btn" :class="{curr:sendIsActive}" @click="send">发送</div>
     </div>
     <div class="desktop" :class="{tobottom:!sysSpeak}">
       <div ref="text" class="facetext-text" v-show="sysSpeak && !faceortext">
         <ul class="fix">
-          <li v-for="(v,k) in textData" @click.stop="pushContent(v,1,k)"><em>{{v}}</em></li>
+          <li v-for="(v,k) in textData" :class="{curr:v===selectText}" @click.stop="pushContent(v,1,k)"><em>{{v}}</em></li>
         </ul>
       </div>
       <div ref="face" class="facetext-face" v-show="sysSpeak">
@@ -43,7 +44,11 @@
         checkText:0,
         checkFace:[],
         sysSpeak:1,//是否有内置弹幕的权限
-        barrageIsOpen:0//弹幕是否有权限
+        barrageIsOpen:0,//弹幕是否有权限
+        showDefaultText:1,
+        selectText:null,
+        sendIsActive:0,
+        textOrDefault:'text',
 			}
 		},
     created(){
@@ -65,28 +70,43 @@
       this.text = new BScroll(this.$refs.text,{click:true})
 		},
 		methods:{
+      contentFocus(){
+        this.textOrDefault = 'text'
+        this.selectText = null
+      },
+      keyup(){
+        if (this.$refs.content.innerHTML.length>0) {
+          return this.sendIsActive = 1
+        }
+        this.sendIsActive = 0
+      },
 			pushContent(d,type,i){
 				if (!type) {
+          this.showDefaultText = 0
 					this.$refs.content.innerHTML += d
           if(this.checkFace.indexOf(i) === -1){
             this.checkFace.push(i)
           }
 				}else{
-					this.$refs.content.innerHTML = d
+          this.selectText = d
           this.checkText = i
+          this.textOrDefault = 'default'
 				}
+        this.sendIsActive = 1
 			},
 			changeFaceText(){
 				this.faceortext = !this.faceortext
 				this.$refs.content.innerHTML = ''
         this.checkText = 0
+        this.sendIsActive = 0
+        this.selectText = null
 			},
       checkPermissions(content){
         let freedomSpeakArr = this.$parent.$parent.GameConfig.LiveBroadcastFreedomSpeak
-        if (this.$refs.content.innerHTML.length <= 0) {
+        if (content.length <= 0) {
           return [0,'请输入您要发表的弹幕！']
         }
-        if (this.$refs.content.innerHTML.length > freedomSpeakArr.Length) {
+        if (content.length > freedomSpeakArr.Length) {
           //验证是否内置弹幕
           if(!/^##[\d]{1,3}##$/.test(content)){
             return [0,'您最长能发表'+freedomSpeakArr.Length+'个字！']
@@ -103,7 +123,17 @@
         return [1]
       },
 			send(){
-        let content = this.$refs.content.innerHTML
+        var content = null
+        if (this.faceortext) {
+          content = this.$refs.content.innerHTML
+        }else{
+          if (this.textOrDefault === 'default') {
+            content = this.selectText
+          }else{
+            content = this.$refs.content.innerHTML
+            console.log(content)
+          }
+        }
         //默认弹幕改为ID
         content = content.replace(this.textData[this.checkText],`##${this.checkText}##`)
         for (var i = 0; i < this.checkFace.length; i++) {
@@ -126,6 +156,7 @@
             this.lastTime = new Date().getTime()
             this.checkFace = []
             this.checkText = 0
+            this.selectText = null
           }else{
             layer.msgWarn(d.StrCode)
           }
@@ -138,10 +169,17 @@
           layer.msgWarn('您当前的等级无法打开弹幕！')
         }
       }
-		}
+		},
 	}
 </script>
 <style lang="scss" scoped>
+.defaultText{
+  font-size: .7em;
+  color:#999;
+  margin-left: .4em;
+  position: absolute;
+  pointer-events:none;
+}
 .facetext{
   height:12em;
   transition:.2s;
@@ -233,10 +271,13 @@
     }
     .btn{
       width:4.25em;
-      background:#ee4a52;
       text-align:center;
       font-size:.8em;
       color:white;
+      background: #ccc;
+    }
+    .curr{
+      background:#ee4a52;
       &:active{
         background:red;
       }
@@ -289,6 +330,12 @@
           color:#ee575d;
         }
       }
+    }
+  }
+  .curr{
+    em{
+      background:#ee4a52;
+      color:white;
     }
   }
 }

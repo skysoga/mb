@@ -85,6 +85,10 @@
 	    	}
     	},
       checkTwoGift(){
+        //检测即将展示的礼物是否和正在展示的一样
+        if (!this.checkSame()) {
+          return
+        }
         this.checkMethods(1)
         this.checkMethods(2)
       },
@@ -113,7 +117,13 @@
             this.twoGift['giftClass'+w] = 'beforeDestory'
           },time-300)
         }
-      }
+      },
+      checkSame(){
+        if (this.giftArr.length > 0) {
+          console.log(this.giftArr[0])
+          // if (this.giftArr[0]) {}
+        }
+      },
     },
     watch:{
     	'$parent.giftArr'(n){
