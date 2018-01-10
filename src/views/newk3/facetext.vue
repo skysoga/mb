@@ -91,6 +91,11 @@
             this.checkFace.push(i)
           }
 				}else{
+          if (this.selectText === d) {
+            this.selectText = null
+            this.sendIsActive = 0
+            return
+          }
           this.selectText = d
           this.checkText = i
           this.textOrDefault = 'default'
@@ -165,6 +170,8 @@
             this.checkFace = []
             this.checkText = 0
             this.selectText = null
+            this.showDefaultText = 1
+            this.sendIsActive = 0
           }else{
             layer.msgWarn(d.StrCode)
           }

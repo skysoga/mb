@@ -549,8 +549,8 @@
       },
       giftPush(gift){
         //检验礼物是否存在并且价格是否正确
-        if (gifts[gift.GiftID]) {
-          if(gifts[gift.GiftID].price !== gift.GiftPrice){
+        if (gifts[gift.GiftName]) {
+          if(gifts[gift.GiftName].price !== gift.GiftPrice){
             console.log('礼物价格错误')
             return
           }
@@ -558,7 +558,7 @@
           console.log('没有这个礼物')
           return
         }
-        gift.type = gift.GiftID
+        gift.type = gift.GiftName
         this.activegift = gift
       },
       barragePush(barrage){

@@ -6,12 +6,12 @@
           <img :src="$store.getters.PhotoPath+twoGift['gift'+d].UserPhoto||$store.state.constant.DefPhoto">
           <div class="text">
             <span>{{twoGift['gift'+d].NickName}}</span>
-            <em>送出{{giftName[hasGift.indexOf(twoGift['gift'+d].GiftID)]}}</em>
+            <em>送出{{giftName[hasGift.indexOf(twoGift['gift'+d].GiftName)]}}</em>
           </div>
-          <cuke v-if="twoGift['gift'+d].GiftID === 'cuke'"></cuke>
-          <injections v-if="twoGift['gift'+d].GiftID === 'injections'"></injections>
-          <kiss v-if="twoGift['gift'+d].GiftID === 'kiss'"></kiss>
-          <durex v-if="twoGift['gift'+d].GiftID === 'durex'"></durex>
+          <cuke v-if="twoGift['gift'+d].GiftName === 'cuke'"></cuke>
+          <injections v-if="twoGift['gift'+d].GiftName === 'injections'"></injections>
+          <kiss v-if="twoGift['gift'+d].GiftName === 'kiss'"></kiss>
+          <durex v-if="twoGift['gift'+d].GiftName === 'durex'"></durex>
         </div>
         <div class="number number_ani">x{{twoGift['gift'+d].GiftNum}}</div>
       </div>
@@ -86,9 +86,9 @@
     	},
       checkTwoGift(){
         //检测即将展示的礼物是否和正在展示的一样
-        if (!this.checkSame()) {
-          return
-        }
+        // if (!this.checkSame()) {
+        //   return
+        // }
         this.checkMethods(1)
         this.checkMethods(2)
       },

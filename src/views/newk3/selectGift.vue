@@ -36,6 +36,7 @@
         time:100,
         t1:null,
         giftNum:1,
+        combo:null,
 			}
 		},
     created(){
@@ -69,18 +70,25 @@
 				this.$parent.activeHide = 0
 			},
       sendGift(){
-        if(this.active.length <= 0){
-          return layer.msgWarn('请选择礼物！')
-        }
-        _fetch({
+        var ajaxData = {
           Action:'SendGift',
           GameID:this.$parent.$parent.lcode,
           GiftName:this.active[0],
           GiftNum:this.giftNum,
-          GiftPrice:this.active[2]
-        })
+          GiftPrice:this.active[2],
+          AnchorName:'第一主播',
+          AnchorID:1
+        }
+        if(this.active.length <= 0){
+          return layer.msgWarn('请选择礼物！')
+        }
+        if (this.combo) {
+          ajaxData['Combo'] = this.combo
+        }
+        _fetch(ajaxData)
         .then(d=>{
           if (d.Code === 1) {
+            this.combo = d.BackData.ComboID
           }else{
             layer.msgWarn(d.StrCode)
           }
