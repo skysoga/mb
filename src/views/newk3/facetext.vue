@@ -7,8 +7,9 @@
         </span>
       </div>
       <div class="content">
-        <div class="testing" @focus="contentFocus" @keyup="keyup" contenteditable="true" @click="showDefaultText = 0" ref="content"></div>
-        <div class="defaultText" v-show="showDefaultText">点击输入可自由发言</div>
+        <div class="testing" @focus="contentFocus" @keyup="keyup" contenteditable="true" ref="content"></div>
+        <div class="defaultText" v-show="showDefaultText  && !faceortext">点击输入可自由发言</div>
+        <div class="defaultText" v-show="showDefaultText  && faceortext">请选择您要发送的表情</div>
         <div v-show="sysSpeak" class="faceortext" :class="{text:faceortext,face:!faceortext}" @click.stop="changeFaceText">
           <i class="iconfont">{{faceortext?'&#xe615;':'&#xe616;'}}</i>
         </div>
@@ -76,9 +77,11 @@
       },
       keyup(){
         if (this.$refs.content.innerHTML.length>0) {
+          this.showDefaultText = 0
           return this.sendIsActive = 1
         }
         this.sendIsActive = 0
+        this.showDefaultText = 1
       },
 			pushContent(d,type,i){
 				if (!type) {
@@ -100,6 +103,7 @@
         this.checkText = 0
         this.sendIsActive = 0
         this.selectText = null
+        this.showDefaultText = 1
 			},
       checkPermissions(content){
         let freedomSpeakArr = this.$parent.$parent.GameConfig.LiveBroadcastFreedomSpeak
