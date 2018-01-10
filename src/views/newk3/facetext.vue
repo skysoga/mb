@@ -111,9 +111,13 @@
           return [0,'请输入您要发表的弹幕！']
         }
         if (content.length > freedomSpeakArr.Length) {
-          //验证是否内置弹幕
-          if(!/^##[\d]{1,3}##$/.test(content)){
-            return [0,'您最长能发表'+freedomSpeakArr.Length+'个字！']
+          //替换表情的长度
+          var temp = content.replace(/\[\[[\d]{0,2}\]\]/g,'a')
+          if (temp.length > freedomSpeakArr.Length) {
+            //验证是否内置弹幕
+            if(!/^##[\d]{1,3}##$/.test(content)){
+              return [0,'您最长能发表'+freedomSpeakArr.Length+'个字！']
+            }
           }
         }
         if(this.$parent.$parent.checkPermissionsLevel('FreedomSpeak') === -1){
