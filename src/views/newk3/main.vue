@@ -762,7 +762,7 @@
 
   
   .playtype{
-    position:relative;
+    position:absolute;
     z-index:50;
     height:calc(100vh - 2.3em;
     padding:0 .35rem;
@@ -907,9 +907,11 @@
     position:relative;
     z-index:20;
     width:100%;
+    height: 100%;
   }
   .betContainer{
     width:100%;
+    height: 100%;
     overflow:hidden;
     transition:.2s;
     opacity: 0;
