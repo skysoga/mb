@@ -327,7 +327,7 @@ window._fetch = function (data, option = {}){
   if(nPass){
     return{then:function(f){
       f({Code:-1,StrCode:'操作失败'})
-      layer.close(layerIndex)
+      // layer.close(layerIndex)
     }}
   }
 
@@ -349,9 +349,9 @@ window._fetch = function (data, option = {}){
         fetchArr.length=i
         break
       }else if(fetchArr[i][1]===str){
-        if(layerIndex||layerIndex=='0'){
-          layer.close(layerIndex)
-        }
+        // if(layerIndex||layerIndex=='0'){
+        //   layer.close(layerIndex)
+        // }
         return {then:function(){
           console.log('重复发送'+str)
         }}
