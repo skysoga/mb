@@ -161,26 +161,26 @@
             }
           }
 
-          // try{
-          //   if (typeof(json)==='string') return
-          //   // json = Xss(json)
-          //   if(json[1]) {
-          //     console.log(json[1]);
-          //   }
+          try{
+            if (typeof(json)==='string') return
+            // json = Xss(json)
+            // if(json[1]) {
+            //   console.log(json[1]);
+            // }
 
-          //   json=json[0]
-            //不需要改StrCode的接口
-            // var notChangeStrCode = ["GetRebateInfo"]
+            // json=json[0]
+            // 不需要改StrCode的接口
+            var notChangeStrCode = ["GetRebateInfo"]
 
             // 对StrCode 加上一些前后缀来表明后端的信息
-          //   if(notChangeStrCode.indexOf(data.Action) === -1){
-          //     json.StrCode = `${json.StrCode}·`
-          //   }
-          //   state.turning && clearTimeout(st)
-          // }catch(error){
-          //   var msg = "请求中含有敏感字符"
-          //   FetchCatch({msg,error})
-          // }
+            if(notChangeStrCode.indexOf(data.Action) === -1){
+              json.StrCode = `${json.StrCode}·`
+            }
+            state.turning && clearTimeout(st)
+          }catch(error){
+            var msg = "请求中含有敏感字符"
+            FetchCatch({msg,error})
+          }
 
           var notRes
 
