@@ -1,4 +1,5 @@
 //接收礼物时验证正确性
+var imgHost = "http://114.215.19.179:8002/"
 var gifts = {
   // airplane:{
   // 	price:888
@@ -95,4 +96,4 @@ let faceData = {
   37:'😨',
   38:'😰',
 }
-module.exports = {gifts,giftsList,faceData}
+module.exports = {gifts,giftsList,faceData,imgHost}

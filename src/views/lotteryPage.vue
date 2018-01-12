@@ -35,12 +35,25 @@
   import {bus, BaseBet, ChaseAjax, easyClone, deleteCompress, Scheme, getBasketAmount,
           computeIssue, getSSCRebate, getMultipleRebate,
           DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../js/kit'
+  import {gifts,giftsList,faceData,imgHost} from '../js/liveconfig'
 
   var randomFeed = Math.floor(Math.random()*4)  //获取开奖时间的随机数，用于错开请求
   var haveGotTime = true		                    //标志位-进页面时是否获取到服务器时间
 
   function scrollTop(){document.body.scrollTop = 0}  //滚动置顶
 
+  function FetchCatch({msg, error}){
+    if(error){
+      error = error.toString()
+      msg += '<br/>'+error
+    }
+
+    layer.alert(msg)
+
+    if(state.turning){
+      state.turning = false
+    }
+  }
   //直播fetch
   var fetchArrLive=[]
   var fetchGoalLive
@@ -349,11 +362,7 @@
             next(vm=>{
               vm.GameConfig = values[2].BackData
               vm.createWS()
-              if (process.env.NODE_ENV === "development") {
-                values[3].BackData.Photo = 'http://114.215.19.179:8002' + '/' + values[3].BackData.Photo
-              }else{
-                values[3].BackData.Photo = state.constant.ImgHost + '/' + values[3].BackData.Photo
-              }
+              values[3].BackData.Photo = imgHost + '/' + values[3].BackData.Photo
               vm.Anchor = values[3].BackData
             })
           }else{
@@ -368,7 +377,7 @@
 
          //关掉loading动画
         store.commit('toggleLoading', false)
-        layer.msgWarn(err.message)
+        layer.msgWarn(err)
         //返回首页
         RootApp.$router.replace('/index')
       })
@@ -1724,11 +1733,7 @@
           case 'Reward':this.$refs.newk3.giftPush(json);break;
           case 'Barrage':this.$refs.newk3.barragePush(json);break;
           case 'AnchorInfo':
-            if (process.env.NODE_ENV === "development") {
-              json.Photo = 'http://114.215.19.179:8002' + '/' + json.Photo
-            }else{
-              json.Photo = state.constant.ImgHost + '/' + json.Photo
-            }
+            json.Photo = imgHost + '/' + json.Photo
             this.Anchor = json
             break;
         }
