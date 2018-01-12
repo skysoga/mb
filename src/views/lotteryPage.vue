@@ -1723,6 +1723,14 @@
         switch(json.Type){
           case 'Reward':this.$refs.newk3.giftPush(json);break;
           case 'Barrage':this.$refs.newk3.barragePush(json);break;
+          case 'AnchorInfo':
+            if (process.env.NODE_ENV === "development") {
+              json.Photo = 'http://114.215.19.179:8002' + '/' + json.Photo
+            }else{
+              json.Photo = state.constant.ImgHost + '/' + json.Photo
+            }
+            this.Anchor = json
+            break;
         }
       },
       WSrefresh(json){

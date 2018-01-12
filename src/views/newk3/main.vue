@@ -664,7 +664,7 @@
   position: absolute;
   width: 1.7em;
   height: 1.7em;
-  background-size: 1.7em !important;
+  background-size: cover !important;
   border-radius: 50%;
   margin-top: .4em;
   margin-left: .2em;

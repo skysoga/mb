@@ -191,7 +191,7 @@ table{
   width: 3.5em;
   margin:0 auto;
   background-repeat: no-repeat !important;
-  background-size: 100% !important;
+  background-size: cover !important;
   border-radius: 50%;
   margin-top: 1.7em;
   img{
