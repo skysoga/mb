@@ -29,7 +29,7 @@
           <li><a class="question" href="javascript:;" @click.stop=""></a></li>
           <li><a class="anchor" href="javascript:;" @click.stop="showCard(2)"></a></li>
           <li><a class="gift" href="javascript:;" @click.stop="showHide(3)"></a></li>
-          <li><a class="facetext" href="javascript:;" @click.stop="showHide(1)"><em>发弹幕</em></a></li>
+          <li><a class="facetext" href="javascript:;" @click.stop="showHide(1)"><em>发弹幕...</em></a></li>
         </ul>
         <div class="hideCon" @click.stop="">
           <facetext :class="{ined:activeHide === 1}"></facetext>

@@ -45,11 +45,11 @@
 @import './scss/public.scss';
 @font-face {
   font-family: 'iconfont';  /* project id 380333 */
-  src: url('//at.alicdn.com/t/font_380333_fkhqgs43umims4i.eot');
-  src: url('//at.alicdn.com/t/font_380333_fkhqgs43umims4i.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_380333_fkhqgs43umims4i.woff') format('woff'),
-  url('//at.alicdn.com/t/font_380333_fkhqgs43umims4i.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_380333_fkhqgs43umims4i.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_380333_m0k7yq5tea2x1or.eot');
+  src: url('//at.alicdn.com/t/font_380333_m0k7yq5tea2x1or.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_380333_m0k7yq5tea2x1or.woff') format('woff'),
+  url('//at.alicdn.com/t/font_380333_m0k7yq5tea2x1or.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_380333_m0k7yq5tea2x1or.svg#iconfont') format('svg');
 }
 html{
   height: 100%;

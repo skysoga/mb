@@ -31,7 +31,7 @@
           <span class="sex" :class="{girl:!$parent.$parent.Sex}"></span>
           <span class="age">{{$parent.$parent.Anchor.Age}}岁</span>
         </div>
-        <div class="bouns"></div>
+        <div class="bouns">本月打赏：{{$parent.$parent.Anchor.Bouns}}元</div>
         <table>
           <tr>
             <td>地区：{{$parent.$parent.Anchor.City}}</td>
@@ -102,6 +102,33 @@
   }
 </script>
 <style lang="scss" scoped>
+.age,.girl:before{
+  font-size: .6em;
+  display: inline-block;
+  vertical-align: middle;
+  color:white;
+  padding:0 .2em;
+  line-height: 1.5em;
+  border-radius: .2em;
+  height: 1.4em;
+}
+.age{
+  background: #f08f69;
+}
+.girl{
+  &:before{
+    content:"\e642";
+    font-family: 'iconfont';
+    background:#e55f9c;
+  }
+}
+.bouns{
+  text-align: center;
+  font-size: .5em;
+  transform:translateY(-1.1em);
+  height: .5em;
+  color:#e55f9c;
+}
 .close{
   &:before{
     content:'\E607';
