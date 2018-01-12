@@ -6,10 +6,9 @@
 </template>
 <style lang="scss" scoped>
 .container{
-	float: left;
+	float: right;
 	width:3em;
 	height:2em;
-	margin-left: .5em;
 	position: relative;
 }
 .kiss{
