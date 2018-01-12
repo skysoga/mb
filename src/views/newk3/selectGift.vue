@@ -11,8 +11,8 @@
     </div>
     <div class="footer fix">
       <div class="btn">
-        <span @click="send" v-show="!showManyBtn">{{active[3]===1?'连发':'发送'}}</span>
-        <em @click="addGift" v-show="showManyBtn">连发：{{time}}</em>
+        <a @click="send" href="javascript:;" v-show="!showManyBtn">{{active[3]===1?'连发':'发送'}}</a>
+        <a @click="addGift" href="javascript:;" v-show="showManyBtn">连发：{{time}}</a>
       </div>
       <div class="manyBtn" v-show="0">
         <span>连送</span>
@@ -83,7 +83,7 @@
           return layer.msgWarn('请选择礼物！')
         }
         if (this.combo) {
-          ajaxData['Combo'] = this.combo
+          ajaxData['ComboID'] = this.combo
         }
         _fetch(ajaxData)
         .then(d=>{
@@ -102,6 +102,7 @@
             clearInterval(this.t1)
             this.showManyBtn = 0
             this.time = 100
+            this.combo = null
           }
         },100)
         this.showManyBtn = 1
@@ -195,7 +196,7 @@
       border-radius:1em;
       margin-top:.76em;
       margin-right:1em;
-      span,em{
+      a{
         display: inline-block;
         width: 100%;
       }

@@ -13,7 +13,7 @@
           <kiss v-if="twoGift['gift'+d].GiftName === 'kiss'"></kiss>
           <durex v-if="twoGift['gift'+d].GiftName === 'durex'"></durex>
         </div>
-        <div class="number number_ani">x{{twoGift['gift'+d].GiftNum}}</div>
+        <div class="number number_ani">x{{twoGift['gift'+d].Combo+1}}</div>
       </div>
   	</div>
   </div>
@@ -52,6 +52,8 @@
           block_ani2:true,
           giftClass1:'default',
           giftClass2:'default',
+          beforeDestoryT1:null,
+          beforeDestoryT2:null,
         },
     	}
     },
@@ -77,20 +79,32 @@
 	    	if (_giftArr.length>0) {
 	    		for (var i = _giftArr.length-1; i > -1; i--) {
 		    		if (this.hasGift.indexOf(_giftArr[i].type) > -1) {
-		    			this.giftArr.push(_giftArr[i])
-		    			this.$parent.giftArr.splice(i,1)
+              //检测即将展示的礼物是否和正在展示的一样
+              if (!this.checkSame(_giftArr[i])) {
+                this.$parent.giftArr.splice(i,1)
+                return
+              }else{
+                this.giftArr.push(_giftArr[i])
+                this.$parent.giftArr.splice(i,1)
+              }
 		    		}
 	    		}
           this.checkTwoGift()
 	    	}
     	},
       checkTwoGift(){
-        //检测即将展示的礼物是否和正在展示的一样
-        // if (!this.checkSame()) {
-        //   return
-        // }
         this.checkMethods(1)
         this.checkMethods(2)
+      },
+      removeGift(w){
+        this.twoGift['gift'+w] = null
+        this.twoGift['block_ani'+w] = false
+        this.twoGift['giftClass'+w] = 'destoried'
+        if (this.giftArr.length > 0) {
+          setTimeout(()=>{
+            this.checkTwoGift()
+          },50)
+        }
       },
       checkMethods(w){
         var time = 5000
@@ -99,30 +113,39 @@
           this.giftArr.splice(0,1)
           //定时器1:结束时
           this.twoGift['gift'+w+'T'] = setTimeout(()=>{
-            this.twoGift['gift'+w] = null
-            this.twoGift['block_ani'+w] = false
-            this.twoGift['giftClass'+w] = 'destoried'
-            if (this.giftArr.length > 0) {
-              setTimeout(()=>{
-                this.checkTwoGift()
-              },50)
-            }
+            this.removeGift(w)
           },time)
           //定时器2：50毫秒开始执行
           setTimeout(()=>{
             this.twoGift['giftClass'+w] = 'created'
           },50)
-          //定时器2：结束前300ms
-          setTimeout(()=>{
+          //定时器3：结束前300ms
+          this.twoGift['beforeDestoryT'+w] = setTimeout(()=>{
             this.twoGift['giftClass'+w] = 'beforeDestory'
           },time-300)
         }
       },
-      checkSame(){
-        if (this.giftArr.length > 0) {
-          console.log(this.giftArr[0])
-          // if (this.giftArr[0]) {}
+      checkSame(n){
+        for (var i = 1; i < 3; i++) {
+          if (this.twoGift['gift'+i]) {
+            if (n.GiftName === this.twoGift['gift'+i].GiftName && n.UserName === this.twoGift['gift'+i].UserName) {
+              //删除之前的定时器，重新定义定时器
+              clearTimeout(this.twoGift['gift'+i+'T'])
+              this.twoGift['gift'+i+'T'] = setTimeout(()=>{
+                this.removeGift(i)
+              },5000)
+              clearTimeout(this.twoGift['beforeDestoryT'+i])
+              this.twoGift['beforeDestoryT'+i] = setTimeout(()=>{
+                this.twoGift['giftClass'+i] = 'created'
+              },5000 - 300)
+              this.$parent.giftArr.splice(0,1)
+              //此处重现数字动画
+              this.twoGift['gift'+i].Combo = n.Combo
+              return false
+            }
+          }
         }
+        return true
       },
     },
     watch:{

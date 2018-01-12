@@ -2,7 +2,7 @@
   <div class="userinfo" :class="{opened}" @click="$parent.userinfoShow = 0">
     <div class="content" @click.stop="">
       <div class="loading" v-show="loading">正在加载...</div>
-      <div class="info" v-show="!loading">
+      <div class="info" v-show="!loading" v-if="$parent.userinfoBy === 'user'">
         <div class="head" :style="{background:'url('+$store.getters.PhotoPath+$store.state.UserPhoto||$store.state.constant.DefPhoto+')'}">
           <img src="/static/img/crown.png">
         </div>
@@ -22,6 +22,27 @@
           </tr>
         </table>
       </div>
+      <div class="info" v-show="!loading" v-if="$parent.userinfoBy === 'Anchor'">
+        <div class="head" :style="{background:'url('+$parent.$parent.Anchor.Photo+')'}">
+          <img src="/static/img/crown.png">
+        </div>
+        <div class="name">
+          {{$parent.$parent.Anchor.Name}}
+          <span class="sex" :class="{girl:!$parent.$parent.Sex}"></span>
+          <span class="age">{{$parent.$parent.Anchor.Age}}岁</span>
+        </div>
+        <div class="bouns"></div>
+        <table>
+          <tr>
+            <td>地区：{{$parent.$parent.Anchor.City}}</td>
+            <td>体重：{{$parent.$parent.Anchor.Weight}}kg</td>
+          </tr>
+          <tr>
+            <td>身高：{{$parent.$parent.Anchor.Height}}cm</td>
+            <td>三围：{{$parent.$parent.Anchor.BWH}}</td>
+          </tr>
+        </table>
+      </div>
       <div class="close" @click="$parent.userinfoShow = 0"></div>
     </div>
   </div>
@@ -37,14 +58,21 @@
       }
     },
     created(){
-      this.UserBalance=store.state.UserBalance
-      var arr=['UserName','UserNickName','UserPhoto']
-      RootApp.GetInitData(arr,state=>{
+      if (this.$parent.userinfoBy === 'user') {
+        this.UserBalance=store.state.UserBalance
+        var arr=['UserName','UserNickName','UserPhoto']
+        RootApp.GetInitData(arr,state=>{
+          this.loading = 0
+          setTimeout(()=>{
+            this.opened = 1
+          },10)
+        })
+      }else{
         this.loading = 0
         setTimeout(()=>{
           this.opened = 1
         },10)
-      })
+      }
     },
     methods:{
       getLevel(v){

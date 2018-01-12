@@ -18,13 +18,16 @@
           <i class="iconfont">&#xe60e;</i>
         </div><history v-if="history" :type="history"></history>
       </div>
-      <div class="userContent"></div>
+      <div class="Anchor" @click.stop="showCard(1)">
+        <div class="AnchorImg" :style="'background: url('+$parent.Anchor.Photo+')'"></div>
+        <div class="AnchorBg" style="background: url('/static/img/crown-anchor.png')"></div>
+      </div>
       <barrage ref="barrage" class="barrage" :class="{toTop:(activeHide===1),toBottom:(activeHide===3)}" v-if="barrageIsOpen"></barrage>
       <div class="control">
         <ul class="con-btn fix">
           <li><a class="back" href="javascript:;" @click.stop="$router.go(-1)"></a></li>
           <li><a class="question" href="javascript:;" @click.stop=""></a></li>
-          <li><a class="anchor" href="javascript:;" @click.stop="userinfoShow = !userinfoShow"></a></li>
+          <li><a class="anchor" href="javascript:;" @click.stop="showCard(2)"></a></li>
           <li><a class="gift" href="javascript:;" @click.stop="showHide(3)"></a></li>
           <li><a class="facetext" href="javascript:;" @click.stop="showHide(1)"><em>发弹幕</em></a></li>
         </ul>
@@ -201,6 +204,7 @@
           {Content:'我要打赏',ID:15}
         ],
         userinfoShow:0,
+        userinfoBy:'',
         A10Rebate:[],
         tipsObj:{},//全部tip的对象
         rebates:{},//全部返点值
@@ -354,6 +358,13 @@
       this.rebates = rebates
     },
     methods:{
+      showCard(w){
+        this.userinfoShow = !this.userinfoShow
+        if (w === 1) {
+          return this.userinfoBy = 'Anchor'
+        }
+        return this.userinfoBy = 'user'
+      },
       getSumRebate(index){
         if(!this.award || !this.award.length){
           return ''
@@ -644,6 +655,27 @@
 </script>
 <style lang="scss" scoped>
 @import "../../scss/dice";
+.Anchor{
+  position: fixed;
+  top:4em;
+  right: .6em;
+}
+.AnchorImg{
+  position: absolute;
+  width: 1.7em;
+  height: 1.7em;
+  background-size: 1.7em !important;
+  border-radius: 50%;
+  margin-top: .4em;
+  margin-left: .2em;
+}
+.AnchorBg{
+  height: 2.3em;
+  width: 2em;
+  background-size: 2em !important;
+  background-repeat: no-repeat !important;
+  position: relative;
+}
 .toTop{
   transform: translateY(-9.6em);
   transition: .3s;
