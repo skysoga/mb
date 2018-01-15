@@ -4,6 +4,7 @@ import xiaosen from './xiaosen'
 
 const login =require('../views/login')
 const index =require('../views/index')
+const liveList =require('../views/liveList')
 const activity =require('../views/activity')
 const newWinners =require('../views/newWinners')
 const center =require('../views/center')
@@ -40,6 +41,17 @@ var routes = [{
     agent:false
   },
   component: index
+},{
+  path: '/liveList',
+  name: '主页',
+  meta:{
+    title:'UU直播',
+    nav:true,
+    link:false,
+    user:false,
+    agent:false
+  },
+  component: liveList
 },{
   path: "/maintain",
   name: "维护中...",
