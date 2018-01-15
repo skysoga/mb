@@ -45,24 +45,28 @@
 }
 .info{
   background: white;
-  padding: .3em .5em;
+  padding: .3em .5rem;
   >*{
     display: block;
     float: left;
-    line-height: 1em;
+    line-height: 1.2em;
   }
   em{
     font-size: .7em;
-    margin-right: .8em;
-    margin-top:.3em;
-    width: 4em;
+    margin-right: .5rem;
+    margin-top:.2em;
+    width: 2.7rem;
   }
   p{
     font-size: .6em;
-    padding-left: .8em;
+    padding-left: .5rem;
     border-left: 1px solid #ccc;
-    margin-top:.4em;
+    margin-top:.3em;
     color:#666;
+    width:9rem;
+    text-overflow:ellipsis;
+    overflow: hidden;
+    white-space:nowrap;
   }
   span{
     float: right;
@@ -73,6 +77,8 @@
     line-height: 2em;
     padding:0 .8em;
     border-radius: 1.4em;
+    width: 2.7rem;
+    text-align:center;
   }
 }
 </style>
