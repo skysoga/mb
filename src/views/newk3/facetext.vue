@@ -7,7 +7,7 @@
         </span>
       </div>
       <div class="content">
-        <div class="testing" @focus="contentFocus" @keyup="keyup" contenteditable="true" ref="content"></div>
+        <div class="testing" @focus="contentFocus" @keyup="keyup($event)" @keydown="limitLength($event)" contenteditable="true" ref="content"></div>
         <div class="defaultText" v-show="showDefaultText  && !faceortext">点击输入可自由发言</div>
         <div class="defaultText" v-show="showDefaultText  && faceortext">请选择您要发送的表情</div>
         <div v-show="sysSpeak" class="faceortext" :class="{text:faceortext,face:!faceortext}" @click.stop="changeFaceText">
@@ -75,13 +75,21 @@
         this.textOrDefault = 'text'
         this.selectText = null
       },
-      keyup(){
+      keyup(e){
         if (this.$refs.content.innerHTML.length>0) {
           this.showDefaultText = 0
           return this.sendIsActive = 1
         }
         this.sendIsActive = 0
         this.showDefaultText = 1
+      },
+      limitLength(e){
+        var length = this.$refs.content.innerHTML.length
+        let key = parseInt(e.key)
+        console.log(length)
+        if(length >= 20 && e.key !=="Enter" && e.key !=="Backspace"){
+          e.preventDefault()
+        }
       },
 			pushContent(d,type,i){
 				if (!type) {

@@ -910,12 +910,12 @@
         width: 6.5em;
         text-align: left;
         padding-left: .4em;
-        color: #8d93b9;
+        color: rgba(255,255,255,.8);
         line-height: 1.2em;
         &:before{
           content:'\e61a';
           display: inline;
-          color: #8d93b9;
+          color: rgba(255,255,255,.8);
           font-size: .7em;
         }
         em{
