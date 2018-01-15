@@ -86,7 +86,6 @@
       limitLength(e){
         var length = this.$refs.content.innerHTML.length
         let key = parseInt(e.key)
-        console.log(length)
         if(length >= 20 && e.key !=="Enter" && e.key !=="Backspace"){
           e.preventDefault()
         }

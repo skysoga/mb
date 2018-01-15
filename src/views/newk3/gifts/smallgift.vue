@@ -55,6 +55,7 @@
           beforeDestoryT1:null,
           beforeDestoryT2:null,
         },
+        keepTime:5000,
     	}
     },
     created(){
@@ -107,14 +108,13 @@
         }
       },
       checkMethods(w){
-        var time = 5000
         if (this.twoGift['gift'+w] === null && this.giftArr.length > 0) {
           this.twoGift['gift'+w] = this.giftArr[0]
           this.giftArr.splice(0,1)
           //定时器1:结束时
           this.twoGift['gift'+w+'T'] = setTimeout(()=>{
             this.removeGift(w)
-          },time)
+          },this.keepTime)
           //定时器2：50毫秒开始执行
           setTimeout(()=>{
             this.twoGift['giftClass'+w] = 'created'
@@ -122,7 +122,7 @@
           //定时器3：结束前300ms
           this.twoGift['beforeDestoryT'+w] = setTimeout(()=>{
             this.twoGift['giftClass'+w] = 'beforeDestory'
-          },time-300)
+          },this.keepTime-300)
         }
       },
       checkSame(n){
@@ -133,13 +133,18 @@
               clearTimeout(this.twoGift['gift'+i+'T'])
               this.twoGift['gift'+i+'T'] = setTimeout(()=>{
                 this.removeGift(i)
-              },5000)
+              },this.keepTime)
               clearTimeout(this.twoGift['beforeDestoryT'+i])
               this.twoGift['beforeDestoryT'+i] = setTimeout(()=>{
-                this.twoGift['giftClass'+i] = 'created'
-              },5000 - 300)
+                this.twoGift['giftClass'+i] = 'beforeDestory'
+              },this.keepTime - 300)
               this.$parent.giftArr.splice(0,1)
               //此处重现数字动画
+              console.log(`一样的礼物，在${i}中重复了`)
+              this.twoGift['giftClass'+i] = 'created resetNumber'
+              setTimeout(()=>{
+                this.twoGift['giftClass'+i] = 'created'
+              },10)
               this.twoGift['gift'+i].Combo = n.Combo
               return false
             }
@@ -204,6 +209,11 @@
     font-size: .55em;
   }
 }
+.resetNumber .number{
+  transition: 0s !important;
+  transform:scale(3) !important;
+  opacity: 0 !important;
+}
 .number{
   text-align: left;
   width: 2em;
@@ -215,13 +225,12 @@
   text-shadow: 0px 3px 5px rgba(0, 0, 0, 0.64);
   float: left;
   padding-left: .2em;
-}
-.number_ani{
-  animation: smallgift_number 5s linear;
+  opacity: 0;
+  transition: .3s;
+  transform:scale(3);
 }
 .block{
   transform: translateX(0);
-  // animation: showgift 5s linear;
   border-radius: 2em;
   background: rgba(0, 0, 0, 0.15);
   width:9em;
@@ -235,31 +244,18 @@
   .block{
     transform: translateX(0);
   }
+  .number{
+    opacity: 1;
+    transform:scale(1);
+  }
 }
 .beforeDestory{
   .block{
     transform: translateX(-12em);
   }
-}
-@keyframes smallgift_number{
-  0%{
+  .number{
     opacity: 0;
-  }
-  6%{
-    transform: scale(3);
-    opacity: 0;
-  }
-  12%{
-    transform: scale(1);
-    opacity: 1;
-  }
-  94%{
-    transform: scale(1);
-    opacity: 1;
-  }
-  100%{
-    transform: scale(1);
-    opacity: 0;
+    transform:scale(1);
   }
 }
 </style>
