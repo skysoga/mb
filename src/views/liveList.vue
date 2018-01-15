@@ -34,10 +34,10 @@
     color:white;
     display: inline-block;
     width: 4em;
-    height: 1.8em;
-    line-height: 1.8em;
+    height: 4em;
+    line-height: 4em;
     text-align: center;
-    border-radius: .9em;
+    border-radius: 4em;
     font-size: .7em;
     margin-left: calc((16rem - 4em) / 2);
     margin-top:4em;
@@ -45,7 +45,7 @@
 }
 .info{
   background: white;
-  padding: .5em .5em;
+  padding: .3em .5em;
   >*{
     display: block;
     float: left;
@@ -54,24 +54,24 @@
   em{
     font-size: .7em;
     margin-right: .8em;
-    margin-top:.1em;
+    margin-top:.3em;
     width: 4em;
   }
   p{
     font-size: .6em;
     padding-left: .8em;
     border-left: 1px solid #ccc;
-    margin-top:.2em;
+    margin-top:.4em;
     color:#666;
   }
   span{
     float: right;
     font-size: .5em;
-    background: #ff688d;
+    background: -webkit-linear-gradient(left, #ff5f91 0%, #ffa070 100%);
     color: white;
-    height:1.6em;
-    line-height: 1.6em;
-    padding:0 .5em;
+    height:2em;
+    line-height: 2em;
+    padding:0 .8em;
     border-radius: 1.4em;
   }
 }
