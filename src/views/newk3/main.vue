@@ -55,19 +55,12 @@
         <div class="slider" ref="slider">
           <div class="slider-group" ref="sliderGroup">
             <div v-for="(d,i,j) in cfg">
-              <div :ref="'wrapperCon'+j" class="betbox" :class="i" :style="{height:heightArrCon+'px'}">
-                <div class="scrollCon">
-                  <div class="topshadow"></div>
-                  <div ref="buttonList" class="newmain">
+                <div class="betbox" :class="i" @click="changeShow">
                     <ul class="buttonList fix">
-                      <li v-for="(e,index) in d.itemArr" :class = "{curr:chosen.indexOf(e) > -1,bgnone:e==0}"><span v-if="!(e==0)"  class="fix" @click="choose(e)"><em><i>{{e}}</i></em><p v-if="A10Rebate[index]">{{index < 4 ? '赔率': '赔'}}{{A10Rebate[index]}}</p></span></li>
+                      <li v-for="(e,index) in d.itemArr" :class = "{curr:chosen.indexOf(e) > -1,bgnone:e==0}"><span v-if="!(e==0)"  class="fix" @click.stop="choose(e)"><em><i>{{e}}</i></em><p v-if="A10Rebate[index]">{{index < 4 ? '赔率': '赔'}}{{A10Rebate[index]}}</p></span></li>
                     </ul>
-                    <p v-show="i !== 'A10'" @click.stop="changeShow" class="MethodMsg">{{tipsObj[i]}}赔率{{rebates[i]}}倍。</p>
-                  </div>
-                  <div class="topshadow" @click.stop="changeShow"></div>
-                  <div class="bottomshadow" :style="{height:j===0?heightArr+'px':'32em'}" @click.stop="changeShow"></div>
+                    <p v-show="i !== 'A10'" class="MethodMsg">{{tipsObj[i]}}赔率{{rebates[i]}}倍。</p>
                 </div>
-              </div>
             </div>
           </div>
         </div>
@@ -440,31 +433,6 @@
         this.$store.commit('lt_setBetStr', getBetStr(_data, this.mode))
         document.activeElement.blur()
       },
-      setHeight(){
-        var screenHeight = document.documentElement.clientHeight
-        if (this.beforeScreenHeight == screenHeight) {
-          return
-        }
-        this.beforeScreenHeight = screenHeight
-        var buttonListHeight = document.getElementsByClassName('buttonList')[0].offsetHeight
-
-        var mainHeight = screenHeight - (2.3+1+1+2.5)*em - buttonListHeight
-        if (mainHeight<3.2*em) {
-          this.heightArrCon=buttonListHeight+2*em+mainHeight
-          mainHeight = 3.2*em
-        }else{
-          this.heightArrCon = mainHeight+buttonListHeight+2*em
-        }
-        this.heightArr = mainHeight
-      },
-      changeHeight(){
-        var screenHeight = document.documentElement.clientHeight
-        var temp = screenHeight - this.beforeScreenHeight
-        this.beforeScreenHeight = screenHeight
-        for (var i = 0; i < this.heightArr.length; i++) {
-          this.heightArr[i] += temp
-        }
-      },
       changeShow(){
         if(document.activeElement.tagName === 'INPUT'){
           return document.activeElement.blur()
@@ -606,7 +574,6 @@
           this.barrageIsOpen = 1
         }
       },100)
-      this.setHeight()
 
       this._setSliderWidth()
       setTimeout(() => {
@@ -617,18 +584,12 @@
       }, 20)
       // 监听窗口大小改变时间
       this.changeSize = ()=>{
-        this.changeHeight()
         if (!this.slider) {
           return
         }
         this._setSliderWidth(true)
         this.slider.refresh()
       }
-      window.addEventListener('resize',this.changeSize)
-      console.log(this.$refs.wrapperCon0[0])
-      this.$nextTick(() => {
-        this.scroll = new BScroll(this.$refs.wrapperCon0[0], {bounce:false})
-      })
       this.$refs.iframe.contentWindow.onload = ()=>{
         let url = this.$parent.GameConfig.LiveWS
         if(process.env.NODE_ENV !== 'production'){
@@ -955,11 +916,6 @@
     opacity: 1;
     z-index: 30;
   }
-  .topshadow{
-    height:1em;
-    width:100%;
-    position: relative;
-  }
   .betboxContainer{
     padding-bottom:2.5em;
     height:calc(100% - 2.3em);
@@ -969,9 +925,8 @@
   }
   .betbox{
     width:100%;
+    height: 100%;
     float:left;
-  }
-  .newmain{
     >p{
       margin:0 auto;
       margin-top: 1em;
@@ -1028,9 +983,6 @@
         border:1px solid #f4c829;
       }
     }
-  }
-  .bottomshadow{
-    width:100%;
   }
   .betbox.A10{
     .buttonList{
