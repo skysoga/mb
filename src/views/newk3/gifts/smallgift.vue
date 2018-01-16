@@ -13,7 +13,7 @@
           <kiss v-if="twoGift['gift'+d].GiftName === 'kiss'"></kiss>
           <durex v-if="twoGift['gift'+d].GiftName === 'durex'"></durex>
         </div>
-        <div class="number number_ani">x{{twoGift['gift'+d].Combo+1}}</div>
+        <div class="number number_ani" v-if="twoGift['gift'+d].Combo !== 0">x{{twoGift['gift'+d].Combo+1}}</div>
       </div>
   	</div>
   </div>
