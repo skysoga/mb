@@ -81,7 +81,7 @@
         this.keyboard = 0
       },
       keyup(e){
-        if (this.$refs.content.innerHTML.length>0) {
+        if (this.$refs.content.innerText.length>0) {
           this.showDefaultText = 0
           return this.sendIsActive = 1
         }
@@ -89,7 +89,7 @@
         this.showDefaultText = 1
       },
       limitLength(e){
-        var length = this.$refs.content.innerHTML.length
+        var length = this.$refs.content.innerText.length
         let key = parseInt(e.key)
         if(length >= 20 && e.key !=="Enter" && e.key !=="Backspace"){
           e.preventDefault()
@@ -99,7 +99,7 @@
         document.activeElement.blur()
 				if (!type) {
           this.showDefaultText = 0
-					this.$refs.content.innerHTML += d
+					this.$refs.content.innerText += d
           if(this.checkFace.indexOf(i) === -1){
             this.checkFace.push(i)
           }
@@ -117,7 +117,7 @@
 			},
 			changeFaceText(){
 				this.faceortext = !this.faceortext
-				this.$refs.content.innerHTML = ''
+				this.$refs.content.innerText = ''
         this.checkText = 0
         this.sendIsActive = 0
         this.selectText = null
@@ -146,17 +146,20 @@
         if (this.lastTime !== 0 && time < barrage.Interval*1000) {
           return [0,barrage.Interval+'秒内只能发送一次弹幕！']
         }
+        if (!/^[\u4e00-\u9fa5|\u3002|\uff1f|\uff01|\uff0c|\u3001|\uff1b|\uff1a|\u201c|\u201d|\u2018|\u2019|\uff08|\uff09|\u300a|\u300b|\u3008|\u3009|\u3010|\u3011|\u300e|\u300f|\u300c|\u300d|\ufe43|\ufe44|\u3014|\u3015|\u2026|\u2014|\uff5e|\ufe4f|\uffe5|.|,!]{0,999}$/.test(content.replace(/##[\d]{1,3}##/g,'').replace(/\[\[[\d]{1,3}\]\]/g,''))) {
+          return [0,'只能发送中文字符！']
+        }
         return [1]
       },
 			send(){
         var content = null
         if (this.faceortext) {
-          content = this.$refs.content.innerHTML
+          content = this.$refs.content.innerText
         }else{
           if (this.textOrDefault === 'default') {
             content = this.selectText
           }else{
-            content = this.$refs.content.innerHTML
+            content = this.$refs.content.innerText
             console.log(content)
           }
         }
@@ -178,7 +181,7 @@
         })
         .then(d=>{
           if (d.Code === 1) {
-            this.$refs.content.innerHTML = ''
+            this.$refs.content.innerText = ''
             this.lastTime = new Date().getTime()
             this.checkFace = []
             this.checkText = 0
