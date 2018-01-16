@@ -175,7 +175,7 @@
   }
   .info{
     height:3.2em;
-    background:rgba(34, 86, 63, 0.8);
+    background:rgba(0, 0, 0, 0.3);
     position: fixed;
     width:100%;
     bottom: 2.5em;

@@ -222,7 +222,7 @@
     border-bottom:1px solid #d4d4d4;
     pointer-events: initial;
     >div{
-    display:table-cell;
+      display:table-cell;
     }
     .type,.content,.btn{
       height:2.4em;
@@ -277,6 +277,7 @@
     .content{
       background:#fdfdfd;
       position:relative;
+      vertical-align: top;
     }
     .testing{
       position:absolute;
@@ -306,6 +307,7 @@
       font-size:.8em;
       color:white;
       background: #ccc;
+      line-height: 2.2em;
     }
     .curr{
       background:#ee4a52;
