@@ -3,7 +3,7 @@
     <div class="list">
       <ul>
         <li>
-          <router-link to="/live/K3/0101" class="pic" style="background: url('http://192.168.0.103:8080/static/img/newk3-bg.jpg')">
+          <router-link to="/live/K3/0101" class="pic" style="background: url('/static/img/newk3-bg.jpg')">
             <span>开始</span>
           </router-link>
           <div class="info fix">

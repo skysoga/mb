@@ -1,5 +1,5 @@
 <template>
-	<div class="facetext">
+	<div class="facetext" :class="{keyboard:keyboard}">
     <div class="title" :class="{tobottom:!sysSpeak}">
       <div class="type">
         <span @click="changeBarrage" :class="{open:$parent.barrageIsOpen}">
@@ -7,7 +7,7 @@
         </span>
       </div>
       <div class="content">
-        <div class="testing" @focus="contentFocus" @keyup="keyup($event)" @keydown="limitLength($event)" contenteditable="true" ref="content"></div>
+        <div class="testing" @focus="contentFocus" @blur="contentBlur" @keyup="keyup($event)" @keydown="limitLength($event)" contenteditable="true" ref="content"></div>
         <div class="defaultText" v-show="showDefaultText  && !faceortext">点击输入可自由发言</div>
         <div class="defaultText" v-show="showDefaultText  && faceortext">请选择您要发送的表情</div>
         <div v-show="sysSpeak" class="faceortext" :class="{text:faceortext,face:!faceortext}" @click.stop="changeFaceText">
@@ -50,6 +50,7 @@
         selectText:null,
         sendIsActive:0,
         textOrDefault:'text',
+        keyboard:0,
 			}
 		},
     created(){
@@ -74,6 +75,10 @@
       contentFocus(){
         this.textOrDefault = 'text'
         this.selectText = null
+        this.keyboard = 1
+      },
+      contentBlur(){
+        this.keyboard = 0
       },
       keyup(e){
         if (this.$refs.content.innerHTML.length>0) {
@@ -91,6 +96,7 @@
         }
       },
 			pushContent(d,type,i){
+        document.activeElement.blur()
 				if (!type) {
           this.showDefaultText = 0
 					this.$refs.content.innerHTML += d
@@ -195,6 +201,9 @@
 	}
 </script>
 <style lang="scss" scoped>
+.keyboard{
+  transform:translateY(-8em) !important;
+}
 .defaultText{
   font-size: .7em;
   color:#999;
