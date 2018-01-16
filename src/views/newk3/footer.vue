@@ -46,7 +46,7 @@
         this.$store.commit('lt_clearBet')
       },
       confirmBet(){
-        let checkTime = this.TimeBar.substring(0,2)
+        var checkTime = this.TimeBar.substring(0,2)
         if (isNaN(checkTime)) {
           layer.alert('当前还没有开局')
         }else if(!this.bet.betting_count){
@@ -67,6 +67,7 @@
             btn: ['确定', '取消'],
             yes: ()=>{
               //判断当前是否已开局
+              checkTime = this.TimeBar.substring(0,2)
               if (isNaN(checkTime)) {
                 return layer.alert('当前还没有开局')
               }
