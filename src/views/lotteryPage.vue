@@ -366,18 +366,23 @@
               vm.Anchor = values[3].BackData
             })
           }else{
+            if (values[2] !== 1) {
+              layer.msgWarn(values[2].StrCode)
+            }else if(values[3] !== 1){
+              layer.msgWarn(values[3].StrCode)
+            }
             state.turning=false
-            layer.msgWarn(values[2].StrCode)
+            
           }
         }else{
           next()
         }
-      }).catch((err)=>{
+      }).catch((e)=>{
         //报错并返回
 
          //关掉loading动画
         store.commit('toggleLoading', false)
-        layer.msgWarn(err)
+        layer.msgWarn('请求错误，可能已经超时！')
         //返回首页
         RootApp.$router.replace('/index')
       })

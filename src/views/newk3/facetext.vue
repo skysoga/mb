@@ -7,14 +7,14 @@
         </span>
       </div>
       <div class="content">
-        <div class="testing" @focus="contentFocus" @blur="contentBlur" @keyup="keyup($event)" @keydown="limitLength($event)" contenteditable="true" ref="content"></div>
-        <div class="defaultText" v-show="showDefaultText  && !faceortext">点击输入可自由发言</div>
-        <div class="defaultText" v-show="showDefaultText  && faceortext">请选择您要发送的表情</div>
+        <input type="text" :maxlength="inputLength" @keydown="inputDown($event)" @keyup="inputUp($event)" :placeholder="(showDefaultText  && !faceortext)?'点击输入可自由发言':'请选择您要发送的表情'" v-model="content">
+        <!-- <div class="testing" @focus="contentFocus" @blur="contentBlur" @keyup="keyup($event)" @keydown="limitLength($event)" ref="content">
+        </div> -->
         <div v-show="sysSpeak" class="faceortext" :class="{text:faceortext,face:!faceortext}" @click.stop="changeFaceText">
           <i class="iconfont">{{faceortext?'&#xe615;':'&#xe616;'}}</i>
         </div>
       </div>
-      <div class="btn" :class="{curr:sendIsActive}" @click="send">发布</div>
+      <div class="btn" :class="{curr:content.length>0}" @click="send">发布</div>
     </div>
     <div class="desktop" :class="{tobottom:!sysSpeak}">
       <div ref="text" class="facetext-text" v-show="sysSpeak && !faceortext">
@@ -51,6 +51,7 @@
         sendIsActive:0,
         textOrDefault:'text',
         keyboard:0,
+        inputLength:null,
 			}
 		},
     created(){
@@ -70,8 +71,21 @@
 		mounted(){
       this.face = new BScroll(this.$refs.face,{click:true})
       this.text = new BScroll(this.$refs.text,{click:true})
+      setTimeout(()=>{
+        this.inputLength = this.$parent.$parent.GameConfig.LiveBroadcastFreedomSpeak.Length
+      },10)
 		},
 		methods:{
+      inputDown(e){
+        if (e.key = 'Backspace') {
+          //删除输入框的功能
+        }
+      },
+      inputUp(e){
+        if (e.key = 'Backspace') {
+          //删除输入框的功能
+        }
+      },
       contentFocus(){
         this.textOrDefault = 'text'
         this.selectText = null
@@ -81,7 +95,7 @@
         this.keyboard = 0
       },
       keyup(e){
-        if (this.$refs.content.innerText.length>0) {
+        if (this.content.length>0) {
           this.showDefaultText = 0
           return this.sendIsActive = 1
         }
@@ -89,17 +103,37 @@
         this.showDefaultText = 1
       },
       limitLength(e){
-        var length = this.$refs.content.innerText.length
+        var length = this.content.length
         let key = parseInt(e.key)
         if(length >= 20 && e.key !=="Enter" && e.key !=="Backspace"){
           e.preventDefault()
         }
       },
+      getCount(){
+        //检测已存在的表情有多少个
+        var _content = this.content
+        var face = 0
+        var allFaceLength = 0
+        var keys = _content.match(/\[[\u4e00-\u9fa5]{0,2}\]/g) || []
+        for (var y = 0; y < keys.length; y++) {
+          let key = keys[y].replace('[','').replace(']','')
+          if(this.faceData[key]){
+            face++
+            _content = _content.replace(keys[y],'a')
+            allFaceLength+=keys[y].length
+          }
+        }
+        this.inputLength = allFaceLength+(_content.length - face)+(this.$parent.$parent.GameConfig.LiveBroadcastFreedomSpeak.Length - (face + (_content.length - face)))
+        return [_content.length,face]
+      },
 			pushContent(d,type,i){
         document.activeElement.blur()
 				if (!type) {
           this.showDefaultText = 0
-					this.$refs.content.innerText += d
+          if (this.getCount()[0]<this.$parent.$parent.GameConfig.LiveBroadcastFreedomSpeak.Length) {
+            this.inputLength = this.inputLength + `[${i}]`.length - 1
+            this.content += `[${i}]`
+          }
           if(this.checkFace.indexOf(i) === -1){
             this.checkFace.push(i)
           }
@@ -117,7 +151,7 @@
 			},
 			changeFaceText(){
 				this.faceortext = !this.faceortext
-				this.$refs.content.innerText = ''
+				// this.$refs.content.innerText = ''
         this.checkText = 0
         this.sendIsActive = 0
         this.selectText = null
@@ -130,7 +164,7 @@
         }
         if (content.length > freedomSpeakArr.Length) {
           //替换表情的长度
-          var temp = content.replace(/\[\[[\d]{0,2}\]\]/g,'a')
+          var temp = content.replace(/\[[\u4e00-\u9fa5]{0,2}\]/g,'a')
           if (temp.length > freedomSpeakArr.Length) {
             //验证是否内置弹幕
             if(!/^##[\d]{1,3}##$/.test(content)){
@@ -146,7 +180,7 @@
         if (this.lastTime !== 0 && time < barrage.Interval*1000) {
           return [0,barrage.Interval+'秒内只能发送一次弹幕！']
         }
-        if (!/^[\u4e00-\u9fa5|\u3002|\uff1f|\uff01|\uff0c|\u3001|\uff1b|\uff1a|\u201c|\u201d|\u2018|\u2019|\uff08|\uff09|\u300a|\u300b|\u3008|\u3009|\u3010|\u3011|\u300e|\u300f|\u300c|\u300d|\ufe43|\ufe44|\u3014|\u3015|\u2026|\u2014|\uff5e|\ufe4f|\uffe5|.|,!]{0,999}$/.test(content.replace(/##[\d]{1,3}##/g,'').replace(/\[\[[\d]{1,3}\]\]/g,''))) {
+        if (!/^[\u4e00-\u9fa5|\u3002|\uff1f|\uff01|\uff0c|\u3001|\uff1b|\uff1a|\u201c|\u201d|\u2018|\u2019|\uff08|\uff09|\u300a|\u300b|\u3008|\u3009|\u3010|\u3011|\u300e|\u300f|\u300c|\u300d|\ufe43|\ufe44|\u3014|\u3015|\u2026|\u2014|\uff5e|\ufe4f|\uffe5|.|,!\[\]]{0,999}$/.test(content.replace(/##[\d]{1,3}##/g,'').replace(/\[\[[\d]{1,3}\]\]/g,''))) {
           return [0,'只能发送中文字符！']
         }
         return [1]
@@ -154,20 +188,20 @@
 			send(){
         var content = null
         if (this.faceortext) {
-          content = this.$refs.content.innerText
+          content = this.content
         }else{
           if (this.textOrDefault === 'default') {
             content = this.selectText
           }else{
-            content = this.$refs.content.innerText
+            content = this.content
             console.log(content)
           }
         }
         //默认弹幕改为ID
         content = content.replace(this.textData[this.checkText],`##${this.checkText}##`)
-        for (var i = 0; i < this.checkFace.length; i++) {
-          content = content.replace(new RegExp(this.faceData[this.checkFace[i]],'g'),`[[${this.checkFace[i]}]]`)
-        }
+        // for (var i = 0; i < this.checkFace.length; i++) {
+        //   content = content.replace(new RegExp(this.faceData[this.checkFace[i]],'g'),`[[${this.checkFace[i]}]]`)
+        // }
         //权限检测
         let permissions = this.checkPermissions(content)
         if (!permissions[0]) {
@@ -181,7 +215,7 @@
         })
         .then(d=>{
           if (d.Code === 1) {
-            this.$refs.content.innerText = ''
+            this.content = ''
             this.lastTime = new Date().getTime()
             this.checkFace = []
             this.checkText = 0
@@ -201,18 +235,32 @@
         }
       }
 		},
+    watch:{
+      'content'(n){
+        var a,b
+        [a,b] = this.getCount()
+        // console.log(a,b)
+      },
+    },
 	}
 </script>
 <style lang="scss" scoped>
+.content{
+  .testing{
+    width:calc(16rem - 3.4em - 4.25em - 1em);
+    overflow: hidden;
+  }
+  input{
+    border: none;
+    width: calc(100% - 2.6em);
+    font-size: .7em;
+    color:#333;
+    padding:0 .2em;
+    outline: none;
+  }
+}
 .keyboard{
   transform:translateY(-8em) !important;
-}
-.defaultText{
-  font-size: .7em;
-  color:#999;
-  margin-left: .4em;
-  position: absolute;
-  pointer-events:none;
 }
 .facetext{
   height:12em;
@@ -281,19 +329,6 @@
       background:#fdfdfd;
       position:relative;
       vertical-align: top;
-    }
-    .testing{
-      position:absolute;
-      width:calc(100% - 3em);
-      padding:.3em .4em;
-      font-size:.7em;
-      height:3.4285em;
-      overflow: auto;
-      line-height: 1.5em;
-      -webkit-user-select: auto;
-      user-select: auto;
-      padding-top:1em;
-      outline: none;
     }
     .faceortext{
       position:absolute;

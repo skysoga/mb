@@ -4,7 +4,6 @@
       <div class="loading" v-show="loading">正在加载...</div>
       <div class="info" v-show="!loading" v-if="$parent.userinfoBy === 'user'">
         <div class="head" :style="{background:'url('+$store.getters.PhotoPath+$store.state.UserPhoto||$store.state.constant.DefPhoto+')'}">
-          <img src="/static/img/crown.png">
         </div>
         <div class="name">
           <template v-if="$store.state.UserNickName">{{$store.state.UserNickName}}</template>
@@ -194,12 +193,7 @@ table{
   background-size: cover !important;
   border-radius: 50%;
   margin-top: 1.7em;
-  img{
-    display: block;
-    width: 3.8em;
-    margin:0 auto;
-    transform:translate(-.1em,-.75em);
-  }
+  border:3px solid #e2e0e0;
 }
 .userinfo{
   top: 0;

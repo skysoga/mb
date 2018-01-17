@@ -48,8 +48,8 @@
         </div>
       </div>
       <div class="space"></div>
-      <ul class="playtype fix" v-show="playtypeShow == 'playtype'">
-        <li v-for="(d,i) in config" @click="toPlay(d,i)"><em>{{d.name}}</em></li>
+      <ul class="playtype fix" v-show="playtypeShow == 'playtype'" @click="changeShow">
+        <li v-for="(d,i) in config" @click.stop="toPlay(d,i)"><em>{{d.name}}</em></li>
       </ul>
       <div class="betboxContainer" v-show="playtypeShow == ''">
         <div class="slider" ref="slider">
