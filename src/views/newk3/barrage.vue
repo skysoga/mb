@@ -3,7 +3,7 @@
 		<ul>
       <li class="default">
         <div class="content">
-          <ins>温馨提示：严禁涉政、造谣、诽谤、广告等，发现一律封号！</ins>
+          <ins>温馨提示：严禁涉政、涉黄、造谣、抹黑、毁谤、广告等，发现一律封号！</ins>
         </div>
       </li>
 			<li v-for="d in data">
