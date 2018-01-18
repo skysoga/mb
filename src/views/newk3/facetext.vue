@@ -7,7 +7,7 @@
         </span>
       </div>
       <div class="content">
-        <input type="text" :maxlength="inputLength" @keydown="inputDown($event)" @keyup="inputUp($event)" :placeholder="(showDefaultText  && !faceortext)?'点击输入可自由发言':'请选择您要发送的表情'" v-model="content">
+        <input type="text" ref="content" :maxlength="inputLength" @focus="inputFocus" @blur="inputBlur" @keydown="inputDown($event)" @keyup="inputUp($event)" :placeholder="(showDefaultText  && !faceortext)?'点击输入可自由发言':'请选择您要发送的表情'" v-model="content">
         <!-- <div class="testing" @focus="contentFocus" @blur="contentBlur" @keyup="keyup($event)" @keydown="limitLength($event)" ref="content">
         </div> -->
         <div v-show="sysSpeak" class="faceortext" :class="{text:faceortext,face:!faceortext}" @click.stop="changeFaceText">
@@ -77,9 +77,20 @@
 		},
 		methods:{
       inputDown(e){
-        this.textOrDefault = 'text'
         if (e.key === 'Backspace') {
           //删除输入框的功能
+          var position = this.getPositionForInput(this.$refs.content)
+          var _content = this.content.substring(0,position)
+          var res = _content.match(/\[[\u4e00-\u9fa5]{0,3}\]$/) || 0
+          if(res){
+            _content = _content.replace(/\[[\u4e00-\u9fa5]{0,3}\]$/,'')
+            this.content = _content + this.content.substring(position,this.content.length)
+            e.preventDefault()
+            setTimeout(()=>{
+              this.setCursorPosition(this.$refs.content,_content.length)
+            },1)
+            
+          }
         }
       },
       inputUp(e){
@@ -87,12 +98,12 @@
           //删除输入框的功能
         }
       },
-      contentFocus(){
+      inputFocus(){
         this.textOrDefault = 'text'
         this.selectText = null
         this.keyboard = 1
       },
-      contentBlur(){
+      inputBlur(){
         this.keyboard = 0
       },
       keyup(e){
@@ -237,7 +248,34 @@
         }else{
           layer.msgWarn('您当前的等级无法打开弹幕！')
         }
-      }
+      },
+
+      //获取光标位置
+      getPositionForInput(ctrl) {
+        var CaretPos = 0;
+        if (document.selection) { // IE Support 
+            ctrl.focus();
+            var Sel = document.selection.createRange();
+            Sel.moveStart('character', -ctrl.value.length);
+            CaretPos = Sel.text.length;
+        } else if (ctrl.selectionStart || ctrl.selectionStart == '0') { // Firefox support 
+            CaretPos = ctrl.selectionStart;
+        }
+        return (CaretPos);
+      },
+      //设置光标位置函数 
+      setCursorPosition(ctrl, pos) {
+        if (ctrl.setSelectionRange) {
+          ctrl.focus();
+          ctrl.setSelectionRange(pos, pos);
+        } else if (ctrl.createTextRange) {
+          var range = ctrl.createTextRange();
+          range.collapse(true);
+          range.moveEnd('character', pos);
+          range.moveStart('character', pos);
+          range.select();
+        }
+      },
 		},
     watch:{
       'content'(n){
