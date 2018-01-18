@@ -5,7 +5,7 @@
         <div class="block" :class="{block_ani:twoGift['block_ani'+d]}">
           <img :src="$store.getters.PhotoPath+twoGift['gift'+d].UserPhoto||$store.state.constant.DefPhoto">
           <div class="text">
-            <span>{{twoGift['gift'+d].NickName}}</span>
+            <span>{{twoGift['gift'+d].NickName?twoGift['gift'+d].NickName:twoGift['gift'+d].UserName}}</span>
             <em>送出{{giftName[hasGift.indexOf(twoGift['gift'+d].GiftName)]}}</em>
           </div>
           <cuke v-if="twoGift['gift'+d].GiftName === 'cuke'"></cuke>

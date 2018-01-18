@@ -36,6 +36,7 @@
           <selectGift :class="{ined:activeHide === 3}"></selectGift>
         </div>
       </div>
+      <div class="mainBg"></div>
     </div>
     <div :class="{bet:(show === 'bet')?1:0}" class="betContainer">
       <div class="header">
@@ -621,6 +622,7 @@
   position: fixed;
   top:4em;
   right: .6em;
+  z-index: 20;
 }
 .AnchorImg{
   position: absolute;
@@ -649,18 +651,13 @@
 }
 .mainPage{
   height:100%;
-  position:fixed;
-  top:0;
-  left:0;
-  bottom:0;
-  right:0;
-  z-index:20;
 }
 .result{
   color:white;
   position:relative;
   top:.4em;
   left: .4em;
+  z-index: 20;
   span{
     font-size:.7em;
     display:block;
@@ -812,6 +809,9 @@
       border: none;
     }
   }
+  .control{
+    z-index: 25;
+  }
   .control,.barrage{
     position: fixed;
     width:100%;
@@ -821,6 +821,14 @@
   .barrage{
     top:initial;
     bottom:2.8em;
+  }
+  .mainBg{
+    position: fixed;
+    z-index: 1;
+    top:0;
+    left: 0;
+    right:0;
+    bottom: 0;
   }
   .con-btn{
     height: 2em;

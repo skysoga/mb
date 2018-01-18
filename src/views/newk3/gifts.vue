@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click="$parent.changeShow">
     <smallgift></smallgift>
     <binary></binary>
   	<div class="gifts" v-if="giftArr.length > 0">
