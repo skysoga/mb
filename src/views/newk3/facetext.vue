@@ -14,7 +14,7 @@
           <i class="iconfont">{{faceortext?'&#xe615;':'&#xe616;'}}</i>
         </div>
       </div>
-      <div class="btn" :class="{curr:content.length>0}" @click="send">发布</div>
+      <div class="btn" :class="{curr:(content.length>0 || sendIsActive)}" @click="send">发布</div>
     </div>
     <div class="desktop" :class="{tobottom:!sysSpeak}">
       <div ref="text" class="facetext-text" v-show="sysSpeak && !faceortext">
@@ -77,12 +77,13 @@
 		},
 		methods:{
       inputDown(e){
-        if (e.key = 'Backspace') {
+        this.textOrDefault = 'text'
+        if (e.key === 'Backspace') {
           //删除输入框的功能
         }
       },
       inputUp(e){
-        if (e.key = 'Backspace') {
+        if (e.key === 'Backspace') {
           //删除输入框的功能
         }
       },
@@ -127,12 +128,15 @@
         return [_content.length,face]
       },
 			pushContent(d,type,i){
+        var length = this.$parent.$parent.GameConfig.LiveBroadcastFreedomSpeak.Length
         document.activeElement.blur()
 				if (!type) {
           this.showDefaultText = 0
-          if (this.getCount()[0]<this.$parent.$parent.GameConfig.LiveBroadcastFreedomSpeak.Length) {
+          if (this.getCount()[0]<length) {
             this.inputLength = this.inputLength + `[${i}]`.length - 1
             this.content += `[${i}]`
+          }else{
+            layer.alert(`为防止遮盖，仅限输入${length}个字符`)
           }
           if(this.checkFace.indexOf(i) === -1){
             this.checkFace.push(i)
@@ -383,12 +387,13 @@
 }
 .facetext-text{
   ul{
+    text-align: center;
     li{
-      width:50%;
+      display: inline-block;
       white-space:nowrap;
-      text-overflow:ellipsis;
-      overflow: hidden;
       margin:.2em 0;
+      float: initial;
+      padding:0 .2em;
       em{
         font-size:.7em;
         background:#f0f0f0;

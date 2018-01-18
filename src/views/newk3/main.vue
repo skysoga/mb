@@ -1,6 +1,6 @@
 <template>
   <div class="newContainer">
-    <gift :activegift="activegift"></gift>
+    <gift :activegift="activegift" v-show="show == 'main'"></gift>
     <div class="video">
       <div><iframe ref="iframe" src="/static/video.html"></iframe></div>
       <img src="/static/img/newk3-bg.jpg" alt="" width="100%">
@@ -544,11 +544,12 @@
         let _barrage = this.$refs.barrage || 0
         if (_barrage) {
           //替换表情
-          let arr = barrage.Message.match(/\[\[[\d]{1,2}\]\]/g) || 0
+          let arr = barrage.Message.match(/\[[\u4e00-\u9fa5]{0,2}\]/g) || 0
           if (arr) {
             for (var i = 0; i < arr.length; i++) {
-              let ID = arr[i].replace(/\[\[/,'').replace(/\]\]/,'')
+              let ID = arr[i].replace(/\[/,'').replace(/\]/,'')
               barrage.Message = barrage.Message.replace(arr[i],this.faceData[ID])
+              console.log(ID,this.faceData[ID])
             }
           }
           //替换内置弹幕

@@ -70,7 +70,7 @@
 <style lang='scss' scoped>
 .binary{
 	position: fixed;
-	z-index: 20;
+	z-index: 21;
 	width: 100%;
 	height:100%;
 

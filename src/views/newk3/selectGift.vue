@@ -7,6 +7,7 @@
           <i>￥{{d[2]}}</i>
           <em>{{d[1]}}</em>
         </li>
+        <li v-for="d in $parent.giftsList.length % 4"></li>
       </ul>
     </div>
     <div class="footer fix">
@@ -137,7 +138,7 @@
 </script>
 <style lang="scss" scoped>
 .giving{
-  background:rgba(0, 0, 0, 0.5);
+  background:rgba(4, 0, 12, 0.88);
   transition:.2s;
   width:100%;
   height:12em;
@@ -150,16 +151,34 @@
         float:left;
         width:4rem;
         height:4.8em;
-        border-right:1px solid rgba(255, 255, 255, 0.1);
+        // border-right:1px solid rgba(255, 255, 255, 0.1);
         padding:.3em;
+        position: relative;
         &:active{
         	background-color:none;
         }
         &:nth-child(1n+5){
-          border-top:1px solid rgba(255, 255, 255, 0.1);
+          // border-top:1px solid rgba(255, 255, 255, 0.1);
         }
         &:nth-child(4n+4){
           border-right:none
+        }
+        &:nth-child(1n+5):before,&:nth-child(1n+2):after{
+          position: absolute;
+          top:0;
+          left: 0;
+          content:'';
+          display: block;
+        }
+        &:nth-child(1n+5):before{
+          height: 1px;
+          width: 100%;
+          background-image: -webkit-linear-gradient(90deg,#464853,#464853 50%,transparent 0);
+        }
+        &:nth-child(1n+2):after{
+          width: 1px;
+          height: 100%;
+          background-image: -webkit-linear-gradient(0deg,#464853,#464853 50%,transparent 0);
         }
         i{
           display: block;
@@ -184,6 +203,14 @@
     line-height:2.4em;
     background: rgba(0, 0, 0, 0.32);
     position: relative;
+    &:before{
+      content:'';
+      position: absolute;
+      display: block;
+      width: 100%;
+      height: 1px;
+      background-image: -webkit-linear-gradient(90deg,#464853,#464853 50%,transparent 0);
+    }
     .btn{
       color:white;
       float:right;
