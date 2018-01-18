@@ -11,6 +11,11 @@
       </ul>
     </div>
     <div class="footer fix">
+      <div class="balance">
+        
+            <template v-if="balShow">余额：{{UserBalance}} <ins @click="getBalance">刷新</ins></template>
+            <template v-else>余额：已隐藏 <ins @click="getBalance">显示</ins></template>
+      </div>
       <div class="btn">
         <a @click="send" href="javascript:;" v-show="!showManyBtn">{{active[3]===1?'连发':'发送'}}</a>
         <a @click="addGift" href="javascript:;" v-show="showManyBtn">连发：{{time}}</a>
@@ -38,10 +43,13 @@
         t1:null,
         giftNum:1,
         combo:null,
+        balShow:false,
+        UserBalance:"",
 			}
 		},
     created(){
       this.giftArr = this.$parent.$parent.GiftConfig
+      this.UserBalance=store.state.UserBalance
     },
 		methods:{
 			select(v){
@@ -112,9 +120,21 @@
         this.sendGift()
         this.time = 100
       },
+      getBalance:function(){
+        RootApp.GetInitData(['UserBalance'],ref=>{
+          this.refreshClass+=" refreshMove"
+          this.balShow=true
+          this.UserBalance=""
+          setTimeout(()=>{
+            this.refreshClass="refresh"
+            this.UserBalance=store.state.UserBalance
+          },500)
+        })
+      },
 		},
     watch:{
       'giftNum'(n,o){
+        //数字动画
         var aa = ()=>{
           this.showScale = 1
           this.showScaleT = setTimeout(()=>{
@@ -132,11 +152,20 @@
         }else{
           aa()
         }
-      }
+      },
+      '$parent.activeHide'(){
+        this.balShow = false
+      },
     }
 	}
 </script>
 <style lang="scss" scoped>
+.balance{
+  float: left;
+  color:#fcc948;
+  font-size: .65em;
+  padding-left: .6em;
+}
 .giving{
   background:rgba(4, 0, 12, 0.88);
   transition:.2s;

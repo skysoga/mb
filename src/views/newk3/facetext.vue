@@ -115,7 +115,7 @@
         var _content = this.content
         var face = 0
         var allFaceLength = 0
-        var keys = _content.match(/\[[\u4e00-\u9fa5]{0,2}\]/g) || []
+        var keys = _content.match(/\[[\u4e00-\u9fa5]{0,3}\]/g) || []
         for (var y = 0; y < keys.length; y++) {
           let key = keys[y].replace('[','').replace(']','')
           if(this.faceData[key]){
@@ -168,7 +168,7 @@
         }
         if (content.length > freedomSpeakArr.Length) {
           //替换表情的长度
-          var temp = content.replace(/\[[\u4e00-\u9fa5]{0,2}\]/g,'a')
+          var temp = content.replace(/\[[\u4e00-\u9fa5]{0,3}\]/g,'a')
           if (temp.length > freedomSpeakArr.Length) {
             //验证是否内置弹幕
             if(!/^##[\d]{1,3}##$/.test(content)){
