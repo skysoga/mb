@@ -59,8 +59,8 @@
   var fetchGoalLive
   var _fetchLive = function (data, option = {}){
     console.log(data)
-    var user = /*data.Action!=='Register'&&*/data.UserName||state.UserName
-    var str=[],k;
+    var user = /*data.Action!=='Register'&&*/state.UserName
+    /*var str=[],k;
     for(var i in data){
       k=data[i];
       if (typeof(k)==="object") {
@@ -68,7 +68,8 @@
       }
       str.push(i+'='+k)
     }
-    str=str.join('&')
+    str=str.join('&')*/
+    var str = _ajaxDatajoint(data)
     // 防止一秒内的完全相同请求
     if(data.Action!=='GetServerTimeMillisecond'){
       var now = new Date().getTime()
@@ -94,22 +95,12 @@
         _catch({msg:'timeout',A:data.Action,U:user})
         reject()
       },10000)
-      var fetchUrl = '/LiveApi?V='+_iver+'&A='+data.Action
+      var fetchUrl = '/LiveApi?A='+data.Action
       if(window.site){
         fetchUrl+='&S='+site
       }
       if(user){
         fetchUrl+='&U='+user
-      }
-
-      if (data.Action==='AddBetting'||data.Action==='AddChaseBetting') {
-        fetchUrl+='&T='+new Date(now-state.Difftime).format('ddhhmmss')
-      }
-      if(_App && ga){
-        //减少发送量
-        if(['GetLotteryOpen','GetInitData','GetServerTimeMillisecond'].indexOf(data.Action)===-1){
-          ga('send','event','fetch',data.Action)
-        }
       }
       fetch(fetchUrl, {
         credentials:'same-origin',
@@ -372,7 +363,7 @@
               layer.msgWarn(values[3].StrCode)
             }
             state.turning=false
-            
+
           }
         }else{
           next()
