@@ -82,9 +82,9 @@
           //删除输入框的功能
           var position = this.getPositionForInput(this.$refs.content)
           var _content = this.content.substring(0,position)
-          var res = _content.match(/\[[\u4e00-\u9fa5]{0,3}\]$/) || 0
+          var res = _content.match(/\[[\u4e00-\u9fa5]{1,3}\]$/) || 0
           if(res){
-            _content = _content.replace(/\[[\u4e00-\u9fa5]{0,3}\]$/,'')
+            _content = _content.replace(/\[[\u4e00-\u9fa5]{1,3}\]$/,'')
             this.content = _content + this.content.substring(position,this.content.length)
             e.preventDefault()
             setTimeout(()=>{
@@ -127,7 +127,7 @@
         var _content = this.content
         var face = 0
         var allFaceLength = 0
-        var keys = _content.match(/\[[\u4e00-\u9fa5]{0,3}\]/g) || []
+        var keys = _content.match(/\[[\u4e00-\u9fa5]{1,3}\]/g) || []
         for (var y = 0; y < keys.length; y++) {
           let key = keys[y].replace('[','').replace(']','')
           if(this.faceData[key]){
@@ -227,6 +227,7 @@
           return
         }
         this.sending = 1
+        this.$parent.barrageIsOpen = 1
         _fetch({
           Action:'SendBarrage',
           GameID:this.$parent.$parent.lcode,

@@ -548,7 +548,7 @@
         let _barrage = this.$refs.barrage || 0
         if (_barrage) {
           //替换表情
-          let arr = barrage.Message.match(/\[[\u4e00-\u9fa5]{0,3}\]/g) || 0
+          let arr = barrage.Message.match(/\[[\u4e00-\u9fa5]{1,3}\]/g) || 0
           if (arr) {
             for (var i = 0; i < arr.length; i++) {
               let ID = arr[i].replace(/\[/,'').replace(/\]/,'')
