@@ -31,7 +31,6 @@
     <div id="HotLottery" v-if="s.LotteryList"
                          v-bind:style="{height:Math.ceil((nowDisplayList.length+1)/3)*5+'em'}">
       <ul>
-        <li><router-link to="/live/K3/0101" class="active L_K3"><p>UU快3</p> <span>测试中</span></router-link></li>
         <li v-for="l in nowDisplayList">
           <router-link :class="'active L_'+s.LotteryList[l].LotteryType"
                        :to="'/lottery/'+s.LotteryList[l].LotteryType+'/'+l">
