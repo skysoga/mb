@@ -6,10 +6,11 @@
       {{oldIssue}}期开奖号码 <i class="iconfont">&#xe601;</i>
     </span>
 
-    <div class="openNumber"  v-if="displayResults">
+    <div class="openNumber" >
+    <!-- <div class="openNumber"  v-if="displayResults"> -->
       <template v-for="(numStr, index) in results">
           <div class="number-box plus" v-if="index === 6"><em class="symbol">+</em></div>
-          <div class="number-box">
+          <div :class="['number-box',!displayResults&&'nocolor']">
             <em :class="numColor[numStr*1]">{{numStr}}</em>
             <span class="number-box-text">{{getAnimal(numStr)}}</span>
           </div>
@@ -119,21 +120,23 @@ export default {
       if(!_results || !_results.length){
         return []
       }else{
-        return _results[0].LotteryOpen.split(',').slice(0,20)
+        return this.displayResults?_results[0].LotteryOpen.split(',').slice(0,20):this.wait4Results
       }
     },
     pastOpen(){
       var code = this.$route.params.code
+      var showTime=['1300'].indexOf(code)>-1
       return state.lt.LotteryResults[code].map(item=>{
         var el = {}
         el.IssueNo = item.IssueNo
         el.LotteryOpen = item.LotteryOpen.split(',').map(str=>('0' + str).slice(-2))
         var mdy = item.OpenTime.split(' ')[0] //开奖时间的年月日
+        var sTime= item.OpenTime.split(' ')[1]
         var [year,month, date] = mdy.split('/')
         year = year.slice(-2)
         month = ('0' + month).slice(-2)
         date = ('0' + date).slice(-2)
-        el.OpenTime = `${year}.${month}.${date}`
+        el.OpenTime =showTime?sTime:`${year}.${month}.${date}`
         return el
       })
     },
@@ -255,6 +258,13 @@ export default {
   }
   span{
     line-height: 1em;
+  }
+
+  &.nocolor{
+  em{
+    background: linear-gradient(to top, #bbb59c 0%,#bbb59c 75%);
+    background: -webkit-linear-gradient(top, #bbb59c 0%,#bbb59c 75%);
+  }
   }
 }
 

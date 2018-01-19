@@ -55,6 +55,25 @@
     <div class="main" v-if= "method === 'Weixin' && !underMaintain ">
       <input name="GetMoneyUser" type="hidden" value="" readonly="readonly">
       <table>
+        <template v-if="nowRender.BankName&&nowRender.CardNum&&nowRender.RealName">
+        <tr>
+          <td>收款银行</td>
+          <td><input class="cGold" type="text"  :value = "nowRender.BankName" readonly="readonly">
+          <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i></td>
+        </tr>
+        <tr>
+          <td>银行帐户</td>
+          <td>
+            <input class="cGold"  type="text" :value = "nowRender.RealName"  readonly="readonly">
+            <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i>
+          </td>
+        </tr>
+        <tr>
+          <td>银行帐号</td>
+          <td><input class="cGold" type="text"  :value = "nowRender.CardNum" readonly="readonly">
+          <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i></td>
+        </tr>        
+        </template>
         <tr>
           <td>充值金额</td>
           <td><input  type="tel" tag = "充值金额" v-va:Money  v-model = 'Money'  placeholder="请输入充值金额"></td>
@@ -63,7 +82,7 @@
           <td>微信昵称</td>
           <td><input type="text" tag = "微信昵称" v-va:PayUser  v-model = 'PayUser'  placeholder="请输入您的微信昵称"></td>
         </tr>
-        <tr>
+        <tr v-if="nowRender.CodeImg">
           <td>扫码支付</td>
           <td>
             <img class="barcode" :src="nowRender.CodeImg" alt="二维码">
@@ -73,12 +92,12 @@
       </table>
       <div class="loginBtn BTN"><a v-va-check>确定</a></div>
       <div class="tips">
-        1、扫一扫以上二维码进行充值。<br>
-        2、请正确填写您的昵称和充值金额。<br>
-        3、微信昵称并非微信账号，请注意区分。<br>
-        4、转账时，请在留言中备注自己的游戏账号，便于及时确认充值金额。<br>
-        5、可以使用其他手机扫二维码进行充值，也可以将二维码保存到相册再使用微信识别相册中的二维码进行充值，由于本二维码经常更换，充值前务必重新保存最新的二维码。<br>
-        6、请务必转账后再提交订单，否则无法及时查到您的款项！
+        1.请使用微信转账到以上账户。<br>
+        2.若提供的是二维码，请使用微信扫一扫进行转账。若提供的是银行账号，请使用微信转账到银行卡的方式进行转账。<br>
+        3.转账时，请在留言中备注自己的游戏账号，便于及时确认充值金额。<br>
+        4.请正确填写您的微信昵称和充值金额。微信昵称并非微信账号，请注意区分。<br>
+        5.请务必转账后再提交订单，否则无法及时查到您的款项！转账1笔提交1次，请勿重复提交订单。<br>
+        6.可以使用其他手机扫二维码进行充值，也可以将二维码保存到相册再使用微信识别相册中的二维码进行充值，由于本二维码经常更换，充值前务必重新保存最新的二维码。<br>
       </div>
     </div>
 
@@ -142,6 +161,7 @@
 
     <div class="main" v-if= "method === 'Alipay' && !underMaintain ">
       <table>
+        <template v-if="nowRender.RealName&&nowRender.AliNo">
         <tr>
           <td>支付宝姓名</td>
           <td>
@@ -154,6 +174,7 @@
           <td><input class="cGold" type="text"  :value = "nowRender.AliNo" readonly="readonly">
           <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i></td>
         </tr>
+        </template>
         <tr>
           <td>充值金额</td>
           <td><input  type="tel" tag = "充值金额"  v-model.trim="Money" v-va:Money placeholder="请输入充值金额"></td>
@@ -162,7 +183,7 @@
           <td>支付宝姓名</td>
           <td><input type="text" tag = "支付宝姓名" v-model="PayUser" v-va:PayUser   placeholder="请输入您的支付宝姓名"></td>
         </tr>
-        <tr>
+        <tr v-if="nowRender.CodeImg">
           <td>扫码支付</td>
           <td>
             <img class="barcode" :src="nowRender.CodeImg" alt="">
@@ -172,12 +193,11 @@
       </table>
       <div class="loginBtn BTN" v-va-check><a>确定</a></div>
       <div class="tips">
-        1、请转账到以上支付宝或扫码支付。<br>
-        2、若提供的是银行账号，请使用支付宝转账到银行卡的方式进行转账。<br>
-        3、请正确填写您的姓名和充值金额。<br>
-        4、设置了支付宝昵称的请直接填写昵称。<br>
-        5、转账1笔提交1次，请勿重复提交订单。<br>
-        6、请务必转账后再提交订单,否则无法及时查到您的款项！
+        1.请使用支付宝转账到以上账户。<br>
+        2.若提供的是二维码，请使用支付宝扫一扫进行转账。若提供的是支付宝账号或银行账号，请使用支付宝转账到银行卡的方式进行转账。<br>
+        3.请正确填写您的姓名和充值金额。设置了支付宝昵称的请直接填写昵称。<br>
+        4.请务必转账后再提交订单，否则无法及时查到您的款项！转账1笔提交1次，请勿重复提交订单。<br>
+        5.可以使用其他手机扫二维码进行充值，也可以将二维码保存到相册再使用支付宝识别相册中的二维码进行充值，由于本二维码经常更换，充值前务必重新保存最新的二维码。<br>
       </div>
     </div>
 
@@ -234,11 +254,11 @@ export default{
           vm.ID = json[0].Id
           var xurl = ''
           if(json[0].CodeImg === '0' || !json[0].CodeImg){
-            xurl = '/../system/common/other/noQRcode.png'
+            xurl =''// '/../system/common/other/noQRcode.png'
           }else{
-            xurl = json[0].CodeImg
+            xurl = state.constant.ImgHost+json[0].CodeImg
           }
-          vm.nowRender.CodeImg =  state.constant.ImgHost + xurl
+          vm.nowRender.CodeImg =  xurl
         }
 
         vm.vaConfig ||(vm.vaConfig = {})

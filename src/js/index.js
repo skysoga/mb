@@ -1,6 +1,6 @@
 import { swiper, swiperSlide, swiperPlugins } from 'vue-awesome-swiper'
 import {mapState} from 'vuex'
-var hotDefault = ["1406","1402","1407","1000","1001","1008","1303","1302","1100","1101","1103"]
+var hotDefault = ["1407","1406","1402","1008","1000","1001","1300","1301","1303","1302","1100"]
 export default {
   name:'index',
   props:["s"],
