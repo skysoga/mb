@@ -657,7 +657,7 @@
   position:relative;
   top:.4em;
   left: .4em;
-  z-index: 20;
+  z-index: 26;
   span{
     font-size:.7em;
     display:block;
@@ -906,10 +906,11 @@
     }
   }
   .newContainer{
-    position:relative;
+    position:fixed;
     z-index:20;
     width:100%;
     height: 100%;
+    overflow: hidden;
   }
   .betContainer{
     width:100%;

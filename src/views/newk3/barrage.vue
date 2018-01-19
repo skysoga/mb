@@ -80,6 +80,7 @@
 .barrage{
 	height: 6em;
 	overflow: hidden;
+  z-index: 20;
 	ul{
 		min-height: 101%;
 		color:white;
