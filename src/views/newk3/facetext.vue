@@ -222,9 +222,13 @@
         }
         //默认弹幕改为ID
         content = content.replace(this.textData[this.checkText],`##${this.checkText}##`)
-        // for (var i = 0; i < this.checkFace.length; i++) {
-        //   content = content.replace(new RegExp(this.faceData[this.checkFace[i]],'g'),`[[${this.checkFace[i]}]]`)
-        // }
+        var contentFace = content.match(/\[[\u4e00-\u9fa5]{1,3}\]$/g) || 0
+        for (var i = 0; i < contentFace.length; i++) {
+          if(this.faceData[contentFace[i].replace('[','').replace(']','')] === undefined){
+            content = content.replace(contentFace[i],'')
+            this.content = content
+          }
+        }
         //权限检测
         let permissions = this.checkPermissions(content)
         if (!permissions[0]) {
