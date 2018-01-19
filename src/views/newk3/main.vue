@@ -958,6 +958,7 @@
     width:312px;
     margin:0 auto;
     font-size:26px;
+    margin-top:.5em;
     >li{
       float:left;
       width:3em;
