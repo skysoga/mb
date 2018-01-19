@@ -41,6 +41,13 @@
           </tr>
         </table>
       </div>
+      <div class="info" v-show="!loading" v-if="$parent.userinfoBy === 'help'">
+        <div class="help-con">
+          <h3>玩法说明</h3>
+          <p>这个页面主要介绍了直播玩法是怎么玩的，告诉用户该如何操作，让用户了解如何使用直播。</p>
+          <p>这个页面主要介绍了直播玩法是怎么玩的，告诉用户该如何操作，让用户了解如何使用直播，不再不明白这个页面如何使用！</p>
+        </div>
+      </div>
       <div class="close" @click="$parent.userinfoShow = 0"></div>
     </div>
   </div>
@@ -56,7 +63,8 @@
       }
     },
     created(){
-      if (this.$parent.userinfoBy === 'user') {
+      var type = this.$parent.userinfoBy
+      if (type === 'user') {
         this.UserBalance=store.state.UserBalance
         var arr=['UserName','UserNickName','UserPhoto']
         RootApp.GetInitData(arr,state=>{
@@ -100,6 +108,20 @@
   }
 </script>
 <style lang="scss" scoped>
+.help-con{
+  h3{
+    text-align: center;
+    margin-bottom: .4em;
+  }
+  p{
+    margin-top:.5em;
+  }
+  color:#333;
+  padding:1.2em .8em;
+  padding-bottom: 0;
+  font-size: .7em;
+  line-height: 1.4em;
+}
 .age,.girl:before{
   font-size: .6em;
   display: inline-block;

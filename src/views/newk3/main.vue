@@ -26,7 +26,7 @@
       <div class="control">
         <ul class="con-btn fix">
           <li><a class="back" href="javascript:;" @click.stop="$router.go(-1)"></a></li>
-          <li><a class="question" href="javascript:;" @click.stop=""></a></li>
+          <li><a class="question" href="javascript:;" @click.stop="showCard(3)"></a></li>
           <li><a class="anchor" href="javascript:;" @click.stop="showCard(2)"></a></li>
           <li><a class="gift" href="javascript:;" @click.stop="showHide(3)"></a></li>
           <li><a class="facetext" href="javascript:;" @click.stop="showHide(1)"><em>发弹幕...</em></a></li>
@@ -357,7 +357,10 @@
         if (w === 1) {
           return this.userinfoBy = 'Anchor'
         }
-        return this.userinfoBy = 'user'
+        if (w === 2) {
+          return this.userinfoBy = 'user'
+        }
+        return this.userinfoBy = 'help'
       },
       getSumRebate(index){
         if(!this.award || !this.award.length){
@@ -600,7 +603,7 @@
         console.log('执行开启视频')
         this.$refs.iframe.contentWindow.openlive(url)
         .then(()=>{
-          
+
         })
       }
     },
