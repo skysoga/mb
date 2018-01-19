@@ -599,6 +599,9 @@
         }
         console.log('执行开启视频')
         this.$refs.iframe.contentWindow.openlive(url)
+        .then(()=>{
+          
+        })
       }
     },
     watch:{
