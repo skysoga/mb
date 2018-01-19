@@ -7,7 +7,8 @@ export default {
       question3:"",
       answer1:"",
       answer2:"",
-      answer3:""
+      answer3:"",
+      SafePassword:""
     }
   },
   beforeRouteEnter(to,from,next){
@@ -42,7 +43,8 @@ export default {
         Action:"SetQuestion",
         Answer1:this.answer1,
         Answer2:this.answer2,
-        Answer3:this.answer3
+        Answer3:this.answer3,
+        SafePassword:this.SafePassword
       }
       var F=sessionStorage.getItem('isFind')
       if(F){

@@ -792,7 +792,7 @@
             }
           },
           lt_get6HCPlan:({state, rootState, commit, dispatch}, code)=>{
-            var LotteryPlan = localStorage.getItem("lotteryPlan"+ code)
+            /*var LotteryPlan = localStorage.getItem("lotteryPlan"+ code)
             LotteryPlan = LotteryPlan&&JSON.parse(LotteryPlan)
             if(LotteryPlan&&LotteryPlan.NextFirst>0){
               console.log('使用缓存')
@@ -812,7 +812,7 @@
               fetch6HCPlan()
             }
 
-            function fetch6HCPlan(){
+            function fetch6HCPlan(){*/
               _fetch({Action:'GetLotteryPlan', Qort:'1301'}).then((json)=>{
                 if(json.Code === 1){
                   var monthPlan = json.Data
@@ -824,7 +824,7 @@
                   layer.msgWarn(json.StrCode);
                 }
               })
-            }
+            // }
 
             //对6HC的计划进行一些变换并报错到vuex中
             function use6HCPlan(monthPlan){
@@ -1060,14 +1060,27 @@
               console.log(state.natal)
               Countdown = nextIssueTime - serverTimeStamp
               // console.log(Countdown)
+              if(Month===1){
+                BeforeIssue=0
+              }
               var issue = BeforeIssue + _issue
               // console.log(issue,state.NowIssue)
               // 设置期号
               commit('lt_setIssueNo', issue)
               var code = state.lottery.LotteryCode   //当前彩种号
-              Vue.set(state, 'NowIssue', computeIssue(code, state.IssueNo))        //当前期 (可以下注的这一期)
-              Vue.set(state, 'OldIssue', computeIssue(code, state.IssueNo - 1))   //上一期
-
+              if (Month===1&&_issue===1){
+                commit('lt_setIssueNo', 1)
+                Vue.set(state, 'OldIssue', computeIssue(code, BeforeIssue,-1))   //上一期
+              }else{
+                Vue.set(state, 'OldIssue', computeIssue(code, state.IssueNo - 1))   //上一期
+              }
+              if (Month===12&&_issue===ScheduleStamp.length) {
+                //当前期为下年第一期
+                commit('lt_setIssueNo', 1)
+                Vue.set(state, 'NowIssue', computeIssue(code, 1,1))               //当前期 (可以下注的这一期)
+              }else{
+                Vue.set(state, 'NowIssue', computeIssue(code, state.IssueNo))        //当前期 (可以下注的这一期)
+              }
               return Countdown
             }
             var that = state.that

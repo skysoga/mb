@@ -3,6 +3,7 @@ export default {
     return{
       Mobile:"",
       SmsCode:"",
+      SafePassword:"",
       reTime:'发送验证码',
       noDo:true,
       toMsg:true
@@ -31,7 +32,8 @@ export default {
       var ajax = {
         Action:"VerifyMobile",
         Mobile: this.Mobile,
-        SmsCode:this.SmsCode
+        SmsCode:this.SmsCode,
+        SafePassword:this.SafePassword
       }
       var F=sessionStorage.getItem('isFind')
       if(F){
