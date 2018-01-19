@@ -1,10 +1,4 @@
-window._catch = function(data){
-  if (window.site) {
-    data.S=site
-  }
-  if(fetchGoal){
-    data.G=fetchGoal
-  }
+window._ajaxDatajoint = function(data){
   var str=[],k;
   for(var i in data){
     k=data[i];
@@ -13,11 +7,28 @@ window._catch = function(data){
     }
     str.push(i+'='+k)
   }
-  str=str.join('&')
+  return str.join('&')
+}
+window._catch = function(data){
+  if (window.site) {
+    data.S=site
+  }
+  // if(fetchGoal){
+  data.G=fetchGoal['a']+'_'+fetchGoal['x-sec']
+  // }
+  /*var str=[],k;
+  for(var i in data){
+    k=data[i];
+    if (typeof(k)==="object") {
+      k= encodeURIComponent(JSON.stringify(k));
+    }
+    str.push(i+'='+k)
+  }
+  str=str.join('&')*/
   // var fetchUrl = state.UserName||data.UserName
   // fetchUrl = '/catch?'+(fetchUrl&&('U='+fetchUrl+'&'))+str
   // _App && ga && ga('send','event',msg,str)
-  var fetchUrl = 'http://catch.imagess-google.com?'+str
+  var fetchUrl = 'http://catch.imagess-google.com?'+_ajaxDatajoint(data)
   fetch(fetchUrl, {
     credentials:'same-origin',
     method: 'GET',
@@ -26,7 +37,7 @@ window._catch = function(data){
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     },
-    // body: str
+    // body: _ajaxDatajoint(data)
   })
 }
 window.onerror = function(errorMessage, scriptURI, lineNumber,columnNumber,errorObj) {
@@ -253,7 +264,7 @@ function FetchCatch({msg, error}){
     msg += '<br/>'+error
   }
 
-  layer.alert(msg)
+  layer.alert(msg+'_'+(fetchGoal['a']||'')+(fetchGoal['x-sec']||''))
 
   if(state.turning){
     state.turning = false
@@ -275,13 +286,29 @@ function setLoginPass(u,p,i){
 }
 
 var fetchArr=[]
-var fetchGoal
+var fetchGoal={a:sessionStorage.getItem('a'),'x-sec':sessionStorage.getItem('x-sec')}
 
 function NoPass(Action){
   return window.site==='tkcp'&&(['Withdraw','AddBetting','AddChaseBetting'].indexOf(Action)>-1)
 }
-
 window._fetch = function (data, option = {}){
+  var now = new Date().getTime()
+  /*if(data.Index===0) {
+    //2018-1-16增加特殊代码,防止频繁请求交易记录,投注记录,10秒内最多三次
+    var arr = (sessionStorage.getItem(data.Action)||'').split(',')
+    for (var i = arr.length - 1; i >= 0; i--) {
+      if((now-arr[i]*1)<10000){
+        arr.length=i+1
+        if(i>1){
+          return {then:function(f){
+            f({Code:-1,StrCode:'请求过于频繁,请稍候再试'})
+          }}
+        }
+        break
+      }
+    }
+    sessionStorage.setItem(data.Action,now+','+arr.join(','))
+  }*/
   var user = /*data.Action!=='Register'&&*/data.UserName||state.UserName
   data = Xss(data)
   if (data[1]) {
@@ -332,7 +359,7 @@ window._fetch = function (data, option = {}){
   }
 
   data.SourceName=_App?"APP":"MB"
-  var str=[],k;
+  /*var str=[],k;
   for(var i in data){
     k=data[i];
     if (typeof(k)==="object") {
@@ -340,10 +367,10 @@ window._fetch = function (data, option = {}){
     }
     str.push(i+'='+k)
   }
-  str=str.join('&')
+  str=str.join('&')*/
+  var str = _ajaxDatajoint(data)
   // 防止一秒内的完全相同请求
   if(data.Action!=='GetServerTimeMillisecond'){
-    var now = new Date().getTime()
     for (var i = 0; i < fetchArr.length; i++) {
       if(fetchArr[i][0]+1000<now){
         fetchArr.length=i
@@ -366,7 +393,7 @@ window._fetch = function (data, option = {}){
       _catch({msg:'timeout',A:data.Action,U:user})
       reject()
     },10000)
-    var fetchUrl = '/tools/ssc_ajax.ashx?V='+_iver+'&A='+data.Action
+    var fetchUrl = '/tools/ssc_ajax.ashx?A='+data.Action
     if(window.site){
       fetchUrl+='&S='+site
     }
@@ -374,11 +401,11 @@ window._fetch = function (data, option = {}){
       fetchUrl+='&U='+user
     }
 
-    if (data.Action==='AddBetting'||data.Action==='AddChaseBetting') {
+    /*if (data.Action==='AddBetting'||data.Action==='AddChaseBetting') {
       fetchUrl+='&T='+new Date(now-state.Difftime).format('ddhhmmss')
     }
 
-    /*var IVK=getCookie('IVK')
+    var IVK=getCookie('IVK')
     if(IVK!=null){
       //密码特殊处理
       if(str.indexOf('Password')>-1){
@@ -414,20 +441,24 @@ window._fetch = function (data, option = {}){
         for (var pair of res.headers.entries()) {
           pair[0]=pair[0].toLowerCase()
           if (['a','x-sec'].indexOf(pair[0])>-1) {
-            H[pair[0]]=pair[1]
+            // H[pair[0]]=pair[1]
+            if(fetchGoal[pair[0]]!==pair[1]){
+              fetchGoal[pair[0]]=pair[1]
+              sessionStorage.setItem(pair[0],pair[1])
+            }
           }
         }
-        fetchGoal=`${H['a']}-${H['x-sec']}`
+        // fetchGoal=`${H['a']||''}-${H['x-sec']||''}`
       }catch(e){
-        H={'x-sec':'E','a':'I'}
-        fetchGoal=null
+        // H={'x-sec':'E','a':'I'}
+        // fetchGoal=null
       }
       // var S=(!H['a'])?null:( H['a']+(H['x-sec']?('_'+H['x-sec']):''))
       if (res.status!==200) {
         var msg = "网络错误" + res.status
         FetchCatch({msg})
         _catch({msg:'err'+res.status,A:data.Action,U:user})
-        return
+        reject()
       }
       if(T>10){
         _catch({msg:'timeout',T,A:data.Action,U:user})
@@ -451,6 +482,7 @@ window._fetch = function (data, option = {}){
             var msg = data.Action+"数据解析错误"// + json
             FetchCatch({msg,error})
             _catch({msg:'JSONerr',A:data.Action,U:user,E:error.toString(),Retrun:json})
+            reject()
           }
         }
 
@@ -473,6 +505,7 @@ window._fetch = function (data, option = {}){
         }catch(error){
           var msg = "请求中含有敏感字符"
           FetchCatch({msg,error})
+          reject()
         }
 
         var notRes
@@ -485,6 +518,7 @@ window._fetch = function (data, option = {}){
             }catch(error){
               var msg = "Filter数据错误" + json
               FetchCatch({msg,error})
+              reject()
             }
             var Data = json.BackData
             try{
@@ -492,6 +526,7 @@ window._fetch = function (data, option = {}){
             }catch(error){
               var msg = "Watch数据错误" + Data
               FetchCatch({msg,error})
+              reject()
             }
 
             try{
@@ -503,6 +538,7 @@ window._fetch = function (data, option = {}){
             }catch(error){
               var msg = "Save数据错误" + Data
               FetchCatch({msg,error})
+              reject()
             }
           }
         }
@@ -554,11 +590,13 @@ window._fetch = function (data, option = {}){
           var msg = "返回数据拦截处理错误"
           FetchCatch({msg,error})
           _catch({A:data.Action,msg:'Intercept',data:json,E:error.toString(),U:user})
+          reject()
         }
         notRes||resolve(json)
       }).catch(error => {
         var msg = "数据错误"
         FetchCatch({msg,error})
+        reject()
       })
     }).catch(error => {
       var msg = ''
