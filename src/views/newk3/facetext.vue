@@ -102,7 +102,9 @@
       inputFocus(){
         this.textOrDefault = 'text'
         this.selectText = null
-        this.keyboard = 1
+        if(this.$parent.$parent.checkPermissionsLevel('SysSpeak') > -1){
+          this.keyboard = 1
+        }
       },
       inputBlur(){
         this.keyboard = 0
