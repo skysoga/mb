@@ -196,6 +196,8 @@
 .text{
   float:left;
   margin-left: .3em;
+  width: 3.2em;
+  overflow: hidden;
   span,em{
     display:block;
     color:white;
@@ -204,6 +206,11 @@
   }
   span{
     margin-top: .4em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    width: 100%;
   }
   em{
     font-size: .55em;
