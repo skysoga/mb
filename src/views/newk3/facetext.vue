@@ -14,7 +14,7 @@
           <i class="iconfont">{{faceortext?'&#xe615;':'&#xe616;'}}</i>
         </div>
       </div>
-      <div class="btn" :class="{curr:(content.length>0 || sendIsActive)}" @click="send">发布<template v-if="sending">中</template></div>
+      <div class="btn" :class="{curr:(content.length>0 || sendIsActive)}" @click="send">发布</div>
     </div>
     <div class="desktop" :class="{tobottom:!sysSpeak}">
       <div ref="text" class="facetext-text" v-show="sysSpeak && !faceortext">
@@ -52,7 +52,6 @@
         textOrDefault:'text',
         keyboard:0,
         inputLength:null,
-        sending:0,
 			}
 		},
     created(){
@@ -229,10 +228,6 @@
         if (!permissions[0]) {
           return layer.msgWarn(permissions[1])
         }
-        if (this.sending === 1) {
-          return
-        }
-        this.sending = 1
         this.$parent.barrageIsOpen = 1
         _fetch({
           Action:'SendBarrage',
@@ -240,7 +235,6 @@
           Barrage:content,
         })
         .then(d=>{
-          this.sending = 0
           if (d.Code === 1) {
             this.content = ''
             this.lastTime = new Date().getTime()
