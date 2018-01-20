@@ -348,13 +348,15 @@
         //校验下这个彩种存不存在，不存在就送回购彩大厅
         var lotteryItem = state.LotteryList[lcode]
         var offLineLottery = ['FC3D', 'PL35']
-        if(lotteryItem === undefined || offLineLottery.indexOf(lotteryItem.LotteryType) > -1){
-          layer.url('您所访问的彩种不存在，即将返回购彩大厅', '/lotteryHall')
-          return
-        }else{
-          var LotteryType = lotteryItem.LotteryType
-          if(lotteryItem.LotteryType !== ltype){
-            RootApp.$router.replace(`./lottery/${LotteryType}/${lcode}`)
+        if (ptype !== 'live'){
+          if((lotteryItem === undefined || offLineLottery.indexOf(lotteryItem.LotteryType) > -1)){
+            layer.url('您所访问的彩种不存在，即将返回购彩大厅', '/lotteryHall')
+            return
+          }else{
+            var LotteryType = lotteryItem.LotteryType
+            if(lotteryItem.LotteryType !== ltype){
+              RootApp.$router.replace(`./lottery/${LotteryType}/${lcode}`)
+            }
           }
         }
         if (ptype === 'live') {
@@ -632,7 +634,20 @@
           },
           //变更彩种
           lt_changeLottery:(state, code)=>{
-            state.lottery = this.$store.state.LotteryList[code]
+            if(state.ptype === 'live'){
+              state.lottery = {
+                  "LotteryCode": "0101",
+                  "LotteryType": "K3",
+                  "LotteryName": "UU直播",
+                  "LotteryIntro": "1分钟1期",
+                  "VerifyIssue": "0001",
+                  "VerifyEndTime": "00:00:59",
+                  "IsStop": ""
+              }
+            }else{
+              state.lottery = this.$store.state.LotteryList[code]
+            }
+            
             router.push(code)    //更改路由
           },
           //变更配置（进入各具体彩种页时，设置）
@@ -974,7 +989,11 @@
           lt_refresh:({state, rootState, commit, dispatch})=>{
             var code = state.lottery.LotteryCode
             var ptype = state.ptype
-            var isStop = rootState.LotteryList[code].IsStop
+            if (state.ptype === 'live') {
+              var isStop = ""
+            }else{
+              var isStop = rootState.LotteryList[code].IsStop
+            }
             // var isStop = rootState.LotteryList[this.lcode].IsStop
             if(isStop === '1'){
               commit('lt_stopSell', 1)    //暂停销售

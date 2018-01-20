@@ -63,21 +63,18 @@
       }
     },
     created(){
+      setTimeout(()=>{
+        this.opened = 1
+      },10)
       var type = this.$parent.userinfoBy
       if (type === 'user') {
         this.UserBalance=store.state.UserBalance
         var arr=['UserName','UserNickName','UserPhoto']
         RootApp.GetInitData(arr,state=>{
           this.loading = 0
-          setTimeout(()=>{
-            this.opened = 1
-          },10)
         })
       }else{
         this.loading = 0
-        setTimeout(()=>{
-          this.opened = 1
-        },10)
       }
     },
     methods:{
@@ -260,6 +257,7 @@ table{
   background: white;
   .loading{
     width: 100%;
+    min-height: 10em;
     text-align: center;
     font-size: .8em;
     color:#666;
