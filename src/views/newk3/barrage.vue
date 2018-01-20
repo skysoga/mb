@@ -3,7 +3,7 @@
 		<ul>
       <li class="default">
         <div class="content">
-          <ins>温馨提示：严禁涉政、涉黄、造谣、抹黑、毁谤、广告等，发现一律封号！</ins>
+          <ins>温馨提示：严禁涉政、涉黄、造谣、抹黑、广告，发现一律封号！</ins>
         </div>
       </li>
 			<li v-for="d in data">
@@ -75,14 +75,17 @@
 </script>
 <style lang="scss" scoped>
 .default{
-  width: 11rem;
+  .content{
+    text-align: justify;
+  }
 }
 .barrage{
-	height: 6em;
+	height: 6.5em;
 	overflow: hidden;
   z-index: 20;
 	ul{
 		min-height: 101%;
+    width: 10.5rem;
 		color:white;
 		margin: 0 .65em;
 		font-size:.7em;
@@ -93,7 +96,7 @@
       // margin: .25em 0;
       padding: .15em .4em;
 			display: table;
-      background: rgba(0,0,0,.2);
+      background: rgba(0,0,0,.15);
       border-radius: .2em;
 			span,>div{
 				display: table-cell;

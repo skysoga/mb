@@ -7,7 +7,7 @@
         </span>
       </div>
       <div class="content">
-        <input type="text" ref="content" @focus="inputFocus" @blur="inputBlur" @keydown="inputDown($event)" @keyup="inputUp($event)" :placeholder="(showDefaultText  && !faceortext)?'点击输入可自由发言':'请选择您要发送的表情'" v-model="content">
+        <input type="text" ref="content" :maxlength="inputLength" @focus="inputFocus" @blur="inputBlur" @keydown="inputDown($event)" @keyup="inputUp($event)" :placeholder="(showDefaultText  && !faceortext)?'点击输入可自由发言':'请选择您要发送的表情'" v-model="content">
         <!-- <div class="testing" @focus="contentFocus" @blur="contentBlur" @keyup="keyup($event)" @keydown="limitLength($event)" ref="content">
         </div> -->
         <div v-show="sysSpeak" class="faceortext" :class="{text:faceortext,face:!faceortext}" @click.stop="changeFaceText">
@@ -90,12 +90,9 @@
             setTimeout(()=>{
               this.setCursorPosition(this.$refs.content,_content.length)
             },1)
+            
           }
         }
-        // if (this.getCount()[0]>=this.inputLength) {
-        //   e.preventDefault()
-        //   layer.alert(`为防止遮盖，仅限输入${this.inputLength}个字符和${this.inputLength}个表情`)
-        // }
       },
       inputUp(e){
         if (e.key === 'Backspace') {
@@ -139,23 +136,19 @@
             allFaceLength+=keys[y].length
           }
         }
-        // this.inputLength = allFaceLength+(_content.length - face)+(this.$parent.$parent.GameConfig.LiveBroadcastFreedomSpeak.Length - (face + (_content.length - face)))
-        // var _length = this.content.length + (this.$parent.$parent.GameConfig.LiveBroadcastFreedomSpeak.Length - (face + (this.content - allFaceLength)))
-        // if (!isNaN(_length)) {
-        //   this.inputLength = _length
-        // }
-        return [this.content.length - allFaceLength,face]
+        this.inputLength = allFaceLength+(_content.length - face)+(this.$parent.$parent.GameConfig.LiveBroadcastFreedomSpeak.Length - (face + (_content.length - face)))
+        return [_content.length,face]
       },
 			pushContent(d,type,i){
         var length = this.$parent.$parent.GameConfig.LiveBroadcastFreedomSpeak.Length
         document.activeElement.blur()
 				if (!type) {
           this.showDefaultText = 0
-          if (this.getCount()[1]<length) {
-            // this.inputLength = this.inputLength + `[${i}]`.length - 1
+          if (this.getCount()[0]<length) {
+            this.inputLength = this.inputLength + `[${i}]`.length - 1
             this.content += `[${i}]`
           }else{
-            layer.alert(`为防止遮盖，仅限输入${length}个字符和${length}个表情`)
+            layer.alert(`为防止遮盖，仅限输入${length}个字符`)
           }
           if(this.checkFace.indexOf(i) === -1){
             this.checkFace.push(i)
@@ -185,16 +178,16 @@
         if (content.length <= 0) {
           return [0,'请输入您要发表的弹幕！']
         }
-        // if (content.length > freedomSpeakArr.Length) {
-        //   //替换表情的长度
-        //   var temp = content.replace(/\[[\u4e00-\u9fa5]{0,3}\]/g,'a')
-        //   if (temp.length > freedomSpeakArr.Length) {
-        //     //验证是否内置弹幕
-        //     if(!/^##[\d]{1,3}##$/.test(content)){
-        //       return [0,'您最长能发表'+freedomSpeakArr.Length+'个字！']
-        //     }
-        //   }
-        // }
+        if (content.length > freedomSpeakArr.Length) {
+          //替换表情的长度
+          var temp = content.replace(/\[[\u4e00-\u9fa5]{0,3}\]/g,'a')
+          if (temp.length > freedomSpeakArr.Length) {
+            //验证是否内置弹幕
+            if(!/^##[\d]{1,3}##$/.test(content)){
+              return [0,'您最长能发表'+freedomSpeakArr.Length+'个字！']
+            }
+          }
+        }
         if(this.$parent.$parent.checkPermissionsLevel('FreedomSpeak') === -1){
           return [0,'您当前的等级无法发表弹幕！']
         }
@@ -296,10 +289,9 @@
 		},
     watch:{
       'content'(n){
-        if (this.getCount()[0] > this.inputLength) {
-          layer.alert(`为防止遮盖，仅限输入${this.inputLength}个字符和${this.inputLength}个表情`)
-          this.content = this.content.substring(0,this.inputLength)
-        }
+        var a,b
+        [a,b] = this.getCount()
+        // console.log(a,b)
       },
     },
 	}
