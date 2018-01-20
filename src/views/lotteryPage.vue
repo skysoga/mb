@@ -336,6 +336,7 @@
       //设置请求的数组
       if (ptype === 'live') {
         //获取主播信息
+        // var GetDefault     = _fetchLive({Action:"GetAnchor",GameID:lcode})
         var GetAnchor     = _fetchLive({Action:"GetAnchor",GameID:lcode})
         var getGameConfig = _fetch({Action:'GameConfig',GameID:lcode})
         var reqArr        = [getRebate, getServerTime,getGameConfig,GetAnchor]

@@ -624,6 +624,13 @@
 </script>
 <style lang="scss" scoped>
 @import "../../scss/dice";
+.MethodMsg{
+  &:before{
+    content:"\e648 ";
+    font-family: 'iconfont';
+    color:#d8d8d8;
+  }
+}
 .Anchor{
   position: fixed;
   top:0.7em;
@@ -1046,6 +1053,11 @@
   .bgnone{
     &:after{
       background:rgba(0,0,0,.4) !important;
+    }
+  }
+  .betbox.D10,.betbox.F10,.betbox.G10,.betbox.H10{
+    .MethodMsg{
+      padding:0 0.4em;
     }
   }
 </style>

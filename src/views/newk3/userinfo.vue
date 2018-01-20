@@ -110,6 +110,12 @@
   h3{
     text-align: center;
     margin-bottom: .4em;
+    color:#e72d3c;
+    &:before{
+      display: inline;
+      content: '\e647 ';
+      font-family: 'iconfont';
+    }
   }
   p{
     margin-top:.5em;
