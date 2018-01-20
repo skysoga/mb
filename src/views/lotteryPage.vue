@@ -363,7 +363,10 @@
           if (values[2].Code === 1 && values[3].Code === 1) {
             next(vm=>{
               vm.GameConfig = values[2].BackData
-              vm.createWS()
+              vm.createWS(vm)
+              vm.isRuningT = setInterval(()=>{
+                vm.createWS(vm)
+              },3000)
               values[3].BackData.Photo = imgHost + '/' + values[3].BackData.Photo
               vm.Anchor = values[3].BackData
             })
@@ -1566,6 +1569,8 @@
         readySleep:'',
         readyRun:'',
         Anchor:{},
+        isRuning:1,
+        isRuningT:null,
       }
     },
     computed:{
@@ -1601,27 +1606,31 @@
 			},
       createWS(){
         //创建livews
-        this.GameWS = new WebSocket(this.GameConfig.GameWS)
-        this.GameWS.onmessage = e =>{
-          let json
-          try{
-            json = JSON.parse(e.data)
-          }catch(e){
-            layer.msgWarn('服务器类型错误')
+        if ((this.GameWS === null || this.GameWS.readyState !== 1) && this.isRuning === 1) {
+          this.GameWS = new WebSocket(this.GameConfig.GameWS)
+          this.GameWS.onmessage = e =>{
+            let json
+            try{
+              json = JSON.parse(e.data)
+            }catch(e){
+              layer.msgWarn('服务器类型错误')
+            }
+            this.WSrefresh(json)
           }
-          this.WSrefresh(json)
-        }
-        this.GameWS.onerror = err =>{
-          layer.msgWarn(err)
+          this.GameWS.onerror = err =>{
+            layer.msgWarn(err)
+          }
         }
         //创建OnlineWS
-        this.OnlineWS = new WebSocket(this.GameConfig.Interactive)
-        this.OnlineWS.onmessage = e =>{
-          let json = JSON.parse(e.data)
-          this.OnlineRefresh(json)
-        }
-        this.OnlineWS.onerror = err =>{
-          layer.msgWarn(err)
+        if ((this.OnlineWS === null || this.OnlineWS.readyState !== 1) && this.isRuning === 1) {
+          this.OnlineWS = new WebSocket(this.GameConfig.Interactive)
+          this.OnlineWS.onmessage = e =>{
+            let json = JSON.parse(e.data)
+            this.OnlineRefresh(json)
+          }
+          this.OnlineWS.onerror = err =>{
+            layer.msgWarn(err)
+          }
         }
         //自动提交礼物和弹幕
         // this.autoTest()
@@ -1897,6 +1906,8 @@
 			clearTimeout(this.timer3)
 			clearTimeout(this.timer4)
 			clearInterval(this.baseLoop)
+      this.isRuning = 0
+      clearInterval(this.isRuningT)
 		},
 
   }
