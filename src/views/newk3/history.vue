@@ -52,7 +52,7 @@
               </a>
 			        <div class="hr1px"></div>
 			    </div>
-			    <div class="msg noMore">更多投注记录请到 我的账户>投注记录 查看</div>
+			    <div class="msg noMore">更多记录请到"我的账户"查看</div>
 				</div>
 			</div>
 		</div>

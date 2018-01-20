@@ -8,7 +8,7 @@
           </router-link>
           <div class="info fix">
             <em>UU快三</em>
-            <p>平台第一款真人直播开奖彩票</p>
+            <p>颠覆性的美女开奖直播彩票</p>
             <span>正在直播</span>
           </div>
         </li>

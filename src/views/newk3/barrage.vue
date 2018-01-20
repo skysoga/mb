@@ -8,7 +8,7 @@
       </li>
 			<li v-for="d in data">
         <div class="content">
-          <span>{{getLevel(d.Level)}}</span>
+          <span :class="'vip'+d.Level">{{getLevel(d.Level)}}</span>
           <div><em>{{d.NickName}}：</em><ins>{{d.Message}}</ins></div>
         </div>
       </li>
@@ -74,6 +74,15 @@
   }
 </script>
 <style lang="scss" scoped>
+.vip1,.vip2,.vip3{
+  background: #f57678 !important;
+}
+.vip4,.vip5,.vip6{
+  background: #09ccd1 !important;
+}
+.vip7,.vip8,.vip9{
+  background: #32aaff !important;
+}
 .default{
   .content{
     text-align: justify;

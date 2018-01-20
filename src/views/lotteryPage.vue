@@ -1797,6 +1797,7 @@
         }
       },
       statusNewest(n){
+        this.WS.TimeLeft = ''
         if ((new Date().getTime() - state.Difftime) > n.end) {
           store.commit('lt_stopSell', 3)
           if (n.record_result) {

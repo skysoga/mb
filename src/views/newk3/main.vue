@@ -626,23 +626,23 @@
 @import "../../scss/dice";
 .Anchor{
   position: fixed;
-  top:4em;
+  top:0.7em;
   right: .6em;
   z-index: 20;
 }
 .AnchorImg{
   position: absolute;
-  width: 1.7em;
-  height: 1.7em;
+  width: 2em;
+  height: 2em;
   background-size: cover !important;
   border-radius: 50%;
   margin-top: .4em;
-  margin-left: .2em;
+  margin-left: .3em;
 }
 .AnchorBg{
-  height: 2.3em;
-  width: 2em;
-  background-size: 2em !important;
+  height: 3em;
+  width: 3em;
+  background-size: 2.6em !important;
   background-repeat: no-repeat !important;
   position: relative;
 }
@@ -664,6 +664,8 @@
   top:.4em;
   left: .4em;
   z-index: 26;
+  display: inline-block;
+  font-size: .8em;
   span{
     font-size:.7em;
     display:block;
