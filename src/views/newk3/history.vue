@@ -166,6 +166,7 @@
 		color:#999;
 		transform: translateX(16rem);
 		transition:.2s;
+		font-size: 1.2em;
 	}
 	.history.opened{
 		transform: translateX(0);
@@ -192,7 +193,7 @@
 			border-bottom: 2px solid white;
 			font-size: .8em;
 			padding:.5em 0;
-			padding-top:.7em;
+			padding-top:.6em;
 		}
 		.curr{
 			color:#ee3945;
