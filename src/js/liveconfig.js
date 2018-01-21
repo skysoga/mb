@@ -1,17 +1,8 @@
 //接收礼物时验证正确性
 var imgHost = "http://114.215.19.179:8002/"
 var gifts = {
-  // airplane:{
-  // 	price:888
-  // },
   aircraft:{
     price:888
-  },
-  boat:{
-  	price:998
-  },
-  cannon:{
-  	price:666
   },
   ferrari:{
   	price:1111
@@ -44,10 +35,7 @@ let giftsList = [
    * 
    * 备注1：0：大礼物，1：连击礼物（属于小礼物），-1：非连击礼物（属于小礼物）
    */
-  // ['airplane',  '飞机',   888, 0],
   ['aircraft',  '飞机',   888, 0],
-  ['boat',      '皇家游轮',998, 0],
-  ['cannon',    '皇家大炮',666, 0],
   ['cuke',      '小黄瓜',  18, -1],
   ['injections','兴奋剂',    88, -1],
   ['kiss',      '么么哒',  1,  1],
