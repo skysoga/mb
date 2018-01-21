@@ -372,9 +372,9 @@
               vm.Anchor = values[3].BackData
             })
           }else{
-            if (values[2] !== 1) {
+            if (values[2].Code !== 1) {
               layer.msgWarn(values[2].StrCode)
-            }else if(values[3] !== 1){
+            }else if(values[3].Code !== 1){
               layer.msgWarn(values[3].StrCode)
             }
             state.turning=false
