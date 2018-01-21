@@ -575,10 +575,10 @@
     },
     mounted(){
       setTimeout(()=>{
-        if(this.$parent.checkPermissionsLevel('Barrage') !== -1){
+        if(this.$parent.GameConfig.LiveBroadcastBarrage.State === 1){
           this.barrageIsOpen = 1
         }
-      },100)
+      },1)
 
       this._setSliderWidth()
       setTimeout(() => {

@@ -59,10 +59,6 @@
       this.textData = this.$parent.textData
       //权限检查
       setTimeout(()=>{
-        //检查系统弹幕的权限
-        if(this.$parent.$parent.checkPermissionsLevel('Barrage') !== -1){
-          this.barrageIsOpen = 1
-        }
         if(this.$parent.$parent.checkPermissionsLevel('SysSpeak') === -1){
           this.sysSpeak = 0
         }else{

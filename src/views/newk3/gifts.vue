@@ -1,5 +1,5 @@
 <template>
-  <div @click="$parent.changeShow">
+  <div @click="$parent.changeShow" v-if="isOpen">
     <smallgift></smallgift>
     <binary></binary>
   	<div class="gifts" v-if="giftArr.length > 0">
@@ -32,10 +32,14 @@
 	  		giftArr:[],
         t1:null,
         t2:null,
+        isOpen:0,
     	}
     },
     created(){
       document.addEventListener("visibilitychange", this.clearGift)
+      setTimeout(()=>{
+        this.isOpen = this.$parent.$parent.GameConfig.LiveBroadcastReward.State
+      },1)
     },
     methods:{
       clearGift(){
