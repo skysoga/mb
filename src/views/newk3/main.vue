@@ -29,7 +29,7 @@
           <li><a class="question" href="javascript:;" @click.stop="showCard(3)"></a></li>
           <li><a class="anchor" href="javascript:;" @click.stop="showCard(2)"></a></li>
           <li><a class="gift" href="javascript:;" @click.stop="showHide(3)"></a></li>
-          <li><a class="facetext" href="javascript:;" @click.stop="showHide(1)"><em>发弹幕...</em></a></li>
+          <li><a class="facetext" href="javascript:;" v-if="barrageShow > -1" @click.stop="showHide(1)"><em>发弹幕...</em></a></li>
         </ul>
         <div class="hideCon" @click.stop="">
           <facetext :class="{ined:activeHide === 1}"></facetext>
@@ -202,6 +202,7 @@
         A10Rebate:[],
         tipsObj:{},//全部tip的对象
         rebates:{},//全部返点值
+        barrageShow:-1,
       }
     },
     computed:mapState({
@@ -313,6 +314,10 @@
       }
     }),
     created(){
+      setTimeout(()=>{
+        this.barrageShow = this.$parent.checkPermissionsLevel('Barrage')
+        console.log(this.$parent.checkPermissionsLevel('Barrage'))
+      },1)
       //内置弹幕数组转对象
       let _textData = this.beforeTextData
       let textDataObj = {}
@@ -548,7 +553,7 @@
         let _barrage = this.$refs.barrage || 0
         if (_barrage) {
           //替换表情
-          let arr = barrage.Message.match(/\[[\u4e00-\u9fa5]{0,3}\]/g) || 0
+          let arr = barrage.Message.match(/\[[\u4e00-\u9fa5]{1,3}\]/g) || 0
           if (arr) {
             for (var i = 0; i < arr.length; i++) {
               let ID = arr[i].replace(/\[/,'').replace(/\]/,'')
@@ -575,10 +580,10 @@
     },
     mounted(){
       setTimeout(()=>{
-        if(this.$parent.checkPermissionsLevel('Barrage') !== -1){
+        if(this.$parent.GameConfig.LiveBroadcastBarrage.State === 1){
           this.barrageIsOpen = 1
         }
-      },100)
+      },1)
 
       this._setSliderWidth()
       setTimeout(() => {
@@ -624,25 +629,32 @@
 </script>
 <style lang="scss" scoped>
 @import "../../scss/dice";
+.MethodMsg{
+  &:before{
+    content:"\e648 ";
+    font-family: 'iconfont';
+    color:#d8d8d8;
+  }
+}
 .Anchor{
   position: fixed;
-  top:4em;
+  top:0.7em;
   right: .6em;
   z-index: 20;
 }
 .AnchorImg{
   position: absolute;
-  width: 1.7em;
-  height: 1.7em;
+  width: 2em;
+  height: 2em;
   background-size: cover !important;
   border-radius: 50%;
   margin-top: .4em;
-  margin-left: .2em;
+  margin-left: .3em;
 }
 .AnchorBg{
-  height: 2.3em;
-  width: 2em;
-  background-size: 2em !important;
+  height: 3em;
+  width: 3em;
+  background-size: 2.6em !important;
   background-repeat: no-repeat !important;
   position: relative;
 }
@@ -664,6 +676,8 @@
   top:.4em;
   left: .4em;
   z-index: 26;
+  display: inline-block;
+  font-size: .9em;
   span{
     font-size:.7em;
     display:block;
@@ -958,6 +972,7 @@
     width:312px;
     margin:0 auto;
     font-size:26px;
+    margin-top:.5em;
     >li{
       float:left;
       width:3em;
@@ -1043,6 +1058,11 @@
   .bgnone{
     &:after{
       background:rgba(0,0,0,.4) !important;
+    }
+  }
+  .betbox.D10,.betbox.F10,.betbox.G10,.betbox.H10{
+    .MethodMsg{
+      padding:0 0.4em;
     }
   }
 </style>

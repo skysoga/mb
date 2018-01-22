@@ -1,41 +1,32 @@
 //接收礼物时验证正确性
 var imgHost = "http://114.215.19.179:8002/"
 var gifts = {
-  // airplane:{
-  // 	price:888
-  // },
   aircraft:{
-    price:888
-  },
-  boat:{
-  	price:998
-  },
-  cannon:{
-  	price:666
+    price:388
   },
   ferrari:{
   	price:1111
   },
   cuke:{
-  	price:18
+  	price:38
   },
   injections:{
   	price:88
   },
   kiss:{
-  	price:1
+  	price:8
   },
   durex:{
   	price:58
   },
   porsche:{
-  	price:1234
+  	price:188
   },
   money:{
-  	price:1888
+  	price:888
   },
   cupidgirl:{
-  	price:520
+  	price:588
   },
 }
 //礼物列表
@@ -44,17 +35,14 @@ let giftsList = [
    * 
    * 备注1：0：大礼物，1：连击礼物（属于小礼物），-1：非连击礼物（属于小礼物）
    */
-  // ['airplane',  '飞机',   888, 0],
-  ['aircraft',  '飞机',   888, 0],
-  ['boat',      '皇家游轮',998, 0],
-  ['cannon',    '皇家大炮',666, 0],
-  ['cuke',      '小黄瓜',  18, -1],
-  ['injections','兴奋剂',    88, -1],
-  ['kiss',      '么么哒',  1,  1],
-  ['durex',     '杜蕾斯',  58, -1],
-  ['porsche',   '保时捷',  1234,0],
-  ['money',     '发财树',  1888,0],
-  ['cupidgirl', '爱神之箭',520, 0]
+  ['kiss',      '么么哒',  8,  1],
+  ['cuke',      '小黄瓜',  38, -1],
+  ['durex',     '避孕套',  58, -1],
+  ['injections','兴奋剂',  88, -1],
+  ['porsche',   '保时捷',  188,0],
+  ['aircraft',  '开飞机',  388, 0],
+  ['cupidgirl', '爱神之箭',588, 0],
+  ['money',     '发财树',  888,0]
 ]
 //表情列表
 

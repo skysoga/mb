@@ -4,11 +4,11 @@
       <ul>
         <li>
           <router-link to="/live/K3/0101" class="pic" style="background: url('/static/img/newk3-bg.jpg')">
-            <span>开始</span>
+            <span></span>
           </router-link>
           <div class="info fix">
             <em>UU快三</em>
-            <p>平台第一款真人直播开奖彩票</p>
+            <p>颠覆性的美女开奖直播彩票</p>
             <span>正在直播</span>
           </div>
         </li>
@@ -30,17 +30,22 @@
   background-repeat: no-repeat !important;
   background-size: cover !important;
   span{
-    background: rgba(0,0,0,.2);
-    color:white;
-    display: inline-block;
-    width: 4em;
-    height: 4em;
-    line-height: 4em;
+    width: 100%;
     text-align: center;
-    border-radius: 4em;
-    font-size: .7em;
-    margin-left: calc((16rem - 4em) / 2);
-    margin-top:4em;
+    display: block;
+    &:before{
+      content:'\e646';
+      display: inline-block;
+      font-family: 'iconfont';
+      font-size: 1em;
+      color:white;
+      background: rgba(0,0,0,.2);
+      border-radius: 50%;
+      width: 2.4em;
+      height: 2.4em;
+      line-height: 2.5em;
+      margin-top:2.8em;
+    }
   }
 }
 .info{

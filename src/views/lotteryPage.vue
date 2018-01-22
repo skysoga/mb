@@ -327,6 +327,7 @@
       //设置请求的数组
       if (ptype === 'live') {
         //获取主播信息
+        // var GetDefault     = _fetchLive({Action:"GetAnchor",GameID:lcode})
         var GetAnchor     = _fetchLive({Action:"GetAnchor",GameID:lcode})
         var getGameConfig = _fetch({Action:'GameConfig',GameID:lcode})
         var reqArr        = [getRebate, getServerTime,getGameConfig,GetAnchor]
@@ -339,27 +340,32 @@
         //校验下这个彩种存不存在，不存在就送回购彩大厅
         var lotteryItem = state.LotteryList[lcode]
         var offLineLottery = ['FC3D', 'PL35']
-        if(lotteryItem === undefined || offLineLottery.indexOf(lotteryItem.LotteryType) > -1){
-          layer.url('您所访问的彩种不存在，即将返回购彩大厅', '/lotteryHall')
-          return
-        }else{
-          var LotteryType = lotteryItem.LotteryType
-          if(lotteryItem.LotteryType !== ltype){
-            RootApp.$router.replace(`./lottery/${LotteryType}/${lcode}`)
+        if (ptype !== 'live'){
+          if((lotteryItem === undefined || offLineLottery.indexOf(lotteryItem.LotteryType) > -1)){
+            layer.url('您所访问的彩种不存在，即将返回购彩大厅', '/lotteryHall')
+            return
+          }else{
+            var LotteryType = lotteryItem.LotteryType
+            if(lotteryItem.LotteryType !== ltype){
+              RootApp.$router.replace(`./lottery/${LotteryType}/${lcode}`)
+            }
           }
         }
         if (ptype === 'live') {
           if (values[2].Code === 1 && values[3].Code === 1) {
             next(vm=>{
               vm.GameConfig = values[2].BackData
-              vm.createWS()
+              vm.createWS(vm)
+              vm.isRuningT = setInterval(()=>{
+                vm.createWS(vm)
+              },3000)
               values[3].BackData.Photo = imgHost + '/' + values[3].BackData.Photo
               vm.Anchor = values[3].BackData
             })
           }else{
-            if (values[2] !== 1) {
+            if (values[2].Code !== 1) {
               layer.msgWarn(values[2].StrCode)
-            }else if(values[3] !== 1){
+            }else if(values[3].Code !== 1){
               layer.msgWarn(values[3].StrCode)
             }
             state.turning=false
@@ -623,7 +629,20 @@
           },
           //变更彩种
           lt_changeLottery:(state, code)=>{
-            state.lottery = this.$store.state.LotteryList[code]
+            if(state.ptype === 'live'){
+              state.lottery = {
+                  "LotteryCode": "0101",
+                  "LotteryType": "K3",
+                  "LotteryName": "UU快三",
+                  "LotteryIntro": "1分钟1期",
+                  "VerifyIssue": "0001",
+                  "VerifyEndTime": "00:00:59",
+                  "IsStop": ""
+              }
+            }else{
+              state.lottery = this.$store.state.LotteryList[code]
+            }
+            
             router.push(code)    //更改路由
           },
           //变更配置（进入各具体彩种页时，设置）
@@ -965,7 +984,11 @@
           lt_refresh:({state, rootState, commit, dispatch})=>{
             var code = state.lottery.LotteryCode
             var ptype = state.ptype
-            var isStop = rootState.LotteryList[code].IsStop
+            if (state.ptype === 'live') {
+              var isStop = ""
+            }else{
+              var isStop = rootState.LotteryList[code].IsStop
+            }
             // var isStop = rootState.LotteryList[this.lcode].IsStop
             if(isStop === '1'){
               commit('lt_stopSell', 1)    //暂停销售
@@ -1538,6 +1561,8 @@
         readySleep:'',
         readyRun:'',
         Anchor:{},
+        isRuning:1,
+        isRuningT:null,
       }
     },
     computed:{
@@ -1573,169 +1598,35 @@
 			},
       createWS(){
         //创建livews
-        this.GameWS = new WebSocket(this.GameConfig.GameWS)
-        this.GameWS.onmessage = e =>{
-          let json
-          try{
-            json = JSON.parse(e.data)
-          }catch(e){
-            layer.msgWarn('服务器类型错误')
+        if ((this.GameWS === null || this.GameWS.readyState !== 1) && this.isRuning === 1) {
+          this.GameWS = new WebSocket(this.GameConfig.GameWS)
+          this.GameWS.onmessage = e =>{
+            let json
+            try{
+              json = JSON.parse(e.data)
+            }catch(e){
+              layer.msgWarn('服务器类型错误')
+            }
+            this.WSrefresh(json)
           }
-          this.WSrefresh(json)
-        }
-        this.GameWS.onerror = err =>{
-          layer.msgWarn(err)
+          this.GameWS.onerror = err =>{
+            layer.msgWarn(err)
+          }
         }
         //创建OnlineWS
-        this.OnlineWS = new WebSocket(this.GameConfig.Interactive)
-        this.OnlineWS.onmessage = e =>{
-          let json = JSON.parse(e.data)
-          this.OnlineRefresh(json)
-        }
-        this.OnlineWS.onerror = err =>{
-          layer.msgWarn(err)
+        if ((this.OnlineWS === null || this.OnlineWS.readyState !== 1) && this.isRuning === 1) {
+          this.OnlineWS = new WebSocket(this.GameConfig.Interactive)
+          this.OnlineWS.onmessage = e =>{
+            let json = JSON.parse(e.data)
+            this.OnlineRefresh(json)
+          }
+          this.OnlineWS.onerror = err =>{
+            layer.msgWarn(err)
+          }
         }
         //自动提交礼物和弹幕
         // this.autoTest()
       },
-      // autoTest(){
-
-      //   var barrages = [
-      //     {
-      //       call:'皇帝',
-      //       name:'突然想起你',
-      //       text:'现场灯光不错，刮的是七级的最炫民族风，我字体的故事之毛笔字',
-      //     },
-      //     {
-      //       call:'知府',
-      //       name:'ju***',
-      //       text:'新功能测试下效果',
-      //     },
-      //     {
-      //       call:'VIP5',
-      //       name:'沙漠皇帝',
-      //       text:'直播开奖新玩法',
-      //     },
-      //     {
-      //       call:'VIP1',
-      //       name:'香烟',
-      //       text:'弹幕内容1',
-      //     },
-      //     {
-      //       call:'VIP2',
-      //       name:'邓紫棋',
-      //       text:'买定离手',
-      //     },
-      //     {
-      //       call:'VIP3',
-      //       name:'周杰伦',
-      //       text:'稳住，我们能赢',
-      //     },
-      //     {
-      //       call:'VIP4',
-      //       name:'杰森斯坦森',
-      //       text:'登顶盈利榜',
-      //     },
-      //     {
-      //       call:'VIP5',
-      //       name:'金三胖',
-      //       text:'这把一定中',
-      //     },
-      //     {
-      //       call:'VIP6',
-      //       name:'特朗普',
-      //       text:'中中中',
-      //     },
-      //     {
-      //       call:'VIP7',
-      //       name:'奥巴马',
-      //       text:'豹子 豹子',
-      //     },
-      //   ]
-      //   var getRedom = ()=>{
-      //     let num = 0
-      //     while(1){
-      //       num = Math.random()*10
-      //       if (num>=2 && num < 4) {
-      //         num = Math.floor(num*10)
-      //         return num
-      //         break
-      //       }
-      //     }
-      //   }
-      //   var num = getRedom()*1000
-      //   var barrageNum = Math.floor(Math.random()*10)
-      //   setTimeout(()=>{
-
-      //     // var fetchUrl = (url,data)=>{
-      //     //   var str=[],k
-      //     //   for(var i in data){
-      //     //     k=data[i];
-      //     //     if (typeof(k)==="object") {
-      //     //       k= encodeURIComponent(JSON.stringify(k));
-      //     //     }
-      //     //     str.push(i+'='+k)
-      //     //   }
-      //     //   str=str.join('&')
-      //     //   return new Promise(function(resolve, reject){
-      //     //     fetch(url,{
-      //     //       credentials:'same-origin',
-      //     //       method: 'POST',
-      //     //       headers: {
-      //     //         "Content-Type": "application/x-www-form-urlencoded"
-      //     //       },
-      //     //       body: str
-      //     //     })
-      //     //     .then(function (d){
-      //     //       if(d.status === 200){
-      //     //         console.log(d)
-      //     //         d.json().then(d=>{
-      //     //           if(d){
-      //     //             resolve(d)
-      //     //           }else{
-      //     //             resolve('数据获取失败！')
-      //     //           }
-      //     //         })
-      //     //         .catch(err=>{
-      //     //           alert("数据解析失败！"+err)
-      //     //         })
-      //     //       }else{
-      //     //         tool.catchFetch(d)
-      //     //       }
-      //     //     })
-      //     //     .catch(err=>{
-      //     //       alert('请求失败!'+err)
-      //     //     })
-      //     //   })
-      //     // }
-      //     // fetchUrl('http://47.52.166.234:38889/interactive/469D5742F4F09F35DA7E692D41BE11E3',{
-      //     //   content:{
-      //     //     "Target":"dafa-test",
-      //     //     "GameID":"0101",
-      //     //     "Data":{
-      //     //       "Type":"xxx",
-      //     //       "LV":-1,
-      //     //       "Interval":30
-      //     //     }
-      //     //   }
-      //     // })
-      //     //生成礼物
-      //     let gifts = ['airplane','boat','cannon','ferrari','cuke','porsche','money']
-      //     let who = null
-      //     while(1){
-      //       who = Math.random()*10
-      //       who = Math.floor(who)
-      //       if (who < 7) {
-      //         break
-      //       }
-      //     }
-
-      //     console.log('送出的礼物是：',gifts[who])
-      //     this.OnlineRefresh({Type:'Reward',gift:gifts[who],name:'杨过',img:'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2764371306,3467823016&fm=27&gp=0.jpg'})
-      //     // this.OnlineRefresh(Object.assign({type:'Barrage'},barrages[barrageNum]))
-      //     this.autoTest()
-      //   },num)
-      // },
       OnlineRefresh(json){
         console.log(json)
         switch(json.Type){
@@ -1760,6 +1651,7 @@
         }
       },
       statusNewest(n){
+        this.WS.TimeLeft = ''
         if ((new Date().getTime() - state.Difftime) > n.end) {
           store.commit('lt_stopSell', 3)
           if (n.record_result) {
@@ -1869,6 +1761,8 @@
 			clearTimeout(this.timer3)
 			clearTimeout(this.timer4)
 			clearInterval(this.baseLoop)
+      this.isRuning = 0
+      clearInterval(this.isRuningT)
 		},
 
   }

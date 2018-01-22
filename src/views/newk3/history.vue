@@ -9,7 +9,7 @@
 			<div class="opened" v-show="type === 2">
 				<div class="title">
 					<div class="issueNo">{{results[0].IssueNo}}期</div>
-					<div class="sum">和值 {{results[0].sum}}</div>
+					<div class="sum">和值&nbsp;&nbsp;{{results[0].sum}}</div>
 					<div class="open">号码{{results[0].LotteryOpen[0]}} {{results[0].LotteryOpen[1]}} {{results[0].LotteryOpen[2]}}</div>
 					<div class="other">{{results[0].bigOrSmall}}，{{results[0].singleOrDouble}}</div>
 					<div class="imgResult">
@@ -52,7 +52,7 @@
               </a>
 			        <div class="hr1px"></div>
 			    </div>
-			    <div class="msg noMore">更多投注记录请到 我的账户>投注记录 查看</div>
+			    <div class="msg noMore">更多记录请到"<router-link id="account" to="/userCenter">我的账户</router-link>"查看</div>
 				</div>
 			</div>
 		</div>
@@ -143,6 +143,11 @@
 </script>
 <style lang="scss" scoped>
 @import '../../scss/detailList.scss';
+#account{
+	display: inline;
+	padding:0;
+	color:#ee3945;
+}
 .nodata{
 	text-align: center;
 	font-size:.7em;

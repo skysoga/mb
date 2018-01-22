@@ -7,7 +7,7 @@
         </div>
         <div class="name">
           <template v-if="$store.state.UserNickName">{{$store.state.UserNickName}}</template>
-          <template v-else>匿名人士</template>
+          <template v-else>未设置昵称</template>
           <em>{{getLevel($store.state.UserUpGradeBonus.Grade)}}</em>
         </div>
         <table>
@@ -23,6 +23,7 @@
       </div>
       <div class="info" v-show="!loading" v-if="$parent.userinfoBy === 'Anchor'">
         <div class="head" :style="{background:'url('+$parent.$parent.Anchor.Photo+')'}">
+          <span style="background: url('/static/img/crown-anchor2x.png')"></span>
         </div>
         <div class="name">
           {{$parent.$parent.Anchor.Name}}
@@ -43,7 +44,7 @@
       </div>
       <div class="info" v-show="!loading" v-if="$parent.userinfoBy === 'help'">
         <div class="help-con">
-          <h3>玩法说明</h3>
+          <h3>直播说明</h3>
           <p>这个页面主要介绍了直播玩法是怎么玩的，告诉用户该如何操作，让用户了解如何使用直播。</p>
           <p>这个页面主要介绍了直播玩法是怎么玩的，告诉用户该如何操作，让用户了解如何使用直播，不再不明白这个页面如何使用！</p>
         </div>
@@ -63,21 +64,18 @@
       }
     },
     created(){
+      setTimeout(()=>{
+        this.opened = 1
+      },10)
       var type = this.$parent.userinfoBy
       if (type === 'user') {
         this.UserBalance=store.state.UserBalance
         var arr=['UserName','UserNickName','UserPhoto']
         RootApp.GetInitData(arr,state=>{
           this.loading = 0
-          setTimeout(()=>{
-            this.opened = 1
-          },10)
         })
       }else{
         this.loading = 0
-        setTimeout(()=>{
-          this.opened = 1
-        },10)
       }
     },
     methods:{
@@ -112,6 +110,12 @@
   h3{
     text-align: center;
     margin-bottom: .4em;
+    color:#e72d3c;
+    &:before{
+      display: inline;
+      content: '\e647 ';
+      font-family: 'iconfont';
+    }
   }
   p{
     margin-top:.5em;
@@ -215,6 +219,16 @@ table{
   border-radius: 50%;
   margin-top: 1.7em;
   border:3px solid #e2e0e0;
+  span{
+    height: 5em;
+    width: 5em;
+    display: block;
+    background-repeat: no-repeat !important;
+    background-size: 4.4em !important;
+    position: absolute;
+    margin-left: -.56em;
+    margin-top:-.8em;
+  }
 }
 .userinfo{
   top: 0;
@@ -260,6 +274,8 @@ table{
   background: white;
   .loading{
     width: 100%;
+    min-height: 10em;
+    line-height: 10em;
     text-align: center;
     font-size: .8em;
     color:#666;

@@ -3,12 +3,12 @@
 		<ul>
       <li class="default">
         <div class="content">
-          <ins>温馨提示：严禁涉政、涉黄、造谣、抹黑、毁谤、广告等，发现一律封号！</ins>
+          <ins>温馨提示：严禁涉政、涉黄、造谣、抹黑、广告，发现一律封号！</ins>
         </div>
       </li>
 			<li v-for="d in data">
         <div class="content">
-          <span>{{getLevel(d.Level)}}</span>
+          <span :class="'vip'+d.Level">{{getLevel(d.Level)}}</span>
           <div><em>{{d.NickName}}：</em><ins>{{d.Message}}</ins></div>
         </div>
       </li>
@@ -74,15 +74,27 @@
   }
 </script>
 <style lang="scss" scoped>
+.vip1,.vip2,.vip3{
+  background: #f57678 !important;
+}
+.vip4,.vip5,.vip6{
+  background: #09ccd1 !important;
+}
+.vip7,.vip8,.vip9{
+  background: #32aaff !important;
+}
 .default{
-  width: 11rem;
+  .content{
+    text-align: justify;
+  }
 }
 .barrage{
-	height: 6em;
+	height: 6.5em;
 	overflow: hidden;
   z-index: 20;
 	ul{
 		min-height: 101%;
+    width: 10.5rem;
 		color:white;
 		margin: 0 .65em;
 		font-size:.7em;
@@ -93,7 +105,7 @@
       // margin: .25em 0;
       padding: .15em .4em;
 			display: table;
-      background: rgba(0,0,0,.2);
+      background: rgba(0,0,0,.15);
       border-radius: .2em;
 			span,>div{
 				display: table-cell;

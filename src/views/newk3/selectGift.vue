@@ -16,7 +16,7 @@
             <template v-if="balShow">余额：{{UserBalance}} <ins @click="getBalance">刷新</ins></template>
             <template v-else>余额：已隐藏 <ins @click="getBalance">显示</ins></template>
       </div>
-      <div class="btn">
+      <div class="btn" :class="{curr:active.length>0}">
         <a @click="send" href="javascript:;" v-show="!showManyBtn">{{active[3]===1?'连发':'发送'}}</a>
         <a @click="addGift" href="javascript:;" v-show="showManyBtn">连发：{{time}}</a>
       </div>
@@ -63,7 +63,7 @@
 			send(){
         //检测是否有权限发送礼物
         if(this.$parent.$parent.checkPermissionsLevel('Reward') === -1){
-          // return layer.msgWarn('您的等级无法发送礼物！')
+          return layer.msgWarn('您当前的等级无法进行打赏！')
         }
         if(this.$parent.$parent.GameConfig.LiveBroadcastReward.State !== 1){
           return layer.msgWarn('已关闭发送礼物！')
@@ -85,9 +85,10 @@
           GiftName:this.active[0],
           GiftNum:this.giftNum,
           GiftPrice:this.active[2],
-          AnchorName:'第一主播',
-          AnchorID:1
+          AnchorName:this.$parent.$parent.Anchor.Name,
+          AnchorID:this.$parent.$parent.Anchor.ID
         }
+        console.log()
         if(this.active.length <= 0){
           return layer.msgWarn('请选择礼物！')
         }
@@ -243,7 +244,7 @@
     .btn{
       color:white;
       float:right;
-      background:#9ec2da;
+      background:#d9dfe2;
       height: 2em;
       width: 5.4em;
       line-height: 2em;
@@ -255,6 +256,9 @@
       a{
         display: inline-block;
         width: 100%;
+      }
+      &.curr{
+        background: #ee3945;
       }
     }
   }
