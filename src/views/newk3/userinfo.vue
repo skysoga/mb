@@ -7,7 +7,7 @@
         </div>
         <div class="name">
           <template v-if="$store.state.UserNickName">{{$store.state.UserNickName}}</template>
-          <template v-else>匿名人士</template>
+          <template v-else>未设置昵称</template>
           <em>{{getLevel($store.state.UserUpGradeBonus.Grade)}}</em>
         </div>
         <table>

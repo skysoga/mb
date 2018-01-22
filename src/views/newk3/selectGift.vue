@@ -258,7 +258,7 @@
         width: 100%;
       }
       &.curr{
-        background: #9ec2da;
+        background: #ee3945;
       }
     }
   }

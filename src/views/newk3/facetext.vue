@@ -175,7 +175,7 @@
       checkPermissions(content){
         let freedomSpeakArr = this.$parent.$parent.GameConfig.LiveBroadcastFreedomSpeak
         if (content.length <= 0) {
-          return [0,'请输入您要发表的弹幕！']
+          return [0,'请输入您要发布的弹幕！']
         }
         if (content.length > freedomSpeakArr.Length) {
           //替换表情的长度
@@ -183,12 +183,12 @@
           if (temp.length > freedomSpeakArr.Length) {
             //验证是否内置弹幕
             if(!/^##[\d]{1,3}##$/.test(content)){
-              return [0,'您最长能发表'+freedomSpeakArr.Length+'个字！']
+              return [0,'您最长能发布'+freedomSpeakArr.Length+'个字！']
             }
           }
         }
         if(this.$parent.$parent.checkPermissionsLevel('FreedomSpeak') === -1){
-          return [0,'您当前的等级无法发表弹幕！']
+          return [0,'您当前的等级无法发布弹幕！']
         }
         let time = new Date().getTime() - this.lastTime
         let barrage =  this.$parent.$parent.GameConfig.LiveBroadcastBarrage

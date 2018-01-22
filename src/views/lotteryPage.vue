@@ -642,7 +642,7 @@
               state.lottery = {
                   "LotteryCode": "0101",
                   "LotteryType": "K3",
-                  "LotteryName": "UU直播",
+                  "LotteryName": "UU快三",
                   "LotteryIntro": "1分钟1期",
                   "VerifyIssue": "0001",
                   "VerifyEndTime": "00:00:59",
