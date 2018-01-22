@@ -425,7 +425,7 @@ window._fetch = function (data, option = {}){
       _catch({msg:'timeout',A:data.Action,U:user})
       reject()
     },10000)
-    var fetchUrl = '/tools/ssc_ajax.ashx?A='+data.Action
+    var fetchUrl = (option.url?option.url+'?A='+data.Action:'/tools/ssc_ajax.ashx?A='+data.Action)
     if(window.site){
       fetchUrl+='&S='+site
     }
