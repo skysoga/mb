@@ -180,23 +180,6 @@
         giftsList:giftsList,
         faceData:faceData,
         textData:null,
-        beforeTextData:[
-          {Content:'买定离手',ID:1},
-          {Content:'稳住，我们能赢',ID:2},
-          {Content:'登顶盈利榜',ID:3},
-          {Content:'这把一定中',ID:4},
-          {Content:'中中中',ID:5},
-          {Content:'大大大',ID:6},
-          {Content:'小小小',ID:7},
-          {Content:'单单单',ID:8},
-          {Content:'双双双',ID:9},
-          {Content:'豹子 豹子',ID:10},
-          {Content:'天灵灵地灵灵 这把一定赢',ID:11},
-          {Content:'吓得直哆嗦',ID:12},
-          {Content:'赢钱娶老婆',ID:13},
-          {Content:'赢钱就去～',ID:14},
-          {Content:'我要打赏',ID:15}
-        ],
         userinfoShow:0,
         userinfoBy:'',
         A10Rebate:[],
@@ -316,15 +299,8 @@
     created(){
       setTimeout(()=>{
         this.barrageShow = this.$parent.checkPermissionsLevel('Barrage')
-        console.log(this.$parent.checkPermissionsLevel('Barrage'))
+        //内置弹幕数组转对象
       },1)
-      //内置弹幕数组转对象
-      let _textData = this.beforeTextData
-      let textDataObj = {}
-      for (var i = 0; i < _textData.length; i++) {
-        textDataObj[_textData[i].ID] = _textData[i].Content
-      }
-      this.textData = textDataObj
 
       function circle(num){
         num ++
@@ -566,12 +542,11 @@
           if (arr2) {
             for (var i = 0; i < arr2.length; i++) {
               let ID = arr2[i].replace(/##/,'').replace(/##/,'')
-              barrage.Message = barrage.Message.replace(arr2[i],this.textData[ID])
+              barrage.Message = barrage.Message.replace(arr2[i],this.$parent.DefaultBarrage[ID])
             }
           }
 
           _barrage.data.push(barrage)
-          console.log(_barrage)
         }
       },
       getResults(){

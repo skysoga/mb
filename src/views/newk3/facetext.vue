@@ -56,7 +56,6 @@
 		},
     created(){
       this.faceData = this.$parent.faceData
-      this.textData = this.$parent.textData
       //权限检查
       setTimeout(()=>{
         if(this.$parent.$parent.checkPermissionsLevel('SysSpeak') === -1){
@@ -64,14 +63,15 @@
         }else{
           this.barrageIsOpen = 1
         }
-      },50)
+        this.textData = this.$parent.$parent.DefaultBarrage
+      },1)
     },
 		mounted(){
       this.face = new BScroll(this.$refs.face,{click:true})
-      this.text = new BScroll(this.$refs.text,{click:true})
       setTimeout(()=>{
         this.inputLength = this.$parent.$parent.GameConfig.LiveBroadcastFreedomSpeak.Length
-      },10)
+        this.text = new BScroll(this.$refs.text,{click:true})
+      },1)
 		},
 		methods:{
       inputDown(e){
