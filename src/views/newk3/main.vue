@@ -29,7 +29,7 @@
           <li><a class="question" href="javascript:;" @click.stop="showCard(3)"></a></li>
           <li><a class="anchor" href="javascript:;" @click.stop="showCard(2)"></a></li>
           <li><a class="gift" href="javascript:;" @click.stop="showHide(3)"></a></li>
-          <li><a class="facetext" href="javascript:;" @click.stop="showHide(1)"><em>发弹幕...</em></a></li>
+          <li><a class="facetext" href="javascript:;" v-if="barrageShow > -1" @click.stop="showHide(1)"><em>发弹幕...</em></a></li>
         </ul>
         <div class="hideCon" @click.stop="">
           <facetext :class="{ined:activeHide === 1}"></facetext>
@@ -202,6 +202,7 @@
         A10Rebate:[],
         tipsObj:{},//全部tip的对象
         rebates:{},//全部返点值
+        barrageShow:-1,
       }
     },
     computed:mapState({
@@ -313,6 +314,10 @@
       }
     }),
     created(){
+      setTimeout(()=>{
+        this.barrageShow = this.$parent.checkPermissionsLevel('Barrage')
+        console.log(this.$parent.checkPermissionsLevel('Barrage'))
+      },1)
       //内置弹幕数组转对象
       let _textData = this.beforeTextData
       let textDataObj = {}
