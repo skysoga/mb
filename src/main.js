@@ -1,3 +1,4 @@
+var _CatchURL = 'http://catch.imagess-google.com'
 window._ajaxDatajoint = function(data){
   var str=[],k;
   for(var i in data){
@@ -8,6 +9,17 @@ window._ajaxDatajoint = function(data){
     str.push(i+'='+k)
   }
   return str.join('&')
+}
+function _HeaderFun(h){
+  for (var p of h) {
+    p[0]=p[0].toLowerCase()
+    if (['a','x-sec','ip'].indexOf(p[0])>-1) {
+      if(fetchGoal[p[0]]!==p[1]){
+        fetchGoal[p[0]]=p[1]
+        sessionStorage.setItem(p[0],p[1])
+      }
+    }
+  }
 }
 window._catch = function(data){
   if (window.site) {
@@ -28,16 +40,18 @@ window._catch = function(data){
   // var fetchUrl = state.UserName||data.UserName
   // fetchUrl = '/catch?'+(fetchUrl&&('U='+fetchUrl+'&'))+str
   // _App && ga && ga('send','event',msg,str)
-  var fetchUrl = 'http://catch.imagess-google.com?'+_ajaxDatajoint(data)
+  var fetchUrl = _CatchURL+'?'+_ajaxDatajoint(data)
   fetch(fetchUrl, {
-    credentials:'same-origin',
+    credentials:'omit',
     method: 'GET',
     cache: 'no-store',
-    'mode':'no-cors',
+    mode:'cors',
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     },
     // body: _ajaxDatajoint(data)
+  }).then(res=>{
+    _HeaderFun(res.headers.entries())
   })
 }
 window.onerror = function(errorMessage, scriptURI, lineNumber,columnNumber,errorObj) {
@@ -77,7 +91,10 @@ var getIver = (function(){
         return
       }
     }
-    fetch('/iver',{credentials: "same-origin"}).then(res=>{
+    fetch('/iver',{credentials:'omit'}).then(res=>{
+      try{
+        _HeaderFun(res.headers.entries())
+      }catch(e){}
       time=new Date().getTime()
       res.text().then(iver=>{
         iver=iver&&iver.slice(0,5)
@@ -88,6 +105,17 @@ var getIver = (function(){
             location.href=location.href
           }
         }
+      })
+    })
+    fetch(_CatchURL+'/ip',{
+      credentials:'omit',
+      method: 'GET',
+      cache: 'no-store',
+      mode:'cors'
+    }).then(res=>{
+      _HeaderFun(res.headers.entries())
+      res.text().then(ip=>{
+        sessionStorage.setItem('ip',ip)
       })
     })
   }
@@ -263,9 +291,12 @@ function FetchCatch({msg, error}){
     error = error.toString()
     msg += '<br/>'+error
   }
-
-  layer.alert(msg+'_'+(fetchGoal['a']||'')+(fetchGoal['x-sec']||''))
-
+  msg+='_'+(fetchGoal['a']||'')+(fetchGoal['x-sec']||'')
+  var ip=sessionStorage.getItem('ip')
+  if(ip){
+    msg+='<br>'+ip
+  }
+  layer.alert(msg)
   if(state.turning){
     state.turning = false
   }
@@ -438,7 +469,8 @@ window._fetch = function (data, option = {}){
       var T = (new Date().getTime()-now)/1000
       var H={}
       try{
-        for (var pair of res.headers.entries()) {
+        _HeaderFun(res.headers.entries())
+        /*for (var pair of res.headers.entries()) {
           pair[0]=pair[0].toLowerCase()
           if (['a','x-sec'].indexOf(pair[0])>-1) {
             // H[pair[0]]=pair[1]
@@ -447,18 +479,31 @@ window._fetch = function (data, option = {}){
               sessionStorage.setItem(pair[0],pair[1])
             }
           }
-        }
+        }*/
         // fetchGoal=`${H['a']||''}-${H['x-sec']||''}`
       }catch(e){
         // H={'x-sec':'E','a':'I'}
         // fetchGoal=null
       }
       // var S=(!H['a'])?null:( H['a']+(H['x-sec']?('_'+H['x-sec']):''))
+      console.log(res.status);
       if (res.status!==200) {
         var msg = "网络错误" + res.status
+        var l
+        if (res.status === 400) {
+          l = document.cookie.length
+          msg += ':' + l
+          var keys = document.cookie.match(/[^ =;]+(?=\=)/g);
+          var ctime = new Date(0).toUTCString()
+          if (keys) {
+            for (var i = keys.length; i--;)
+              document.cookie = keys[i] + '=0;expires=' + ctime
+          }
+        }
         FetchCatch({msg})
-        _catch({msg:'err'+res.status,A:data.Action,U:user})
+        _catch({msg:'err'+res.status,l,A:data.Action,U:user})
         reject()
+        return
       }
       if(T>10){
         _catch({msg:'timeout',T,A:data.Action,U:user})
@@ -469,21 +514,28 @@ window._fetch = function (data, option = {}){
           resolve(json)
           return
         }
+        if(!json){
+          var msg = data.Action+"返回数据为空"
+          FetchCatch({msg,error})
+          _catch({msg:'responsenull',A:data.Action,U:user})
+          reject()
+          return
+        }
         try{
           json = JSON.parse(json)
         }catch(error){
           // 解析成json数据失败
-          if (json[0]==='<') {
+          /*if (json[0]==='<') {
             // 可能是一些高防拦截等需要重发
             _fetch(data,option).then(json=>{
               resolve(json)
             })
-          }else{
-            var msg = data.Action+"数据解析错误"// + json
-            FetchCatch({msg,error})
+          }else{*/
+            var msg = data.Action+"数据解析错误:" + json.slice(0,20)
+            FetchCatch({msg})
             _catch({msg:'JSONerr',A:data.Action,U:user,E:error.toString(),Retrun:json})
             reject()
-          }
+          // }
         }
 
         try{
@@ -506,6 +558,7 @@ window._fetch = function (data, option = {}){
           var msg = "请求中含有敏感字符"
           FetchCatch({msg,error})
           reject()
+          return
         }
 
         var notRes
@@ -1313,17 +1366,22 @@ window.RootApp={
   getServerTime: (function(){
     var cantGetTime = 0,
         timeItemList = []
+    function getTimeFinish(fun){
+      store.commit('setDifftime', timeItemList)
+      cantGetTime = 0
+      timeItemList = []
+      fun && fun()
+    }
     return function(fun){
       var timeBegin = new Date().getTime()
       _fetch({Action: "GetServerTimeMillisecond"}).then((json)=>{
         var timeEnd = new Date().getTime()
         var interval = timeEnd - timeBegin
         var timeReg = /^\d{13}$/
-
         if(json.Code > -1 && timeReg.test(json.Data)){
           timeItemList.push(new TimeItem(interval, timeEnd, timeBegin, json.Data))
         }
-        if(cantGetTime > 4){
+        if(cantGetTime > 2){
           var noTimeGeted = timeItemList.every(timeItem=>!timeItem.SerTime)  //一次都没获取到数据
           if(noTimeGeted){
             var Difftime=0
@@ -1341,29 +1399,20 @@ window.RootApp={
             // layer.url("因无法同步服务器时间,您将无法投注,请检查网络情况", '/index')
           }else{
             //有一些获取到了数据，但是超时了。从获取到的再择优
-            store.commit('setDifftime', timeItemList)
-            cantGetTime = 0
-            timeItemList = []
-            fun && fun()
+            getTimeFinish(fun)
           }
-
         }else{
-          if(interval > 1000){
-            cantGetTime++
+          cantGetTime++
+          if(false && interval > 1000){
             this.getServerTime(fun)
           }else{
             if(json.Code === 1) {
               if(!json.Data){
-                cantGetTime++;
                 this.getServerTime(fun);
               }else {
-                store.commit('setDifftime', timeItemList)
-                fun && fun()
-                cantGetTime = 0
-                timeItemList = []
+                getTimeFinish(fun)
               }
             }else{
-              cantGetTime++;
               this.getServerTime(fun);
             }
           }
