@@ -98,10 +98,14 @@
       //设置请求的数组
       if (ptype === 'live') {
         //获取主播信息
-        // var GetDefault     = _fetchLive({Action:"GetAnchor",GameID:lcode})
+        var GetDefaultBarrage= new Promise(function(res,rej){
+          RootApp.GetInitData(['DefaultBarrage'],d=>{
+            res(d)
+          },{url:'/LiveApi'})
+        })
         var GetAnchor     = _fetch({Action:"GetAnchor",GameID:lcode},{url:'/LiveApi'})
         var getGameConfig = _fetch({Action:'GameConfig',GameID:lcode})
-        var reqArr        = [getRebate, getServerTime,getGameConfig,GetAnchor]
+        var reqArr        = [getRebate, getServerTime,getGameConfig,GetAnchor,GetDefaultBarrage]
       }else{
         var reqArr        = [getRebate, getLotteryList, getServerTime]
       }
@@ -132,6 +136,13 @@
               },3000)
               values[3].BackData.Photo = imgHost + '/' + values[3].BackData.Photo
               vm.Anchor = values[3].BackData
+              console.log(values[4])
+              let _textData = values[4]
+              let textDataObj = {}
+              for (var i = 0; i < values[4].length; i++) {
+                textDataObj[_textData[i].ID] = _textData[i].Content
+              }
+              vm.DefaultBarrage = textDataObj
             })
           }else{
             if (values[2].Code !== 1) {

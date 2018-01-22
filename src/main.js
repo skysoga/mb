@@ -1262,7 +1262,7 @@ window.RootApp={
       }
     }
   },
-  AjaxGetInitData(arr,fun){
+  AjaxGetInitData(arr,fun,options){
     state.needVerify=0
     sessionStorage.setItem("needVerify",state.needVerify)
     var ajax = {
@@ -1283,7 +1283,7 @@ window.RootApp={
     }else{
       ajax.CacheData=CacheData
     }
-    _fetch(ajax).then((json)=>{
+    _fetch(ajax,options).then((json)=>{
       if (json.Code===1||json.Code===0) {
         fun&&fun(state)
       }else{
@@ -1291,7 +1291,7 @@ window.RootApp={
       }
     })
   },
-  GetInitData(arr,fun){
+  GetInitData(arr,fun,options){
     state.UserName&&arr.push("UserUpGradeBonus")
     console.log(arr);
     var newArr=[];
@@ -1334,7 +1334,7 @@ window.RootApp={
       fun&&fun(state)
       return;
     }
-    this.AjaxGetInitData(newArr,fun)
+    this.AjaxGetInitData(newArr,fun,options)
   },
   //保证校验时按顺序来
   format:function(obj, order, cfg){
