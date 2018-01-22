@@ -1,6 +1,6 @@
 <template>
 	<div class="facetext" :class="{keyboard:keyboard}">
-    <div class="title" :class="{tobottom:!sysSpeak}">
+    <div class="title">
       <div class="type">
         <span @click="changeBarrage" :class="{open:$parent.barrageIsOpen}">
           <em>弹</em>
@@ -10,19 +10,19 @@
         <input type="text" ref="content" :maxlength="inputLength" @focus="inputFocus" @blur="inputBlur" @keydown="inputDown($event)" @keyup="inputUp($event)" :placeholder="(showDefaultText  && !faceortext)?'点击输入可自由发言':'请选择您要发送的表情'" v-model="content">
         <!-- <div class="testing" @focus="contentFocus" @blur="contentBlur" @keyup="keyup($event)" @keydown="limitLength($event)" ref="content">
         </div> -->
-        <div v-show="sysSpeak" class="faceortext" :class="{text:faceortext,face:!faceortext}" @click.stop="changeFaceText">
+        <div class="faceortext" :class="{text:faceortext,face:!faceortext}" @click.stop="changeFaceText">
           <i class="iconfont">{{faceortext?'&#xe615;':'&#xe616;'}}</i>
         </div>
       </div>
       <div class="btn" :class="{curr:(content.length>0 || sendIsActive)}" @click="send">发布</div>
     </div>
-    <div class="desktop" :class="{tobottom:!sysSpeak}">
-      <div ref="text" class="facetext-text" v-show="sysSpeak && !faceortext">
+    <div class="desktop">
+      <div ref="text" class="facetext-text" v-show="!faceortext">
         <ul class="fix">
           <li v-for="(v,k) in textData" :class="{curr:v===selectText}" @click.stop="pushContent(v,1,k)"><em>{{v}}</em></li>
         </ul>
       </div>
-      <div ref="face" class="facetext-face" v-show="sysSpeak">
+      <div ref="face" class="facetext-face">
         <ul class="fix">
           <li v-for="(v,k) in faceData" @click.stop="pushContent(v,0,k)">{{v}}</li>
         </ul>
@@ -153,6 +153,9 @@
             this.checkFace.push(i)
           }
 				}else{
+          if (!this.sysSpeak) {
+            return layer.msgWarn('您当前的等级无法发送系统弹幕！')
+          }
           if (this.selectText === d) {
             this.selectText = null
             this.sendIsActive = 0
@@ -188,7 +191,7 @@
           }
         }
         if(this.$parent.$parent.checkPermissionsLevel('FreedomSpeak') === -1){
-          return [0,'您当前的等级无法发布弹幕！']
+          return [0,'您当前的等级无法自由发言！']
         }
         let time = new Date().getTime() - this.lastTime
         let barrage =  this.$parent.$parent.GameConfig.LiveBroadcastBarrage
@@ -472,9 +475,5 @@
       color:white;
     }
   }
-}
-.tobottom{
-  transform:translateY(9.6em);
-  pointer-events: initial;
 }
 </style>
