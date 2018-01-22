@@ -672,7 +672,7 @@
   left: .4em;
   z-index: 26;
   display: inline-block;
-  font-size: .8em;
+  font-size: .9em;
   span{
     font-size:.7em;
     display:block;

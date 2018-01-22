@@ -361,8 +361,7 @@
           }
         }
         if (ptype === 'live') {
-          if (values[2].Code === 1) {
-          // if (values[2].Code === 1 && values[3].Code === 1) {
+          if (values[2].Code === 1 && values[3].Code === 1) {
             next(vm=>{
               vm.GameConfig = values[2].BackData
               vm.createWS(vm)
