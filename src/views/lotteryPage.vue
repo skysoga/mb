@@ -138,10 +138,18 @@
               vm.Anchor = values[3].BackData
               let _textData = values[4].DefaultBarrage
               let textDataObj = {}
+              let newBarrage = []
+              //随机弹幕
               for (var i = 0; i < _textData.length; i++) {
-                textDataObj[_textData[i].ID] = _textData[i].Content
+                var y = parseInt(Math.random()*(_textData.length-i),10)+1;
+                newBarrage.push(_textData[y])
+                _textData.splice(y,1)
+              }
+              for (var i = 0; i < newBarrage.length; i++) {
+                textDataObj[newBarrage[i].ID] = newBarrage[i].Content
               }
               vm.DefaultBarrage = textDataObj
+              vm.RandomBarrage = newBarrage
             })
           }else{
             if (values[2].Code !== 1) {
@@ -1344,6 +1352,8 @@
         Anchor:{},
         isRuning:1,
         isRuningT:null,
+        DefaultBarrage:{},
+        RandomBarrage:[],
       }
     },
     computed:{

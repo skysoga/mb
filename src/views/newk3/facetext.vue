@@ -19,7 +19,7 @@
     <div class="desktop">
       <div ref="text" class="facetext-text" v-show="!faceortext">
         <ul class="fix">
-          <li v-for="(v,k) in textData" :class="{curr:v===selectText}" @click.stop="pushContent(v,1,k)"><em>{{v}}</em></li>
+          <li v-for="(v,k) in textData" :class="{curr:v.Content===selectText}" @click.stop="pushContent(v.Content,1,v.ID)"><em>{{v.Content}}</em></li>
         </ul>
       </div>
       <div ref="face" class="facetext-face">
@@ -63,7 +63,7 @@
           }else{
             this.barrageIsOpen = 1
           }
-          this.textData = this.$parent.$parent.DefaultBarrage
+          this.textData = this.$parent.$parent.RandomBarrage
           this.inputLength = this.$parent.$parent.GameConfig.LiveBroadcastFreedomSpeak.Length
           this.face = new BScroll(this.$refs.face,{click:true})
         },1)
@@ -138,6 +138,7 @@
         return [_content.length,face]
       },
 			pushContent(d,type,i){
+        console.log(i)
         var length = this.$parent.$parent.GameConfig.LiveBroadcastFreedomSpeak.Length
         document.activeElement.blur()
 				if (!type) {
@@ -184,6 +185,7 @@
           var temp = content.replace(/\[[\u4e00-\u9fa5]{0,3}\]/g,'a')
           if (temp.length > freedomSpeakArr.Length) {
             //验证是否内置弹幕
+            console.log(content)
             if(!/^##[\d]{1,3}##$/.test(content)){
               return [0,'您最长能发布'+freedomSpeakArr.Length+'个字！']
             }
@@ -215,7 +217,8 @@
           }
         }
         //默认弹幕改为ID
-        content = content.replace(this.textData[this.checkText],`##${this.checkText}##`)
+        console.log(this.checkText)
+        content = content.replace(this.$parent.$parent.DefaultBarrage[this.checkText],`##${this.checkText}##`)
         var contentFace = content.match(/\[[\u4e00-\u9fa5]{1,3}\]$/g) || 0
         for (var i = 0; i < contentFace.length; i++) {
           if(this.faceData[contentFace[i].replace('[','').replace(']','')] === undefined){
