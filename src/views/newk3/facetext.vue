@@ -205,7 +205,7 @@
         return [1]
       },
 			send(){
-        var content = null
+        var content = ''
         if (this.faceortext) {
           content = this.content
         }else{
@@ -244,7 +244,7 @@
             this.lastTime = new Date().getTime()
             this.checkFace = []
             this.checkText = 0
-            this.selectText = null
+            this.selectText = ''
             this.showDefaultText = 1
             this.sendIsActive = 0
           }else{
