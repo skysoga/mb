@@ -528,8 +528,11 @@
           if (arr) {
             for (var i = 0; i < arr.length; i++) {
               let ID = arr[i].replace(/\[/,'').replace(/\]/,'')
-              barrage.Message = barrage.Message.replace(arr[i],this.faceData[ID])
-              console.log(ID,this.faceData[ID])
+              if (this.faceData[ID] === undefined) {
+                barrage.Message = barrage.Message.replace(arr[i],'')
+              }else{
+                barrage.Message = barrage.Message.replace(arr[i],this.faceData[ID])
+              }
             }
           }
           //替换内置弹幕
@@ -537,6 +540,9 @@
           if (arr2) {
             for (var i = 0; i < arr2.length; i++) {
               let ID = arr2[i].replace(/##/,'').replace(/##/,'')
+              if (this.$parent.DefaultBarrage[ID] === undefined) {
+                return
+              }
               barrage.Message = barrage.Message.replace(arr2[i],this.$parent.DefaultBarrage[ID])
             }
           }

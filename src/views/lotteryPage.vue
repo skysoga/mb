@@ -136,7 +136,7 @@
               },3000)
               values[3].BackData.Photo = imgHost + '/' + values[3].BackData.Photo
               vm.Anchor = values[3].BackData
-              let _textData = values[4].DefaultBarrage
+              let _textData = JSON.parse(JSON.stringify(values[4].DefaultBarrage))
               let textDataObj = {}
               let newBarrage = []
               //随机弹幕
