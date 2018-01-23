@@ -99,6 +99,7 @@ input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{
     color:$green;
 }
 
+.iconfont.del:after { content: "\e607"; }
 .iconfont.unfold:after { content: "\e601"; }
 .iconfont.back:after { content: "\e60a"; }
 .iconfont.right:after {

@@ -30,7 +30,8 @@
               <template v-else>
                 <template v-if="x==1">
                   <div class="" v-for="item in temp_ajax[newName+'%'+newDay][x-1].res_data">
-                    <a class="active" @click="$router.push({path:'/betDetail',query:{ID:item.ID,UID:item.UserId||0}})">
+                    <a class="active" @click="getShow(item.ID,item.UserId||0)">
+                    <!-- <a class="active" @click="$router.push({path:'/betDetail',query:{ID:item.ID,UID:item.UserId||0}})"> -->
                       <div><p>{{isAgent?item.UserName:item.LotteryName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span></div>
                       <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
                       <strong :class="item.State==='等待开奖'?'OutMoney':''" v-else>{{item.State}}</strong>
@@ -40,7 +41,8 @@
                 </template>
                 <template v-if="x==2">
                 <div class="" v-for="item in temp_ajax[newName+'%'+newDay][x-1].res_data">
-                  <a class="active" @click="$router.push({path:'/betDetail',query:{ID:item.ID,UID:item.UserId||0}})">
+                  <a class="active" @click="getShow(item.ID,item.UserId||0)">
+                  <!-- <a class="active" @click="$router.push({path:'/betDetail',query:{ID:item.ID,UID:item.UserId||0}})"> -->
                     <div>
                       <p>{{isAgent?item.UserName:item.LotteryName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span></div>
                     <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
@@ -51,7 +53,8 @@
                 </template>
                 <template v-if="x==3">
                 <div class="" v-for="item in temp_ajax[newName+'%'+newDay][x-1].res_data">
-                  <a class="active" @click="$router.push({path:'/betDetail',query:{ID:item.ID,UID:item.UserId||0}})">
+                  <a class="active" @click="getShow(item.ID,item.UserId||0)">
+                  <!-- <a class="active" @click="$router.push({path:'/betDetail',query:{ID:item.ID,UID:item.UserId||0}})"> -->
                     <div>
                       <p>{{isAgent?item.UserName:item.LotteryName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span></div>
                     <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
@@ -62,7 +65,8 @@
                 </template>
                 <template v-if="x==4">
                 <div class="" v-for="item in temp_ajax[newName+'%'+newDay][x-1].res_data">
-                  <a class="active" @click="$router.push({path:'/betDetail',query:{ID:item.ID,UID:item.UserId||0}})">
+                  <a class="active" @click="getShow(item.ID,item.UserId||0)">
+                  <!-- <a class="active" @click="$router.push({path:'/betDetail',query:{ID:item.ID,UID:item.UserId||0}})"> -->
                     <div>
                       <p>{{isAgent?item.UserName:item.LotteryName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span></div>
                      <strong class="OutMoney">{{item.State}}</strong>
@@ -142,15 +146,20 @@
       </div>
     </div>
     <!-- 底部弹框组件 -->
-    <bottom-box v-show="BottomBoxShow" :list="BottomBoxList"></bottom-box>
+    <bottombox v-show="BottomBoxShow" :list="BottomBoxList"></bottombox>
+    <betDetailShow v-show="defaultShow" :betID="defaultID" :UID="defaultUID"/>
   </div>
 </template>
 
 <script>
 import bottombox from '../components/bottom-box'
+import betDetailShow from '../components/betDetailShow'
 export default {
   data() {
     return {
+      defaultUID:0,
+      defaultID:'',
+      defaultShow:false,
       li_bet: ["全部", "已中奖", "未中奖", "等待开奖"],
       li_bill: ["所有类型","提现记录","充值记录"],
       type_agent:['GetAgentBillRecord','GetAgentWithdrawRecord','GetAgentRechargeRecord'],
@@ -184,9 +193,15 @@ export default {
     }
   },
   components: {
-    'bottom-box': bottombox
+    bottombox,
+    betDetailShow
   },
   methods: {
+    getShow(ID,UID){
+      this.defaultShow=true
+      this.defaultUID=UID
+      this.defaultID=ID
+    },
     bottomBox:function(a,b){
       this.top_text=b
       this.BottomBoxShow=!this.BottomBoxShow
