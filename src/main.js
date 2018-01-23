@@ -1262,7 +1262,7 @@ window.RootApp={
       }
     }
   },
-  AjaxGetInitData(arr,fun,options){
+  AjaxGetInitData(arr,fun,option){
     state.needVerify=0
     sessionStorage.setItem("needVerify",state.needVerify)
     var ajax = {
@@ -1283,7 +1283,7 @@ window.RootApp={
     }else{
       ajax.CacheData=CacheData
     }
-    _fetch(ajax,options).then((json)=>{
+    _fetch(ajax,option).then((json)=>{
       if (json.Code===1||json.Code===0) {
         fun&&fun(state)
       }else{
