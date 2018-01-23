@@ -297,11 +297,6 @@
       }
     }),
     created(){
-      setTimeout(()=>{
-        this.barrageShow = this.$parent.checkPermissionsLevel('Barrage')
-        //内置弹幕数组转对象
-      },1)
-
       function circle(num){
         num ++
         if(num > 3){
@@ -555,6 +550,7 @@
     },
     mounted(){
       setTimeout(()=>{
+        this.barrageShow = this.$parent.checkPermissionsLevel('Barrage')
         if(this.$parent.GameConfig.LiveBroadcastBarrage.State === 1){
           this.barrageIsOpen = 1
         }

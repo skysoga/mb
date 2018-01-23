@@ -136,10 +136,9 @@
               },3000)
               values[3].BackData.Photo = imgHost + '/' + values[3].BackData.Photo
               vm.Anchor = values[3].BackData
-              console.log(values[4])
-              let _textData = values[4]
+              let _textData = values[4].DefaultBarrage
               let textDataObj = {}
-              for (var i = 0; i < values[4].length; i++) {
+              for (var i = 0; i < _textData.length; i++) {
                 textDataObj[_textData[i].ID] = _textData[i].Content
               }
               vm.DefaultBarrage = textDataObj

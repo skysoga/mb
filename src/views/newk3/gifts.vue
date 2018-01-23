@@ -29,7 +29,7 @@
         isOpen:0,
     	}
     },
-    created(){
+    mounted(){
       document.addEventListener("visibilitychange", this.clearGift)
       setTimeout(()=>{
         this.isOpen = this.$parent.$parent.GameConfig.LiveBroadcastReward.State

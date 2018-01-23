@@ -1292,7 +1292,11 @@ window.RootApp={
     })
   },
   GetInitData(arr,fun,options){
-    state.UserName&&arr.push("UserUpGradeBonus")
+    try{
+      options.url
+    }catch(e){
+      state.UserName&&arr.push("UserUpGradeBonus")
+    }
     console.log(arr);
     var newArr=[];
     for (var i = arr.length - 1; i >= 0; i--) {
