@@ -846,6 +846,7 @@ var SiteArr=[ //需要校验更新版本的列表
   'GradeList',//等级体系
   'RewardData',//每日加奖设置
   'DefaultPhotoList',
+  'DefaultBarrage',
 ]
 
 var AppArr=[
