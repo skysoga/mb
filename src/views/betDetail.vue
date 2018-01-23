@@ -54,10 +54,10 @@ export default {
     },
     setNum(str,flag){
       //flag 标志位
-      if(flag){
+      // if(flag){
         var delimiter = flag&&this.res_data.LotteryName.indexOf('六合彩')==-1 ? ' ' : ','
         var MaxNum = flag ? 10 : 8
-      }
+      // }
 
       var originArr = str.split(delimiter)
       var actualArr = originArr.slice(0, MaxNum)
