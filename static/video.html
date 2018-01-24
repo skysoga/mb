@@ -25,7 +25,7 @@
 	<script>
 		var canvas,url,option,player
 		var openlive = function(address){
-			canvas = document.getElementById('myCanvas')
+			window.canvas = canvas = document.getElementById('myCanvas')
 			url = address
 			option = {canvas: canvas, chunkSize:1}
 			player = new Live.Player(url, option)
