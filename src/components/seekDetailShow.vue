@@ -29,7 +29,7 @@
     <ul><li></li>
       <!-- <li v-for="item in res_data.ChaseInfoList" @click="$router.push({path:'/betDetail',query:{ID:item.ID}})"> -->
       <li v-for="item in res_data.ChaseInfoList">
-        <div @click="getShow(item.ID,0)">开奖号码：<br>{{setNum(item.OpenNum)}}</div>
+        <div @click="getShow(item.ID,0)">开奖号码：{{setNum(item.OpenNum)}}</div>
         <span>{{item.IssueNo}}</span>
         <span class="fr" v-if="Number(item.Bonus)">奖金：{{item.Bonus}}</span>
         <p class="hr1px"></p></li>
