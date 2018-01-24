@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div class="newContainer">
     <gift :activegift="activegift" v-show="show == 'main'"></gift>
     <div class="video">
@@ -69,6 +70,8 @@
       <mainfooter ref="footer" :betshow="bet.betting_count" :chosen="chosen"></mainfooter>
     </div>
     <userinfo v-if="userinfoShow"></userinfo>
+  </div>
+    <div class="testbg"></div>
   </div>
 </template>
 <script>
@@ -606,6 +609,10 @@
 </script>
 <style lang="scss" scoped>
 @import "../../scss/dice";
+.testbg{
+  height: 120vh;
+  width: 100vw;
+}
 .MethodMsg{
   &:before{
     content:"\e648 ";
@@ -907,7 +914,6 @@
     z-index:20;
     width:100%;
     height: 100%;
-    overflow: hidden;
   }
   .betContainer{
     width:100%;
