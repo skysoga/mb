@@ -140,11 +140,12 @@
               let textDataObj = {}
               let newBarrage = []
               //随机弹幕
-              for (var i = 0; i < _textData.length; i++) {
-                var y = parseInt(Math.random()*(_textData.length-i),10)+1;
+              for (var i = 0; i < values[4].DefaultBarrage.length-1; i++) {
+                var y = parseInt(Math.random()*(values[4].DefaultBarrage.length-i-1),10)+1;
                 newBarrage.push(_textData[y])
                 _textData.splice(y,1)
               }
+              newBarrage.push(_textData[0])
               for (var i = 0; i < newBarrage.length; i++) {
                 textDataObj[newBarrage[i].ID] = newBarrage[i].Content
               }
