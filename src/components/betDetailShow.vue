@@ -5,7 +5,8 @@
 <template>
 <div class="layShow">
   <div class="topBG">
-    <a class="iconfont del" @click="close"></a>
+    <a class="iconfont back" @click="close"></a>
+    <div><em>注单详情</em></div>    
     <div style="float:right;width:20%">
       <div class="textMore dataType" v-if="(res_data.State==='等待开奖')&&(UID==0)" @click='CancelBet(betID)'><em>撤单</em></div>
     </div>
@@ -195,6 +196,7 @@ export default {
     height: 100%;
     z-index: 1222;
     background: #000;
+    overflow-x: hidden;
     overflow-y: scroll;    
   }
   .topBG{

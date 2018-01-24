@@ -17,7 +17,8 @@
               <template v-else>
                 <template v-if="x==1">
                   <div class="" v-for="item in temp_ajax[newDay][x-1].res_data">
-                    <a class="active" @click="$router.push({path:'/seekDetail',query:{ID:item.ID}})">
+                    <a class="active" @click="getShow(item.ID,0)">
+                    <!-- <a class="active" @click="$router.push({path:'/seekDetail',query:{ID:item.ID}})"> -->
                       <div><p>{{item.LotteryName}}<span>￥{{item.CompleteMoney.toString().split('/')[1]}}</span></p><span>{{item.AddTime}}</span></div>
                       <strong :class="Number(item.State)?'InMoney':''">{{Number(item.State)?'+'+item.State:item.State}}</strong>
                     </a>
@@ -26,7 +27,8 @@
                 </template>
                 <template v-if="x==2">
                 <div class="" v-for="item in temp_ajax[newDay][x-1].res_data">
-                  <a class="active" @click="$router.push({path:'/seekDetail',query:{ID:item.ID}})">
+                  <a class="active" @click="getShow(item.ID,0)">
+                  <!-- <a class="active" @click="$router.push({path:'/seekDetail',query:{ID:item.ID}})"> -->
                     <div>
                       <p>{{item.LotteryName}}<span>￥{{item.CompleteMoney.toString().split('/')[1]}}</span></p><span>{{item.AddTime}}</span></div>
                       <strong>{{item.State}}</strong>
@@ -36,7 +38,8 @@
                 </template>
                 <template v-if="x==3">
                 <div class="" v-for="item in temp_ajax[newDay][x-1].res_data">
-                  <a class="active" @click="$router.push({path:'/seekDetail',query:{ID:item.ID}})">
+                  <a class="active" @click="getShow(item.ID,0)">
+                  <!-- <a class="active" @click="$router.push({path:'/seekDetail',query:{ID:item.ID}})"> -->
                     <div>
                       <p>{{item.LotteryName}}<span>￥{{item.CompleteMoney.toString().split('/')[1]}}</span></p><span>{{item.AddTime}}</span></div>
                     <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">进行中</span></div>
@@ -47,7 +50,8 @@
                 </template>
                 <template v-if="x==4">
                 <div class="" v-for="item in temp_ajax[newDay][x-1].res_data">
-                  <a class="active" @click="$router.push({path:'/seekDetail',query:{ID:item.ID}})">
+                  <a class="active" @click="getShow(item.ID,0)">
+                  <!-- <a class="active" @click="$router.push({path:'/seekDetail',query:{ID:item.ID}})"> -->
                     <div>  <p>{{item.LotteryName}}<span>￥{{item.CompleteMoney.toString().split('/')[1]}}</span></p><span>{{item.AddTime}}</span></div>
                     <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已结束</span></div>
                     <strong class="" v-else>{{item.State}}</strong>
@@ -69,15 +73,20 @@
       </div>
     </div>
     <!-- 底部弹框组件 -->
-    <bottom-box v-show="BottomBoxShow" :list="BottomBoxList"></bottom-box>
+    <bottomboxs v-show="BottomBoxShow" :list="BottomBoxList" />
+    <seekDetailShow v-show="defaultShow" :betID="defaultID" :UID="defaultUID"/>
   </div>
 </template>
 
 <script>
-import bottombox from '../components/bottom-box'
+import bottomboxs from '../components/bottom-box'
+import seekDetailShow from '../components/seekDetailShow'
 export default {
   data() {
     return {
+      defaultUID:0,
+      defaultID:'',
+      defaultShow:false,
       li_seek: ["全部", "未开始", "进行中", "已结束"],
       li_state: 0,
       BottomBoxShow:false,
@@ -103,9 +112,15 @@ export default {
     }
   },
   components: {
-    'bottom-box': bottombox
+    seekDetailShow,
+    bottomboxs
   },
   methods: {
+    getShow(ID,UID){//追号详情
+      this.defaultShow=true
+      this.defaultUID=UID
+      this.defaultID=ID
+    },
     bottomBox:function(a,b){
       this.top_text=b
       this.BottomBoxShow=!this.BottomBoxShow
