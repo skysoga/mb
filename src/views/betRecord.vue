@@ -197,7 +197,7 @@ export default {
     betDetailShow
   },
   methods: {
-    getShow(ID,UID){
+    getShow(ID,UID){//注单详情
       this.defaultShow=true
       this.defaultUID=UID
       this.defaultID=ID

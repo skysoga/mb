@@ -1,3 +1,7 @@
+<!--
+注单详情组件说明：v-show="defaultShow"
+父级传入参数： :betID="defaultID" :UID="defaultUID"
+-->
 <template>
 <div class="layShow">
   <div class="topBG">
