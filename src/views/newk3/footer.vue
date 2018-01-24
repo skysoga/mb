@@ -226,7 +226,7 @@
       position:absolute;
       width:100%;
       height:1px;
-      background-image: -webkit-linear-gradient(90deg, #164630, #164630 50%, transparent 50%);
+      background-image: -webkit-linear-gradient(90deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)50%, transparent 50%);
       left:0;
       top:0;
     }

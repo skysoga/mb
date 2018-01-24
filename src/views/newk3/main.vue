@@ -33,7 +33,7 @@
           <li><a class="facetext" href="javascript:;" v-if="barrageShow > -1" @click.stop="showHide(1)"><em>发弹幕...</em></a></li>
         </ul>
         <div class="hideCon" @click.stop="">
-          <facetext :class="{ined:activeHide === 1}"></facetext>
+          <facetext ref="facetext" :class="{ined:activeHide === 1}"></facetext>
           <selectGift :class="{ined:activeHide === 3}"></selectGift>
         </div>
       </div>
@@ -508,6 +508,11 @@
         }else{
           this.activeHide = witch
         }
+        switch(witch){
+          case 1:
+            this.$refs.facetext.reset()
+            break;
+        }
       },
       giftPush(gift){
         //检验礼物是否存在并且价格是否正确
@@ -587,9 +592,6 @@
         }
         console.log('执行开启视频')
         this.$refs.iframe.contentWindow.openlive(url)
-        .then(()=>{
-
-        })
       }
     },
     watch:{

@@ -73,6 +73,10 @@
       })
 		},
 		methods:{
+      reset(){
+        this.face.refresh()
+        this.text.refresh()
+      },
       inputDown(e){
         if (e.key === 'Backspace') {
           //删除输入框的功能
