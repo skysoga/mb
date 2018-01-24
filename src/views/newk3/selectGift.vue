@@ -4,6 +4,7 @@
       <ul class="fix">
         <li v-for="d in $parent.giftsList" @click.stop="select(d)" :class="{selected:active[0] === d[0]}" class="gift">
           <span v-show="d[3] === 1">连</span>
+          <div :class="'review view-'+d[0]" :style="'background: url(/static/img/smallgifts/'+d[0]+'.png)'"></div>
           <i>￥{{d[2]}}</i>
           <em>{{d[1]}}</em>
         </li>
@@ -161,6 +162,12 @@
 	}
 </script>
 <style lang="scss" scoped>
+.review{
+  width: 100%;
+  height: 2.9em;
+  background-size: 100% !important;
+  background-position: 0 -.1em !important;
+}
 .balance{
   float: left;
   color:#fcc948;
@@ -215,7 +222,7 @@
           text-align: center;
           font-size: .5em;
           color:#d7da2b;
-          margin-bottom: .3em;
+          // margin-bottom: .3em;
         }
         em{
           display:block;

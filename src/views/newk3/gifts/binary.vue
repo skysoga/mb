@@ -8,7 +8,7 @@
     data:()=>{
 			return {
 				reStartT:null,
-				all:['porsche','money','cupidgirl','aircraft'],
+				all:['porsche','money','salute','aircraft'],
 				moving:0,
 				className:'',
 			}
@@ -88,7 +88,7 @@
     height: 28.44444rem !important;
     transform: initial !important;
 	}
-	&.porsche,&.cupidgirl{
+	&.porsche,&.salute{
 		canvas{
 			height: 16rem !important;
 			margin-top:6.22222rem;

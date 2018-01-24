@@ -25,7 +25,7 @@ var gifts = {
   money:{
   	price:888
   },
-  cupidgirl:{
+  salute:{
   	price:588
   },
 }
@@ -41,7 +41,7 @@ let giftsList = [
   ['injections','兴奋剂',  88, -1],
   ['porsche',   '保时捷',  188,0],
   ['aircraft',  '开飞机',  388, 0],
-  ['cupidgirl', '爱神之箭',588, 0],
+  ['salute', '爱神之箭',588, 0],
   ['money',     '发财树',  888,0]
 ]
 //表情列表

@@ -29,9 +29,6 @@
 			url = address
 			option = {canvas: canvas, chunkSize:1}
 			player = new Live.Player(url, option)
-			return new Promise(function(resolve, reject){
-				resolve()
-      })
 		}
 		var refresh = function(){
 			player.destroy()
