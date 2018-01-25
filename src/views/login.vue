@@ -82,7 +82,7 @@
         // BottomBoxList,
         UserList:'',
         // Eyes:false,
-        lastLoginImage:localStorage.getItem('lastLoginImage')||''
+        lastLoginImage:+localStorage.getItem('lastLoginImage')||''
       }
     },
     created(){
