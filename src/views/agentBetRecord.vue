@@ -27,7 +27,8 @@
           <template v-else>
               <template v-if="x==1">
               <div class="" v-for="item in temp_ajax[newName+'%'+newDay][x-1].res_data">
-                <a class="active" @click="$router.push({path:'betDetail',query:{ID:item.ID,UID:item.UserId}})">
+                <a class="active" @click="getShow(item.ID,item.UserId)">
+                <!-- <a class="active" @click="$router.push({path:'betDetail',query:{ID:item.ID,UID:item.UserId}})"> -->
                   <div><p>{{item.UserName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span></div>
                   <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
                   <strong :class="item.State==='等待开奖'?'OutMoney':''" v-else>{{item.State}}</strong>
@@ -37,7 +38,8 @@
             </template>
             <template v-if="x==2">
             <div class="" v-for="item in temp_ajax[newName+'%'+newDay][x-1].res_data">
-              <a class="active" @click="$router.push({path:'betDetail',query:{ID:item.ID,UID:item.UserId}})">
+              <a class="active" @click="getShow(item.ID,item.UserId)">
+              <!-- <a class="active" @click="$router.push({path:'betDetail',query:{ID:item.ID,UID:item.UserId}})"> -->
                 <div>
                   <p>{{item.UserName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span></div>
                 <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
@@ -48,7 +50,8 @@
             </template>
             <template v-if="x==3">
             <div class="" v-for="item in temp_ajax[newName+'%'+newDay][x-1].res_data">
-              <a class="active" @click="$router.push({path:'betDetail',query:{ID:item.ID,UID:item.UserId}})">
+              <a class="active" @click="getShow(item.ID,item.UserId)">
+              <!-- <a class="active" @click="$router.push({path:'betDetail',query:{ID:item.ID,UID:item.UserId}})"> -->
                 <div>
                   <p>{{item.UserName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span></div>
                 <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
@@ -59,7 +62,8 @@
             </template>
             <template v-if="x==4">
             <div class="" v-for="item in temp_ajax[newName+'%'+newDay][x-1].res_data">
-              <a class="active" @click="$router.push({path:'betDetail',query:{ID:item.ID,UID:item.UserId}})">
+              <a class="active" @click="getShow(item.ID,item.UserId)">
+              <!-- <a class="active" @click="$router.push({path:'betDetail',query:{ID:item.ID,UID:item.UserId}})"> -->
                 <div>
                   <p>{{item.UserName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span></div>
                  <strong class="OutMoney">{{item.State}}</strong>
@@ -75,13 +79,18 @@
         </div>
     </div>
     <bottom-box v-show = "BottomBoxShow" :list = "BottomBoxList"></bottom-box>
+    <betDetailShow v-show="defaultShow" :betID="defaultID" :UID="defaultUID"/>
   </div>
 </template>
 <script>
 import bottombox from '../components/bottom-box'
+import betDetailShow from '../components/betDetailShow'
 export default {
   data() {
     return {
+      defaultUID:0,
+      defaultID:'',
+      defaultShow:false,
       li_arr_obj: ["全部", "已中奖", "未中奖", "等待开奖"],
       li_state: 0,
       BottomBoxShow:false,
@@ -114,9 +123,15 @@ export default {
     }
   },
   components: {
-    'bottom-box': bottombox
+    'bottom-box': bottombox,
+    betDetailShow
   },
   methods: {
+    getShow(ID,UID){//注单详情
+      this.defaultShow=true
+      this.defaultUID=UID
+      this.defaultID=ID
+    },
     bottomBox:function(a,b){
       this.top_text=b
       this.BottomBoxShow=!this.BottomBoxShow
