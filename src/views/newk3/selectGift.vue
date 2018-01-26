@@ -166,8 +166,9 @@
   width: 100%;
   height: 2.9em;
   background-position: center -.1em !important;
-  background-size: 2.9em !important;
+  background-size: 3.1em !important;
   background-repeat: no-repeat !important;
+  transform:translateY(.1em);
 }
 .balance{
   float: left;
