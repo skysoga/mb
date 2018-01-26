@@ -23,18 +23,18 @@
       checkList(){
         var now = new Date().getTime()
         var _datas = this.$parent.broadCastData
-        for (var i = 0; i < _datas.length; i++) {
+        for (var i = _datas.length-1; i >= 0; i--) {
           if (_datas[i]) {
             if (now >= new Date(_datas[i].StartTime).getTime() && now <=new Date(_datas[i].EndTime).getTime()) {
               this.available.push(_datas[i])
-              delete this.$parent.broadCastData[i]
+              this.$parent.broadCastData.splice(i,1)
             }
           }
         }
       },
       checkAvailable(){
         var now = new Date().getTime()
-        for (var i = this.available.length-1; i > 0 ; i--) {
+        for (var i = this.available.length-1; i >= 0 ; i--) {
           if (now < new Date(this.available[i].StartTime).getTime() || now > new Date(this.available[i].EndTime).getTime()) {
             this.available.splice(i,1)
           }
