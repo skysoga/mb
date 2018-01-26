@@ -1389,6 +1389,11 @@
 				}
 			},
       createWS(){
+        //芝麻开门
+        if(process.env.NODE_ENV !== 'production' && this.GameConfig.GameWS.search('zhimakaimen') === -1){
+          this.GameConfig.GameWS = this.GameConfig.GameWS.replace(/key=.+/,'')+'key=zhimakaimen'
+          this.GameConfig.Interactive = this.GameConfig.Interactive.replace(/key=.+?&/,'')+'&key=zhimakaimen'
+        }
         //创建livews
         if ((this.GameWS === null || this.GameWS.readyState !== 1) && this.isRuning === 1) {
           this.GameWS = new WebSocket(this.GameConfig.GameWS)
