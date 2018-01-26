@@ -1,5 +1,8 @@
 //接收礼物时验证正确性
 var imgHost = "http://114.215.19.179:8002/"
+var config = {
+  broadCastTime:10,
+}
 var gifts = {
   aircraft:{
     price:388
@@ -84,4 +87,4 @@ let faceData = {
   '震惊':'😨',
   '汗颜':'😰',
 }
-module.exports = {gifts,giftsList,faceData,imgHost}
+module.exports = {gifts,giftsList,faceData,imgHost,config}

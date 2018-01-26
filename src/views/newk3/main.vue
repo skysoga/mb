@@ -37,6 +37,7 @@
           <selectGift :class="{ined:activeHide === 3}"></selectGift>
         </div>
       </div>
+      <broadCast></broadCast>
       <div class="mainBg"></div>
     </div>
     <div :class="{bet:(show === 'bet')?1:0}" class="betContainer">
@@ -85,8 +86,9 @@
   import selectGift    from './selectGift'
   import facetext      from './facetext'
   import history       from './history'
-  import {gifts,giftsList,faceData} from '../../js/liveconfig'
+  import {gifts,giftsList,faceData,config} from '../../js/liveconfig'
   import userinfo      from './userinfo'
+  import broadCast      from './broadCast'
   var eachLen = data=>data.map(arr=>arr.length)
   var getBetStr = (data, mode)=>{
     var line =  data.map(arr=>arr.join(' '))
@@ -156,6 +158,7 @@
       facetext,
       history,
       userinfo,
+      broadCast,
     },
     data:()=>{
       return{
@@ -183,12 +186,14 @@
         giftsList:giftsList,
         faceData:faceData,
         textData:null,
+        broadCastData:[],
         userinfoShow:0,
         userinfoBy:'',
         A10Rebate:[],
         tipsObj:{},//全部tip的对象
         rebates:{},//全部返点值
         barrageShow:-1,
+        config:config,
       }
     },
     computed:mapState({
@@ -557,6 +562,9 @@
 
           _barrage.data.push(barrage)
         }
+      },
+      broadCastPush(json){
+        this.broadCastData.push(json)
       },
       getResults(){
         this.$store.dispatch('lt_getResults', this.lcode)

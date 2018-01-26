@@ -1441,6 +1441,7 @@
             json.Photo = imgHost + '/' + json.Photo
             this.Anchor = json
             break;
+          case 'BroadCast':this.$refs.newk3.broadCastPush(json);break;
         }
       },
       WSrefresh(json){
