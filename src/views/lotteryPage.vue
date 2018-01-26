@@ -1409,6 +1409,14 @@
           this.GameWS.onerror = err =>{
             layer.msgWarn(err)
           }
+          this.GameWS.onclose = e =>{
+            var tt = setInterval(()=>{
+              if (this.isRuning === 1) {
+                router.push('/reload')
+                clearInterval(tt)
+              }
+            },1000)
+          }
         }
         //创建OnlineWS
         if ((this.OnlineWS === null || this.OnlineWS.readyState !== 1) && this.isRuning === 1) {

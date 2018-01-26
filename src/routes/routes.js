@@ -5,6 +5,7 @@ import xiaosen from './xiaosen'
 const login =require('../views/login')
 const index =require('../views/index')
 const liveList =require('../views/liveList')
+const reload =require('../views/reload')
 const activity =require('../views/activity')
 const newWinners =require('../views/newWinners')
 const center =require('../views/center')
@@ -30,6 +31,17 @@ var publicRoute = [
 var routes = [{
   path: '/',
   redirect: '/index' //重定向配置
+},{
+  path: '/reload',
+  name: '重载',
+  meta:{
+    title:'重载',
+    nav:false,
+    link:false,
+    user:false,
+    agent:false
+  },
+  component: reload
 },{
   path: '/index',
   name: '主页',
