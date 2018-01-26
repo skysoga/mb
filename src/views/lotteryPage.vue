@@ -409,6 +409,7 @@
 
             bus.$emit('clearNoteStr')   //清空文本框文字
             this.$store.commit('lt_clearBet')
+            console.log(mode)
             state.mode = mode
             //更改玩法时，对应玩法的奖金也跟着变
             state.award = awardSetter[type](mode.mode, Odds)

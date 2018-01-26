@@ -1,6 +1,6 @@
 //接收礼物时验证正确性
 var imgHost = "http://114.215.19.179:8002/"
-var config = {
+var livecfg = {
   broadCastTime:10,
 }
 var gifts = {
@@ -87,4 +87,4 @@ let faceData = {
   '震惊':'😨',
   '汗颜':'😰',
 }
-module.exports = {gifts,giftsList,faceData,imgHost,config}
+module.exports = {gifts,giftsList,faceData,imgHost,livecfg}

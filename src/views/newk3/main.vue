@@ -86,7 +86,7 @@
   import selectGift    from './selectGift'
   import facetext      from './facetext'
   import history       from './history'
-  import {gifts,giftsList,faceData,config} from '../../js/liveconfig'
+  import {gifts,giftsList,faceData,livecfg} from '../../js/liveconfig'
   import userinfo      from './userinfo'
   import broadCast      from './broadCast'
   var eachLen = data=>data.map(arr=>arr.length)
@@ -193,7 +193,7 @@
         tipsObj:{},//全部tip的对象
         rebates:{},//全部返点值
         barrageShow:-1,
-        config:config,
+        livecfg:livecfg,
       }
     },
     computed:mapState({

@@ -17,7 +17,7 @@
       this.t = setInterval(()=>{
         this.checkList()
         this.checkAvailable()
-      },this.$parent.config.broadCastTime*1000)
+      },this.$parent.livecfg.broadCastTime*1000)
     },
     methods:{
       checkList(){
