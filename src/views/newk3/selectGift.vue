@@ -165,8 +165,9 @@
 .review{
   width: 100%;
   height: 2.9em;
-  background-size: 100% !important;
-  background-position: 0 -.1em !important;
+  background-position: center -.1em !important;
+  background-size: 2.9em !important;
+  background-repeat: no-repeat !important;
 }
 .balance{
   float: left;

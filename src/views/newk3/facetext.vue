@@ -8,8 +8,6 @@
       </div>
       <div class="content">
         <input type="text" ref="content" :maxlength="inputLength" @focus="inputFocus" @blur="inputBlur" @keydown="inputDown($event)" @keyup="inputUp($event)" :placeholder="(showDefaultText  && !faceortext)?'点击输入可自由发言':'请选择您要发送的表情'" v-model="content">
-        <!-- <div class="testing" @focus="contentFocus" @blur="contentBlur" @keyup="keyup($event)" @keydown="limitLength($event)" ref="content">
-        </div> -->
         <div class="faceortext" :class="{text:faceortext,face:!faceortext}" @click.stop="changeFaceText">
           <i class="iconfont">{{faceortext?'&#xe615;':'&#xe616;'}}</i>
         </div>
