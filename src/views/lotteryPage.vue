@@ -98,7 +98,13 @@
       //设置请求的数组
       if (ptype === 'live') {
         //检测等级
-        if ((','+livecfg.level).search(`,${state.UserUpGradeBonus.Grade},`) === -1) {
+        var _level
+        try{
+          _level = state.UserUpGradeBonus.Grade
+        }catch(e){
+          RootApp.$router.replace('/login')
+        }
+        if ((','+livecfg.level).search(`,${_level},`) === -1) {
          //关掉loading动画
           store.commit('toggleLoading', false)
           return layer.msgWarn('您当前的等级无法进入直播页面！')

@@ -9,6 +9,7 @@
       <router-view :s="$store.state"></router-view>
     </transition>
     <newIframe :url="$store.state.URL" v-if="$store.state.URL"></newIframe>
+    <direction v-show="directions === 'landscape'"></direction>
   </div>
 </template>
 
@@ -16,15 +17,31 @@
   import Navbar from './components/navbar';
   import TitleInfo from './components/title-info';
   import newIframe from './components/newIframe';
+  import direction from './components/direction';
   export default {
     components: {
       Navbar,
       TitleInfo,
-      newIframe
+      newIframe,
+      direction,
     },
     data:()=>{
       return{
+        directions:'portrait'
       }
+    },
+    created(){
+      var mql = window.matchMedia('(orientation: portrait)')
+      console.log(mql);
+      var handleOrientationChange = (mql)=>{
+        if(mql.matches) {
+          this.directions = 'portrait'
+        }else {
+          this.directions = 'landscape'
+        }
+      }
+      mql.addListener(handleOrientationChange)
+      handleOrientationChange(mql)
     },
     /*watch:{
       $route(to,from){
