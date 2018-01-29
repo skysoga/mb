@@ -102,7 +102,7 @@
         try{
           _level = state.UserUpGradeBonus.Grade
         }catch(e){
-          RootApp.$router.replace('/login')
+          router.push('/login')
         }
         if ((','+livecfg.level).search(`,${_level},`) === -1) {
          //关掉loading动画

@@ -6,7 +6,7 @@
           <img :src="$store.getters.PhotoPath+twoGift['gift'+d].UserPhoto||$store.state.constant.DefPhoto">
           <div class="text">
             <span>{{twoGift['gift'+d].NickName?twoGift['gift'+d].NickName:twoGift['gift'+d].UserName}}</span>
-            <em>送出{{giftName[hasGift.indexOf(twoGift['gift'+d].GiftName)]}}</em>
+            <em>送出<i>{{giftName[hasGift.indexOf(twoGift['gift'+d].GiftName)]}}</i></em>
           </div>
           <cuke v-if="twoGift['gift'+d].GiftName === 'cuke'"></cuke>
           <injections v-if="twoGift['gift'+d].GiftName === 'injections'"></injections>
@@ -215,6 +215,9 @@
   em{
     font-size: .55em;
   }
+  i{
+    color:#f3e76e;
+  }
 }
 .resetNumber .number{
   transition: 0s !important;
@@ -228,7 +231,7 @@
   line-height: 2em;
   font-style: italic;
   font-size: 1.1em;
-  color: #f9bc35;
+  color: #f3e76e;
   text-shadow: 0px 3px 5px rgba(0, 0, 0, 0.64);
   float: left;
   padding-left: .2em;
@@ -243,7 +246,7 @@
   width:9em;
   height:100%;
   float:left;
-  border: 1px solid #f9d66a;
+  border: 1px solid #f3e76e;
   transform: translateX(-12em);
   transition:.3s;
 }
