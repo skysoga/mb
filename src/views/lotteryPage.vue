@@ -35,7 +35,7 @@
   import {bus, BaseBet, ChaseAjax, easyClone, deleteCompress, Scheme, getBasketAmount,
           computeIssue, getSSCRebate, getMultipleRebate,
           DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../js/kit'
-  import {gifts,giftsList,faceData,imgHost} from '../js/liveconfig'
+  import {gifts,giftsList,faceData,imgHost,livecfg} from '../js/liveconfig'
 
   var randomFeed = Math.floor(Math.random()*4)  //获取开奖时间的随机数，用于错开请求
   var haveGotTime = true		                    //标志位-进页面时是否获取到服务器时间
@@ -97,6 +97,12 @@
 
       //设置请求的数组
       if (ptype === 'live') {
+        //检测等级
+        if ((','+livecfg.level).search(`,${state.UserUpGradeBonus.Grade},`) === -1) {
+         //关掉loading动画
+          store.commit('toggleLoading', false)
+          return layer.msgWarn('您当前的等级无法进入直播页面！')
+        }
         //获取主播信息
         var GetDefaultBarrage= new Promise(function(res,rej){
           RootApp.GetInitData(['DefaultBarrage'],d=>{

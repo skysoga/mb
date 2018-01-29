@@ -2,6 +2,7 @@
 var imgHost = "http://114.215.19.179:8002/"
 var livecfg = {
   broadCastTime:10,
+  level:'-1,0,1,2,3,4,5,6,7,8,9,',
 }
 var gifts = {
   aircraft:{
