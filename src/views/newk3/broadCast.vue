@@ -29,6 +29,7 @@
     },
     methods:{
       checkList(){
+        console.table(this.$parent.broadCastData)
         var now = new Date().getTime()
         var _datas = this.$parent.broadCastData
         for (var i = _datas.length-1; i >= 0; i--) {

@@ -608,6 +608,13 @@
           console.log('此时要上抬')
         }
       },
+      '$parent.BroadCast'(n){
+        for (var i = 0; i < n.length; i++) {
+          n[i].StartTime = n[i].StartTime.replace(/-/g,'/').replace(/T/,' ')
+          n[i].EndTime = n[i].EndTime.replace(/-/g,'/').replace(/T/,' ')
+        }
+        this.broadCastData = n
+      },
     },
     // 生命周期destroyed销毁清除定时器，有利于内存释放
     destroyed() {

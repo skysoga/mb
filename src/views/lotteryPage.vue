@@ -116,8 +116,9 @@
           },{url:'/LiveApi'})
         })
         var GetAnchor     = _fetch({Action:"GetAnchor",GameID:lcode},{url:'/LiveApi'})
+        var GetLiveBroadCast= _fetch({Action:"GetLiveBroadCast",GameID:lcode},{url:'/LiveApi'})
         var getGameConfig = _fetch({Action:'GameConfig',GameID:lcode})
-        var reqArr        = [getRebate, getServerTime,getGameConfig,GetAnchor,GetDefaultBarrage]
+        var reqArr        = [getRebate, getServerTime,getGameConfig,GetAnchor,GetDefaultBarrage,GetLiveBroadCast]
       }else{
         var reqArr        = [getRebate, getLotteryList, getServerTime]
       }
@@ -163,6 +164,7 @@
               }
               vm.DefaultBarrage = textDataObj
               vm.RandomBarrage = newBarrage
+              vm.BroadCast = values[5].BackData
             })
           }else{
             if (values[2].Code !== 1) {
@@ -1368,6 +1370,7 @@
         isRuningT:null,
         DefaultBarrage:{},
         RandomBarrage:[],
+        BroadCast:null,
       }
     },
     computed:{
