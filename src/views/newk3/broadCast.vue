@@ -1,9 +1,9 @@
 <template>
   <div class="broadCast" v-if="available.length">
     <ul class="fix">
-      <li v-for="v in available"><em></em>
+      <li><em></em>
         <span>
-          <scrollText class="scrollText" :content="v.Content"></scrollText>
+          <scrollText class="scrollText" :content="available[showRow].Content"></scrollText>
         </span>
       </li>
     </ul>
@@ -19,6 +19,8 @@
       return{
         t:null,
         available:[],
+        showRow:0,
+        maxRow:1,
       }
     },
     mounted(){
@@ -29,7 +31,6 @@
     },
     methods:{
       checkList(){
-        console.table(this.$parent.broadCastData)
         var now = new Date().getTime()
         var _datas = this.$parent.broadCastData
         for (var i = _datas.length-1; i >= 0; i--) {
@@ -53,8 +54,14 @@
     watch:{
       '$parent.broadCastData'(n,o){
         this.checkList()
-      }
-    }
+      },
+      'available'(n,o){
+        this.maxRow = n.length
+      },
+    },
+    beforeDestroy(){
+      clearInterval(this.t)
+    },
   }
 </script>
 <style lang="scss" scoped>

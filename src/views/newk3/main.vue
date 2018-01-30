@@ -610,8 +610,8 @@
       },
       '$parent.BroadCast'(n){
         for (var i = 0; i < n.length; i++) {
-          n[i].StartTime = n[i].StartTime.replace(/-/g,'/').replace(/T/,' ')
-          n[i].EndTime = n[i].EndTime.replace(/-/g,'/').replace(/T/,' ')
+          n[i].StartTime = n[i].StartTime.replace(/-/g,'/').replace(/T/,' ').replace(/\.[\d]{0,3}/,'')
+          n[i].EndTime = n[i].EndTime.replace(/-/g,'/').replace(/T/,' ').replace(/\.[\d]{0,3}/,'')
         }
         this.broadCastData = n
       },
