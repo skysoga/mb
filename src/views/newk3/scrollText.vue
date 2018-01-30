@@ -19,18 +19,37 @@
     mounted(){
       this.width = this.$refs.target.scrollWidth
       this.maxWidth = this.$refs.target.offsetWidth
+      setTimeout(()=>{
+        this.$parent.className="mounted"
+      },10)
       if (this.width > this.maxWidth) {
         this.scroll()
+      }else{
+        setTimeout(()=>{
+          this.$parent.className="before-destroy"
+          setTimeout(()=>{
+            //关闭自身
+            this.closeSelf()
+          },1000)
+        },5000)
       }
     },
     methods:{
       scroll(){
         setTimeout(()=>{
           this.moveX = -(this.width - this.maxWidth)
-        },1000)
-        setInterval(()=>{
-          this.reset = !this.reset
-        },6000)
+        },2000)
+        setTimeout(()=>{
+          //自身消失动画
+          this.$parent.className="before-destroy"
+          setTimeout(()=>{
+            //关闭自身
+            this.closeSelf()
+          },1000)
+        },8000)
+      },
+      closeSelf(){
+        this.$parent.changeRow()
       }
     },
     beforeDestroy(){
@@ -40,6 +59,7 @@
 </script>
 <style lang="scss" scoped>
 .con{
+  pointer-events: none;
 }
 .scrollText{
   display: block;

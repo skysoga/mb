@@ -1,9 +1,9 @@
 <template>
-  <div class="broadCast" v-if="available.length">
+  <div class="broadCast" :class="className" v-if="available.length">
     <ul class="fix">
       <li><em></em>
         <span>
-          <scrollText class="scrollText" :content="available[showRow].Content"></scrollText>
+          <scrollText class="scrollText" v-if="status" :content="available[showRow].Content"></scrollText>
         </span>
       </li>
     </ul>
@@ -21,6 +21,8 @@
         available:[],
         showRow:0,
         maxRow:1,
+        className:"",
+        status:1,
       }
     },
     mounted(){
@@ -50,6 +52,18 @@
           }
         }
       },
+      changeRow(){
+        this.className = ''
+        this.status = 0
+        setTimeout(()=>{
+          if (this.showRow<this.maxRow-1) {
+            this.showRow++
+          }else{
+            this.showRow = 0
+          }
+          this.status = 1
+        },500)
+      },
     },
     watch:{
       '$parent.broadCastData'(n,o){
@@ -70,14 +84,17 @@
   top:4.06em;
   margin-left: .4em;
   z-index: 25;
+  transition: 1s;
+  transform: translateX(16rem);
+  opacity: 0;
   li{
     border-radius: 1em;
     padding:0 .4em;
     color:white;
     font-size: .6em;
-    background: #33a2f2;
-    background: linear-gradient(to left, #33a2f2 2%, #50c6f5 100%);
-    background: -webkit-linear-gradient(left, #33a2f2 2%, #50c6f5 100%);
+    background: #ec8f36;
+    background: linear-gradient(to left, #ec8f36 2%, #fad066 100%);
+    background: -webkit-linear-gradient(left, #ec8f36 2%, #fad066 100%);
     margin-bottom:.5em;
     padding:.2em .4em;
     position: relative;
@@ -91,6 +108,14 @@
         line-height: 1.4em;
       }
     }
+  }
+  &.mounted{
+    transform: translateX(0);
+    opacity: 1;
+  }
+  &.before-destroy{
+    transform: translateX(-16rem);
+    opacity: 0;
   }
 }
 .scrollText{
