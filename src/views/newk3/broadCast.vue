@@ -58,10 +58,13 @@
         setTimeout(()=>{
           if (this.showRow<this.maxRow-1) {
             this.showRow++
+            this.status = 1
           }else{
             this.showRow = 0
+            setTimeout(()=>{
+              this.status = 1
+            },this.$parent.livecfg.broadCastIntervalTime*1000)
           }
-          this.status = 1
         },500)
       },
     },

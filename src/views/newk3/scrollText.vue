@@ -1,6 +1,6 @@
 <template>
   <div class="con" ref="target">
-    <div class="target" :class="{reset}" :style="`transform:translateX(${moveX}px)`">{{content}}</div>
+    <div class="target" :class="{reset}" :style="{transform:`translateX(${moveX}px)`,transition:`${$parent.$parent.livecfg.broadCastShowTime}s`}">{{content}}</div>
   </div>
 </template>
 <script>
@@ -31,7 +31,7 @@
             //关闭自身
             this.closeSelf()
           },1000)
-        },5000)
+        },this.$parent.$parent.livecfg.broadCastShowTime*1000)
       }
     },
     methods:{
@@ -46,7 +46,7 @@
             //关闭自身
             this.closeSelf()
           },1000)
-        },8000)
+        },this.$parent.$parent.livecfg.broadCastShowTime*1000+2000)
       },
       closeSelf(){
         this.$parent.changeRow()

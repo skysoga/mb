@@ -1,7 +1,12 @@
 //接收礼物时验证正确性
 var imgHost = "http://114.215.19.179:8002/"
 var livecfg = {
+  //多长时间验证一次广播的有效期（秒）
   broadCastTime:10,
+  //广播显示时间长度（秒）
+  broadCastShowTime:5,
+  //广播循环显示一次之后多久再循环显示（秒）
+  broadCastIntervalTime:10,
   level:'-1,0,1,2,3,4,5,6,7,8,9,',
 }
 var gifts = {
