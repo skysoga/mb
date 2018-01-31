@@ -9,7 +9,7 @@
           <div class="info fix">
             <em>UU快三</em>
             <p>颠覆性的美女直播投注玩法</p>
-            <span>暂未开放</span>
+            <span>即将上线</span>
           </div>
         </li>
       </ul>
@@ -24,7 +24,7 @@
     },
     methods:{
       stop(){
-        layer.msgWarn('内测中，暂未开放')
+        layer.msgWarn('内测中，暂未开放！')
       }
     },
   }
