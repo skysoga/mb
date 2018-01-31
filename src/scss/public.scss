@@ -966,12 +966,9 @@ content:"\e62c";
   fill:#333;
   transform: translateY(1px);
 }
-#app~*{
-  display: none !important;
-}
 body > * {
   display: none !important;
 }
-#app{
+.layermbox,#app{
   display: block !important;
 }
