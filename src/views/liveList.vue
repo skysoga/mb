@@ -8,7 +8,7 @@
           </a>
           <div class="info fix">
             <em>UU快三</em>
-            <p>颠覆性的美女开奖直播彩票</p>
+            <p>颠覆性的美女直播投注玩法</p>
             <span>暂未开放</span>
           </div>
         </li>
