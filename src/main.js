@@ -54,8 +54,7 @@ window._catch = function(data){
     _HeaderFun(res.headers.entries())
   })
 }
-window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
-if(!window.indexedDB){
+if(!(window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB)){
   _catch({msg:'IndexedDB'})
 }
 window.onerror = function(errorMessage, scriptURI, lineNumber,columnNumber,errorObj) {
