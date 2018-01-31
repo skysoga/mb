@@ -16,6 +16,7 @@ const competition =require('../views/competition')
 const maintain = require('../views/maintain')
 const AppDownload = require('../views/AppDownload')
 const AppPackage = require('../views/AppPackage')
+const liveList = require('../views/liveList')
 
 
 var publicRoute = [
@@ -158,6 +159,10 @@ var routes = [{
     link:"/index",
   },
   component: AppPackage
+},{
+  path: '/liveList',
+  name: 'UU直播',
+  component: liveList
 }]
 
 routes = routes.concat(lottery).concat(zhiming).concat(xiaosen).concat(publicRoute)
