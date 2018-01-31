@@ -3,7 +3,7 @@
     <div class="list">
       <ul>
         <li>
-          <a class="pic" @click="stop" style="background: url('/static/img/livelist-k3.jpg')">
+          <a class="pic" @click="stop" :style="`background: url('${$store.state.constant.ImgHost}/system/live/livelist-k3.jpg')`">
             <span></span>
           </a>
           <div class="info fix">
@@ -21,6 +21,10 @@
     data:()=>{
       return{
       }
+    },
+    beforeRouteEnter(to,from,next){
+      to.meta.title=`<img id="uulive-logo" src="${state.constant.ImgHost}/system/live/logo.png" />UU直播`
+      next()
     },
     methods:{
       stop(){
