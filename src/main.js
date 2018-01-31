@@ -659,7 +659,7 @@ window._fetch = function (data, option = {}){
       if("Failed to fetch"===error.message){
         msg = "您的设备失去了网络连接"
       }else{
-        msg = "网络错误，请检查网络状态"
+        msg = "网络错误"+error.message
       }
       _catch({msg:'fetchFailed'})
       // var msg = "网络错误，请检查网络状态"
@@ -1051,7 +1051,7 @@ window.store = new Vuex.Store({
   layer.alert=function(msg,fun){
     return layer.open({
       className: "layerConfirm",
-      title:'温馨提示',
+      title:(_App?'温馨':'错误')+'提示',
       shadeClose: false,
       content: msg,
       btn: ["确定"],
