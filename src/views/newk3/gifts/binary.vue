@@ -88,10 +88,15 @@
     height: 28.44444rem !important;
     transform: initial !important;
 	}
-	&.porsche,&.salute{
+	&.porsche{
 		canvas{
 			height: 16rem !important;
 			margin-top:6.22222rem;
+		}
+	}
+	&.salute{
+		canvas{
+			margin-top:-2em;
 		}
 	}
 }

@@ -235,6 +235,7 @@
         }
         this.$parent.barrageIsOpen = 1
         content = this.Simplized(content)
+        this.$parent.activeHide = 0
         _fetch({
           Action:'SendBarrage',
           GameID:this.$parent.$parent.lcode,
