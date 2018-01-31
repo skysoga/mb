@@ -161,7 +161,14 @@ var routes = [{
   component: AppPackage
 },{
   path: '/liveList',
-  name: 'UU直播',
+  name: '主页',
+  meta:{
+    title:'<img id="uulive-logo" src="/static/img/uulive-logo.png" />UU直播',
+    nav:true,
+    link:false,
+    user:false,
+    agent:false
+  },
   component: liveList
 }]
 
