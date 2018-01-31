@@ -972,7 +972,12 @@ content:"\e62c";
   fill:#333;
   transform: translateY(1px);
 }
-
+body > * {
+  display: none !important;
+}
+.layermbox,#app{
+  display: block !important;
+}
 #uulive-logo{
   width:initial !important;
   height: 1.5em;
