@@ -1,6 +1,8 @@
 <template>
 	<div class="binary">
-		<div id="gift" :class="className"></div>新型礼物
+		<div>
+			<div class="gift" id="gift" :class="className"></div>
+		</div>
 	</div>
 </template>
 <script>
@@ -71,13 +73,16 @@
 .binary{
 	position: fixed;
 	z-index: 21;
-	width: 100%;
-	height:100%;
-
+	width: 16rem;
+	height:150%;
+	top:-25%;
 	pointer-events:none;
+	display: table;
 	>div{
-		width:100%;
 		height:100%;
+		width: 100%;
+		display: table-cell;
+		vertical-align: middle;
 	}
 }
 </style>
@@ -91,12 +96,6 @@
 	&.porsche{
 		canvas{
 			height: 16rem !important;
-			margin-top:6.22222rem;
-		}
-	}
-	&.salute{
-		canvas{
-			margin-top:-2em;
 		}
 	}
 }
