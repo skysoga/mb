@@ -54,6 +54,10 @@ window._catch = function(data){
     _HeaderFun(res.headers.entries())
   })
 }
+window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+if(!window.indexedDB){
+  _catch({msg:'IndexedDB'})
+}
 window.onerror = function(errorMessage, scriptURI, lineNumber,columnNumber,errorObj) {
   console.log(errorMessage, scriptURI, lineNumber,columnNumber,errorObj)
   _catch({msg:'winerr',errorMessage,scriptURI,errorObj})
