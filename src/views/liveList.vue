@@ -3,19 +3,32 @@
     <div class="list">
       <ul>
         <li>
-          <router-link to="/live/K3/0101" class="pic" style="background: url('/static/img/livelist-k3.jpg')">
+          <a class="pic" @click="stop" style="background: url('/static/img/livelist-k3.jpg')">
             <span></span>
-          </router-link>
+          </a>
           <div class="info fix">
             <em>UU快三</em>
             <p>颠覆性的美女开奖直播彩票</p>
-            <span>正在直播</span>
+            <span>暂未开放</span>
           </div>
         </li>
       </ul>
     </div>
   </div>
 </template>
+<script>
+  export default {
+    data:()=>{
+      return{
+      }
+    },
+    methods:{
+      stop(){
+        layer.msgWarn('内测中，暂未开放')
+      }
+    },
+  }
+</script>
 <style scoped lang="scss">
 .list{
   margin-top:2.8em;
