@@ -106,6 +106,7 @@ export default {
     },
     transType:function(type){
       switch(type){
+      case '快三':
       case '快3':
         this.lottery_icon = 'L_K3'
         break
