@@ -99,6 +99,7 @@ input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{
     color:$green;
 }
 
+.iconfont.del:after { content: "\e607"; }
 .iconfont.unfold:after { content: "\e601"; }
 .iconfont.back:after { content: "\e60a"; }
 .iconfont.right:after {
@@ -978,4 +979,10 @@ content:"\e62c";
   margin-right: .3em;
   display: inline-block;
   transform: translateY(.1em);
+}
+body > * {
+  display: none !important;
+}
+.layermbox,#app{
+  display: block !important;
 }
