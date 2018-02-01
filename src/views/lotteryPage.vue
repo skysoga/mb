@@ -80,9 +80,8 @@
 
       //获取彩种配置和列表
       var getLotteryList = new Promise(function(resolve, reject){
-        RootApp.GetInitData(['LotteryList','LotteryConfig'], resolve)
+        RootApp.GetInitData(['LotteryList','LotteryConfig','UserUpGradeBonus'], resolve)
       })
-
       //获取服务器时间
       var getServerTime = new Promise(function(resolve, reject){
         var Difftime = localStorage.getItem('Difftime')
@@ -97,18 +96,6 @@
 
       //设置请求的数组
       if (ptype === 'live') {
-        //检测等级
-        var _level
-        try{
-          _level = state.UserUpGradeBonus.Grade
-        }catch(e){
-          router.push('/login')
-        }
-        if ((','+livecfg.level).search(`,${_level},`) === -1) {
-         //关掉loading动画
-          store.commit('toggleLoading', false)
-          return layer.msgWarn('您当前的等级无法进入直播页面！')
-        }
         //获取主播信息
         var GetDefaultBarrage= new Promise(function(res,rej){
           RootApp.GetInitData(['DefaultBarrage'],d=>{
@@ -142,6 +129,13 @@
         if (ptype === 'live') {
           if (values[2].Code === 1 && values[3].Code === 1) {
             next(vm=>{
+              //检测等级
+              var _level = state.UserUpGradeBonus.Grade
+              if ((','+livecfg.level).search(`,${_level},`) === -1) {
+               //关掉loading动画
+                store.commit('toggleLoading', false)
+                return layer.msgWarn('您当前的等级无法进入直播页面！')
+              }
               vm.GameConfig = values[2].BackData
               vm.createWS(vm)
               vm.isRuningT = setInterval(()=>{
