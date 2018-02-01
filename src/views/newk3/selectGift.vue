@@ -175,6 +175,10 @@
   color:#fcc948;
   font-size: .65em;
   padding-left: .6em;
+  &:before{
+    content: '\e64f ';
+    font-family: 'iconfont';
+  }
 }
 .giving{
   background:rgba(4, 0, 12, 0.88);
@@ -193,6 +197,7 @@
         // border-right:1px solid rgba(255, 255, 255, 0.1);
         padding:.3em;
         position: relative;
+        overflow: hidden;
         &:active{
         	background-color:none;
         }
@@ -233,7 +238,7 @@
         }
       }
       .selected{
-      	border:1px solid #9560a7 !important;
+      	border:1px solid #ee3945 !important;
       }
     }
   }

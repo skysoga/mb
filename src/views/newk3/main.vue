@@ -810,6 +810,7 @@
     height: 150%;
     width: 100%;
     display: table;
+    background: #b8b4aa;
     img{
       position:absolute;
       top:15%;

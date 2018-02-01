@@ -34,6 +34,9 @@
       var mql = window.matchMedia('(orientation: portrait)')
       console.log(mql);
       var handleOrientationChange = (mql)=>{
+        if(document.activeElement.tagName === 'INPUT'){
+          return
+        }
         if(mql.matches) {
           this.directions = 'portrait'
         }else {
