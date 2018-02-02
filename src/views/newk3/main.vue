@@ -5,6 +5,7 @@
     <div class="video">
       <div><iframe ref="iframe" src="/static/video.html"></iframe></div>
       <img src="/static/img/newk3-bg.jpg" alt="" width="100%">
+      <div v-if="loading" class="loading" id="loading"></div>
     </div>
     <div v-show="show == 'main'" @click="changeShow" class="mainPage">
       <div class="result">
@@ -194,6 +195,8 @@
         rebates:{},//全部返点值
         barrageShow:-1,
         livecfg:livecfg,
+        loading:1,
+        player:null,
       }
     },
     computed:mapState({
@@ -336,6 +339,16 @@
       this.rebates = rebates
     },
     methods:{
+      startLoading(){
+        console.log('加载动画')
+        this.player = new SVGA.Player('#loading');
+        var parser = new SVGA.Parser('#loading'); // 如果你需要支持 IE6+，那么必须把同样的选择器传给 Parser。
+        parser.load('/static/img/loading.c', videoItem=> {
+          this.player.clearsAfterStop=true
+          this.player.setVideoItem(videoItem);
+          this.player.startAnimation();
+        })
+      },
       showCard(w){
         this.userinfoShow = !this.userinfoShow
         if (w === 1) {
@@ -571,6 +584,8 @@
       },
     },
     mounted(){
+
+      this.startLoading()
       setTimeout(()=>{
         this.barrageShow = this.$parent.checkPermissionsLevel('Barrage')
         if(this.$parent.GameConfig.LiveBroadcastBarrage.State === 1){
@@ -599,7 +614,12 @@
           url = url.replace(/key=.+/,'')+'key=zhimakaimen'
         }
         console.log('执行开启视频')
-        this.$refs.iframe.contentWindow.openlive(url)
+        this.$refs.iframe.contentWindow.openlive(url,()=>{
+          setTimeout(()=>{
+            this.loading = 0
+            this.player.stopAnimation()
+          },2000)
+        })
       }
     },
     watch:{
@@ -626,6 +646,14 @@
 </script>
 <style lang="scss" scoped>
 @import "../../scss/dice";
+.loading{
+  display: block;
+  position: fixed;
+  z-index: 9 !important;
+  top: 0;
+  left: 0;
+  transform: scale(.4);
+}
 .testbg{
   height: 120vh;
   width: 100vw;
@@ -822,6 +850,8 @@
       vertical-align: middle;
       width: 100%;
       height: 100%;
+      position: fixed;
+      z-index: 10;
     }
     iframe{
       position: relative;
