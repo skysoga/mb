@@ -2,20 +2,16 @@
   <div @click="$parent.changeShow" v-if="isOpen">
     <smallgift></smallgift>
     <binary></binary>
-  	<div class="gifts" v-if="giftArr.length > 0">
-  		<ferrari  v-if="giftArr[0].type === 'ferrari'"	></ferrari>
-  		<airplane v-if="giftArr[0].type === 'airplane'"	></airplane>
-  	</div>
+  	<!-- <div class="gifts" v-if="giftArr.length > 0">
+  	</div> -->
   </div>
 </template>
 <script>
   import smallgift  from './gifts/smallgift'
-  import airplane   from './gifts/airplane'
   import binary     from './gifts/binary'
   export default {
     components: {
       smallgift,
-      airplane,
       binary,
     },
   	props:['activegift'],
@@ -88,14 +84,14 @@
   }
 </script>
 <style lang="scss" scoped>
-.gifts{
-	.gift{
-		position: fixed;
-		z-index: 21;
-		width: 100%;
-		height: 100%;
-		bottom:0;
-		pointer-events:none;
-	}
-}
-</style>
+// .gifts{
+// 	.gift{
+// 		position: fixed;
+// 		z-index: 21;
+// 		width: 100%;
+// 		height: 100%;
+// 		bottom:0;
+// 		pointer-events:none;
+// 	}
+// }
+// </style>

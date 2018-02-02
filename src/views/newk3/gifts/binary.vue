@@ -1,8 +1,9 @@
 <template>
 	<div class="binary">
-		<div>
+		<div class="binary-con">
 			<div class="gift" id="gift" :class="className"></div>
 		</div>
+		<div class="info" v-if="$parent.giftArr[0]" :class="{tobottom:$parent.$parent.available.length>0}"><span>{{$parent.giftArr[0].NickName?$parent.giftArr[0].NickName:$parent.giftArr[0].UserName}}送出</span></div>
 	</div>
 </template>
 <script>
@@ -39,6 +40,9 @@
 				}
 			},
 			start(){
+				if (!this.$parent.giftArr[0].type) {
+					return
+				}
 				var player = new SVGA.Player('#gift');
 				var parser = new SVGA.Parser('#gift'); // 如果你需要支持 IE6+，那么必须把同样的选择器传给 Parser。
 				parser.load('/static/img/gifts/'+this.$parent.giftArr[0].type+'.c', videoItem=> {
@@ -70,6 +74,30 @@
 	}
 </script>
 <style lang='scss' scoped>
+.tobottom{
+	transform:translateY(1.42em);
+}
+.info{
+	position: fixed;
+	top: 3.75em;
+  margin-left: .4em;
+  left: 0;
+	span{
+		border-radius: 1em;
+    padding: 0 .4em;
+    color: white;
+    font-size: .6em;
+    background: #33a2f2;
+    background: linear-gradient(to left, #33a2f2 2%, #50c6f5 100%);
+    background: -webkit-linear-gradient(left, #33a2f2 2%, #50c6f5 100%);
+    margin-bottom: .5em;
+    padding: 0 .4em;
+    position: relative;
+    height: 1.8em;
+    line-height: 1.8em;
+    display: inline-block;
+	}
+}
 .binary{
 	position: fixed;
 	z-index: 21;
@@ -78,12 +106,12 @@
 	top:-25%;
 	pointer-events:none;
 	display: table;
-	>div{
-		height:100%;
-		width: 100%;
-		display: table-cell;
-		vertical-align: middle;
-	}
+}
+.binary-con{
+	height:100%;
+	width: 100%;
+	display: table-cell;
+	vertical-align: middle;
 }
 </style>
 <style lang="scss">

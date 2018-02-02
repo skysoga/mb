@@ -1,9 +1,9 @@
 <template>
-  <div class="broadCast" :class="className" v-if="available.length">
+  <div class="broadCast" :class="className" v-if="$parent.available.length">
     <ul class="fix">
       <li><em></em>
         <span>
-          <scrollText class="scrollText" v-if="status" :content="available[showRow].Content"></scrollText>
+          <scrollText class="scrollText" v-if="status" :content="$parent.available[showRow].Content"></scrollText>
         </span>
       </li>
     </ul>
@@ -18,7 +18,6 @@
     data:()=>{
       return{
         t:null,
-        available:[],
         showRow:0,
         maxRow:1,
         className:"",
@@ -38,7 +37,7 @@
         for (var i = _datas.length-1; i >= 0; i--) {
           if (_datas[i]) {
             if (now >= new Date(_datas[i].StartTime.replace(/-/g,'/')).getTime() && now <=new Date(_datas[i].EndTime.replace(/-/g,'/')).getTime()) {
-              this.available.push(_datas[i])
+              this.$parent.available.push(_datas[i])
               this.$parent.broadCastData.splice(i,1)
             }
           }
@@ -46,9 +45,9 @@
       },
       checkAvailable(){
         var now = new Date().getTime()
-        for (var i = this.available.length-1; i >= 0 ; i--) {
-          if (now < new Date(this.available[i].StartTime).getTime() || now > new Date(this.available[i].EndTime).getTime()) {
-            this.available.splice(i,1)
+        for (var i = this.$parent.available.length-1; i >= 0 ; i--) {
+          if (now > new Date(this.$parent.available[i].EndTime).getTime()) {
+            this.$parent.available.splice(i,1)
           }
         }
       },
@@ -83,7 +82,7 @@
 </script>
 <style lang="scss" scoped>
 .broadCast{
-  position: absolute;
+  position: fixed;
   top:4.06em;
   margin-left: .4em;
   z-index: 25;
@@ -99,7 +98,9 @@
     background: linear-gradient(to left, #ec8f36 2%, #fad066 100%);
     background: -webkit-linear-gradient(left, #ec8f36 2%, #fad066 100%);
     margin-bottom:.5em;
-    padding:.2em .4em;
+    padding:0 .4em;
+    height: 1.8em;
+    line-height: 1.8em;
     position: relative;
     em{
       &:before{
@@ -108,7 +109,7 @@
         content:"\e649";
         font-family: 'iconfont';
         padding-right: .3em;
-        line-height: 1.4em;
+        line-height: 1.8em;
       }
     }
   }

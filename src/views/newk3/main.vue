@@ -3,16 +3,16 @@
   <div class="newContainer">
     <gift :activegift="activegift" v-show="show == 'main'"></gift>
     <div class="video">
-      <div><iframe ref="iframe" src="/static/video.html"></iframe></div>
       <img src="/static/img/newk3-bg.jpg" alt="" width="100%">
       <div v-if="loading" class="loading" id="loading"></div>
+      <div><iframe ref="iframe" src="/static/video.html"></iframe></div>
     </div>
     <div v-show="show == 'main'" @click="changeShow" class="mainPage">
       <div class="result">
         <div class="timebar" @click.stop="history = 1">
           <em v-show="/^\d/.test(TimeBar)">{{nowIssue}}投注：</em>
           {{TimeBar}}<i class="iconfont">&#xe60e;</i>
-        </div><br>
+        </div>
         <div class="oldissue" @click.stop="history = 2">
           {{oldIssue}}开奖：<div class="DiceImg">
             <div class="Dice" :class="displayClass+results[0]"></div><div class="Dice" :class="displayClass+results[1]"></div><div class="Dice" :class="displayClass+results[2]"></div>
@@ -197,6 +197,7 @@
         livecfg:livecfg,
         loading:1,
         player:null,
+        available:[],
       }
     },
     computed:mapState({
@@ -707,6 +708,7 @@
   z-index: 26;
   display: inline-block;
   font-size: .9em;
+  width: 10em;
   span{
     font-size:.7em;
     display:block;
@@ -727,7 +729,9 @@
 }
 .timebar,.oldissue{
   font-size:.68em;
-  padding:.5em .8em;
+  padding:0 .8em;
+  height: 2.4em;
+  line-height: 2.5em;
   border-radius: 1.4705em;
 }
 .timebar{
@@ -736,7 +740,7 @@
   }
 }
 .oldissue{
-  margin-top:.588em;
+  margin-top:.6em;
 }
 
 .DiceImg{
@@ -850,8 +854,6 @@
       vertical-align: middle;
       width: 100%;
       height: 100%;
-      position: fixed;
-      z-index: 10;
     }
     iframe{
       position: relative;
