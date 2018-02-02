@@ -3,7 +3,16 @@
 		<div class="binary-con">
 			<div class="gift" id="gift" :class="className"></div>
 		</div>
-		<div class="info" v-if="$parent.giftArr[0]" :class="{tobottom:$parent.$parent.available.length>0}"><span>~{{$parent.giftArr[0].NickName?$parent.giftArr[0].NickName:$parent.giftArr[0].UserName}}送出 {{$parent.giftsObj[$parent.giftArr[0].type][1]}}~~</span></div>
+		<div class="info fix" v-if="$parent.giftArr[0]" :class="{tobottom:$parent.$parent.available.length>0}">
+			<div class="img">
+				<img height="100%" width="100%" :src="$store.getters.PhotoPath+$parent.giftArr[0].UserPhoto||$store.state.constant.DefPhoto">
+			</div>
+			<div class="text">
+				<span>{{$parent.giftArr[0].NickName?$parent.giftArr[0].NickName:$parent.giftArr[0].UserName}}</span>
+				<em>送出<i>{{$parent.giftsObj[$parent.giftArr[0].type][1]}}</i></em>
+			</div>
+			<div class="review" :style="'background: url(/static/img/smallgifts/'+$parent.giftArr[0].type+'.png) center'"></div>
+		</div>
 	</div>
 </template>
 <script>
@@ -79,24 +88,60 @@
 }
 .info{
 	position: fixed;
-	top: 3.75em;
+  height: 2em;
+  width: 9em;
   margin-left: .4em;
   left: 0;
+  top: 4em;
+  border: 1px solid #42b3f3;
+  border-radius: 2em;
+  background: #45a1f5;
+  background: linear-gradient(to left, #45a1f5 2%, #5bc3f7 100%);
+  background: -webkit-linear-gradient(left, #45a1f5 2%, #5bc3f7 100%);
 	span{
-		border-radius: 1em;
-    padding: 0 .4em;
-    color: white;
-    font-size: .6em;
-    background: #33a2f2;
-    background: linear-gradient(to left, #33a2f2 2%, #50c6f5 100%);
-    background: -webkit-linear-gradient(left, #33a2f2 2%, #50c6f5 100%);
-    margin-bottom: .5em;
-    padding: 0 .6em;
-    position: relative;
-    height: 1.8em;
-    line-height: 1.8em;
-    display: inline-block;
+    margin-top: .4em;
+    font-size: .68em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    line-height: 1.32em;
 	}
+	.img{
+		float: left;
+		width: 1.95em;
+		height: 100%;
+    display: block;
+	}
+	img{
+		border-radius: 50%;
+		display: inline-block;
+	}
+}
+.text{
+  width: 3.2em;
+  float: left;
+  height: 100%;
+  overflow: hidden;
+  line-height: 1em;
+  color: white;
+  margin-left: .3em;
+  em{
+  	font-size: .55em;
+  	display: block;
+  	line-height: 1.32em;
+  	i{
+  		color:#f3e76e;
+  	}
+  }
+}
+.review{
+	float: left;
+  width: 2.8em;
+	height: 2em;
+	background-size: cover !important;
+	margin-left: .4em;
+	overflow: hidden;
 }
 .binary{
 	position: fixed;
