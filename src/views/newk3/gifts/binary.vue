@@ -3,7 +3,7 @@
 		<div class="binary-con">
 			<div class="gift" id="gift" :class="className"></div>
 		</div>
-		<div class="info" v-if="$parent.giftArr[0]" :class="{tobottom:$parent.$parent.available.length>0}"><span>{{$parent.giftArr[0].NickName?$parent.giftArr[0].NickName:$parent.giftArr[0].UserName}}送出</span></div>
+		<div class="info" v-if="$parent.giftArr[0]" :class="{tobottom:$parent.$parent.available.length>0}"><span>~{{$parent.giftArr[0].NickName?$parent.giftArr[0].NickName:$parent.giftArr[0].UserName}}送出 {{$parent.giftsObj[$parent.giftArr[0].type][1]}}~~</span></div>
 	</div>
 </template>
 <script>
@@ -91,7 +91,7 @@
     background: linear-gradient(to left, #33a2f2 2%, #50c6f5 100%);
     background: -webkit-linear-gradient(left, #33a2f2 2%, #50c6f5 100%);
     margin-bottom: .5em;
-    padding: 0 .4em;
+    padding: 0 .6em;
     position: relative;
     height: 1.8em;
     line-height: 1.8em;

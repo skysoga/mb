@@ -23,7 +23,14 @@
         t1:null,
         t2:null,
         isOpen:0,
+        giftsObj:{},
     	}
+    },
+    created(){
+      var giftsList = this.$parent.giftsList
+      for (var i = 0; i < giftsList.length; i++) {
+        this.giftsObj[giftsList[i][0]] = giftsList[i]
+      }
     },
     mounted(){
       document.addEventListener("visibilitychange", this.clearGift)

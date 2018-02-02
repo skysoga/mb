@@ -98,7 +98,7 @@
     background: linear-gradient(to left, #ec8f36 2%, #fad066 100%);
     background: -webkit-linear-gradient(left, #ec8f36 2%, #fad066 100%);
     margin-bottom:.5em;
-    padding:0 .4em;
+    padding:0 .6em;
     height: 1.8em;
     line-height: 1.8em;
     position: relative;
