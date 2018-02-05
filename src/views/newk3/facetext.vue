@@ -196,6 +196,9 @@
         if(this.$parent.$parent.checkPermissionsLevel('FreedomSpeak') === -1){
           return [0,'您当前的等级无法自由发言！']
         }
+        if(this.$parent.$parent.checkPermissionsLevel('Barrage') === -1){
+          return [0,'您当前的等级已关闭弹幕功能！']
+        }
         let time = new Date().getTime() - this.lastTime
         let barrage =  this.$parent.$parent.GameConfig.LiveBroadcastBarrage
         if (this.lastTime !== 0 && time < barrage.Interval*1000) {
