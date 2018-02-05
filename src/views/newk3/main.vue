@@ -593,7 +593,7 @@
 
       this.startLoading()
       setTimeout(()=>{
-        this.barrageShow = this.$parent.checkPermissionsLevel('Barrage')
+        this.barrageShow = this.$parent.checkPermissionsLevel('FreedomSpeak') || this.$parent.checkPermissionsLevel('SysSpeak')
         if(this.$parent.GameConfig.LiveBroadcastBarrage.State === 1){
           this.barrageIsOpen = 1
         }
