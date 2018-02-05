@@ -389,7 +389,7 @@ function BaseBet(state,count, betStr){
   this.betting_number = _betStr                       //投注号码
 
   this.betting_count = _count                         //这个方案多少注
-  if(lt.lottery.LotteryCode.indexOf('14') > -1 && lt.mode.mode === 'A10'){
+  if(((lt.lottery.LotteryCode.indexOf('14') > -1) ||(lt.lottery.LotteryCode.indexOf('0101') > -1)) && lt.mode.mode === 'A10'){
     this.betting_money = +(lt.perbet * bet.betting_model * bet.graduation_count).toFixed(2)
   }else{
     this.betting_money = +(lt.perbet * _count * bet.betting_model * bet.graduation_count).toFixed(2)

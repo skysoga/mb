@@ -578,6 +578,11 @@
         }
       },
       broadCastPush(json){
+        for (var i = 0; i < this.broadCastData.length; i++) {
+          if(this.broadCastData[i].ID === json.ID){
+            return this.broadCastData[i] = json
+          }
+        }
         this.broadCastData.push(json)
       },
       getResults(){
@@ -653,7 +658,7 @@
   z-index: 9 !important;
   top: 0;
   left: 0;
-  transform: scale(.4);
+  // transform: scale(.4);
 }
 .testbg{
   height: 120vh;

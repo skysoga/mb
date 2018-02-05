@@ -37,6 +37,11 @@
         for (var i = _datas.length-1; i >= 0; i--) {
           if (_datas[i]) {
             if (now >= new Date(_datas[i].StartTime.replace(/-/g,'/')).getTime() && now <=new Date(_datas[i].EndTime.replace(/-/g,'/')).getTime()) {
+              for (var j = 0; j < this.$parent.available.length; j++) {
+                if(this.$parent.available[j].ID === _datas[i].ID){
+                  return this.$parent.available[j] = _datas[i]
+                }
+              }
               this.$parent.available.push(_datas[i])
               this.$parent.broadCastData.splice(i,1)
             }
