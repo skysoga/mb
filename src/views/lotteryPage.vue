@@ -138,9 +138,9 @@
               }
               vm.GameConfig = values[2].BackData
               vm.createWS(vm)
-              vm.isRuningT = setInterval(()=>{
-                vm.createWS(vm)
-              },3000)
+              // vm.isRuningT = setInterval(()=>{
+              //   vm.createWS(vm)
+              // },3000)
               values[3].BackData.Photo = imgHost + '/' + values[3].BackData.Photo
               vm.Anchor = values[3].BackData
               let _textData = JSON.parse(JSON.stringify(values[4].DefaultBarrage))
@@ -1361,7 +1361,7 @@
         readyRun:'',
         Anchor:{},
         isRuning:1,
-        isRuningT:null,
+        // isRuningT:null,
         DefaultBarrage:{},
         RandomBarrage:[],
         BroadCast:null,
@@ -1405,7 +1405,8 @@
           this.GameConfig.Interactive = this.GameConfig.Interactive.replace(/key=.+?&/,'')+'&key=zhimakaimen'
         }
         //创建livews
-        if ((this.GameWS === null || this.GameWS.readyState !== 1) && this.isRuning === 1) {
+        // if ((this.GameWS === null || this.GameWS.readyState !== 1) && this.isRuning === 1) {
+        if (this.GameWS === null) {
           this.GameWS = new WebSocket(this.GameConfig.GameWS)
           this.GameWS.onmessage = e =>{
             let json
@@ -1420,16 +1421,17 @@
             layer.msgWarn(err)
           }
           this.GameWS.onclose = e =>{
-            var tt = setInterval(()=>{
+            // var tt = setInterval(()=>{
               if (this.isRuning === 1) {
+                // clearInterval(tt)
                 router.push('/reload')
-                clearInterval(tt)
               }
-            },1000)
+            // },1000)
           }
         }
         //创建OnlineWS
-        if ((this.OnlineWS === null || this.OnlineWS.readyState !== 1) && this.isRuning === 1) {
+        // if ((this.OnlineWS === null || this.OnlineWS.readyState !== 1) && this.isRuning === 1) {
+        if (this.OnlineWS === null) {
           this.OnlineWS = new WebSocket(this.GameConfig.Interactive)
           this.OnlineWS.onmessage = e =>{
             let json = JSON.parse(e.data)
@@ -1437,6 +1439,14 @@
           }
           this.OnlineWS.onerror = err =>{
             layer.msgWarn(err)
+          }
+          this.OnlineWS.onclose = e =>{
+          //   var tt = setInterval(()=>{
+              if (this.isRuning === 1) {
+          //       clearInterval(tt)
+                router.push('/reload')
+              }
+          //   },1000)
           }
         }
         //自动提交礼物和弹幕
@@ -1578,7 +1588,7 @@
 			clearTimeout(this.timer4)
 			clearInterval(this.baseLoop)
       this.isRuning = 0
-      clearInterval(this.isRuningT)
+      // clearInterval(this.isRuningT)
 		},
 
   }

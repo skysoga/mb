@@ -658,7 +658,7 @@
   z-index: 9 !important;
   top: 0;
   left: 0;
-  // transform: scale(.4);
+  transform: scale(1.5);
 }
 .testbg{
   height: 120vh;
