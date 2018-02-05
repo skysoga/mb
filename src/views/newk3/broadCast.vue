@@ -56,15 +56,18 @@
           }
         }
       },
-      changeRow(){
+      changeRow(){ 
         this.className = ''
         this.status = 0
+        this.maxRow = this.$parent.available.length
         setTimeout(()=>{
           if (this.showRow<this.maxRow-1) {
             this.showRow++
             this.status = 1
+            console.log('切换下一条',this.showRow)
           }else{
             this.showRow = 0
+            console.log('切换第一条')
             setTimeout(()=>{
               this.status = 1
             },this.$parent.livecfg.broadCastIntervalTime*1000)
@@ -75,9 +78,6 @@
     watch:{
       '$parent.broadCastData'(n,o){
         this.checkList()
-      },
-      'available'(n,o){
-        this.maxRow = n.length
       },
     },
     beforeDestroy(){
