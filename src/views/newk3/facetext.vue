@@ -43,7 +43,6 @@
         checkText:0,
         checkFace:[],
         sysSpeak:1,//是否有内置弹幕的权限
-        barrageIsOpen:0,//弹幕是否有权限
         showDefaultText:1,
         selectText:null,
         sendIsActive:0,
@@ -58,8 +57,6 @@
         setTimeout(()=>{
           if(this.$parent.$parent.checkPermissionsLevel('SysSpeak') === -1){
             this.sysSpeak = 0
-          }else{
-            this.barrageIsOpen = 1
           }
           this.textData = this.$parent.$parent.RandomBarrage
           this.inputLength = this.$parent.$parent.GameConfig.LiveBroadcastFreedomSpeak.Length
@@ -155,9 +152,6 @@
             this.checkFace.push(i)
           }
 				}else{
-          if (!this.sysSpeak) {
-            return layer.msgWarn('您当前的等级无法发送系统弹幕！')
-          }
           if (this.selectText === d) {
             this.selectText = null
             this.sendIsActive = 0
@@ -179,6 +173,11 @@
 			},
       checkPermissions(content){
         let freedomSpeakArr = this.$parent.$parent.GameConfig.LiveBroadcastFreedomSpeak
+        if(/^##[\d]{1,3}##$/.test(content)){
+          if (!this.sysSpeak) {
+            return [0,'您当前的等级无法发送系统弹幕！']
+          }
+        }
         if (content.length <= 0) {
           return [0,'请输入您要发布的弹幕！']
         }
@@ -259,11 +258,7 @@
         })
 			},
       changeBarrage(){
-        if (this.barrageIsOpen) {
-          this.$parent.barrageIsOpen = !this.$parent.barrageIsOpen
-        }else{
-          layer.msgWarn('您当前的等级无法打开弹幕！')
-        }
+        this.$parent.barrageIsOpen = !this.$parent.barrageIsOpen
       },
 
       //获取光标位置
