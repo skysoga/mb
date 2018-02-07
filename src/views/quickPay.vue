@@ -30,7 +30,7 @@
         <br>2、单笔充值金额最低<ins>{{this.nowRender.MinMoney}}</ins>元，最高<ins>{{this.nowRender.MaxMoney}}</ins>元。
         <br> 3、可以使用其他手机扫二维码进行充值，也可以将二维码保存到相册再使用{{this.$route.meta.title}}识别相册中的二维码进行充值，该二维码仅当次有效，每次充值前务必重新保存最新的二维码。
         <br>
-        <template v-if="method=='UnionPay'">
+        <template v-if="method=='UnionPay'||method=='QQpay'">
         4、为了更准确核对您的金额，系统会随机为整数金额添加小数点。
         </template>
         <template v-else>
@@ -319,7 +319,7 @@ export default {
       }
       var nowAjax = ajax[this.method]
       //判断是否小数 仅银联扫码需处理小数点金额
-      if(this.method=='UnionPay'){
+      if(this.method=='UnionPay'||this.method=='QQpay'){
         function isDic(n){
           n=n*1
           console.log(n);
