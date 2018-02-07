@@ -45,8 +45,9 @@
       <div class="info" v-show="!loading" v-if="$parent.userinfoBy === 'help'">
         <div class="help-con">
           <h3>直播说明</h3>
-          <p>这个页面主要介绍了直播玩法是怎么玩的，告诉用户该如何操作，让用户了解如何使用直播。</p>
-          <p>这个页面主要介绍了直播玩法是怎么玩的，告诉用户该如何操作，让用户了解如何使用直播，不再不明白这个页面如何使用！</p>
+          <p>1、点击屏幕可进行投注和取消投注！</p>
+<p>2、投注界面左右滑动可以切换玩法！</p>
+<p>3、点击4G可切换到4G模式节省流量！</p>
         </div>
       </div>
       <div class="close" @click="$parent.userinfoShow = 0"></div>

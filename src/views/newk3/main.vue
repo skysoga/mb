@@ -4,7 +4,7 @@
     <gift :activegift="activegift" v-show="show == 'main'"></gift>
     <div class="video">
       <img src="/static/img/newk3-bg.jpg" alt="" width="100%">
-      <div v-if="loading" class="loading" id="loading"></div>
+      <div v-if="loading" class="loading" id="loading"><span><i>{{loadingText2}}</i><em>{{loadingText}}</em></span></div>
       <div><iframe ref="iframe" src="/static/video.html"></iframe></div>
     </div>
     <div v-show="show == 'main'" @click="changeShow" class="mainPage">
@@ -27,7 +27,7 @@
       <barrage ref="barrage" class="barrage" :class="{toTop:(activeHide===1),toBottom:(activeHide===3)}" v-if="barrageIsOpen"></barrage>
       <div class="control">
         <ul class="con-btn fix">
-          <li><a class="back" href="javascript:;" @click.stop="$router.go(-1)"></a></li>
+          <li><router-link class="back" to="/livelist"></router-link></li>
           <li><a class="question" href="javascript:;" @click.stop="showCard(3)"></a></li>
           <li><a class="anchor" href="javascript:;" @click.stop="showCard(2)"></a></li>
           <li><a class="gift" href="javascript:;" @click.stop="showHide(3)"></a></li>
@@ -198,6 +198,9 @@
         loading:1,
         player:null,
         available:[],
+        loadingText:"",
+        loadingText2:"",
+        loadingt:null,
       }
     },
     computed:mapState({
@@ -348,6 +351,16 @@
           this.player.clearsAfterStop=true
           this.player.setVideoItem(videoItem);
           this.player.startAnimation();
+          this.loadingText = ""
+          this.loadingText2 = "小U努力加载中"
+          this.loadingt = setInterval(()=>{
+            switch(this.loadingText){
+              case '':this.loadingText = ".";break;
+              case '.':this.loadingText = "..";break;
+              case '..':this.loadingText = "...";break;
+              case '...':this.loadingText = "";break;
+            }
+          },200)
         })
       },
       showCard(w){
@@ -624,6 +637,7 @@
           setTimeout(()=>{
             this.loading = 0
             this.player.stopAnimation()
+            clearInterval(this.loadingt)
           },2000)
         })
       }
@@ -650,6 +664,11 @@
     },
   }
 </script>
+<style lang="scss">
+.loading canvas{
+  margin-top: -3em;
+}
+</style>
 <style lang="scss" scoped>
 @import "../../scss/dice";
 .loading{
@@ -658,7 +677,24 @@
   z-index: 9 !important;
   top: 0;
   left: 0;
-  transform: scale(1.5);
+  transform:scale(.7);
+  span{
+    position: fixed;
+    display: block;
+    text-align: center;
+    width: 16rem;
+    height: 100vh;
+    top: 4em;
+    left: -.5em;
+    line-height: 100vh;
+    color: white;
+    i,em{
+      font-size: .75em;
+    }
+    em{
+      position: absolute;
+    }
+  }
 }
 .testbg{
   height: 120vh;
@@ -964,6 +1000,13 @@
       }
     }
   }
+  @media (min-width: 375px) {
+  .con-btn{
+    li{
+      margin-left: .4em;
+    }
+  }
+  }
   .newContainer{
     position:fixed;
     z-index:20;
@@ -1103,8 +1146,6 @@
       padding:0 0.4em;
     }
   }
-</style>
-<style lang="scss" scoped>
 .slider-wrapper{
   width: 100%;
   position: relative;

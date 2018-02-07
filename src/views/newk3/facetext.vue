@@ -177,6 +177,10 @@
           if (!this.sysSpeak) {
             return [0,'您当前的等级无法发送系统弹幕！']
           }
+        }else{
+          if(this.$parent.$parent.checkPermissionsLevel('FreedomSpeak') === -1){
+            return [0,'您当前的等级无法自由发言！']
+          }
         }
         if (content.length <= 0) {
           return [0,'请输入您要发布的弹幕！']
@@ -191,9 +195,6 @@
               return [0,'您最长能发布'+freedomSpeakArr.Length+'个字！']
             }
           }
-        }
-        if(this.$parent.$parent.checkPermissionsLevel('FreedomSpeak') === -1){
-          return [0,'您当前的等级无法自由发言！']
         }
         if(this.$parent.$parent.checkPermissionsLevel('Barrage') === -1){
           return [0,'您当前的等级已关闭弹幕功能！']

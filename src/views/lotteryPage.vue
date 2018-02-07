@@ -1424,7 +1424,9 @@
             // var tt = setInterval(()=>{
               if (this.isRuning === 1) {
                 // clearInterval(tt)
-                router.push('/reload')
+                setTimeout(()=>{
+                  router.push('/reload')
+                },500)
               }
             // },1000)
           }
@@ -1444,7 +1446,9 @@
           //   var tt = setInterval(()=>{
               if (this.isRuning === 1) {
           //       clearInterval(tt)
-                router.push('/reload')
+                setTimeout(()=>{
+                  router.push('/reload')
+                },500)
               }
           //   },1000)
           }
