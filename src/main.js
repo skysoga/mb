@@ -25,21 +25,7 @@ window._catch = function(data){
   if (window.site) {
     data.S=site
   }
-  // if(fetchGoal){
   data.G=fetchGoal['a']+'_'+fetchGoal['x-sec']
-  // }
-  /*var str=[],k;
-  for(var i in data){
-    k=data[i];
-    if (typeof(k)==="object") {
-      k= encodeURIComponent(JSON.stringify(k));
-    }
-    str.push(i+'='+k)
-  }
-  str=str.join('&')*/
-  // var fetchUrl = state.UserName||data.UserName
-  // fetchUrl = '/catch?'+(fetchUrl&&('U='+fetchUrl+'&'))+str
-  // _App && ga && ga('send','event',msg,str)
   var fetchUrl = _CatchURL+'?'+_ajaxDatajoint(data)
   fetch(fetchUrl, {
     credentials:'omit',
@@ -49,17 +35,13 @@ window._catch = function(data){
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     },
-    // body: _ajaxDatajoint(data)
   }).then(res=>{
     _HeaderFun(res.headers.entries())
   })
 }
-if(!(window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB)){
-  _catch({msg:'IndexedDB'})
-}
 window.onerror = function(errorMessage, scriptURI, lineNumber,columnNumber,errorObj) {
   console.log(errorMessage, scriptURI, lineNumber,columnNumber,errorObj)
-  _catch({msg:'winerr',errorMessage,scriptURI,errorObj})
+  // _catch({msg:'winerr',errorMessage,scriptURI,errorObj})
 }
 ;(function(){
   try {
@@ -473,21 +455,7 @@ window._fetch = function (data, option = {}){
       var H={}
       try{
         _HeaderFun(res.headers.entries())
-        /*for (var pair of res.headers.entries()) {
-          pair[0]=pair[0].toLowerCase()
-          if (['a','x-sec'].indexOf(pair[0])>-1) {
-            // H[pair[0]]=pair[1]
-            if(fetchGoal[pair[0]]!==pair[1]){
-              fetchGoal[pair[0]]=pair[1]
-              sessionStorage.setItem(pair[0],pair[1])
-            }
-          }
-        }*/
-        // fetchGoal=`${H['a']||''}-${H['x-sec']||''}`
-      }catch(e){
-        // H={'x-sec':'E','a':'I'}
-        // fetchGoal=null
-      }
+      }catch(e){}
       // var S=(!H['a'])?null:( H['a']+(H['x-sec']?('_'+H['x-sec']):''))
       console.log(res.status);
       if (res.status!==200) {
