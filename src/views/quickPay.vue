@@ -33,6 +33,9 @@
         <template v-if="method=='UnionPay'">
         4、为了更准确核对您的金额，系统会随机为整数金额添加小数点。
         </template>
+        <template v-else>
+        4、充值金额请输入整数。
+        </template>
       </div>
     </template>
     <div id="iframeWrap" v-show="QrBg">
