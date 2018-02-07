@@ -4,8 +4,12 @@
     <gift :activegift="activegift" v-show="show == 'main'"></gift>
     <div class="video">
       <img src="/static/img/newk3-bg.jpg" alt="" width="100%">
+      <img v-if="WifiOr4G === '4G'" src="/static/img/4g-bg.jpg" alt="" width="100%">
       <div v-if="loading" class="loading" id="loading"><span><i>{{loadingText2}}</i><em>{{loadingText}}</em></span></div>
       <div><iframe ref="iframe" src="/static/video.html"></iframe></div>
+    </div>
+    <div class="g4view">
+      
     </div>
     <div v-show="show == 'main'" @click="changeShow" class="mainPage">
       <div class="result">
@@ -204,6 +208,7 @@
         loadingText:"",
         loadingText2:"",
         loadingt:null,
+        WifiOr4G:'wifi'
       }
     },
     computed:mapState({
@@ -349,8 +354,11 @@
       changeNet(){
         this.$refs.iframe.contentWindow.destroy({func:(state)=>{
           if (state) {
-            this.$refs.iframe.contentWindow.refresh()
+            this.WifiOr4G = '4G'
+          }else{
+            this.WifiOr4G = 'Wifi'
           }
+          console.log(this.WifiOr4G)
         }})
       },
       startLoading(){
@@ -681,6 +689,12 @@
 </style>
 <style lang="scss" scoped>
 @import "../../scss/dice";
+.g4view{
+
+}
+.g4view-bg{
+
+}
 .g4{
   position: fixed;
   z-index: 25;

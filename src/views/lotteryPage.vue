@@ -6,8 +6,7 @@
     <LotteryK3 v-if = "ptype !== 'live' && $route.params.type === 'K3'"></LotteryK3>
 
     <Lottery6HC v-if = "$route.params.type === '6HC'"></Lottery6HC>
-    <NewK3 ref="newk3" v-if = "ptype === 'live' && !isSleep" :lcode="lcode"></NewK3>
-    <sleeping v-if = "ptype === 'live' && isSleep"></sleeping>
+    <NewK3 ref="newk3" v-if = "ptype === 'live'" :lcode="lcode"></NewK3>
   </div>
 </template>
 <style lang='scss' scoped>
@@ -21,7 +20,6 @@
   import LotteryK3 from './lottery_k3'
   import Lottery6HC from './lottery_6hc'
   import NewK3 from './newk3/main'
-  import sleeping from './newk3/sleeping'
 
   import {sscConfig} from '../js/page_config/lt_ssc'
   import {k3Config} from '../js/page_config/lt_k3'
@@ -48,7 +46,6 @@
       LotteryK3,
       Lottery6HC,
       NewK3,
-      sleeping
     },
     beforeRouteEnter(to, from, next){
       // 将滚动置顶
@@ -904,20 +901,20 @@
 
 
               //是否有维护计划
-              if (that.readySleep !== '' && that.isSleep === 0) {
-                if(serverTime*1 + 1000 >= that.readySleep){
-                  that.isSleep = 1
-                  that.readySleep = ''
-                }
-              }
+              // if (that.readySleep !== '' && that.isSleep === 0) {
+              //   if(serverTime*1 + 1000 >= that.readySleep){
+              //     that.isSleep = 1
+              //     that.readySleep = ''
+              //   }
+              // }
 
               //是否有开播计划
-              if (that.readyRun !== '' && that.isSleep === 1) {
-                if(serverTime*1 + 1000 >= that.readyRun *1 - 60 * 5 * 1000){
-                  that.isSleep = 0
-                  that.readyRun = ''
-                }
-              }
+              // if (that.readyRun !== '' && that.isSleep === 1) {
+              //   if(serverTime*1 + 1000 >= that.readyRun *1 - 60 * 5 * 1000){
+              //     that.isSleep = 0
+              //     that.readyRun = ''
+              //   }
+              // }
 
 
               if (_status === 'NewGame' || _status === 'Newest'){
@@ -1355,7 +1352,7 @@
         GameConfig:null,
         GameWS:null,
         OnlineWS:null,
-        isSleep:0,
+        // isSleep:0,
         readySleep:'',
         readyRun:'',
         Anchor:{},
@@ -1505,9 +1502,9 @@
         store.commit('lt_stopSell', 3)
         var _status = n.status
         switch(_status){
-          case 'readySleep':this.readySleep = n.ready_time;break;
-          case 'sleeping':this.isSleep = 1;break;
-          case 'readyRun':this.readyRun = n.ready_time;break;
+          // case 'readySleep':this.readySleep = n.ready_time;break;
+          // case 'sleeping':this.isSleep = 1;break;
+          // case 'readyRun':this.readyRun = n.ready_time;break;
           case 'running':this.isSleep = 0;break;
         }
       },

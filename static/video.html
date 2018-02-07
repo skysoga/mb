@@ -39,12 +39,16 @@
 			canvas.style.opacity = 1
 		}
 		var destroy = function (option){
-			if(!player.isPlaying){
+			var state = player.isPlaying
+			if(!state){
 				return refresh()
 			}
 			else{
 				canvas.style.opacity = 0
 				player.destroy()
+			}
+			if (option.func) {
+				option.func(state)
 			}
 		}
 	</script>
