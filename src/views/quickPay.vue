@@ -114,7 +114,7 @@ export default {
       method: '',                //什么充值方式
       PayType:null,
       Bank:[],
-      pageName: '',              //维护的名字
+      // pageName: '',              //维护的名字
       underMaintain: false,      //是否维护
       QrImg:'',
       QrBg:false,
