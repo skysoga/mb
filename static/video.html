@@ -14,7 +14,6 @@
 	    display: block;
 			height: 100%;
 			width: 100%;
-			opacity: 0;
 		}
 	</style>
 	
@@ -24,6 +23,8 @@
 	<script type="text/javascript" src="/static/public/live.min.js"></script>
 	<script>
 		var canvas,url,option,player
+		window.state=0
+		window.changing = 1
 		var openlive = function(address,func){
 			window.canvas = canvas = document.getElementById('myCanvas')
 			url = address
@@ -32,12 +33,18 @@
 			func()
 		}
 		var refresh = function(){
-			player.destroy()
+			// player.destroy()
 			player = new Live.Player(url, option)
+			canvas.style.opacity = 1
 		}
-		var destroy = function (){
-			player.destroy()
-			document.body.removeChild(canvas)
+		var destroy = function (option){
+			if(!player.isPlaying){
+				return refresh()
+			}
+			else{
+				canvas.style.opacity = 0
+				player.destroy()
+			}
 		}
 	</script>
 </body>

@@ -26,7 +26,7 @@
       </div>
       <barrage ref="barrage" class="barrage" :class="{toTop:(activeHide===1),toBottom:(activeHide===3)}" v-if="barrageIsOpen"></barrage>
       <div class="g4">
-        <div class="btn" @click.stop="changeNet">4G</div>
+        <a href="javascript:;" class="btn" @click.stop="changeNet">4G</a>
       </div>
       <div class="control">
         <ul class="con-btn fix">
@@ -347,7 +347,11 @@
     },
     methods:{
       changeNet(){
-        this.$refs.iframe.contentWindow.destroy()
+        this.$refs.iframe.contentWindow.destroy({func:(state)=>{
+          if (state) {
+            this.$refs.iframe.contentWindow.refresh()
+          }
+        }})
       },
       startLoading(){
         console.log('加载动画')
@@ -683,6 +687,7 @@
   bottom:2.8em;
   right: .5em;
   .btn{
+    display: block;
     width: 1.8em;
     height: 1.8em;
     font-size: .8em;

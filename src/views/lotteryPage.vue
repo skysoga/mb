@@ -932,19 +932,18 @@
                     store.commit('lt_stopSell', 3)
                     return
                   }
-                }else if(that.WS.TimeLeft <= 1000){
+                }else if(that.WS.TimeLeft < 1000){
                   //状态改为等待开奖
                   that.WS.Status = 'WaitResult'
                   store.commit('lt_stopSell', 4)
                   commit('lt_displayResults', false)
                   that.WS.TimeLeft = ''
                   return
-                }else{
-                  that.WS.TimeLeft=that.WS.TimeLeft*1-1000
+                }else if(that.WS.TimeLeft > 0){
+                  that.WS.TimeLeft = NewGame.end*1 - serverTime*1
                 }
                 // console.log('TimeLeft:'+that.WS.TimeLeft)
                 var Countdown = that.WS.TimeLeft
-
               }else{
                 return
               }
