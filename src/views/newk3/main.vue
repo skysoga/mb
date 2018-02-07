@@ -25,6 +25,9 @@
         <div class="AnchorBg" style="background: url('/static/img/crown-anchor.png')"></div>
       </div>
       <barrage ref="barrage" class="barrage" :class="{toTop:(activeHide===1),toBottom:(activeHide===3)}" v-if="barrageIsOpen"></barrage>
+      <div class="g4">
+        <div class="btn" @click.stop="changeNet">4G</div>
+      </div>
       <div class="control">
         <ul class="con-btn fix">
           <li><router-link class="back" to="/livelist"></router-link></li>
@@ -343,6 +346,9 @@
       this.rebates = rebates
     },
     methods:{
+      changeNet(){
+        this.$refs.iframe.contentWindow.destroy()
+      },
       startLoading(){
         console.log('加载动画')
         this.player = new SVGA.Player('#loading');
@@ -671,6 +677,22 @@
 </style>
 <style lang="scss" scoped>
 @import "../../scss/dice";
+.g4{
+  position: fixed;
+  z-index: 25;
+  bottom:2.8em;
+  right: .5em;
+  .btn{
+    width: 1.8em;
+    height: 1.8em;
+    font-size: .8em;
+    line-height: 1.8em;
+    text-align: center;
+    color:white;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+  }
+}
 .loading{
   display: block;
   position: fixed;
