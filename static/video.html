@@ -42,10 +42,10 @@
 			var state = player.isPlaying
 			if(!state){
 				return refresh()
-			}
-			else{
+			}else{
 				canvas.style.opacity = 0
 				player.destroy()
+				window.state=0
 			}
 			if (option.func) {
 				option.func(state)
