@@ -38,19 +38,23 @@
 			player = new Live.Player(url, option)
 			canvas.style.opacity = 1
 		}
-		var destroy = function (option){
+ 		var destroy = function (option){
 			var state = player.isPlaying
 			if(!state){
-				return refresh()
-			}else{
-				canvas.style.opacity = 0
-				player.destroy()
-				window.state=0
-			}
+				if (option.func) {
+					option.func(state)
+				}
+ 				return refresh()
+ 			}
+ 			else{
+ 				canvas.style.opacity = 0
+ 				player.destroy()
+ 			}
 			if (option.func) {
 				option.func(state)
 			}
-		}
+ 		}
+
 	</script>
 </body>
 </html>

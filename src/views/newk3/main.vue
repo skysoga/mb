@@ -9,7 +9,7 @@
       <div><iframe ref="iframe" src="/static/video.html"></iframe></div>
     </div>
     <div class="g4view">
-      
+      <SicBo :lcode="lcode" v-show="WifiOr4G === '4G'"></SicBo>
     </div>
     <div v-show="show == 'main'" @click="changeShow" class="mainPage">
       <div class="result">
@@ -96,7 +96,8 @@
   import history       from './history'
   import {gifts,giftsList,faceData,livecfg} from '../../js/liveconfig'
   import userinfo      from './userinfo'
-  import broadCast      from './broadCast'
+  import broadCast     from './broadCast'
+  import SicBo         from './SicBo'
   var eachLen = data=>data.map(arr=>arr.length)
   var getBetStr = (data, mode)=>{
     var line =  data.map(arr=>arr.join(' '))
@@ -167,6 +168,7 @@
       history,
       userinfo,
       broadCast,
+      SicBo,
     },
     data:()=>{
       return{
@@ -358,7 +360,7 @@
           }else{
             this.WifiOr4G = 'Wifi'
           }
-          console.log(this.WifiOr4G)
+          console.log(state,this.WifiOr4G)
         }})
       },
       startLoading(){

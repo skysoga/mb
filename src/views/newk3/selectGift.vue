@@ -192,7 +192,7 @@
       li{
         color:white;
         float:left;
-        width:4rem;
+        width:25%;
         height:4.8em;
         // border-right:1px solid rgba(255, 255, 255, 0.1);
         padding:.3em;
