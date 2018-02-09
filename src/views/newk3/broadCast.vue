@@ -44,6 +44,13 @@
               }
               this.$parent.available.push(_datas[i])
               this.$parent.broadCastData.splice(i,1)
+            }else{
+              for (var j = 0; j < this.$parent.available.length; j++) {
+                if(this.$parent.available[j].ID === _datas[i].ID){
+                  this.$parent.available.splice(j,1)
+                  this.$parent.broadCastData.splice(i,1)
+                }
+              }
             }
           }
         }

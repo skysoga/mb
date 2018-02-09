@@ -93,26 +93,89 @@
 
       //设置请求的数组
       if (ptype === 'live') {
-        //获取主播信息
-        var GetDefaultBarrage= new Promise(function(res,rej){
-          RootApp.GetInitData(['DefaultBarrage'],d=>{
-            res(d)
-          },{url:'/LiveApi'})
+        _fetch({Action:'GameConfig',GameID:lcode})
+        .then(d=>{
+          localStorage.removeItem('btnText')
+          if (d.Code === 1 && d.BackData.LiveType.Type == 'true') {
+            var GetDefaultBarrage = new Promise(function(res,rej){
+              RootApp.GetInitData(['DefaultBarrage'],d=>{
+                res(d)
+              },{url:'/LiveApi'})
+            })
+            var GetAnchor       = _fetch({Action:"GetAnchor",GameID:lcode},{url:'/LiveApi'})
+            var GetLiveBroadCast= _fetch({Action:"GetLiveBroadCast",GameID:lcode},{url:'/LiveApi'})
+            var reqArr          = [getRebate, getServerTime,GetAnchor,GetDefaultBarrage,GetLiveBroadCast]
+
+            // 进入彩种页必须先获取到  赔率/彩种配置/服务器时间
+            Promise.all(reqArr).then((values)=>{
+              //校验下这个彩种存不存在，不存在就送回购彩大厅
+              var lotteryItem = state.LotteryList[lcode]
+              var offLineLottery = ['FC3D', 'PL35']
+              if (values[2].Code === 1) {
+                next(vm=>{
+                  //检测等级
+                  var _level = state.UserUpGradeBonus.Grade
+                  if ((','+livecfg.level).search(`,${_level},`) === -1) {
+                   //关掉loading动画
+                    store.commit('toggleLoading', false)
+                    return layer.msgWarn('您当前的等级无法进入直播页面！')
+                  }
+                  vm.GameConfig = d.BackData
+                  vm.createWS(vm)
+                  // vm.isRuningT = setInterval(()=>{
+                  //   vm.createWS(vm)
+                  // },3000)
+                  values[2].BackData.Photo = imgHost + '/' + values[2].BackData.Photo
+                  vm.Anchor = values[2].BackData
+                  let _textData = JSON.parse(JSON.stringify(values[3].DefaultBarrage))
+                  let textDataObj = {}
+                  let newBarrage = []
+                  //随机弹幕
+                  for (var i = 0; i < values[3].DefaultBarrage.length-1; i++) {
+                    var y = parseInt(Math.random()*(values[3].DefaultBarrage.length-i-1),10)+1;
+                    newBarrage.push(_textData[y])
+                    _textData.splice(y,1)
+                  }
+                  newBarrage.push(_textData[0])
+                  for (var i = 0; i < newBarrage.length; i++) {
+                    textDataObj[newBarrage[i].ID] = newBarrage[i].Content
+                  }
+                  vm.DefaultBarrage = textDataObj
+                  vm.RandomBarrage = newBarrage
+                  vm.BroadCast = values[4].BackData
+                })
+              }else{
+                if(values[2].Code !== 1){
+                  layer.msgWarn(values[2].StrCode)
+                }
+                state.turning=false
+              }
+            }).catch((e)=>{
+               //关掉loading动画
+              store.commit('toggleLoading', false)
+              layer.msgWarn('请求错误，可能已经超时！')
+              //返回首页
+              RootApp.$router.replace('/index')
+            })
+          }else{
+            if (d.BackData.LiveType.Type == 'false') {
+              console.log('停播处理')
+              //停播处理
+              RootApp.$router.replace(`/liveList?title=${d.BackData.LiveType.CloseTitle}&content=${d.BackData.LiveType.CloseContent}&type=${d.BackData.LiveType.Type}&${Math.random()}`)
+              // state.turning=false
+            }else{
+              layer.msgWarn(d.StrCode)
+            }
+          }
         })
-        var GetAnchor     = _fetch({Action:"GetAnchor",GameID:lcode},{url:'/LiveApi'})
-        var GetLiveBroadCast= _fetch({Action:"GetLiveBroadCast",GameID:lcode},{url:'/LiveApi'})
-        var getGameConfig = _fetch({Action:'GameConfig',GameID:lcode})
-        var reqArr        = [getRebate, getServerTime,getGameConfig,GetAnchor,GetDefaultBarrage,GetLiveBroadCast]
+        
       }else{
         var reqArr        = [getRebate, getLotteryList, getServerTime]
-      }
-
-      // 进入彩种页必须先获取到  赔率/彩种配置/服务器时间
-      Promise.all(reqArr).then((values)=>{
-        //校验下这个彩种存不存在，不存在就送回购彩大厅
-        var lotteryItem = state.LotteryList[lcode]
-        var offLineLottery = ['FC3D', 'PL35']
-        if (ptype !== 'live'){
+        // 进入彩种页必须先获取到  赔率/彩种配置/服务器时间
+        Promise.all(reqArr).then((values)=>{
+          //校验下这个彩种存不存在，不存在就送回购彩大厅
+          var lotteryItem = state.LotteryList[lcode]
+          var offLineLottery = ['FC3D', 'PL35']
           if((lotteryItem === undefined || offLineLottery.indexOf(lotteryItem.LotteryType) > -1)){
             layer.url('您所访问的彩种不存在，即将返回购彩大厅', '/lotteryHall')
             return
@@ -122,62 +185,15 @@
               RootApp.$router.replace(`./lottery/${LotteryType}/${lcode}`)
             }
           }
-        }
-        if (ptype === 'live') {
-          if (values[2].Code === 1 && values[3].Code === 1) {
-            next(vm=>{
-              //检测等级
-              var _level = state.UserUpGradeBonus.Grade
-              if ((','+livecfg.level).search(`,${_level},`) === -1) {
-               //关掉loading动画
-                store.commit('toggleLoading', false)
-                return layer.msgWarn('您当前的等级无法进入直播页面！')
-              }
-              vm.GameConfig = values[2].BackData
-              vm.createWS(vm)
-              // vm.isRuningT = setInterval(()=>{
-              //   vm.createWS(vm)
-              // },3000)
-              values[3].BackData.Photo = imgHost + '/' + values[3].BackData.Photo
-              vm.Anchor = values[3].BackData
-              let _textData = JSON.parse(JSON.stringify(values[4].DefaultBarrage))
-              let textDataObj = {}
-              let newBarrage = []
-              //随机弹幕
-              for (var i = 0; i < values[4].DefaultBarrage.length-1; i++) {
-                var y = parseInt(Math.random()*(values[4].DefaultBarrage.length-i-1),10)+1;
-                newBarrage.push(_textData[y])
-                _textData.splice(y,1)
-              }
-              newBarrage.push(_textData[0])
-              for (var i = 0; i < newBarrage.length; i++) {
-                textDataObj[newBarrage[i].ID] = newBarrage[i].Content
-              }
-              vm.DefaultBarrage = textDataObj
-              vm.RandomBarrage = newBarrage
-              vm.BroadCast = values[5].BackData
-            })
-          }else{
-            if (values[2].Code !== 1) {
-              layer.msgWarn(values[2].StrCode)
-            }else if(values[3].Code !== 1){
-              layer.msgWarn(values[3].StrCode)
-            }
-            state.turning=false
-
-          }
-        }else{
           next()
-        }
-      }).catch((e)=>{
-        //报错并返回
-
-         //关掉loading动画
-        store.commit('toggleLoading', false)
-        layer.msgWarn('请求错误，可能已经超时！')
-        //返回首页
-        RootApp.$router.replace('/index')
-      })
+        }).catch((e)=>{
+           //关掉loading动画
+          store.commit('toggleLoading', false)
+          layer.msgWarn('请求错误，可能已经超时！')
+          //返回首页
+          RootApp.$router.replace('/index')
+        })
+      }
 		},
 		created(){
 		  //从url上获取彩种type和彩种code
@@ -897,6 +913,7 @@
             if (ptype === 'live') {
               //获取服务器的时间
               var serverTime = new Date().getTime() - rootState.Difftime
+              // layer.msgWarn('当前时间：'+new Date().getTime()+'，时间差：'+rootState.Difftime+'，服务器时间：'+serverTime)
               var _status = that.WS.Status
 
 
@@ -1462,6 +1479,18 @@
             this.Anchor = json
             break;
           case 'BroadCast':this.$refs.newk3.broadCastPush(json);break;
+          case 'LiveType':
+            layer.open({
+              className: "layerConfirm",
+              title:json.CloseTitle,
+              content: json.CloseContent,
+              shadeClose: false,
+              btn: ["确定"],
+              yes: function(index) {
+                router.push('/liveList')
+              },
+            })
+            break;
         }
       },
       WSrefresh(json){

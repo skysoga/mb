@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>测试</title>
+</head>
+<style type="text/css">
+  body{
+    background: #aaa;
+  }
+  canvas{
+    background: black;
+    width: 400px;
+    height: 800px;
+  }
+</style>
+<body>
+<canvas id="myCanvas"></canvas>
+<script type="text/javascript" src="http://test.caishen08.com/live.min.js?t=87"></script>
+<script>
+  var canvas = document.getElementById('myCanvas');
+  var url = 'ws://220.130.175.201:8086/live?key=zhimakaimen';//loadingImg: 'bg.png'
+  var option = {canvas: canvas, loadingImg: 'timg.gif'};//  disableGl:true
+  var player = new Live.Player(url, option);
+  
+  function flash(){
+    player.destroy();
+    player = new Live.Player(url, option);
+  }
+  function destroy(){
+    player.destroy();
+    document.body.removeChild(canvas);
+  }
+    
+  </script>
+</body>
+</html>

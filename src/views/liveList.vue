@@ -9,13 +9,43 @@
           <div class="info fix">
             <em>UU快三</em>
             <p>颠覆性的美女直播投注玩法</p>
-            <span>正在直播</span>
+            <span>{{btnText}}</span>
           </div>
         </li>
       </ul>
     </div>
   </div>
 </template>
+<script>
+  export default {
+    data:()=>{
+      return{
+        btnText:'正在直播',
+      }
+    },
+    created(){
+      var text = localStorage.getItem('btnText') || 0
+      if (text) {
+        this.btnText = text
+      }
+    },
+    watch:{
+      $route(to,from){
+        if (to.query.type == 'false') {
+          //显示弹窗
+          layer.open({
+            className: "layerConfirm",
+            title:to.query.title,
+            content: to.query.content,
+            btn: ["确定"]
+          })
+          this.btnText = to.query.title
+          localStorage.setItem('btnText',to.query.title)
+        }
+      }
+    }
+  }
+</script>
 <style scoped lang="scss">
 .list{
   margin-top:2.8em;
