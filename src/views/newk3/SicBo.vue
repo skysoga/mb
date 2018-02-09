@@ -3,7 +3,11 @@
     <div class="bg" style="background: url('/static/img/SicBo.png') no-repeat;"></div>
     <div class="dice">
       <div id="dice" v-show="showDice"></div>
-      <div class="result" v-show="showResult">{{results}}</div>
+      <div class="result" v-if="results instanceof Array" v-show="showResult">
+        <em :class="'d d1 dice'+results[0]" style="background: url('/static/img/history-dice.png')"></em>
+        <em :class="'d d2 dice'+results[1]" style="background: url('/static/img/history-dice.png')"></em>
+        <em :class="'d d3 dice'+results[2]" style="background: url('/static/img/history-dice.png')"></em>
+      </div>
     </div>
     <div class="transparent" style="background: url('/static/img/SicBo.png') no-repeat;"></div>
   </div>
@@ -75,8 +79,8 @@
   position: absolute;
   width: 6em;
   height: 6em;
-  bottom:2em;
-  right:.5em;
+  bottom:1em;
+  right:.4em;
   >div{
     width: 100%;
     height:100%;
@@ -101,5 +105,42 @@
   height: 7.2em;
   background-size: 12em !important;
   background-position: -6.6em 0 !important;
+}
+.result{
+  font-size:.8em;
+  .d1{
+    right:7.1em;
+    bottom:5em;
+  }
+  .d2{
+    right:5.9em;
+    bottom:6.2em;
+  }
+  .d3{
+    right:4.7em;
+    bottom:4.9em;
+  }
+}
+.d{
+  display: block;
+  width: 1.58em;
+  height:1.58em;
+  background-size: 9.6em !important;
+  position: fixed;
+}
+.dice2{
+  background-position: -1.6em 0 !important;
+}
+.dice3{
+  background-position: -3.2em 0 !important;
+}
+.dice4{
+  background-position: -4.8em 0 !important;
+}
+.dice5{
+  background-position: -6.4em 0 !important;
+}
+.dice6{
+  background-position: -8em 0 !important;
 }
 </style>
