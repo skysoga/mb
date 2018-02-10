@@ -7,15 +7,15 @@
 		</div>
 		<div class="list">
 			<div class="opened" v-show="type === 2">
-				<div class="title">
+				<div class="title" :style="'background:url('+$store.state.constant.ImgHost+'/live/history-bg.png) no-repeat'">
 					<div class="issueNo">{{results[0].IssueNo}}期</div>
 					<div class="sum">和值&nbsp;&nbsp;{{results[0].sum}}</div>
 					<div class="open">号码{{results[0].LotteryOpen[0]}} {{results[0].LotteryOpen[1]}} {{results[0].LotteryOpen[2]}}</div>
 					<div class="other">{{results[0].bigOrSmall}}，{{results[0].singleOrDouble}}</div>
 					<div class="imgResult">
-						<span :class="'dice'+results[0].LotteryOpen[0]" style="background: url('/static/img/history-dice.png')"></span>
-						<span :class="'dice'+results[0].LotteryOpen[1]" style="background: url('/static/img/history-dice.png')"></span>
-						<span :class="'dice'+results[0].LotteryOpen[2]" style="background: url('/static/img/history-dice.png')"></span>
+						<span :class="'dice'+results[0].LotteryOpen[0]" :style="'background: url('+$store.state.constant.ImgHost+'/live/history-dice.png)'"></span>
+						<span :class="'dice'+results[0].LotteryOpen[1]" :style="'background: url('+$store.state.constant.ImgHost+'/live/history-dice.png)'"></span>
+						<span :class="'dice'+results[0].LotteryOpen[2]" :style="'background: url('+$store.state.constant.ImgHost+'/live/history-dice.png)'"></span>
 					</div>
 				</div>
 				<table>
@@ -205,8 +205,7 @@
 		}
 	}
 	.title{
-		background: url('/static/img/history-bg.png') no-repeat;
-		background-size: 16rem;
+		background-size: 16rem !important;
 		height:7.6rem;
 		color:white;
 		font-size:.6em;

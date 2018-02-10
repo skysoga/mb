@@ -23,7 +23,7 @@
       </div>
       <div class="info" v-show="!loading" v-if="$parent.userinfoBy === 'Anchor'">
         <div class="head" :style="{background:'url('+$parent.$parent.Anchor.Photo+')'}">
-          <span style="background: url('/static/img/crown-anchor2x.png')"></span>
+          <span :style="'background: url('+$store.state.constant.ImgHost+'/live/crown-anchor2x.png)'"></span>
         </div>
         <div class="name">
           {{$parent.$parent.Anchor.Name}}

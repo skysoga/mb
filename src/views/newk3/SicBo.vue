@@ -1,15 +1,15 @@
 <template>
   <div class="sicbo">
-    <div class="bg" style="background: url('/static/img/SicBo.png') no-repeat;"></div>
+    <div class="bg" :style="'background: url('+$store.state.constant.ImgHost+'/live/SicBo.png) no-repeat;'"></div>
     <div class="dice-con">
       <div id="dice" v-show="showDice"></div>
       <div class="result" v-if="results instanceof Array" v-show="showResult">
-        <em :class="'d d1 dice'+results[0]" style="background: url('/static/img/history-dice.png')"></em>
-        <em :class="'d d2 dice'+results[1]" style="background: url('/static/img/history-dice.png')"></em>
-        <em :class="'d d3 dice'+results[2]" style="background: url('/static/img/history-dice.png')"></em>
+        <em :class="'d d1 dice'+results[0]" :style="'background: url('+$store.state.constant.ImgHost+'/live/history-dice.png)'"></em>
+        <em :class="'d d2 dice'+results[1]" :style="'background: url('+$store.state.constant.ImgHost+'/live/history-dice.png)'"></em>
+        <em :class="'d d3 dice'+results[2]" :style="'background: url('+$store.state.constant.ImgHost+'/live/history-dice.png)'"></em>
       </div>
     </div>
-    <div class="transparent" style="background: url('/static/img/SicBo.png') no-repeat;"></div>
+    <div class="transparent" :style="'background: url('+$store.state.constant.ImgHost+'/live/SicBo.png) no-repeat;'"></div>
   </div>
 </template>
 <script>

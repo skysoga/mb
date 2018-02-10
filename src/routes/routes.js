@@ -57,7 +57,7 @@ var routes = [{
   path: '/liveList',
   name: '主页',
   meta:{
-    title:'<img id="uulive-logo" src="/static/img/uulive-logo.png" />UU直播',
+    title:'',
     nav:true,
     link:false,
     user:false,

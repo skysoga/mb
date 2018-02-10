@@ -30,7 +30,7 @@
       </div>
       <div class="Anchor" @click.stop="showCard(1)">
         <div class="AnchorImg" :style="'background: url('+$parent.Anchor.Photo+')'"></div>
-        <div class="AnchorBg" style="background: url('/static/img/crown-anchor.png')"></div>
+        <div class="AnchorBg" :style="'background: url('+$store.state.constant.ImgHost+'/live/crown-anchor.png)'"></div>
       </div>
       <barrage ref="barrage" class="barrage" :class="{toTop:(activeHide===1),toBottom:(activeHide===3)}" v-if="barrageIsOpen"></barrage>
       <div class="g4">

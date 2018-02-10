@@ -1,10 +1,10 @@
 <template>
 	<div class="container">
 		<div class="block">
-			<div v-show="show" class="target1" style="background:url('/static/img/gifts/injections.png')"></div>
-			<div v-show="!show" class="target2" style="background:url('/static/img/gifts/injections.png')"></div>
-			<div class="water1" style="background:url('/static/img/gifts/injections.png')"></div>
-			<div class="water2" style="background:url('/static/img/gifts/injections.png')"></div>
+			<div v-show="show" class="target1" :style="'background:url('+$store.state.constant.ImgHost+'/live/gifts/injections.png)'"></div>
+			<div v-show="!show" class="target2" :style="'background:url('+$store.state.constant.ImgHost+'/live/gifts/injections.png)'"></div>
+			<div class="water1" :style="'background:url('+$store.state.constant.ImgHost+'/live/gifts/injections.png)'"></div>
+			<div class="water2" :style="'background:url('+$store.state.constant.ImgHost+'/live/gifts/injections.png)'"></div>
 		</div>
 	</div>
 </template>

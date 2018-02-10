@@ -23,6 +23,10 @@
         btnText:'正在直播',
       }
     },
+    beforeRouteEnter(to,from,next){
+      to.meta.title=`<img id="uulive-logo" src="${state.constant.ImgHost}/system/live/logo.png" />UU直播`
+      next()
+    },
     created(){
       var text = localStorage.getItem('btnText') || 0
       if (text) {
