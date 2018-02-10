@@ -3,7 +3,7 @@
     <div class="list">
       <ul>
         <li>
-          <router-link to="/live/K3/0101" class="pic" :style="'background: url('+$store.state.constant.ImgHost+'/live/livelist-k3.jpg) center'">
+          <router-link to="/live/K3/0101" class="pic" :style="'background: url('+$store.state.constant.ImgHost+'/system/live/livelist-k3.jpg) center'">
             <span></span>
           </router-link>
           <div class="info fix">
