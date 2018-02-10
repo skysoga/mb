@@ -3,7 +3,7 @@
     <div class="content" @click.stop="">
       <div class="loading" v-show="loading">正在加载...</div>
       <div class="info" v-show="!loading" v-if="$parent.userinfoBy === 'user'">
-        <div class="head" :style="{background:'url('+$store.getters.PhotoPath+$store.state.UserPhoto||$store.state.constant.DefPhoto+')'}">
+        <div class="head" :style="{background:'url('+UserPhoto+')'}">
         </div>
         <div class="name">
           <template v-if="$store.state.UserNickName">{{$store.state.UserNickName}}</template>
@@ -45,7 +45,7 @@
       <div class="info" v-show="!loading" v-if="$parent.userinfoBy === 'help'">
         <div class="help-con">
           <h3>直播说明</h3>
-          <p>1.避免争议,筛子靠壁倾斜需重摇；</p>
+          <p>1.避免争议，骰子靠壁倾斜需重摇；</p>
 <p>2.点击屏幕可进行投注和取消投注；</p>
 <p>3.投注界面左右滑动可以切换玩法；</p>
 <p>4.点击4G按钮可以切换到4G模式；</p>
@@ -65,6 +65,7 @@
         balShow:false,
         UserBalance:"",
         opened:0,
+        UserPhoto:null,
       }
     },
     created(){
@@ -77,6 +78,7 @@
         var arr=['UserName','UserNickName','UserPhoto']
         RootApp.GetInitData(arr,state=>{
           this.loading = 0
+          this.UserPhoto = this.$store.getters.PhotoPath+state.UserPhoto||state.constant.DefPhoto
         })
       }else{
         this.loading = 0

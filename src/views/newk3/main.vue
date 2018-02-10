@@ -701,7 +701,7 @@
 }
 .g4{
   position: fixed;
-  z-index: 25;
+  z-index: 20;
   top:11em;
   right:0.3em;
   width: 2.62em;
@@ -714,11 +714,12 @@
     &:before{
       font-family: 'iconfont';
       font-size: 1.3em;
-    }
-    &.Wifi:before{
-      content: '\e666';
+      color:#e7edec;
     }
     &.FG:before{
+      content: '\e666';
+    }
+    &.Wifi:before{
       content: '\e667';
     }
   }

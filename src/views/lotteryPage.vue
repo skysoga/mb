@@ -121,9 +121,9 @@
                     return layer.msgWarn('您当前的等级无法进入直播页面！')
                   }
                   vm.GameConfig = d.BackData
-                  vm.createWS(vm)
+                  vm.createWS()
                   // vm.isRuningT = setInterval(()=>{
-                  //   vm.createWS(vm)
+                  //   vm.createWS()
                   // },3000)
                   values[2].BackData.Photo = imgHost + '/' + values[2].BackData.Photo
                   vm.Anchor = values[2].BackData
@@ -1411,6 +1411,17 @@
 					store.commit('lt_changeMode', state.lt.config[0])
 				}
 			},
+      getAnchor(){
+        _fetch({Action:"GetAnchor",GameID:this.lcode},{url:'/LiveApi'})
+        .then(d=>{
+          if (d.Code === 1) {
+            d.BackData.Photo = imgHost + '/' + d.BackData.Photo
+            this.Anchor = d.BackData
+          }else{
+            layer.msgWarn(d.StrCode)
+          }
+        })
+      },
       createWS(){
         //芝麻开门
         if(process.env.NODE_ENV !== 'production' && this.GameConfig.GameWS.search('zhimakaimen') === -1){
@@ -1434,14 +1445,11 @@
             layer.msgWarn(err)
           }
           this.GameWS.onclose = e =>{
-            // var tt = setInterval(()=>{
-              if (this.isRuning === 1) {
-                // clearInterval(tt)
-                setTimeout(()=>{
-                  router.push('/reload')
-                },500)
-              }
-            // },1000)
+            this.GameWS = null
+            if (this.isRuning === 1) {
+              this.getAnchor()
+              this.createWS()
+            }
           }
         }
         //创建OnlineWS
@@ -1456,14 +1464,11 @@
             layer.msgWarn(err)
           }
           this.OnlineWS.onclose = e =>{
-          //   var tt = setInterval(()=>{
-              if (this.isRuning === 1) {
-          //       clearInterval(tt)
-                setTimeout(()=>{
-                  router.push('/reload')
-                },500)
-              }
-          //   },1000)
+            this.OnlineWS = null
+            if (this.isRuning === 1) {
+              this.getAnchor()
+              this.createWS()
+            }
           }
         }
         //自动提交礼物和弹幕
