@@ -65,11 +65,11 @@
 @import './scss/public.scss';
 @font-face {
   font-family: 'iconfont';  /* project id 380333 */
-  src: url('//at.alicdn.com/t/font_380333_ggnrcg6tmq8v9529.eot');
-  src: url('//at.alicdn.com/t/font_380333_ggnrcg6tmq8v9529.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_380333_ggnrcg6tmq8v9529.woff') format('woff'),
-  url('//at.alicdn.com/t/font_380333_ggnrcg6tmq8v9529.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_380333_ggnrcg6tmq8v9529.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_380333_sluopv26rabmaemi.eot');
+  src: url('//at.alicdn.com/t/font_380333_sluopv26rabmaemi.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_380333_sluopv26rabmaemi.woff') format('woff'),
+  url('//at.alicdn.com/t/font_380333_sluopv26rabmaemi.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_380333_sluopv26rabmaemi.svg#iconfont') format('svg');
 }
 html{
   height: 100%;

@@ -45,9 +45,12 @@
       <div class="info" v-show="!loading" v-if="$parent.userinfoBy === 'help'">
         <div class="help-con">
           <h3>直播说明</h3>
-          <p>1、点击屏幕可进行投注和取消投注！</p>
-<p>2、投注界面左右滑动可以切换玩法！</p>
-<p>3、点击4G可切换到4G模式节省流量！</p>
+          <p>1.避免争议,筛子靠壁倾斜需重摇；</p>
+<p>2.点击屏幕可进行投注和取消投注；</p>
+<p>3.投注界面左右滑动可以切换玩法；</p>
+<p>4.点击4G按钮可以切换到4G模式；</p>
+<p>5.点击WiFi按钮可切回视频模式；</p>
+<p>6.点击×号按钮可以退出直播间。</p>
         </div>
       </div>
       <div class="close" @click="$parent.userinfoShow = 0"></div>

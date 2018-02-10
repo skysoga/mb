@@ -1,7 +1,7 @@
 <template>
   <div class="sicbo">
     <div class="bg" style="background: url('/static/img/SicBo.png') no-repeat;"></div>
-    <div class="dice">
+    <div class="dice-con">
       <div id="dice" v-show="showDice"></div>
       <div class="result" v-if="results instanceof Array" v-show="showResult">
         <em :class="'d d1 dice'+results[0]" style="background: url('/static/img/history-dice.png')"></em>
@@ -75,7 +75,7 @@
   }
 </script>
 <style lang="scss" scoped>
-.dice{
+.dice-con{
   position: absolute;
   width: 6em;
   height: 6em;
@@ -89,7 +89,7 @@
 .sicbo{
   position: fixed;
   bottom:2em;
-  right:2em;
+  right:1em;
 }
 .bg{
   width: 6.6em;
@@ -107,18 +107,21 @@
   background-position: -6.6em 0 !important;
 }
 .result{
+  position: absolute;
   font-size:.8em;
+  top:0;
+  left:0;
   .d1{
-    right:7.1em;
-    bottom:5em;
+    right:4.1em;
+    bottom:1.2em;
   }
   .d2{
-    right:5.9em;
-    bottom:6.2em;
+    right:2.9em;
+    bottom:2.4em;
   }
   .d3{
-    right:4.7em;
-    bottom:4.9em;
+    right:1.7em;
+    bottom:1.2em;
   }
 }
 .d{
@@ -126,7 +129,7 @@
   width: 1.58em;
   height:1.58em;
   background-size: 9.6em !important;
-  position: fixed;
+  position: absolute;
 }
 .dice2{
   background-position: -1.6em 0 !important;

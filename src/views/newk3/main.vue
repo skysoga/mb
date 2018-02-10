@@ -4,12 +4,12 @@
     <gift :activegift="activegift" v-show="show == 'main'"></gift>
     <div class="video">
       <img src="/static/img/newk3-bg.jpg" alt="" width="100%">
-      <img v-if="WifiOr4G === '4G'" src="/static/img/4g-bg.jpg" alt="" width="100%">
+      <img v-if="WifiOrFG === 'FG'" src="/static/img/4g-bg.jpg" alt="" width="100%">
       <div v-if="loading" class="loading" id="loading"><span><i>{{loadingText2}}</i><em>{{loadingText}}</em></span></div>
       <div><iframe ref="iframe" src="/static/video.html"></iframe></div>
     </div>
     <div class="g4view">
-      <SicBo :lcode="lcode" v-show="WifiOr4G === '4G'"></SicBo>
+      <SicBo :lcode="lcode" v-show="WifiOrFG === 'FG'"></SicBo>
     </div>
     <div v-show="show == 'main'" @click="changeShow" class="mainPage">
       <div class="result">
@@ -30,7 +30,7 @@
       </div>
       <barrage ref="barrage" class="barrage" :class="{toTop:(activeHide===1),toBottom:(activeHide===3)}" v-if="barrageIsOpen"></barrage>
       <div class="g4">
-        <a href="javascript:;" class="btn" @click.stop="changeNet">4G</a>
+        <a href="javascript:;" class="btn" :class="WifiOrFG" v-show="showFGbtn" @click.stop="changeNet"></a>
       </div>
       <div class="control">
         <ul class="con-btn fix">
@@ -210,7 +210,8 @@
         loadingText:"",
         loadingText2:"",
         loadingt:null,
-        WifiOr4G:'wifi'
+        WifiOrFG:'Wifi',
+        showFGbtn:0,
       }
     },
     computed:mapState({
@@ -356,11 +357,11 @@
       changeNet(){
         this.$refs.iframe.contentWindow.destroy({func:(state)=>{
           if (state) {
-            this.WifiOr4G = '4G'
+            this.WifiOrFG = 'FG'
           }else{
-            this.WifiOr4G = 'Wifi'
+            this.WifiOrFG = 'Wifi'
           }
-          console.log(state,this.WifiOr4G)
+          console.log(state,this.WifiOrFG)
         }})
       },
       startLoading(){
@@ -658,6 +659,7 @@
             this.loading = 0
             this.player.stopAnimation()
             clearInterval(this.loadingt)
+            this.showFGbtn = 1
           },2000)
         })
       }
@@ -700,20 +702,28 @@
 .g4{
   position: fixed;
   z-index: 25;
-  bottom:2.8em;
-  right: .5em;
+  top:11em;
+  right:0.3em;
+  width: 2.62em;
   .btn{
     display: block;
-    width: 1.8em;
     height: 1.8em;
-    font-size: .8em;
     line-height: 1.8em;
     text-align: center;
     color:white;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 50%;
+    &:before{
+      font-family: 'iconfont';
+      font-size: 1.3em;
+    }
+    &.Wifi:before{
+      content: '\e666';
+    }
+    &.FG:before{
+      content: '\e667';
+    }
   }
 }
+
 .loading{
   display: block;
   position: fixed;
@@ -752,8 +762,9 @@
 }
 .Anchor{
   position: fixed;
-  top:0.7em;
-  right: .6em;
+  top:8em;
+  right: .3em;
+  width: 2.62em;
   z-index: 20;
 }
 .AnchorImg{
