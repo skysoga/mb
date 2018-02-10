@@ -11,7 +11,7 @@
 				<span>{{$parent.giftArr[0].NickName?$parent.giftArr[0].NickName:$parent.giftArr[0].UserName}}</span>
 				<em>送出<i>{{$parent.giftsObj[$parent.giftArr[0].type][1]}}</i></em>
 			</div>
-			<div class="review" :style="'background: url(/static/img/smallgifts/'+$parent.giftArr[0].type+'.png) center'"></div>
+			<div class="review" :style="'background: url('+$store.state.constant.ImgHost+'/live/smallgifts/'+$parent.giftArr[0].type+'.png) center'"></div>
 		</div>
 	</div>
 </template>
@@ -54,7 +54,7 @@
 				}
 				var player = new SVGA.Player('#gift');
 				var parser = new SVGA.Parser('#gift'); // 如果你需要支持 IE6+，那么必须把同样的选择器传给 Parser。
-				parser.load('/static/img/gifts/'+this.$parent.giftArr[0].type+'.c', videoItem=> {
+				parser.load(state.constant.ImgHost+'/live/gifts/'+this.$parent.giftArr[0].type+'.gif', videoItem=> {
 					this.className = this.$parent.giftArr[0].type
 					this.moving = 1
 					player.loops = 1

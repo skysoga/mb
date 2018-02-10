@@ -50,7 +50,7 @@
     mounted(){
       this.player = new SVGA.Player('#dice');
       var parser = new SVGA.Parser('#dice'); // 如果你需要支持 IE6+，那么必须把同样的选择器传给 Parser。
-      parser.load('/static/img/4g-dice.c', videoItem=> {
+      parser.load(state.constant.ImgHost+'/live/4g-dice.gif', videoItem=> {
         this.player.loops = 0
         this.player.setVideoItem(videoItem);
         this.player.startAnimation();

@@ -4,10 +4,10 @@
     <gift :activegift="activegift" v-show="show == 'main'"></gift>
     <div class="video">
       <div class="imgs">
-        <img src="/static/img/newk3-bg.jpg" alt="" width="100%">
+        <img :src="$store.state.constant.ImgHost+'/live/newk3-bg.jpg'" alt="" width="100%">
       </div>
       <div class="imgs">
-        <img v-if="WifiOrFG === 'FG'" src="/static/img/4g-bg.jpg" alt="" width="100%">
+        <img v-if="WifiOrFG === 'FG'" :src="$store.state.constant.ImgHost+'/live/4g-bg.jpg'" alt="" width="100%">
       </div>
       <div v-if="loading" class="loading" id="loading"><span><i>{{loadingText2}}</i><em>{{loadingText}}</em></span></div>
       <div><iframe ref="iframe" src="/static/video.html"></iframe></div>
@@ -372,7 +372,7 @@
         console.log('加载动画')
         this.player = new SVGA.Player('#loading');
         var parser = new SVGA.Parser('#loading'); // 如果你需要支持 IE6+，那么必须把同样的选择器传给 Parser。
-        parser.load('/static/img/loading.c', videoItem=> {
+        parser.load(state.constant.ImgHost+'/live/loading.gif', videoItem=> {
           this.player.clearsAfterStop=true
           this.player.setVideoItem(videoItem);
           this.player.startAnimation();

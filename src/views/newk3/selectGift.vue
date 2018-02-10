@@ -4,7 +4,7 @@
       <ul class="fix">
         <li v-for="d in $parent.giftsList" @click.stop="select(d)" :class="{selected:active[0] === d[0]}" class="gift">
           <span v-show="d[3] === 1">连</span>
-          <div :class="'review view-'+d[0]" :style="'background: url(/static/img/smallgifts/'+d[0]+'.png)'"></div>
+          <div :class="'review view-'+d[0]" :style="'background: url('+$store.state.constant.ImgHost+'/live/smallgifts/'+d[0]+'.png)'"></div>
           <i>￥{{d[2]}}</i>
           <em>{{d[1]}}</em>
         </li>
