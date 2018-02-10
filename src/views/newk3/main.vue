@@ -946,7 +946,6 @@
     background: #b8b4aa;
     img{
       position:absolute;
-      top:10%;
       left:0;
       z-index: 9;
     }
