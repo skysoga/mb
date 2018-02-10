@@ -3,8 +3,12 @@
   <div class="newContainer">
     <gift :activegift="activegift" v-show="show == 'main'"></gift>
     <div class="video">
-      <img src="/static/img/newk3-bg.jpg" alt="" width="100%">
-      <img v-if="WifiOrFG === 'FG'" src="/static/img/4g-bg.jpg" alt="" width="100%">
+      <div class="imgs">
+        <img src="/static/img/newk3-bg.jpg" alt="" width="100%">
+      </div>
+      <div class="imgs">
+        <img v-if="WifiOrFG === 'FG'" src="/static/img/4g-bg.jpg" alt="" width="100%">
+      </div>
       <div v-if="loading" class="loading" id="loading"><span><i>{{loadingText2}}</i><em>{{loadingText}}</em></span></div>
       <div><iframe ref="iframe" src="/static/video.html"></iframe></div>
     </div>
@@ -689,6 +693,8 @@
 <style lang="scss">
 .loading canvas{
   margin-top: -3em;
+  position: absolute;
+  left: 0;
 }
 </style>
 <style lang="scss" scoped>
@@ -713,7 +719,7 @@
     color:white;
     &:before{
       font-family: 'iconfont';
-      font-size: 1.3em;
+      font-size: 1.5em;
       color:#e7edec;
     }
     &.FG:before{
@@ -733,12 +739,11 @@
   left: 0;
   transform:scale(.7);
   span{
-    position: fixed;
+    position: absolute;
     display: block;
     text-align: center;
     width: 16rem;
-    height: 100vh;
-    top: 4em;
+    top: 7.4em;
     left: -.5em;
     line-height: 100vh;
     color: white;
@@ -937,19 +942,20 @@
     left: 0;
     height: 150%;
     width: 100%;
-    display: table;
+    display:flex;
     background: #b8b4aa;
     img{
       position:absolute;
-      top:15%;
+      top:10%;
       left:0;
       z-index: 9;
     }
     >div{
-      display: table-cell;
-      vertical-align: middle;
       width: 100%;
       height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     iframe{
       position: relative;
