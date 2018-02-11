@@ -90,6 +90,7 @@
   position: fixed;
   bottom:2em;
   right:1em;
+  z-index: 3;
 }
 .bg{
   width: 6.6em;
