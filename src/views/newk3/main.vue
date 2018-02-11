@@ -812,7 +812,6 @@
   position:relative;
   top:.4em;
   left: .4em;
-  z-index: 26;
   display: inline-block;
   font-size: .9em;
   width: 10em;
@@ -842,11 +841,15 @@
   border-radius: 1.4705em;
 }
 .timebar{
+  position: relative;
+  z-index: 25;
   em{
     display:inline;
   }
 }
 .oldissue{
+  position: relative;
+  z-index: 25;
   margin-top:.6em;
 }
 
@@ -1057,13 +1060,14 @@
     overflow:hidden;
     transition:.2s;
     opacity: 0;
-    z-index: 0;
     position: relative;
     background: rgba(0,0,0,.4);
+    pointer-events: none;
+    z-index: 30;
   }
   .betContainer.bet{
     opacity: 1;
-    z-index: 30;
+    pointer-events: initial;
   }
   .betboxContainer{
     padding-bottom:2.5em;
