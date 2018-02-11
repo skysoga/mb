@@ -403,7 +403,7 @@
         }
       },
       choose(item){
-        if(!this.award)return 
+        if(!this.award)return
         var _pos = this.chosen.indexOf(item),
             _chosen = this.chosen.slice(0)
 
@@ -710,11 +710,13 @@
   align-items: center;
   height: 100%;
   z-index: 1;
-  > *{
+  > img{
     display: flex;
     justify-content: center;
     align-items: center;
     width:16rem;
+    min-height: 28.46rem;
+    height: 100%;
   }
 }
 .iframe{
@@ -915,7 +917,7 @@
   }
   //header样式结束
 
-  
+
   .playtype{
     position:absolute;
     z-index:50;
@@ -1123,7 +1125,7 @@
           i{
             font-size:.71em;
           }
-          
+
         }
         p{
           font-size: .41em;
