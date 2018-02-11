@@ -1,12 +1,12 @@
 <template>
 	<div class="container">
 		<div class="durex">
-			<div class="durex1" style="background:url('/static/img/gifts/durex.png')"></div>
-			<div class="durex2" style="background:url('/static/img/gifts/durex.png')"></div>
+			<div class="durex1" :style="'background:url('+$store.state.constant.ImgHost+'/live/gifts/durex.png)'"></div>
+			<div class="durex2" :style="'background:url('+$store.state.constant.ImgHost+'/live/gifts/durex.png)'"></div>
 		</div>
-		<div class="small1 small" style="background:url('/static/img/gifts/durex.png')"></div>
-		<div class="small2 small" style="background:url('/static/img/gifts/durex.png')"></div>
-		<div class="small3 small" style="background:url('/static/img/gifts/durex.png')"></div>
+		<div class="small1 small" :style="'background:url('+$store.state.constant.ImgHost+'/live/gifts/durex.png)'"></div>
+		<div class="small2 small" :style="'background:url('+$store.state.constant.ImgHost+'/live/gifts/durex.png)'"></div>
+		<div class="small3 small" :style="'background:url('+$store.state.constant.ImgHost+'/live/gifts/durex.png)'"></div>
 	</div>
 </template>
 <style lang="scss" scoped>

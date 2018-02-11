@@ -1,8 +1,8 @@
 <template>
 	<div class="container">
 		<div class="block">
-			<div class="cuke1" style="background:url('/static/img/gifts/cuke.png')"></div>
-			<div class="cuke2" style="background:url('/static/img/gifts/cuke.png')"></div>
+			<div class="cuke1" :style="'background:url('+$store.state.constant.ImgHost+'/live/gifts/cuke.png)'"></div>
+			<div class="cuke2" :style="'background:url('+$store.state.constant.ImgHost+'/live/gifts/cuke.png)'"></div>
 		</div>
 	</div>
 </template>

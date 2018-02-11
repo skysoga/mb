@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
-		<div class="kiss" style="background:url('/static/img/gifts/kiss.png')"></div>
-		<div class="small" style="background:url('/static/img/gifts/kiss.png')"></div>
+		<div class="kiss" :style="'background:url('+$store.state.constant.ImgHost+'/live/gifts/kiss.png)'"></div>
+		<div class="small" :style="'background:url('+$store.state.constant.ImgHost+'/live/gifts/kiss.png)'"></div>
 	</div>
 </template>
 <style lang="scss" scoped>
