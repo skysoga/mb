@@ -9,7 +9,8 @@
       <div v-if="loading" class="loading" id="loading"></div>
     </div>
     <div class="middleBox FGAndWifi">
-      <img v-if="WifiOrFG === 'FG'" :src="$store.state.constant.ImgHost+'/live/4g-bg.jpg'" alt="" width="100%">
+      <!-- <img v-if="WifiOrFG === 'FG'" :src="$store.state.constant.ImgHost+'/live/4g-bg.jpg'" alt="" width="100%"> -->
+      <div v-if="WifiOrFG === 'FG'" :style="'background-image: url('+$store.state.constant.ImgHost+'/live/4g-bg.jpg);'"></div>
     </div>
     <div class="middleBox iframe">
       <iframe ref="iframe" src="/static/video.html"></iframe>
@@ -710,7 +711,7 @@
   align-items: center;
   height: 100%;
   z-index: 1;
-  > img{
+  > *{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -729,6 +730,12 @@
 }
 .FGAndWifi{
   z-index: 2;
+  > div{
+    width: 16rem;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+  }
 }
 .loadingBg{
   margin:0;
