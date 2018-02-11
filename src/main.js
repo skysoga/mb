@@ -140,6 +140,17 @@ window.Vue=Vue
 Vue.use(Va)
 Vue.use(VueRouter)
 Vue.use(Vuex)
+//数组随机扩展方法
+Array.prototype.shuffle = function() {
+  var input = this
+  for (var i = input.length-1; i >=0; i--) {
+    var randomIndex = Math.floor(Math.random()*(i+1))
+    var itemAtIndex = input[randomIndex]
+    input[randomIndex] = input[i]
+    input[i] = itemAtIndex
+  }
+  return input
+}
 //全局过滤器
 Vue.filter('num', v=>+v) // 转成数字类型
 Vue.filter('filNum',v=>String(Math.floor(v)).length>7?Math.floor(v):v)//数字整数长度大于7位去掉小数点部分

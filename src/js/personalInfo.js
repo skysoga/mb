@@ -25,7 +25,7 @@ export default {
         // this.UserQQ=state.UserQQ  'UserQQ',
         this.UserSex=state.UserSex
         this.UserBirthDay=state.UserBirthDay
-        this.HeadImgBoxList=state.DefaultPhotoList
+        this.HeadImgBoxList=state.DefaultPhotoList.shuffle()
   },
   methods:{
     upHeadImg(){
