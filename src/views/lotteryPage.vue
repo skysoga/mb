@@ -95,77 +95,86 @@
       if (ptype === 'live') {
         _fetch({Action:'GameConfig',GameID:lcode})
         .then(d=>{
+          try{
           localStorage.removeItem('btnText')
-          if (d.Code === 1 && d.BackData.LiveType.Type == 'true') {
-            var GetDefaultBarrage = new Promise(function(res,rej){
-              RootApp.GetInitData(['DefaultBarrage'],d=>{
-                res(d)
-              },{url:'/LiveApi'})
-            })
-            var GetAnchor       = _fetch({Action:"GetAnchor",GameID:lcode},{url:'/LiveApi'})
-            var GetLiveBroadCast= _fetch({Action:"GetLiveBroadCast",GameID:lcode},{url:'/LiveApi'})
-            var reqArr          = [getRebate, getServerTime,GetAnchor,GetDefaultBarrage,GetLiveBroadCast]
+          if (d.BackData != null) {
+            if (d.Code === 1 && d.BackData.LiveType.Type == 'true') {
+              var GetDefaultBarrage = new Promise(function(res,rej){
+                RootApp.GetInitData(['DefaultBarrage'],d=>{
+                  res(d)
+                },{url:'/LiveApi'})
+              })
+              var GetAnchor       = _fetch({Action:"GetAnchor",GameID:lcode},{url:'/LiveApi'})
+              var GetLiveBroadCast= _fetch({Action:"GetLiveBroadCast",GameID:lcode},{url:'/LiveApi'})
+              var reqArr          = [getRebate, getServerTime,GetAnchor,GetDefaultBarrage,GetLiveBroadCast]
 
-            // 进入彩种页必须先获取到  赔率/彩种配置/服务器时间
-            Promise.all(reqArr).then((values)=>{
-              //校验下这个彩种存不存在，不存在就送回购彩大厅
-              var lotteryItem = state.LotteryList[lcode]
-              var offLineLottery = ['FC3D', 'PL35']
-              if (values[2].Code === 1) {
-                next(vm=>{
-                  //检测等级
-                  var _level = state.UserUpGradeBonus.Grade
-                  if ((','+livecfg.level).search(`,${_level},`) === -1) {
-                   //关掉loading动画
-                    store.commit('toggleLoading', false)
-                    return layer.msgWarn('您当前的等级无法进入直播页面！')
+              // 进入彩种页必须先获取到  赔率/彩种配置/服务器时间
+              Promise.all(reqArr).then((values)=>{
+                //校验下这个彩种存不存在，不存在就送回购彩大厅
+                var lotteryItem = state.LotteryList[lcode]
+                var offLineLottery = ['FC3D', 'PL35']
+                if (values[2].Code === 1) {
+                  next(vm=>{
+                    //检测等级
+                    var _level = state.UserUpGradeBonus.Grade
+                    if ((','+livecfg.level).search(`,${_level},`) === -1) {
+                     //关掉loading动画
+                      store.commit('toggleLoading', false)
+                      return layer.msgWarn('您当前的等级无法进入直播页面！')
+                    }
+                    vm.GameConfig = d.BackData
+                    vm.createWS()
+                    // vm.isRuningT = setInterval(()=>{
+                    //   vm.createWS()
+                    // },3000)
+                    values[2].BackData.Photo = imgHost + '/' + values[2].BackData.Photo
+                    vm.Anchor = values[2].BackData
+                    let _textData = JSON.parse(JSON.stringify(values[3].DefaultBarrage))
+                    let textDataObj = {}
+                    let newBarrage = []
+                    //随机弹幕
+                    for (var i = 0; i < values[3].DefaultBarrage.length-1; i++) {
+                      var y = parseInt(Math.random()*(values[3].DefaultBarrage.length-i-1),10)+1;
+                      newBarrage.push(_textData[y])
+                      _textData.splice(y,1)
+                    }
+                    newBarrage.push(_textData[0])
+                    for (var i = 0; i < newBarrage.length; i++) {
+                      textDataObj[newBarrage[i].ID] = newBarrage[i].Content
+                    }
+                    vm.DefaultBarrage = textDataObj
+                    vm.RandomBarrage = newBarrage
+                    vm.BroadCast = values[4].BackData
+                  })
+                }else{
+                  if(values[2].Code !== 1){
+                    layer.msgWarn(values[2].StrCode)
                   }
-                  vm.GameConfig = d.BackData
-                  vm.createWS()
-                  // vm.isRuningT = setInterval(()=>{
-                  //   vm.createWS()
-                  // },3000)
-                  values[2].BackData.Photo = imgHost + '/' + values[2].BackData.Photo
-                  vm.Anchor = values[2].BackData
-                  let _textData = JSON.parse(JSON.stringify(values[3].DefaultBarrage))
-                  let textDataObj = {}
-                  let newBarrage = []
-                  //随机弹幕
-                  for (var i = 0; i < values[3].DefaultBarrage.length-1; i++) {
-                    var y = parseInt(Math.random()*(values[3].DefaultBarrage.length-i-1),10)+1;
-                    newBarrage.push(_textData[y])
-                    _textData.splice(y,1)
-                  }
-                  newBarrage.push(_textData[0])
-                  for (var i = 0; i < newBarrage.length; i++) {
-                    textDataObj[newBarrage[i].ID] = newBarrage[i].Content
-                  }
-                  vm.DefaultBarrage = textDataObj
-                  vm.RandomBarrage = newBarrage
-                  vm.BroadCast = values[4].BackData
-                })
-              }else{
-                if(values[2].Code !== 1){
-                  layer.msgWarn(values[2].StrCode)
+                  state.turning=false
                 }
-                state.turning=false
-              }
-            }).catch((e)=>{
-               //关掉loading动画
-              store.commit('toggleLoading', false)
-              layer.msgWarn('请求错误，可能已经超时！')
-              //返回首页
-              RootApp.$router.replace('/index')
-            })
-          }else{
-            if (d.BackData.LiveType.Type == 'false') {
-              console.log('停播处理')
-              //停播处理
-              RootApp.$router.replace(`/liveList?title=${d.BackData.LiveType.CloseTitle}&content=${d.BackData.LiveType.CloseContent}&type=${d.BackData.LiveType.Type}&${Math.random()}`)
-              // state.turning=false
+              }).catch((e)=>{
+                 //关掉loading动画
+                store.commit('toggleLoading', false)
+                layer.msgWarn('请求错误，可能已经超时！')
+                //返回首页
+                RootApp.$router.replace('/index')
+              })
             }else{
-              layer.msgWarn(d.StrCode)
+              if (d.BackData.LiveType.Type == 'false') {
+                console.log('停播处理')
+                //停播处理
+                RootApp.$router.replace(`/liveList?title=${d.BackData.LiveType.CloseTitle}&content=${d.BackData.LiveType.CloseContent}&type=${d.BackData.LiveType.Type}&${Math.random()}`)
+                // state.turning=false
+              }else{
+                layer.msgWarn(d.StrCode)
+              }
             }
+          }else{
+            layer.msgWarn('后台数据错误')
+          }
+          
+          }catch(e){
+            layer.alert(e+','+JSON.stringify(d)+'，GameConfig错误')
           }
         })
         

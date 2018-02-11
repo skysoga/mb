@@ -2,16 +2,19 @@
   <div>
   <div class="newContainer">
     <gift :activegift="activegift" v-show="show == 'main'"></gift>
-    <div class="video">
-      <div class="imgs">
-        <img :src="$store.state.constant.ImgHost+'/live/newk3-bg.jpg'" alt="" width="100%">
-      </div>
-      <div class="imgs">
-        <img v-if="WifiOrFG === 'FG'" :src="$store.state.constant.ImgHost+'/live/4g-bg.jpg'" alt="" width="100%">
-      </div>
-      <div v-if="loading" class="loading" id="loading"><span><i>{{loadingText2}}</i><em>{{loadingText}}</em></span></div>
-      <div><iframe ref="iframe" src="/static/video.html"></iframe></div>
+    <div class="middleBox loadingBg">
+      <img :src="$store.state.constant.ImgHost+'/live/newk3-bg.jpg'" alt="" width="100%">
     </div>
+    <div class="middleBox">
+      <div v-if="loading" class="loading" id="loading"></div>
+    </div>
+    <div class="middleBox FGAndWifi">
+      <img v-if="WifiOrFG === 'FG'" :src="$store.state.constant.ImgHost+'/live/4g-bg.jpg'" alt="" width="100%">
+    </div>
+    <div class="middleBox iframe">
+      <iframe ref="iframe" src="/static/video.html"></iframe>
+    </div>
+    <div class="changeShow" @click="changeShow"></div>
     <div class="g4view">
       <SicBo :lcode="lcode" v-show="WifiOrFG === 'FG'"></SicBo>
     </div>
@@ -211,9 +214,6 @@
         loading:1,
         player:null,
         available:[],
-        loadingText:"",
-        loadingText2:"",
-        loadingt:null,
         WifiOrFG:'Wifi',
         showFGbtn:0,
       }
@@ -376,16 +376,6 @@
           this.player.clearsAfterStop=true
           this.player.setVideoItem(videoItem);
           this.player.startAnimation();
-          this.loadingText = ""
-          this.loadingText2 = "小U努力加载中"
-          this.loadingt = setInterval(()=>{
-            switch(this.loadingText){
-              case '':this.loadingText = ".";break;
-              case '.':this.loadingText = "..";break;
-              case '..':this.loadingText = "...";break;
-              case '...':this.loadingText = "";break;
-            }
-          },200)
         })
       },
       showCard(w){
@@ -662,7 +652,6 @@
           setTimeout(()=>{
             this.loading = 0
             this.player.stopAnimation()
-            clearInterval(this.loadingt)
             this.showFGbtn = 1
           },2000)
         })
@@ -692,13 +681,55 @@
 </script>
 <style lang="scss">
 .loading canvas{
-  margin-top: -3em;
-  position: absolute;
-  left: 0;
+  width:100%;
+  height:100%;
+  transform:initial !important;
 }
 </style>
 <style lang="scss" scoped>
 @import "../../scss/dice";
+.changeShow{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top:0;
+  z-index: 11;
+}
+.loading{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width:16rem;
+}
+.middleBox{
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  z-index: 1;
+  > *{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width:16rem;
+  }
+}
+.iframe{
+  z-index: 10;
+  iframe{
+    height:32rem;
+    width:16rem;
+    border: none;
+  }
+}
+.FGAndWifi{
+  z-index: 2;
+}
+.loadingBg{
+  margin:0;
+}
 .g4view{
 
 }
@@ -727,31 +758,6 @@
     }
     &.Wifi:before{
       content: '\e667';
-    }
-  }
-}
-
-.loading{
-  display: block;
-  position: fixed;
-  z-index: 9 !important;
-  top: 0;
-  left: 0;
-  transform:scale(.7);
-  span{
-    position: absolute;
-    display: block;
-    text-align: center;
-    width: 16rem;
-    top: 7.4em;
-    left: -.5em;
-    line-height: 100vh;
-    color: white;
-    i,em{
-      font-size: .75em;
-    }
-    em{
-      position: absolute;
     }
   }
 }
@@ -935,34 +941,6 @@
   .space2{
     height:2.15em;
     width:100%;
-  }
-  .video{
-    position: fixed;
-    top: -25%;
-    left: 0;
-    height: 150%;
-    width: 100%;
-    display:flex;
-    background: #b8b4aa;
-    img{
-      position:absolute;
-      left:0;
-      z-index: 9;
-    }
-    >div{
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    iframe{
-      position: relative;
-      z-index: 10;
-      height:32rem;
-      width:16rem;
-      border: none;
-    }
   }
   .control{
     z-index: 25;
