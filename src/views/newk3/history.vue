@@ -66,7 +66,7 @@
 	    results(){
 	      var pastOpen = state.lt.LotteryResults[this.$parent.lcode].map(item=>{
 	        var el = {}
-	        el.IssueNo = item.IssueNo.length < 7 ? item.IssueNo :item.IssueNo.slice(2)        //把年份砍掉
+	        el.IssueNo = item.IssueNo.length < 7 ? item.IssueNo :item.IssueNo.slice(4)        //把年份砍掉
 	        var results = item.LotteryOpen.split(',')
 	        el.LotteryOpen = results
 	        el.sum = results.reduce((a,b)=>(+a)+(+b))

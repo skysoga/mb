@@ -239,12 +239,12 @@
           return this.nowIssue
         }
         let newRecord = state.lt.LotteryResults[this.lcode][0]
-        return newRecord?newRecord.IssueNo.replace(/^.{2}/,''):''
+        return newRecord?newRecord.IssueNo.replace(/^.{4}/,''):''
       },
       nowIssue(){
         let issue = ''+state.lt.NowIssue
         if (issue) {
-          return issue.substring(2,issue.length)
+          return issue.substring(4,issue.length)
         }
         return '00000000'
       },
