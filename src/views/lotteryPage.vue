@@ -639,8 +639,20 @@
                 //     results: json.BackData
                 //   })
                 // }
-
-               commit({
+                if(state.lottery.LotteryType==='6HC'){
+                  json.BackData.map(item=>{
+                    item.natal=getNatal(new Date(item.OpenTime))
+                    return item
+                  })
+                }
+                /*if(state.lottery.LotteryName.slice(0,2)==='大发'){
+                  //大发彩种去掉开头的年份
+                  json.BackData.map(item=>{
+                    item.IssueNo=item.IssueNo.slice(4)
+                    return item
+                  })
+                }*/
+                commit({
                   type: 'lt_setLotteryResult',
                   code,
                   results: json.BackData
