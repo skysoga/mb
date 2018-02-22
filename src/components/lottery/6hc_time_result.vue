@@ -134,7 +134,7 @@ export default {
       var showTime=['1300'].indexOf(code)>-1
       return state.lt.LotteryResults[code].map(item=>{
         var el = {}
-        el.IssueNo = item.IssueNo.length < 7 ? item.IssueNo :item.IssueNo.slice(4)        //把年份砍掉
+        el.IssueNo = item.IssueNo.length === 7 ? item.IssueNo :item.IssueNo.slice(4)        //把年份砍掉
         el.LotteryOpen = item.LotteryOpen.split(',').map(str=>('0' + str).slice(-2))
         var mdy = item.OpenTime.split(' ')[0] //开奖时间的年月日
         var sTime= item.OpenTime.split(' ')[1]
