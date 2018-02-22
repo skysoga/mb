@@ -6,11 +6,19 @@
       {{oldIssue}}期开奖号码 <i class="iconfont">&#xe601;</i>
     </span>
 
-    <div class="openNumber" >
-    <!-- <div class="openNumber"  v-if="displayResults"> -->
+    <div class="openNumber"  v-if="!displayResults">
+      <template v-for="(numStr, index) in results">
+          <div class="number-box plus" v-if="index === 6"><em class="symbol">+</em></div>
+          <div :class="['number-box','nocolor']">
+            <em :class="numColor[numStr*1]">{{numStr}}</em>
+            <span class="number-box-text">{{getAnimal(numStr,results.natal)}}</span>
+          </div>
+      </template>
+    </div>
+    <div class="openNumber"  v-else>
       <template v-for="(numStr, index) in results.LotteryOpen">
           <div class="number-box plus" v-if="index === 6"><em class="symbol">+</em></div>
-          <div :class="['number-box',!displayResults&&'nocolor']">
+          <div :class="['number-box']">
             <em :class="numColor[numStr*1]">{{numStr}}</em>
             <span class="number-box-text">{{getAnimal(numStr,results.natal)}}</span>
           </div>
