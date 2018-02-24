@@ -644,7 +644,7 @@
         this._setSliderWidth(true)
         this.slider.refresh()
       }
-      this.$refs.iframe.contentWindow.onload = ()=>{
+      var openlive = ()=>{
         let url = this.$parent.GameConfig.LiveWS
         if(process.env.NODE_ENV !== 'production'){
           url = url.replace(/key=.+/,'')+'key=zhimakaimen'
@@ -658,6 +658,12 @@
           },2000)
         })
       }
+      this.$refs.iframe.contentWindow.onload = ()=>{
+        openlive()
+      }
+      document.addEventListener("visibilitychange", ()=>{
+        this.changeNet()
+      })
     },
     watch:{
       'activeHide'(n){
