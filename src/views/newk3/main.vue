@@ -217,6 +217,7 @@
         available:[],
         WifiOrFG:'Wifi',
         showFGbtn:0,
+        visibilitychange:null,
       }
     },
     computed:mapState({
@@ -661,9 +662,10 @@
       this.$refs.iframe.contentWindow.onload = ()=>{
         openlive()
       }
-      document.addEventListener("visibilitychange", ()=>{
+      this.visibilitychange = ()=>{
         this.changeNet()
-      })
+      }
+      document.addEventListener("visibilitychange", this.visibilitychange)
     },
     watch:{
       'activeHide'(n){
@@ -684,6 +686,7 @@
       clearTimeout(this.timer)
       clearTimeout(this.wait4Resultst)
       window.removeEventListener('resize',this.changeSize)
+      document.removeEventListener("visibilitychange", this.visibilitychange)
     },
   }
 </script>
