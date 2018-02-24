@@ -1245,6 +1245,11 @@
 	    }
 	    next()
 	  },
+    beforeCreate(){
+      if(Math.abs(state.Difftime)>82800000){
+        layer.url('本地时间不正确，请调整后刷新','/index')
+      }
+    },
 		beforeDestroy(){
 			clearTimeout(this.timer1)
 			clearTimeout(this.timer2)
