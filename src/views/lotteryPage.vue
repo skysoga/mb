@@ -965,7 +965,6 @@
                   that.WS.TimeLeft = NewGame.end*1 - serverTime*1
                 }
                 var Countdown = that.WS.TimeLeft
-                console.log(Countdown)
               }else{
                 return
               }
