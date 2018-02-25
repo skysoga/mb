@@ -947,7 +947,6 @@
                 //正常倒计时
                 var NewGame = that.WS[_status]
                 if (that.WS.TimeLeft === '') {
-                  // console.log(serverTime)
                   // console.log(NewGame.start)
                   if (serverTime >= NewGame.start && NewGame.end >= serverTime) {
                     that.WS.TimeLeft = NewGame.end*1 - serverTime*1
@@ -955,7 +954,7 @@
                     store.commit('lt_stopSell', 3)
                     return
                   }
-                }else if(that.WS.TimeLeft < 1000){
+                }else if(that.WS.TimeLeft < 2000){
                   //状态改为等待开奖
                   that.WS.Status = 'WaitResult'
                   store.commit('lt_stopSell', 4)
@@ -965,8 +964,8 @@
                 }else if(that.WS.TimeLeft > 0){
                   that.WS.TimeLeft = NewGame.end*1 - serverTime*1
                 }
-                // console.log('TimeLeft:'+that.WS.TimeLeft)
                 var Countdown = that.WS.TimeLeft
+                console.log(Countdown)
               }else{
                 return
               }

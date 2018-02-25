@@ -372,8 +372,8 @@
       },
       startLoading(){
         console.log('加载动画')
-        this.player = new SVGA.Player('#loading');
-        var parser = new SVGA.Parser('#loading'); // 如果你需要支持 IE6+，那么必须把同样的选择器传给 Parser。
+        this.player = new abcg_i.Player('#loading');
+        var parser = new abcg_i.Parser('#loading'); // 如果你需要支持 IE6+，那么必须把同样的选择器传给 Parser。
         parser.load(state.constant.ImgHost+'/live/loading.gif', videoItem=> {
         // parser.load('/static/img/loading.gif', videoItem=> {
           this.player.clearsAfterStop=true
