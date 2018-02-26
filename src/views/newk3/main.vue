@@ -647,6 +647,10 @@
       }
       var openlive = ()=>{
         let url = this.$parent.GameConfig.LiveWS
+        if(url.search('0.0.0.0') > -1){
+          this.WifiOrFG = 'FG'
+          return
+        }
         if(process.env.NODE_ENV !== 'production'){
           url = url.replace(/key=.+/,'')+'key=zhimakaimen'
         }
