@@ -102,7 +102,7 @@
       padding:.2em 0;
     }
 		.content{
-      // margin: .25em 0;
+      /*margin: .25em 0;*/
       padding: .15em .4em;
 			display: table;
       background: rgba(0,0,0,.15);

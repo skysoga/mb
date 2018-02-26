@@ -1451,7 +1451,7 @@
             this.WSrefresh(json)
           }
           this.GameWS.onerror = err =>{
-            layer.msgWarn(err)
+            layer.msgWarn('重新连接中...')
           }
           this.GameWS.onclose = e =>{
             this.GameWS = null
@@ -1470,7 +1470,7 @@
             this.OnlineRefresh(json)
           }
           this.OnlineWS.onerror = err =>{
-            layer.msgWarn(err)
+            layer.msgWarn('重新连接中...')
           }
           this.OnlineWS.onclose = e =>{
             this.OnlineWS = null
