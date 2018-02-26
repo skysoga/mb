@@ -138,7 +138,9 @@
                       newBarrage.push(_textData[y])
                       _textData.splice(y,1)
                     }
-                    newBarrage.push(_textData[0])
+                    if (_textData[0] !== undefined) {
+                      newBarrage.push(_textData[0])
+                    }
                     for (var i = 0; i < newBarrage.length; i++) {
                       textDataObj[newBarrage[i].ID] = newBarrage[i].Content
                     }
