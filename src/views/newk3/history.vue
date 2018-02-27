@@ -40,26 +40,28 @@
 					<div class="nodata" v-if="betData === null">正在加载...</div>
 					<div class="nodata" v-if="betData !== null && betData.length<=0">暂无数据</div>
 			    <div v-for="d in betData">
-			        <a class="active">
-			            <div>
-			            	<p>{{d.lotteryName}}<span>￥{{d.normal_money}}</span></p><span>{{d.issueNo}} 期</span>
-			            </div>
-                  <div class="fr" v-if="Number(d.openState)">
-                  	<strong class="InMoney fr">+{{d.openState}}</strong>
-                  	<span class="InMoney fr">已中奖</span>
-                  </div>
-                  <strong class="" v-else>{{d.openState}}</strong>
-              </a>
-			        <div class="hr1px"></div>
+			      <a class="active" @click="getShow(d.ID,d.UserId)">
+                    <div>
+                        <p>{{d.lotteryName}}<span>￥{{d.normal_money}}</span></p><span>{{d.issueNo}} 期</span>
+                    </div>
+                    <div class="fr" v-if="Number(d.openState)">
+                        <strong class="InMoney fr">+{{d.openState}}</strong>
+                        <span class="InMoney fr">已中奖</span>
+                    </div>
+                    <strong class="" v-else>{{d.openState}}</strong>
+                    </a>
+			      <div class="hr1px"></div>
 			    </div>
 			    <div class="msg noMore">更多记录请到"<router-link id="account" to="/userCenter">我的账户</router-link>"查看</div>
 				</div>
 			</div>
 		</div>
+    <betDetailShow v-show="defaultShow" :betID="defaultID" :UID="defaultUID"/>
 	</div>
 </template>
 <script>
   import {mapState} from 'vuex'
+  import betDetailShow from '../../components/betDetailShow'
 	export default{
 		props:['type'],
     computed:mapState({
@@ -81,7 +83,10 @@
 			return {
 				opened:0,
 				betData:null,
-				loaedBetting:0,
+                loaedBetting:0,
+                defaultUID:0,
+                defaultID:'',
+                defaultShow:false
 			}
 		},
 		created(){
@@ -98,6 +103,11 @@
 			}
 		},
 		methods:{
+            getShow(ID,UID){//注单详情
+                this.defaultShow=true
+                this.defaultUID=UID
+                this.defaultID=ID
+            },
 			close(){
 				this.opened = 0
 				setTimeout(()=>{
@@ -138,7 +148,10 @@
 
 				}
 			}
-		},
+    },
+    components:{
+      betDetailShow
+    }
 	}
 </script>
 <style lang="scss" scoped>
