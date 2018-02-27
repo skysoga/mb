@@ -18,8 +18,8 @@
             <template v-else>余额：已隐藏 <ins @click="getBalance">显示</ins></template>
       </div>
       <div class="btn" :class="{curr:active.length>0}">
-        <a @click="send" href="javascript:;" v-show="!showManyBtn">{{active[3]===1?'连发':'发送'}}</a>
-        <a @click="addGift" href="javascript:;" v-show="showManyBtn">连发：{{time}}</a>
+        <a @touchend.stop="" @click.stop="send" href="javascript:;" v-show="!showManyBtn">{{active[3]===1?'连发':'发送'}}</a>
+        <a @touchend.stop="" @click.stop="addGift" href="javascript:;" v-show="showManyBtn">连发：{{time}}</a>
       </div>
       <div class="manyBtn" v-show="0">
         <span>连送</span>
