@@ -146,7 +146,7 @@
             this.inputLength = this.inputLength + `[${i}]`.length - 1
             this.content += `[${i}]`
           }else{
-            layer.alert(`为防止遮盖，仅限输入${length}个字符`)
+            layer.alert(`为防止遮挡，仅限输入${length}个字符`)
           }
           if(this.checkFace.indexOf(i) === -1){
             this.checkFace.push(i)
