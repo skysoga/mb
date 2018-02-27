@@ -1450,9 +1450,6 @@
             }
             this.WSrefresh(json)
           }
-          this.GameWS.onerror = err =>{
-            layer.msgWarn('重新连接中...')
-          }
           this.GameWS.onclose = e =>{
             this.GameWS = null
             if (this.isRuning === 1) {
@@ -1468,9 +1465,6 @@
           this.OnlineWS.onmessage = e =>{
             let json = JSON.parse(e.data)
             this.OnlineRefresh(json)
-          }
-          this.OnlineWS.onerror = err =>{
-            layer.msgWarn('重新连接中...')
           }
           this.OnlineWS.onclose = e =>{
             this.OnlineWS = null

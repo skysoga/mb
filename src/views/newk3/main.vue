@@ -9,8 +9,7 @@
       <div v-if="loading" class="loading" id="loading"></div>
     </div>
     <div class="middleBox FGAndWifi">
-      <!-- <img v-if="WifiOrFG === 'FG'" :src="$store.state.constant.ImgHost+'/live/4g-bg.jpg'" alt="" width="100%"> -->
-      <div v-if="WifiOrFG === 'FG'" :style="'background-image: url('+$store.state.constant.ImgHost+'/live/4g-bg.jpg);'"></div>
+      <div v-show="showFGbtn" :style="'background-image: url('+$store.state.constant.ImgHost+'/live/4g-bg.jpg);'"></div>
     </div>
     <div class="middleBox iframe">
       <iframe ref="iframe" src="/static/video.html"></iframe>
@@ -667,7 +666,9 @@
         openlive()
       }
       this.visibilitychange = ()=>{
-        this.changeNet()
+        this.$refs.iframe.contentWindow.destroy({func:(state)=>{
+          this.WifiOrFG = 'FG'
+        },state : 1})
       }
       document.addEventListener("visibilitychange", this.visibilitychange)
     },

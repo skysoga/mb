@@ -40,6 +40,9 @@
 		}
  		var destroy = function (option){
 			var state = player.isPlaying
+			if (option.state !== undefined) {
+				state = option.state
+			}
 			if(!state){
 				try{
 					option.func(state)
