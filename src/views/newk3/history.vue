@@ -40,7 +40,7 @@
 					<div class="nodata" v-if="betData === null">正在加载...</div>
 					<div class="nodata" v-if="betData !== null && betData.length<=0">暂无数据</div>
 			    <div v-for="d in betData">
-			      <a class="active" @click="getShow(d.ID,d.UserId)">
+			      <a class="active" @click="getShow(d.ID,0)">
                     <div>
                         <p>{{d.lotteryName}}<span>￥{{d.normal_money}}</span></p><span>{{d.issueNo}} 期</span>
                     </div>
