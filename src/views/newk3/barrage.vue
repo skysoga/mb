@@ -38,13 +38,16 @@
     		},100)
     	},
       getLevel(v){
+        if(v===-1){
+          v=0
+        }
         if (v>0&&v<10) {
           return 'VIP'+v
         }
         else{
           switch(v){
             case 0:return '黑名单';break;
-            case -1:return 'VIP1';break;
+            // case -1:return 'VIP1';break;
             case 10:return '站长';break;
           }
         }
