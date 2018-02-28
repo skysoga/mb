@@ -154,6 +154,8 @@
               if (d.BackData.LiveType.Type == 'false') {
                 console.log('停播处理')
                 //停播处理
+                d.BackData.LiveType.CloseTitle = d.BackData.LiveType.CloseTitle || '暂停直播'
+                d.BackData.LiveType.CloseContent = d.BackData.LiveType.CloseContent || 'UU直播维护中...'
                 RootApp.$router.replace(`/liveList?title=${d.BackData.LiveType.CloseTitle}&content=${d.BackData.LiveType.CloseContent}&type=${d.BackData.LiveType.Type}&${Math.random()}`)
                 // state.turning=false
               }else{
@@ -1441,6 +1443,8 @@
             this.GameConfig = d.BackData
             try{
               if(d.BackData.LiveType.Type == 'false'){
+                d.BackData.LiveType.CloseTitle = d.BackData.LiveType.CloseTitle || '暂停直播'
+                d.BackData.LiveType.CloseContent = d.BackData.LiveType.CloseContent || 'UU直播维护中...'
                 layer.open({
                   className: "layerConfirm",
                   title:d.BackData.LiveType.CloseTitle,
@@ -1527,6 +1531,8 @@
             break;
           case 'BroadCast':this.$refs.newk3.broadCastPush(json);break;
           case 'LiveType':
+            json.CloseTitle = json.CloseTitle || '暂停直播'
+            json.CloseContent = json.CloseContent || 'UU直播维护中...'
             layer.open({
               className: "layerConfirm",
               title:json.CloseTitle,
