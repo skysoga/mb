@@ -129,23 +129,12 @@
                     // },3000)
                     values[2].BackData.Photo = imgHost + '/' + values[2].BackData.Photo
                     vm.Anchor = values[2].BackData
-                    let _textData = JSON.parse(JSON.stringify(values[3].DefaultBarrage))
-                    let textDataObj = {}
-                    let newBarrage = []
-                    //随机弹幕
-                    for (var i = 0; i < values[3].DefaultBarrage.length-1; i++) {
-                      var y = parseInt(Math.random()*(values[3].DefaultBarrage.length-i-1),10)+1;
-                      newBarrage.push(_textData[y])
-                      _textData.splice(y,1)
-                    }
-                    if (_textData[0] !== undefined) {
-                      newBarrage.push(_textData[0])
-                    }
-                    for (var i = 0; i < newBarrage.length; i++) {
-                      textDataObj[newBarrage[i].ID] = newBarrage[i].Content
+                    var textDataObj = {}
+                    for (var i = 0; i < values[3].DefaultBarrage.length; i++) {
+                      textDataObj[values[3].DefaultBarrage[i].ID] = values[3].DefaultBarrage[i].Content
                     }
                     vm.DefaultBarrage = textDataObj
-                    vm.RandomBarrage = newBarrage
+                    vm.RandomBarrage = values[3].DefaultBarrage.shuffle()
                     vm.BroadCast = values[4].BackData
                   })
                 }else{
