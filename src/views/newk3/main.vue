@@ -1261,6 +1261,7 @@
     left:0;
     >div{
       position:absolute;
+      transform: translateY(12em);
     }
   }
   .facetext.ined,.giving.ined{
