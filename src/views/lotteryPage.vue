@@ -1425,12 +1425,46 @@
 					store.commit('lt_changeMode', state.lt.config[0])
 				}
 			},
-      getAnchor(){
+      reconnect(){
         _fetch({Action:"GetAnchor",GameID:this.lcode},{url:'/LiveApi'})
         .then(d=>{
           if (d.Code === 1) {
             d.BackData.Photo = imgHost + '/' + d.BackData.Photo
             this.Anchor = d.BackData
+          }else{
+            layer.msgWarn(d.StrCode)
+          }
+        })
+        _fetch({Action:'GameConfig',GameID:this.lcode})
+        .then(d=>{
+          if (d.Code === 1) {
+            this.GameConfig = d.BackData
+            try{
+              if(d.BackData.LiveType.Type == 'false'){
+                layer.open({
+                  className: "layerConfirm",
+                  title:d.BackData.LiveType.CloseTitle,
+                  content: d.BackData.LiveType.CloseContent,
+                  shadeClose: false,
+                  btn: ["确定"],
+                  yes: function(index) {
+                    router.push(`/liveList`)
+                    localStorage.setItem('btnText',d.BackData.LiveType.CloseTitle)
+                  },
+                })
+              }
+            }catch(e){
+              layer.msgWarn('GameConfig接口返回信息有误！')
+            }
+          }else{
+            layer.msgWarn(d.StrCode)
+          }
+        })
+        _fetch({Action:"GetLiveBroadCast",GameID:this.lcode},{url:'/LiveApi'})
+        .then(d=>{
+          if (d.Code === 1) {
+            this.$refs.newk3.clearBroadCast()
+            this.BroadCast = d.BackData
           }else{
             layer.msgWarn(d.StrCode)
           }
@@ -1458,7 +1492,7 @@
           this.GameWS.onclose = e =>{
             this.GameWS = null
             if (this.isRuning === 1) {
-              this.getAnchor()
+              this.reconnect()
               this.createWS()
             }
           }
@@ -1474,7 +1508,7 @@
           this.OnlineWS.onclose = e =>{
             this.OnlineWS = null
             if (this.isRuning === 1) {
-              this.getAnchor()
+              this.reconnect()
               this.createWS()
             }
           }

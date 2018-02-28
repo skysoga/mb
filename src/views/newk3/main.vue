@@ -359,6 +359,10 @@
       this.rebates = rebates
     },
     methods:{
+      clearBroadCast(){
+        this.broadCastData = []
+        this.available = []
+      },
       changeNet(){
         this.$refs.iframe.contentWindow.destroy({func:(state)=>{
           if (state) {
