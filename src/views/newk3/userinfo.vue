@@ -19,6 +19,10 @@
             <td>账号：{{$store.state.UserName}}</td>
             <td style="text-align: right"><router-link class="userCenter" to="/userCenter">我的账户</router-link></td>
           </tr>
+          <tr>
+            <td><router-link to="/rechargeWay">我要充值</router-link></td>
+            <td style="text-align: right"><router-link class="withdraw" to="/withdraw">我要提现</router-link></td>
+          </tr>
         </table>
       </div>
       <div class="info" v-show="!loading" v-if="$parent.userinfoBy === 'Anchor'">
@@ -177,7 +181,7 @@
 ins{
   color:rgb(220, 59, 64);
 }
-.userCenter:before{
+.withdraw:before,.userCenter:before{
   position: absolute;
   margin-top: .5em;
   content:'';
