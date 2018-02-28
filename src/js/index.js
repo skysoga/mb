@@ -26,7 +26,11 @@ export default {
     if (NologApp) {
       to.meta.title='未登录'
     }
-
+    if (state.UserName !== null) {
+      to.meta.title=`<img src="${state.constant.ImgHost}${state.SiteConfig.MobileLogo}" />`
+    }else{
+      to.meta.title='未登录'
+    }
     var arr = [!NologApp?"BannerList":"SysBanner","LotteryConfig","LotteryHot","LotteryList"],
       ar=["SiteConfig"];
     state.UserName&&arr.push("NoticeData")

@@ -44,7 +44,7 @@
         else{
           switch(v){
             case 0:return '黑名单';break;
-            case -1:return '测试组';break;
+            case -1:return 'VIP1';break;
             case 10:return '站长';break;
           }
         }
