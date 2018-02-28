@@ -112,7 +112,7 @@ export default{
       var vm=this
       layer.msgWait("正在提交")
       let {...Obj}=this.ArrData
-      Obj.Money=Math.floor(Obj.Money)
+        Obj.Money=Math.floor(Obj.Money)
       _fetch(Obj).then(json=>{
         if(json.Code==1){
           layer.open({

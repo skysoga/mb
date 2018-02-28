@@ -25,21 +25,7 @@ window._catch = function(data){
   if (window.site) {
     data.S=site
   }
-  // if(fetchGoal){
   data.G=fetchGoal['a']+'_'+fetchGoal['x-sec']
-  // }
-  /*var str=[],k;
-  for(var i in data){
-    k=data[i];
-    if (typeof(k)==="object") {
-      k= encodeURIComponent(JSON.stringify(k));
-    }
-    str.push(i+'='+k)
-  }
-  str=str.join('&')*/
-  // var fetchUrl = state.UserName||data.UserName
-  // fetchUrl = '/catch?'+(fetchUrl&&('U='+fetchUrl+'&'))+str
-  // _App && ga && ga('send','event',msg,str)
   var fetchUrl = _CatchURL+'?'+_ajaxDatajoint(data)
   fetch(fetchUrl, {
     credentials:'omit',
@@ -49,14 +35,13 @@ window._catch = function(data){
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     },
-    // body: _ajaxDatajoint(data)
   }).then(res=>{
     _HeaderFun(res.headers.entries())
   })
 }
 window.onerror = function(errorMessage, scriptURI, lineNumber,columnNumber,errorObj) {
   console.log(errorMessage, scriptURI, lineNumber,columnNumber,errorObj)
-  _catch({msg:'winerr',errorMessage,scriptURI,errorObj})
+  // _catch({msg:'winerr',errorMessage,scriptURI,errorObj})
 }
 ;(function(){
   try {
@@ -482,21 +467,7 @@ window._fetch = function (data, option = {}){
       var H={}
       try{
         _HeaderFun(res.headers.entries())
-        /*for (var pair of res.headers.entries()) {
-          pair[0]=pair[0].toLowerCase()
-          if (['a','x-sec'].indexOf(pair[0])>-1) {
-            // H[pair[0]]=pair[1]
-            if(fetchGoal[pair[0]]!==pair[1]){
-              fetchGoal[pair[0]]=pair[1]
-              sessionStorage.setItem(pair[0],pair[1])
-            }
-          }
-        }*/
-        // fetchGoal=`${H['a']||''}-${H['x-sec']||''}`
-      }catch(e){
-        // H={'x-sec':'E','a':'I'}
-        // fetchGoal=null
-      }
+      }catch(e){}
       // var S=(!H['a'])?null:( H['a']+(H['x-sec']?('_'+H['x-sec']):''))
       console.log(res.status);
       if (res.status!==200) {
@@ -523,6 +494,7 @@ window._fetch = function (data, option = {}){
       res.text().then(json=>{
         if (data.Action==='GetImageCode') {
           //获取验证码的不需要转换成json
+          json = 'data:image/png;base64,R0lGODlhPAAWAPcAAAAAAAAAMwAAZgAAmQAAzAAA/wArAAArMwArZgArmQArzAAr/wBVAABVMwBVZgBVmQBVzABV/wCAAACAMwCAZgCAmQCAzACA/wCqAACqMwCqZgCqmQCqzACq/wDVAADVMwDVZgDVmQDVzADV/wD/AAD/MwD/ZgD/mQD/zAD//zMAADMAMzMAZjMAmTMAzDMA/zMrADMrMzMrZjMrmTMrzDMr/zNVADNVMzNVZjNVmTNVzDNV/zOAADOAMzOAZjOAmTOAzDOA/zOqADOqMzOqZjOqmTOqzDOq/zPVADPVMzPVZjPVmTPVzDPV/zP/ADP/MzP/ZjP/mTP/zDP//2YAAGYAM2YAZmYAmWYAzGYA/2YrAGYrM2YrZmYrmWYrzGYr/2ZVAGZVM2ZVZmZVmWZVzGZV/2aAAGaAM2aAZmaAmWaAzGaA/2aqAGaqM2aqZmaqmWaqzGaq/2bVAGbVM2bVZmbVmWbVzGbV/2b/AGb/M2b/Zmb/mWb/zGb//5kAAJkAM5kAZpkAmZkAzJkA/5krAJkrM5krZpkrmZkrzJkr/5lVAJlVM5lVZplVmZlVzJlV/5mAAJmAM5mAZpmAmZmAzJmA/5mqAJmqM5mqZpmqmZmqzJmq/5nVAJnVM5nVZpnVmZnVzJnV/5n/AJn/M5n/Zpn/mZn/zJn//8wAAMwAM8wAZswAmcwAzMwA/8wrAMwrM8wrZswrmcwrzMwr/8xVAMxVM8xVZsxVmcxVzMxV/8yAAMyAM8yAZsyAmcyAzMyA/8yqAMyqM8yqZsyqmcyqzMyq/8zVAMzVM8zVZszVmczVzMzV/8z/AMz/M8z/Zsz/mcz/zMz///8AAP8AM/8AZv8Amf8AzP8A//8rAP8rM/8rZv8rmf8rzP8r//9VAP9VM/9VZv9Vmf9VzP9V//+AAP+AM/+AZv+Amf+AzP+A//+qAP+qM/+qZv+qmf+qzP+q///VAP/VM//VZv/Vmf/VzP/V////AP//M///Zv//mf//zP///wAAAAAAAAAAAAAAACH5BAEAAPwALAAAAAA8ABYAAAj' + json
           resolve(json)
           return
         }
@@ -668,7 +640,7 @@ window._fetch = function (data, option = {}){
       if("Failed to fetch"===error.message){
         msg = "您的设备失去了网络连接"
       }else{
-        msg = "网络错误，请检查网络状态"
+        msg = "网络错误"+error.message
       }
       _catch({msg:'fetchFailed'})
       // var msg = "网络错误，请检查网络状态"
@@ -677,33 +649,6 @@ window._fetch = function (data, option = {}){
   })
 }
 
-// 获取图形码接口专用
-window._fetchT=function _fetchT(data){
-  return _fetch(data)
-  // var str=[],k;
-  // for(var i in data){
-  //   k=data[i];
-  //   if (typeof(k)==="object") {
-  //     k=JSON.stringify(k);
-  //   }
-  //   str.push(i+'='+k);
-  // }
-  // data = str.join('&');
-  // return new Promise(function(resolve, reject){
-  //   fetch('/tools/ssc_ajax.ashx', {
-  //     credentials:'same-origin',
-  //     method: 'POST',
-  //     headers: {
-  //       "Content-Type": "application/x-www-form-urlencoded"
-  //     },
-  //     body: data
-  //   }).then((res)=>{
-  //     res.text().then(text=>{
-  //       resolve(text)
-  //     })
-  //   })
-  // })
-}
 
 window._App=(function(host){
   //是否APP
@@ -1061,7 +1006,7 @@ window.store = new Vuex.Store({
   layer.alert=function(msg,fun){
     return layer.open({
       className: "layerConfirm",
-      title:'温馨提示',
+      title:(_App?'温馨':'错误')+'提示',
       shadeClose: false,
       content: msg,
       btn: ["确定"],

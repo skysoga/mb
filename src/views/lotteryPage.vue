@@ -764,8 +764,20 @@
                 //     results: json.BackData
                 //   })
                 // }
-
-               commit({
+                if(state.lottery.LotteryType==='6HC'){
+                  json.BackData.map(item=>{
+                    item.natal=getNatal(new Date(item.OpenTime))
+                    return item
+                  })
+                }
+                /*if(state.lottery.LotteryName.slice(0,2)==='大发'){
+                  //大发彩种去掉开头的年份
+                  json.BackData.map(item=>{
+                    item.IssueNo=item.IssueNo.slice(4)
+                    return item
+                  })
+                }*/
+                commit({
                   type: 'lt_setLotteryResult',
                   code,
                   results: json.BackData
@@ -1345,6 +1357,10 @@
       this.baseLoop = setInterval(()=>{
         this.$store.dispatch('lt_refresh')
       },1000)
+      // 本地时间是否正确
+      if(Math.abs(this.$store.state.Difftime)>82800000){
+        layer.url('本地时间不正确，请调整后刷新','/index')
+      }
     },
     data(){
       return {

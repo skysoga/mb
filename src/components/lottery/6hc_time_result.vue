@@ -6,13 +6,21 @@
       {{oldIssue}}期开奖号码 <i class="iconfont">&#xe601;</i>
     </span>
 
-    <div class="openNumber" >
-    <!-- <div class="openNumber"  v-if="displayResults"> -->
+    <div class="openNumber"  v-if="!displayResults">
       <template v-for="(numStr, index) in results">
           <div class="number-box plus" v-if="index === 6"><em class="symbol">+</em></div>
-          <div :class="['number-box',!displayResults&&'nocolor']">
+          <div :class="['number-box','nocolor']">
             <em :class="numColor[numStr*1]">{{numStr}}</em>
-            <span class="number-box-text">{{getAnimal(numStr)}}</span>
+            <span class="number-box-text">{{getAnimal(numStr,results.natal)}}</span>
+          </div>
+      </template>
+    </div>
+    <div class="openNumber"  v-else>
+      <template v-for="(numStr, index) in results.LotteryOpen">
+          <div class="number-box plus" v-if="index === 6"><em class="symbol">+</em></div>
+          <div :class="['number-box']">
+            <em :class="numColor[numStr*1]">{{numStr}}</em>
+            <span class="number-box-text">{{getAnimal(numStr,results.natal)}}</span>
           </div>
       </template>
     </div>
@@ -42,7 +50,7 @@
               <div class = "past-open-result-box" v-if="index === 6"><span class = "symbol">+</span></div>
               <div class = "past-open-result-box">
                 <em :class = "numColor[numStr*1]">{{numStr}}</em>
-                <span>{{getAnimal(numStr)}}</span>
+                <span>{{getAnimal(numStr,item.natal)}}</span>
               </div>
             </template>
           </td>
@@ -71,8 +79,9 @@ export default {
     }
   },
   methods:{
-    getAnimal(numStr){
-      return getAnimal(numStr, this.natal)
+    getAnimal(numStr,natal){
+      console.log(natal)
+      return getAnimal(numStr, natal||this.natal)
     },
     inArray(arr, item){
       return arr.indexOf(item) > -1
@@ -119,8 +128,13 @@ export default {
       var _results = this.$store.state.lt.LotteryResults[code]
       if(!_results || !_results.length){
         return []
+      }else if(!this.displayResults){
+        return this.wait4Results
       }else{
-        return this.displayResults?_results[0].LotteryOpen.split(',').slice(0,20):this.wait4Results
+        return {
+          LotteryOpen:_results[0].LotteryOpen.split(',').slice(0,20),
+          natal:_results[0].natal
+        }
       }
     },
     pastOpen(){
@@ -128,7 +142,7 @@ export default {
       var showTime=['1300'].indexOf(code)>-1
       return state.lt.LotteryResults[code].map(item=>{
         var el = {}
-        el.IssueNo = item.IssueNo
+        el.IssueNo = item.IssueNo.length === 7 ? item.IssueNo :item.IssueNo.slice(4)        //把年份砍掉
         el.LotteryOpen = item.LotteryOpen.split(',').map(str=>('0' + str).slice(-2))
         var mdy = item.OpenTime.split(' ')[0] //开奖时间的年月日
         var sTime= item.OpenTime.split(' ')[1]
@@ -137,6 +151,7 @@ export default {
         month = ('0' + month).slice(-2)
         date = ('0' + date).slice(-2)
         el.OpenTime =showTime?sTime:`${year}.${month}.${date}`
+        el.natal=item.natal
         return el
       })
     },

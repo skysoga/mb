@@ -986,3 +986,11 @@ body > * {
 .layermbox,#app{
   display: block !important;
 }
+#uulive-logo{
+  width:initial !important;
+  height: 1.5em;
+  vertical-align: sub;
+  margin-right: .3em;
+  display: inline-block;
+  transform: translateY(.1em);
+}

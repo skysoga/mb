@@ -622,7 +622,7 @@ function computeIssue(code, index, isChase){
       return (betweenDays * planLen + baseIssue + index)+'';
     }
   }
-
+//alert(2)
   //这里挂各特殊彩种的处理函数--有返回的直接出返回结果。不参与下一步----每年过年前更新一次
   var handler = {
     '1001':function(){
@@ -637,11 +637,13 @@ function computeIssue(code, index, isChase){
       // }
     },
     //北京快三，以某一期作为基准
-    '1406':basedOnFixedIssue(68606, "2017/2/4"),
+    // '1406':basedOnFixedIssue(68606, "2017/2/11"),
+    '1406':basedOnFixedIssue(102070, "2018/2/22"),
     //北京快乐8,以某一期作为基准
-    '1302':basedOnFixedIssue(807929-21, "2017/2/18"),
+    //'1302':basedOnFixedIssue(807929-7, "2017/2/22"),
+    '1302':basedOnFixedIssue(873257, "2018/2/22"),
     //PK10,以某一期作为基准
-    '1303':basedOnFixedIssue(602501-20, "2017/2/18"),
+    '1303':basedOnFixedIssue(602501-20, "2017/2/25"),
 
     //福彩3D：每天一期
     '1201':oneDayOneIssue(1, "2018/1/1"),
