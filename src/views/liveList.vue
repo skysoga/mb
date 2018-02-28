@@ -25,7 +25,11 @@
     },
     beforeRouteEnter(to,from,next){
       to.meta.title=`<img id="uulive-logo" src="${state.constant.ImgHost}/system/live/logo.png" />UU直播`
-      next()
+      next(vm=>{
+        if (to.query.title !== undefined) {
+          vm.btnText = to.query.title
+        }
+      })
     },
     created(){
       var text = localStorage.getItem('btnText') || 0

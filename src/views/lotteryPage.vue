@@ -1500,7 +1500,7 @@
               shadeClose: false,
               btn: ["确定"],
               yes: function(index) {
-                router.push('/liveList')
+                router.push(`/liveList?title=${json.CloseTitle}&content=${json.CloseContent}&type=false&${Math.random()}`)
               },
             })
             break;
