@@ -41,7 +41,7 @@
       </div>
       <div class="control">
         <ul class="con-btn fix">
-          <li><router-link class="back" to="/livelist"></router-link></li>
+          <li><router-link class="back" to="/liveList"></router-link></li>
           <li><a class="question" href="javascript:;" @click.stop="showCard(3)"></a></li>
           <li><a class="anchor" href="javascript:;" @click.stop="showCard(2)"></a></li>
           <li><a class="gift" href="javascript:;" @click.stop="showHide(3)"></a></li>
