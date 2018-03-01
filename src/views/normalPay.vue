@@ -276,7 +276,7 @@ export default{
   data () {
     return {
       method: '',                //什么充值方式
-      pageName: '',              //维护的名字
+      // pageName: '',              //维护的名字
       underMaintain: false,      //是否维护
       Bank:[],                  //银行的比较多，先拿个数组存起来
       isSupportCopy: !!document.execCommand,      //支不支持这个属性
@@ -287,7 +287,7 @@ export default{
       //ajax
       PayUser: '',
       Money: '',
-      ID:0,
+      // ID:0,
     }
   },
   computed:{

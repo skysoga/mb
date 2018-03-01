@@ -10,6 +10,7 @@ export default {
       SafePassword:'',
       nextUrl:'',
       BankNum:'',
+      checkBankNum:'',
       Qort:'',
       Banklist:{
             1:'工商银行',

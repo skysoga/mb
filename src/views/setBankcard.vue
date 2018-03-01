@@ -56,13 +56,13 @@
         <tr>
           <td>银行卡号</td>
           <td>
-            <input type="tel" v-va:BankNum tag="银行卡号" v-model="BankNum" value="" placeholder="请输入银行卡的卡号">
+            <input type="tel" v-va:BankNum tag="银行卡号" v-model.trim="BankNum" value="" placeholder="请输入银行卡的卡号">
           </td>
         </tr>
         <tr>
           <td>确认卡号</td>
           <td>
-            <input type="tel" v-va:checkBankNum.BankNum = "[{'equal':'BankNum'}]" tag="确认卡号" value=""  placeholder="请再次输入银行卡号">
+            <input type="tel" v-va:checkBankNum.BankNum = "[{'equal':'BankNum'}]" tag="确认卡号" v-model.trim="checkBankNum" value=""  placeholder="请再次输入银行卡号">
           </td>
         </tr>
         <tr>
