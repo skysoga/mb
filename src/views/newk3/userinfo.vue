@@ -10,18 +10,16 @@
           <template v-else>未设置昵称</template>
           <em>{{getLevel($store.state.UserUpGradeBonus.Grade)}}</em>
         </div>
-        <table>
-          <tr>
-            <td colspan="2" v-if="balShow">余额：{{UserBalance}} <ins @click="getBalance">刷新</ins></td>
-            <td colspan="2" v-else>余额：已隐藏 <ins @click="getBalance">显示</ins></td>
-          </tr>
-          <tr>
-            <td>账号：{{$store.state.UserName}}</td>
-            <td style="text-align: right"><router-link class="userCenter" to="/userCenter">我的账户</router-link></td>
-          </tr>
+        <div class="money" v-if="balShow">余额：{{UserBalance}} <ins @click="getBalance">刷新</ins></div>
+        <div class="money" v-else>余额：已隐藏 <ins @click="getBalance">显示</ins></div>
+        <table class="userTable">
           <tr>
             <td><router-link to="/rechargeWay">我要充值</router-link></td>
-            <td style="text-align: right"><router-link class="withdraw" to="/withdraw">我要提现</router-link></td>
+            <td><router-link to="/billRecord">交易记录</router-link></td>
+          </tr>
+          <tr>
+            <td><router-link to="/withdraw">我要提现</router-link></td>
+            <td><router-link to="/userCenter">我的账户</router-link></td>
           </tr>
         </table>
       </div>
@@ -182,23 +180,7 @@
   }
 }
 ins{
-  color:rgb(220, 59, 64);
-}
-.withdraw:before,.userCenter:before{
-  position: absolute;
-  margin-top: .5em;
-  content:'';
-  display: block;
-  width: 1px;
-  height: 1em;
-  background: #ccc;
-}
-.userCenter:after{
-  content: '\e60e';
-  position: absolute;
-  font-family: 'iconfont';
-  transform:scale(.75);
-  color:#a3a3a3;
+  color:#666;
 }
 table{
   font-size: .65em;
@@ -297,6 +279,27 @@ table{
     height: 100%;
     width: 100%;
     padding-bottom: 1em;
+  }
+}
+.money{
+  text-align: center;
+  font-size: .6em;
+  transform:translateY(-.6em);
+  color:#df3040;
+}
+.userTable{
+  text-align: center;
+  td{
+    position: relative;
+  }
+  td:nth-child(2n+2):before{
+    position: absolute;
+    margin-top: .5em;
+    content:'';
+    display: block;
+    width: 1px;
+    height: 1em;
+    background: #ccc;
   }
 }
 </style>

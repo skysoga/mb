@@ -65,6 +65,10 @@
   display: block;
   max-width: 10rem;
   overflow: scroll;
+  transform: translateY(.1em);
+}
+.scrollText::-webkit-scrollbar {
+  display:none
 }
 .target{
   white-space: nowrap;
