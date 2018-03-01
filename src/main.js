@@ -118,7 +118,7 @@ import App from './App'
 import routes from './routes/routes'
 import Va from './plugins/va'
 import {DAY_TIME, GMT_DIF} from './js/kit'
-require('svgaplayerweb')
+require('./js/svga.min')
 window.md5=require('./plugins/md5.min')
 var localState={}
 window.Vue=Vue
