@@ -38,16 +38,13 @@
     		},100)
     	},
       getLevel(v){
-        if(v===-1){
-          v=0
-        }
         if (v>0&&v<10) {
           return 'VIP'+v
         }
         else{
           switch(v){
             case 0:return '黑名单';break;
-            // case -1:return 'VIP1';break;
+            case -1:return 'VIP1';break;
             case 10:return '站长';break;
           }
         }
@@ -77,14 +74,14 @@
   }
 </script>
 <style lang="scss" scoped>
-.vip1,.vip2,.vip3{
-  background: #f57678 !important;
+.vip-1,.vip1,.vip2,.vip3{
+  background: #32aaff !important;
 }
 .vip4,.vip5,.vip6{
   background: #09ccd1 !important;
 }
 .vip7,.vip8,.vip9{
-  background: #32aaff !important;
+  background: #f57678 !important;
 }
 .default{
   .content{
