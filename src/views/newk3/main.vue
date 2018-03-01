@@ -702,7 +702,7 @@
 <style lang="scss">
 .loading canvas{
   width:100%;
-  height:28.44444em;
+  // height:28.44444em;
   transform:initial !important;
 }
 </style>
