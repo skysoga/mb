@@ -673,7 +673,7 @@ window._App=(function(host){
   return false
 })(location.host)
 ;(function(){
-  var versions = function() {
+  window.versions = function() {
     var u = navigator.userAgent,
       app = navigator.appVersion;
     return {
