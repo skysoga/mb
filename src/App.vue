@@ -9,7 +9,7 @@
       <router-view :s="$store.state"></router-view>
     </transition>
     <newIframe :url="$store.state.URL" v-if="$store.state.URL"></newIframe>
-    <direction v-show="directions === 'landscape'"></direction>
+    <direction v-if="directionShow" v-show="directions === 'landscape'"></direction>
   </div>
 </template>
 
@@ -27,7 +27,8 @@
     },
     data:()=>{
       return{
-        directions:'portrait'
+        directions:'portrait',
+        directionShow:window.versions.mobile,
       }
     },
     created(){
