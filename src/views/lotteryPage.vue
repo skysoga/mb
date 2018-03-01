@@ -165,12 +165,12 @@
           }else{
             layer.msgWarn('后台数据错误')
           }
-          
+
           }catch(e){
             layer.alert(e+','+JSON.stringify(d)+'，GameConfig错误')
           }
         })
-        
+
       }else{
         var reqArr        = [getRebate, getLotteryList, getServerTime]
         // 进入彩种页必须先获取到  赔率/彩种配置/服务器时间
@@ -456,7 +456,7 @@
             }else{
               state.lottery = this.$store.state.LotteryList[code]
             }
-            
+
             router.push(code)    //更改路由
           },
           //变更配置（进入各具体彩种页时，设置）
@@ -1055,6 +1055,7 @@
                   switch(state.lottery.LotteryCode){
                     case "1407":
                     case "1008":
+                    case "1300":
                       interval=5
                       break
                     default:
