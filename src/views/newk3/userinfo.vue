@@ -148,13 +148,13 @@
   height: 1.4em;
 }
 .age{
-  background: #f08f69;
+  background: #ff8a60;
 }
 .girl{
   &:before{
     content:"\e642";
     font-family: 'iconfont';
-    background:#e55f9c;
+    background:#f7529e;
   }
 }
 .bouns{
@@ -162,7 +162,7 @@
   font-size: .5em;
   transform:translateY(-1.1em);
   height: .5em;
-  color:#e55f9c;
+  color:#f7529e;
 }
 .close{
   &:before{
@@ -199,7 +199,7 @@ table{
   margin:1.2em 0;
   em{
     color:white;
-    background: #55a9f8;
+    background: #32aaff;
     font-size: .7em;
     padding:0 .3em;
     border-radius: .2em;
