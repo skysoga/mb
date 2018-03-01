@@ -1657,12 +1657,6 @@
 		    store.commit('lt_setChasePower', 1)		//清空追号配置
 				store.commit('lt_setChaseIssue', 1)
 	    }
-      if (this.GameWS !== null) {
-        this.GameWS.close()
-      }
-      if (this.OnlineWS !== null) {
-        this.OnlineWS.close()
-      }
 	    next()
 	  },
 		beforeDestroy(){
@@ -1672,6 +1666,12 @@
 			clearTimeout(this.timer4)
 			clearInterval(this.baseLoop)
       this.isRuning = 0
+      if (this.GameWS !== null) {
+        this.GameWS.close()
+      }
+      if (this.OnlineWS !== null) {
+        this.OnlineWS.close()
+      }
       // clearInterval(this.isRuningT)
 		},
 

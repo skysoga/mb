@@ -206,8 +206,8 @@ table{
   }
 }
 .head{
-  height: 3.5em;
-  width: 3.5em;
+  height: 4em;
+  width: 4em;
   margin:0 auto;
   background-repeat: no-repeat !important;
   background-size: cover !important;
@@ -219,10 +219,10 @@ table{
     width: 5em;
     display: block;
     background-repeat: no-repeat !important;
-    background-size: 4.4em !important;
+    background-size: 5em !important;
     position: absolute;
-    margin-left: -.56em;
-    margin-top:-.8em;
+    margin-left: -.65em;
+    margin-top: -.85em;
   }
 }
 .userinfo{
