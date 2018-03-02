@@ -52,8 +52,8 @@
 				if (!this.$parent.giftArr[0].type) {
 					return
 				}
-				var player = new abcg_i.Player('#gift');
-				var parser = new abcg_i.Parser('#gift'); // 如果你需要支持 IE6+，那么必须把同样的选择器传给 Parser。
+				var player = new gif.Player('#gift');
+				var parser = new gif.Parser('#gift'); // 如果你需要支持 IE6+，那么必须把同样的选择器传给 Parser。
 				parser.load(state.constant.ImgHost+'/live/gifts/'+this.$parent.giftArr[0].type+'.gif', videoItem=> {
 					this.className = this.$parent.giftArr[0].type
 					this.moving = 1
