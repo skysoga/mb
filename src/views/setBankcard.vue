@@ -50,19 +50,19 @@
         <tr>
           <td>开户人姓名</td>
           <td>
-            <input type="text" v-va:RealName tag="开户人姓名" v-model="RealName" value="" placeholder="请输入银行卡的姓名">
+            <input type="text" v-va:RealName tag="开户人姓名" v-model="RealName" placeholder="请输入银行卡的姓名">
           </td>
         </tr>
         <tr>
           <td>银行卡号</td>
           <td>
-            <input type="tel" v-va:BankNum tag="银行卡号" v-model.trim="BankNum" value="" placeholder="请输入银行卡的卡号">
+            <input type="tel" v-trim v-va:BankNum tag="银行卡号" v-model.trim="BankNum" placeholder="请输入银行卡的卡号">
           </td>
         </tr>
         <tr>
           <td>确认卡号</td>
           <td>
-            <input type="tel" v-va:checkBankNum.BankNum = "[{'equal':'BankNum'}]" tag="确认卡号" v-model.trim="checkBankNum" value=""  placeholder="请再次输入银行卡号">
+            <input type="tel" v-trim v-va:checkBankNum.BankNum = "[{'equal':'BankNum'}]" tag="确认卡号" v-model.trim="checkBankNum" placeholder="请再次输入银行卡号">
           </td>
         </tr>
         <tr>

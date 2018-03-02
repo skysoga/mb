@@ -1498,6 +1498,15 @@ Vue.directive('copyBtn', {
     })
   }
 })
+//去除所有空格
+Vue.directive('trim',{
+  bind:function(el,binding,vnode){
+    el.addEventListener('change',function(){      
+      el.value=el.value.replace(/\s+/g,"")
+      vnode.context[el.name]=el.value
+    })
+  }
+})
 
 //如果检测到copy事件
 document.addEventListener('copy', function(e){
