@@ -40,7 +40,7 @@
           </tr>
           <tr>
             <td>身高：{{$parent.$parent.Anchor.Height}}cm</td>
-            <td>三围：{{$parent.$parent.Anchor.BWH}}</td>
+            <td>三围：{{$parent.$parent.Anchor.BWH.replace(/,/g,' ')}}</td>
           </tr>
         </table>
       </div>
@@ -286,6 +286,7 @@ table{
   font-size: .6em;
   transform:translateY(-.6em);
   color:#df3040;
+  line-height: .8em;
 }
 .userTable{
   text-align: center;
@@ -298,8 +299,8 @@ table{
     content:'';
     display: block;
     width: 1px;
-    height: 1em;
-    background: #ccc;
+    height: .9em;
+    background-image: -webkit-linear-gradient(0deg,#d0d0d0,#d0d0d0 50%,transparent 0);
   }
 }
 </style>
