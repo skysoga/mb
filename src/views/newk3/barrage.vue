@@ -74,14 +74,20 @@
   }
 </script>
 <style lang="scss" scoped>
-.vip-1,.vip1,.vip2,.vip3{
-  background: #32aaff !important;
+.vip-1,.vip1,.vip2{
+  background: #56bcf9 !important;
 }
-.vip4,.vip5,.vip6{
-  background: #09ccd1 !important;
+.vip3,.vip4{
+  background: #bda4ea !important;
 }
-.vip7,.vip8,.vip9{
-  background: #f57678 !important;
+.vip5,.vip6{
+  background: #53e3c5 !important;
+}
+.vip7,.vip8{
+  background: #53e3c5 !important;
+}
+.vip9{
+  background: #53e3c5 !important;
 }
 .default{
   .content{
