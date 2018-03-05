@@ -718,16 +718,16 @@ window._App=(function(host){
         }
       },100)
     })
-    /*addScript("https://www.googletagmanager.com/gtag/js?id=UA-107734696-1",function(){
+    /*addScript("https://www.googletagmanager.com/gtag/js?id=UA-115132268-1",function(){
       window.gtag=function(){(window.dataLayer || []).push(arguments);}
       gtag('js', new Date());
       gtag('config', 'UA-107734696-1');
     })*/
-    /*window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
     addScript("https://www.google-analytics.com/analytics.js",function(){
-      ga('create', 'UA-107734696-1', 'auto');
+      ga('create', 'UA-115132268-1', 'auto');
       ga('send', 'even','刷新');
-    })*/
+    })
     window.ga=window.ga||function(){};
   }
   if (!versions.android) {
@@ -1501,7 +1501,7 @@ Vue.directive('copyBtn', {
 //去除所有空格
 Vue.directive('trim',{
   bind:function(el,binding,vnode){
-    el.addEventListener('change',function(){      
+    el.addEventListener('change',function(){
       el.value=el.value.replace(/\s+/g,"")
       vnode.context[el.name]=el.value
     })
