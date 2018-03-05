@@ -84,7 +84,7 @@
 </script>
 <style lang='scss' scoped>
 .tobottom{
-	transform:translateY(1.42em);
+	transform:translateY(1.6em);
 }
 .info{
 	position: fixed;
@@ -92,7 +92,7 @@
   width: 9em;
   margin-left: .4em;
   left: 0;
-  top: 4em;
+  top: 4.3em;
   border: 1px solid #42b3f3;
   border-radius: 2em;
   background: #45a1f5;

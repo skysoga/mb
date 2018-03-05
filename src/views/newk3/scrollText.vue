@@ -65,7 +65,7 @@
   display: block;
   max-width: 10rem;
   overflow: scroll;
-  transform: translateY(.1em);
+  transform: translateY(.05em);
 }
 .scrollText::-webkit-scrollbar {
   display:none

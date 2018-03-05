@@ -843,7 +843,6 @@
   top:.4em;
   left: .4em;
   display: inline-block;
-  font-size: .9em;
   width: 10em;
   span{
     font-size:.7em;
@@ -860,7 +859,7 @@
   }
 }
 .timebar,.oldissue{
-  background:rgba(0,0,0,.2);
+  background:rgba(0,0,0,.25);
   display:inline-block;
 }
 .timebar,.oldissue{

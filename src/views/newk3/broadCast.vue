@@ -95,7 +95,7 @@
 <style lang="scss" scoped>
 .broadCast{
   position: fixed;
-  top:4.06em;
+  top:4.45em;
   margin-left: .4em;
   z-index: 25;
   transition: 1s;
