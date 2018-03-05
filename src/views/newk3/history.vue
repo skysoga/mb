@@ -28,7 +28,11 @@
 					</tr>
 					<tr v-for="d in results">
 						<td>{{d.IssueNo}}</td>
-						<td>{{d.LotteryOpen[0] + ' ' + d.LotteryOpen[1] + ' ' + d.LotteryOpen[2]}}</td>
+						<td>
+							<div class="DiceImg">
+		            <div class="Dice" :class="'Dice'+d.LotteryOpen[0]"></div><div class="Dice" :class="'Dice'+d.LotteryOpen[1]"></div><div class="Dice" :class="'Dice'+d.LotteryOpen[2]"></div>
+		          </div>
+						</td>
 						<td>{{d.sum}}</td>
 						<td>{{d.bigOrSmall}}</td>
 						<td>{{d.singleOrDouble}}</td>
@@ -83,10 +87,10 @@
 			return {
 				opened:0,
 				betData:null,
-                loaedBetting:0,
-                defaultUID:0,
-                defaultID:'',
-                defaultShow:false
+        loaedBetting:0,
+        defaultUID:0,
+        defaultID:'',
+        defaultShow:false
 			}
 		},
 		created(){
@@ -96,18 +100,18 @@
 			if (this.type === 1) {
 				this.getBet()
 			}else{
-				if(this.results.length < 10){
+				if(this.results.length < 20){
 					this.$parent.getResults()
 					console.log('开奖结果数量不够，需要从接口获取')
 				}
 			}
 		},
 		methods:{
-            getShow(ID,UID){//注单详情
-                this.defaultShow=true
-                this.defaultUID=UID
-                this.defaultID=ID
-            },
+      getShow(ID,UID){//注单详情
+          this.defaultShow=true
+          this.defaultUID=UID
+          this.defaultID=ID
+      },
 			close(){
 				this.opened = 0
 				setTimeout(()=>{
@@ -156,6 +160,10 @@
 </script>
 <style lang="scss" scoped>
 @import '../../scss/detailList.scss';
+@import "../../scss/dice";
+.DiceImg{
+  display: inline-block;
+}
 #account{
 	display: inline;
 	padding:0;
@@ -184,6 +192,7 @@
 		color:#999;
 		transform: translateX(16rem);
 		transition:.2s;
+		overflow: auto;
 	}
 	.history.opened{
 		transform: translateX(0);

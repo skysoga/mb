@@ -77,7 +77,9 @@
                     <ul class="buttonList fix">
                       <li v-for="(e,index) in d.itemArr" :class = "{curr:chosen.indexOf(e) > -1,bgnone:e==0}"><span v-if="!(e==0)"  class="fix" @click.stop="choose(e)"><em><i>{{e}}</i></em><p v-if="A10Rebate[index]">{{index < 4 ? '赔率': '赔'}}{{A10Rebate[index]}}</p></span></li>
                     </ul>
-                    <p v-show="i !== 'A10'" class="MethodMsg">{{tipsObj[i]}}赔率{{rebates[i]}}倍。</p>
+                    <p class="MethodMsg">{{tipsObj[i]}}
+                      <template v-if="i !== 'A10'">赔率{{rebates[i]}}倍。</template>
+                    </p>
                 </div>
             </div>
           </div>
@@ -620,7 +622,7 @@
         this.broadCastData.push(json)
       },
       getResults(){
-        this.$store.dispatch('lt_getResults', this.lcode)
+        this.$store.dispatch('lt_getResults', {code:this.lcode,num:20})
       },
     },
     mounted(){

@@ -750,13 +750,18 @@
           lt_getResults:({state, rootState, commit, dispatch}, code)=>{
             // var Results = []
             //     ,IssueNo = Results.length?Results[0].IssueNo:0;
-
+            var num = 10
+            var _code = code
+            if(typeof _code == "object"){
+              num = _code.num
+              code = _code.code
+            }
             _fetch({
               Action: "GetLotteryOpen",
               LotteryCode: code,
               IssueNo: 0,
               // IssueNo: IssueNo,
-              DataNum: 10
+              DataNum: num
             }).then((json)=>{
               if(json.Code === 1) {
                 // if (10===json.BackData.length) {

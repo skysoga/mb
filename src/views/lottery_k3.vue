@@ -22,6 +22,7 @@
              @click = "changeLottery(lottery.LotteryCode)">
             {{lottery.LotteryName}}
           </a>
+          <router-link v-show="lcode == 1407" to="/live/K3/0101" style="color:#e54042">UU快3</router-link>
         </div>
     </div>
     <router-link to="/index" class="iconfont back"></router-link>
