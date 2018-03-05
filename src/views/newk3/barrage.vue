@@ -84,10 +84,10 @@
   background: #53e3c5 !important;
 }
 .vip7,.vip8{
-  background: #53e3c5 !important;
+  background: #fad058 !important;
 }
 .vip9{
-  background: #53e3c5 !important;
+  background: #f76566 !important;
 }
 .default{
   .content{

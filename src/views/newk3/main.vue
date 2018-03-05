@@ -74,12 +74,12 @@
           <div class="slider-group" ref="sliderGroup">
             <div v-for="(d,i,j) in cfg">
                 <div class="betbox" :class="i" @click="changeShow">
-                    <ul class="buttonList fix">
-                      <li v-for="(e,index) in d.itemArr" :class = "{curr:chosen.indexOf(e) > -1,bgnone:e==0}"><span v-if="!(e==0)"  class="fix" @click.stop="choose(e)"><em><i>{{e}}</i></em><p v-if="A10Rebate[index]">{{index < 4 ? '赔率': '赔'}}{{A10Rebate[index]}}</p></span></li>
-                    </ul>
                     <p class="MethodMsg">{{tipsObj[i]}}
                       <template v-if="i !== 'A10'">赔率{{rebates[i]}}倍。</template>
                     </p>
+                    <ul class="buttonList fix">
+                      <li v-for="(e,index) in d.itemArr" :class = "{curr:chosen.indexOf(e) > -1,bgnone:e==0}"><span v-if="!(e==0)"  class="fix" @click.stop="choose(e)"><em><i>{{e}}</i></em><p v-if="A10Rebate[index]">{{index < 4 ? '赔率': '赔'}}{{A10Rebate[index]}}</p></span></li>
+                    </ul>
                 </div>
             </div>
           </div>
@@ -1125,7 +1125,7 @@
     width:312px;
     margin:0 auto;
     font-size:26px;
-    margin-top:.5em;
+    margin-top:.2em;
     >li{
       float:left;
       width:3em;
@@ -1213,7 +1213,7 @@
       background:rgba(0,0,0,.4) !important;
     }
   }
-  .betbox.D10,.betbox.F10,.betbox.G10,.betbox.H10{
+  .betbox.A10,.betbox.D10,.betbox.F10,.betbox.G10,.betbox.H10{
     .MethodMsg{
       padding:0 0.4em;
     }

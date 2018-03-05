@@ -5,6 +5,7 @@ import xiaosen from './xiaosen'
 const login =require('../views/login')
 const index =require('../views/index')
 const liveList =require('../views/liveList')
+const _redirect =require('../views/newk3/redirect')
 const reload =require('../views/reload')
 const activity =require('../views/activity')
 const newWinners =require('../views/newWinners')
@@ -64,6 +65,16 @@ var routes = [{
     agent:false
   },
   component: liveList
+},{
+  path: '/redirect',
+  meta:{
+    title:'',
+    nav:false,
+    link:false,
+    user:false,
+    agent:false
+  },
+  component: _redirect
 },{
   path: "/maintain",
   name: "维护中...",
