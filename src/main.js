@@ -1474,7 +1474,12 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
+window.preurl = '/'
 router.afterEach((to, from) => {
+  var name = from.name || 0
+  if(name){
+    preurl = from.path
+  }
   state.turning=false
   layer.closeAll()
   state.needVerify++

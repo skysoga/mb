@@ -41,7 +41,7 @@
       </div>
       <div class="control">
         <ul class="con-btn fix">
-          <li><router-link class="back" to="/liveList"></router-link></li>
+          <li><router-link class="back" :to="backPage"></router-link></li>
           <li><a class="question" href="javascript:;" @click.stop="showCard(3)"></a></li>
           <li><a class="anchor" href="javascript:;" @click.stop="showCard(2)"></a></li>
           <li><a class="gift" href="javascript:;" @click.stop="showHide(3)"></a></li>
@@ -219,6 +219,7 @@
         WifiOrFG:'Wifi',
         showFGbtn:0,
         visibilitychange:null,
+        backPage:window.preurl
       }
     },
     computed:mapState({
@@ -359,6 +360,9 @@
         rebates[state.lt.Odds['K3'][i].PlayCode] = state.lt.Odds['K3'][i].Bonus
       }
       this.rebates = rebates
+      if (/^\/lottery\//.test(this.backPage)) {
+        this.backPage = '/redirect?r=' + this.backPage
+      }
     },
     methods:{
       clearBroadCast(){

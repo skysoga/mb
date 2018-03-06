@@ -68,7 +68,6 @@ var routes = [{
 },{
   path: '/redirect',
   meta:{
-    title:'',
     nav:false,
     link:false,
     user:false,
