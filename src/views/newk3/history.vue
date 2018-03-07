@@ -100,13 +100,16 @@
 			if (this.type === 1) {
 				this.getBet()
 			}else{
+				this.checkSum()
+			}
+		},
+		methods:{
+			checkSum(){
 				if(this.results.length < 20){
 					this.$parent.getResults()
 					console.log('开奖结果数量不够，需要从接口获取')
 				}
-			}
-		},
-		methods:{
+			},
       getShow(ID,UID){//注单详情
           this.defaultShow=true
           this.defaultUID=UID
@@ -137,6 +140,9 @@
 			'$parent.history'(n){
 				if (n === 1 && !this.loaedBetting) {
 					this.getBet()
+				}
+				if (n === 2) {
+					this.checkSum()
 				}
 			},
 			'results'(n,o){
