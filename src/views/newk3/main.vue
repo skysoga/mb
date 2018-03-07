@@ -21,11 +21,11 @@
     <div v-show="show == 'main'" @click="changeShow" class="mainPage">
       <div class="result">
         <div class="timebar" @click.stop="history = 1">
-          <em v-show="/^\d/.test(TimeBar)">{{nowIssue}}投注：</em>
+          <em v-show="/^\d/.test(TimeBar)">{{nowIssue}}期投注：</em>
           {{TimeBar}}<i class="iconfont">&#xe60e;</i>
         </div>
         <div class="oldissue" @click.stop="history = 2">
-          {{oldIssue}}开奖：<div class="DiceImg">
+          {{oldIssue}}期开奖：<div class="DiceImg">
             <div class="Dice" :class="displayClass+results[0]"></div><div class="Dice" :class="displayClass+results[1]"></div><div class="Dice" :class="displayClass+results[2]"></div>
           </div>
           <i class="iconfont">&#xe60e;</i>
@@ -847,7 +847,7 @@
   top:.4em;
   left: .4em;
   display: inline-block;
-  width: 10em;
+  width: 11em;
   span{
     font-size:.7em;
     display:block;
