@@ -30,6 +30,8 @@ window.phoneModel = function(){
       if (result.search('Macintosh')>-1) {
         return false
       }
+    }else{
+      return false
     }
     return result
   }
