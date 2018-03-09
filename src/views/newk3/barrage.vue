@@ -74,14 +74,20 @@
   }
 </script>
 <style lang="scss" scoped>
-.vip-1,.vip1,.vip2,.vip3{
-  background: #32aaff !important;
+.vip-1,.vip1,.vip2{
+  background: -webkit-linear-gradient(left, #41baea 0%,#6fd3fa 100%) !important;
 }
-.vip4,.vip5,.vip6{
-  background: #09ccd1 !important;
+.vip3,.vip4{
+  background: -webkit-linear-gradient(left, #13b8ad 0%,#32e3d7 100%) !important;
 }
-.vip7,.vip8,.vip9{
-  background: #f57678 !important;
+.vip5,.vip6{
+  background: -webkit-linear-gradient(left, #edb532 0%,#fcce65 100%) !important;
+}
+.vip7,.vip8{
+  background: -webkit-linear-gradient(left, #f06537 0%,#fb9e76 100%) !important;
+}
+.vip9{
+  background: -webkit-linear-gradient(left, #f75657 0%,#fe7c7c 100%) !important;
 }
 .default{
   .content{

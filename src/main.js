@@ -1,4 +1,40 @@
 var _CatchURL = 'http://catch.imagess-google.com'
+window.phoneModel = function(){
+  /*返回系统和机型，格式：
+   * "Android5.1.1;Nexus6"
+   * "Android6.0;Nexus5"
+   * "Android5.0;SM-G900P"
+   * "iPhone;iPhoneOS9_1"
+   * "iPad;OS9_1"
+   * false (无法获取时)
+   */
+  var userAgent = window.navigator.userAgent
+  if (userAgent.search(/^Firefox/) === -1) {
+    var result = userAgent.match(/\(.+?\)/) || 0
+    if (result) {
+      result = result[0]
+      .replace('(','')
+      .replace(')','')
+      .replace(/\s/g,'')
+      .replace(/CPU/,'')
+      .replace(/likeMacOSX/,'')
+      .replace(/Linux;/,'')
+      .replace(/U;/,'')
+      .replace(/zh-cn;/i,'')
+      if (result.search('Android')>-1) {
+        result = result.replace(/Build\/.+$/,'')
+      }
+      if (result.length > 30) {
+        return false
+      }
+      if (result.search('Macintosh')>-1) {
+        return false
+      }
+    }
+    return result
+  }
+  return false
+}
 window._ajaxDatajoint = function(data){
   var str=[],k;
   for(var i in data){
