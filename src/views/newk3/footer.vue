@@ -54,7 +54,7 @@
         }else if(!(+this.showPrice)){
           layer.alert('请填写您要投注的金额')
         }else{
-
+          _pushType('bet')
           var msg = `${this.LotteryName}: ${this.nowIssue}期<br>
                       投注金额: <span style = "color:red">${this.bet.betting_money}元</span><br>
                       投注内容:${this.chosen.join(' ')}`

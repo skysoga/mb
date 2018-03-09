@@ -331,6 +331,7 @@
       }
     }),
     created(){
+      _pushType('in')
       function circle(num){
         num ++
         if(num > 3){

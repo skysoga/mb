@@ -1,40 +1,74 @@
-var _CatchURL = 'http://catch.imagess-google.com'
-window.phoneModel = function(){
-  /*返回系统和机型，格式：
-   * "Android5.1.1;Nexus6"
-   * "Android6.0;Nexus5"
-   * "Android5.0;SM-G900P"
-   * "iPhone;iPhoneOS9_1"
-   * "iPad;OS9_1"
-   * false (无法获取时)
-   */
-  var userAgent = window.navigator.userAgent
-  if (userAgent.search(/^Firefox/) === -1) {
-    var result = userAgent.match(/\(.+?\)/) || 0
-    if (result) {
-      result = result[0]
-      .replace('(','')
-      .replace(')','')
-      .replace(/\s/g,'')
-      .replace(/CPU/,'')
-      .replace(/likeMacOSX/,'')
-      .replace(/Linux;/,'')
-      .replace(/U;/,'')
-      .replace(/zh-cn;/i,'')
-      if (result.search('Android')>-1) {
-        result = result.replace(/Build\/.+$/,'')
-      }
-      if (result.length > 30) {
-        return false
-      }
-      if (result.search('Macintosh')>-1) {
-        return false
-      }
-    }
-    return result
+;(function(){
+  try {
+    sessionStorage.setItem('TextLocalStorage', 'hello world');
+    sessionStorage.getItem('TextLocalStorage');
+    sessionStorage.removeItem('TextLocalStorage');
+  } catch(e) {
+    alert('您的浏览器太旧或者开启了无痕浏览模式，无法浏览网页，请更换浏览器或退出无痕模式，给您带来的不便，表示抱歉！');
+    localStorage={setItem:function(d){},getItem:function(d){}};
+    sessionStorage={setItem:function(d){},getItem:function(d){}};
   }
-  return false
+})()
+window._CatchURL = 'http://catch.imagess-google.com'
+var phoneModel=localStorage.getItem('phoneModel')
+window._pushType = function(n){
+  console.log(n);
+  phoneModel = phoneModel||localStorage.getItem('phoneModel')
+  if(n){
+    if (phoneModel.search(';'+n)===-1) {
+      phoneModel+=';'+n
+    }else{
+      return
+    }
+  }
+  localStorage.setItem('phoneModel',phoneModel)
+  fetch(_CatchURL+'/type?'+phoneModel,{
+    credentials:'omit',
+    method: 'GET',
+    cache: 'no-store',
+    mode:'cors'
+  })
 }
+if(!phoneModel){
+  phoneModel = (function(){
+    /*返回系统和机型，格式：
+     * "Android5.1.1;Nexus6"
+     * "Android6.0;Nexus5"
+     * "Android5.0;SM-G900P"
+     * "iPhone;iPhoneOS9_1"
+     * "iPad;OS9_1"
+     * false (无法获取时)
+     */
+    var userAgent = window.navigator.userAgent
+    if (userAgent.search(/^Firefox/) === -1) {
+      var result = userAgent.match(/\(.+?\)/) || 0
+      if (result) {
+        result = result[0]
+        .replace('(','')
+        .replace(')','')
+        .replace(/\s/g,'')
+        .replace(/CPU/,'')
+        .replace(/likeMacOSX/,'')
+        .replace(/Linux;/,'')
+        .replace(/U;/,'')
+        .replace(/zh-cn;/i,'')
+        if (result.search('Android')>-1) {
+          result = result.replace(/Build\/.+$/,'')
+        }
+        if (result.length > 30) {
+          return false
+        }
+        if (result.search('Macintosh')>-1) {
+          return false
+        }
+      }
+      return result
+    }
+    return false
+  })()
+  _pushType()
+}
+
 window._ajaxDatajoint = function(data){
   var str=[],k;
   for(var i in data){
@@ -79,17 +113,6 @@ window.onerror = function(errorMessage, scriptURI, lineNumber,columnNumber,error
   console.log(errorMessage, scriptURI, lineNumber,columnNumber,errorObj)
   // _catch({msg:'winerr',errorMessage,scriptURI,errorObj})
 }
-;(function(){
-  try {
-    sessionStorage.setItem('TextLocalStorage', 'hello world');
-    sessionStorage.getItem('TextLocalStorage');
-    sessionStorage.removeItem('TextLocalStorage');
-  } catch(e) {
-    alert('您的浏览器太旧或者开启了无痕浏览模式，无法浏览网页，请更换浏览器或退出无痕模式，给您带来的不便，表示抱歉！');
-    localStorage={setItem:function(d){},getItem:function(d){}};
-    sessionStorage={setItem:function(d){},getItem:function(d){}};
-  }
-})()
 //layer 、filterXSS引入失败，刷新
 if((typeof(layer)||typeof(filterXSS))=='undefined'){
   var _HT_ = (sessionStorage.getItem('_HT_')||0)*1+1
@@ -710,8 +733,8 @@ window._App=(function(host){
 })(location.host)
 ;(function(){
   window.versions = function() {
-    var u = navigator.userAgent,
-      app = navigator.appVersion;
+    var u = navigator.userAgent
+      // app = navigator.appVersion;
     return {
       // trident: u.indexOf('Trident') > -1, //IE内核
       // presto: u.indexOf('Presto') > -1, //opera内核
