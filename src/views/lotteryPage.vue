@@ -37,6 +37,7 @@
 
   var randomFeed = Math.floor(Math.random()*4)  //获取开奖时间的随机数，用于错开请求
   var haveGotTime = true		                    //标志位-进页面时是否获取到服务器时间
+  var offLineLottery = ['FC3D', 'PL35']//不存在的彩种
 
   function scrollTop(){document.body.scrollTop = 0}  //滚动置顶
 
@@ -112,7 +113,7 @@
               Promise.all(reqArr).then((values)=>{
                 //校验下这个彩种存不存在，不存在就送回购彩大厅
                 var lotteryItem = state.LotteryList[lcode]
-                var offLineLottery = ['FC3D', 'PL35']
+                // var offLineLottery = ['FC3D', 'PL35']
                 if (values[2].Code === 1) {
                   next(vm=>{
                     //检测等级
@@ -176,8 +177,7 @@
         // 进入彩种页必须先获取到  赔率/彩种配置/服务器时间
         Promise.all(reqArr).then((values)=>{
           //校验下这个彩种存不存在，不存在就送回购彩大厅
-          var lotteryItem = state.LotteryList[lcode]
-          var offLineLottery = ['FC3D', 'PL35']
+          var lotteryItem = state.LotteryList[lcode]          
           if((lotteryItem === undefined || offLineLottery.indexOf(lotteryItem.LotteryType) > -1)){
             layer.url('您所访问的彩种不存在，即将返回购彩大厅', '/lotteryHall')
             return
@@ -224,6 +224,11 @@
         'KL8': getMultipleRebate,
         '6HC': getMultipleRebate,
       }
+
+      //自已生成计划的彩种配置
+      var panConfig=['1407','1008','1300','1304']
+      //香港六合彩1301
+      var LHCConfig=['1301']
 
       var wait4Results = 0, wait4BetRecord = false
       const lt = {
@@ -323,7 +328,7 @@
           //计算当前期号
           lt_computeIssueNo:(state, LotteryPlan)=>{
             var code = state.lottery.LotteryCode
-            if(code === '1301'){
+            if(LHCConfig.indexOf(code) !== -1){
               return
             }
 
@@ -680,9 +685,9 @@
           },
           //action-获取开奖计划
           lt_updatePlan:({state, rootState, commit, dispatch}, code)=>{
-            if(code === '1301'){
+            if(LHCConfig.indexOf(code) !== -1){
               dispatch('lt_get6HCPlan', code)
-            }else if(['1407','1008','1300','1304'].indexOf(code)!==-1){
+            }else if(panConfig.indexOf(code)!==-1){
               createDFPlan()        //大发系列的，自行计算计划
             }else{
               //不是大发系列的
@@ -979,7 +984,7 @@
                 return
               }
             }else{
-              if(code !== '1301'){
+              if(LHCConfig.indexOf(code) === -1){
                 if(!state.PlanLen)return
                 var Countdown = computeCountdown(state.IssueNo, _SerTime)
                 Countdown %= DAY_TIME;
@@ -1057,15 +1062,20 @@
                   // wait4Results++
                   wait4Results = 60 - Countdown%60
                   var interval
-                  switch(state.lottery.LotteryCode){
-                    case "1407":
-                    case "1008":
-                    case "1300":
-                      interval=5
-                      break
-                    default:
-                      interval=30
+                  if(panConfig.indexOf(state.lottery.LotteryCode)!==-1){
+                    interval=5
+                  }else{
+                    interval=30
                   }
+                  // switch(state.lottery.LotteryCode){
+                  //   case "1407":
+                  //   case "1008":
+                  //   case "1300":
+                  //     interval=5
+                  //     break
+                  //   default:
+                  //     interval=30
+                  // }
                   if (wait4Results>(5+randomFeed) && wait4Results%interval===randomFeed) {
                     dispatch('lt_getResults', state.lottery.LotteryCode)    //获取开奖结果
                   }
@@ -1107,14 +1117,14 @@
 
             // 更新倒计时文字
             function updateTimeBar(Countdown, code){
-              if (code==1301) {
+              if (LHCConfig.indexOf(code)!==-1) {
                 Countdown-=300 //封单时长5分钟
                 if (Countdown<0) {
                   commit('lt_stopSell', 2)   //当期封单
                   return
                 }
               }
-              if(Countdown>600 && code !== '1301'){
+              if(Countdown>600 && LHCConfig.indexOf(code) === -1){
                 commit('lt_updateTimeBar', '预售中')//如果Countdown大于10分钟，则进入预售
               }else{
                 //倒计时渲染

@@ -596,7 +596,7 @@ function computeIssue(code, index, isChase){
 
     //跨期的处理
     var firstIssue = state.lt.LotteryPlan[0]
-    if((firstIssue.End < firstIssue.Start) && (firstIssue.Start < _SerTime)){
+    if(firstIssue&&(firstIssue.End < firstIssue.Start) && (firstIssue.Start < _SerTime)){
       days++
     }
   }
