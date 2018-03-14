@@ -2,6 +2,7 @@
 testdist/
 dist/
 node_modules/
+n_node_modules/
 npm-debug.log
 /html/release
 /config/usercfg.js

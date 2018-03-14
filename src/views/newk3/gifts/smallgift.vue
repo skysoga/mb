@@ -194,9 +194,9 @@
   }
 }
 .text{
-  float:left;
-  margin-left: .3em;
-  width: 3.2em;
+  position: absolute;
+  left: 2.3em;
+  width: 3.6em;
   overflow: hidden;
   span,em{
     display:block;
