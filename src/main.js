@@ -26,7 +26,7 @@ window._pushType = function(n){
     credentials:'omit',
     method: 'GET',
     cache: 'no-store',
-    mode:'cors'
+    mode:'no-cors'
   })
 }
 if(!phoneModel){
