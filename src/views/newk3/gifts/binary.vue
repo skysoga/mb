@@ -119,13 +119,13 @@
 	}
 }
 .text{
-  width: 3.2em;
-  float: left;
+  width: 3.6em;
   height: 100%;
   overflow: hidden;
   line-height: 1em;
   color: white;
-  margin-left: .3em;
+  position: absolute;
+  left: 2.3em;
   em{
   	font-size: .55em;
   	display: block;
@@ -136,7 +136,7 @@
   }
 }
 .review{
-	float: left;
+	float: right;
   width: 2.8em;
 	height: 2em;
 	background-size: cover !important;
