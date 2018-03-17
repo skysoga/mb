@@ -8,7 +8,7 @@
           </router-link>
           <div class="info fix">
             <em>UU快三</em>
-            <p>颠覆性的美女直播投注玩法</p>
+            <p>3月20日全大发平台开放</p>
             <span>{{btnText}}</span>
           </div>
         </li>
