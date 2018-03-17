@@ -342,6 +342,7 @@ export default {
             maxAward=thisAward.toFixed(2)*1
           }
         }
+        console.log(numFeature)
         // console.log(maxAward);
         return maxAward
       }else if(['E01','E02'].indexOf(this.mode)!==-1){

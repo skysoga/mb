@@ -1,6 +1,6 @@
 <template>
    <div class="selectNumber fix">
-      <div class="title fix">
+      <div class="title fix" v-if="!(gyhlh&&mode=='H11')">
         <em><p>{{tag}}</p></em>
         <!-- 全大小奇偶清 -->
         <!-- <div class="filterNumber">
@@ -12,11 +12,14 @@
         </div> -->
       </div>
 
-      <div class="numberContent">
-        <a v-for = "item in itemArr"
+      <div :class="['numberContent',gyhlh&&'yghContent',gyhlh&&mode=='H11'&&'gyhAllWidth']">
+        <a v-for = "(item,key) in itemArr"
            @click = "choose(item)"
            :class = "chosen.indexOf(item) > -1 ? 'curr': ''">
-           <span>{{item}}</span>
+           <span>
+             {{item}}
+            <i v-if="gyhlh">{{awardArr[key]}}</i>
+           </span>
         </a>
       </div>
     </div>
@@ -29,6 +32,8 @@ import {unique, createStringArray} from '../../js/kit'
 function isArrayEqual(a, b){
   return a.every((item, index)=>b[index]===item ) && a.length === b.length
 }
+var BJSCres=['PK10']//北京赛车配置
+var arrMode=['G11','H11']//北京赛车，双面盘，冠亚和
 
 var _0to9 = [0,1,2,3,4,5,6,7,8,9],
     _dsds = ['大', '小', '单', '双'],
@@ -36,10 +41,13 @@ var _0to9 = [0,1,2,3,4,5,6,7,8,9],
     _1to26 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26],
     _0to18 = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
     _1to17 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],
+    _3to19 = ['03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19'],
     _syx5 = ['01','02','03','04','05','06','07','08','09','10','11'],
     _above = createStringArray(1,40),
     _below = createStringArray(41, 80),
-    _1to10String = createStringArray(1,10)
+    _1to10String = createStringArray(1,10),
+    _gyhdsds = ['和大','和小','和单','和双'],
+    _dsdslh = ['大','小','单','双','龙','虎']
 
 var cfg = {
   /**时时彩**/
@@ -114,6 +122,20 @@ var cfg = {
   'eighth':{tag:'第八', itemArr: _1to10String},
   'ninth':{tag:'第九', itemArr: _1to10String},
   'tenth':{tag:'第十', itemArr: _1to10String},
+  //双面盘大小单双龙虎
+  'igyh':{tag:'冠亚和', itemArr: _gyhdsds},
+  'ifirst':{tag:'冠军', itemArr: _dsdslh},
+  'isecond':{tag:'亚军', itemArr: _dsdslh},
+  'ithird':{tag:'季军', itemArr: _dsdslh},
+  'ifourth':{tag:'第四', itemArr: _dsdslh},
+  'ififth':{tag:'第五', itemArr: _dsdslh},
+  'isixth':{tag:'第六', itemArr: _dsds},
+  'iseventh':{tag:'第七', itemArr: _dsds},
+  'ieighth':{tag:'第八', itemArr: _dsds},
+  'ininth':{tag:'第九', itemArr: _dsds},
+  'itenth':{tag:'第十', itemArr: _dsds},
+  //冠亚军
+  'gyhz':{tag:'冠亚和值', itemArr: _3to19},
 }
 
 var refer = {
@@ -126,7 +148,7 @@ var refer = {
 }
 
 export default {
-  props:['alias'],
+  props:['alias','awardArr'],
   created(){
     this.config = cfg[this.alias]
   },
@@ -146,12 +168,21 @@ export default {
         return state.lt.mode.name
       }
     },
+    mode(){
+      return this.$parent.mode
+    },
+    lottery(){
+      return this.$parent.lottery
+    },
+    gyhlh(){
+      return arrMode.indexOf(this.mode)!==-1&&BJSCres.indexOf(this.lottery)!==-1
+    },
     itemArr(){
       return cfg[this.alias].itemArr
     },
     filters(){
       return cfg[this.alias].filters
-    },
+    }    
   }),
   methods:{
     choose(item){
@@ -371,7 +402,7 @@ export default {
     border: 1px solid #bfbfbf;
     font-size: .8em;
     margin:0.3em;
-  }
+  }  
   .curr{
     span{
       background: #dc3b40;
@@ -379,5 +410,45 @@ export default {
       border:1px solid #dc3b40;
     }
   }
+  i{
+    font-size: .2em;
+  }  
 }
+.yghContent{
+  a{
+    width: calc(12.4rem / 4);
+    width: -webkit-calc(12.32rem / 4);
+    span{
+      display: block;
+      margin:0 .3em .3em 0;
+      padding: .3em .3em .15em .3em;
+      width:auto;
+      height:auto;
+      background: #faf9f6;
+      border-radius:.3em;
+      line-height: 100%;
+      i{
+        color:#999;
+        /* padding-top: .2em; */
+        display: block;
+      }
+    }
+  }
+  .curr{
+    i{
+      color: #fff;
+    }
+  }
+}
+
+.gyhAllWidth{
+    width: 15.4rem;
+    a{
+      width:-webkit-calc(15.32rem / 4);
+      width: calc(15.32rem / 4);
+      i{
+        display: block;
+      }
+    }
+  }
 </style>

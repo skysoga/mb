@@ -37,7 +37,9 @@ var numFeature = (function(){
       hds:h%2?'合单':'合双',
       wdx:w<=4?'尾大':'尾小',
     }
+    
     if(49===i){
+      console.log(i,num.dx,num.ds)
       delete num.dx
       delete num.ds
       delete num.hdx
