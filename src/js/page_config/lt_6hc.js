@@ -39,7 +39,6 @@ var numFeature = (function(){
     }
     
     if(49===i){
-      console.log(i,num.dx,num.ds)
       delete num.dx
       delete num.ds
       delete num.hdx
