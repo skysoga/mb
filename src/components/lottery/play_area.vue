@@ -168,7 +168,7 @@ export default {
       }
       return this.setLineOdd(objList,obj)
     },
-    setLineOdd(objList,award){      
+    setLineOdd(objList,award){
         var obj={}        
         for(var i in objList){
           if(objList.hasOwnProperty(i)){
