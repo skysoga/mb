@@ -17,7 +17,8 @@ var pk10Config = {
     "传统玩法":[{
       "name": "双面盘",
       "mode": "G11",
-      "tip": "从冠亚和、冠、亚、季、四、五、六、七、八、九、十任意位置上任意选择一个或一个以上属性。",
+      "tip": "从冠、亚、季、四、五、六、七、八、九、十任意位置上任意选择一个或一个以上属性。",
+      // "tip": "从冠亚和、冠、亚、季、四、五、六、七、八、九、十任意位置上任意选择一个或一个以上属性。",
       "group": "双面盘",
       "subGroup": "传统玩法",
       "tag": "双面盘",
@@ -202,7 +203,8 @@ var pk10Play = {
   //冠亚军
   H11:{render:['igyh','gyhz'], alg:(order, tmp)=>betSum(order, tmp).reduce(function(a,b){return a + b})},
   //双面盘
-  G11:{render:['igyh','ifirst','isecond','ithird','ifourth','ififth','isixth','iseventh','ieighth','ininth','itenth'], alg:(order, tmp)=>betSum(order, tmp).reduce(function(a,b){return a + b})},
+  G11:{render:['ifirst','isecond','ithird','ifourth','ififth','isixth','iseventh','ieighth','ininth','itenth'], alg:(order, tmp)=>betSum(order, tmp).reduce(function(a,b){return a + b})},
+  // G11:{render:['igyh','ifirst','isecond','ithird','ifourth','ififth','isixth','iseventh','ieighth','ininth','itenth'], alg:(order, tmp)=>betSum(order, tmp).reduce(function(a,b){return a + b})},
   //定位胆
   F11:{render:['first','second','third','fourth','fifth','sixth','seventh','eighth','ninth','tenth'], alg:(order, tmp)=>betSum(order, tmp).reduce(function(a,b){return a + b})},
   //前五
@@ -248,11 +250,12 @@ function getOneArr(){
   return res
 }
 //双面盘随机数
-function randomOneArr(){  
-  var line = Math.floor(Math.random()*11)
+function randomOneArr(){
+  var leng=pk10Play['G11'].render.length
+  var line = Math.floor(Math.random()*leng)
   var res = []
   var obj=getOneArr()
-  for(var i=0;i<11;i++){
+  for(var i=0;i<leng;i++){
     var lineRes = []
     var length=obj[i].length
     if(line === i){

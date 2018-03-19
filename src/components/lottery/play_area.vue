@@ -134,9 +134,10 @@ export default {
       var objList={}
       switch(this.mode){
         case 'G11':
-        line=[1,2,1,50]
+        line=[50]
+        // line=[1,2,1,50]
         objList={
-          "igyh":4,
+          // "igyh":4,
           "ifirst":6,
           "isecond":6,
           "ithird":6,

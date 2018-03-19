@@ -56,7 +56,6 @@ export default{
   data(){
     return {
       betvalue:'',
-      ltCfg:'',
       lengthLimit: 30,
     }
   },
@@ -89,7 +88,7 @@ export default{
     //选号对赔率
     NumToAward(){
       var obj={}
-      var Arr=this.renderOdds
+      var Arr=this.setOddsArr()
       for(var i in Arr){
         if(Arr.hasOwnProperty(i)){
           var x={}
@@ -115,13 +114,7 @@ export default{
         }
       }
       return obj
-    },
-    //每行的赔率-北京赛车
-    renderOdds(){
-      var line=this.ltCfg[this.mode].render
-      var arr=[]
-      return this.setOddsArr(line)
-    },
+    },    
     //最高可中金额
     maxAward(){
       if(this.betCount===0){
@@ -130,8 +123,7 @@ export default{
       }
       var maxAward=0
       var getBetMax=this.getBetMax
-      var award=this.renderOdds
-
+      var award=this.setOddsArr()
       var setData=function(n,data,obj){
         var awardArr=obj[n]
         var xrr=[]
@@ -152,11 +144,8 @@ export default{
       return maxAward.toFixed(3)
     }
   },
-  created(){
-    this.ltCfg = playCfg[this.lottery]
-  },
   methods:{
-    setOddsArr(arr){
+    setOddsArr(){
       if(!this.award){
         // layer.msgWarn('奖金不存在')
       }
@@ -166,9 +155,10 @@ export default{
       var objList={}
       switch(this.mode){
         case 'G11':
-        line=[1,2,1,50]
+        line=[50]
+        // line=[1,2,1,50]
         objList={
-          "igyh":4,
+          // "igyh":4,
           "ifirst":6,
           "isecond":6,
           "ithird":6,
