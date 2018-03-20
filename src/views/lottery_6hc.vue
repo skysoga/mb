@@ -43,7 +43,7 @@
 
         <lt-footer1 :betStr = "betStr"
                     :betCount = "betCount"
-                    :maxAward = "maxAward"
+                    :maxAward = "maxAward*1"
                     v-model = "perbet"
                     @clearBet = "clearBet"
                     @confirmBet = "confirmBet"></lt-footer1>
@@ -398,21 +398,24 @@ export default {
         return C(l,n)*this.award
       }else if(this.mode.charAt(0)==='F'){
         // console.log('连尾');
-        var n = this.mode.charAt(2)*1
-        // console.log(n);
-        if(this.betStr.length>20){
-          //超过7选号
-          return C(7,n)*this.award[1]
-        }else{
-          //7号以内,分含不含0
-          var betStr=this.betStr.split(',')
-          var natal = betStr.indexOf('0尾')===-1 ? 0:1 //0尾个数
-          betStr=betStr.length-natal  //非0尾数
-          // console.log(betStr);
-          return natal*betStr*this.award[0]+C(betStr,n)*this.award[1]
-        }
+        var betStr=this.betStr.split(',')
+        var natal = betStr.indexOf('0尾')===-1 ? 1:0 //0尾个数
+        return this.award[natal]
+        // var n = this.mode.charAt(2)*1
+        // // console.log(n);
+        // if(this.betStr.length>20){
+        //   //超过7选号
+        //   return C(7,n)*this.award[1]
+        // }else{
+        //   //7号以内,分含不含0
+        //   var betStr=this.betStr.split(',')
+        //   var natal = betStr.indexOf('0尾')===-1 ? 0:1 //0尾个数
+        //   betStr=betStr.length-natal  //非0尾数
+        //   // console.log(betStr);
+        //   return natal*betStr*this.award[0]+C(betStr,n)*this.award[1]
+        // }
       }
-      return -2
+      return 0
     }
   }),
   methods:{
