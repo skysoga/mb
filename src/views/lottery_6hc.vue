@@ -361,7 +361,9 @@ export default {
           //7生肖以内,分含不含本命
           var betStr=this.betStr.split(',')
           var natal = betStr.indexOf(this.natal)===-1 ? 0:1 //本命生肖数
-          betStr=betStr.length-natal  //非本命生肖数
+          betStr=betStr.length
+          if(betStr>7){betStr=7} //如果超过7个尾数,只能保留7个
+          betStr=betStr-natal  //非本命生肖数
           return natal*C(betStr,n-1)*this.award[0]+C(betStr,n)*this.award[1]
         }
       }else if(['C01','C02'].indexOf(this.mode)!==-1){
@@ -409,8 +411,7 @@ export default {
           var natal = betStr.indexOf('0尾')===-1 ? 0:1 //0尾个数
           betStr=betStr.length-natal  //非0尾数
           // console.log(betStr);
-          // return natal*betStr*this.award[0]+C(betStr,n)*this.award[1]
-          return natal*this.award[0]+C(betStr,n)*this.award[1]
+          return natal*C(betStr,n-1)*this.award[0]+C(betStr,n)*this.award[1]
         }
       }
       return -2
