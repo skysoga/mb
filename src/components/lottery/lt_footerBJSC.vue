@@ -248,7 +248,8 @@ export default{
       var lotteryCode = lt.lottery.LotteryCode
       var nowIssue = lt.NowIssue
       var lotteryName = lt.lottery.LotteryName
-      var betMoney = this.betCount * this.betvalue
+      var betMoney = this.betvalue*1
+      // var betMoney = this.betCount * this.betvalue
       var rebate = lt.Rebate[this.lottery]
       var lotteryMode = this.mode
 
