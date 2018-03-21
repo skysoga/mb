@@ -1,6 +1,6 @@
 <template>
   <div class="minIsLotteryCon" @click="isShow=!isShow">
-    <template v-if="$store.state.lt.mode.mode !== 'H11' && $store.state.lt.mode.mode !== 'G11'">
+<!--     <template>
       <div class="title">{{nowIssue}}期投注截至：<em>{{TimeBar}}</em></div>
       <ul :class="{'record':true,'open':isShow}">
         <li class="fix" v-for="item in pastOpen">
@@ -21,17 +21,32 @@
         </li>
       </ul>
       <div :class="{'lernMore':true,'close':!isShow}"><em class="iconfont"><i>&#xe64c;</i></em></div>
-  </template>
-  <template v-else>
+  </template> -->
     <div class="StateStyle2">
-      <div class="past">{{pastOpen[0].IssueNo}}期开奖
-        <div class="resultCon">
-          <em v-for="d in pastOpen[0].LotteryOpen">{{d}} </em>
+      <div class="past" v-if="pastOpen.length>0">{{pastOpen[0].IssueNo}}期开奖：<div class="resultCon">
+          <em v-for="(d,i) in pastOpen[0].LotteryOpen" v-if="i<10">{{d}}</em><ins v-show="pastOpen[0].LotteryOpen.length>10">&nbsp;...</ins>
         </div>
       </div>
-      <div class="current">{{nowIssue}}期投注截至：<em>{{TimeBar}}</em></div>
+      <div class="current" :class="{'open':isShow}">{{nowIssue}}期投注：<em>{{TimeBar}}</em>&nbsp;<i class="iconfont">&#xe601;</i></div>
+      <ul :class="{'record':true,'open':isShow}">
+        <li class="fix" v-for="item in pastOpen">
+          <div class="left">第{{item.IssueNo}}期<br>{{item.OpenTime}}</div>
+          <div class="right">
+            <template v-if="ltype==='KL8'">
+              <div class="line1">
+                <a v-for = "(num,key) in item.LotteryOpen" v-if="key<10"><span>{{num}}</span></a>
+              </div>
+              <div class="line2">
+                <a v-for = "(num,key) in item.LotteryOpen" v-if="key>9&&key<20"><span>{{delEnd(num)}}</span></a>
+              </div>
+            </template>
+            <div class="line1" v-else>
+              <a v-for = "num in item.LotteryOpen"><span>{{num}}</span></a>
+            </div>
+          </div>
+        </li>
+      </ul>
     </div>
-  </template>
   </div>
 </template>
 <script>
@@ -79,8 +94,61 @@ export default{
 <style lang='scss' scoped>
 .StateStyle2{
   font-size: .65em;
-  margin: .5em 1em;
+  margin: .12em 0;
+  line-height: 2.2;
   .resultCon{
+    display: inline-block;
+    em{
+      &:first-child{
+        margin-left: 0;
+      }
+      &:last-child{
+        margin-right: 0;
+      }
+    }
+  }
+  ins{
+    position: absolute;
+  }
+}
+.resultCon em,.record span{
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  background: #faf9f6;
+  border-radius: 50%;
+  text-align: center;
+  margin:0 .1em;
+  line-height: 1.7em;
+  background: linear-gradient(unquote('to top, #f86469 0%,#bf1f24 75%'));
+  box-shadow: 0px 2px 1px #bbb59c;
+  color:white;
+  font-size: 0.85em;
+}
+.current,.past{
+  padding-left: 1em;
+
+}
+.current{
+  &:before{
+    position: absolute;
+    margin-left: -1em;
+    content:'';
+    width: 100%;
+    height: 1px;
+    display: block;
+    background-image: -webkit-linear-gradient(90deg, #bdb48b, #bdb48b 50%, transparent 50%);
+  }
+  &.open{
+    i{
+      transform:rotate(180deg);
+    }
+  }
+  em{
+    color:#dc3b40;
+  }
+  i{
+    transition: .5s;
     display: inline-block;
   }
 }
@@ -90,6 +158,7 @@ export default{
   left: 0;
   width: 100%;
   z-index: 6;
+  background: #e1d9ba;
   .record.open{
     height: 38.6em;
   }
@@ -115,6 +184,10 @@ export default{
   background: #f5f1e5;
   border-color: #bdb58b;
   box-shadow: 0 -1px 0 #bdb58b ;
+  position: absolute;
+  margin-top: 2px;
+  width: 100%;
+  font-size: 1em;
   li{
     .left,.right{
       float: left;
@@ -132,10 +205,9 @@ export default{
     }
     .right{
       position: relative;
-      width: 60%;
+      width: 18.5em;
       padding-left: 1.3em;
       a{
-        margin:0 .2em;
       }
       &:before{
         content:"";

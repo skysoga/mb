@@ -17,7 +17,7 @@
            @click = "choose(item)"
            :class = "chosen.indexOf(item) > -1 ? 'curr': ''">
            <span>
-             {{item}}
+             <em>{{item}}</em>
             <i v-if="gyhlh">{{mode!=='G11'&&awardArr[key].length<5?'赔率':'赔'}}{{awardArr[key]}}</i>
            </span>
         </a>
@@ -399,7 +399,7 @@ export default {
     color:#dc3b40;
     background: #faf9f6;
     border-radius: 50%;
-    border: 1px solid #bfbfbf;
+    border: 1px solid #dfdfdf;
     font-size: .8em;
     margin:0.3em;
   }  
@@ -411,7 +411,7 @@ export default {
     }
   }
   i{
-    font-size: .2em;
+    font-size: .5em;
   }  
 }
 .yghContent{
@@ -421,15 +421,18 @@ export default {
     span{
       display: block;
       margin:0 .3em .3em 0;
-      padding: .3em .3em .15em .3em;
+      padding: .2em;
       width:auto;
       height:auto;
       background: #faf9f6;
-      border-radius:.3em;
+      border-radius:.15rem;
       line-height: 100%;
+      em{
+        line-height: 1.44;
+      }
       i{
-        color:#999;
-        /* padding-top: .2em; */
+        color:#333;
+        font-size: .66em;
         display: block;
       }
     }
