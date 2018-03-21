@@ -410,7 +410,7 @@ export default {
           var betStr=this.betStr.split(',')
           var natal = betStr.indexOf('0尾')===-1 ? 0:1 //0尾个数
           betStr=betStr.length-natal  //非0尾数
-          return natal*C(betStr,n-1)*award[0]+C(betStr,n)*award[1]
+          return natal*C(betStr,n-1)*this.award[0]+C(betStr,n)*this.award[1]
         }
       }
       return -2
