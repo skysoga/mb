@@ -24,7 +24,7 @@
   </template> -->
     <div class="StateStyle2">
       <div class="past" v-if="pastOpen.length>0">{{pastOpen[0].IssueNo}}期开奖：<div class="resultCon">
-          <em v-for="d in pastOpen[0].LotteryOpen">{{d}}</em>
+          <em v-for="(d,i) in pastOpen[0].LotteryOpen" v-if="i<10">{{d}}</em><ins v-show="pastOpen[0].LotteryOpen.length>10">&nbsp;...</ins>
         </div>
       </div>
       <div class="current" :class="{'open':isShow}">{{nowIssue}}期投注：<em>{{TimeBar}}</em>&nbsp;<i class="iconfont">&#xe601;</i></div>
@@ -107,6 +107,9 @@ export default{
       }
     }
   }
+  ins{
+    position: absolute;
+  }
 }
 .resultCon em,.record span{
   display: inline-block;
@@ -134,7 +137,7 @@ export default{
     width: 100%;
     height: 1px;
     display: block;
-    background-image: -webkit-linear-gradient(90deg, rgba(0,0,0,.15), rgba(0,0,0,.15) 50%, transparent 50%);
+    background-image: -webkit-linear-gradient(90deg, #bdb48b, #bdb48b 50%, transparent 50%);
   }
   &.open{
     i{
@@ -202,7 +205,7 @@ export default{
     }
     .right{
       position: relative;
-      width: 18.5;
+      width: 18.5em;
       padding-left: 1.3em;
       a{
       }
