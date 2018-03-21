@@ -1,29 +1,41 @@
 <template>
   <div class="minIsLotteryCon" @click="isShow=!isShow">
-    <div class="title">{{nowIssue}}期投注截至：<em>{{TimeBar}}</em></div>
-    <ul :class="{'record':true,'open':isShow}">
-      <li class="fix" v-for="item in pastOpen">
-        <div class="left">第{{item.IssueNo}}期<br>{{item.OpenTime}}</div>
-        <div class="right">
-          <template v-if="ltype==='KL8'">
-            <div class="line1">
-              <a v-for = "(num,key) in item.LotteryOpen" v-if="key<10"><span>{{num}}</span></a>
+    <template v-if="$store.state.lt.mode.mode !== 'H11' && $store.state.lt.mode.mode !== 'G11'">
+      <div class="title">{{nowIssue}}期投注截至：<em>{{TimeBar}}</em></div>
+      <ul :class="{'record':true,'open':isShow}">
+        <li class="fix" v-for="item in pastOpen">
+          <div class="left">第{{item.IssueNo}}期<br>{{item.OpenTime}}</div>
+          <div class="right">
+            <template v-if="ltype==='KL8'">
+              <div class="line1">
+                <a v-for = "(num,key) in item.LotteryOpen" v-if="key<10"><span>{{num}}</span></a>
+              </div>
+              <div class="line2">
+                <a v-for = "(num,key) in item.LotteryOpen" v-if="key>9&&key<20"><span>{{delEnd(num)}}</span></a>
+              </div>
+            </template>
+            <div class="line1" v-else>
+              <a v-for = "num in item.LotteryOpen"><span>{{num}}</span></a>
             </div>
-            <div class="line2">
-              <a v-for = "(num,key) in item.LotteryOpen" v-if="key>9&&key<20"><span>{{delEnd(num)}}</span></a>
-            </div>
-          </template>
-          <div class="line1" v-else>
-            <a v-for = "num in item.LotteryOpen"><span>{{num}}</span></a>
           </div>
+        </li>
+      </ul>
+      <div :class="{'lernMore':true,'close':!isShow}"><em class="iconfont"><i>&#xe64c;</i></em></div>
+  </template>
+  <template v-else>
+    <div class="StateStyle2">
+      <div class="past">{{pastOpen[0].IssueNo}}期开奖
+        <div class="resultCon">
+          <em v-for="d in pastOpen[0].LotteryOpen">{{d}} </em>
         </div>
-      </li>
-    </ul>
-    <div :class="{'lernMore':true,'close':!isShow}"><em class="iconfont"><i>&#xe64c;</i></em></div>
+      </div>
+      <div class="current">{{nowIssue}}期投注截至：<em>{{TimeBar}}</em></div>
+    </div>
+  </template>
   </div>
 </template>
 <script>
-  import {mapState} from 'vuex'
+import {mapState} from 'vuex'
 export default{
   data(){
     return{
@@ -65,6 +77,13 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+.StateStyle2{
+  font-size: .65em;
+  margin: .5em 1em;
+  .resultCon{
+    display: inline-block;
+  }
+}
 .minIsLotteryCon{
   position: fixed;
   top: 2.3em;
