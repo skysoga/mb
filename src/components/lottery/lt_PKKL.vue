@@ -23,14 +23,15 @@
       <div :class="{'lernMore':true,'close':!isShow}"><em class="iconfont"><i>&#xe64c;</i></em></div>
   </template> -->
     <div class="StateStyle2">
-      <div class="past" v-if="pastOpen.length>0">{{pastOpen[0].IssueNo}}期开奖：<div class="resultCon">
-          <em v-for="(d,i) in pastOpen[0].LotteryOpen" v-if="i<10">{{d}}</em><ins v-show="pastOpen[0].LotteryOpen.length>10">&nbsp;...</ins>
+      <div class="past" v-if="pastOpen.length>0">{{openNum(pastOpen[0].IssueNo)}}期开奖：
+        <div class="resultCon">
+          <em v-for="(d,i) in display" v-if="i<10">{{d}}</em><ins v-show="pastOpen[0].LotteryOpen.length>10">&nbsp;...</ins>
         </div>
       </div>
       <div class="current" :class="{'open':isShow}">{{nowIssue}}期投注：<em>{{TimeBar}}</em>&nbsp;<i class="iconfont">&#xe601;</i></div>
       <ul :class="{'record':true,'open':isShow}">
         <li class="fix" v-for="item in pastOpen">
-          <div class="left">第{{item.IssueNo}}期<br>{{item.OpenTime}}</div>
+          <div class="left">第{{openNum(item.IssueNo)}}期<br>{{item.OpenTime}}</div>
           <div class="right">
             <template v-if="ltype==='KL8'">
               <div class="line1">
@@ -55,6 +56,7 @@ export default{
   data(){
     return{
       isShow:false,
+      wait4Results:[],
       ltype: '',    //彩种类型
       lcode: '',    //彩种code
     }
@@ -66,6 +68,19 @@ export default{
   },
   created(){
     [,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
+    function circle(num){
+      num ++
+      if(num > 9){
+        return 0
+      }else{
+        return num
+      }
+    }
+    var arr = [0,0,0,0,0,0,0,0,0,0]
+    this.timer = setInterval(()=>{
+      arr = arr.map(circle)
+      this.wait4Results = arr
+    },40)
   },
   computed:mapState({
     nowIssue:()=>{
@@ -73,6 +88,17 @@ export default{
       return nowIssue.length < 8 ? nowIssue : nowIssue.slice(4)
     },
     TimeBar:()=>state.lt.TimeBar,
+    display(){
+      return state.lt.displayResults ? this.results : this.wait4Results
+    },
+    results(){
+      var _results = state.lt.LotteryResults[this.lcode]
+      if(!_results || !_results.length){
+        return []
+      }else{
+        return _results[0].LotteryOpen.split(',').slice(0,20)
+      }
+    },
     pastOpen(){
       return state.lt.LotteryResults[this.lcode].map(item=>{
         var el = {}
@@ -87,7 +113,13 @@ export default{
     delEnd(num){
       var num=num.split('+')[0]
       return num
+    },
+    openNum(arr){
+      return arr.length>6?arr.slice(4):arr
     }
+  },
+  beforeDestroy(){
+    clearInterval(this.timer)
   }
 }
 </script>
