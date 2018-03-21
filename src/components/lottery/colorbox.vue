@@ -1,9 +1,5 @@
 <template>
 <div class="selectNumber fix">
-  <div class="title fix">
-    <em><p>号码</p></em>
-  </div>
-
   <div class="numberContent">
     <a v-for = "(item,i) in itemArr"
        @click = "choose(item)"
@@ -55,52 +51,6 @@ export default {
     height: 1px;
     @include bgImg-linear-gradient('90deg, #dfdfda, #dfdfda 50%, transparent 50%');
   }
-  .title{
-    height: 1.85em;
-    width: 2.6rem;
-    display: table-cell;
-    em{
-      font-size: 0.65em;
-      width:3.2em;
-      display: block;
-      text-align: left;
-      line-height: 1.3em;
-      color:#bbb39c;
-      background: #eeebda;
-      border:1px solid #e3decf;
-      border-radius: .3em;
-      position: relative;
-      z-index: 2;
-      margin-top: .8em;
-      padding:.2em .5em;
-      /*&:before,&:after{
-        content:"";
-        position: absolute;
-        // display: none;
-      }
-      &:before{
-        width: 0;
-        height: 0;
-        right: -.6em;
-        top: 0;
-        border-top: .79em solid transparent;
-        border-left: .6em solid #f4f1e2;
-        border-bottom: .79em solid transparent;
-        z-index: 2;
-      }
-      &:after{
-        width: 0;
-        height: 0;
-        right: -.64em;
-        transform:scale(1.1);
-        top: 0;
-        border-top: .79em solid transparent;
-        border-left: .6em solid #ece7d9;
-        border-bottom: .79em solid transparent;
-        z-index: 1;
-      }*/
-    }
-  }
 }
 .selectNumberCenter{
   .numberContent{
@@ -109,7 +59,7 @@ export default {
 }
 .numberContent{
   padding: 0;
-  width: 12.4rem;
+  width: 14.88rem;
   display: table-cell;
   a{
     width: calc(12.4rem / 5);

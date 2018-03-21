@@ -2,7 +2,7 @@
 <div class="isLotteryCon">
   <!-- 开奖号码 -->
   <div class="result"  v-if="$store.state.lt.OldIssue" @click.stop="togglePastOpen">
-    <span class="text-small">
+    <span class="text-small" :class="{'show-list':status}">
       {{oldIssue}}期开奖号码 <i class="iconfont">&#xe601;</i>
     </span>
 
@@ -76,6 +76,7 @@ export default {
       // green:['05','06','11','16','17','21','22','27','28','32','33','38','39','43','44','49'],
       wait4Results:['01','01','01','01','01','01','01'],
       timer:null,
+      status:0,
     }
   },
   methods:{
@@ -87,9 +88,13 @@ export default {
       return arr.indexOf(item) > -1
     },
     togglePastOpen(){
-      this.$store.state.lt.box === 'pastOpen' ?
-         this.$store.commit('lt_changeBox', '') :
-           this.$store.commit('lt_changeBox', 'pastOpen')
+      if(this.$store.state.lt.box === 'pastOpen'){
+        this.$store.commit('lt_changeBox', '')
+        this.status = 0
+      }else{
+        this.$store.commit('lt_changeBox', 'pastOpen')
+        this.status = 1
+      }
     }
   },
   created(){
@@ -175,7 +180,11 @@ export default {
   background: linear-gradient(unquote('to '+$v));
   background: -webkit-linear-gradient(unquote($v));
 }
-
+.show-list{
+  i{
+    transform:rotate(180deg);
+  }
+}
 .isLotteryCon{
   color:#333;
   position: fixed;
@@ -288,6 +297,10 @@ export default {
   line-height: 1.3em;
   margin-left:1em;
   display: block;
+  i{
+    display: inline-block;
+    transition:.5s;
+  }
 }
 
 .past-open{
