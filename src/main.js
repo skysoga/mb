@@ -1536,7 +1536,7 @@ router.beforeEach((to, from, next) => {
 window.preurl = '/'
 router.afterEach((to, from) => {
   var name = from.name || 0
-  if(name){
+  if(name && name !=='登录'){
     preurl = from.path
   }
   state.turning=false
