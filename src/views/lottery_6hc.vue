@@ -409,7 +409,8 @@ export default {
           var natal = betStr.indexOf('0尾')===-1 ? 0:1 //0尾个数
           betStr=betStr.length-natal  //非0尾数
           // console.log(betStr);
-          return natal*betStr*this.award[0]+C(betStr,n)*this.award[1]
+          // return natal*betStr*this.award[0]+C(betStr,n)*this.award[1]
+          return natal*this.award[0]+C(betStr,n)*this.award[1]
         }
       }
       return -2
