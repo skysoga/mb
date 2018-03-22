@@ -19,6 +19,7 @@
                       @click.stop = "changeGroup(groupItem)"
                       :class = "{curr:group === mode.group, lastSelect: group === '大小单双'}">
                     {{group}}
+                    <em v-if="group == '冠亚军' || group == '双面盘'" class="newPlayType">NEW</em>
                   </li>
                 </ul>
 
@@ -168,6 +169,18 @@
 
 .active:active{
   background: initial !important;
+}
+.newPlayType{
+  color:white;
+  background: red;
+  font-weight: bold;
+  position: absolute;
+  margin-top:-.6em;
+  margin-left:-.7em;
+  transform: scale(.5);
+  border-radius: .2em;
+  line-height: 1em;
+  padding:.2em;
 }
 @import '../../scss/scssConfig','../../scss/mixin';
   .sscHeader{
