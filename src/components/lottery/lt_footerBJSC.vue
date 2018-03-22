@@ -130,22 +130,21 @@ export default{
       var maxAward=0
       var getBetMax=this.getBetMax
       var NumToAward=this.NumToAward//选号和对应赔率
-      var award=this.setOddsArr()
-      var setData=function(n,data,obj){
-        var awardArr=obj[n]
-        var xrr=[]
-        for(var i=0;i<data.length;i++){
-          if(awardArr[data[i]]){
-            xrr.push(awardArr[data[i]])
-          }
+      if(this.mode==='G11'){
+        var setData=function(n,data,obj){
+          var awardArr=obj[n]
+          var award=awardArr['大']
+          var dx=(data.indexOf('大')>-1||data.indexOf('小')>-1)?+award:0
+          var ds=(data.indexOf('单')>-1||data.indexOf('双')>-1)?+award:0
+          var lh=(data.indexOf('龙')>-1||data.indexOf('虎')>-1)?+award:0
+          var num=dx+ds+lh
+          return num
         }
-        return xrr
-      }
-      
-      for(var i in getBetMax){
-        var Max=setData(i,getBetMax[i],NumToAward)
-        Max=Max.length?Math.max.apply({},Max):0
-        maxAward+=Max*1
+
+        for(var i in getBetMax){
+          var Max=setData(i,getBetMax[i],NumToAward)
+          maxAward+=Max*1
+        }
       }
       //计算冠亚和
       if(this.mode==='H11'){
