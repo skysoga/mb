@@ -49,11 +49,20 @@
         <i class="iconfont" v-show="lTopNav.indexOf(ltype)===-1">&#xe61e;</i>
       </div>
 
-      <div class="lotteryList fix" v-show = "ifShowTypeSelect">
-        <a v-for = "item in LotteryList"
-           @click = "changeLottery(item.LotteryCode)">
-            {{item.LotteryName}}
-        </a>
+      <div class="lotteryList fix" v-show = "ifShowTypeSelect">        
+        <template v-if="ltype==='PK10'">
+          <a v-for = "item in LotteryList"
+             v-if="item.LotteryType==='PK10'"
+            @click = "changeLottery(item.LotteryCode)">
+              {{item.LotteryName}}
+          </a>
+        </template>
+        <template v-else>
+          <a v-for = "item in LotteryList"
+            @click = "changeLottery(item.LotteryCode)">
+              {{item.LotteryName}}
+          </a>
+        </template>
       </div>
     </div>
   </header>
@@ -80,7 +89,7 @@
     data () {
       return {
         LotteryList: [],//彩种list
-        lTopNav:['PK10','KL8', '6HC'],//导航隐藏配置
+        lTopNav:['KL8', '6HC'],//导航隐藏配置
         hideSubGroup:['6HC'],         //没有次级补录
         noLotteryName: ['6HC'],       //没有彩种名字
         ltype: '',      //彩种类型
