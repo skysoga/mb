@@ -58,13 +58,13 @@ export default{
     [,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
     function circle(num){
       num ++
-      if(num > 9){
-        return 0
+      if(num > 10){
+        return '01'
       }else{
-        return num
+        return num>9?num+'':('0'+num)
       }
     }
-    var arr = [0,0,0,0,0,0,0,0,0,0]
+    var arr = ['01','01','01','01','01','01','01','01','01','01']
     this.timer = setInterval(()=>{
       arr = arr.map(circle)
       this.wait4Results = arr
@@ -73,7 +73,7 @@ export default{
   data(){
     return{
       isShow:false,
-      wait4Results:[0,0,0,0,0,0,0,0,0,0],
+      wait4Results:['01','01','01','01','01','01','01','01','01','01'],
       ltype: '',    //彩种类型
       lcode: '',    //彩种code
       timer:null,
