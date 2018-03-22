@@ -22,8 +22,8 @@
       </ul>
       <div :class="{'lernMore':true,'close':!isShow}"><em class="iconfont"><i>&#xe64c;</i></em></div>
   </template> -->
-    <div class="StateStyle2">
-      <div class="past" v-if="pastOpen.length>0">{{openNum(pastOpen[0].IssueNo)}}期开奖：
+    <div class="StateStyle2" v-if = "$store.state.lt.LotteryResults[lcode]&&pastOpen.length">
+      <div class="past">{{openNum(pastOpen[0].IssueNo)}}期开奖：
         <div class="resultCon">
           <em v-for="(d,i) in display" v-if="i<10">{{d}}</em><ins v-show="pastOpen[0].LotteryOpen.length>10">&nbsp;...</ins>
         </div>
@@ -50,22 +50,10 @@
     </div>
   </div>
 </template>
+
 <script>
 import {mapState} from 'vuex'
 export default{
-  data(){
-    return{
-      isShow:false,
-      wait4Results:[],
-      ltype: '',    //彩种类型
-      lcode: '',    //彩种code
-    }
-  },
-  watch:{
-    $route(){
-      [,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
-    }
-  },
   created(){
     [,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
     function circle(num){
@@ -82,9 +70,23 @@ export default{
       this.wait4Results = arr
     },40)
   },
+  data(){
+    return{
+      isShow:false,
+      wait4Results:[0,0,0,0,0,0,0,0,0,0],
+      ltype: '',    //彩种类型
+      lcode: '',    //彩种code
+      timer:null,
+    }
+  },
+  watch:{
+    $route(){
+      [,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
+    }
+  },  
   computed:mapState({
     nowIssue:()=>{
-      var nowIssue = state.lt.NowIssue||[]
+      var nowIssue = state.lt.NowIssue
       return nowIssue.length < 8 ? nowIssue : nowIssue.slice(4)
     },
     TimeBar:()=>state.lt.TimeBar,
@@ -107,7 +109,7 @@ export default{
         el.OpenTime = item.OpenTime.split(' ')[1] //开奖时间的时分秒
         return el
       })
-    }
+    }    
   }),
   methods:{
     delEnd(num){
@@ -150,7 +152,7 @@ export default{
   background: #faf9f6;
   border-radius: 50%;
   text-align: center;
-  margin:0 .1em;
+  margin:0 .05em;
   line-height: 1.7em;
   background: linear-gradient(unquote('to top, #f86469 0%,#bf1f24 75%'));
   box-shadow: 0px 2px 1px #bbb59c;
@@ -237,7 +239,7 @@ export default{
     }
     .right{
       position: relative;
-      width: 18.5em;
+      width: 16.5em;
       padding-left: 1.3em;
       a{
       }
