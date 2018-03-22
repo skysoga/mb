@@ -129,6 +129,7 @@ export default{
       }
       var maxAward=0
       var getBetMax=this.getBetMax
+      var NumToAward=this.NumToAward//选号和对应赔率
       var award=this.setOddsArr()
       var setData=function(n,data,obj){
         var awardArr=obj[n]
@@ -142,11 +143,35 @@ export default{
       }
       
       for(var i in getBetMax){
-        var Max=setData(i,getBetMax[i],this.NumToAward)
+        var Max=setData(i,getBetMax[i],NumToAward)
         Max=Max.length?Math.max.apply({},Max):0
         maxAward+=Max*1
       }
-
+      //计算冠亚和
+      if(this.mode==='H11'){
+        var dsds=getBetMax.igyh
+        var dadsAward=NumToAward.igyh
+        var gyhz=getBetMax.gyhz
+        var gyhzAward=NumToAward.gyhz
+            dsds=[
+              dsds.indexOf('和大')>-1,
+              dsds.indexOf('和小')>-1,
+              dsds.indexOf('和单')>-1,
+              dsds.indexOf('和双')>-1
+            ]
+        var getLine=[]
+        getBetMax['gyhz'].forEach((v,i,a)=>{
+          var self=gyhzAward[v]
+          var hd=(v>11&&dsds[0])?dadsAward['和大']:0
+          var hx=(v<12&&dsds[1])?dadsAward['和小']:0
+          var hdd=(v%2!==0&&dsds[2])?dadsAward['和单']:0
+          var hss=(v%2===0&&dsds[3])?dadsAward['和双']:0
+          var dx=+Math.max(hd,hx)
+          var ds=+Math.max(hdd,hss)
+          getLine.push(+self+dx+ds)
+        })        
+        maxAward=getLine.length?Math.max.apply({},getLine):0
+      }
       return maxAward.toFixed(3)
     }
   },
