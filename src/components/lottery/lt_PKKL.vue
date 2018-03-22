@@ -23,12 +23,12 @@
       <div :class="{'lernMore':true,'close':!isShow}"><em class="iconfont"><i>&#xe64c;</i></em></div>
   </template> -->
     <div class="StateStyle2" v-if = "$store.state.lt.LotteryResults[lcode]&&pastOpen.length">
-      <div class="past">{{openNum(pastOpen[0].IssueNo)}}期开奖：
+      <div class="past">{{openNum(pastOpen[0].IssueNo)}}开奖：
         <div class="resultCon">
           <em v-for="(d,i) in display" v-if="i<10">{{d}}</em><ins v-show="pastOpen[0].LotteryOpen.length>10">&nbsp;...</ins>
         </div>
       </div>
-      <div class="current" :class="{'open':isShow}">{{nowIssue}}期投注：<em>{{TimeBar}}</em>&nbsp;<i class="iconfont">&#xe601;</i></div>
+      <div class="current" :class="{'open':isShow}">{{nowIssue}}投注：<em>{{TimeBar}}</em>&nbsp;<i class="iconfont">&#xe601;</i></div>
       <ul :class="{'record':true,'open':isShow}">
         <li class="fix" v-for="item in pastOpen">
           <div class="left">第{{openNum(item.IssueNo)}}期<br>{{item.OpenTime}}</div>
@@ -212,7 +212,6 @@ export default{
   font-size: .65em;
   line-height: 1.4em;
   color: #333;
-  transition: .6s;
   height: 0;
   overflow: hidden;
   background: #f5f1e5;
