@@ -95,7 +95,7 @@ body{
 .KL8{
   .sscMain{
     .sscTips{
-      padding-top: 4.7em;
+      padding-top: 5.7em;
     }
   }
   .betFilterAnd{
