@@ -1,5 +1,5 @@
 <template>
-  <div class="minIsLotteryCon" @click="isShow=!isShow">
+  <div class="minIsLotteryCon" @click.stop="togglePastOpen">
 <!--     <template>
       <div class="title">{{nowIssue}}期投注截至：<em>{{TimeBar}}</em></div>
       <ul :class="{'record':true,'open':isShow}">
@@ -27,8 +27,8 @@
           <em v-for="(d,i) in display" v-if="i<10">{{d}}</em><ins v-show="pastOpen[0].LotteryOpen.length>10">&nbsp;...</ins>
         </div>
       </div>
-      <div class="current" :class="{'open':isShow}">{{nowIssue}}投注：<em>{{TimeBar}}</em>&nbsp;<i class="iconfont">&#xe601;</i></div>
-      <ul :class="{'record':true,'open':isShow}">
+      <div class="current" :class="{'open':ifShowPastOpen}">{{nowIssue}}投注：<em>{{TimeBar}}</em>&nbsp;<i class="iconfont">&#xe601;</i></div>
+      <ul :class="{'record':true,'open':ifShowPastOpen}">
         <li class="fix" v-for="item in pastOpen">
           <div class="left">第{{openNum(item.IssueNo)}}期<br>{{item.OpenTime}}</div>
           <div class="right">
@@ -71,7 +71,6 @@ export default{
   },
   data(){
     return{
-      isShow:false,
       wait4Results:['01','01','01','01','01','01','01','01','01','01'],
       ltype: '',    //彩种类型
       lcode: '',    //彩种code
@@ -112,7 +111,10 @@ export default{
         el.OpenTime = item.OpenTime.split(' ')[1] //开奖时间的时分秒
         return el
       })
-    }    
+    },
+    ifShowPastOpen(){
+      return state.lt.box === 'pastOpen'
+    },
   }),
   methods:{
     delEnd(num){
@@ -121,7 +123,12 @@ export default{
     },
     openNum(arr){
       return arr.length>6?arr.slice(4):arr
-    }
+    },
+    togglePastOpen(){
+      this.$store.state.lt.box === 'pastOpen' ?
+         this.$store.commit('lt_changeBox', '') :
+           this.$store.commit('lt_changeBox', 'pastOpen')
+    },
   },
   beforeDestroy(){
     clearInterval(this.timer)
