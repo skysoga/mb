@@ -71,8 +71,7 @@ export default {
       var len=e&&this.res_data.LotteryName.indexOf('六合彩')==-1?str.split(' ').length:str.split(',').length
       if(len<(e?11:9)){return}
       str=e?str:str.split('+')[0].split(',').slice(0,20).join(',')
-      layer.confirm(str,['确定'],()=>{})
-      // layer.alert(str)
+      layer.alert(str)
     },
     setNum(str,flag){
       //flag 标志位
