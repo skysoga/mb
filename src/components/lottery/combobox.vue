@@ -89,13 +89,13 @@ export default{
 .bet-item{
   width:100%;
   padding-top:0.2em;
-  color: #333;
+  color:#dc3b40;
   font-size:1em;
 }
 
 .bet-item-award{
   width:100%;
-  color:#dc3b40;
+  color: #333;
   padding-top:.16em;
   padding-bottom:.5em;
   font-size:.66em;

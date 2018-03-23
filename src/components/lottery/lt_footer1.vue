@@ -184,7 +184,7 @@ $footer-left:0.5em;
   text-align: center;
   height: 2.2em;
   line-height: 2.2em;
-  width: 6em;
+  width: 100%;
   border-radius: 0.26rem;
 }
 </style>
