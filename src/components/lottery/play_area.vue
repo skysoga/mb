@@ -35,12 +35,6 @@ import {factorial, mul, C, combNoRepeat, unique, normalSum2, normalSum3, accumul
 var countSingle = (order,tmp)=>betSum(order,tmp)[0]  //单行计数
 // 单式只要传一个数字
 
-// 测试数据
-var awardObj={
-  'H11':'2.182 1.746 2.182 43.65 21.825 14.55 10.912 8.73 10.912 14.55 21.825 43.65',
-  'G11':'1.94'
-}
-
 var playCfg = {
   'SSC': sscPlay,
   'SYX5': syx5Play,
@@ -104,7 +98,7 @@ export default {
   },
   computed:mapState({
     tip:()=>state.lt.mode.tip,      //提示
-    award:()=>state.lt.award||awardObj[state.lt.mode.mode],        //奖金
+    award:()=>state.lt.award,        //奖金
     mode:()=>state.lt.mode.mode,
     lottery:()=>state.lt.lottery.LotteryType,
     getQW:()=>{

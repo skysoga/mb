@@ -30,11 +30,6 @@
 //处理最大奖金
 import {pk10Play} from '../../js/page_config/lt_pk10'
 import {_dsdslh,_dsds,_3to19,_gyhdsds} from '../../js/kit'
-// 测试数据
-var awardObj={
-  'H11':'2.182 1.746 2.182 43.65 21.825 14.55 10.912 8.73 10.912 14.55 21.825 43.65',
-  'G11':'1.94'
-}
 
 var BJSCres=['PK10']//北京赛车配置
 var arrMode=['G11','H11']//北京赛车，双面盘，冠亚和
@@ -78,7 +73,7 @@ export default{
     betCount(){
       return this.$store.state.lt.bet.betting_count
     },
-    award:()=>state.lt.award||awardObj[state.lt.mode.mode],        //奖金
+    award:()=>state.lt.award,        //奖金
     mode:()=>state.lt.mode.mode,
     lottery:()=>state.lt.lottery.LotteryType,
     betMoney(){return this.$store.state.lt.bet.betting_money.toFixed(2)},
