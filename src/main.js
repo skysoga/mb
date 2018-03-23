@@ -1065,7 +1065,8 @@ window.store = new Vuex.Store({
   layer.alert=function(msg,fun){
     return layer.open({
       className: "layerConfirm",
-      title:(_App?'温馨':'错误')+'提示',
+      title:'温馨提示',
+      // title:(_App?'温馨':'错误')+'提示',
       shadeClose: false,
       content: msg,
       btn: ["确定"],
