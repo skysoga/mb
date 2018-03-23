@@ -1,5 +1,5 @@
 <template>
-<div class="selectNumber fix">
+<div class="selectNumber fix" :class="$store.state.lt.mode.mode">
   <div class="numberContent" :class="(needAward && renderOdds && renderOdds.length)?'':'noaward'">
     <div v-for = "(item, index) in itemArr" class="bet-item-box-Con">
       <div class = "bet-item-box"  @click = "choose(item)" :class = "{curr: chosen.indexOf(item)>-1}">
@@ -69,11 +69,28 @@ export default{
     }
   }
 }
-.bet-item-box-Con{
+
+.D01 .bet-item-box-Con,.E01 .bet-item-box-Con{
   width: 33.3333333%;
   font-size: .8em;
   padding: .48em;
   float: left;
+}
+.bet-item-box-Con{
+  width: 25%;
+  font-size: .8em;
+  padding: .24em;
+  float: left;
+}
+.D01 .bet-item-box,.E01 .bet-item-box{
+  border:1px solid #dfdfdf;
+  border-radius:.15rem;
+  background: #faf9f6;
+  a,span{
+    display: block;
+    text-align: center;
+    line-height: 1.44;
+  }
 }
 .bet-item-box{
   border:1px solid #dfdfdf;
@@ -101,7 +118,7 @@ export default{
   font-size:.66em;
 }
 
-.bet-item-eg-box{
+.D01 .bet-item-eg-box,.E01 .bet-item-eg-box{
   width:100%;
   border-top:1px solid #dfdfdf;
   text-align: center;
