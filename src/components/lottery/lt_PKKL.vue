@@ -131,8 +131,7 @@ export default{
 <style lang='scss' scoped>
 .StateStyle2{
   font-size: .65em;
-  margin: .12em 0;
-  line-height: 2.2;
+  background: #e1d9ba;
   .resultCon{
     display: inline-block;
     em{
@@ -164,7 +163,8 @@ export default{
 }
 .current,.past{
   padding-left: 1em;
-
+  height: 2.308em;
+  line-height: 2.308em;
 }
 .current{
   &:before{
@@ -195,7 +195,6 @@ export default{
   left: 0;
   width: 100%;
   z-index: 6;
-  background: #e1d9ba;
   .record.open{
     height: 38.6em;
   }
@@ -211,17 +210,15 @@ export default{
   }
 }
 .record{
-  background: #ece6d2;
-  font-size: .65em;
+  background: #e1d9ba;
   line-height: 1.4em;
   color: #333;
   height: 0;
   overflow: hidden;
-  background: #f5f1e5;
   border-color: #bdb58b;
   box-shadow: 0 -1px 0 #bdb58b ;
   position: absolute;
-  margin-top: 2px;
+  margin-top: 1px;
   width: 100%;
   font-size: 1em;
   li{
