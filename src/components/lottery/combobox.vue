@@ -69,28 +69,41 @@ export default{
     }
   }
 }
-
-.D01 .bet-item-box-Con,.E01 .bet-item-box-Con{
-  width: 33.3333333%;
-  font-size: .8em;
-  padding: .48em;
-  float: left;
+.D01,.E01,.E02,.E03,.E04,.E05{
+  .bet-item-box-Con{
+    width: 33.3333333%;
+    font-size: .8em;
+    padding: .48em;
+    float: left;
+  }
+  .bet-item-box{
+    border:1px solid #dfdfdf;
+    border-radius:.15rem;
+    background: #faf9f6;
+    a,span{
+      display: block;
+      text-align: center;
+      line-height: 1.44;
+    }
+  }
+  .bet-item-eg-box{
+    width:100%;
+    border-top:1px solid #dfdfdf;
+    text-align: center;
+    line-height: 0;
+    padding: .1em;
+    span{
+      display: inline-block;
+      width: .8rem;
+      line-height: 1.2em;
+    }
+  }
 }
 .bet-item-box-Con{
   width: 25%;
   font-size: .8em;
   padding: .24em;
   float: left;
-}
-.D01 .bet-item-box,.E01 .bet-item-box{
-  border:1px solid #dfdfdf;
-  border-radius:.15rem;
-  background: #faf9f6;
-  a,span{
-    display: block;
-    text-align: center;
-    line-height: 1.44;
-  }
 }
 .bet-item-box{
   border:1px solid #dfdfdf;
@@ -116,19 +129,6 @@ export default{
   padding-top:.16em;
   padding-bottom:.5em;
   font-size:.66em;
-}
-
-.D01 .bet-item-eg-box,.E01 .bet-item-eg-box{
-  width:100%;
-  border-top:1px solid #dfdfdf;
-  text-align: center;
-  line-height: 0;
-  padding: .1em;
-  span{
-    display: inline-block;
-    width: .8rem;
-    line-height: 1.2em;
-  }
 }
 
 .bet-item-eg{
