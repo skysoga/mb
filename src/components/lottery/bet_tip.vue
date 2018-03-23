@@ -1,9 +1,6 @@
 <template>
   <div class="sscTips">
-    <p v-if = "this.type === 'noAward'">
-      <template v-if="!isAll&&tipLength">{{TipShow}} <i @click="isAll=!isAll" style="color:rgb(33, 141, 221);">详情</i></template>
-      <template v-else>{{tip}}<i v-if="gyhlh" style="color:rgb(33, 141, 221);">1元模式</i><i v-show="tipLength" @click="isAll=!isAll" style="color:rgb(33, 141, 221);"> 收起</i></template>
-      <slot></slot></p>    
+    <p v-if = "this.type === 'noAward'">{{tip}} <i v-if="gyhlh" style="color:rgb(33, 141, 221);">1元模式</i><slot></slot></p>    
     <p v-if = "this.type === 'multiple'" >{{tip}}<span @click="showBonus">奖金详情</span> <slot></slot></p>
     <p v-if = "this.type === 'single'" >{{tip}}{{this.isOdds ? '赔率 ' : '奖金 '}}<i>{{award}}</i>{{this.isOdds ? '': '元'}}<slot></slot></p>
   </div>
@@ -36,8 +33,6 @@ export default {
   data(){
     return {
       type: '',
-      isAll:false,
-      defaultLen:48
     }
   },
   beforeUpdate(){
@@ -49,19 +44,9 @@ export default {
   computed:{
     mode:()=>state.lt.mode.mode,
     lottery:()=>state.lt.lottery.LotteryType,
-    tipLength(){
-      return this.tip.length>this.defaultLen
-    },
     gyhlh(){
       return arrMode.indexOf(this.mode)!==-1&&BJSCres.indexOf(this.lottery)!==-1
     },
-    TipShow(){
-      if(this.tipLength){
-        return this.tip.slice(0,this.defaultLen)+'...'
-      }else{
-        return this.tip
-      }
-    }
   },
   methods:{
     checkProps(){
