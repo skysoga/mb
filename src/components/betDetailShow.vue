@@ -119,6 +119,7 @@ export default {
         this.lottery_icon = 'L_SYX5'
         break
       case '10':
+      case '赛车':
         this.lottery_icon = 'L_PK10'
         break
       case '农场':
