@@ -71,7 +71,8 @@ export default {
       var len=e&&this.res_data.LotteryName.indexOf('六合彩')==-1?str.split(' ').length:str.split(',').length
       if(len<(e?11:9)){return}
       str=e?str:str.split('+')[0].split(',').slice(0,20).join(',')
-      layer.alert(str)
+      layer.confirm(str,['确定'],()=>{})
+      // layer.alert(str)
     },
     setNum(str,flag){
       //flag 标志位
@@ -119,6 +120,7 @@ export default {
         this.lottery_icon = 'L_SYX5'
         break
       case '10':
+      case '赛车':
         this.lottery_icon = 'L_PK10'
         break
       case '农场':
