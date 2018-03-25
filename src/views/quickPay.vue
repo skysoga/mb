@@ -56,6 +56,14 @@
 </template>
 <script>
 var OType=['金付卡','智汇付']//新开窗口数组
+function tapLink(){
+  var op=document.createElement("a");
+	op.href=''
+  op.target='_blank'
+	op.className='tapLink';
+	document.body.appendChild(op);
+}
+
 export default {
   beforeRouteEnter(to, from, next){
     var title = {
@@ -275,6 +283,12 @@ export default {
       return _name[this.method]
     }
   },
+  mounted(){
+    var openLink=document.querySelector('a.tapLink')
+      if(!openLink){
+        tapLink()
+      }
+  },
   methods:{
     $vaSubmit () {
       var vm=this
@@ -354,7 +368,7 @@ export default {
           console.log('新开窗口');
         }
       }
-
+      
       this.QrBg=true
       layer.msgWait("正在提交")
       _fetch(nowAjax).then((json)=>{
@@ -363,11 +377,11 @@ export default {
           layer.closeAll()
           if(newTab||OpenType===4){
             this.QrBg=false
-            RootApp.OpenWin(json.BackUrl, newTab)
+            RootApp.OpenWin(json.BackUrl, newTab,'new')
             this.Money = ''
           }else if(OpenType===1){
             this.QrImg=json.BackUrl
-			this.Styles=json.Style
+            this.Styles=json.Style
             this.Money = ''
           }else{
             this.QrSvg=true
