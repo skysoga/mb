@@ -56,13 +56,6 @@
 </template>
 <script>
 var OType=['金付卡','智汇付']//新开窗口数组
-function tapLink(){
-  var op=document.createElement("a");
-	op.href=''
-  op.target='_blank'
-	op.className='tapLink';
-	document.body.appendChild(op);
-}
 
 export default {
   beforeRouteEnter(to, from, next){
@@ -108,6 +101,7 @@ export default {
           vm.underMaintain = false
           vm.nowRender = json[0]
           vm.Bank=json
+          vm.isOpenType=json[0].OpenType
           vm.vaConfig ||(vm.vaConfig = {})
           vm.vaConfig['Money'] || (vm.vaConfig['Money'] = [])
             var Min=json[0].MinMoney,
@@ -127,6 +121,7 @@ export default {
       QrImg:'',
       QrBg:false,
       QrSvg:false,
+      isOpenType:'',
       //当前
       nowRender:{},
       limit:'',
@@ -283,12 +278,6 @@ export default {
       return _name[this.method]
     }
   },
-  mounted(){
-    var openLink=document.querySelector('a.tapLink')
-      if(!openLink){
-        tapLink()
-      }
-  },
   methods:{
     $vaSubmit () {
       var vm=this
@@ -332,6 +321,7 @@ export default {
         }
       }
       var nowAjax = ajax[this.method]
+      var newTab=null
       //判断是否小数 仅银联扫码需处理小数点金额
       if(this.method=='UnionPay'||this.method=='QQpay'){
         function isDic(n){
@@ -362,12 +352,13 @@ export default {
       nowAjax.ID = this.nowRender.Id
       nowAjax.BankCode =this.nowRender.PayType
 
-      if(OType.indexOf(nowAjax.BankCode)!==-1){
-        if(nowAjax.BankCode!=='智汇付'||nowAjax.Qort===6){
-          var newTab=YDB?true:window.open('about:blank')
+      // if(OType.indexOf(nowAjax.BankCode)!==-1){
+        // if(nowAjax.BankCode!=='智汇付'||nowAjax.Qort===6){
+        if(this.isOpenType==4||OType.indexOf(nowAjax.BankCode)!==-1){
+          newTab=window.open('about:blank')
           console.log('新开窗口');
         }
-      }
+      // }
       
       this.QrBg=true
       layer.msgWait("正在提交")
@@ -375,15 +366,14 @@ export default {
         if(json.Code === 1){
           var OpenType=json.OpenType
           layer.closeAll()
-          if(newTab||OpenType===4){
-            this.QrBg=false
-            RootApp.OpenWin(json.BackUrl, newTab,'new')
-            this.Money = ''
-          }else if(OpenType===1){
+          if(OpenType!==4){
+           if(OpenType===1){
+            newTab&&newTab.close()
             this.QrImg=json.BackUrl
             this.Styles=json.Style
             this.Money = ''
           }else{
+            newTab&&newTab.close()
             this.QrSvg=true
             if(OpenType===3){
               var qrcode=document.getElementById("qrcode")
@@ -396,6 +386,17 @@ export default {
             }
           }
         }else{
+          this.QrBg=false
+          if(YDB){
+            newTab&&newTab.close()
+            newTab=true
+          }
+          RootApp.OpenWin(json.BackUrl, newTab)
+          this.Money = ''
+        }
+
+        }else{
+          newTab&&newTab.close()
           this.QrBg=false
           this.Money=''
           layer.msgWarn(json.StrCode)

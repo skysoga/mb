@@ -1115,7 +1115,7 @@ window.RootApp={
     this.SaveInitData({UserName:UserName})
     fun()
   },
-  OpenWin: function (url, newTab,newWin){
+  OpenWin: function (url, newTab){
     //app
     // if(localStorage.getItem('isSelfApp')){
       // state.URL=url
@@ -1124,12 +1124,6 @@ window.RootApp={
     if(YDB){
       YDB.OpenWithSafari(url)
     }else{
-      var win = document.querySelector('a.tapLink')
-      if (newWin&&url&&win){
-        win.href = url
-        win.click()
-        return
-      }
       if (!newTab){
         newTab = window.open('about:blank')
       }
