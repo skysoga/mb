@@ -721,7 +721,8 @@ window._App=(function(host){
   if(host.indexOf('app2jsknacs') > -1){
     return true
   }
-  if(/^m\./.test(host)===-1){
+  if(!(/^m\./.test(host))){
+  // if(/^m\./.test(host)===-1){
     return true
   }
   // host = host.split('.')
@@ -1124,7 +1125,7 @@ window.RootApp={
       YDB.OpenWithSafari(url)
     }else{
       var win = document.querySelector('a.tapLink')
-      if (newWin&&url && win){
+      if (newWin&&url&&win){
         win.href = url
         win.click()
         return
