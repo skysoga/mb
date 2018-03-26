@@ -721,7 +721,8 @@ window._App=(function(host){
   if(host.indexOf('app2jsknacs') > -1){
     return true
   }
-  if(/^m\./.test(host)===-1){
+  if(!(/^m\./.test(host))){
+  // if(/^m\./.test(host)===-1){
     return true
   }
   // host = host.split('.')
@@ -1114,7 +1115,7 @@ window.RootApp={
     this.SaveInitData({UserName:UserName})
     fun()
   },
-  OpenWin:function(url, newTab){
+  OpenWin: function (url, newTab){
     //app
     // if(localStorage.getItem('isSelfApp')){
       // state.URL=url
@@ -1123,7 +1124,7 @@ window.RootApp={
     if(YDB){
       YDB.OpenWithSafari(url)
     }else{
-      if(!newTab){
+      if (!newTab){
         newTab = window.open('about:blank')
       }
       newTab.location.href=url
