@@ -101,7 +101,7 @@ export default {
           vm.underMaintain = false
           vm.nowRender = json[0]
           vm.Bank=json
-          vm.isOpenType=json[0].OpenType
+          vm.isOpenType=json[0].OpenType||json[0].Opentype
           vm.vaConfig ||(vm.vaConfig = {})
           vm.vaConfig['Money'] || (vm.vaConfig['Money'] = [])
             var Min=json[0].MinMoney,
