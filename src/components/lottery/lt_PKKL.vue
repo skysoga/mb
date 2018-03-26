@@ -29,8 +29,12 @@
       </div>
       <div class="current" :class="{'open':ifShowPastOpen}">{{nowIssue}}投注：<em>{{TimeBar}}</em>&nbsp;<i class="iconfont">&#xe601;</i></div>
       <ul :class="{'record':true,'open':ifShowPastOpen}">
+        <li class="title">
+          <div class="left"><i>期号</i></div>
+          <div class="right"><i>开奖号码</i></div>
+        </li>
         <li class="fix" v-for="item in pastOpen">
-          <div class="left">第{{openNum(item.IssueNo)}}期<br>{{item.OpenTime}}</div>
+          <div class="left">{{openNum(item.IssueNo)}}<br>{{item.OpenTime}}</div>
           <div class="right">
             <template v-if="ltype==='KL8'">
               <div class="line1">
@@ -208,26 +212,40 @@ export default{
 }
 .title{
   text-align: center;
-  font-size: .65em;
-  line-height: 2em;
-  height: 1.9em;
-  background: #f5f1e5;
+  height: 2.4em;
+  font-weight: 400;
+  line-height: 2.4em;
+  border-bottom: 1px solid #bdb48b;
   em{
     color:#dc3b40;
+  }
+  i{
+    font-size: 1.1em;
+  }
+  > div{
+    padding-top: 0 !important;
+  }
+  .left{
+    border:none !important;
+  }
+  .right{
+    &:before{
+      display: none !important;
+    }
   }
 }
 .record{
   background: #e1d9ba;
   line-height: 1.4em;
-  color: #333;
   height: 0;
   overflow: hidden;
   border-color: #bdb58b;
-  box-shadow: 0 -1px 0 #bdb58b ;
+  box-shadow: 0 -1px 0 white ;
   position: absolute;
   margin-top: 1px;
   width: 100%;
   font-size: 1em;
+  color: #666;
   li{
     .left,.right{
       float: left;
@@ -240,8 +258,8 @@ export default{
     }
     .left{
       width: 7.8em;
-      padding-left: 1em;
       border-right:1px solid #bdb58b;
+      text-align: center;
     }
     .right{
       position: relative;
