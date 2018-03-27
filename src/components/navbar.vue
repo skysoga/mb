@@ -16,19 +16,31 @@
       }
     },
     created(){
-      this.isFirstTime = localStorage.getItem('FirstTimeLive') || 1
+      this.check()
     },
     methods:{
       clearPint(){
-        localStorage.setItem('FirstTimeLive','0')
-        this.isFirstTime = 0
+        if (state.UserName !== null) {
+          localStorage.setItem('FirstTimeLive','0')
+          this.isFirstTime = 0
+        }
         router.push('/liveList')
-      }
+      },
+      check(){
+        if((localStorage.getItem('FirstTimeLive') === null) && (state.UserName !== null)){
+          this.isFirstTime = 1
+        }else{
+          this.isFirstTime = 0
+        }
+      },
     },
     watch:{
       '$route.path'(n){
         this.path = n
-      }
+      },
+      '$store.state.UserName'(n){
+        this.check()
+      },
     },
   }
 </script>
@@ -39,8 +51,8 @@
         position: absolute;
         border-radius: 50%;
         display: inline-block;
-        width: .35em;
-        height: .35em;
+        width: .5em;
+        height: .5em;
         background: #e54042;
         margin-top: .34em;
         margin-left: .7em;
