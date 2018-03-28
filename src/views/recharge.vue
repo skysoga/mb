@@ -215,6 +215,7 @@ export default {
         QrImg:'',
         QrBg:false,
         QrSvg:false,
+        isOpenType:'',
         Styles:'',
         //AJAX
         PayUser: '',
@@ -247,6 +248,7 @@ export default {
                 return
             }
             vm.nowRender = json[0]
+            vm.isOpenType=json[0].OpenType||json[0].Opentype
             if(method =='Bank'){
                 vm[method] = Object.freeze(json)
                 vm.BankCode = json[0].BankCode;
@@ -324,7 +326,8 @@ export default {
           Money:0,
           ID:1,
           BankCode:''
-        }
+        },
+      newTab=null
       ajaxObj.Qort=ajax[this.method]
       var nowAjax = ajaxObj
       if(this.PayType=='一般'||this.method === 'Bank'){
@@ -354,11 +357,11 @@ export default {
           })
           return
         }
-        if(OType.indexOf(nowAjax.BankCode)>-1){
-          if(nowAjax.BankCode!=='智汇付'&&nowAjax.Qort===6){
-            var newTab=YDB?true:window.open('about:blank')
-            console.log('新开窗口');
-          }
+        if(this.isOpenType==4||OType.indexOf(nowAjax.BankCode)>-1){
+          // if(nowAjax.BankCode!=='智汇付'&&nowAjax.Qort===6){
+          newTab=YDB?true:window.open('about:blank')
+          console.log('新开窗口');
+          // }
         }
         this.QrBg=true
       }
@@ -384,27 +387,31 @@ export default {
           if(json.Code === 1){
             var OpenType=json.OpenType
             layer.closeAll()
-            if(newTab||OpenType===4){
-              this.QrBg=false
-              RootApp.OpenWin(json.BackUrl, OpenType!==4&&newTab)
-              this.Money = ''
-            }else if(OpenType===1){
-              this.QrImg=json.BackUrl
-              this.Styles=json.Style
-              this.Money = ''
-            }else{
-              this.QrSvg=true
-              if(OpenType===3){
-                var qrcode=document.getElementById("qrcode")
-                var img=document.createElement("img")
-                img.src=this.QrImg
-                img.width='260'
-                qrcode.appendChild(img)
-              }else if(OpenType===2){
-                this.setQrCode(json.BackUrl)
+            if(OpenType!==4){
+              newTab&&newTab.close()
+              if(OpenType===1){
+                this.QrImg=json.BackUrl
+                this.Styles=json.Style
+                this.Money = ''
+              }else{
+                this.QrSvg=true
+                if(OpenType===3){
+                  var qrcode=document.getElementById("qrcode")
+                  var img=document.createElement("img")
+                  img.src=this.QrImg
+                  img.width='260'
+                  qrcode.appendChild(img)
+                }else if(OpenType===2){
+                  this.setQrCode(json.BackUrl)
+                }
               }
-            }
+            }else{
+              this.QrBg=false
+              RootApp.OpenWin(json.BackUrl,newTab)
+              this.Money = ''
+            }            
           }else{
+            newTab&&newTab.close()
             this.QrBg=false
             this.Money=''
             layer.msgWarn(json.StrCode)
