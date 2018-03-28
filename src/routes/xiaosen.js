@@ -128,7 +128,6 @@ var routes = [{
   user:true,
   agent:false,
   verify:'UserHasSafePwd',
-  from:'SafePwd,Mobile,Question,Mail,'
   from:'SafePwd,Mobile,Question,Mail,Pwd,BankCard,'
   },
   component: setSafePwd
@@ -409,10 +408,7 @@ var routes = [{
   meta:{
   title:'线路检测',
   link:'/index',
-  user:true
-    title:'线路检测',
-    link:'/index',
-    user:true
+  user:true    
   },
   component:ping
 },
