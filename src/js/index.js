@@ -1,4 +1,5 @@
 import { swiper, swiperSlide, swiperPlugins } from 'vue-awesome-swiper'
+import 'swiper/dist/css/swiper.css' //幻灯片显示有问题时，需引入此依赖
 import {mapState} from 'vuex'
 var hotDefault = ["1407","1406","1402","1008","1000","1001","1300","1301","1303","1302","1100"]
 export default {
