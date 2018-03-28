@@ -19,7 +19,7 @@
               <td>选择银行</td>
               <td>
                 <select v-model = "PayType" @change = "changeBank">
-                  <option v-for = "option in Bank" :value = "option.PayType">{{option.PayType}}</option>
+                  <option v-for = "option in Bank" :value = "option.PayType">{{option.Alias}}</option>
                 </select>
                 <i class="iconfont unfold"></i>
               </td>
