@@ -26,8 +26,8 @@
         <li><div><span>账号</span><em>{{$store.state.UserName}}</em></div></li>
     </ul>
     <ul>
-        <li><div><span>手机</span><i class="iconfont right"></i><em>{{$store.state.UserMobile||'未绑定'}}</em></div></li>
-        <li><div><span>邮箱</span><i class="iconfont right"></i><em>{{$store.state.UserMail||'未绑定'}}</em></div></li>
+        <li><div @click="!$store.state.UserMobile&&getUrl('Mobile')"><span>手机</span><i class="iconfont right"></i><em>{{$store.state.UserMobile||'未绑定'}}</em></div></li>
+        <li><div @click="!$store.state.UserMail&&getUrl('Mail')"><span>邮箱</span><i class="iconfont right"></i><em>{{$store.state.UserMail||'未绑定'}}</em></div></li>
         <!-- <li>
         <div>
           <span>Q Q</span>

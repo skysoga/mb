@@ -25,7 +25,7 @@ export default {
         // this.UserQQ=state.UserQQ  'UserQQ',
         this.UserSex=state.UserSex
         this.UserBirthDay=state.UserBirthDay
-        this.HeadImgBoxList=state.DefaultPhotoList
+        this.HeadImgBoxList=state.DefaultPhotoList.shuffle()
   },
   methods:{
     upHeadImg(){
@@ -95,6 +95,11 @@ export default {
           return
         }
       }
+    },
+    getUrl(str){
+      var obj=(str=='Mobile')
+      var route=obj?'/setMobile':'/setMail'
+      router.push(route)
     }
   },
   components:{

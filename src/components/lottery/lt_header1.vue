@@ -45,7 +45,7 @@
 
     <div class="lotterySort" ref = "lotterySort" :class = "{active:ifShowTypeSelect}">
       <div @click.stop = "toggleTypeSelect">
-        <em v-show = "noLotteryName.indexOf(ltype) === -1">{{lotteryName}}</em>
+        <em v-show = "noLotteryName.indexOf(ltype) === -1">{{lotteryName.replace(/六合彩/,'')}}</em>
         <i class="iconfont" v-show="lTopNav.indexOf(ltype)===-1">&#xe61e;</i>
       </div>
 
@@ -71,8 +71,8 @@
       LotteryConfig.forEach(item=>{
         if(item.LotteryClassID.indexOf(this.lcode.slice(0,2)) > -1){
           this.LotteryList = item.LotteryList.map(code=>{
-            var el = state.LotteryList[code]
-            return el
+              var el = state.LotteryList[code]
+              return el.LotteryType=='6HC'&&el
           })
         }
       })
@@ -80,9 +80,9 @@
     data () {
       return {
         LotteryList: [],//彩种list
-        lTopNav:['PK10','KL8', '6HC'],//导航隐藏配置
+        lTopNav:['PK10','KL8'],//导航隐藏配置
         hideSubGroup:['6HC'],         //没有次级补录
-        noLotteryName: ['6HC'],       //没有彩种名字
+        noLotteryName: [],       //没有彩种名字
         ltype: '',      //彩种类型
         lcode: ''        //彩种code
       }
@@ -105,12 +105,14 @@
       },
       //更改彩种
       changeLottery(code){
-        this.LotteryList.forEach(item=>{
-          if(item.LotteryCode === code){
-            this.LotteryName = item.LotteryName
-          }
-        })
-        this.$store.dispatch('lt_updateLottery', code)
+        if(this.$route.params.code!=code){
+          this.LotteryList.forEach(item=>{
+            if(item.LotteryCode === code){
+              this.LotteryName = item.LotteryName
+            }
+          })
+          this.$store.dispatch('lt_updateLottery', code)
+        }
       },
       //玩法选择框，切换
       toggleModeSelect(){

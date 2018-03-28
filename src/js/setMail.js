@@ -3,6 +3,7 @@ export default {
     return{
       Mail:"",
       MailCode:"",
+      SafePassword:"",
       reTime:'发送验证码',
       noDo:true,
       toMsg:true
@@ -31,7 +32,8 @@ export default {
       var ajax = {
         Action:"VerifyMail",
         Mail: this.Mail,
-        MailCode:this.MailCode
+        MailCode:this.MailCode,
+        SafePassword:this.SafePassword
       }
       var F=sessionStorage.getItem('isFind')
       if(F){

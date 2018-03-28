@@ -1,11 +1,12 @@
 <template>
   <div @click = "closeBox" class="lotteryOutCon">
     <!-- 普通彩种 -->
-    <LotteryCommon v-if = "$route.params.type !== 'K3' && $route.params.type !== '6HC'"></LotteryCommon>
+    <LotteryCommon v-if = "ptype !== 'live' && $route.params.type !== 'K3' && $route.params.type !== '6HC'"></LotteryCommon>
     <!-- 快三彩种 -->
-    <LotteryK3 v-if = "$route.params.type === 'K3'"></LotteryK3>
+    <LotteryK3 v-if = "ptype !== 'live' && $route.params.type === 'K3'"></LotteryK3>
 
     <Lottery6HC v-if = "$route.params.type === '6HC'"></Lottery6HC>
+    <NewK3 ref="newk3" v-if = "ptype === 'live'" :lcode="lcode"></NewK3>
   </div>
 </template>
 <style lang='scss' scoped>
@@ -18,6 +19,7 @@
   import LotteryCommon from './lottery_common'
   import LotteryK3 from './lottery_k3'
   import Lottery6HC from './lottery_6hc'
+  import NewK3 from './newk3/main'
 
   import {sscConfig} from '../js/page_config/lt_ssc'
   import {k3Config} from '../js/page_config/lt_k3'
@@ -31,9 +33,11 @@
   import {bus, BaseBet, ChaseAjax, easyClone, deleteCompress, Scheme, getBasketAmount,
           computeIssue, getSSCRebate, getMultipleRebate,
           DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME, GMT_DIF, PERBET} from '../js/kit'
+  import {gifts,giftsList,faceData,imgHost,livecfg} from '../js/liveconfig'
 
   var randomFeed = Math.floor(Math.random()*4)  //获取开奖时间的随机数，用于错开请求
   var haveGotTime = true		                    //标志位-进页面时是否获取到服务器时间
+  var offLineLottery = ['FC3D', 'PL35']//不存在的彩种
 
   function scrollTop(){document.body.scrollTop = 0}  //滚动置顶
 
@@ -41,13 +45,14 @@
     components:{
       LotteryCommon,
       LotteryK3,
-      Lottery6HC
+      Lottery6HC,
+      NewK3,
     },
     beforeRouteEnter(to, from, next){
       // 将滚动置顶
       scrollTop()
       //从url上获取彩种type和彩种code
-      var [,ltype, lcode] = to.fullPath.slice(1).split('/')
+      var [ptype,ltype, lcode] = to.fullPath.slice(1).split('/')
       //获取返点
       var getRebate = new Promise(function(resolve, reject){
         var storageName = `Rebate${ltype}`
@@ -73,9 +78,8 @@
 
       //获取彩种配置和列表
       var getLotteryList = new Promise(function(resolve, reject){
-        RootApp.GetInitData(['LotteryList','LotteryConfig'], resolve)
+        RootApp.GetInitData(['LotteryList','LotteryConfig','UserUpGradeBonus'], resolve)
       })
-
       //获取服务器时间
       var getServerTime = new Promise(function(resolve, reject){
         var Difftime = localStorage.getItem('Difftime')
@@ -87,35 +91,115 @@
         }
       })
 
-      // 进入彩种页必须先获取到  赔率/彩种配置/服务器时间
-      Promise.all([getRebate, getLotteryList, getServerTime]).then((values)=>{
-        //校验下这个彩种存不存在，不存在就送回购彩大厅
-        var lotteryItem = state.LotteryList[lcode]
-        var offLineLottery = ['FC3D', 'PL35']
-        if(lotteryItem === undefined || offLineLottery.indexOf(lotteryItem.LotteryType) > -1){
-          layer.url('您所访问的彩种不存在，即将返回购彩大厅', '/lotteryHall')
-          return
-        }else{
-          var LotteryType = lotteryItem.LotteryType
-          if(lotteryItem.LotteryType !== ltype){
-            RootApp.$router.replace(`./lottery/${LotteryType}/${lcode}`)
-          }
-        }
-        next()
-      }).catch((err)=>{
-        //报错并返回
 
-         //关掉loading动画
-        store.commit('toggleLoading', false)
-        layer.msgWarn(err.message)
-        //返回首页
-        RootApp.$router.replace('/index')
-      })
+      //设置请求的数组
+      if (ptype === 'live') {
+        _fetch({Action:'GameConfig',GameID:lcode})
+        .then(d=>{
+          try{
+          localStorage.removeItem('btnText')
+          if (d.BackData != null) {
+            if (d.Code === 1 && d.BackData.LiveType.Type == 'true') {
+              var GetDefaultBarrage = new Promise(function(res,rej){
+                RootApp.GetInitData(['DefaultBarrage'],d=>{
+                  res(d)
+                },{url:'/LiveApi'})
+              })
+              var GetAnchor       = _fetch({Action:"GetAnchor",GameID:lcode},{url:'/LiveApi'})
+              var GetLiveBroadCast= _fetch({Action:"GetLiveBroadCast",GameID:lcode},{url:'/LiveApi'})
+              var reqArr          = [getRebate, getServerTime,GetAnchor,GetDefaultBarrage,GetLiveBroadCast]
+
+              // 进入彩种页必须先获取到  赔率/彩种配置/服务器时间
+              Promise.all(reqArr).then((values)=>{
+                //校验下这个彩种存不存在，不存在就送回购彩大厅
+                var lotteryItem = state.LotteryList[lcode]
+                // var offLineLottery = ['FC3D', 'PL35']
+                if (values[2].Code === 1) {
+                  next(vm=>{
+                    //检测等级
+                    var _level = state.UserUpGradeBonus.Grade
+                    if ((','+livecfg.level).search(`,${_level},`) === -1) {
+                     //关掉loading动画
+                      store.commit('toggleLoading', false)
+                      return layer.msgWarn('您当前的等级无法进入直播页面！')
+                    }
+                    vm.GameConfig = d.BackData
+                    vm.createWS()
+                    // vm.isRuningT = setInterval(()=>{
+                    //   vm.createWS()
+                    // },3000)
+                    values[2].BackData.Photo = imgHost + '/' + values[2].BackData.Photo
+                    vm.Anchor = values[2].BackData
+                    var textDataObj = {}
+                    for (var i = 0; i < values[3].DefaultBarrage.length; i++) {
+                      textDataObj[values[3].DefaultBarrage[i].ID] = values[3].DefaultBarrage[i].Content
+                    }
+                    vm.DefaultBarrage = textDataObj
+                    vm.RandomBarrage = values[3].DefaultBarrage.shuffle()
+                    vm.BroadCast = values[4].BackData
+                  })
+                }else{
+                  if(values[2].Code !== 1){
+                    layer.msgWarn(values[2].StrCode)
+                  }
+                  state.turning=false
+                }
+              }).catch((e)=>{
+                 //关掉loading动画
+                store.commit('toggleLoading', false)
+                layer.msgWarn('请求错误，可能已经超时！')
+                //返回首页
+                RootApp.$router.replace('/index')
+              })
+            }else{
+              if (d.BackData.LiveType.Type == 'false') {
+                console.log('停播处理')
+                //停播处理
+                d.BackData.LiveType.CloseTitle = d.BackData.LiveType.CloseTitle || '暂停直播'
+                d.BackData.LiveType.CloseContent = d.BackData.LiveType.CloseContent || 'UU直播维护中...'
+                RootApp.$router.replace(`/liveList?title=${d.BackData.LiveType.CloseTitle}&content=${d.BackData.LiveType.CloseContent}&type=${d.BackData.LiveType.Type}&${Math.random()}`)
+                // state.turning=false
+              }else{
+                layer.msgWarn(d.StrCode)
+              }
+            }
+          }else{
+            layer.msgWarn('后台数据错误')
+          }
+
+          }catch(e){
+            layer.alert(e+','+JSON.stringify(d)+'，GameConfig错误')
+          }
+        })
+
+      }else{
+        var reqArr        = [getRebate, getLotteryList, getServerTime]
+        // 进入彩种页必须先获取到  赔率/彩种配置/服务器时间
+        Promise.all(reqArr).then((values)=>{
+          //校验下这个彩种存不存在，不存在就送回购彩大厅
+          var lotteryItem = state.LotteryList[lcode]          
+          if((lotteryItem === undefined || offLineLottery.indexOf(lotteryItem.LotteryType) > -1)){
+            layer.url('您所访问的彩种不存在，即将返回购彩大厅', '/lotteryHall')
+            return
+          }else{
+            var LotteryType = lotteryItem.LotteryType
+            if(lotteryItem.LotteryType !== ltype){
+              RootApp.$router.replace(`./lottery/${LotteryType}/${lcode}`)
+            }
+          }
+          next()
+        }).catch((e)=>{
+           //关掉loading动画
+          store.commit('toggleLoading', false)
+          layer.msgWarn('请求错误，可能已经超时！')
+          //返回首页
+          RootApp.$router.replace('/index')
+        })
+      }
 		},
 		created(){
 		  //从url上获取彩种type和彩种code
-		  ;[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
-
+		  ;[this.ptype,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
       //如果有本地缓存的时间，则再更新一次
       if(haveGotTime){
 	      RootApp.getServerTime()
@@ -140,6 +224,11 @@
         'KL8': getMultipleRebate,
         '6HC': getMultipleRebate,
       }
+
+      //自已生成计划的彩种配置
+      var panConfig=['1407','1008','1300','1304']
+      //香港六合彩1301
+      var LHCConfig=['1301']
 
       var wait4Results = 0, wait4BetRecord = false
       const lt = {
@@ -193,6 +282,12 @@
           BetRecord:[],      //投注记录
           PlanLen:0,        //当前彩种的彩种计划长度
           IssueNo:0,        //期号索引:从0开始，到PlanLen-1
+          //新增的变量
+          StopTime:0,       //结束投注时间
+          WS:{
+            openNum:-1,
+          },
+          ptype:'',
 
           //渲染用
           Todaystr:'',
@@ -233,7 +328,7 @@
           //计算当前期号
           lt_computeIssueNo:(state, LotteryPlan)=>{
             var code = state.lottery.LotteryCode
-            if(code === '1301'){
+            if(LHCConfig.indexOf(code) !== -1){
               return
             }
 
@@ -282,21 +377,42 @@
             this.$store.commit('lt_updateIssue')
           },
           //更新期号时
-          lt_updateIssue:(state)=>{
-            var code = state.lottery.LotteryCode   //当前彩种号
-            Vue.set(state, 'NowIssue', computeIssue(code, state.IssueNo))        //当前期 (可以下注的这一期)
-            Vue.set(state, 'OldIssue', computeIssue(code, state.IssueNo - 1))   //上一期
-            this.$store.commit('lt_displayResults', false)
-            state.basket.forEach(bet=>{
-              bet.betting_issuseNo = computeIssue(code, state.IssueNo)
-            })
-            this.$store.dispatch('lt_ordinaryChase')
+          lt_updateIssue:(state,source)=>{
+            var ptype = state.ptype
+            if (ptype === 'live') {
+              // if (state.LotteryResults['0101'][0] !== undefined) {
+              //   Vue.set(state, 'OldIssue', state.LotteryResults['0101'][0].IssueNo)
+              // }
+            }else{
+              var code = state.lottery.LotteryCode   //当前彩种号
+              Vue.set(state, 'NowIssue', computeIssue(code, state.IssueNo))        //当前期 (可以下注的这一期)
+              Vue.set(state, 'OldIssue', computeIssue(code, state.IssueNo - 1))   //上一期
+              this.$store.commit('lt_displayResults', false)
+              state.basket.forEach(bet=>{
+                bet.betting_issuseNo = computeIssue(code, state.IssueNo)
+              })
+              this.$store.dispatch('lt_ordinaryChase')
+            }
           },
           lt_setLotteryResult:(state, {code, results})=>{              //设置某一彩种的开奖结果
             Vue.set(state.LotteryResults, code, results)
           },
+          lt_setOnceLotteryResult:(state, {code, results})=>{          //设置一条开奖结果
+            if (state.LotteryResults[code].length > 0) {
+              if (results.IssueNo === state.LotteryResults[code][0].IssueNo) {
+                return
+              }
+            }
+            let _lresult = JSON.parse(JSON.stringify(state.LotteryResults[code]))
+            if(_lresult.length >= 10){
+              _lresult.pop()
+            }
+            _lresult.unshift(results)
+            Vue.set(state.LotteryResults, code, _lresult)
+            this.$store.commit('lt_updateIssue')
+          },
           lt_stopSell:(state, type)=>{
-            this.$store.commit('lt_updateTimeBar', ['期号有误','暂停销售','当期封单'][type])    //暂停销售
+            this.$store.commit('lt_updateTimeBar', ['期号有误','暂停销售','当期封单','等待开局','等待开奖'][type])    //暂停销售
             return
           },
           lt_setIssueNo:(state, IssueNo)=>{state.IssueNo = IssueNo},  //设置当前期号
@@ -321,6 +437,7 @@
 
             bus.$emit('clearNoteStr')   //清空文本框文字
             this.$store.commit('lt_clearBet')
+            console.log(mode)
             state.mode = mode
             //更改玩法时，对应玩法的奖金也跟着变
             state.award = awardSetter[type](mode.mode, Odds)
@@ -331,7 +448,20 @@
           },
           //变更彩种
           lt_changeLottery:(state, code)=>{
-            state.lottery = this.$store.state.LotteryList[code]
+            if(state.ptype === 'live'){
+              state.lottery = {
+                  "LotteryCode": "0101",
+                  "LotteryType": "K3",
+                  "LotteryName": "UU快三",
+                  "LotteryIntro": "1分钟1期",
+                  "VerifyIssue": "0001",
+                  "VerifyEndTime": "00:00:59",
+                  "IsStop": ""
+              }
+            }else{
+              state.lottery = this.$store.state.LotteryList[code]
+            }
+
             router.push(code)    //更改路由
           },
           //变更配置（进入各具体彩种页时，设置）
@@ -481,15 +611,17 @@
               })
             }
             commit('lt_changeLottery', code)  //变更彩种
-            dispatch('lt_getResults', code)    //获得开奖结果
-            wait4Results = 0
-            wait4BetRecord = false
-            clearTimeout(this.timer1)
-            clearTimeout(this.timer2)
-            dispatch('lt_updatePlan', code)    //更新计划
+            if (state.ptype !== 'live') {
+              dispatch('lt_getResults', code)    //获得开奖结果
+              wait4Results = 0
+              wait4BetRecord = false
+              clearTimeout(this.timer1)
+              clearTimeout(this.timer2)
+              dispatch('lt_updatePlan', code)    //更新计划
+            }
           },
           lt_get6HCPlan:({state, rootState, commit, dispatch}, code)=>{
-            var LotteryPlan = localStorage.getItem("lotteryPlan"+ code)
+            /*var LotteryPlan = localStorage.getItem("lotteryPlan"+ code)
             LotteryPlan = LotteryPlan&&JSON.parse(LotteryPlan)
             if(LotteryPlan&&LotteryPlan.NextFirst>0){
               console.log('使用缓存')
@@ -509,7 +641,7 @@
               fetch6HCPlan()
             }
 
-            function fetch6HCPlan(){
+            function fetch6HCPlan(){*/
               _fetch({Action:'GetLotteryPlan', Qort:'1301'}).then((json)=>{
                 if(json.Code === 1){
                   var monthPlan = json.Data
@@ -521,13 +653,16 @@
                   layer.msgWarn(json.StrCode);
                 }
               })
-            }
+            // }
 
             //对6HC的计划进行一些变换并报错到vuex中
             function use6HCPlan(monthPlan){
               //2017-10-15 通知本月15日不开奖
               if (monthPlan.Month==10) {
                 monthPlan.Schedule=monthPlan.Schedule.replace('15,','')
+              }
+              if (monthPlan.Month==11) {
+                monthPlan.BeforeIssue=127
               }
               //保证转为数字类型
               monthPlan.BeforeIssue *= 1
@@ -550,9 +685,9 @@
           },
           //action-获取开奖计划
           lt_updatePlan:({state, rootState, commit, dispatch}, code)=>{
-            if(code === '1301'){
+            if(LHCConfig.indexOf(code) !== -1){
               dispatch('lt_get6HCPlan', code)
-            }else if(['1407','1008','1300','1304'].indexOf(code)!==-1){
+            }else if(panConfig.indexOf(code)!==-1){
               createDFPlan()        //大发系列的，自行计算计划
             }else{
               //不是大发系列的
@@ -620,13 +755,18 @@
           lt_getResults:({state, rootState, commit, dispatch}, code)=>{
             // var Results = []
             //     ,IssueNo = Results.length?Results[0].IssueNo:0;
-
+            var num = 10
+            var _code = code
+            if(typeof _code == "object"){
+              num = _code.num
+              code = _code.code
+            }
             _fetch({
               Action: "GetLotteryOpen",
               LotteryCode: code,
               IssueNo: 0,
               // IssueNo: IssueNo,
-              DataNum: 10
+              DataNum: num
             }).then((json)=>{
               if(json.Code === 1) {
                 // if (10===json.BackData.length) {
@@ -636,8 +776,20 @@
                 //     results: json.BackData
                 //   })
                 // }
-
-               commit({
+                if(state.lottery.LotteryType==='6HC'){
+                  json.BackData.map(item=>{
+                    item.natal=getNatal(new Date(item.OpenTime))
+                    return item
+                  })
+                }
+                /*if(state.lottery.LotteryName.slice(0,2)==='大发'){
+                  //大发彩种去掉开头的年份
+                  json.BackData.map(item=>{
+                    item.IssueNo=item.IssueNo.slice(4)
+                    return item
+                  })
+                }*/
+                commit({
                   type: 'lt_setLotteryResult',
                   code,
                   results: json.BackData
@@ -667,7 +819,12 @@
           //refresh
           lt_refresh:({state, rootState, commit, dispatch})=>{
             var code = state.lottery.LotteryCode
-            var isStop = rootState.LotteryList[code].IsStop
+            var ptype = state.ptype
+            if (state.ptype === 'live') {
+              var isStop = ""
+            }else{
+              var isStop = rootState.LotteryList[code].IsStop
+            }
             // var isStop = rootState.LotteryList[this.lcode].IsStop
             if(isStop === '1'){
               commit('lt_stopSell', 1)    //暂停销售
@@ -753,124 +910,193 @@
               console.log(state.natal)
               Countdown = nextIssueTime - serverTimeStamp
               // console.log(Countdown)
+              if(Month===1){
+                BeforeIssue=0
+              }
               var issue = BeforeIssue + _issue
               // console.log(issue,state.NowIssue)
               // 设置期号
               commit('lt_setIssueNo', issue)
               var code = state.lottery.LotteryCode   //当前彩种号
-              Vue.set(state, 'NowIssue', computeIssue(code, state.IssueNo))        //当前期 (可以下注的这一期)
-              Vue.set(state, 'OldIssue', computeIssue(code, state.IssueNo - 1))   //上一期
-
+              if (Month===1&&_issue===1){
+                commit('lt_setIssueNo', 1)
+                Vue.set(state, 'OldIssue', computeIssue(code, BeforeIssue,-1))   //上一期
+              }else{
+                Vue.set(state, 'OldIssue', computeIssue(code, state.IssueNo - 1))   //上一期
+              }
+              if (Month===12&&_issue===ScheduleStamp.length) {
+                //当前期为下年第一期
+                commit('lt_setIssueNo', 1)
+                Vue.set(state, 'NowIssue', computeIssue(code, 1,1))               //当前期 (可以下注的这一期)
+              }else{
+                Vue.set(state, 'NowIssue', computeIssue(code, state.IssueNo))        //当前期 (可以下注的这一期)
+              }
               return Countdown
             }
+            var that = state.that
+            if (ptype === 'live') {
+              //获取服务器的时间
+              var serverTime = new Date().getTime() - rootState.Difftime
+              // layer.msgWarn('当前时间：'+new Date().getTime()+'，时间差：'+rootState.Difftime+'，服务器时间：'+serverTime)
+              var _status = that.WS.Status
 
 
-            if(code !== '1301'){
-              if(!state.PlanLen) return
-              var Countdown = computeCountdown(state.IssueNo, _SerTime)
-              Countdown %= DAY_TIME;
-              //如果倒计时小于0，则一直更新到最新期
-              //用循环是因为有可能长时间不相应，需要一次性校正到位
-              var crossCount = 0
-              if(Countdown<=0){
-                while(Countdown<=0){
-                  crossCount++
-                  var lastIssueEnd = state.LotteryPlan[state.PlanLen - 1].End
-                      ,firstIssueStart = state.LotteryPlan[0].Start
+              //是否有维护计划
+              // if (that.readySleep !== '' && that.isSleep === 0) {
+              //   if(serverTime*1 + 1000 >= that.readySleep){
+              //     that.isSleep = 1
+              //     that.readySleep = ''
+              //   }
+              // }
 
-                  //等于： 首尾相接的期号。大于：最后一期在第二天。 余去，则不会进入out of issue
-                  if(firstIssueStart >= lastIssueEnd){
-                    commit('lt_setIssueNo', ++IssueNo%state.PlanLen)
+              //是否有开播计划
+              // if (that.readyRun !== '' && that.isSleep === 1) {
+              //   if(serverTime*1 + 1000 >= that.readyRun *1 - 60 * 5 * 1000){
+              //     that.isSleep = 0
+              //     that.readyRun = ''
+              //   }
+              // }
+
+
+              if (_status === 'NewGame' || _status === 'Newest'){
+                //正常倒计时
+                var NewGame = that.WS[_status]
+                if (that.WS.TimeLeft === '') {
+                  // console.log(NewGame.start)
+                  if (serverTime >= NewGame.start && NewGame.end >= serverTime) {
+                    that.WS.TimeLeft = NewGame.end*1 - serverTime*1
                   }else{
-                    commit('lt_setIssueNo', ++IssueNo)
+                    store.commit('lt_stopSell', 3)
+                    return
+                  }
+                }else if(that.WS.TimeLeft < 2000){
+                  //状态改为等待开奖
+                  that.WS.Status = 'WaitResult'
+                  store.commit('lt_stopSell', 4)
+                  commit('lt_displayResults', false)
+                  that.WS.TimeLeft = ''
+                  return
+                }else if(that.WS.TimeLeft > 0){
+                  that.WS.TimeLeft = NewGame.end*1 - serverTime*1
+                }
+                var Countdown = that.WS.TimeLeft
+              }else{
+                return
+              }
+            }else{
+              if(LHCConfig.indexOf(code) === -1){
+                if(!state.PlanLen)return
+                var Countdown = computeCountdown(state.IssueNo, _SerTime)
+                Countdown %= DAY_TIME;
+                //如果倒计时小于0，则一直更新到最新期
+                //用循环是因为有可能长时间不相应，需要一次性校正到位
+                var crossCount = 0
+                if(Countdown<=0){
+                  while(Countdown<=0){
+                    crossCount++
+                    var lastIssueEnd = state.LotteryPlan[state.PlanLen - 1].End
+                        ,firstIssueStart = state.LotteryPlan[0].Start
+
+                    //等于： 首尾相接的期号。大于：最后一期在第二天。 余去，则不会进入out of issue
+                    if(firstIssueStart >= lastIssueEnd){
+                      commit('lt_setIssueNo', ++IssueNo%state.PlanLen)
+                    }else{
+                      commit('lt_setIssueNo', ++IssueNo)
+                    }
+
+                    Countdown = computeCountdown(state.IssueNo, _SerTime)
                   }
 
-                  Countdown = computeCountdown(state.IssueNo, _SerTime)
+                  if(crossCount > 1){
+                    console.log('更新到最新期')
+                    commit('lt_updateDate')
+                    commit('lt_setIssueNo', state.IssueNo%state.PlanLen)
+                  }
+
+                  //期号更新
+                  commit('lt_updateIssue')
+                  var _year = new Date(new Date().getTime()- this.$store.state.Difftime - GMT_DIF).getFullYear()  //本年
+                  layer.open({
+                    shadeClose: false,
+                    className: "layerConfirm layerCenter",
+                    content: `${state.OldIssue.replace(_year,"")}期已截止</br>当前期号<span style="color:red">${state.NowIssue.replace(_year,"")}</span></br>投注时请注意期号`,
+                    title: "温馨提示",
+                    btn: ["确定"]
+                  });
                 }
 
-                if(crossCount > 1){
-                  console.log('更新到最新期')
-                  commit('lt_updateDate')
-                  commit('lt_setIssueNo', state.IssueNo%state.PlanLen)
+              }else{
+                // 获得6HC的倒计时
+                var Countdown = get6HCCountdown()
+                if(Countdown < 0){
+                  // nextFirst的时间都到了。依然没有获取到开奖计划
+                  commit('lt_stopSell', 0)    //暂停销售
+                  console.log('本月计划未更新')
+                  return
+                }else if(Countdown < 1000){
+                  console.log('下一期了')
+                  // var _year = new Date(new Date().getTime()- this.$store.state.Difftime - GMT_DIF).getFullYear()  //本年
+                  var currIssue = computeIssue(code, state.IssueNo)
+                  var nextIssue= computeIssue(code, state.IssueNo + 1)
+                  layer.open({
+                    shadeClose: false,
+                    className: "layerConfirm layerCenter",
+                    content: `${currIssue}期已截止</br>当前期号<span style="color:red">${nextIssue}</span></br>投注时请注意期号`,
+                    title: "温馨提示",
+                    btn: ["确定"]
+                  });
                 }
-
-                //期号更新
-                commit('lt_updateIssue')
-                var _year = new Date(new Date().getTime()- this.$store.state.Difftime - GMT_DIF).getFullYear()  //本年
-                layer.open({
-                  shadeClose: false,
-                  className: "layerConfirm layerCenter",
-                  content: `${state.OldIssue.replace(_year,"")}期已截止</br>当前期号<span style="color:red">${state.NowIssue.replace(_year,"")}</span></br>投注时请注意期号`,
-                  title: "温馨提示",
-                  btn: ["确定"]
-                });
-              }
-
-            }else{
-              // 获得6HC的倒计时
-              var Countdown = get6HCCountdown()
-              if(Countdown < 0){
-                // nextFirst的时间都到了。依然没有获取到开奖计划
-                commit('lt_stopSell', 0)    //暂停销售
-                console.log('本月计划未更新')
-                return
-              }else if(Countdown < 1000){
-                console.log('下一期了')
-                // var _year = new Date(new Date().getTime()- this.$store.state.Difftime - GMT_DIF).getFullYear()  //本年
-                var currIssue = computeIssue(code, state.IssueNo)
-                var nextIssue= computeIssue(code, state.IssueNo + 1)
-                layer.open({
-                  shadeClose: false,
-                  className: "layerConfirm layerCenter",
-                  content: `${currIssue}期已截止</br>当前期号<span style="color:red">${nextIssue}</span></br>投注时请注意期号`,
-                  title: "温馨提示",
-                  btn: ["确定"]
-                });
               }
             }
-
 
             Countdown = Math.floor(Countdown/1000);   //转成以秒为单位
             updateTimeBar(Countdown, code)                  //更新倒计时文字
 
             var Results = state.LotteryResults[state.lottery.LotteryCode]
                 ,len = Results?Results.length:0;
-
-            if(!wait4BetRecord){
-              //如果在获取我的投注/我的追号,则不进入
-              if(!len || Results[0].IssueNo*1 < state.OldIssue*1) {
-                //没有结果 或者 有结果且上一期还没开奖，就以一定频率轮询开奖结果
-                // wait4Results++
-                wait4Results = 60 - Countdown%60
-                var interval
-                switch(state.lottery.LotteryCode){
-                  case "1407":
-                  case "1008":
+            if (ptype !== 'live') {
+              if(!wait4BetRecord){
+                //如果在获取我的投注/我的追号,则不进入
+                if(!len || Results[0].IssueNo*1 < state.OldIssue*1) {
+                  //没有结果 或者 有结果且上一期还没开奖，就以一定频率轮询开奖结果
+                  // wait4Results++
+                  wait4Results = 60 - Countdown%60
+                  var interval
+                  if(panConfig.indexOf(state.lottery.LotteryCode)!==-1){
                     interval=5
-                    break
-                  default:
+                  }else{
                     interval=30
-                }
-                if (wait4Results>(5+randomFeed) && wait4Results%interval===randomFeed) {
-                  dispatch('lt_getResults', state.lottery.LotteryCode)    //获取开奖结果
-                }
-              }else if(Results[0].IssueNo*1 >= state.NowIssue*1){
-                commit('lt_stopSell', 0)    //暂停购买
-              }else{
-                commit('lt_displayResults', true)
-                //开奖
-                if(wait4Results){
-                  wait4BetRecord = true
-                  // this.timer1 = setTimeout(()=>{
-                  //   // console.log('6s')
-                  //   dispatch('lt_updateBetRecord')      //获取我的投注
-                  // }, 6000)
+                  }
+                  // switch(state.lottery.LotteryCode){
+                  //   case "1407":
+                  //   case "1008":
+                  //   case "1300":
+                  //     interval=5
+                  //     break
+                  //   default:
+                  //     interval=30
+                  // }
+                  if (wait4Results>(5+randomFeed) && wait4Results%interval===randomFeed) {
+                    dispatch('lt_getResults', state.lottery.LotteryCode)    //获取开奖结果
+                  }
+                }else if(Results[0].IssueNo*1 >= state.NowIssue*1){
+                  commit('lt_stopSell', 0)    //暂停购买
+                }else{
+                  commit('lt_displayResults', true)
+                  //开奖
+                  if(wait4Results){
+                    wait4BetRecord = true
+                    // this.timer1 = setTimeout(()=>{
+                    //   // console.log('6s')
+                    //   dispatch('lt_updateBetRecord')      //获取我的投注
+                    // }, 6000)
 
-                  this.timer2 = setTimeout(()=>{
-                    dispatch('lt_updateBetRecord')      //获取我的投注
-                    wait4Results = 0
-                    wait4BetRecord = false
-                  }, (11 + randomFeed) * 1000)
+                    this.timer2 = setTimeout(()=>{
+                      dispatch('lt_updateBetRecord')      //获取我的投注
+                      wait4Results = 0
+                      wait4BetRecord = false
+                    }, (11 + randomFeed) * 1000)
+                  }
                 }
               }
             }
@@ -891,14 +1117,14 @@
 
             // 更新倒计时文字
             function updateTimeBar(Countdown, code){
-              if (code==1301) {
+              if (LHCConfig.indexOf(code)!==-1) {
                 Countdown-=300 //封单时长5分钟
                 if (Countdown<0) {
                   commit('lt_stopSell', 2)   //当期封单
                   return
                 }
               }
-              if(Countdown>600 && code !== '1301'){
+              if(Countdown>600 && LHCConfig.indexOf(code) === -1){
                 commit('lt_updateTimeBar', '预售中')//如果Countdown大于10分钟，则进入预售
               }else{
                 //倒计时渲染
@@ -1117,6 +1343,8 @@
 
       //注册彩种模块 --lt
       this.$store.state.lt || this.$store.registerModule('lt', lt)
+      Vue.set(store.state.lt,'ptype',this.ptype)
+      Vue.set(store.state.lt,'that',this)
       //生成昨天今天明天字符串
       this.$store.commit('lt_updateDate')
       //切换彩种
@@ -1147,22 +1375,47 @@
       this.baseLoop = setInterval(()=>{
         this.$store.dispatch('lt_refresh')
       },1000)
+      // 本地时间是否正确
+      if(Math.abs(this.$store.state.Difftime)>82800000){
+        layer.url('本地时间不正确，请调整后刷新','/index')
+      }
     },
     data(){
       return {
+        ptype:'',  //live
         ltype:'',  //SSC、K3、11X5
         lcode:'',  //彩种code
         timer1:null,
         timer2:null,
         timer3:null,
         timer4:null,
-        baseLoop:null
+        baseLoop:null,
+        WS:{
+          GameStatus:null,
+          Newest:null,
+          NewGame:null,
+          GameResult:null,
+          TimeLeft:'',
+          Status:''
+        },
+        GameConfig:null,
+        GameWS:null,
+        OnlineWS:null,
+        // isSleep:0,
+        readySleep:'',
+        readyRun:'',
+        Anchor:{},
+        isRuning:1,
+        // isRuningT:null,
+        DefaultBarrage:{},
+        RandomBarrage:[],
+        BroadCast:null,
       }
     },
     computed:{
       IsStop(){
         //判断是否不可提交订单,并弹出警告
-        return ('0123456789预'.search(state.lt.TimeBar[0])===-1)&&layer.msgWarn(state.lt.TimeBar)
+        return ('0123456789预等'.search(state.lt.TimeBar[0])===-1)&&layer.msgWarn(state.lt.TimeBar)
       },
     },
     methods:{
@@ -1172,7 +1425,7 @@
       },
       setDefaultMode(){
         var defaultMode = {
-          'SSC':['五星', '直选'],
+          'SSC':['一星','定位胆'],
           'SYX5':['三码', '三码'],
           'FC3D':['三星', '直选'],
           'PL35':['三星', '直选'],
@@ -1189,7 +1442,212 @@
 				}else{
 					store.commit('lt_changeMode', state.lt.config[0])
 				}
-			}
+			},
+      reconnect(){
+        _fetch({Action:"GetAnchor",GameID:this.lcode},{url:'/LiveApi'})
+        .then(d=>{
+          if (d.Code === 1) {
+            d.BackData.Photo = imgHost + '/' + d.BackData.Photo
+            this.Anchor = d.BackData
+          }else{
+            layer.msgWarn(d.StrCode)
+          }
+        })
+        _fetch({Action:'GameConfig',GameID:this.lcode})
+        .then(d=>{
+          if (d.Code === 1) {
+            this.GameConfig = d.BackData
+            try{
+              if(d.BackData.LiveType.Type == 'false'){
+                d.BackData.LiveType.CloseTitle = d.BackData.LiveType.CloseTitle || '暂停直播'
+                d.BackData.LiveType.CloseContent = d.BackData.LiveType.CloseContent || 'UU直播维护中...'
+                layer.open({
+                  className: "layerConfirm",
+                  title:d.BackData.LiveType.CloseTitle,
+                  content: d.BackData.LiveType.CloseContent,
+                  shadeClose: false,
+                  btn: ["确定"],
+                  yes: function(index) {
+                    router.push(`/liveList`)
+                    localStorage.setItem('btnText',d.BackData.LiveType.CloseTitle)
+                  },
+                })
+              }
+            }catch(e){
+              layer.msgWarn('GameConfig接口返回信息有误！')
+            }
+          }else{
+            layer.msgWarn(d.StrCode)
+          }
+        })
+        _fetch({Action:"GetLiveBroadCast",GameID:this.lcode},{url:'/LiveApi'})
+        .then(d=>{
+          if (d.Code === 1) {
+            this.$refs.newk3.clearBroadCast()
+            this.BroadCast = d.BackData
+          }else{
+            layer.msgWarn(d.StrCode)
+          }
+        })
+      },
+      createWS(){
+        //芝麻开门
+        if(process.env.NODE_ENV !== 'production' && this.GameConfig.GameWS.search('zhimakaimen') === -1){
+          this.GameConfig.GameWS = this.GameConfig.GameWS.replace(/key=.+/,'')+'key=zhimakaimen'
+          this.GameConfig.Interactive = this.GameConfig.Interactive.replace(/key=.+?&/,'')+'&key=zhimakaimen'
+        }
+        //创建livews
+        // if ((this.GameWS === null || this.GameWS.readyState !== 1) && this.isRuning === 1) {
+        if (this.GameWS === null) {
+          this.GameWS = new WebSocket(this.GameConfig.GameWS)
+          this.GameWS.onmessage = e =>{
+            let json
+            try{
+              json = JSON.parse(e.data)
+            }catch(e){
+              layer.msgWarn('服务器类型错误')
+            }
+            this.WSrefresh(json)
+          }
+          this.GameWS.onclose = e =>{
+            this.GameWS = null
+            if (this.isRuning === 1) {
+              this.reconnect()
+              this.createWS()
+            }
+          }
+        }
+        //创建OnlineWS
+        // if ((this.OnlineWS === null || this.OnlineWS.readyState !== 1) && this.isRuning === 1) {
+        if (this.OnlineWS === null) {
+          this.OnlineWS = new WebSocket(this.GameConfig.Interactive)
+          this.OnlineWS.onmessage = e =>{
+            let json = JSON.parse(e.data)
+            this.OnlineRefresh(json)
+          }
+          this.OnlineWS.onclose = e =>{
+            this.OnlineWS = null
+            if (this.isRuning === 1) {
+              this.reconnect()
+              this.createWS()
+            }
+          }
+        }
+        //自动提交礼物和弹幕
+        // this.autoTest()
+      },
+      OnlineRefresh(json){
+        console.log(json)
+        switch(json.Type){
+          case 'Reward':this.$refs.newk3.giftPush(json);break;
+          case 'Barrage':this.$refs.newk3.barragePush(json);break;
+          case 'AnchorInfo':
+            json.Photo = imgHost + '/' + json.Photo
+            this.Anchor = json
+            break;
+          case 'BroadCast':this.$refs.newk3.broadCastPush(json);break;
+          case 'LiveType':
+            json.CloseTitle = json.CloseTitle || '暂停直播'
+            json.CloseContent = json.CloseContent || 'UU直播维护中...'
+            layer.open({
+              className: "layerConfirm",
+              title:json.CloseTitle,
+              content: json.CloseContent,
+              shadeClose: false,
+              btn: ["确定"],
+              yes: function(index) {
+                router.push(`/liveList`)
+                localStorage.setItem('btnText',json.CloseTitle)
+              },
+            })
+            break;
+        }
+      },
+      WSrefresh(json){
+        this.WS[json.type] = json.result
+        this.WS.Status = json.type
+        console.log(json.type)
+        switch(json.type){
+          case 'Newest':this.statusNewest(json.result);break;
+          case 'GameStatus':this.statusGameStatus(json.result);break;
+          case 'NewGame':this.statusNewest(json.result);break;
+          case 'GameResult':this.statusGameResult(json.result);break;
+          case 'Previous':this.statusPrevious(json.result);break;
+        }
+      },
+      statusNewest(n){
+        this.WS.TimeLeft = ''
+        if ((new Date().getTime() - state.Difftime) > n.end) {
+          store.commit('lt_stopSell', 3)
+          if (n.record_result) {
+            store.commit({
+              type:'lt_setOnceLotteryResult',
+              code:this.lcode,
+              results: {
+                IssueNo:n.record_code,
+                LotteryOpen:this.formatResult(n.record_result),
+                OpenTime:''
+              }
+            })
+          }
+        }else{
+          console.log('正在投注')
+          Vue.set(state.lt, 'NowIssue', n.record_code)
+          this.$store.dispatch('lt_refresh')
+        }
+        Vue.set(state.lt, 'StopTime', n.end)
+      },
+      statusGameStatus(n){
+        store.commit('lt_stopSell', 3)
+        var _status = n.status
+        switch(_status){
+          // case 'readySleep':this.readySleep = n.ready_time;break;
+          // case 'sleeping':this.isSleep = 1;break;
+          // case 'readyRun':this.readyRun = n.ready_time;break;
+          case 'running':this.isSleep = 0;break;
+        }
+      },
+      statusGameResult(n){
+        Vue.set(state.lt.WS, 'openNum', n.record_result)
+        store.commit({
+          type:'lt_setOnceLotteryResult',
+          code:this.lcode,
+          results: {
+            IssueNo:n.record_code,
+            LotteryOpen:this.formatResult(n.record_result),
+            OpenTime:''
+          }
+        })
+        store.commit('lt_displayResults', false)
+        store.commit('lt_stopSell', 3)
+        console.log('watch:已开奖')
+      },
+      statusPrevious(n){
+        console.log('once前一期的开奖记录',n)
+        store.commit({
+          type:'lt_setOnceLotteryResult',
+          code:this.lcode,
+          results: {
+            IssueNo:n.record_code,
+            LotteryOpen:this.formatResult(n.record_result),
+            OpenTime:''
+          }
+        })
+      },
+      formatResult(n){
+        let newresult = ''
+        for (var i = 0; i < n.length; i++) {
+          newresult +=n[i]+','
+        }
+        return newresult = newresult.substring(0,newresult.length-1)
+      },
+      checkPermissionsLevel(wicth){ //Barrage、FreedomSpeak、Reward、SysSpeak
+        let block = this.GameConfig['LiveBroadcast'+wicth]
+        if (block.state === 0) {
+          return false
+        }
+        return (','+block.Level).search(','+state.UserUpGradeBonus.Grade+',')
+      },
 		},
 		watch:{
 			$route(val){
@@ -1222,6 +1680,14 @@
 			clearTimeout(this.timer3)
 			clearTimeout(this.timer4)
 			clearInterval(this.baseLoop)
+      this.isRuning = 0
+      if (this.GameWS !== null) {
+        this.GameWS.close()
+      }
+      if (this.OnlineWS !== null) {
+        this.OnlineWS.close()
+      }
+      // clearInterval(this.isRuningT)
 		},
 
   }

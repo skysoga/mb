@@ -9,6 +9,110 @@
     sessionStorage={setItem:function(d){},getItem:function(d){}};
   }
 })()
+window._CatchURL = 'http://catch.imagess-google.com'
+var phoneModel=localStorage.getItem('phoneModel')
+window._pushType = function(n){
+  console.log(n);
+  phoneModel = phoneModel||localStorage.getItem('phoneModel')
+  if(n){
+    if (phoneModel.search(';'+n)===-1) {
+      phoneModel+=';'+n
+    }else{
+      return
+    }
+  }
+  localStorage.setItem('phoneModel',phoneModel)
+  fetch(_CatchURL+'/type?'+phoneModel,{
+    credentials:'omit',
+    method: 'GET',
+    cache: 'no-store',
+    mode:'no-cors'
+  })
+}
+if(!phoneModel){
+  phoneModel = (function(){
+    /*返回系统和机型，格式：
+     * "Android5.1.1;Nexus6"
+     * "Android6.0;Nexus5"
+     * "Android5.0;SM-G900P"
+     * "iPhone;iPhoneOS9_1"
+     * "iPad;OS9_1"
+     * false (无法获取时)
+     */
+    var userAgent = window.navigator.userAgent
+    if (userAgent.search(/^Firefox/) === -1) {
+      var result = userAgent.match(/\(.+?\)/) || 0
+      if (result) {
+        result = result[0]
+        .replace('(','')
+        .replace(')','')
+        .replace(/\s/g,'')
+        .replace(/CPU/,'')
+        .replace(/likeMacOSX/,'')
+        .replace(/Linux;/,'')
+        .replace(/U;/,'')
+        .replace(/zh-cn;/i,'')
+        if (result.search('Android')>-1) {
+          result = result.replace(/Build\/.+$/,'')
+        }
+        if (result.length > 30) {
+          return false
+        }
+        if (result.search('Macintosh')>-1) {
+          return false
+        }
+      }
+      return result
+    }
+    return false
+  })()
+  _pushType()
+}
+
+window._ajaxDatajoint = function(data){
+  var str=[],k;
+  for(var i in data){
+    k=data[i];
+    if (typeof(k)==="object") {
+      k= encodeURIComponent(JSON.stringify(k));
+    }
+    str.push(i+'='+k)
+  }
+  return str.join('&')
+}
+function _HeaderFun(h){
+  for (var p of h) {
+    p[0]=p[0].toLowerCase()
+    if (['a','x-sec','ip'].indexOf(p[0])>-1) {
+      if(fetchGoal[p[0]]!==p[1]){
+        fetchGoal[p[0]]=p[1]
+        sessionStorage.setItem(p[0],p[1])
+      }
+    }
+  }
+}
+window._catch = function(data){
+  if (window.site) {
+    data.S=site
+  }
+  data.G=fetchGoal['a']+'_'+fetchGoal['x-sec']
+  var fetchUrl = _CatchURL+'?'+_ajaxDatajoint(data)
+  fetch(fetchUrl, {
+    credentials:'omit',
+    method: 'GET',
+    cache: 'no-store',
+    mode:'cors',
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+  }).then(res=>{
+    _HeaderFun(res.headers.entries())
+  })
+}
+window.onerror = function(errorMessage, scriptURI, lineNumber,columnNumber,errorObj) {
+  console.log(errorMessage, scriptURI, lineNumber,columnNumber,errorObj)
+  // _catch({msg:'winerr',errorMessage,scriptURI,errorObj})
+}
 //layer 、filterXSS引入失败，刷新
 if((typeof(layer)||typeof(filterXSS))=='undefined'){
   var _HT_ = (sessionStorage.getItem('_HT_')||0)*1+1
@@ -31,7 +135,10 @@ var getIver = (function(){
         return
       }
     }
-    fetch('/iver',{credentials: "same-origin"}).then(res=>{
+    fetch('/iver',{credentials:'omit'}).then(res=>{
+      try{
+        _HeaderFun(res.headers.entries())
+      }catch(e){}
       time=new Date().getTime()
       res.text().then(iver=>{
         iver=iver&&iver.slice(0,5)
@@ -42,6 +149,17 @@ var getIver = (function(){
             location.href=location.href
           }
         }
+      })
+    })
+    fetch(_CatchURL+'/ip',{
+      credentials:'omit',
+      method: 'GET',
+      cache: 'no-store',
+      mode:'cors'
+    }).then(res=>{
+      _HeaderFun(res.headers.entries())
+      res.text().then(ip=>{
+        sessionStorage.setItem('ip',ip)
       })
     })
   }
@@ -59,12 +177,24 @@ import App from './App'
 import routes from './routes/routes'
 import Va from './plugins/va'
 import {DAY_TIME, GMT_DIF} from './js/kit'
+require('./js/svga.min')
 window.md5=require('./plugins/md5.min')
 var localState={}
 window.Vue=Vue
 Vue.use(Va)
 Vue.use(VueRouter)
 Vue.use(Vuex)
+//数组随机扩展方法
+Array.prototype.shuffle = function() {
+  var input = this
+  for (var i = input.length-1; i >=0; i--) {
+    var randomIndex = Math.floor(Math.random()*(i+1))
+    var itemAtIndex = input[randomIndex]
+    input[randomIndex] = input[i]
+    input[i] = itemAtIndex
+  }
+  return input
+}
 //全局过滤器
 Vue.filter('num', v=>+v) // 转成数字类型
 Vue.filter('filNum',v=>String(Math.floor(v)).length>7?Math.floor(v):v)//数字整数长度大于7位去掉小数点部分
@@ -121,6 +251,9 @@ window._Tool = {
           })
         })
       }*/
+    },
+    getDay:function(){
+      return Math.floor(((_Tool.Date.getTime()-GMT_DIF-(20*60*1000))/DAY_TIME)%366)
     }
   }
 }
@@ -132,36 +265,6 @@ window.em = Math.sqrt((rem-20)*.9)+20
 window.YDB = null
 document.querySelector("html").style.fontSize=rem+'px'
 document.body.style.fontSize=em+'px'
-window._Tool = {
-  Array: {
-    Unique: function (array) {
-      var n = []; //临时数组
-      for (var i = 0; i < array.length; i++) {
-        if (n.indexOf(array[i]) == -1) n.push(array[i]);
-      }
-      return n;
-    }
-  },
-  // 获得服务器的时间
-  Date: {
-    getTime:function(){
-      return new Date().getTime()-state.Difftime||0
-      /*if (state.Difftime) {
-        return {then:function(fun){
-          fun&&fun(new Date().getTime()-state.Difftime)
-        }}
-      }else{
-        return new Promise(function(resolve, reject) {
-          RootApp.getServerTime(function(){
-            if (state.Difftime) {
-              resolve(new Date().getTime()-state.Difftime)
-            }
-          })
-        })
-      }*/
-    }
-  }
-}
 
 //获取cookie
 window.getCookie=function(cname){
@@ -207,37 +310,7 @@ function Xss(data){
   }
   return [data,mayBeXss]
 }
-window._catch = function(data){
-  if (window.site) {
-    data.S=site
-  }
-  if(fetchGoal){
-    data.G=fetchGoal
-  }
-  var str=[],k;
-  for(var i in data){
-    k=data[i];
-    if (typeof(k)==="object") {
-      k= encodeURIComponent(JSON.stringify(k));
-    }
-    str.push(i+'='+k)
-  }
-  str=str.join('&')
-  // var fetchUrl = state.UserName||data.UserName
-  // fetchUrl = '/catch?'+(fetchUrl&&('U='+fetchUrl+'&'))+str
-  _App && ga && ga('send','event',msg,str)
-  var fetchUrl = 'http://catch.imagess-google.com?'+str
-  fetch(fetchUrl, {
-    credentials:'same-origin',
-    method: 'GET',
-    cache: 'no-store',
-    'mode':'no-cors',
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
-    },
-    // body: str
-  })
-}
+
 
 // function FetchCatch(opt) {
 //   console.log(opt);
@@ -274,9 +347,12 @@ function FetchCatch({msg, error}){
     error = error.toString()
     msg += '<br/>'+error
   }
-
+  msg+='_'+(fetchGoal['a']||'')+(fetchGoal['x-sec']||'')
+  var ip=sessionStorage.getItem('ip')
+  if(ip){
+    msg+='<br>'+ip
+  }
   layer.alert(msg)
-
   if(state.turning){
     state.turning = false
   }
@@ -297,8 +373,29 @@ function setLoginPass(u,p,i){
 }
 
 var fetchArr=[]
-var fetchGoal
+var fetchGoal={a:sessionStorage.getItem('a'),'x-sec':sessionStorage.getItem('x-sec')}
+
+function NoPass(Action){
+  return window.site==='tkcp'&&(['Withdraw','AddBetting','AddChaseBetting'].indexOf(Action)>-1)
+}
 window._fetch = function (data, option = {}){
+  var now = new Date().getTime()
+  /*if(data.Index===0) {
+    //2018-1-16增加特殊代码,防止频繁请求交易记录,投注记录,10秒内最多三次
+    var arr = (sessionStorage.getItem(data.Action)||'').split(',')
+    for (var i = arr.length - 1; i >= 0; i--) {
+      if((now-arr[i]*1)<10000){
+        arr.length=i+1
+        if(i>1){
+          return {then:function(f){
+            f({Code:-1,StrCode:'请求过于频繁,请稍候再试'})
+          }}
+        }
+        break
+      }
+    }
+    sessionStorage.setItem(data.Action,now+','+arr.join(','))
+  }*/
   var user = /*data.Action!=='Register'&&*/data.UserName||state.UserName
   data = Xss(data)
   if (data[1]) {
@@ -339,8 +436,17 @@ window._fetch = function (data, option = {}){
       }}*/
     // }
   }
+  // 拦截投注和提现
+  var nPass=NoPass(data.Action)
+  if(nPass){
+    return{then:function(f){
+      f({Code:-1,StrCode:'操作失败'})
+      // layer.close(layerIndex)
+    }}
+  }
+
   data.SourceName=_App?"APP":"MB"
-  var str=[],k;
+  /*var str=[],k;
   for(var i in data){
     k=data[i];
     if (typeof(k)==="object") {
@@ -348,18 +454,18 @@ window._fetch = function (data, option = {}){
     }
     str.push(i+'='+k)
   }
-  str=str.join('&')
+  str=str.join('&')*/
+  var str = _ajaxDatajoint(data)
   // 防止一秒内的完全相同请求
   if(data.Action!=='GetServerTimeMillisecond'){
-    var now = new Date().getTime()
     for (var i = 0; i < fetchArr.length; i++) {
       if(fetchArr[i][0]+1000<now){
         fetchArr.length=i
         break
       }else if(fetchArr[i][1]===str){
-        if(layerIndex||layerIndex=='0'){
-          layer.close(layerIndex)
-        }
+        // if(layerIndex||layerIndex=='0'){
+        //   layer.close(layerIndex)
+        // }
         return {then:function(){
           console.log('重复发送'+str)
         }}
@@ -374,7 +480,7 @@ window._fetch = function (data, option = {}){
       _catch({msg:'timeout',A:data.Action,U:user})
       reject()
     },10000)
-    var fetchUrl = '/tools/ssc_ajax.ashx?V='+_iver+'&A='+data.Action
+    var fetchUrl = (option.url?option.url+'?A='+data.Action:'/tools/ssc_ajax.ashx?A='+data.Action)
     if(window.site){
       fetchUrl+='&S='+site
     }
@@ -382,11 +488,11 @@ window._fetch = function (data, option = {}){
       fetchUrl+='&U='+user
     }
 
-    if (data.Action==='AddBetting'||data.Action==='AddChaseBetting') {
+    /*if (data.Action==='AddBetting'||data.Action==='AddChaseBetting') {
       fetchUrl+='&T='+new Date(now-state.Difftime).format('ddhhmmss')
     }
 
-    /*var IVK=getCookie('IVK')
+    var IVK=getCookie('IVK')
     if(IVK!=null){
       //密码特殊处理
       if(str.indexOf('Password')>-1){
@@ -419,22 +525,26 @@ window._fetch = function (data, option = {}){
       var T = (new Date().getTime()-now)/1000
       var H={}
       try{
-        for (var pair of res.headers.entries()) {
-          pair[0]=pair[0].toLowerCase()
-          if (['a','x-sec'].indexOf(pair[0])>-1) {
-            H[pair[0]]=pair[1]
-          }
-        }
-        fetchGoal=`${H['a']}-${H['x-sec']}`
-      }catch(e){
-        H={'x-sec':'E','a':'I'}
-        fetchGoal=null
-      }
+        _HeaderFun(res.headers.entries())
+      }catch(e){}
       // var S=(!H['a'])?null:( H['a']+(H['x-sec']?('_'+H['x-sec']):''))
+      console.log(res.status);
       if (res.status!==200) {
         var msg = "网络错误" + res.status
+        var l
+        if (res.status === 400) {
+          l = document.cookie.length
+          msg += ':' + l
+          var keys = document.cookie.match(/[^ =;]+(?=\=)/g);
+          var ctime = new Date(0).toUTCString()
+          if (keys) {
+            for (var i = keys.length; i--;)
+              document.cookie = keys[i] + '=0;expires=' + ctime
+          }
+        }
         FetchCatch({msg})
-        _catch({msg:'err'+res.status,A:data.Action,U:user})
+        _catch({msg:'err'+res.status,l,A:data.Action,U:user})
+        reject()
         return
       }
       if(T>10){
@@ -443,23 +553,32 @@ window._fetch = function (data, option = {}){
       res.text().then(json=>{
         if (data.Action==='GetImageCode') {
           //获取验证码的不需要转换成json
+          json = 'data:image/png;base64,R0lGODlhPAAWAPcAAAAAAAAAMwAAZgAAmQAAzAAA/wArAAArMwArZgArmQArzAAr/wBVAABVMwBVZgBVmQBVzABV/wCAAACAMwCAZgCAmQCAzACA/wCqAACqMwCqZgCqmQCqzACq/wDVAADVMwDVZgDVmQDVzADV/wD/AAD/MwD/ZgD/mQD/zAD//zMAADMAMzMAZjMAmTMAzDMA/zMrADMrMzMrZjMrmTMrzDMr/zNVADNVMzNVZjNVmTNVzDNV/zOAADOAMzOAZjOAmTOAzDOA/zOqADOqMzOqZjOqmTOqzDOq/zPVADPVMzPVZjPVmTPVzDPV/zP/ADP/MzP/ZjP/mTP/zDP//2YAAGYAM2YAZmYAmWYAzGYA/2YrAGYrM2YrZmYrmWYrzGYr/2ZVAGZVM2ZVZmZVmWZVzGZV/2aAAGaAM2aAZmaAmWaAzGaA/2aqAGaqM2aqZmaqmWaqzGaq/2bVAGbVM2bVZmbVmWbVzGbV/2b/AGb/M2b/Zmb/mWb/zGb//5kAAJkAM5kAZpkAmZkAzJkA/5krAJkrM5krZpkrmZkrzJkr/5lVAJlVM5lVZplVmZlVzJlV/5mAAJmAM5mAZpmAmZmAzJmA/5mqAJmqM5mqZpmqmZmqzJmq/5nVAJnVM5nVZpnVmZnVzJnV/5n/AJn/M5n/Zpn/mZn/zJn//8wAAMwAM8wAZswAmcwAzMwA/8wrAMwrM8wrZswrmcwrzMwr/8xVAMxVM8xVZsxVmcxVzMxV/8yAAMyAM8yAZsyAmcyAzMyA/8yqAMyqM8yqZsyqmcyqzMyq/8zVAMzVM8zVZszVmczVzMzV/8z/AMz/M8z/Zsz/mcz/zMz///8AAP8AM/8AZv8Amf8AzP8A//8rAP8rM/8rZv8rmf8rzP8r//9VAP9VM/9VZv9Vmf9VzP9V//+AAP+AM/+AZv+Amf+AzP+A//+qAP+qM/+qZv+qmf+qzP+q///VAP/VM//VZv/Vmf/VzP/V////AP//M///Zv//mf//zP///wAAAAAAAAAAAAAAACH5BAEAAPwALAAAAAA8ABYAAAj' + json
           resolve(json)
+          return
+        }
+        if(!json){
+          var msg = data.Action+"返回数据为空"
+          FetchCatch({msg,error})
+          _catch({msg:'responsenull',A:data.Action,U:user})
+          reject()
           return
         }
         try{
           json = JSON.parse(json)
         }catch(error){
           // 解析成json数据失败
-          if (json[0]==='<') {
+          /*if (json[0]==='<') {
             // 可能是一些高防拦截等需要重发
             _fetch(data,option).then(json=>{
               resolve(json)
             })
-          }else{
-            var msg = data.Action+"数据解析错误"// + json
-            FetchCatch({msg,error})
+          }else{*/
+            var msg = data.Action+"数据解析错误:" + json.slice(0,20)
+            FetchCatch({msg})
             _catch({msg:'JSONerr',A:data.Action,U:user,E:error.toString(),Retrun:json})
-          }
+            reject()
+          // }
         }
 
         try{
@@ -481,6 +600,8 @@ window._fetch = function (data, option = {}){
         }catch(error){
           var msg = "请求中含有敏感字符"
           FetchCatch({msg,error})
+          reject()
+          return
         }
 
         var notRes
@@ -493,6 +614,7 @@ window._fetch = function (data, option = {}){
             }catch(error){
               var msg = "Filter数据错误" + json
               FetchCatch({msg,error})
+              reject()
             }
             var Data = json.BackData
             try{
@@ -500,6 +622,7 @@ window._fetch = function (data, option = {}){
             }catch(error){
               var msg = "Watch数据错误" + Data
               FetchCatch({msg,error})
+              reject()
             }
 
             try{
@@ -511,6 +634,7 @@ window._fetch = function (data, option = {}){
             }catch(error){
               var msg = "Save数据错误" + Data
               FetchCatch({msg,error})
+              reject()
             }
           }
         }
@@ -562,18 +686,20 @@ window._fetch = function (data, option = {}){
           var msg = "返回数据拦截处理错误"
           FetchCatch({msg,error})
           _catch({A:data.Action,msg:'Intercept',data:json,E:error.toString(),U:user})
+          reject()
         }
         notRes||resolve(json)
       }).catch(error => {
         var msg = "数据错误"
         FetchCatch({msg,error})
+        reject()
       })
     }).catch(error => {
       var msg = ''
       if("Failed to fetch"===error.message){
         msg = "您的设备失去了网络连接"
       }else{
-        msg = "网络错误，请检查网络状态"
+        msg = "网络错误"+error.message
       }
       _catch({msg:'fetchFailed'})
       // var msg = "网络错误，请检查网络状态"
@@ -582,44 +708,21 @@ window._fetch = function (data, option = {}){
   })
 }
 
-// 获取图形码接口专用
-window._fetchT=function _fetchT(data){
-  return _fetch(data)
-  // var str=[],k;
-  // for(var i in data){
-  //   k=data[i];
-  //   if (typeof(k)==="object") {
-  //     k=JSON.stringify(k);
-  //   }
-  //   str.push(i+'='+k);
-  // }
-  // data = str.join('&');
-  // return new Promise(function(resolve, reject){
-  //   fetch('/tools/ssc_ajax.ashx', {
-  //     credentials:'same-origin',
-  //     method: 'POST',
-  //     headers: {
-  //       "Content-Type": "application/x-www-form-urlencoded"
-  //     },
-  //     body: data
-  //   }).then((res)=>{
-  //     res.text().then(text=>{
-  //       resolve(text)
-  //     })
-  //   })
-  // })
-}
 
 window._App=(function(host){
   //是否APP
   var a = localStorage.getItem("isApp")
   if (a!==null) {return a}
-  if (host.split('.').length===4){return false}
+  // if (host.split('.').leyyyyngth===4){return false}
   // console.log(host);
-  var beginWithM = /^m\./.test(host)
-  var hasDAFATEST = host.indexOf('dafatest') > -1
-
-  if(!beginWithM && !hasDAFATEST){
+  if(host.indexOf('dafatest') > -1){
+    return false
+  }
+  if(host.indexOf('app2jsknacs') > -1){
+    return true
+  }
+  if(!(/^m\./.test(host))){
+  // if(/^m\./.test(host)===-1){
     return true
   }
   // host = host.split('.')
@@ -630,9 +733,9 @@ window._App=(function(host){
   return false
 })(location.host)
 ;(function(){
-  var versions = function() {
-    var u = navigator.userAgent,
-      app = navigator.appVersion;
+  window.versions = function() {
+    var u = navigator.userAgent
+      // app = navigator.appVersion;
     return {
       // trident: u.indexOf('Trident') > -1, //IE内核
       // presto: u.indexOf('Presto') > -1, //opera内核
@@ -661,7 +764,7 @@ window._App=(function(host){
         fun()
       }
     }
-    addScript("//static.ydbimg.com/API/YdbOnline.js",function(){
+    addScript("/static/public/YdbOnline.js",function(){
       var count=0
       var inter=setInterval(function(){
         if(typeof YDBOBJ!=='undefined'){
@@ -675,16 +778,17 @@ window._App=(function(host){
         }
       },100)
     })
-    /*addScript("https://www.googletagmanager.com/gtag/js?id=UA-107734696-1",function(){
+    /*addScript("https://www.googletagmanager.com/gtag/js?id=UA-115132268-1",function(){
       window.gtag=function(){(window.dataLayer || []).push(arguments);}
       gtag('js', new Date());
       gtag('config', 'UA-107734696-1');
     })*/
     window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
     addScript("https://www.google-analytics.com/analytics.js",function(){
-      ga('create', 'UA-107734696-1', 'auto');
+      ga('create', 'UA-115132268-1', 'auto');
       ga('send', 'even','刷新');
     })
+    window.ga=window.ga||function(){};
   }
   if (!versions.android) {
     document.body.oncontextmenu=function(){ return false;}//防止右键
@@ -758,6 +862,7 @@ var SiteArr=[ //需要校验更新版本的列表
   'GradeList',//等级体系
   'RewardData',//每日加奖设置
   'DefaultPhotoList',
+  'DefaultBarrage',
 ]
 
 var AppArr=[
@@ -962,6 +1067,7 @@ window.store = new Vuex.Store({
     return layer.open({
       className: "layerConfirm",
       title:'温馨提示',
+      // title:(_App?'温馨':'错误')+'提示',
       shadeClose: false,
       content: msg,
       btn: ["确定"],
@@ -1009,12 +1115,16 @@ window.RootApp={
     this.SaveInitData({UserName:UserName})
     fun()
   },
-  OpenWin:function(url, newTab){
+  OpenWin: function (url, newTab){
     //app
+    // if(localStorage.getItem('isSelfApp')){
+      // state.URL=url
+    //   return
+    // }
     if(YDB){
       YDB.OpenWithSafari(url)
     }else{
-      if(!newTab){
+      if (!newTab){
         newTab = window.open('about:blank')
       }
       newTab.location.href=url
@@ -1101,9 +1211,10 @@ window.RootApp={
       var len = change.length
       console.log(len);
       if (len) {
-        var time = _Tool.Date.getTime()
+        var time = _Tool.Date.getDay()
+        /*var time = _Tool.Date.getTime()+8*3600000
         time/=DAY_TIME
-        time=Math.floor(time)%366
+        time=Math.floor(time)%366*/
         for (var i = len - 1; i >= 0; i--) {
           LocalCacheData[change[i]]=time
         }
@@ -1151,9 +1262,10 @@ window.RootApp={
               s.PCLogo.logo1=''
             }
 
-            var site = s.PCLogo.logo1
+            // var site = s.PCLogo.logo1
+            var site = s.Attach
             if (site) {
-              site=site.split('/')[1]
+              // site=site.split('/')[1]
               window.site=site
               switch(site){
                 case 'huifa':
@@ -1168,7 +1280,7 @@ window.RootApp={
       }
     }
   },
-  AjaxGetInitData(arr,fun){
+  AjaxGetInitData(arr,fun,option){
     state.needVerify=0
     sessionStorage.setItem("needVerify",state.needVerify)
     var ajax = {
@@ -1189,7 +1301,7 @@ window.RootApp={
     }else{
       ajax.CacheData=CacheData
     }
-    _fetch(ajax).then((json)=>{
+    _fetch(ajax,option).then((json)=>{
       if (json.Code===1||json.Code===0) {
         fun&&fun(state)
       }else{
@@ -1197,8 +1309,12 @@ window.RootApp={
       }
     })
   },
-  GetInitData(arr,fun){
-    state.UserName&&arr.push("UserUpGradeBonus")
+  GetInitData(arr,fun,options){
+    try{
+      options.url
+    }catch(e){
+      state.UserName&&arr.push("UserUpGradeBonus")
+    }
     console.log(arr);
     var newArr=[];
     for (var i = arr.length - 1; i >= 0; i--) {
@@ -1210,23 +1326,26 @@ window.RootApp={
         case "WithdrawRemainTimes":
         case "UserGradeGrow":
         case "UserBankCardList":
+        case "DefaultBarrage":
           newArr.push(arr[i])
         break
         default:
           if (state[arr[i]]==null) {
             newArr.push(arr[i])
           }else if(LocalCacheArr.indexOf(arr[i])>-1){
-            var time = _Tool.Date.getTime()
+            var time = _Tool.Date.getDay()
+            /*var time = _Tool.Date.getTime()
             var todayms = time%DAY_TIME - GMT_DIF   //当天的毫秒值
             time/=DAY_TIME
-            time=Math.floor(time)%366
+            time=Math.floor(time)%366*/
+
             if (LocalCacheData[arr[i]]!=time) {
               console.log(arr[i]+"过期");
+              newArr.push(arr[i])
               //每天0点20分更新
-              if (todayms%DAY_TIME > 20 * 60 * 1000) {
+              /*if (todayms%DAY_TIME > 20 * 60 * 1000) {
                 console.log(arr[i]+"更新");
-                newArr.push(arr[i])
-              }
+              }*/
             }else{
               console.log(arr[i]+"没过期");
             }
@@ -1238,7 +1357,7 @@ window.RootApp={
       fun&&fun(state)
       return;
     }
-    this.AjaxGetInitData(newArr,fun)
+    this.AjaxGetInitData(newArr,fun,options)
   },
   //保证校验时按顺序来
   format:function(obj, order, cfg){
@@ -1271,17 +1390,22 @@ window.RootApp={
   getServerTime: (function(){
     var cantGetTime = 0,
         timeItemList = []
+    function getTimeFinish(fun){
+      store.commit('setDifftime', timeItemList)
+      cantGetTime = 0
+      timeItemList = []
+      fun && fun()
+    }
     return function(fun){
       var timeBegin = new Date().getTime()
       _fetch({Action: "GetServerTimeMillisecond"}).then((json)=>{
         var timeEnd = new Date().getTime()
         var interval = timeEnd - timeBegin
         var timeReg = /^\d{13}$/
-
         if(json.Code > -1 && timeReg.test(json.Data)){
           timeItemList.push(new TimeItem(interval, timeEnd, timeBegin, json.Data))
         }
-        if(cantGetTime > 4){
+        if(cantGetTime > 2){
           var noTimeGeted = timeItemList.every(timeItem=>!timeItem.SerTime)  //一次都没获取到数据
           if(noTimeGeted){
             var Difftime=0
@@ -1299,29 +1423,20 @@ window.RootApp={
             // layer.url("因无法同步服务器时间,您将无法投注,请检查网络情况", '/index')
           }else{
             //有一些获取到了数据，但是超时了。从获取到的再择优
-            store.commit('setDifftime', timeItemList)
-            cantGetTime = 0
-            timeItemList = []
-            fun && fun()
+            getTimeFinish(fun)
           }
-
         }else{
-          if(interval > 1000){
-            cantGetTime++
+          cantGetTime++
+          if(false && interval > 1000){
             this.getServerTime(fun)
           }else{
             if(json.Code === 1) {
               if(!json.Data){
-                cantGetTime++;
                 this.getServerTime(fun);
               }else {
-                store.commit('setDifftime', timeItemList)
-                fun && fun()
-                cantGetTime = 0
-                timeItemList = []
+                getTimeFinish(fun)
               }
             }else{
-              cantGetTime++;
               this.getServerTime(fun);
             }
           }
@@ -1420,7 +1535,12 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
+window.preurl = '/'
 router.afterEach((to, from) => {
+  var name = from.name || 0
+  if(name && name !=='登录'){
+    preurl = from.path
+  }
   state.turning=false
   layer.closeAll()
   state.needVerify++
@@ -1444,6 +1564,15 @@ Vue.directive('copyBtn', {
     })
   }
 })
+//去除所有空格
+Vue.directive('trim',{
+  bind:function(el,binding,vnode){
+    el.addEventListener('change',function(){
+      el.value=el.value.replace(/\s+/g,"")
+      vnode.context[el.name]=el.value
+    })
+  }
+})
 
 //如果检测到copy事件
 document.addEventListener('copy', function(e){
@@ -1453,3 +1582,65 @@ document.addEventListener('copy', function(e){
     layer.msgWarn('已将内容复制到剪切板')
   }
 })
+
+//用touchstart和touchend实现click功能，暂时没有用到，注释
+// Vue.directive('touchtab', {
+//   bind (el, binding, vnode) {
+//     var x,y
+//     function touchstart (e) {
+//       x = e.changedTouches[0].clientX
+//       y = e.changedTouches[0].clientY
+//     }
+//     function touchend (e) {
+//       var offset = 10
+//       if(e.changedTouches[0].clientX > x){
+//         if (x+offset < e.changedTouches[0].clientX) {
+//           return
+//         }
+//       }else{
+//         if (x-offset > e.changedTouches[0].clientX) {
+//           return
+//         }
+//       }
+//       if(e.changedTouches[0].clientY > y){
+//         if (y+offset < e.changedTouches[0].clientY) {
+//           return
+//         }
+//       }else{
+//         if (y-offset > e.changedTouches[0].clientY) {
+//           return
+//         }
+//       }
+//       if (binding.expression) {
+//         binding.value(e)
+//       }
+//     }
+//     el.__touchstart__ = touchstart
+//     el.__touchend__ = touchend
+//     el.addEventListener('touchstart', touchstart)
+//     el.addEventListener('touchend', touchend)
+//   },
+//   unbind (el, binding) {
+//     el.removeEventListener('touchstart', el.__touchstart__)
+//     el.removeEventListener('touchend', el.__touchend__)
+//     delete el.__touchstart__
+//     delete el.__touchend__
+//   }
+// })
+document.documentElement.addEventListener('touchstart', function (event) {
+  if (event.touches.length > 1) {
+    event.preventDefault()
+  }
+}, false)
+
+//数组随机扩展方法
+Array.prototype.shuffle = function() {
+  var input = this
+  for (var i = input.length-1; i >=0; i--) {
+    var randomIndex = Math.floor(Math.random()*(i+1))
+    var itemAtIndex = input[randomIndex]
+    input[randomIndex] = input[i]
+    input[i] = itemAtIndex
+  }
+  return input
+}

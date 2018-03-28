@@ -41,6 +41,13 @@ module.exports = {
           // localAddress:"http://css.dafatest.com",
           secure: false
         },
+        '/LiveApi': {
+          target: Usercfg.APIhostLive||'http://55.twtest88.com:8001',
+          changeOrigin: true,
+          headers:{Origin:Usercfg.Origin||"http://m.dafatest.com"},
+          // localAddress:"http://css.dafatest.com",
+          secure: false
+        },
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

@@ -4,6 +4,9 @@ import xiaosen from './xiaosen'
 
 const login =require('../views/login')
 const index =require('../views/index')
+const liveList =require('../views/liveList')
+const _redirect =require('../views/newk3/redirect')
+const reload =require('../views/reload')
 const activity =require('../views/activity')
 const newWinners =require('../views/newWinners')
 const center =require('../views/center')
@@ -16,6 +19,7 @@ const competition =require('../views/competition')
 const maintain = require('../views/maintain')
 const AppDownload = require('../views/AppDownload')
 const AppPackage = require('../views/AppPackage')
+const lotteryPage = require('../views/lotteryPage')
 
 
 var publicRoute = [
@@ -29,6 +33,17 @@ var routes = [{
   path: '/',
   redirect: '/index' //重定向配置
 },{
+  path: '/reload',
+  name: '重载',
+  meta:{
+    title:'重载',
+    nav:false,
+    link:false,
+    user:false,
+    agent:false
+  },
+  component: reload
+},{
   path: '/index',
   name: '主页',
   meta:{
@@ -39,6 +54,26 @@ var routes = [{
     agent:false
   },
   component: index
+},{
+  path: '/liveList',
+  name: '主页',
+  meta:{
+    title:'',
+    nav:true,
+    link:false,
+    user:false,
+    agent:false
+  },
+  component: liveList
+},{
+  path: '/redirect',
+  meta:{
+    nav:false,
+    link:false,
+    user:false,
+    agent:false
+  },
+  component: _redirect
 },{
   path: "/maintain",
   name: "维护中...",
@@ -158,6 +193,15 @@ var routes = [{
     link:"/index",
   },
   component: AppPackage
+},{
+  path: '/live/:type/:code',
+  name: '彩种',
+  meta:{
+    // title:"彩种",
+    user: true,
+    component:lotteryPage
+  },
+  component: lotteryPage
 }]
 
 routes = routes.concat(lottery).concat(zhiming).concat(xiaosen).concat(publicRoute)

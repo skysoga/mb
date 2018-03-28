@@ -29,13 +29,20 @@
           <i class="fr"><span class="iconfont right"></span></i>
         </router-link>
       </template>
-      <template v-if="$store.state.SiteConfig">
+      <template v-if="SafeNum<2&&!ResetSafePwd&&$store.state.UserHasSafePwd">
+        <p class="hr1px"></p>
+        <router-link :to="{path:'ArtificialAppeal',query:{Q:reUrl}}" class="active">
+          <span>通过身份识别</span>
+          <i class="fr"><span class="iconfont right"></span></i>
+        </router-link>
+      </template>
+      <!-- <template v-if="$store.state.SiteConfig">
         <p class="hr1px"></p>
         <router-link :to="'service'" class="active" v-show="reUrl">
           <span>通过在线客服</span>
           <i class="fr"><span class="iconfont right"></span></i>
         </router-link>
-      </template>
+      </template> -->
         <p class="hr1px"></p>
     </div>
   </div>

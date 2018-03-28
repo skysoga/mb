@@ -2,16 +2,25 @@
 <div class="isLotteryCon">
   <!-- 开奖号码 -->
   <div class="result"  v-if="$store.state.lt.OldIssue" @click.stop="togglePastOpen">
-    <span class="text-small">
+    <span class="text-small" :class="{'show-list':status}">
       {{oldIssue}}期开奖号码 <i class="iconfont">&#xe601;</i>
     </span>
 
-    <div class="openNumber"  v-if="displayResults">
+    <div class="openNumber"  v-if="!displayResults">
       <template v-for="(numStr, index) in results">
           <div class="number-box plus" v-if="index === 6"><em class="symbol">+</em></div>
-          <div class="number-box">
+          <div :class="['number-box','nocolor']">
             <em :class="numColor[numStr*1]">{{numStr}}</em>
-            <span class="number-box-text">{{getAnimal(numStr)}}</span>
+            <span class="number-box-text">{{getAnimal(numStr,results.natal)}}</span>
+          </div>
+      </template>
+    </div>
+    <div class="openNumber"  v-else>
+      <template v-for="(numStr, index) in results.LotteryOpen">
+          <div class="number-box plus" v-if="index === 6"><em class="symbol">+</em></div>
+          <div :class="['number-box']">
+            <em :class="numColor[numStr*1]">{{numStr}}</em>
+            <span class="number-box-text">{{getAnimal(numStr,results.natal)}}</span>
           </div>
       </template>
     </div>
@@ -41,7 +50,7 @@
               <div class = "past-open-result-box" v-if="index === 6"><span class = "symbol">+</span></div>
               <div class = "past-open-result-box">
                 <em :class = "numColor[numStr*1]">{{numStr}}</em>
-                <span>{{getAnimal(numStr)}}</span>
+                <span>{{getAnimal(numStr,item.natal)}}</span>
               </div>
             </template>
           </td>
@@ -67,19 +76,25 @@ export default {
       // green:['05','06','11','16','17','21','22','27','28','32','33','38','39','43','44','49'],
       wait4Results:['01','01','01','01','01','01','01'],
       timer:null,
+      status:0,
     }
   },
   methods:{
-    getAnimal(numStr){
-      return getAnimal(numStr, this.natal)
+    getAnimal(numStr,natal){
+      console.log(natal)
+      return getAnimal(numStr, natal||this.natal)
     },
     inArray(arr, item){
       return arr.indexOf(item) > -1
     },
     togglePastOpen(){
-      this.$store.state.lt.box === 'pastOpen' ?
-         this.$store.commit('lt_changeBox', '') :
-           this.$store.commit('lt_changeBox', 'pastOpen')
+      if(this.$store.state.lt.box === 'pastOpen'){
+        this.$store.commit('lt_changeBox', '')
+        this.status = 0
+      }else{
+        this.$store.commit('lt_changeBox', 'pastOpen')
+        this.status = 1
+      }
     }
   },
   created(){
@@ -118,22 +133,30 @@ export default {
       var _results = this.$store.state.lt.LotteryResults[code]
       if(!_results || !_results.length){
         return []
+      }else if(!this.displayResults){
+        return this.wait4Results
       }else{
-        return _results[0].LotteryOpen.split(',').slice(0,20)
+        return {
+          LotteryOpen:_results[0].LotteryOpen.split(',').slice(0,20),
+          natal:_results[0].natal
+        }
       }
     },
     pastOpen(){
       var code = this.$route.params.code
+      var showTime=['1300'].indexOf(code)>-1
       return state.lt.LotteryResults[code].map(item=>{
         var el = {}
-        el.IssueNo = item.IssueNo
+        el.IssueNo = item.IssueNo.length === 7 ? item.IssueNo :item.IssueNo.slice(4)        //把年份砍掉
         el.LotteryOpen = item.LotteryOpen.split(',').map(str=>('0' + str).slice(-2))
         var mdy = item.OpenTime.split(' ')[0] //开奖时间的年月日
-        var [month, date, year] = mdy.split('/')
-        // year = year.slice(-2)
+        var sTime= item.OpenTime.split(' ')[1]
+        var [year,month, date] = mdy.split('/')
+        year = year.slice(-2)
         month = ('0' + month).slice(-2)
         date = ('0' + date).slice(-2)
-        el.OpenTime = `${year}.${month}.${date}`
+        el.OpenTime =showTime?sTime:`${year}.${month}.${date}`
+        el.natal=item.natal
         return el
       })
     },
@@ -157,7 +180,11 @@ export default {
   background: linear-gradient(unquote('to '+$v));
   background: -webkit-linear-gradient(unquote($v));
 }
-
+.show-list{
+  i{
+    transform:rotate(180deg);
+  }
+}
 .isLotteryCon{
   color:#333;
   position: fixed;
@@ -256,6 +283,13 @@ export default {
   span{
     line-height: 1em;
   }
+
+  &.nocolor{
+  em{
+    background: linear-gradient(to top, #bbb59c 0%,#bbb59c 75%);
+    background: -webkit-linear-gradient(top, #bbb59c 0%,#bbb59c 75%);
+  }
+  }
 }
 
 .text-small{
@@ -263,6 +297,10 @@ export default {
   line-height: 1.3em;
   margin-left:1em;
   display: block;
+  i{
+    display: inline-block;
+    transition:.5s;
+  }
 }
 
 .past-open{

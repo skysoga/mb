@@ -1,11 +1,12 @@
 import { swiper, swiperSlide, swiperPlugins } from 'vue-awesome-swiper'
 import {mapState} from 'vuex'
-var hotDefault = ["1406","1402","1407","1000","1001","1008","1303","1302","1100","1101","1103"]
+var hotDefault = ["1407","1406","1402","1008","1000","1001","1300","1301","1303","1302","1100"]
 export default {
   name:'index',
   props:["s"],
   data:()=>{
     return{
+      notApp:!window._App&&!localStorage.getItem('isSelfApp'),
       hotLottery:[],
       NologApp:''
     }
@@ -22,10 +23,6 @@ export default {
     }
     //是APP且未登录
     var NologApp = _App&&!state.UserName
-    if (NologApp) {
-      to.meta.title='未登录'
-    }
-
     var arr = [!NologApp?"BannerList":"SysBanner","LotteryConfig","LotteryHot","LotteryList"],
       ar=["SiteConfig"];
     state.UserName&&arr.push("NoticeData")
@@ -33,6 +30,11 @@ export default {
 
 
     RootApp.GetInitData(arr, state=>{
+      if (NologApp) {
+        to.meta.title='未登录'
+      }else{
+        to.meta.title=`<img src="${state.constant.ImgHost}${state.SiteConfig.MobileLogo}" />`
+      }
       next();
     })
   },
@@ -82,8 +84,7 @@ export default {
     LotteryHot:'LotteryHot',
 		LotteryList:'LotteryList',
     nowDisplayList(){
-
-        var hotLottery = this.setDataHot()
+      var hotLottery = this.setDataHot()
       // 如果后台数据错误就返回默认的数组，如果热门超过11个，那么返回前11个
       if(Array.isArray(hotLottery) && hotLottery.length){
         if(hotLottery.length > 11){

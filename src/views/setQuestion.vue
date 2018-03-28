@@ -60,6 +60,18 @@
         <tr></tr>
       </tbody>
     </table>
+    <table>
+      <tbody>
+      <tr>
+        <td>安全密码</td>
+        <td>
+          <form action="" autocomplete="off">
+            <input type="password" v-va:SafePassword.Password tag="安全密码" v-model="SafePassword" placeholder="请输入您的安全密码">
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
     <div class="loginBtn BTN"><a v-va-check>确定</a></div>
   </div>
 </template>

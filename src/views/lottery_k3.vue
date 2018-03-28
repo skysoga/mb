@@ -22,6 +22,7 @@
              @click = "changeLottery(lottery.LotteryCode)">
             {{lottery.LotteryName}}
           </a>
+          <router-link to="/redirect?r=/live/K3/0101" style="color:#e54042">UU快3</router-link>
         </div>
     </div>
     <router-link to="/index" class="iconfont back"></router-link>
@@ -351,7 +352,9 @@ export default {
     },
     //更改彩种
     changeLottery(code){
-      this.$store.dispatch('lt_updateLottery', code)
+      if(this.$route.params.code!=code){
+        this.$store.dispatch('lt_updateLottery', code)
+      }
     },
     renderRebate(mode){
       var rebate

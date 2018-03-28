@@ -15,7 +15,6 @@ var PERBET = 2    //每注2元
 var Max_Rate =10000   //最大倍数
 var Max_Chase_Issue = 50  //追号最大期数
 var Max_Expect_Rate = 20000 //追号最大预期盈利率限制
-var BASE_ISSUE_1406 = 52586+1-7*89 //北京快三基准期
 
 /**
  * 阶乘
@@ -390,7 +389,7 @@ function BaseBet(state,count, betStr){
   this.betting_number = _betStr                       //投注号码
 
   this.betting_count = _count                         //这个方案多少注
-  if(lt.lottery.LotteryCode.indexOf('14') > -1 && lt.mode.mode === 'A10'){
+  if(((lt.lottery.LotteryCode.indexOf('14') > -1) ||(lt.lottery.LotteryCode.indexOf('0101') > -1)) && lt.mode.mode === 'A10'){
     this.betting_money = +(lt.perbet * bet.betting_model * bet.graduation_count).toFixed(2)
   }else{
     this.betting_money = +(lt.perbet * _count * bet.betting_model * bet.graduation_count).toFixed(2)
@@ -597,7 +596,7 @@ function computeIssue(code, index, isChase){
 
     //跨期的处理
     var firstIssue = state.lt.LotteryPlan[0]
-    if((firstIssue.End < firstIssue.Start) && (firstIssue.Start < _SerTime)){
+    if(firstIssue&&(firstIssue.End < firstIssue.Start) && (firstIssue.Start < _SerTime)){
       days++
     }
   }
@@ -615,19 +614,15 @@ function computeIssue(code, index, isChase){
   }
 
   //基于固定期
-  function basedOnFixedIssue(baseIssue, dateStr, planLen, zeroCount){
-    if(!zeroCount)zeroCount = 0
+  function basedOnFixedIssue(baseIssue, dateStr){
+    var planLen=state.lt.LotteryPlan.length
     return function(){
       var data = state.lt.Todaystr.replace(/^(\d{4})(\d{2})(\d{2})$/,'$1/$2/$3');
-      //补零
-      var zero = ''
-      for(var i = 0;i < zeroCount;i++){
-        zero += '0'
-      }
-      return zero + (Math.floor((Date.parse(data) - Date.parse(dateStr)) / DAY_TIME) * planLen + baseIssue + index);
+      var betweenDays = Math.floor((Date.parse(data) - Date.parse(dateStr)) / DAY_TIME)
+      return (betweenDays * planLen + baseIssue + index)+'';
     }
   }
-
+//alert(2)
   //这里挂各特殊彩种的处理函数--有返回的直接出返回结果。不参与下一步----每年过年前更新一次
   var handler = {
     '1001':function(){
@@ -642,21 +637,27 @@ function computeIssue(code, index, isChase){
       // }
     },
     //北京快三，以某一期作为基准
-    '1406':basedOnFixedIssue(68606, "2017/2/4", 89, 1),
+    // '1406':basedOnFixedIssue(68606, "2017/2/11"),
+    '1406':basedOnFixedIssue(102070, "2018/2/22"),
     //北京快乐8,以某一期作为基准
-    '1302':basedOnFixedIssue(807929-20, "2017/2/18", 179),
+    //'1302':basedOnFixedIssue(807929-7, "2017/2/22"),
+    '1302':basedOnFixedIssue(873257, "2018/2/22"),
     //PK10,以某一期作为基准
-    '1303':basedOnFixedIssue(602501-20, "2017/2/18", 179),
+    '1303':basedOnFixedIssue(602501-20, "2017/2/25"),
 
     //福彩3D：每天一期
-    '1201':oneDayOneIssue(33, "2017/2/9"),
+    '1201':oneDayOneIssue(1, "2018/1/1"),
     //排列3：每天一期
-    '1202':oneDayOneIssue(33, "2017/2/9"),
+    '1202':oneDayOneIssue(1, "2018/1/1"),
     '1301':function(){
       // var dateStr = new Date().getFullYear().toString()
-      var issueNo =  index < 100 ? '0'+index : index
+      var year=state.lt.Todaystr.slice(0,4)
+      if(isChase){
+        year=year*1+isChase+''
+      }
+      var issueNo =  ('00'+index).slice(-3)
       // console.log(state.Todaystr.slice(0,4) + issueNo)
-      return state.lt.Todaystr.slice(0,4) + issueNo
+      return year + issueNo
     }
   }
 
@@ -851,5 +852,5 @@ export {factorial, mul, C, combNoRepeat, unique, normalSum2,
    bus, BaseBet, compress, throttle, easyClone, ChaseAjax,
     deleteCompress, Scheme, getBasketAmount,computeIssue,
     getSSCRebate,getMultipleRebate, DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME,
-  GMT_DIF, PERBET,Max_Rate, Max_Chase_Issue, Max_Expect_Rate, BASE_ISSUE_1406, syx5_zx2,
+  GMT_DIF, PERBET,Max_Rate, Max_Chase_Issue, Max_Expect_Rate, syx5_zx2,
   countSingle, betSum, createStringArray, _random, _0to9, _dsds, _0to27, _1to26, _0to18, _1to17, _syx5, _pk10, oneRandom, oneStar}

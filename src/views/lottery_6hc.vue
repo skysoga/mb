@@ -361,7 +361,9 @@ export default {
           //7生肖以内,分含不含本命
           var betStr=this.betStr.split(',')
           var natal = betStr.indexOf(this.natal)===-1 ? 0:1 //本命生肖数
-          betStr=betStr.length-natal  //非本命生肖数
+          betStr=betStr.length
+          if(betStr>7){betStr=7} //如果超过7个尾数,只能保留7个
+          betStr=betStr-natal  //非本命生肖数
           return natal*C(betStr,n-1)*this.award[0]+C(betStr,n)*this.award[1]
         }
       }else if(['C01','C02'].indexOf(this.mode)!==-1){
@@ -409,7 +411,7 @@ export default {
           var natal = betStr.indexOf('0尾')===-1 ? 0:1 //0尾个数
           betStr=betStr.length-natal  //非0尾数
           // console.log(betStr);
-          return natal*betStr*this.award[0]+C(betStr,n)*this.award[1]
+          return natal*C(betStr,n-1)*this.award[0]+C(betStr,n)*this.award[1]
         }
       }
       return -2
@@ -485,14 +487,15 @@ export default {
       var betMoney = this.betCount * this.perbet
       var rebate = lt.Rebate[this.lottery]
 
-      var lotteryMode = lotteryCode + this.mode
+      var lotteryMode = this.mode
+      // var lotteryMode = lotteryCode + this.mode
       var chosen = this.chosen
 
 
       // 关于生肖的处理
-      var sxLotteryMode = ['1301E01','1301E02','1301E03','1301E04','1301E05'] //和生肖相关的玩法
-      var poultryWild = ['1301A02','1301B09','1301B10','1301B11','1301B12','1301B13','1301B14']  //家禽野兽相关玩法
-      var lwMode = ['1301F02','1301F03','1301F04']  //尾数
+      var sxLotteryMode = ['E01','E02','E03','E04','E05'] //和生肖相关的玩法
+      var poultryWild = ['A02','B09','B10','B11','B12','B13','B14']  //家禽野兽相关玩法
+      var lwMode = ['F02','F03','F04']  //尾数
       if(sxLotteryMode.indexOf(lotteryMode) > -1){
         //对生肖进行转换
         chosen = chosen.map(char=>getAnimalIndex(char, this.natal))

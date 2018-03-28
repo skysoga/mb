@@ -1,5 +1,5 @@
 <template>
-<div class="selectNumber fix">
+<div class="selectNumber fix" :class="$store.state.lt.mode.mode">
   <div class="numberContent" :class="(needAward && renderOdds && renderOdds.length)?'':'noaward'">
     <div v-for = "(item, index) in itemArr" class="bet-item-box-Con">
       <div class = "bet-item-box"  @click = "choose(item)" :class = "{curr: chosen.indexOf(item)>-1}">
@@ -69,10 +69,40 @@ export default{
     }
   }
 }
+.D01,.E01,.E02,.E03,.E04,.E05{
+  .bet-item-box-Con{
+    width: 33.3333333%;
+    font-size: .8em;
+    padding: .48em;
+    float: left;
+  }
+  .bet-item-box{
+    border:1px solid #dfdfdf;
+    border-radius:.15rem;
+    background: #faf9f6;
+    a,span{
+      display: block;
+      text-align: center;
+      line-height: 1.44;
+    }
+  }
+  .bet-item-eg-box{
+    width:100%;
+    border-top:1px solid #dfdfdf;
+    text-align: center;
+    line-height: 0;
+    padding: .1em;
+    span{
+      display: inline-block;
+      width: .8rem;
+      line-height: 1.2em;
+    }
+  }
+}
 .bet-item-box-Con{
-  width: 33.3333333%;
+  width: 25%;
   font-size: .8em;
-  padding: .48em;
+  padding: .24em;
   float: left;
 }
 .bet-item-box{
@@ -89,29 +119,16 @@ export default{
 .bet-item{
   width:100%;
   padding-top:0.2em;
-  color: #333;
+  color:#dc3b40;
   font-size:1em;
 }
 
 .bet-item-award{
   width:100%;
-  color:#dc3b40;
+  color: #333;
   padding-top:.16em;
   padding-bottom:.5em;
   font-size:.66em;
-}
-
-.bet-item-eg-box{
-  width:100%;
-  border-top:1px solid #dfdfdf;
-  text-align: center;
-  line-height: 0;
-  padding: .1em;
-  span{
-    display: inline-block;
-    width: .8rem;
-    line-height: 1.2em;
-  }
 }
 
 .bet-item-eg{
