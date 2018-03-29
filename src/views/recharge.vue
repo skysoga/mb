@@ -18,8 +18,8 @@
           <tr v-if="Bank.length>1">
               <td>选择银行</td>
               <td>
-                <select v-model = "PayType" @change = "changeBank">
-                  <option v-for = "option in Bank" :value = "option.PayType">{{option.Alias}}</option>
+                <select v-model = "Id" @change = "changeBank">
+                  <option v-for = "option in Bank" :value = "option.Id">{{option.Alias}}</option>
                 </select>
                 <i class="iconfont unfold"></i>
               </td>
@@ -208,7 +208,7 @@ export default {
         method:'',//页面类型
         Bank:[],
         Id:'',
-        BankCode:'',
+        // BankCode:'',
         nowRender:{},
         PayType:null,//充值类型或一般
         underMaintain:false,
@@ -250,10 +250,10 @@ export default {
             }
             vm.nowRender = json[0]
             vm.isOpenType=json[0].OpenType||json[0].Opentype
+            vm.Id = json[0].Id;
             if(method =='Bank'){
                 vm[method] = Object.freeze(json)
-                vm.Id = json[0].Id;
-                vm.BankCode = json[0].BankCode;
+                // vm.BankCode = json[0].BankCode;
             }else{
               var xurl = ''
               if(json[0].CodeImg === '0' || !json[0].CodeImg){
@@ -307,7 +307,8 @@ export default {
     },
     changeBank(){
       this.Bank.forEach(item=>{
-        if(item.PayType === this.PayType){
+        if(item.Id === this.Id){
+          this.PayType = item.PayType
           this.nowRender = item
         }
       })
@@ -359,7 +360,7 @@ export default {
           })
           return
         }
-        if(this.isOpenType==4||OType.indexOf(nowAjax.BankCode)>-1){
+        if(this.isOpenType==4){
           // if(nowAjax.BankCode!=='智汇付'&&nowAjax.Qort===6){
           newTab=YDB?true:window.open('about:blank')
           console.log('新开窗口');
@@ -369,12 +370,13 @@ export default {
       }
       nowAjax.Money = this.vaVal.Money
       nowAjax.ID = this.nowRender.Id
-      if(this.PayType!='一般'){
-        nowAjax.BankCode = this.nowRender.PayType
-      }
+      // if(this.PayType!='一般'){
+        // nowAjax.BankCode = this.nowRender.PayType
+      // }
       if(this.method === 'Bank'){
         nowAjax.ID = this.Id
-        nowAjax.BankCode = this.BankCode
+      }else{
+        nowAjax.BankCode = 0
       }
       layer.msgWait("正在提交")
       _fetch(nowAjax).then((json)=>{
