@@ -180,6 +180,7 @@ export default{
 .past::before{
   content: "";
     position: absolute;
+    left: 0;
     width: 16rem;
     height: 1px;
     border-top: 1px solid #fff;
