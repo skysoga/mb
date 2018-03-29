@@ -177,6 +177,13 @@ export default{
   height: 2.308em;
   line-height: 2.308em;
 }
+.past::before{
+  content: "";
+    position: absolute;
+    width: 16rem;
+    height: 1px;
+    border-top: 1px solid #fff;
+}
 .current{
   &:before{
     position: absolute;
