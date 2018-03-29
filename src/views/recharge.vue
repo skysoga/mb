@@ -125,8 +125,8 @@
           <tr>
             <td>选择银行</td>
             <td>
-              <select v-model = "BankCode" @change = "changeBankAccount">
-                <option v-for = "option in Bank" :value = "option.BankCode">{{option.BankName}}</option>
+              <select v-model = "Id" @change = "changeBankAccount">
+                <option v-for = "option in Bank" :value = "option.Id">{{option.BankName}}</option>
               </select>
               <i class="iconfont unfold"></i>
             </td>
@@ -207,6 +207,7 @@ export default {
       return{
         method:'',//页面类型
         Bank:[],
+        Id:'',
         BankCode:'',
         nowRender:{},
         PayType:null,//充值类型或一般
@@ -251,6 +252,7 @@ export default {
             vm.isOpenType=json[0].OpenType||json[0].Opentype
             if(method =='Bank'){
                 vm[method] = Object.freeze(json)
+                vm.Id = json[0].Id;
                 vm.BankCode = json[0].BankCode;
             }else{
               var xurl = ''
@@ -285,7 +287,7 @@ export default {
       //切换充值银行
     changeBankAccount(){
       this.Bank.forEach(item=>{
-        if(item.BankCode === this.BankCode){
+        if(item.Id === this.Id){
           this.nowRender = item
         }
       })
@@ -371,6 +373,7 @@ export default {
         nowAjax.BankCode = this.nowRender.PayType
       }
       if(this.method === 'Bank'){
+        nowAjax.ID = this.Id
         nowAjax.BankCode = this.BankCode
       }
       layer.msgWait("正在提交")
