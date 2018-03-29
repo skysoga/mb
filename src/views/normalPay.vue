@@ -6,8 +6,8 @@
         <tr>
           <td>选择银行</td>
           <td>
-            <select v-model = "BankCode" @change = "changeBankAccount">
-              <option v-for = "option in Bank" :value = "option.BankCode">{{option.BankName}}</option>
+            <select v-model = "BankName" @change = "changeBankAccount">
+              <option v-for = "option in Bank" :value = "option.BankName">{{option.BankName}}</option>
             </select>
             <i class="iconfont unfold"></i>
           </td>
@@ -246,7 +246,7 @@ export default{
         //银行转账
         if(method === 'Bank'){
           vm[method] = Object.freeze(json)
-          vm.BankCode = json[0].BankCode;
+          vm.BankName = json[0].BankName;
           vm.nowRender = json[0]
           // console.log(vm.nowRender)
         }else{
@@ -281,7 +281,7 @@ export default{
       Bank:[],                  //银行的比较多，先拿个数组存起来
       isSupportCopy: !!document.execCommand,      //支不支持这个属性
       //当前
-      BankCode:'',
+      BankName:'',
       nowRender:{},
       limit:'',
       //ajax
@@ -314,7 +314,7 @@ export default{
     //切换充值银行
     changeBankAccount (){
       this.Bank.forEach(item=>{
-        if(item.BankCode === this.BankCode){
+        if(item.BankName === this.BankName){
           this.nowRender = item
         }
       })
@@ -329,7 +329,6 @@ export default{
           PayUser:'',
           Money:0,
           ID:1,
-          BankCode:0,
         },
         //微信支付
         Weixin:{
@@ -338,7 +337,6 @@ export default{
           PayUser:'',
           Money:0,
           ID:1,
-          BankCode:0
         },
         //支付宝
         Alipay:{
@@ -347,7 +345,6 @@ export default{
           PayUser:'',
           Money:0,
           ID:1,
-          BankCode:0
         },
         //QQ钱包
         QQpay:{
@@ -365,7 +362,6 @@ export default{
           PayUser:'',
           Money:0,
           ID:1,
-          BankCode:0
         }
       }
 
@@ -374,7 +370,7 @@ export default{
       nowAjax.Money = this.vaVal.Money
       nowAjax.ID = this.nowRender.Id
       if(this.method === 'Bank'){
-        nowAjax.BankCode = this.BankCode
+        nowAjax.BankName = this.BankName
       }
       layer.msgWait("正在提交")
       _fetch(nowAjax).then((json)=>{
