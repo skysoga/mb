@@ -142,8 +142,8 @@ export default{
 }
 
 .curr{
-  background: #dc3b40;
-  border:1px solid #dc3b40;
+  background: #dc3b40 !important;
+  border:1px solid #dc3b40 !important;
   .bet-item, .bet-item-award, .bet-item-eg{
     color: #faf9f6;
   }
