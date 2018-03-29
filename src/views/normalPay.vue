@@ -337,6 +337,7 @@ export default{
           PayUser:'',
           Money:0,
           ID:1,
+          BankCode:0
         },
         //支付宝
         Alipay:{
@@ -345,6 +346,7 @@ export default{
           PayUser:'',
           Money:0,
           ID:1,
+          BankCode:0
         },
         //QQ钱包
         QQpay:{
@@ -362,6 +364,7 @@ export default{
           PayUser:'',
           Money:0,
           ID:1,
+          BankCode:0
         }
       }
 
