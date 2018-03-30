@@ -439,8 +439,7 @@ import BottomBox from '../components/bottom-box';
                 set = Mname==="半波"||Mname==="一肖"||Mname==="特码"&&iMo!=="直选"||Mname==="正码"&&iMo!=="任选"&&iMo!=="正特"
               }else{
                 iMo=Mode.substr(Mode.length-2);
-                var BJSC=Mode.indexOf('冠亚和')>-1
-                set = iMo=='三星'||iMo=='二星'||iMo=='/双'||iMo=='和双'||iMo=='和单'||iMo=='龙虎'||BJSC
+                set = iMo=='三星'||iMo=='二星'||iMo=='/双'||iMo=='和双'||iMo=='和单'||iMo=='龙虎'
               }
               var Num=this.SetOdd(isMode[i].Odd[0],isMode[i].Odd[1],set);
               isArr.Data.push(Num);
