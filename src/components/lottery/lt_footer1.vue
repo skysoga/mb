@@ -10,7 +10,7 @@
       最高可中<span>{{(value*maxAward).toFixed(2)}}</span>元
     </template>
     <template v-else>
-      请输入要投注金额
+      请输入要投注的金额
     </template>
   </div>
 

@@ -105,10 +105,11 @@
 		},
 		methods:{
 			checkSum(){
-				if(this.results.length < 20){
 					this.$parent.getResults()
-					console.log('开奖结果数量不够，需要从接口获取')
-				}
+				// if(this.results.length < 20){
+				// 	this.$parent.getResults()
+				// 	console.log('开奖结果数量不够，需要从接口获取')
+				// }
 			},
       getShow(ID,UID){//注单详情
           this.defaultShow=true
@@ -145,19 +146,19 @@
 					this.checkSum()
 				}
 			},
-			'results'(n,o){
-				if (o.length === 0) {
-					return
-				}
-				try{
-					if (n[0].IssueNo -1 !== o[0].IssueNo*1) {
-						this.$parent.getResults()
-						console.log('校验错误需要重新获取开奖列表')
-					}
-				}catch(e){
+			// 'results'(n,o){
+			// 	if (o.length === 0) {
+			// 		return
+			// 	}
+			// 	try{
+			// 		if (n[0].IssueNo -1 !== o[0].IssueNo*1) {
+			// 			this.$parent.getResults()
+			// 			console.log('校验错误需要重新获取开奖列表')
+			// 		}
+			// 	}catch(e){
 
-				}
-			}
+			// 	}
+			// }
     },
     components:{
       betDetailShow
