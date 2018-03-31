@@ -18,7 +18,7 @@
            :class = "chosen.indexOf(item) > -1 ? 'curr': ''">
            <span>
              <em>{{item}}</em>
-            <i v-if="gyhlh">{{mode!=='G11'&&awardArr[key].length<5?'赔率':'赔'}}{{awardArr[key]}}</i>
+            <i v-if="gyhlh&&awardArr[key]">{{mode!=='G11'&&awardArr[key].length<5?'赔率':'赔'}}{{awardArr[key]}}</i>
            </span>
         </a>
       </div>
