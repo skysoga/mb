@@ -1566,7 +1566,9 @@
       WSrefresh(json){
         this.WS[json.type] = json.result
         this.WS.Status = json.type
-        console.log(json.type)
+        if(json.result.game_code !== router.currentRoute.params.code){
+          return
+        }
         switch(json.type){
           case 'Newest':this.statusNewest(json.result);break;
           case 'GameStatus':this.statusGameStatus(json.result);break;
