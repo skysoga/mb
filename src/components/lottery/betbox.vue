@@ -47,7 +47,10 @@ var _0to9 = [0,1,2,3,4,5,6,7,8,9],
     _below = createStringArray(41, 80),
     _1to10String = createStringArray(1,10),
     _gyhdsds = ['和大','和小','和单','和双'],
-    _dsdslh = ['大','小','单','双','龙','虎']
+    _dsdslh = ['大','小','单','双','龙','虎'],
+    _dsdszh = ['大','小','单','双','质','合'],
+    _zhlh = ['和大','和小','和单','和双','龙','虎'],
+    _lhh = ['龙','虎','和']
 
 var cfg = {
   /**时时彩**/
@@ -74,6 +77,12 @@ var cfg = {
   'i10': {tag: '十位', itemArr: _dsds},
   'i1': {tag: '个位', itemArr: _dsds},
   'whole':{itemArr: _0to9},
+  //带z大小单双质合
+  'z10000': {tag: '万位', itemArr: _dsdszh},
+  'z1000': {tag: '千位', itemArr: _dsdszh},
+  'z100': {tag: '百位', itemArr: _dsdszh},
+  'z10': {tag: '十位', itemArr: _dsdszh},
+  'z1': {tag: '个位', itemArr: _dsdszh},
 
   'psum27':{tag:'和值', itemArr: _0to27},
   'psum18':{tag:'和值', itemArr: _0to18},
@@ -136,6 +145,20 @@ var cfg = {
   'itenth':{tag:'第十', itemArr: _dsds},
   //冠亚军
   'gyhz':{tag:'冠亚和值', itemArr: _3to19},
+  //时时彩新玩法
+  'cbz':{tag:'猜豹子', itemArr: _0to9},
+  //总和/龙虎
+  'zhlh':{tag:'总和龙虎', itemArr: _zhlh},
+  'wQian':{tag:'万千', itemArr: _lhh},
+  'wBai':{tag:'万百', itemArr: _lhh},
+  'wShi':{tag:'万十', itemArr: _lhh},
+  'wGe':{tag:'万个', itemArr: _lhh},
+  'qBai':{tag:'千百', itemArr: _lhh},
+  'qShi':{tag:'千十', itemArr: _lhh},
+  'qGe':{tag:'千个', itemArr: _lhh},
+  'bShi':{tag:'百十', itemArr: _lhh},
+  'bGe':{tag:'百个', itemArr: _lhh},
+  'sGe':{tag:'十个', itemArr: _lhh},
 }
 
 var refer = {
