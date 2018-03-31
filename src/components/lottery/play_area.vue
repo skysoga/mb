@@ -64,8 +64,8 @@ var bonusText={
 'SSCD25':['**311或**331','**345'],
 }
 
-var BJSCres=['PK10']//北京赛车配置
-var arrMode=['G11','H11']//北京赛车，双面盘，冠亚和
+// var BJSCres=['PK10']//北京赛车配置
+// var arrMode=['G11','H11']//北京赛车，双面盘，冠亚和
 var isShowBox=['PK10G11','PK10H11','SSCJ11','SSCK11','SSCL11']
 var awardSSC={//时时彩新玩法赔率测试数据
   'J11':'2.199',
@@ -119,19 +119,20 @@ export default {
     //渲染赔率-北京赛车
     renderOdds(){
       var line=this.ltCfg[this.mode].render
-      var arr=[]
       return this.setOddsArr(line)
     },
     notBJSC(){
-      return !(arrMode.indexOf(this.mode)!==-1&&BJSCres.indexOf(this.lottery)!==-1)
+      return isShowBox.indexOf(this.lottery+this.mode)===-1//!(arrMode.indexOf(this.mode)!==-1&&BJSCres.indexOf(this.lottery)!==-1)
     }
   }),
   methods:{
     getAward(alias){      
-      return (arrMode.indexOf(this.mode)!==-1&&BJSCres.indexOf(this.lottery)!==-1)?this.renderOdds[alias]:[]
+      // return (arrMode.indexOf(this.mode)!==-1&&BJSCres.indexOf(this.lottery)!==-1)?this.renderOdds[alias]:[]
+      return isShowBox.indexOf(this.lottery+this.mode)>-1?this.renderOdds[alias]:[]
     },
     setOddsArr(arr){
-      if(!this.award){
+      if(!this.award||this.notBJSC){
+        return {}
         // layer.msgWarn('奖金不存在')
       }
       var line=[]      
@@ -157,16 +158,53 @@ export default {
         }
         break;
         case 'H11':
-        line=[1,2,1,2,2,2,2,1,2,2,2,2]        
+        line=[1,2,1,2,2,2,2,1,2,2,2,2]
         objList={
           "igyh":4,
           "gyhz":17
         }
         break;
+        case 'J11':
+        line=[10]
+        objList={
+          'cbz':10
+        }
+        break;
+        case 'K11':
+        line=[4,2,1,30]
+        objList={
+          "zhlh":7,
+          "z10000":6,
+          "z1000":6,
+          "z100":6,
+          "z10":6,
+          "z1":6,
+        }
+        break;
+        case 'L11':
+        var arr=[]        
+        line=[2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1]
+        for(var i=0;i<10;i++){
+          arr.push(award)
+        }
+        award=arr.reduce((a,b)=>a.concat(b))
+        objList={
+          "wQian":3,
+          "wBai":3,
+          "wShi":3,
+          "wGe":3,
+          "qBai":3,
+          "qShi":3,
+          "qGe":3,
+          "bShi":3,
+          "bGe":3,
+          "sGe":3,
+        }
+        break;
         default:
         line=[]
       }
-      if(line.length&&BJSCres.indexOf(this.lottery)!==-1){
+      if(line.length){
         for(var i=0;i<award.length;i++){
           for(var j=0;j<line[i];j++){
             obj.push(award[i])

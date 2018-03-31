@@ -18,7 +18,7 @@
            :class = "chosen.indexOf(item) > -1 ? 'curr': ''">
            <span>
              <em>{{item}}</em>
-            <i v-if="gyhlh&&awardArr[key]">{{mode!=='G11'&&awardArr[key].length<5?'赔率':'赔'}}{{awardArr[key]}}</i>
+            <i v-if="gyhlh&&awardArr">{{mode!=='G11'&&awardArr[key].length<5?'赔率':'赔'}}{{awardArr[key]}}</i>
            </span>
         </a>
       </div>
@@ -32,8 +32,9 @@ import {unique, createStringArray} from '../../js/kit'
 function isArrayEqual(a, b){
   return a.every((item, index)=>b[index]===item ) && a.length === b.length
 }
-var BJSCres=['PK10']//北京赛车配置
-var arrMode=['G11','H11']//北京赛车，双面盘，冠亚和
+// var BJSCres=['PK10']//北京赛车配置
+// var arrMode=['G11','H11']//北京赛车，双面盘，冠亚和
+var isShowBox=['PK10G11','PK10H11','SSCJ11','SSCK11','SSCL11']
 
 var _0to9 = [0,1,2,3,4,5,6,7,8,9],
     _dsds = ['大', '小', '单', '双'],
@@ -49,7 +50,7 @@ var _0to9 = [0,1,2,3,4,5,6,7,8,9],
     _gyhdsds = ['和大','和小','和单','和双'],
     _dsdslh = ['大','小','单','双','龙','虎'],
     _dsdszh = ['大','小','单','双','质','合'],
-    _zhlh = ['和大','和小','和单','和双','龙','虎'],
+    _zhlh = ['和大','和小','和单','和双','龙','虎','和'],
     _lhh = ['龙','虎','和']
 
 var cfg = {
@@ -198,7 +199,7 @@ export default {
       return this.$parent.lottery
     },
     gyhlh(){
-      return arrMode.indexOf(this.mode)!==-1&&BJSCres.indexOf(this.lottery)!==-1
+      return isShowBox.indexOf(this.lottery+this.mode)>-1//arrMode.indexOf(this.mode)!==-1&&BJSCres.indexOf(this.lottery)!==-1
     },
     itemArr(){
       return cfg[this.alias].itemArr
