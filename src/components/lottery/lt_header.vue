@@ -45,7 +45,7 @@
 
     <div class="lotterySort" ref = "lotterySort" :class = "{active:ifShowTypeSelect}">
       <div @click.stop = "toggleTypeSelect">
-        <em v-show = "noLotteryName.indexOf(ltype) === -1">{{lotteryName.slice(0,2)}}</em>
+        <em v-show = "noLotteryName.indexOf(ltype) === -1">{{ltype!=='KL8'?lotteryName.slice(0,2):lotteryName}}</em>
         <i class="iconfont" v-show="lTopNav.indexOf(ltype)===-1">&#xe61e;</i>
       </div>
 
