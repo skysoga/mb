@@ -10,7 +10,7 @@
       最高可中<span>{{(betvalue*maxAward).toFixed(2)}}</span>元
     </template>
     <template v-else>
-      请输入要投注金额
+      请输入要投注的金额
     </template>
   </div>
 
@@ -416,7 +416,7 @@ $footer-left:0.5em;
   text-align: center;
   height: 2.2em;
   line-height: 2.2em;
-  width: 6em;
+  width: 100%;
   border-radius: 0.26rem;
 }
 </style>
