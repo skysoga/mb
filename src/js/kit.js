@@ -600,13 +600,7 @@ function computeIssue(code, index, isChase){
       days++
     }
   }
-  //2018/2/1时间转换为2019-02-01
-  function timetotime(str){
-    var arr = str.split('/')
-    if(arr[1].length<2){arr[1] = '0'+arr[1]}
-    if(arr[2].length<2){arr[2] = '0'+arr[2]}
-    return `${arr[0]}-${arr[1]}-${arr[2]}`
-  }
+
   //一天一期，20点开
   function oneDayOneIssue(baseIssue, dateStr){
     return function(){
@@ -621,11 +615,10 @@ function computeIssue(code, index, isChase){
 
   //基于固定期
   function basedOnFixedIssue(baseIssue, dateStr){
-    dateStr = timetotime(dateStr)+'T00:00:00-04:00'
     var planLen=state.lt.LotteryPlan.length
     return function(){
-      var data = state.lt.Todaystr.replace(/^(\d{4})(\d{2})(\d{2})$/,'$1-$2-$3T00:00:00-04:00');
-      var betweenDays = Math.floor((new Date(data) - new Date(dateStr)) / DAY_TIME)
+      var data = state.lt.Todaystr.replace(/^(\d{4})(\d{2})(\d{2})$/,'$1/$2/$3');
+      var betweenDays = Math.round((Date.parse(data) - Date.parse(dateStr)) / DAY_TIME)
       return (betweenDays * planLen + baseIssue + index)+'';
     }
   }
