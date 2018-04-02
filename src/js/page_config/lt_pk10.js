@@ -1,4 +1,4 @@
-import {countSingle, betSum, _random, _pk10} from '../kit'
+import {countSingle, betSum, _random, _dsds, _3to19, _gyhdsds, _dsdslh, _pk10} from '../kit'
 
 var pk10Config = {
   "定位胆":{
@@ -104,6 +104,30 @@ var pk10Config = {
       "tag": "前一直选复式",
       "default":true
     }]
+  },
+  "冠亚军":{
+    "1元模式":[{
+      "name": "冠亚和",
+      "mode": "H11",
+      "tip": "猜冠军和亚军开奖号相加的和，3-11为和小，12-19为和大；奇数为和单，偶数为和双。",
+      "group": "冠亚军",
+      "subGroup": "1元模式",
+      "tag": "冠亚和",
+      "eg":["选择03",'03 *'],
+      "default":true
+    }]
+  },
+  "双面盘":{
+    "1元模式":[{
+      "name": "双面盘",
+      "mode": "G11",
+      "tip": "可选任意位置投注，开出的号码1-5为小，6-10为大；奇数为单，偶数为双；正数第一名与倒数第一名开出的号码对比，大于为龙，小于为虎，以此类推。",
+      "group": "双面盘",
+      "subGroup": "1元模式",
+      "tag": "双面盘",
+      "eg":["冠选择大",'大 *'],
+      "default":true
+    }]
   }
 }
 
@@ -175,6 +199,11 @@ function mulNoRepeat5(d1, d2, d3, d4, d5){
 }
 
 var pk10Play = {
+  //冠亚军
+  H11:{render:['igyh','gyhz'], alg:(order, tmp)=>betSum(order, tmp).reduce(function(a,b){return a + b})},
+  //双面盘
+  G11:{render:['ifirst','isecond','ithird','ifourth','ififth','isixth','iseventh','ieighth','ininth','itenth'], alg:(order, tmp)=>betSum(order, tmp).reduce(function(a,b){return a + b})},
+  // G11:{render:['igyh','ifirst','isecond','ithird','ifourth','ififth','isixth','iseventh','ieighth','ininth','itenth'], alg:(order, tmp)=>betSum(order, tmp).reduce(function(a,b){return a + b})},
   //定位胆
   F11:{render:['first','second','third','fourth','fifth','sixth','seventh','eighth','ninth','tenth'], alg:(order, tmp)=>betSum(order, tmp).reduce(function(a,b){return a + b})},
   //前五
@@ -207,6 +236,53 @@ function syx5OneStar(){
   return res
 }
 
+//生双面盘配置
+function getOneArr(){
+  var line=[1,5,5]
+  var obj=[_gyhdsds,_dsdslh,_dsds]
+  var res = []
+  for(var i=0;i<obj.length;i++){
+    for(var j=0;j<line[i];j++){
+      res.push(obj[i])
+    }
+  }
+  return res
+}
+//双面盘随机数
+function randomOneArr(){
+  var leng=pk10Play['G11'].render.length
+  var line = Math.floor(Math.random()*leng)
+  var res = []
+  var obj=getOneArr()
+  for(var i=0;i<leng;i++){
+    var lineRes = []
+    var length=obj[i].length
+    if(line === i){
+      var feed = Math.floor(Math.random()*length)      
+      lineRes.push(obj[i][feed])
+    }
+    res.push(lineRes)
+  }
+  return res
+}
+
+//冠亚军随机数
+function randomGYZ(){
+ var obj=[_gyhdsds,_3to19]
+ var line=Math.floor(Math.random()*obj.length)
+ var res=[]
+ for(var i=0;i<obj.length;i++){
+    var length=obj[i].length
+    var lineRes = []
+    if(line===i){
+      var feed=Math.floor(Math.random()*length)
+      lineRes.push(obj[i][feed])
+    }
+    res.push(lineRes)
+ }
+ return res
+}
+
 function getSYX5NoteRandom(num, baseArr, noNeedOrder){
   var source = baseArr.slice()
   console.log(source)
@@ -226,6 +302,8 @@ function getSYX5NoteRandom(num, baseArr, noNeedOrder){
 
 //复式注单随机生成函数
 var pk10Random = {
+  H11:()=>randomGYZ(),//冠亚和
+  G11:()=>randomOneArr(),//双面盘龙虎
   F11:()=>syx5OneStar(),//定位胆
   E11:()=>_random([1,1,1,1,1], false, _pk10),//前五
   D11:()=>_random([1,1,1,1], false, _pk10),//前四

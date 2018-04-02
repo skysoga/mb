@@ -822,12 +822,15 @@ function _random(cfgArr, canRepeat, baseArr){
 var _0to9 = [0,1,2,3,4,5,6,7,8,9],
     _dsds = ['大', '小', '单', '双'],
     // filters = ['全', '大', '小', '奇', '偶', '清'],
+    _3to19 = ['03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19'],
     _0to27 = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27],
     _1to26 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26],
     _0to18 = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
     _1to17 = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],
     _syx5 = ['01','02','03','04','05','06','07','08','09','10','11'],
-    _pk10 = ['01','02','03','04','05','06','07','08','09','10']
+    _pk10 = ['01','02','03','04','05','06','07','08','09','10'],
+    _gyhdsds = ['和大','和小','和单','和双'],
+    _dsdslh = ['大','小','单','双','龙','虎']
 
 // 给出0-(n-1)的随机数
 var oneRandom = (n)=>Math.floor(Math.random() * n)
@@ -853,4 +856,4 @@ export {factorial, mul, C, combNoRepeat, unique, normalSum2,
     deleteCompress, Scheme, getBasketAmount,computeIssue,
     getSSCRebate,getMultipleRebate, DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME,
   GMT_DIF, PERBET,Max_Rate, Max_Chase_Issue, Max_Expect_Rate, syx5_zx2,
-  countSingle, betSum, createStringArray, _random, _0to9, _dsds, _0to27, _1to26, _0to18, _1to17, _syx5, _pk10, oneRandom, oneStar}
+  countSingle, betSum, createStringArray, _random, _0to9, _dsds, _0to27, _1to26, _0to18, _1to17, _syx5, _pk10,_3to19, _gyhdsds,_dsdslh, oneRandom, oneStar}

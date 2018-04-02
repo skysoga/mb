@@ -19,6 +19,7 @@
                       @click.stop = "changeGroup(groupItem)"
                       :class = "{curr:group === mode.group, lastSelect: group === '大小单双'}">
                     {{group}}
+                    <em v-if="group == '冠亚军' || group == '双面盘'" class="newPlayType">NEW</em>
                   </li>
                 </ul>
 
@@ -44,15 +45,24 @@
 
     <div class="lotterySort" ref = "lotterySort" :class = "{active:ifShowTypeSelect}">
       <div @click.stop = "toggleTypeSelect">
-        <em v-show = "noLotteryName.indexOf(ltype) === -1">{{lotteryName}}</em>
+        <em v-show = "noLotteryName.indexOf(ltype) === -1">{{ltype!=='KL8'?lotteryName.slice(0,2):lotteryName}}</em>
         <i class="iconfont" v-show="lTopNav.indexOf(ltype)===-1">&#xe61e;</i>
       </div>
 
-      <div class="lotteryList fix" v-show = "ifShowTypeSelect">
-        <a v-for = "item in LotteryList"
-           @click = "changeLottery(item.LotteryCode)">
-            {{item.LotteryName}}
-        </a>
+      <div class="lotteryList fix" v-show = "ifShowTypeSelect">        
+        <template v-if="ltype==='PK10'">
+          <a v-for = "item in LotteryList"
+             v-if="item.LotteryType==='PK10'"
+            @click = "changeLottery(item.LotteryCode)">
+              {{item.LotteryName}}
+          </a>
+        </template>
+        <template v-else>
+          <a v-for = "item in LotteryList"
+            @click = "changeLottery(item.LotteryCode)">
+              {{item.LotteryName}}
+          </a>
+        </template>
       </div>
     </div>
   </header>
@@ -79,7 +89,7 @@
     data () {
       return {
         LotteryList: [],//彩种list
-        lTopNav:['PK10','KL8', '6HC'],//导航隐藏配置
+        lTopNav:['KL8', '6HC'],//导航隐藏配置
         hideSubGroup:['6HC'],         //没有次级补录
         noLotteryName: ['6HC'],       //没有彩种名字
         ltype: '',      //彩种类型
@@ -168,6 +178,18 @@
 
 .active:active{
   background: initial !important;
+}
+.newPlayType{
+  color:white;
+  background: red;
+  font-weight: bold;
+  position: absolute;
+  margin-top:-.6em;
+  margin-left:-.7em;
+  transform: scale(.5);
+  border-radius: .2em;
+  line-height: 1em;
+  padding:.2em;
 }
 @import '../../scss/scssConfig','../../scss/mixin';
   .sscHeader{

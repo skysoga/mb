@@ -1,12 +1,13 @@
 <template>
   <div :class="{'sscMain':true,'quWei':getQW}">
     <!-- 奖金详情 -->
-    <bet-tip :award = "award" :tip = "tip" :itemArr = "bonusText[lotteryMode]"></bet-tip>
+    <bet-tip :award = "notBJSC?award:[]" :tip = "tip" :itemArr = "bonusText[lotteryMode]"></bet-tip>
 
     <!-- 普通 -->
     <betbox v-if = "!ltCfg[mode].box"
             v-for = "alias in ltCfg[mode].render"
             :alias = "alias"
+            :awardArr="getAward(alias)"
             v-on:choose = "whenChoose">
             </betbox>
 
@@ -62,6 +63,10 @@ var bonusText={
 'SSCD24':['**001','**123'],
 'SSCD25':['**311或**331','**345'],
 }
+
+var BJSCres=['PK10']//北京赛车配置
+var arrMode=['G11','H11']//北京赛车，双面盘，冠亚和
+
 export default {
   components:{
     betbox,
@@ -105,8 +110,78 @@ export default {
     lotteryMode(){
       return [this.lottery, this.mode].join('')
     },
+    //渲染赔率-北京赛车
+    renderOdds(){
+      var line=this.ltCfg[this.mode].render
+      var arr=[]
+      return this.setOddsArr(line)
+    },
+    notBJSC(){
+      return !(arrMode.indexOf(this.mode)!==-1&&BJSCres.indexOf(this.lottery)!==-1)
+    }
   }),
   methods:{
+    getAward(alias){      
+      return (arrMode.indexOf(this.mode)!==-1&&BJSCres.indexOf(this.lottery)!==-1)?this.renderOdds[alias]:[]
+    },
+    setOddsArr(arr){
+      if(!this.award){
+        // layer.msgWarn('奖金不存在')
+      }
+      var line=[]      
+      var award=this.award?this.award.split(" "):[]
+      var obj=[]//输出数组
+      var objList={}
+      switch(this.mode){
+        case 'G11':
+        line=[50]
+        // line=[1,2,1,50]
+        objList={
+          // "igyh":4,
+          "ifirst":6,
+          "isecond":6,
+          "ithird":6,
+          "ifourth":6,
+          "ififth":6,
+          "isixth":4,
+          "iseventh":4,
+          "ieighth":4,
+          "ininth":4,
+          "itenth":4
+        }
+        break;
+        case 'H11':
+        line=[1,2,1,2,2,2,2,1,2,2,2,2]        
+        objList={
+          "igyh":4,
+          "gyhz":17
+        }
+        break;
+        default:
+        line=[]
+      }
+      if(line.length&&BJSCres.indexOf(this.lottery)!==-1){
+        for(var i=0;i<award.length;i++){
+          for(var j=0;j<line[i];j++){
+            obj.push(award[i])
+          }
+        }
+      }
+      return this.setLineOdd(objList,obj)
+    },
+    setLineOdd(objList,award){
+        var obj={}        
+        for(var i in objList){
+          if(objList.hasOwnProperty(i)){
+            obj[i]=[]
+            for(var j=0;j<objList[i];j++){
+              obj[i].push(award[0])
+              award.splice(0,1)            
+            }
+          }
+      }
+      return obj
+    },
     whenChoose(alias, choose){
       var tmp = state.lt.tmp                     //即时投注号码
       // 处理胆码和拖码不可重选

@@ -20,7 +20,8 @@
         <playArea></playArea>
 
         <!-- 倍和单位， 确认投注， 号码篮 -->
-        <lt-footer></lt-footer>
+        <ltFooterBJSC v-if="gyhlh"></ltFooterBJSC>
+        <lt-footer v-else></lt-footer>
       </div>
     </div>
 
@@ -37,9 +38,13 @@
   import lt_result from '../components/lottery/lt_result'
   import lt_timebar from '../components/lottery/lt_timebar'
   import lt_footer from '../components/lottery/lt_footer'
+  import lt_footerBJSC from '../components/lottery/lt_footerBJSC'
   import lt_PKKL from '../components/lottery/lt_PKKL'
   import playArea from '../components/lottery/play_area'
   import basket from '../components/lottery/basket'
+
+  var BJSCres=['PK10']//北京赛车配置
+  var arrMode=['G11','H11']//北京赛车，双面盘，冠亚和
   export default {
     components:{
       'lt-header': lt_header,
@@ -48,7 +53,8 @@
       'lt-footer': lt_footer,
       'playArea': playArea,
       'basket': basket,
-      'lt-PKKL':lt_PKKL
+      'lt-PKKL':lt_PKKL,
+      'ltFooterBJSC':lt_footerBJSC
     },
     created(){
       this.$store.commit('lt_initConfig')
@@ -60,6 +66,11 @@
       ifShowType(){
         var lotteryArr=['KL8','PK10']
         return lotteryArr.indexOf(this.$parent.ltype)==-1
+      },
+      mode:()=>state.lt.mode.mode,
+      lottery:()=>state.lt.lottery.LotteryType,
+      gyhlh(){
+        return arrMode.indexOf(this.mode)!==-1&&BJSCres.indexOf(this.lottery)!==-1
       }
     },
   }

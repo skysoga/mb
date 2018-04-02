@@ -4,7 +4,7 @@ import BottomBox from '../components/bottom-box';
       return{
         BetweenType:'',
         BottomBoxShow:false,
-        BottomBoxList:{K3:"快3",SSC:"时时彩",SYX5:"11选5",FC3D:"福彩3D",PL35:"排列3",KL8:"北京快乐8",PK10:"北京PK10",LHC:"六合彩"},
+        BottomBoxList:{K3:"快3",SSC:"时时彩",SYX5:"11选5",FC3D:"福彩3D",PL35:"排列3",KL8:"北京快乐8",PK10:"PK10",LHC:"六合彩"},
         AgentRebate:'',//自身返点数组
         setObj:{Max:8.0,Min:0.0},//最大返点
         ArrObj:'',//当前总数据
@@ -190,6 +190,18 @@ import BottomBox from '../components/bottom-box';
           {"Mode":"前二-复式","Odd":[40320,3628800]},
           {"Mode":"前二-单式","Odd":[40320,3628800]},
           {"Mode":"前一-复式","Odd":[362880,3628800]},
+          {"Mode":"双面盘-大小单双龙虎","Odd":[1,2]},
+          {"Mode":"冠亚和-和大/和双","Odd":[40,90]},
+          {"Mode":"冠亚和-和小/和单","Odd":[50,90]},
+          {"Mode":"冠亚和-03/04","Odd":[2,90]},
+          {"Mode":"冠亚和-05/06","Odd":[4,90]},
+          {"Mode":"冠亚和-07/08","Odd":[6,90]},
+          {"Mode":"冠亚和-09/10","Odd":[8,90]},
+          {"Mode":"冠亚和-11","Odd":[10,90]},
+          {"Mode":"冠亚和-12/13","Odd":[8,90]},
+          {"Mode":"冠亚和-14/15","Odd":[6,90]},
+          {"Mode":"冠亚和-16/17","Odd":[4,90]},
+          {"Mode":"冠亚和-18/19","Odd":[2,90]},
         ]
       }
       this.ListArr={
@@ -427,7 +439,7 @@ import BottomBox from '../components/bottom-box';
                 set = Mname==="半波"||Mname==="一肖"||Mname==="特码"&&iMo!=="直选"||Mname==="正码"&&iMo!=="任选"&&iMo!=="正特"
               }else{
                 iMo=Mode.substr(Mode.length-2);
-                set = iMo=='三星'||iMo=='二星'||iMo=='/双'
+                set = iMo=='三星'||iMo=='二星'||iMo=='/双'||iMo=='和双'||iMo=='和单'||iMo=='龙虎'
               }
               var Num=this.SetOdd(isMode[i].Odd[0],isMode[i].Odd[1],set);
               isArr.Data.push(Num);
