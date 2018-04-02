@@ -125,6 +125,7 @@ body{
     }
   }
   .sscMain{
+    padding-bottom: 5.8em !important;
     .sscTips{
       padding-top: 5.6em;
     }
