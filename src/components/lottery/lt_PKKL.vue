@@ -191,13 +191,13 @@ export default{
   // background: #faf9f6;
   // border-radius: 50%;
   text-align: center;
-  margin:0 .05em;
+  // margin:0 .05em;
   line-height: 1.7em;
   // background: linear-gradient(unquote('to top, #f86469 0%,#bf1f24 75%'));
   // box-shadow: 0px 2px 1px #bbb59c;
   // color:white;
   color:#e54042;
-  font-size: 0.85em;
+  // font-size: 0.95em;
 }
 .current,.past{
   padding-left: 1em;
