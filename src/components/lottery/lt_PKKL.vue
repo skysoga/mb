@@ -345,7 +345,7 @@ export default{
         content:"";
         display: block;
         position: absolute;
-        left: -.375em;
+        left: -.41em;
         top:1.8em;
         // width: .3em;
         // height: .3em;
