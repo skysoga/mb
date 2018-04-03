@@ -33,14 +33,15 @@
           <div class="left"><i>期号</i></div>
           <div class="right"><i>开奖号码</i></div>
         </li>
+        <li class="space"><div class="left"></div><div class="right"></div></li>
         <li class="fix" v-if = "$store.state.lt.LotteryResults[lcode]&&pastOpen.length" v-for="item in pastOpen">
           <div class="left">{{openNum(item.IssueNo)}}<br>{{item.OpenTime}}</div>
           <div class="right">
             <template v-if="ltype==='KL8'">
-              <div class="line1">
+              <div class="line1 fix">
                 <a v-for = "(num,key) in item.LotteryOpen" v-if="key<10"><span>{{num}}</span></a>
               </div>
-              <div class="line2">
+              <div class="line2 fix">
                 <a v-for = "(num,key) in item.LotteryOpen" v-if="key>9&&key<20"><span>{{delEnd(num)}}</span></a>
               </div>
             </template>
@@ -49,6 +50,7 @@
             </div>
           </div>
         </li>
+        <li class="space"><div class="left"></div><div class="right"></div></li>
       </ul>
     </div>
   </div>
@@ -152,6 +154,14 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+.space{
+  height: .6em !important;
+  .right{
+    &:before{
+      display: none !important;
+    }
+  }
+}
 .StateStyle2{
   font-size: .65em;
   background: #e1d9ba;
@@ -174,11 +184,11 @@ export default{
   display: inline-block;
   width: 1.5em;
   height: 1.5em;
+  line-height: 1.7em;
   background: #faf9f6;
   border-radius: 50%;
   text-align: center;
   margin:0 .05em;
-  line-height: 1.7em;
   background: linear-gradient(unquote('to bottom, #f86469 0%,#bf1f24 75%'));
   box-shadow: 0px 2px 1px #bbb59c;
   color:white;
@@ -187,12 +197,10 @@ export default{
 .record span{
   display: inline-block;
   width: 1.5em;
-  height: 1.5em;
   // background: #faf9f6;
   // border-radius: 50%;
   text-align: center;
   // margin:0 .05em;
-  line-height: 1.7em;
   // background: linear-gradient(unquote('to top, #f86469 0%,#bf1f24 75%'));
   // box-shadow: 0px 2px 1px #bbb59c;
   // color:white;
@@ -248,7 +256,7 @@ export default{
 }
 .title{
   text-align: center;
-  height: 2.4em;
+  height: 2.4em !important;
   font-weight: 400;
   line-height: 2.4em;
   border-bottom: 1px solid #bdb48b;
@@ -283,15 +291,15 @@ export default{
   width: 100%;
   font-size: 1em;
   color: #666;
+  box-shadow: 0 10px 10px rgba(41, 41, 41, 0.08);
   li{
+    height: 3.6em;
     .left,.right{
       float: left;
-      padding-top: 1em;
-    }
-    &:last-child{
-      .left,.right{
-        padding-bottom: 1em;
-      }
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .left{
       width: 7.8em;
@@ -303,19 +311,23 @@ export default{
       width: 16.5em;
       padding-left: 1.3em;
       a{
+        float: left;
       }
       &:before{
         content:"";
         display: block;
         position: absolute;
-        left: -.315em;
-        top:2.2em;
-        width: .3em;
-        height: .3em;
-        border-radius: .4em;
+        left: -.375em;
+        top:1.8em;
+        // width: .3em;
+        // height: .3em;
+        // border-radius: .4em;
         /*box-shadow: 0 0 0 .2em #bdb58b;*/
-        border:.15em solid #bdb58b;
-        background: #f5f1e5;
+        // border:.15em solid #bdb58b;
+        // background: #f5f1e5;
+        width: .7em;
+        height: 1px;
+        background-image: -webkit-linear-gradient(90deg, transparent, transparent 50%, #a7a182 50%);
       }
     }
   }
