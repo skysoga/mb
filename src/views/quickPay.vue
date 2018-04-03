@@ -354,12 +354,12 @@ export default {
 
       // if(OType.indexOf(nowAjax.BankCode)!==-1){
         // if(nowAjax.BankCode!=='智汇付'||nowAjax.Qort===6){
-        if(this.isOpenType==4||OType.indexOf(nowAjax.BankCode)!==-1){
+        /*if(this.isOpenType==4||OType.indexOf(nowAjax.BankCode)!==-1){
           newTab=window.open('about:blank')
           console.log('新开窗口');
-        }
+        }*/
       // }
-      
+
       this.QrBg=true
       layer.msgWait("正在提交")
       _fetch(nowAjax).then((json)=>{
@@ -386,13 +386,14 @@ export default {
             }
           }
         }else{
-          this.QrBg=false
+          /*this.QrBg=false
           if(YDB){
             newTab&&newTab.close()
             newTab=true
           }
           RootApp.OpenWin(json.BackUrl, newTab)
-          this.Money = ''
+          this.Money = ''*/
+          location.href=json.BackUrl
         }
 
         }else{
