@@ -163,8 +163,18 @@ export default{
           var dx=+Math.max(hd,hx)
           var ds=+Math.max(hdd,hss)
           getLine.push(+self+dx+ds)
-        })        
-        maxAward=getLine.length?Math.max.apply({},getLine):0
+        })
+        //处理只有和大小单双的情况
+        function setDSDS(){
+          var hd=dsds[0]?dadsAward['和大']:0
+          var hx=dsds[1]?dadsAward['和小']:0
+          var hdd=dsds[2]?dadsAward['和单']:0
+          var hs=dsds[3]?dadsAward['和双']:0
+          var dx=+Math.max(hd,hx)
+          var ds=+Math.max(hdd,hs)
+          return dx+ds
+        }
+        maxAward=getLine.length?Math.max.apply({},getLine):setDSDS()
       }
       return maxAward.toFixed(3)
     }

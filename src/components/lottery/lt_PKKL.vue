@@ -22,9 +22,9 @@
       </ul>
       <div :class="{'lernMore':true,'close':!isShow}"><em class="iconfont"><i>&#xe64c;</i></em></div>
   </template> -->
-    <div class="StateStyle2" v-if = "$store.state.lt.LotteryResults[lcode]&&pastOpen.length">
+    <div class="StateStyle2">
       <div class="past">{{openNum(oldIssue)}}开奖：<div class="resultCon">
-          <em v-for="(d,i) in display" v-if="i<10">{{d}}</em><ins v-show="pastOpen[0].LotteryOpen.length>10">&nbsp;...</ins>
+          <em v-for="(d,i) in display" v-if="i<10">{{d}}</em><ins v-show="display.length>10">&nbsp;...</ins>
         </div>
       </div>
       <div class="current" :class="{'open':ifShowPastOpen}">{{nowIssue}}投注：<em>{{TimeBar}}</em>&nbsp;<i class="iconfont">&#xe601;</i></div>
@@ -33,7 +33,7 @@
           <div class="left"><i>期号</i></div>
           <div class="right"><i>开奖号码</i></div>
         </li>
-        <li class="fix" v-for="item in pastOpen">
+        <li class="fix" v-if = "$store.state.lt.LotteryResults[lcode]&&pastOpen.length" v-for="item in pastOpen">
           <div class="left">{{openNum(item.IssueNo)}}<br>{{item.OpenTime}}</div>
           <div class="right">
             <template v-if="ltype==='KL8'">
@@ -108,13 +108,25 @@ export default{
       }
     },
     pastOpen(){
-      return state.lt.LotteryResults[this.lcode].map(item=>{
+      var arr = state.lt.LotteryResults[this.lcode].map(item=>{
         var el = {}
         el.IssueNo = item.IssueNo.slice(0)        //把年份砍掉
         el.LotteryOpen = item.LotteryOpen.split(',')
         el.OpenTime = item.OpenTime.split(' ')[1] //开奖时间的时分秒
         return el
       })
+      try{
+      //需要去掉的期数
+      var num = arr.length - 8
+      if (num>0) {
+        for (var i = 0; i < num; i++) {
+          arr.pop()
+        }
+      }
+      }catch(e){
+
+      }
+      return arr
     },
     ifShowPastOpen(){
       return state.lt.box === 'pastOpen'
@@ -158,7 +170,7 @@ export default{
     position: absolute;
   }
 }
-.resultCon em,.record span{
+.resultCon em{
   display: inline-block;
   width: 1.5em;
   height: 1.5em;
@@ -167,10 +179,25 @@ export default{
   text-align: center;
   margin:0 .05em;
   line-height: 1.7em;
-  background: linear-gradient(unquote('to top, #f86469 0%,#bf1f24 75%'));
+  background: linear-gradient(unquote('to bottom, #f86469 0%,#bf1f24 75%'));
   box-shadow: 0px 2px 1px #bbb59c;
   color:white;
   font-size: 0.85em;
+}
+.record span{
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  // background: #faf9f6;
+  // border-radius: 50%;
+  text-align: center;
+  // margin:0 .05em;
+  line-height: 1.7em;
+  // background: linear-gradient(unquote('to top, #f86469 0%,#bf1f24 75%'));
+  // box-shadow: 0px 2px 1px #bbb59c;
+  // color:white;
+  color:#e54042;
+  // font-size: 0.95em;
 }
 .current,.past{
   padding-left: 1em;
@@ -215,7 +242,8 @@ export default{
   width: 100%;
   z-index: 6;
   .record.open{
-    height: 38.6em;
+    // height: 38.6em;
+    display: block;
   }
 }
 .title{
@@ -245,7 +273,8 @@ export default{
 .record{
   background: #e1d9ba;
   line-height: 1.4em;
-  height: 0;
+  // height: 0;
+  display: none;
   overflow: hidden;
   border-color: #bdb58b;
   box-shadow: 0 -1px 0 white ;
