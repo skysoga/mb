@@ -248,7 +248,7 @@ export default{
 }
 .title{
   text-align: center;
-  height: 2.4em;
+  height: 2.4em !important;
   font-weight: 400;
   line-height: 2.4em;
   border-bottom: 1px solid #bdb48b;
@@ -284,9 +284,13 @@ export default{
   font-size: 1em;
   color: #666;
   li{
+    height: 4em;
     .left,.right{
       float: left;
-      padding-top: 1em;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     &:last-child{
       .left,.right{
