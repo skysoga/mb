@@ -1,4 +1,5 @@
 import BottomBox from '../components/bottom-box';
+var BJSC = ['双面盘', '冠亚和']//1元玩法
   export default{
     data(){
       return{
@@ -339,7 +340,8 @@ import BottomBox from '../components/bottom-box';
       },
       setMsg(key,index){
         if(index>0){
-          return (key!=="K3"&&key!=="LHC")?"奖金":"赔率"
+          var isBJSC = this.ArrObj.Mode[index-1].slice(0,3)//1元玩法
+          return (key !== "K3" && key !== "LHC") ? (BJSC.indexOf(isBJSC) > -1 ?"赔率":"奖金"):"赔率"
         }else{
           return ""
         }
@@ -390,7 +392,19 @@ import BottomBox from '../components/bottom-box';
                         j=0;
                 nArr.push(reArr[i]);
                 for(;j<Data.length;j++){
-                    nArr.push(Data[j][i]);
+                  var type = Mode[j].slice(0, 3)
+                  var key = Data[j][i]
+                  if (this.BetweenType=='PK10'&&BJSC.indexOf(type) > -1) {
+                    key = key/2
+                    var isNum = Mode[j].match(/[大单双]/g)
+                    if(!isNum){
+                      key=Math.floor(key*100)/100
+                    }else{
+                      key=key.toFixed(3)
+                    }
+                  }
+                  nArr.push(key);
+
                 }
               if(Onum<=this.reeData.Rebate[0]&&Onum>=this.reeData.Rebate[1]){
                 isArr.push(nArr)
