@@ -112,10 +112,6 @@ body{
 }
 
 .PK10{
-  .line1{
-    height: 2em;
-    line-height: 3em;
-  }
   .betFilterAnd{
     padding: .2rem !important;
     li{
