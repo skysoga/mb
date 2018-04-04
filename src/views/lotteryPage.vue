@@ -36,7 +36,7 @@
   import {gifts,giftsList,faceData,imgHost,livecfg} from '../js/liveconfig'
 
   var randomFeed = Math.floor(Math.random()*4)  //获取开奖时间的随机数，用于错开请求
-  var haveGotTime = true		                    //标志位-进页面时是否获取到服务器时间
+  var haveGotTime = true                        //标志位-进页面时是否获取到服务器时间
   var offLineLottery = ['FC3D', 'PL35']//不存在的彩种
 
   function scrollTop(){document.body.scrollTop = 0}  //滚动置顶
@@ -177,7 +177,7 @@
         // 进入彩种页必须先获取到  赔率/彩种配置/服务器时间
         Promise.all(reqArr).then((values)=>{
           //校验下这个彩种存不存在，不存在就送回购彩大厅
-          var lotteryItem = state.LotteryList[lcode]          
+          var lotteryItem = state.LotteryList[lcode]
           if((lotteryItem === undefined || offLineLottery.indexOf(lotteryItem.LotteryType) > -1)){
             layer.url('您所访问的彩种不存在，即将返回购彩大厅', '/lotteryHall')
             return
@@ -196,13 +196,13 @@
           RootApp.$router.replace('/index')
         })
       }
-		},
-		created(){
-		  //从url上获取彩种type和彩种code
-		  ;[this.ptype,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
+    },
+    created(){
+      //从url上获取彩种type和彩种code
+      ;[this.ptype,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
       //如果有本地缓存的时间，则再更新一次
       if(haveGotTime){
-	      RootApp.getServerTime()
+        RootApp.getServerTime()
       }
 
       //页面配置信息
@@ -318,7 +318,7 @@
           lt_updateDate:(state)=>{
             var nowSerTime = new Date().getTime()- this.$store.state.Difftime;   //当前的服务器时间
             nowSerTime=nowSerTime+new Date().getTimezoneOffset()*60*1000-GMT_DIF
-            console.log(new Date(nowSerTime).format("yyyyMMddhhmmss"));
+            // console.log(new Date(nowSerTime).format("yyyyMMddhhmmss"));
             state.Todaystr = new Date(nowSerTime).format("yyyyMMdd");           //今天
           },
           // 设置LotteryPlan
@@ -1376,9 +1376,17 @@
         this.$store.dispatch('lt_refresh')
       },1000)
       // 本地时间是否正确
-      if(Math.abs(this.$store.state.Difftime)>82800000){
-        layer.url('本地时间不正确，请调整后刷新','/index')
+      /*if(Math.abs(this.$store.state.Difftime)>82800000){
+        localStorage.removeItem('Difftime')
+        layer.url('本地时间不正确，请调整后进入','/index')
+      }*/
+      this.visibilitychange=function(){
+        document.hidden && commit('lt_updateDate')
       }
+      document.addEventListener("visibilitychange", this.visibilitychange)
+    },
+    destroyed(){
+      document.removeEventListener("visibilitychange", this.visibilitychange)
     },
     data(){
       return {
@@ -1434,15 +1442,15 @@
           '6HC': ['特码', '特码']
         }
 
-				if(this.ltype !== 'K3'){
-					var _group, _subGroup
-				  _group = defaultMode[this.ltype][0]			//默认的玩法群
-				  _subGroup = defaultMode[this.ltype][1]		//默认的玩法组
-	  			store.commit('lt_changeMode', state.lt.config[_group][_subGroup][0])
-				}else{
-					store.commit('lt_changeMode', state.lt.config[0])
-				}
-			},
+        if(this.ltype !== 'K3'){
+          var _group, _subGroup
+          _group = defaultMode[this.ltype][0]     //默认的玩法群
+          _subGroup = defaultMode[this.ltype][1]    //默认的玩法组
+          store.commit('lt_changeMode', state.lt.config[_group][_subGroup][0])
+        }else{
+          store.commit('lt_changeMode', state.lt.config[0])
+        }
+      },
       reconnect(){
         _fetch({Action:"GetAnchor",GameID:this.lcode},{url:'/LiveApi'})
         .then(d=>{
@@ -1650,38 +1658,38 @@
         }
         return (','+block.Level).search(','+state.UserUpGradeBonus.Grade+',')
       },
-		},
-		watch:{
-			$route(val){
-			  ;[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
-		    store.commit('lt_setPerbet', PERBET)
-		    store.commit('lt_clearBet')
-		    store.commit('lt_clearBasket')
-		    store.commit('lt_setScheme', [])
-		    store.commit('lt_setChasePower', 1)		//清空追号配置
-				store.commit('lt_setChaseIssue', 1)
-			}
-		},
-	  beforeRouteLeave(to, from, next){
-	    //离开页面前将每注金额重设为 PERBET (2元)
-	    if(store.state.lt){
-		    store.commit('lt_setPower', 1)
-		    store.commit('lt_setPerbet', PERBET)
-		    store.commit('lt_setUnit', 1)
-		    store.commit('lt_clearBet')
-		    store.commit('lt_clearBasket')
-		    store.commit('lt_setScheme', [])
-		    store.commit('lt_setChasePower', 1)		//清空追号配置
-				store.commit('lt_setChaseIssue', 1)
-	    }
-	    next()
-	  },
-		beforeDestroy(){
-			clearTimeout(this.timer1)
-			clearTimeout(this.timer2)
-			clearTimeout(this.timer3)
-			clearTimeout(this.timer4)
-			clearInterval(this.baseLoop)
+    },
+    watch:{
+      $route(val){
+        ;[,this.ltype, this.lcode] = this.$route.fullPath.slice(1).split('/')
+        store.commit('lt_setPerbet', PERBET)
+        store.commit('lt_clearBet')
+        store.commit('lt_clearBasket')
+        store.commit('lt_setScheme', [])
+        store.commit('lt_setChasePower', 1)   //清空追号配置
+        store.commit('lt_setChaseIssue', 1)
+      }
+    },
+    beforeRouteLeave(to, from, next){
+      //离开页面前将每注金额重设为 PERBET (2元)
+      if(store.state.lt){
+        store.commit('lt_setPower', 1)
+        store.commit('lt_setPerbet', PERBET)
+        store.commit('lt_setUnit', 1)
+        store.commit('lt_clearBet')
+        store.commit('lt_clearBasket')
+        store.commit('lt_setScheme', [])
+        store.commit('lt_setChasePower', 1)   //清空追号配置
+        store.commit('lt_setChaseIssue', 1)
+      }
+      next()
+    },
+    beforeDestroy(){
+      clearTimeout(this.timer1)
+      clearTimeout(this.timer2)
+      clearTimeout(this.timer3)
+      clearTimeout(this.timer4)
+      clearInterval(this.baseLoop)
       this.isRuning = 0
       if (this.GameWS !== null) {
         this.GameWS.close()
@@ -1690,7 +1698,7 @@
         this.OnlineWS.close()
       }
       // clearInterval(this.isRuningT)
-		},
+    },
 
   }
 </script>
