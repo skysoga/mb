@@ -393,7 +393,12 @@ export default {
           }
           RootApp.OpenWin(json.BackUrl, newTab)
           this.Money = ''*/
-          location.href=json.BackUrl
+          if (_App) {
+            RootApp.OpenWin(json.BackUrl, newTab)
+          }else{
+            location.href=json.BackUrl
+          }
+          
         }
 
         }else{
