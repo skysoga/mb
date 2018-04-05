@@ -2,7 +2,7 @@
 <div class="isLotteryCon">
   <!-- 开奖号码 -->
   <div class="result"  v-if="$store.state.lt.OldIssue" @click.stop="togglePastOpen">
-    <span class="text-small" :class="{'show-list':status}">
+    <span class="text-small" :class="{'show-list':ifShowPastOpen}">
       {{oldIssue}}期开奖号码 <i class="iconfont">&#xe601;</i>
     </span>
 
@@ -76,7 +76,6 @@ export default {
       // green:['05','06','11','16','17','21','22','27','28','32','33','38','39','43','44','49'],
       wait4Results:['01','01','01','01','01','01','01'],
       timer:null,
-      status:0,
     }
   },
   methods:{
@@ -90,10 +89,8 @@ export default {
     togglePastOpen(){
       if(this.$store.state.lt.box === 'pastOpen'){
         this.$store.commit('lt_changeBox', '')
-        this.status = 0
       }else{
         this.$store.commit('lt_changeBox', 'pastOpen')
-        this.status = 1
       }
     }
   },

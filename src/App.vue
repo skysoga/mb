@@ -112,10 +112,6 @@ body{
 }
 
 .PK10{
-  .line1{
-    height: 2em;
-    line-height: 3em;
-  }
   .betFilterAnd{
     padding: .2rem !important;
     li{
@@ -125,6 +121,7 @@ body{
     }
   }
   .sscMain{
+    padding-bottom: 5.8em !important;
     .sscTips{
       padding-top: 5.6em;
     }
