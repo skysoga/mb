@@ -618,7 +618,7 @@ function computeIssue(code, index, isChase){
     var planLen=state.lt.LotteryPlan.length
     return function(){
       var data = state.lt.Todaystr.replace(/^(\d{4})(\d{2})(\d{2})$/,'$1/$2/$3');
-      var betweenDays = Math.floor((Date.parse(data) - Date.parse(dateStr)) / DAY_TIME)
+      var betweenDays = Math.round((Date.parse(data) - Date.parse(dateStr)) / DAY_TIME)
       return (betweenDays * planLen + baseIssue + index)+'';
     }
   }

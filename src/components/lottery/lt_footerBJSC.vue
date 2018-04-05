@@ -10,7 +10,7 @@
       最高可中<span>{{(betvalue*maxAward).toFixed(2)}}</span>元
     </template>
     <template v-else>
-      请输入要投注金额
+      请输入要投注的金额
     </template>
   </div>
 
@@ -163,8 +163,18 @@ export default{
           var dx=+Math.max(hd,hx)
           var ds=+Math.max(hdd,hss)
           getLine.push(+self+dx+ds)
-        })        
-        maxAward=getLine.length?Math.max.apply({},getLine):0
+        })
+        //处理只有和大小单双的情况
+        function setDSDS(){
+          var hd=dsds[0]?dadsAward['和大']:0
+          var hx=dsds[1]?dadsAward['和小']:0
+          var hdd=dsds[2]?dadsAward['和单']:0
+          var hs=dsds[3]?dadsAward['和双']:0
+          var dx=+Math.max(hd,hx)
+          var ds=+Math.max(hdd,hs)
+          return dx+ds
+        }
+        maxAward=getLine.length?Math.max.apply({},getLine):setDSDS()
       }
       return maxAward.toFixed(3)
     }
@@ -416,7 +426,7 @@ $footer-left:0.5em;
   text-align: center;
   height: 2.2em;
   line-height: 2.2em;
-  width: 6em;
+  width: 100%;
   border-radius: 0.26rem;
 }
 </style>
