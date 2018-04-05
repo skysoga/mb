@@ -253,13 +253,16 @@ export default{
       }
     },
     inputPerbet($event){
-      var value = $event.target.value
-      var reg = /^\d*$/  //正整数
-      if(!reg.test(value)){
-        value = ''
-        $event.target.value = value
+      // var value = $event.target.value
+      // var reg = /^\d*$/  //正整数
+      // if(!reg.test(value)){
+      //   value = ''
+      //   $event.target.value = value
+      // }
+      // this.$emit('input', value)
+      if(!/^\d+$/.test(this.betvalue)|| !(+this.betvalue)){
+        this.betvalue = ''
       }
-      this.$emit('input', value)
     },
     showBetStr(){
       layer.confirm(this.betStr,['确定'],()=>{})
