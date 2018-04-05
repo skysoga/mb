@@ -257,7 +257,7 @@ export default{
   },
   methods:{
     setOddsArr(){
-      if(!this.award||this.notBJSC){
+      if(!this.award){
         return {}
         // layer.msgWarn('奖金不存在')
       }
