@@ -259,7 +259,17 @@ export default{
   height: 2.4em !important;
   font-weight: 400;
   line-height: 2.4em;
-  border-bottom: 1px solid #bdb48b;
+  position: relative;
+  &:after{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    content:'';
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-image: -webkit-linear-gradient(90deg,transparent,transparent 50%,#a7a182 0);
+  }
   em{
     color:#dc3b40;
   }
@@ -270,7 +280,9 @@ export default{
     padding-top: 0 !important;
   }
   .left{
-    border:none !important;
+    &:after{
+      display: none;
+    }
   }
   .right{
     &:before{
@@ -281,17 +293,24 @@ export default{
 .record{
   background: #e1d9ba;
   line-height: 1.4em;
-  // height: 0;
   display: none;
   overflow: hidden;
   border-color: #bdb58b;
-  box-shadow: 0 -1px 0 white ;
   position: absolute;
-  margin-top: 1px;
   width: 100%;
   font-size: 1em;
   color: #666;
   box-shadow: 0 10px 10px rgba(41, 41, 41, 0.08);
+  position: relative;
+  &:before{
+    content: '';
+    width: 100%;
+    position: absolute;
+    height: 1px;
+    left: 0;
+    top:0;
+    background-image: -webkit-linear-gradient(90deg,#fff,#fff 50%,transparent 0);
+  }
   li{
     height: 3.6em;
     .left,.right{
@@ -303,8 +322,17 @@ export default{
     }
     .left{
       width: 7.8em;
-      border-right:1px solid #bdb58b;
       text-align: center;
+      position: relative;
+      &:after{
+        content:'';
+        position: absolute;
+        top:0;
+        right: 0;
+        height: 100%;
+        background-image: -webkit-linear-gradient(0deg,#a7a182,#a7a182 50%,transparent 0);
+        width: 1px;
+      }
     }
     .right{
       position: relative;
@@ -317,7 +345,7 @@ export default{
         content:"";
         display: block;
         position: absolute;
-        left: -.375em;
+        left: -.41em;
         top:1.8em;
         // width: .3em;
         // height: .3em;

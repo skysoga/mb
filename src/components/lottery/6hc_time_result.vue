@@ -80,7 +80,7 @@ export default {
   },
   methods:{
     getAnimal(numStr,natal){
-      console.log(natal)
+      // console.log(natal)
       return getAnimal(numStr, natal||this.natal)
     },
     inArray(arr, item){
