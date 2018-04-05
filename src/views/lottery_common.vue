@@ -43,8 +43,9 @@
   import playArea from '../components/lottery/play_area'
   import basket from '../components/lottery/basket'
 
-  var BJSCres=['PK10']//北京赛车配置
-  var arrMode=['G11','H11']//北京赛车，双面盘，冠亚和
+  // var BJSCres=['PK10']//北京赛车配置
+  // var arrMode=['G11','H11']//北京赛车，双面盘，冠亚和
+  var isShowBox=['PK10G11','PK10H11','SSCJ11','SSCK11','SSCL11']
   export default {
     components:{
       'lt-header': lt_header,
@@ -70,7 +71,7 @@
       mode:()=>state.lt.mode.mode,
       lottery:()=>state.lt.lottery.LotteryType,
       gyhlh(){
-        return arrMode.indexOf(this.mode)!==-1&&BJSCres.indexOf(this.lottery)!==-1
+        return isShowBox.indexOf(this.lottery+this.mode)!==-1
       }
     },
   }

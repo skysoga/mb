@@ -29,12 +29,20 @@
 <script>
 //处理最大奖金
 import {pk10Play} from '../../js/page_config/lt_pk10'
-import {_dsdslh,_dsds,_3to19,_gyhdsds} from '../../js/kit'
+import {sscPlay} from '../../js/page_config/lt_ssc'
+import {_dsdslh,_dsds,_3to19,_gyhdsds,_0to9,_lhh,_dsdszh,_zhlh} from '../../js/kit'
 
-var BJSCres=['PK10']//北京赛车配置
-var arrMode=['G11','H11']//北京赛车，双面盘，冠亚和
+// var BJSCres=['PK10']//北京赛车配置
+// var arrMode=['G11','H11']//北京赛车，双面盘，冠亚和
+// var isShowBox=['PK10G11','PK10H11','SSCJ11','SSCK11','SSCL11']
+var awardSSC={//时时彩新玩法赔率测试数据
+  'J11':'2.199',
+  'K11':'1.8 2 9 1.8',
+  'L11':'2 9',
+}
 var playCfg = {
-  'PK10': pk10Play
+  'PK10': pk10Play,
+  'SSC': sscPlay
 }
 // G11,H11配置
 var cfg={
@@ -52,6 +60,26 @@ var cfg={
   'itenth':{tag:'第十', itemArr: _dsds},
   //冠亚军
   'gyhz':{tag:'冠亚和值', itemArr: _3to19},
+  //带z大小单双质合
+  'z10000': {tag: '万位', itemArr: _dsdszh},
+  'z1000': {tag: '千位', itemArr: _dsdszh},
+  'z100': {tag: '百位', itemArr: _dsdszh},
+  'z10': {tag: '十位', itemArr: _dsdszh},
+  'z1': {tag: '个位', itemArr: _dsdszh},
+  //时时彩新玩法
+  'cbz':{tag:'猜豹子', itemArr: _0to9},
+  //总和/龙虎
+  'zhlh':{tag:'总和龙虎', itemArr: _zhlh},
+  'wQian':{tag:'万千', itemArr: _lhh},
+  'wBai':{tag:'万百', itemArr: _lhh},
+  'wShi':{tag:'万十', itemArr: _lhh},
+  'wGe':{tag:'万个', itemArr: _lhh},
+  'qBai':{tag:'千百', itemArr: _lhh},
+  'qShi':{tag:'千十', itemArr: _lhh},
+  'qGe':{tag:'千个', itemArr: _lhh},
+  'bShi':{tag:'百十', itemArr: _lhh},
+  'bGe':{tag:'百个', itemArr: _lhh},
+  'sGe':{tag:'十个', itemArr: _lhh}
 }
 export default{
   data(){
@@ -73,7 +101,7 @@ export default{
     betCount(){
       return this.$store.state.lt.bet.betting_count
     },
-    award:()=>state.lt.award,        //奖金
+    award:()=>state.lt.award||awardSSC[state.lt.mode.mode],        //奖金
     mode:()=>state.lt.mode.mode,
     lottery:()=>state.lt.lottery.LotteryType,
     betMoney(){return this.$store.state.lt.bet.betting_money.toFixed(2)},
@@ -176,12 +204,61 @@ export default{
         }
         maxAward=getLine.length?Math.max.apply({},getLine):setDSDS()
       }
+      //时时彩新玩法
+      if(this.mode==='J11'){
+        var cbz=NumToAward.cbz
+        var getLine=[]
+        for(var i in cbz){
+          if(cbz.hasOwnProperty(i)){
+            getLine.push(cbz[i])
+          }
+        }
+        maxAward+=Math.max.apply({},getLine)
+      }
+      if(this.mode==='K11'){
+        var zhlhAward=NumToAward.zhlh,
+            getLine=[]
+            for(var i in getBetMax){
+              if(getBetMax.hasOwnProperty(i)){
+                if(i==='zhlh'){                  
+                var zda=getBetMax[i].indexOf('和大')>-1?zhlhAward['和大']:0,
+                    zxiao=getBetMax[i].indexOf('和小')>-1?zhlhAward['和小']:0,
+                    zdan=getBetMax[i].indexOf('和单')>-1?zhlhAward['和单']:0,
+                    zsuang=getBetMax[i].indexOf('和双')>-1?zhlhAward['和双']:0,
+                    zlong=getBetMax[i].indexOf('龙')>-1?zhlhAward['龙']:0,
+                    zhu=getBetMax[i].indexOf('虎')>-1?zhlhAward['虎']:0,
+                    zhe=getBetMax[i].indexOf('和')>-1?zhlhAward['和']:0,
+                    zdx=+Math.max(zda,zxiao),
+                    zds=+Math.max(zdan,zsuang),
+                    zlhh=+Math.max(zlong,zhu,zhe)
+                    getLine.push(zdx+zds+zlhh)
+                }else{
+                  var dx=+Math.max((getBetMax[i].indexOf('大')>-1?NumToAward[i]['大']:0),(getBetMax[i].indexOf('小')>-1?NumToAward[i]['小']:0)),
+                      ds=+Math.max((getBetMax[i].indexOf('单')>-1?NumToAward[i]['单']:0),(getBetMax[i].indexOf('双')>-1?NumToAward[i]['双']:0)),
+                      zh=+Math.max((getBetMax[i].indexOf('质')>-1?NumToAward[i]['质']:0),(getBetMax[i].indexOf('合')>-1?NumToAward[i]['合']:0))
+                  getLine.push(dx+ds+zh)
+                }
+              }
+            }
+        maxAward+=getLine.reduce((a,b)=>a+b)
+      }
+      if(this.mode==='L11'){
+        var getLine=[]
+        for(var i in getBetMax){
+          if(getBetMax.hasOwnProperty(i)){
+            var lhh=+Math.max((getBetMax[i].indexOf('龙')>-1?NumToAward[i]['龙']:0),(getBetMax[i].indexOf('虎')>-1?NumToAward[i]['虎']:0),(getBetMax[i].indexOf('和')>-1?NumToAward[i]['和']:0))
+            getLine.push(lhh)
+          }
+        }
+        maxAward+=getLine.reduce((a,b)=>a+b)
+      }
       return maxAward.toFixed(3)
     }
   },
   methods:{
     setOddsArr(){
-      if(!this.award){
+      if(!this.award||this.notBJSC){
+        return {}
         // layer.msgWarn('奖金不存在')
       }
       var line=[]      
@@ -207,16 +284,53 @@ export default{
         }
         break;
         case 'H11':
-        line=[1,2,1,2,2,2,2,1,2,2,2,2]        
+        line=[1,2,1,2,2,2,2,1,2,2,2,2]
         objList={
           "igyh":4,
           "gyhz":17
         }
         break;
+        case 'J11':
+        line=[10]
+        objList={
+          'cbz':10
+        }
+        break;
+        case 'K11':
+        line=[4,2,1,30]
+        objList={
+          "zhlh":7,
+          "z10000":6,
+          "z1000":6,
+          "z100":6,
+          "z10":6,
+          "z1":6,
+        }
+        break;
+        case 'L11':
+        var arr=[]        
+        line=[2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1]
+        for(var i=0;i<10;i++){
+          arr.push(award)
+        }
+        award=arr.reduce((a,b)=>a.concat(b))
+        objList={
+          "wQian":3,
+          "wBai":3,
+          "wShi":3,
+          "wGe":3,
+          "qBai":3,
+          "qShi":3,
+          "qGe":3,
+          "bShi":3,
+          "bGe":3,
+          "sGe":3,
+        }
+        break;
         default:
         line=[]
       }
-      if(line.length&&BJSCres.indexOf(this.lottery)!==-1){
+      if(line.length){
         for(var i=0;i<award.length;i++){
           for(var j=0;j<line[i];j++){
             obj.push(award[i])
@@ -252,14 +366,17 @@ export default{
         })
       }
     },
-    inputPerbet($event){
-      var value = $event.target.value
-      var reg = /^\d*$/  //正整数
-      if(!reg.test(value)){
-        value = ''
-        $event.target.value = value
+    inputPerbet(){
+      // var value = $event.target.value
+      // var reg = /^\d*$/  //正整数
+      // if(!reg.test(value)){
+      //   value = ''
+      //   $event.target.value = value
+      // }
+      if(!/^\d+$/.test(this.betvalue)|| !(+this.betvalue)){
+        this.betvalue = ''
       }
-      this.$emit('input', value)
+      // this.$emit('input', this.betvalue)
     },
     showBetStr(){
       layer.confirm(this.betStr,['确定'],()=>{})

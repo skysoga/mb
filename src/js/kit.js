@@ -830,7 +830,10 @@ var _0to9 = [0,1,2,3,4,5,6,7,8,9],
     _syx5 = ['01','02','03','04','05','06','07','08','09','10','11'],
     _pk10 = ['01','02','03','04','05','06','07','08','09','10'],
     _gyhdsds = ['和大','和小','和单','和双'],
-    _dsdslh = ['大','小','单','双','龙','虎']
+    _dsdslh = ['大','小','单','双','龙','虎'],
+    _dsdszh = ['大','小','单','双','质','合'],
+    _zhlh = ['和大','和小','和单','和双','龙','虎','和'],
+    _lhh = ['龙','虎','和']
 
 // 给出0-(n-1)的随机数
 var oneRandom = (n)=>Math.floor(Math.random() * n)
@@ -856,4 +859,5 @@ export {factorial, mul, C, combNoRepeat, unique, normalSum2,
     deleteCompress, Scheme, getBasketAmount,computeIssue,
     getSSCRebate,getMultipleRebate, DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME,
   GMT_DIF, PERBET,Max_Rate, Max_Chase_Issue, Max_Expect_Rate, syx5_zx2,
-  countSingle, betSum, createStringArray, _random, _0to9, _dsds, _0to27, _1to26, _0to18, _1to17, _syx5, _pk10,_3to19, _gyhdsds,_dsdslh, oneRandom, oneStar}
+  countSingle, betSum, createStringArray, _random, _0to9, _dsds, _0to27, _1to26, _0to18, _1to17,_lhh,_zhlh,_dsdszh,
+  _syx5, _pk10,_3to19, _gyhdsds,_dsdslh, oneRandom, oneStar}
