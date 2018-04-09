@@ -684,11 +684,6 @@
       document.addEventListener("visibilitychange", this.visibilitychange)
     },
     watch:{
-      'activeHide'(n){
-        if(n === 1){
-          console.log('此时要上抬')
-        }
-      },
       '$parent.BroadCast'(n){
         for (var i = 0; i < n.length; i++) {
           n[i].StartTime = n[i].StartTime.replace(/-/g,'/').replace(/T/,' ').replace(/\.[\d]{0,3}/,'')
