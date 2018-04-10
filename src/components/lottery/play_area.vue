@@ -67,11 +67,6 @@ var bonusText={
 // var BJSCres=['PK10']//北京赛车配置
 // var arrMode=['G11','H11']//北京赛车，双面盘，冠亚和
 var isShowBox=['PK10G11','PK10H11','SSCJ11','SSCK11','SSCL11']
-var awardSSC={//时时彩新玩法赔率测试数据
-  'J11':'2.199',
-  'K11':'1.8 2 9 1.8',
-  'L11':'2 9',
-}
 
 export default {
   components:{
@@ -104,7 +99,7 @@ export default {
   },
   computed:mapState({
     tip:()=>state.lt.mode.tip,      //提示
-    award:()=>state.lt.award||awardSSC[state.lt.mode.mode],        //奖金
+    award:()=>state.lt.award,        //奖金
     mode:()=>state.lt.mode.mode,
     lottery:()=>state.lt.lottery.LotteryType,
     getQW:()=>{
@@ -122,12 +117,11 @@ export default {
       return this.setOddsArr(line)
     },
     notBJSC(){
-      return isShowBox.indexOf(this.lottery+this.mode)===-1//!(arrMode.indexOf(this.mode)!==-1&&BJSCres.indexOf(this.lottery)!==-1)
+      return isShowBox.indexOf(this.lottery+this.mode)===-1
     }
   }),
   methods:{
     getAward(alias){      
-      // return (arrMode.indexOf(this.mode)!==-1&&BJSCres.indexOf(this.lottery)!==-1)?this.renderOdds[alias]:[]
       return isShowBox.indexOf(this.lottery+this.mode)>-1?this.renderOdds[alias]:[]
     },
     setOddsArr(arr){

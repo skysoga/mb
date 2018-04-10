@@ -199,7 +199,7 @@ export default {
       return this.$parent.lottery
     },
     gyhlh(){
-      return isShowBox.indexOf(this.lottery+this.mode)>-1//arrMode.indexOf(this.mode)!==-1&&BJSCres.indexOf(this.lottery)!==-1
+      return isShowBox.indexOf(this.lottery+this.mode)>-1
     },
     itemArr(){
       return cfg[this.alias].itemArr

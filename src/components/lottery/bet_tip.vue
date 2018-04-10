@@ -46,7 +46,7 @@ export default {
     mode:()=>state.lt.mode.mode,
     lottery:()=>state.lt.lottery.LotteryType,
     gyhlh(){
-      return isShowBox.indexOf(this.lottery+this.mode)>-1 //arrMode.indexOf(this.mode)!==-1&&BJSCres.indexOf(this.lottery)!==-1
+      return isShowBox.indexOf(this.lottery+this.mode)>-1
     },
   },
   methods:{

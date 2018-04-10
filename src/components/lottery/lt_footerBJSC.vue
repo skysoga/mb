@@ -35,11 +35,7 @@ import {_dsdslh,_dsds,_3to19,_gyhdsds,_0to9,_lhh,_dsdszh,_zhlh} from '../../js/k
 // var BJSCres=['PK10']//北京赛车配置
 // var arrMode=['G11','H11']//北京赛车，双面盘，冠亚和
 // var isShowBox=['PK10G11','PK10H11','SSCJ11','SSCK11','SSCL11']
-var awardSSC={//时时彩新玩法赔率测试数据
-  'J11':'2.199',
-  'K11':'1.8 2 9 1.8',
-  'L11':'2 9',
-}
+
 var playCfg = {
   'PK10': pk10Play,
   'SSC': sscPlay
@@ -101,7 +97,7 @@ export default{
     betCount(){
       return this.$store.state.lt.bet.betting_count
     },
-    award:()=>state.lt.award||awardSSC[state.lt.mode.mode],        //奖金
+    award:()=>state.lt.award,        //奖金
     mode:()=>state.lt.mode.mode,
     lottery:()=>state.lt.lottery.LotteryType,
     betMoney(){return this.$store.state.lt.bet.betting_money.toFixed(2)},
