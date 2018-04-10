@@ -17,9 +17,9 @@
                 <ul class="betFilter fix" ref = "betFilter">
                   <li v-for = "(groupItem,group) in config"
                       @click.stop = "changeGroup(groupItem)"
-                      :class = "{curr:group === mode.group, lastSelect: group === '大小单双', 'langW':group === '大小单双龙虎'}">
+                      :class = "{curr:group === mode.group, lastSelect: group === '大小单双'}">
                     {{group}}
-                    <em v-if="group == '冠亚军' || group == '双面盘'|| group == '猜豹子' || group == '大小单双龙虎' || group == '龙虎斗'" class="newPlayType">NEW</em>
+                    <em v-if="group == '冠亚军' || group == '双面盘'|| group == '猜豹子' || group == '两面' || group == '龙虎斗'" class="newPlayType">NEW</em>
                   </li>
                 </ul>
 
@@ -348,10 +348,7 @@
     box-shadow: 0 2px 10px rgba(41, 41, 41, 0.08);
     li{
       padding: 0;
-      width: 2.72rem;
-      &.langW{
-        width:5.8rem;
-      }
+      width: 2.72rem;     
     }
     .lastSelect{
       width: 3.9rem;
