@@ -1,6 +1,6 @@
 <template>
    <div class="selectNumber fix">
-      <div class="title fix" v-if="!(gyhlh&&mode=='H11')">
+      <div class="title fix" v-if="!(gyhlh&&mode=='H11'||gyhlh&&mode=='J11')">
         <em><p>{{tag}}</p></em>
         <!-- 全大小奇偶清 -->
         <!-- <div class="filterNumber">
@@ -12,7 +12,7 @@
         </div> -->
       </div>
 
-      <div :class="['numberContent',gyhlh&&'yghContent',gyhlh&&mode=='H11'&&'gyhAllWidth']">
+      <div :class="['numberContent',gyhlh&&'yghContent',(gyhlh&&mode=='H11'||gyhlh&&mode=='J11'||gyhlh&&mode=='L11')&&'gyhAllWidth']">
         <a v-for = "(item,key) in itemArr"
            @click = "choose(item)"
            :class = "chosen.indexOf(item) > -1 ? 'curr': ''">
