@@ -221,13 +221,13 @@ export default{
                     zxiao=getBetMax[i].indexOf('和小')>-1?zhlhAward['和小']:0,
                     zdan=getBetMax[i].indexOf('和单')>-1?zhlhAward['和单']:0,
                     zsuang=getBetMax[i].indexOf('和双')>-1?zhlhAward['和双']:0,
-                    zlong=getBetMax[i].indexOf('龙')>-1?zhlhAward['龙']:0,
-                    zhu=getBetMax[i].indexOf('虎')>-1?zhlhAward['虎']:0,
-                    zhe=getBetMax[i].indexOf('和')>-1?zhlhAward['和']:0,
+                    // zlong=getBetMax[i].indexOf('龙')>-1?zhlhAward['龙']:0,
+                    // zhu=getBetMax[i].indexOf('虎')>-1?zhlhAward['虎']:0,
+                    // zhe=getBetMax[i].indexOf('和')>-1?zhlhAward['和']:0,
                     zdx=+Math.max(zda,zxiao),
-                    zds=+Math.max(zdan,zsuang),
-                    zlhh=+Math.max(zlong,zhu,zhe)
-                    getLine.push(zdx+zds+zlhh)
+                    zds=+Math.max(zdan,zsuang)
+                    // zlhh=+Math.max(zlong,zhu,zhe)
+                    getLine.push(zdx+zds)
                 }else{
                   var dx=+Math.max((getBetMax[i].indexOf('大')>-1?NumToAward[i]['大']:0),(getBetMax[i].indexOf('小')>-1?NumToAward[i]['小']:0)),
                       ds=+Math.max((getBetMax[i].indexOf('单')>-1?NumToAward[i]['单']:0),(getBetMax[i].indexOf('双')>-1?NumToAward[i]['双']:0)),
