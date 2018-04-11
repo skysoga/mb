@@ -1,6 +1,6 @@
 <template>
   <div class="lottery_sscCon">
-    <div :class="{'lottery_ssc':true,'KL8':this.$parent.ltype=='KL8','PK10':this.$parent.ltype=='PK10'}" v-show = "!ifShowBasket">
+    <div :class="{'lottery_ssc':true,'KL8':this.$parent.ltype=='KL8'}" v-show = "!ifShowBasket">
       <div class="DontSelect sscActive">
         <!-- 头部： 玩法选择， 同类彩种选择-->
 
