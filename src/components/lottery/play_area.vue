@@ -1,7 +1,15 @@
 <template>
   <div :class="{'sscMain':true,'quWei':getQW}">
-    <!-- 奖金详情 -->
-    <bet-tip :award = "notBJSC?award:[]" :tip = "tip" :itemArr = "bonusText[lotteryMode]"></bet-tip>
+    <!-- 奖金详情 -->    
+    <div class="sscTips" v-if = "!tipDisplayFlag && tipOverLong">
+            <p>
+              {{actualTip}}
+              <span @click = "toggleDetail(true)" style = "color:#218ddd;">详细</span>
+            </p>
+          </div>
+    <bet-tip v-else :award = "notBJSC?award:[]" :tip = "tip" :itemArr = "bonusText[lotteryMode]">
+      <span v-if = "tipDisplayFlag" @click = "toggleDetail(false)" style = "color:#218ddd;">收起</span>
+    </bet-tip>
 
     <!-- 普通 -->
     <betbox v-if = "!ltCfg[mode].box"
@@ -95,6 +103,7 @@ export default {
     return {
       ltCfg: {},
       bonusText:bonusText,
+      ellipsisWidth: 46,
     }
   },
   computed:mapState({
@@ -118,11 +127,25 @@ export default {
     },
     notBJSC(){
       return isShowBox.indexOf(this.lottery+this.mode)===-1
-    }
+    },
+    tipDisplayFlag:()=>state.lt.tipDisplayFlag,
+    tipOverLong(){
+      return this.tip.length > this.ellipsisWidth
+    },
+    actualTip(){
+      if(!this.tipOverLong){
+        return this.tip
+      }else{
+        return this.tip.slice(0, this.ellipsisWidth) + '...'
+      }
+    },
   }),
   methods:{
     getAward(alias){      
       return isShowBox.indexOf(this.lottery+this.mode)>-1?this.renderOdds[alias]:[]
+    },
+    toggleDetail(bool){
+      this.$store.commit('lt_showFullTip', bool)
     },
     setOddsArr(arr){
       if(!this.award||this.notBJSC){

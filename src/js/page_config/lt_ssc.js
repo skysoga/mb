@@ -724,7 +724,7 @@ var sscConfig = {
     "1元模式":[{
       "name": "两面",
       "mode": "K11",
-      "tip": "从总和/龙虎，万位，千位，百位，十位，个位中，任选一个属性组成一注，所选属性与开奖结果属性相同，即中奖",
+      "tip": "总和龙虎：开奖号码相加的和值，大于22为“和大”，小于23为“和小”，奇数为“和单”，偶数为“和双”。开奖号万位与个位对比，大于个位为“龙”，小于个位为“虎”，相同为“和”；具体位置的开奖号码，大于4为“大”，小于5为“小”，奇数为“单”，偶数为“双”；1，2，3，5，7为“质”；0，4，6，8，9为“合”；所选属性与开奖结果属性相同，即中奖",
       "group": "两面",
       "subGroup": "1元模式",
       "tag": "两面",
@@ -855,7 +855,7 @@ var sscPlay = {
   // 新玩法
   J11:{render:['cbz'],alg:(order, tmp)=>betSum(order, tmp).reduce(function(a,b){return a + b})},
   K11:{render:['zhlh','z10000','z1000','z100','z10','z1'],alg:(order, tmp)=>betSum(order, tmp).reduce(function(a,b){return a + b})},
-  L11:{render:['wQian','wBai','wGe','qBai','qShi','qGe','bShi','bGe','sGe'],alg:(order, tmp)=>betSum(order, tmp).reduce(function(a,b){return a + b})},
+  L11:{render:['wQian','wBai','wShi','wGe','qBai','qShi','qGe','bShi','bGe','sGe'],alg:(order, tmp)=>betSum(order, tmp).reduce(function(a,b){return a + b})},
 }
 
 var sscRandom = {
