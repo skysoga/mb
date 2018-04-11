@@ -1,5 +1,5 @@
 import BottomBox from '../components/bottom-box';
-var BJSC = ['双面盘', '冠亚和']//1元玩法
+var BJSC = ['双面盘', '冠亚和','两面,','龙虎斗','猜豹子']//1元玩法
   export default{
     data(){
       return{
@@ -71,7 +71,12 @@ var BJSC = ['双面盘', '冠亚和']//1元玩法
           {"Mode":"五星-一帆风顺","Odd":[40951,100000]},
           {"Mode":"五星-好事成双","Odd":[8146,100000]},
           {"Mode":"五星-三星报喜","Odd":[856,100000]},
-          {"Mode":"五星-四季发财","Odd":[46,100000]}
+          {"Mode":"五星-四季发财","Odd":[46,100000]},
+          {"Mode":"两面,总和大小单双","Odd":[50000,100000]},
+          {"Mode":"两面,大小单双质合","Odd":[50000,100000]},
+          {"Mode":"龙虎斗,龙虎","Odd":[45,100]},
+          {"Mode":"龙虎斗,和","Odd":[10,100]},
+          {"Mode":"猜豹子","Odd":[1,100000]}
         ],
         "SYX5":[
           {"Mode":"前三直选复式","Odd":[1,990]},
@@ -394,15 +399,15 @@ var BJSC = ['双面盘', '冠亚和']//1元玩法
                 for(;j<Data.length;j++){
                   var type = Mode[j].slice(0, 3)
                   var key = Data[j][i]
-                  if (this.BetweenType=='PK10'&&BJSC.indexOf(type) > -1) {
+                  if ((this.BetweenType=='PK10'||this.BetweenType=='SSC')&&BJSC.indexOf(type) > -1) {
                     key = key/2
-                    var isNum = Mode[j].match(/[大单双]/g)
+                    var isNum = Mode[j].match(/[大单双虎]/g)
                     if(!isNum){
                       key=Math.floor(key*100)/100
                     }else{
                       key=key.toFixed(3)
                     }
-                  }
+                  }                  
                   nArr.push(key);
 
                 }
