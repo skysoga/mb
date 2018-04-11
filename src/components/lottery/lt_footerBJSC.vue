@@ -30,7 +30,7 @@
 //处理最大奖金
 import {pk10Play} from '../../js/page_config/lt_pk10'
 import {sscPlay} from '../../js/page_config/lt_ssc'
-import {_dsdslh,_dsds,_3to19,_gyhdsds,_0to9,_lhh,_dsdszh,_zhlh} from '../../js/kit'
+import {_dsdslh,_dsds,_3to19,_gyhdsds,_0to9,_lhh,_dsdszh} from '../../js/kit'
 
 // var BJSCres=['PK10']//北京赛车配置
 // var arrMode=['G11','H11']//北京赛车，双面盘，冠亚和
@@ -65,7 +65,7 @@ var cfg={
   //时时彩新玩法
   'cbz':{tag:'猜豹子', itemArr: _0to9},
   //总和/龙虎
-  'zhlh':{tag:'总和龙虎', itemArr: _zhlh},
+  'zhlh':{tag:'总和', itemArr: _gyhdsds},
   'wQian':{tag:'万千', itemArr: _lhh},
   'wBai':{tag:'万百', itemArr: _lhh},
   'wShi':{tag:'万十', itemArr: _lhh},
@@ -293,9 +293,9 @@ export default{
         }
         break;
         case 'K11':
-        line=[4,2,1,30]
+        line=[34]
         objList={
-          "zhlh":7,
+          "zhlh":4,
           "z10000":6,
           "z1000":6,
           "z100":6,

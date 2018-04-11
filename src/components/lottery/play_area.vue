@@ -188,9 +188,9 @@ export default {
         }
         break;
         case 'K11':
-        line=[4,2,1,30]
+        line=[34]
         objList={
-          "zhlh":7,
+          "zhlh":4,
           "z10000":6,
           "z1000":6,
           "z100":6,
