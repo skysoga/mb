@@ -64,7 +64,7 @@
     		}
     	},
     	'data'(n){
-    		if (n.length >= 100) {
+    		if (n.length >= 101) {
     			this.data = []
     			this.data.push(n[n.length-1])
     		}

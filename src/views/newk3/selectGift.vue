@@ -36,7 +36,6 @@
 		data:()=>{
 			return {
 				active:[],
-        giftArr:'',
         showManyBtn:0,
         showScale:1,
         showScaleT:null,
@@ -49,7 +48,6 @@
 			}
 		},
     created(){
-      this.giftArr = this.$parent.$parent.GiftConfig
       this.UserBalance=store.state.UserBalance
     },
 		methods:{
