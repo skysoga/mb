@@ -37,6 +37,7 @@ import {sscPlay} from '../../js/page_config/lt_ssc'
 import {syx5Play} from '../../js/page_config/lt_syx5'
 import {pk10Play} from '../../js/page_config/lt_pk10'
 import {kl8Play} from '../../js/page_config/lt_kl8'
+import {fc3dPlay} from '../../js/page_config/lt_fc3d'
 import {factorial, mul, C, combNoRepeat, unique, normalSum2, normalSum3, accumulate,
   diff2, diff3, combSum2, combSum3} from '../../js/kit'
 
@@ -48,6 +49,7 @@ var playCfg = {
   'SYX5': syx5Play,
   'PK10': pk10Play,
   'KL8': kl8Play,
+  'FC3D': fc3dPlay,
 }
 var modeArr=['定单双','趣味']
 // 奖金详情专用

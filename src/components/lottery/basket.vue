@@ -60,6 +60,7 @@ import {sscRandom, sscRandomNote, sscSpecialMode} from '../../js/page_config/lt_
 import {syx5Random, syx5RandomNote, syx5SpecialMode} from '../../js/page_config/lt_syx5'
 import {pk10Random, pk10RandomNote, pk10SpecialMode} from '../../js/page_config/lt_pk10'
 import {kl8Random, kl8RandomNote, kl8SpecialMode} from '../../js/page_config/lt_kl8'
+import {fc3dRandom, fc3dRandomNote, fc3dSpecialMode} from '../../js/page_config/lt_fc3d'
 
 function getBetStr(arr, isSYX5Type){
   arr = arr.map(item=>item.join(' ')).map(item=>{
@@ -98,6 +99,7 @@ var randomCfgs = {
   SSC: sscRandom,
   SYX5: syx5Random,
   PK10: pk10Random,
+  FC3D: fc3dRandom,
   KL8: kl8Random
 }
 
@@ -105,6 +107,7 @@ var randomNoteBets = {
   SSC: sscRandomNote,
   SYX5: syx5RandomNote,
   PK10: pk10RandomNote,
+  FC3D: fc3dRandomNote,
   KL8: kl8RandomNote
 }
 
@@ -112,6 +115,7 @@ var specialModes = {
   SSC: sscSpecialMode,
   SYX5: syx5SpecialMode,
   PK10: pk10SpecialMode,
+  FC3D: fc3dSpecialMode,
   KL8: kl8SpecialMode
 }
 

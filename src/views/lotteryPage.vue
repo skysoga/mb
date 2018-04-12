@@ -27,6 +27,7 @@
   import {pk10Config} from '../js/page_config/lt_pk10'
   import {kl8Config} from '../js/page_config/lt_kl8'
   import {hcConfig} from '../js/page_config/lt_6hc'
+  import {fc3dConfig} from '../js/page_config/lt_fc3d'
   import getNatal from '../js/page_config/natal'
 
   import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
@@ -37,7 +38,7 @@
 
   var randomFeed = Math.floor(Math.random()*4)  //获取开奖时间的随机数，用于错开请求
   var haveGotTime = true                        //标志位-进页面时是否获取到服务器时间
-  var offLineLottery = ['FC3D', 'PL35']//不存在的彩种
+  var offLineLottery = ['PL35']//不存在的彩种,不显示的彩种
 
   function scrollTop(){document.body.scrollTop = 0}  //滚动置顶
 
@@ -212,6 +213,7 @@
         'SYX5': syx5Config,
         'PK10': pk10Config,
         'KL8': kl8Config,
+        'FC3D': fc3dConfig,
         '6HC': hcConfig
       }
 
@@ -222,6 +224,7 @@
         'SYX5': getMultipleRebate,
         'PK10': getMultipleRebate,
         'KL8': getMultipleRebate,
+        'FC3D': getMultipleRebate,
         '6HC': getMultipleRebate,
       }
 
@@ -229,6 +232,8 @@
       var panConfig=['1407','1008','1300','1304']
       //香港六合彩1301
       var LHCConfig=['1301']
+      //非预售
+      var noCode=['1201']
 
       var wait4Results = 0, wait4BetRecord = false
       const lt = {
@@ -697,7 +702,7 @@
               var LotteryPlan = localStorage.getItem("lotteryPlan"+ code)
               LotteryPlan = LotteryPlan&&JSON.parse(LotteryPlan)
 
-              if(LotteryPlan){
+              if(LotteryPlan){                
                 checkPlan(code)                   //校验计划
               }else{
                 // dispatch('lt_fetchPlan', code)    //获取计划
@@ -838,7 +843,7 @@
                 ,IssueNo = state.IssueNo
             if(_SerTime<1000) {
               // console.log("新的一天");
-              commit('lt_updateDate')
+              commit('lt_updateDate')              
               commit('lt_setIssueNo', state.IssueNo%state.PlanLen)
             }
 
@@ -1027,7 +1032,7 @@
                     btn: ["确定"]
                   });
                 }
-
+                
               }else{
                 // 获得6HC的倒计时
                 var Countdown = get6HCCountdown()
@@ -1108,8 +1113,12 @@
             function computeCountdown(issueNo, _SerTime){
               var _issue = state.LotteryPlan[state.IssueNo % state.PlanLen]
                   ,isCrossDay = (_issue.Start > _issue.End) && (_SerTime > _issue.Start)  //本期跨天,且当前时间大于End
-                  ,isOutOfIssue = state.IssueNo === state.PlanLen                       //如果现在不在任何期内
-                  ,needAddOneDay = isCrossDay || isOutOfIssue
+                  ,isOutOfIssue = state.IssueNo === state.PlanLen                     //如果现在不在任何期内
+                  ,isOneDayOneIssue=noCode.indexOf(code) > -1
+              
+              //如果现在在一天一期的当期开奖后
+              var extra = isOneDayOneIssue && (_SerTime > state.LotteryPlan[0].End)
+              var needAddOneDay = isCrossDay || isOutOfIssue || extra
 
               var Countdown = state.LotteryPlan[state.IssueNo % state.PlanLen].End
                               +needAddOneDay * DAY_TIME
@@ -1127,7 +1136,7 @@
                   return
                 }
               }
-              if(Countdown>600 && LHCConfig.indexOf(code) === -1){
+              if(Countdown>600 && LHCConfig.indexOf(code) === -1&&noCode.indexOf(code)===-1){
                 commit('lt_updateTimeBar', '预售中')//如果Countdown大于10分钟，则进入预售
               }else{
                 //倒计时渲染

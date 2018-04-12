@@ -45,7 +45,7 @@
 
     <div class="lotterySort" ref = "lotterySort" :class = "{active:ifShowTypeSelect}">
       <div @click.stop = "toggleTypeSelect">
-        <em v-show = "noLotteryName.indexOf(ltype) === -1">{{ltype!=='KL8'?lotteryName.slice(0,2):lotteryName}}</em>
+        <em v-show = "noLotteryName.indexOf(ltype) === -1">{{notShow.indexOf(ltype)===-1?lotteryName.slice(0,2):lotteryName}}</em>
         <i class="iconfont" v-show="lTopNav.indexOf(ltype)===-1">&#xe61e;</i>
       </div>
 
@@ -89,10 +89,11 @@
     data () {
       return {
         LotteryList: [],//彩种list
-        lTopNav:['KL8', '6HC'],//导航隐藏配置
-        hideSubGroup:['6HC'],         //没有次级补录
+        lTopNav:['KL8', '6HC','PL3','FC3D'],//导航隐藏配置
+        hideSubGroup:['6HC','FC3D'],         //没有次级补录
         noLotteryName: ['6HC'],       //没有彩种名字
         ltype: '',      //彩种类型
+        notShow:['FC3D','KL8'],//显示完整名称的彩种
         lcode: ''        //彩种code
       }
     },

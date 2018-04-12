@@ -646,9 +646,9 @@ function computeIssue(code, index, isChase){
     '1303':basedOnFixedIssue(602501-20, "2017/2/25"),
 
     //福彩3D：每天一期
-    '1201':oneDayOneIssue(1, "2018/1/1"),
+    '1201':oneDayOneIssue(1, "2018/1/8"),
     //排列3：每天一期
-    '1202':oneDayOneIssue(1, "2018/1/1"),
+    '1202':oneDayOneIssue(1, "2018/1/8"),
     '1301':function(){
       // var dateStr = new Date().getFullYear().toString()
       var year=state.lt.Todaystr.slice(0,4)
