@@ -18,11 +18,11 @@
         </li>
       </ul>
       <div v-show = "ifShowClearAll" class="moreOption fix">
-        <div class="stop">
+        <div class="stop" v-if="ltype!=='FC3D'">
           <input type="checkbox" id="stoping" v-model = "isChase">
           <label for="stoping">追号</label>
         </div>
-        <div class="clear"  @click = "clearBasket">清空</div>
+        <div :class="['clear',ltype==='FC3D'&&'allWidth']"  @click = "clearBasket">清空</div>
       </div>
   </div>
   </div>
@@ -484,6 +484,9 @@ left: 0;
   }
   &:before{
     content:"\e652";
+  }
+  &.allWidth{
+    width:100%;
   }
 }
 .stop{
