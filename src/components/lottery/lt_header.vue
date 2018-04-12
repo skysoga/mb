@@ -90,7 +90,7 @@
       return {
         LotteryList: [],//彩种list
         lTopNav:['KL8', '6HC','PL3','FC3D'],//导航隐藏配置
-        hideSubGroup:['6HC','FC3D'],         //没有次级补录
+        hideSubGroup:['6HC'],         //没有次级补录
         noLotteryName: ['6HC'],       //没有彩种名字
         ltype: '',      //彩种类型
         notShow:['FC3D','KL8'],//显示完整名称的彩种
