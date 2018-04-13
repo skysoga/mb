@@ -1,6 +1,6 @@
 <template id="">
-  <div class="main">
-    <div class="touchScroll" @touchend="scroll()" ref="div">
+  <div class="main main-msg">
+    <div class="touchScroll touchScroll-msg" @touchend="scroll()" ref="div">
       <template v-if="data_count===0">
         <div class='fullPageMsg' ><div class='fullPageIcon iconfont'>&#xe63c;</div><p>暂无私信</p></div>
       </template>
@@ -97,5 +97,19 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../scss/msgList.scss';
+@import '../scss/detailList.scss';
+.noRead{
+  color:red;
+  margin-top:-.3em;
+}
+.fr.iconfont{
+  margin-top:-.2em;
+  margin-right:-.8em;
+  font-size:1em;
+  line-height:3em;
+  height:3em;
+  width:3em;
+  text-align: center;
+  color:$font-gray;
+}
 </style>

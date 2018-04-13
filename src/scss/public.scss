@@ -2632,3 +2632,14 @@ body > * {
   text-align: center;
   clear: both;
 }
+
+//公告和消息
+.main-msg{
+  min-height: 100%;
+  background: white;
+}
+.touchScroll-msg{
+  padding:0;
+  position:static;
+  background-color:#fff;
+}
