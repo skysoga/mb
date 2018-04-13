@@ -392,5 +392,9 @@ export default{
 </script>
 
 <style lang = "scss" scoped>
-  @import '../scss/FromTable.scss';
+@import '../scss/FromTable.scss';
+.barcode {
+  margin: .4em;
+  width: 100px;
+}
 </style>

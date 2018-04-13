@@ -55,10 +55,10 @@
 </template>
 <script src="../js/withdraw.js"></script>
 <style lang="scss" scoped>
-  @import '../scss/FromTable.scss';
-  .bankTr{
-    height:3.2em
-  }
+@import '../scss/FromTable.scss';
+.bankTr{
+  height:3.2em
+}
 
 /* 提现银行卡选择 */
 
