@@ -1,6 +1,6 @@
 <template>
-  <div class="main">
-    <table>
+  <div class="main main-security">
+    <table class="table-security">
       <tbody>
         <tr>
           <td>手机号</td>
@@ -31,5 +31,5 @@
 </template>
 <script src="../js/setMobile.js"></script>
 <style lang="scss" scoped>
-  @import '../scss/SecurityCenter.scss';
+  @import '../scss/FromTable.scss';
 </style>

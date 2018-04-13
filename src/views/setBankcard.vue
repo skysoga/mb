@@ -1,6 +1,6 @@
 <template>
-  <div class="main">
-    <table>
+  <div class="main main-security">
+    <table class="table-security">
       <tbody>
         <tr>
           <td>选择银行</td>
@@ -81,5 +81,5 @@
 </template>
 <script src="../js/setBankcard.js"></script>
 <style lang="scss" scoped>
-  @import '../scss/SecurityCenter.scss';
+  @import '../scss/FromTable.scss';
 </style>

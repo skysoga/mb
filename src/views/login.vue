@@ -39,7 +39,7 @@
     </table>
     </form>
 
-    <div class="loginBtn BTN" v-va-check>
+    <div class="BTN" v-va-check>
       <a>立即登录</a>
     </div>
     <div class="otherBtn">

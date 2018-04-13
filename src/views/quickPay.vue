@@ -1,12 +1,12 @@
 <template>
-  <div class="main">
+  <div class="main main-security">
     <div class="fullPageMsg" v-if="underMaintain">
       <div class="fullPageIcon iconfont">&#xe626;</div>
       <p>{{pageName}}维护中···
         <br/>请使用其他充值方式！</p>
     </div>
     <template v-else>
-      <table>
+      <table class="table-security">
         <tr v-if="Bank.length>1">
           <td>选择银行</td>
           <td>
@@ -25,7 +25,7 @@
         <tr></tr>
       </table>
       <div class="loginBtn BTN"><a v-va-check>确定</a></div>
-      <div class="tips">
+      <div class="tips-security">
         1、扫一扫弹出的二维码进行充值。
         <br>2、单笔充值金额最低<ins>{{this.nowRender.MinMoney}}</ins>元，最高<ins>{{this.nowRender.MaxMoney}}</ins>元。
         <br> 3、可以使用其他手机扫二维码进行充值，也可以将二维码保存到相册再使用{{this.$route.meta.title}}识别相册中的二维码进行充值，该二维码仅当次有效，每次充值前务必重新保存最新的二维码。
@@ -45,7 +45,7 @@
           <div id="qrcode" ref="qrcode" style="text-align:center"></div>
         </div>
         <!-- <div class="loginBtn BTN" @click="close"><a>关闭</a></div> -->
-        <div class="tips">
+        <div class="tips-security">
           温馨提示：支付成功后，会在一分钟内为您添加额度，请刷新您的账户余额!
         </div>
       </div>
@@ -431,7 +431,7 @@ export default {
 </script>
 
 <style lang = "scss" scoped>
-  @import '../scss/securityCenter.scss';
+  @import '../scss/FromTable.scss';
   #iframeWrap{
     position:absolute;
     z-index:5;

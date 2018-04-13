@@ -1,6 +1,6 @@
 <template>
-  <div class="main">
-    <table>
+  <div class="main main-security">
+    <table class="table-security">
       <tbody>
         <tr>
           <td>问题一</td>
@@ -20,7 +20,7 @@
         <tr></tr>
       </tbody>
     </table>
-    <table>
+    <table class="table-security">
       <tbody>
         <tr>
           <td>问题二</td>
@@ -40,7 +40,7 @@
         <tr></tr>
       </tbody>
     </table>
-    <table>
+    <table class="table-security">
       <tbody>
         <tr>
           <td>问题三</td>
@@ -60,7 +60,7 @@
         <tr></tr>
       </tbody>
     </table>
-    <table>
+    <table class="table-security">
       <tbody>
       <tr>
         <td>安全密码</td>
@@ -77,5 +77,5 @@
 </template>
 <script src="../js/setQuestion.js"></script>
 <style lang="scss" scoped>
-  @import '../scss/SecurityCenter.scss';
+  @import '../scss/FromTable.scss';
 </style>

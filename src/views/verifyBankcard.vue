@@ -1,6 +1,6 @@
 <template>
-  <div class="main">
-    <table>
+  <div class="main main-security">
+    <table class="table-security">
       <tbody>
         <tr>
           <td>银行卡号</td>
@@ -26,12 +26,12 @@
       </tbody>
     </table>
     <div class="loginBtn BTN" v-va-check><a>确定</a></div>
-    <div class="tips">
+    <div class="tips-security">
       为确定是本人操作，再次添加银行卡时需要验证首张银行卡信息。
     </div>
   </div>
 </template>
 <script src="../js/verifyBankcard.js"></script>
 <style lang="scss" scoped>
-  @import '../scss/SecurityCenter.scss';
+  @import '../scss/FromTable.scss';
 </style>

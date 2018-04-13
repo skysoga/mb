@@ -1,6 +1,6 @@
 <template>
-  <div class="main">
-      <table>
+  <div class="main main-security">
+      <table class="table-security">
         <tbody>
           <!-- 图片验证 -->
           <tr>
@@ -14,7 +14,7 @@
         </tbody>
       </table>
     <div class="loginBtn BTN"><a v-va-check>确定</a></div>
-    <div class="tips" >
+    <div class="tips-security" >
       1、如果审核通过，安全密码会设为123456，届时请及时修改；<br>
       2、我们将在10个小时内审核您的资料，并通过站内信通知审核结果；<br>
       3、请关注站内信，站内信位于我的帐户->我的消息<br>
@@ -96,5 +96,5 @@ export default{
 
 </script>
 <style lang="scss" scoped>
-  @import '../scss/SecurityCenter.scss';
+  @import '../scss/FromTable.scss';
 </style>

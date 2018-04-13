@@ -1,6 +1,6 @@
 <template>
-  <div class="main">
-    <table>
+  <div class="main main-security">
+    <table class="table-security">
       <tbody>
         <tr>
           <td>原安全密码</td>
@@ -11,7 +11,7 @@
     </table>
     <router-link v-if="isLogin" class='forget fr' :to="{path:'resetWay',query:{Q:'ResetSafePwd'}}">找回安全密码?</router-link>
     <div class="loginBtn BTN"><a v-va-check>确定</a></div>
-    <div class="tips">
+    <div class="tips-security">
       安全密码用于提现、绑定银行卡等操作，可保障资金安全。
     </div>
 </div>
@@ -27,5 +27,5 @@
     font-size: .7em;
     width: 10rem;
   }
-  @import '../scss/SecurityCenter.scss';
+  @import '../scss/FromTable.scss';
 </style>

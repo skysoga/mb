@@ -1,6 +1,6 @@
 <template>
-  <div class="main">
-    <table>
+  <div class="main main-security">
+    <table class="table-security">
       <tbody>
         <tr>
           <td>问题一</td>
@@ -18,7 +18,7 @@
         <tr></tr>
       </tbody>
     </table>
-    <table>
+    <table class="table-security">
       <tbody>
         <tr>
           <td>问题二</td>
@@ -41,5 +41,5 @@
 </template>
 <script src="../js/verifyQuestion.js"></script>
 <style lang="scss" scoped>
-  @import '../scss/SecurityCenter.scss';
+  @import '../scss/FromTable.scss';
 </style>

@@ -55,7 +55,7 @@
   </table>
 
   <router-link class='tologin fr' to = "/login">已有账号? 立即登录</router-link>
-  <div class="loginBtn BTN mt30" v-va-check>
+  <div class="BTN mt30" v-va-check>
     <a>立即注册</a>
   </div>
 </div>
