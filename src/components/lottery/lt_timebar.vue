@@ -88,7 +88,6 @@ export default{
 </script>
 
 <style lang = "scss" scoped>
-@import '../../scss/isLotteryCon.scss';
 .openNumber-01{
   em{
     background: none;
