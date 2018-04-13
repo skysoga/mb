@@ -2498,3 +2498,36 @@ body > * {
     }
   } */
 }
+
+//登陆注册
+.table-login-register{
+  /* td{
+    width: 8rem;
+  } */
+  td:first-of-type{
+    width: 4rem;
+    text-indent: .5em;
+  }
+  td:last-of-type{
+    width: 4em;
+  }
+  .yzm{
+    float: right;
+    width: 4em;
+    height: 2.5em;
+  }
+  #more{
+    color: $green;
+    font-weight: bold;
+    float: right;
+    display: block;
+    width: 2rem;
+    height: 100%;
+    line-height: 2.5em;
+    text-align: center;
+  }
+}
+.BTN-login-register+.BTN-login-register{
+  margin-top:.5rem;
+  background:#fff;
+}

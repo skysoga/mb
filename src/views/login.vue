@@ -7,7 +7,7 @@
       </div>
     </div>
     <form autocomplete="off">
-    <table>
+    <table class="table-login-register">
       <tbody>
         <tr>
           <td class="username-icon"></td>
@@ -39,14 +39,13 @@
     </table>
     </form>
 
-    <div class="BTN" v-va-check>
+    <div class="BTN BTN-login-register" v-va-check>
       <a>立即登录</a>
     </div>
     <div class="otherBtn">
       <router-link class='signup' to = "/register">立即注册</router-link><router-link class='forget' to = "/forgetPwd?Q=ResetPwd">忘记密码</router-link>
       <span class="downUrl" v-show="isAPP=='ios'">APP下载与修复网址：<em>fa789.com</em></span>
     </div>
-    <ul id="usedList"></ul>
     <!-- 区分是否登录记录数据 -->
     <bottom-box v-show = "BottomBoxShow"
                  :list = "UserList"
@@ -269,7 +268,12 @@
   }
 </script>
 <style lang="scss" scoped>
-  @import '../scss/login.scss';
+  @import '../scss/scssConfig','../scss/FromTable';
+  .show{
+    &:before{
+      transform: rotate(180deg);
+    }
+  }
   table{
     table-layout: fixed;
     tr{
@@ -344,6 +348,29 @@
         color: #dc3b40;
         // text-decoration: underline;
       }
+    }
+  }
+  span.downico{
+    position:absolute;
+    z-index: 5;
+    right:.5em;
+    top:0;
+    width:2em;
+    height:2em;
+    line-height:2em;
+    border-radius:.2em;
+    margin-top:.25em;
+    color:#c3c3c3;
+    &:active{
+      background:#efefef;
+      color:#333;
+    }
+    &:before{
+      content:'\e64c';
+      font-family:'iconfont';
+      display:block;
+      text-align:center;
+      transition:.4s;
     }
   }
 </style>
