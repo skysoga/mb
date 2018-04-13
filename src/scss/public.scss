@@ -2063,19 +2063,9 @@ body > * {
   min-height: 100%;
 }
 .lotteryCloseItem{
-  position: relative;
   height: 3em;
   float: left;
   width: 50%;
-  &:before{
-    content:"";
-    position: absolute;
-    left: 0;
-    top:0;
-    height: 100%;
-    width: 1px;
-    @include bgImg-linear-gradient('0deg, #bdb48b, #bdb48b 50%, transparent 50%');
-  }
   &:after{
     content:"";
     position: absolute;
@@ -2091,16 +2081,12 @@ body > * {
     display: inline-block;
   }
   &.active{
-    &:after{
-      @include bgImg-linear-gradient('90deg, #fff, #fff 50%, transparent 50%');
-      z-index: 5;
-    }
     .iconfont{
       transform:rotate(180deg)
     }
-    .pastOpen{
-      left: initial;
-      right: 0;
+    &:after{
+      @include bgImg-linear-gradient('90deg, #fff, #fff 50%, transparent 50%');
+      z-index: 5;
     }
   }
 }

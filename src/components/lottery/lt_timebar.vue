@@ -88,6 +88,7 @@ export default{
 </script>
 
 <style lang = "scss" scoped>
+@import '../../scss/isLotteryCon.scss';
 .openNumber-01{
   em{
     background: none;
@@ -95,6 +96,12 @@ export default{
     width: inherit;
     font-size: .9em;
     box-shadow: none;
+  }
+}
+.lotteryCloseItem.active{
+  &:after{
+    left: initial;
+    right: 0;
   }
 }
 </style>

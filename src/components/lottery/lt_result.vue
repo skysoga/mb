@@ -110,4 +110,10 @@ export default {
     border-top:1px solid white;
   }
 }
+.lotteryCloseItem.active{
+  &:after{
+    left: initial;
+    right: 0;
+  }
+}
 </style>
