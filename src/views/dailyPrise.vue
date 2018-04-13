@@ -1,5 +1,5 @@
 <template>
-  <div class="activityMian main">
+  <div class="activityMian main main-activity">
     <div class="activiTop">
         <img width="100%" v-show="Img" :src="$store.state.constant.ImgHost+Img">
         <div class="rewardStatus">
@@ -29,6 +29,3 @@
 </div>
 </template>
 <script src="../js/dailyPrise.js"></script>
-<style lang="scss" scoped>
-  @import '../scss/activity_info.scss';
-</style>
