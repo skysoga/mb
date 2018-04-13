@@ -4,7 +4,7 @@
     <div class="lotteryClose"
          @click.stop = "togglePastOpen">
       <span>{{nowIssue}}期投注截止</span>
-      <div class="waitNumber">
+      <div class="openNumber-01">
         <em>{{TimeBar}}</em>
       </div>
     </div>
@@ -88,5 +88,13 @@ export default{
 </script>
 
 <style lang = "scss" scoped>
-  @import '../../scss/isLotteryCon.scss';
+.openNumber-01{
+  em{
+    background: none;
+    color:#333;
+    width: inherit;
+    font-size: .9em;
+    box-shadow: none;
+  }
+}
 </style>
