@@ -479,7 +479,6 @@
 
 .sscMain{
   margin-bottom: 3.6em;
-  // padding-bottom: 3.2em;
 }
 
 
@@ -491,7 +490,6 @@
   width:100%;
   left:0;
   z-index: 999;
-  // display: none;
 }
 .playSortMoreCon{
   background: white;

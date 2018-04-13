@@ -1,5 +1,4 @@
-@import 'scssConfig','mixin','variable';
-/*--Ã¦Â Â·Ã¥Â¼ÂÃ©â€¡ÂÃ§Â½Â®*/
+@import 'scssConfig','mixin';
 html { font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;}
 body { margin: 0; height: 100%; overflow-x: hidden; -webkit-overflow-scrolling: touch;
     -webkit-touch-callout: none;
@@ -72,16 +71,12 @@ input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{
 
 * { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;
 }
-/*Ã¦Â Â·Ã¥Â¼ÂÃ©â€¡ÂÃ§Â½Â®--*/
-
-/*--Ã¥Â¸Â¸Ã§â€Â¨Ã¥Å½Å¸Ã¥Â­ÂÃ§Â±Â»*/
 .fl{
     float: left;
 }
 .fr{
     float: right;
 }
-/*Ã¥Â¸Â¸Ã§â€Â¨Ã¥Å½Å¸Ã¥Â­ÂÃ§Â±Â»--*/
 
 
 
@@ -327,9 +322,6 @@ content:"\e62c";
 }
 
 
-/**
- ** Ã¤Â¸â‚¬Ã¥Æ’ÂÃ§Â´Â Ã¨Â¾Â¹Ã¦Â¡â€ 
- */
 
 .newWinner ul li > div,.personalInfo ul li > div, .fix{
     &:before,
@@ -608,9 +600,7 @@ content:"\e62c";
 }
 
 
-/**
- * Ã¤Â¸â€°Ã¥Ë†â€”Ã§Â«â€“Ã§ÂºÂ¿Ã¦Â Â·Ã¥Â¼Â
- */
+
 
 .PLSdetail {
   padding: 1rem;
@@ -2727,4 +2717,13 @@ body > * {
 .main-list{
   padding-top: 2.3em;
   padding-bottom: 0;
+}
+.cGold{
+    color:$glod;
+}
+.cGray{
+    color:$btngray;
+}
+.cGreen{
+    color:$green;
 }
