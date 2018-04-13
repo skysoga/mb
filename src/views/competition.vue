@@ -57,5 +57,92 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '../scss/newwinners.scss';
+.competition {
+  margin-top: 2.3em;
+  margin-bottom: 2.5em;
+  background: white;
+  table {
+    background: white;
+    width: 100%;
+    font-size: 0.7em;
+    tr {
+      td:first-child {
+        padding-left: 0.8rem;
+      }
+      td {
+        height: 3.6em;
+        position: relative;
+        span {
+          color: #e80d2d;
+        }
+        i {
+          color: #0079ff;
+        }
+        &:before {
+          content: '';
+          position: absolute;
+          left: 0;
+          background: #d0d0d0;
+          width: 100%;
+          height: 1px;
+          transform: scaleY(.5);
+          transform-origin: 0 0;
+          top: 0;
+        }
+      }
+
+      &:nth-child(1) td:nth-child(2) {
+        em {
+          background: #ca9293;
+          color: white;
+          background: -webkit-radial-gradient(circle at 25px 25px, #c12f33, #ca9293);
+          background: radial-gradient(circle at 25px 25px, #c12f33, #ca9293);
+        }
+      }
+      &:nth-child(2) td:nth-child(2) {
+        em {
+          background: #53b0fe;
+          color: white;
+          background: -webkit-radial-gradient(circle at 25px 25px, #2b82cc, #53b0fe);
+          background: radial-gradient(circle at 25px 25px, #2b82cc, #53b0fe);
+        }
+      }
+      &:nth-child(3) td:nth-child(2) {
+        em {
+          background: #f8a968;
+          color: white;
+          background: -webkit-radial-gradient(circle at 25px 25px, #c57532, #f8a968);
+          background: radial-gradient(circle at 25px 25px, #c57532, #f8a968);
+        }
+      }
+    }
+    td {
+      &:nth-child(2) {
+        color: #333;
+        text-align: center;
+      }
+      padding: 0.5em 0.8em;
+    }
+    img {
+      width: 3em;
+      height: 3em;
+      border-radius: 50%;
+      float: left;
+      margin-right: 1em;
+    }
+    p {
+      line-height: 1.5em;
+      height: 2.8em;
+      overflow: hidden;
+    }
+    em {
+      display: block;
+      margin: 0 auto;
+      width: 1.8em;
+      height: 1.8em;
+      border-radius: 50%;
+      line-height: 1.8em;
+    }
+  }
+}
 </style>
