@@ -281,11 +281,6 @@ export default {
 
 <style lang = "scss" scoped>
 @import '../../scss/scssConfig','../../scss/mixin';
-.numberContent{
-  ins{
-
-  }
-}
 .selectNumber{
   padding:.3rem 0.5rem;
   padding-right: 0;

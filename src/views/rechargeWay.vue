@@ -3,7 +3,7 @@
   <div class="main">
     <div class="innerWrap">
 
-      <div class="surperise active">
+      <div class="surperise surperise-01 active">
         <router-link class="wrap" to = "normalPay?method=Bank">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/card.png'">
           <div class="text">
@@ -20,7 +20,7 @@
         </router-link>
       </div>
 
-      <div class="surperise active">
+      <div class="surperise surperise-01 active">
         <a class = "wrap" @click = "setUrl(wechatType,'Weixin',weixMsg)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/weixin.png'">
           <div class="text">
@@ -37,7 +37,7 @@
         </a>
       </div>
 
-      <div class="surperise active">
+      <div class="surperise surperise-01 active">
         <a class = "wrap" @click = "setUrl(aliType,'Alipay',aliMsg)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/alipay.png'">
           <div class="text">
@@ -54,7 +54,7 @@
         </a>
       </div>
 
-      <div class="surperise active">
+      <div class="surperise surperise-01 active">
         <a class = "wrap" @click = "setUrl(qqType,'QQpay',qqMsg)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/qqpay.png'">
           <div class="text">
@@ -71,7 +71,7 @@
         </a>
       </div>
 
-      <div class="surperise active">
+      <div class="surperise surperise-01 active">
         <a class = "wrap" @click = "setUrl(unionType,'UnionPay',UnionMsg)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/card.png'">
           <div class="text">
@@ -89,7 +89,7 @@
       </div>
       <!-- 第四方支付 暂定名：多功能支付-->
 
-      <div class="surperise active" v-show="FourUrl.PayUrl">
+      <div class="surperise surperise-01 active" v-show="FourUrl.PayUrl">
         <a class="wrap" @click="!isSelfApp&&toFourUrl()" :href="isSelfApp&&FourUrl.PayUrl">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/fourthpay.png'">
           <div class="text">
@@ -210,7 +210,3 @@ export default {
   }
 }
 </script>
-<style lang = "scss" scoped>
-  @import '../scss/activity.scss';
-</style>
-

@@ -1,35 +1,5 @@
 @import 'scssConfig','mixin';
 .user-main{background: #fff}
-.BTN{
-  width: 80%;
-  height: 2.25em;
-  line-height: 2.25em;
-  margin: 1.5em auto 0;
-  background-color: $btnred1;
-  border-color: $btnred;
-  color: #fff;
-  border-bottom: .25em solid $btnred;
-  font-weight: bold;
-  letter-spacing: .2em;
-  a{
-    font-size: 1.2em;
-  }
-}
-.BTN:active{
-  margin-top: 1.75em;
-  margin-bottom: -.25em;
-  border:0 none;
-  background-color:$btnred;
-}
-.BTN.unClick{
-  color: #666;
-  background: $btngray1 !important;
-  border-color: $btngray;
-}
-.BTN.unClick:active{
-  background-color:$btngray;
-}
-
 .activityInfo{
   width: 15rem;
   background-color: #fff;
