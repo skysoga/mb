@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main main-form">
     <div class="header">
       <div class="headImg">
         <img :src="'http://imagess-google.com/system/common/headimg/'+(lastLoginImage||'defaultHead.png')" width="100%" height="100%" alt="">
@@ -7,7 +7,7 @@
       </div>
     </div>
     <form autocomplete="off">
-    <table class="table-login-register">
+    <table class="table-form table-login-register">
       <tbody>
         <tr>
           <td class="username-icon"></td>
@@ -39,7 +39,7 @@
     </table>
     </form>
 
-    <div class="BTN BTN-login-register" v-va-check>
+    <div class="BTN BTN-form BTN-login-register" v-va-check>
       <a>立即登录</a>
     </div>
     <div class="otherBtn">
@@ -268,7 +268,7 @@
   }
 </script>
 <style lang="scss" scoped>
-  @import '../scss/scssConfig','../scss/FromTable';
+  @import '../scss/scssConfig';
   .show{
     &:before{
       transform: rotate(180deg);

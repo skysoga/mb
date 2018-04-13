@@ -1,8 +1,8 @@
 <template>
   <div>
 
-    <div class="main main-security" v-if= "method === 'Bank' && !underMaintain">
-      <table class="table-security">
+    <div class="main main-security main-form" v-if= "method === 'Bank' && !underMaintain">
+      <table class="table-form table-security">
         <tr>
           <td>选择银行</td>
           <td>
@@ -43,7 +43,7 @@
           <td><input type="text" tag = "转账户名"  v-va:PayUser.RealName  v-model = 'PayUser'   placeholder="请输入付款人的银行卡姓名"></td>
         </tr>
       </table>
-      <div class="loginBtn BTN"><a v-va-check>确定</a></div>
+      <div class="loginBtn BTN BTN-form"><a v-va-check>确定</a></div>
       <div class="tips-security">
         1、请转账到以上收款银行账户。<br>
         2、请正确填写转账银行卡的持卡人姓名和充值金额，以便及时核对。<br>
@@ -90,7 +90,7 @@
         </tr>
         <tr></tr>
       </table>
-      <div class="loginBtn BTN"><a v-va-check>确定</a></div>
+      <div class="loginBtn BTN BTN-form"><a v-va-check>确定</a></div>
       <div class="tips-security">
         1.请使用微信转账到以上账户。<br>
         2.若提供的是二维码，请使用微信扫一扫进行转账。若提供的是银行账号，请使用微信转账到银行卡的方式进行转账。<br>
@@ -120,7 +120,7 @@
         </tr>
         <tr></tr>
       </table>
-      <div class="loginBtn BTN"><a v-va-check>确定</a></div>
+      <div class="loginBtn BTN BTN-form"><a v-va-check>确定</a></div>
       <div class="tips-security">
         1、扫一扫以上二维码进行充值。<br>
         2、请正确填写您的昵称和充值金额。<br>
@@ -149,7 +149,7 @@
         </tr>
         <tr></tr>
       </table>
-      <div class="loginBtn BTN"><a v-va-check>确定</a></div>
+      <div class="loginBtn BTN BTN-form"><a v-va-check>确定</a></div>
       <div class="tips-security">
         1、扫一扫以上二维码进行充值。<br>
         2、请正确填写您的姓名和充值金额。<br>
@@ -191,7 +191,7 @@
         </tr>
         <tr></tr>
       </table>
-      <div class="loginBtn BTN" v-va-check><a>确定</a></div>
+      <div class="loginBtn BTN BTN-form" v-va-check><a>确定</a></div>
       <div class="tips-security">
         1.请使用支付宝转账到以上账户。<br>
         2.若提供的是二维码，请使用支付宝扫一扫进行转账。若提供的是支付宝账号或银行账号，请使用支付宝转账到银行卡的方式进行转账。<br>
@@ -392,7 +392,6 @@ export default{
 </script>
 
 <style lang = "scss" scoped>
-@import '../scss/FromTable.scss';
 .barcode {
   margin: .4em;
   width: 100px;

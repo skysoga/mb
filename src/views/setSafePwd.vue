@@ -1,6 +1,6 @@
 <template>
-  <div class="main main-security">
-    <table class="table-security">
+  <div class="main main-security main-form">
+    <table class="table-form table-security">
       <tbody>
         <tr>
           <td>安全密码</td>
@@ -13,13 +13,10 @@
         <tr></tr>
       </tbody>
     </table>
-    <div class="loginBtn BTN"><a v-va-check>确定</a></div>
+    <div class="loginBtn BTN BTN-form"><a v-va-check>确定</a></div>
     <div class="tips-security">
       安全密码用于提现、绑定银行卡等操作，可保障资金安全。
     </div>
 </div>
 </template>
 <script src="../js/setSafePwd.js"></script>
-<style lang="scss" scoped>
-  @import '../scss/FromTable.scss';
-</style>

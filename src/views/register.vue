@@ -1,6 +1,6 @@
 <template>
-<div class="main">
-  <table class="table-login-register">
+<div class="main main-form">
+  <table class="table-form table-login-register">
     <tbody>
       <tr>
         <td>邀请码</td>
@@ -55,7 +55,7 @@
   </table>
 
   <router-link class='tologin fr' to = "/login">已有账号? 立即登录</router-link>
-  <div class="BTN BTN-login-register mt30" v-va-check>
+  <div class="BTN BTN-login-register BTN-form mt30" v-va-check>
     <a>立即注册</a>
   </div>
 </div>
@@ -195,7 +195,6 @@ export default {
 
 
 <style lang = "scss" scoped>
-  @import '../scss/scssConfig','../scss/FromTable';
   .main{
     background: #fafafa;
     height: 100%;

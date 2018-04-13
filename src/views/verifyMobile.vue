@@ -1,6 +1,6 @@
 <template>
-   <div class="main main-security">
-    <table class="table-security">
+   <div class="main main-security main-form">
+    <table class="table-form table-security">
       <tbody>
         <tr>
           <td>已绑定手机</td>
@@ -18,10 +18,7 @@
         <tr></tr>
       </tbody>
     </table>
-    <div class="loginBtn BTN"><a v-va-check>确定</a></div>
+    <div class="loginBtn BTN BTN-form"><a v-va-check>确定</a></div>
   </div>
 </template>
 <script src="../js/verifyMobile.js"></script>
-<style lang="scss" scoped>
-  @import '../scss/FromTable.scss';
-</style>

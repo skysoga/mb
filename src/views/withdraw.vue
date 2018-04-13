@@ -1,6 +1,6 @@
 <template>
-  <div class="main main-security">
-    <table class="table-security">
+  <div class="main main-security main-form">
+    <table class="table-form table-security">
       <tbody>
         <tr>
           <td>账户余额</td>
@@ -44,7 +44,7 @@
         <tr></tr>
       </tbody>
     </table>
-    <div class="loginBtn BTN"><a v-if="ReGetTime>0" v-va-check>确定</a><span v-else>确定</span></div>
+    <div class="loginBtn BTN BTN-form"><a v-if="ReGetTime>0" v-va-check>确定</a><span v-else>确定</span></div>
     <div class="tips-security">
       今天还可以提现<ins>{{ReGetTime}}</ins>次<br/>
       可提现金额={{WithdrawText}}<br/>
@@ -55,7 +55,6 @@
 </template>
 <script src="../js/withdraw.js"></script>
 <style lang="scss" scoped>
-@import '../scss/FromTable.scss';
 .bankTr{
   height:3.2em
 }
