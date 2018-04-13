@@ -1,6 +1,6 @@
 <template id="">
-  <div class="main main-msg">
-    <div class="touchScroll touchScroll-msg" @touchend="scroll()" ref="div">
+  <div class="main main-msg main-list">
+    <div class="touchScroll touchScroll-list touchScroll-msg" @touchend="scroll()" ref="div">
       <template v-if="data_count===0">
         <div class='fullPageMsg' ><div class='fullPageIcon iconfont'>&#xe63c;</div><p>暂无私信</p></div>
       </template>
@@ -14,7 +14,7 @@
             </div>
             <i class="fr iconfont" @click="delLIst(item.ID)">&#xe620;</i>
           </a>
-          <div class="hr1px"></div>
+          <div class="hr1px hr1px-list"></div>
         </div>
         <div class="msg" v-html="msg_arr[cant_scroll]"></div>
 
@@ -97,7 +97,6 @@
 </script>
 
 <style lang="scss" scoped>
-@import '../scss/detailList.scss';
 .noRead{
   color:red;
   margin-top:-.3em;
@@ -110,6 +109,6 @@
   height:3em;
   width:3em;
   text-align: center;
-  color:$font-gray;
+  color:#989898;
 }
 </style>

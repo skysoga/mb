@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main main-list">
     <div class="textMore dataType" @click="BottomBoxShow=!BottomBoxShow"><em>{{top_text}}</em> <i class="iconfont"></i></div>
     <!-- 判断是明细页面还是记录页面，明细页面有搜索框，记录则无 -->
     <div class="searchBtn" v-if="isAgent">
@@ -18,7 +18,7 @@
       </div>
       <div class="bd dontSelect">
         <div class="scrollBox" v-for="x in (isBetPage?4:3)">
-          <div class="touchScroll" @touchend="scroll(x-1)" v-if="li_state==x-1" ref="div">
+          <div class="touchScroll touchScroll-list" @touchend="scroll(x-1)" v-if="li_state==x-1" ref="div">
             <!-- 投注模板页面 -->
             <template v-if="isBetPage">
               <template v-if="temp_ajax[newName+'%'+newDay][x-1].DataCount===0">
@@ -36,7 +36,7 @@
                       <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
                       <strong :class="item.State==='等待开奖'?'OutMoney':''" v-else>{{item.State}}</strong>
                     </a>
-                    <div class="hr1px"></div>
+                    <div class="hr1px hr1px-list"></div>
                   </div>
                 </template>
                 <template v-if="x==2">
@@ -48,7 +48,7 @@
                     <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
                     <strong class="" v-else>{{item.State}}</strong>
                   </a>
-                  <div class="hr1px"></div>
+                  <div class="hr1px hr1px-list"></div>
                 </div>
                 </template>
                 <template v-if="x==3">
@@ -60,7 +60,7 @@
                     <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
                     <strong class="" v-else>{{item.State}}</strong>
                   </a>
-                  <div class="hr1px"></div>
+                  <div class="hr1px hr1px-list"></div>
                 </div>
                 </template>
                 <template v-if="x==4">
@@ -71,7 +71,7 @@
                       <p>{{isAgent?item.UserName:item.LotteryName}}<span>￥{{item.BetMoney}}</span></p><span>{{item.AddTime}}</span></div>
                      <strong class="OutMoney">{{item.State}}</strong>
                   </a>
-                  <div class="hr1px"></div>
+                  <div class="hr1px hr1px-list"></div>
                 </div>
                 </template>
                 <div class="msg noMore" v-html="msg[temp_ajax[newName+'%'+newDay][x-1].cant_scroll]" v-if="temp_ajax[newName+'%'+newDay][x-1].cant_scroll<2"></div>
@@ -104,7 +104,7 @@
                       </div>
                       <strong v-else :class="check_money(item.InMoney,item.OutMoney)>0?'InMoney':'OutMoney'">{{check_money(item.InMoney,item.OutMoney)}}</strong>
                     </a>
-                    <div class="hr1px"></div>
+                    <div class="hr1px hr1px-list"></div>
                   </div>
                 </template>
                 <template v-if="x==2">
@@ -116,7 +116,7 @@
                         <span class="fr">{{item.State}}</span>
                       </div>
                     </a>
-                    <div class="hr1px"></div>
+                    <div class="hr1px hr1px-list"></div>
                   </div>
                 </template>
                 <template v-if="x==3">
@@ -127,7 +127,7 @@
                         <strong class="InMoney" v-else>+{{item.ApplyMoney}}</strong>
                         <span class="fr">{{item.State}}</span></div> </div>
                     </a>
-                    <div class="hr1px"></div>
+                    <div class="hr1px hr1px-list"></div>
                   </div>
                 </template>
                 <div class="msg noMore" v-html="msg[temp_ajax[newName+'%'+newDay][x-1].cant_scroll]" v-if="temp_ajax[newName+'%'+newDay][x-1].cant_scroll<2"></div>
@@ -352,9 +352,3 @@ export default {
   }
 }
 </script>
-
-
-
-<style lang="scss" scoped>
-  @import '../scss/detailList.scss';
-</style>

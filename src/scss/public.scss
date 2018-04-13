@@ -2643,3 +2643,88 @@ body > * {
   position:static;
   background-color:#fff;
 }
+
+.touchScroll-list{
+  position: relative;
+  width: 100%;
+  padding: 10px 0;
+  height:calc(100vh - 4.3em) !important;
+  background: white;
+  overflow:auto;
+  -webkit-overflow-scrolling: touch;
+  a{
+    display: block;
+    width: 100%;
+    padding: 4px 5%;
+    color: #000;
+    >div{
+      line-height: 25/20*1em;
+      display: inline-block;
+      p{
+        font-size: 14/20*1em;
+        span{
+          font-size:16/20*1em;
+          margin-left:0.4em;
+        }
+      }
+      span{
+        font-size: 0.7em;
+        clear: both;
+        color: #989898;
+      }
+    }
+    strong{
+      font-weight: normal;
+      font-size: 0.7em;
+      float: right;
+    }
+    >strong{
+      line-height: 3.8em;
+    }
+  }
+  .msg{
+    height: 2.5em;
+    text-align: center;
+    font-size: 0.7em;
+    padding: 1.9em 0;
+    color:darken(#989898,30%);
+    >div{
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+  .msg.noMore{
+    height: 40;
+    .svgLoad{
+    }
+  }
+  .msg.empty{
+    position: relative;
+    top: 50%;
+    margin-top: -90px;
+    font-weight: bold;
+    font-size: 60px;
+    line-height: 100px;
+    height: 100px;
+    color: #999;
+  }
+}
+
+.hr1px-list{
+  margin-left: 5%;
+}
+
+.InMoney{
+  color:red !important;
+}
+.OutMoney{
+  color:green;
+}
+.bd{
+  width: 100%;
+  height: 100%;
+}
+.main-list{
+  padding-top: 2.3em;
+  padding-bottom: 0;
+}

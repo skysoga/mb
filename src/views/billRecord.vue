@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main main-list">
     <div class="textMore dataType" @click="BottomBoxShow=!BottomBoxShow"><em>{{top_text}}</em> <i class="iconfont"></i></div>
     <div class="" id="leftTabBox">
       <div class="hd">
@@ -9,7 +9,7 @@
       </div>
       <div class="bd dontSelect">
         <div class="scrollBox" v-for="x in 3">
-          <div class="touchScroll" @touchend="scroll(x-1)" v-if="li_state==x-1" ref="div">
+          <div class="touchScroll touchScroll-list" @touchend="scroll(x-1)" v-if="li_state==x-1" ref="div">
             <template v-if="temp_ajax[newDay][x-1].DataCount===0">
               <div class='fullPageMsg' ><div class='fullPageIcon iconfont'>&#xe63c;</div><p>暂无记录</p></div>
             </template>
@@ -20,7 +20,7 @@
                     <div><p>{{item.TypeName}}</p><span>{{item.AddTime}}</span> </div>
                     <strong :class="check_money(item.InMoney,item.OutMoney)>0?'InMoney':'OutMoney'">{{check_money(item.InMoney,item.OutMoney)}}</strong>
                   </a>
-                  <div class="hr1px"></div>
+                  <div class="hr1px hr1px-list"></div>
                 </div>
               </template>
               <template v-if="x==2">
@@ -32,7 +32,7 @@
                       <span class="fr">{{item.State}}</span>
                     </div>
                   </a>
-                  <div class="hr1px"></div>
+                  <div class="hr1px hr1px-list"></div>
                 </div>
               </template>
               <template v-if="x==3">
@@ -41,7 +41,7 @@
                   <div><p>{{item.TypeName}}</p><span>{{item.AddTime}}</span> </div>
                   <div class="fr"><strong class="InMoney">{{"+"+item.ApplyMoney}}</strong><span class="fr">{{item.State}}</span></div>
                 </a>
-                <div class="hr1px"></div>
+                <div class="hr1px hr1px-list"></div>
               </div>
               </template>
               <div class="msg noMore" v-html="msg[temp_ajax[newDay][x-1].cant_scroll]" v-if="temp_ajax[newDay][x-1].cant_scroll<2"></div>
@@ -183,7 +183,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-  @import '../scss/detailList.scss';
-</style>
