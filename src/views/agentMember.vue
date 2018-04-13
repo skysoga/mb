@@ -1,5 +1,5 @@
 <template>
-<div class="main" ref="div">
+<div class="user-main" ref="div">
   <table class="col3Table col3TableTitle">
     <tbody>
       <tr>
@@ -32,7 +32,7 @@
       <div class="creatAccountDetail">
       <h3 class="line"><em>返点详情</em><a><i class="iconfont" @click="isShow=false"></i></a></h3>
        <ul class="infoshow">
-           <li v-for="x in code_obj"><span>{{x.lotteryname}}</span><input type="number" min="0" :value="x.value" disabled=""></li>
+           <li v-for="x in code_obj"><span>{{x.lotteryname}}</span><input class="user-input" type="number" min="0" :value="x.value" disabled=""></li>
         </ul>
       </div>
     </div>
@@ -220,8 +220,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../scss/personalinfo.scss';
-  .main{
+  .user-main{
     padding-bottom:0;
   }
   .col3Table{
@@ -231,8 +230,8 @@ export default {
       background: #d0d0d0;
       width: 100%;
       height: 1px;
-      @include scaleY(0.5);
-      @include origin( 0 0);
+      transform: scaleY(0.5);
+      transform-origin:0 0;
       left:0;
     }
     th,td{
@@ -245,7 +244,7 @@ export default {
       width:3rem;
     }
   }
-.main{
+.user-main{
   .col3Table{
       td:nth-child(1){
         width:5rem;

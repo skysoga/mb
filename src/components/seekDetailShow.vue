@@ -8,13 +8,13 @@
     <a class="iconfont back" @click="close"></a>
     <div><em>追号详情</em></div>    
   </div>
-  <div class="main">  
+  <div class="main-detail main">  
     <div class="tzHead">
       <div class="fl iconfont" :class="lottery_icon" style="font-size: 2.5em;margin: 0 .4em 0 1rem;width:1em"></div>
       <h1>{{res_data.LotteryName}}</h1>
       <p>第{{res_data.StartIssue}}期起</p>
     </div>
-    <table>
+    <table class="table-detail">
       <tr><td>追号时间</td><td>{{res_data.AddTime}}</td></tr>
       <tr><td>追号单号</td><td>{{res_data.SerialNum}}</td></tr>
       <tr><td>追号进度</td><td>{{res_data.Schedule}}</td></tr>
@@ -24,7 +24,7 @@
       <tr><td>中奖即停</td><td>{{res_data.Condition==='中奖即停'?'是':'否'}}</td></tr>
       <tr></tr>
     </table>
-    <section>
+    <section class="section-detail">
     <header>已追记录</header>
     <ul><li></li>
       <!-- <li v-for="item in res_data.ChaseInfoList" @click="$router.push({path:'/betDetail',query:{ID:item.ID}})"> -->
@@ -130,40 +130,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-  @import '../scss/tzDetail.scss';
-  .layShow{
-    position: fixed;
-    left: 0;
-    top:0;
-    width: 100%;
-    height: 100%;
-    z-index: 1100;
-    background: #000;
-    overflow-x: hidden;
-    overflow-y: scroll;    
-  }
-  .topBG{
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 2.55556em;
-    line-height: 2.55556em;
-    font-size: .9em;
-    text-align: center;
-    color: #fff;
-    z-index: 999;
-    background: #dc3b40;
-    background: linear-gradient(to bottom, #dc3b40 2%,#dc3b40 50%, #db3b40 51%, #d7363b 100%);
-    background: -webkit-linear-gradient(bottom, #dc3b40 2%,#dc3b40 50%, #db3b40 51%, #d7363b 100%);
-    .iconfont{
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 2.5em;
-      height: 100%;
-      fill: #fff;     
-    }
-  }  
-</style>

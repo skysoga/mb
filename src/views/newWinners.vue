@@ -1,5 +1,5 @@
 <template>
-  <div class="newWinner main" ref="div">
+  <div class="newWinner user-main" ref="div">
     <loading v-show="isDataNot"></loading>
     <ul ref="ul">
        <transition-group name="list">
@@ -154,7 +154,6 @@
 
 <style lang="scss" scoped>
   @import '../scss/newwinners.scss';
-  @import '../scss/personalinfo.scss';
 
   .list-enter-active{
     animation: bounce-in .5s;

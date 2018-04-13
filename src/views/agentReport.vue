@@ -1,9 +1,9 @@
 <template>
-  <div class="main" style="padding-bottom: 0;">
+  <div class="user-main" style="padding-bottom: 0;">
   <datatype></datatype>
 <div class="searchBtn">
     <div class="searchCon">
-      <input class="proxySearch" type="text" v-model="UserName" placeholder="下级报表查询">
+      <input class="user-input proxySearch" type="text" v-model="UserName" placeholder="下级报表查询">
     </div>
     <a id="submitBtn" @click="doSearch">
       <div class="submitTouch"><i class="iconfont">&#xe60e;</i></div>
@@ -19,6 +19,3 @@
 </div>
 </template>
 <script src="../js/agentReport.js"></script>
-<style lang="scss" scoped>
-  @import '../scss/personalinfo.scss';
-</style>

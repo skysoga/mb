@@ -58,5 +58,4 @@
 
 <style lang="scss" scoped>
   @import '../scss/newwinners.scss';
-  @import '../scss/personalinfo.scss';
 </style>

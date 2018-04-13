@@ -1,12 +1,12 @@
 <template>
-  <div class="main creatAccount" ref="main" style="padding-bottom: 0;">
+  <div class="user-main creatAccount" ref="main" style="padding-bottom: 0;">
     <div class="creatAccountTitle radio">
       开户类型
-        <router-link to="/manageIcode/AgentCode"><input type="radio" value="1" v-model="codetype" id="radio1">
-        <label for="radio1">代理类型</label></router-link>
+        <router-link to="/manageIcode/AgentCode"><input class="user-input" type="radio" value="1" v-model="codetype" id="radio1">
+        <label class="user-label" for="radio1">代理类型</label></router-link>
         <router-link to="/manageIcode/memberCode">
-        <input type="radio" value="0" id="radio2">
-        <label for="radio2">玩家类型</label>
+        <input class="user-input" type="radio" value="0" id="radio2">
+        <label class="user-label" for="radio2">玩家类型</label>
         </router-link>
     </div>
     <Icode-box :UserType="codetype"></Icode-box>
@@ -25,6 +25,3 @@ export default{
     }
   }
 </script>
-<style lang="scss" scoped>
-  @import '../scss/personalinfo.scss';
-</style>

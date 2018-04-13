@@ -174,7 +174,6 @@
 </script>
 
 <style lang = "scss" scoped>
-  /*@import '../../scss/newssc.scss';*/
 
 .active:active{
   background: initial !important;

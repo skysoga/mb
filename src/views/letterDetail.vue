@@ -33,7 +33,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '../scss/public.scss';
   .main {
     background: #fff;
     min-height: 100%;
