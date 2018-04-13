@@ -1,8 +1,5 @@
 <template>
   <div class="maintainCon">
-    <!-- <header class="top">
-      <span><img :src="$store.getters.PhotoPath+'logo/mobile_logo.png'"></span>
-    </header> -->
     <div class="errorContent fix" v-if="Maintain">
       <div class="maintain">
         <div class="left">
@@ -63,5 +60,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '../scss/maintain.scss';
+em,i{
+    font-style: initial;
+    color: #e4393c;
+    margin: 0 5px;
+}
+.maintain{
+  display:table;
+  margin:0 auto;
+  img{
+    /* margin-top:50px; */
+    /* margin-right: 30px; */
+  }
+}
 </style>
