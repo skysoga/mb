@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="main">
     <ul class="pingContent">
       <li v-for="n in LineList" :class="{noActive:n[2]==1}"><input type="text" :value="n[2]==0?n[1]+'ms':'连接超时'"><i class="cssico-2right"></i><input type="text" :value="n[0]"><a v-if="n[2]==0" :href="'//'+n[0]">切换</a><a v-else>切换</a></li>
@@ -97,5 +97,6 @@ export default{
   }
 </script>
 <style lang="scss" scoped>
-  @import '../scss/ping.scss'
+  @import '../scss/FromTable','../scss/ping.scss';
 </style>
+ -->
