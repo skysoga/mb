@@ -366,7 +366,6 @@ export default {
         if(json.Code === 1){
           var OpenType=json.OpenType
           layer.closeAll()
-          console.log(OpenType)
           switch(OpenType){
             case 1:
               this.QrImg=json.BackUrl
@@ -376,6 +375,8 @@ export default {
             case 2:
             case 3:
             case 4:
+              this.QrImg=''
+              this.QrBg=false
               if (_App) {
                 RootApp.OpenWin(json.BackUrl, newTab)
               }else{
