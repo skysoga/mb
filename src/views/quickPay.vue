@@ -365,9 +365,9 @@ export default {
       _fetch(nowAjax).then((json)=>{
         if(json.Code === 1){
           var OpenType=this.isOpenType//json.OpenType
+          layer.closeAll()
           switch(OpenType){
             case 1:
-              layer.closeAll()
               this.QrImg=json.BackUrl
               this.Styles=json.Style
               this.Money = ''
