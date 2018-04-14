@@ -101,7 +101,7 @@ export default {
           vm.underMaintain = false
           vm.nowRender = json[0]
           vm.Bank=json
-          // vm.isOpenType=json[0].OpenType||json[0].Opentype
+          vm.isOpenType=json[0].OpenType||json[0].Opentype
           vm.vaConfig ||(vm.vaConfig = {})
           vm.vaConfig['Money'] || (vm.vaConfig['Money'] = [])
             var Min=json[0].MinMoney,
@@ -121,7 +121,7 @@ export default {
       QrImg:'',
       QrBg:false,
       QrSvg:false,
-      // isOpenType:'',
+      isOpenType:'',
       //当前
       nowRender:{},
       limit:'',
@@ -364,10 +364,10 @@ export default {
       layer.msgWait("正在提交")
       _fetch(nowAjax).then((json)=>{
         if(json.Code === 1){
-          var OpenType=json.OpenType
-          layer.closeAll()
+          var OpenType=this.isOpenType//json.OpenType
           switch(OpenType){
             case 1:
+              layer.closeAll()
               this.QrImg=json.BackUrl
               this.Styles=json.Style
               this.Money = ''
