@@ -95,8 +95,10 @@
 
       //设置请求的数组
       if (ptype === 'live') {
+        var path = router.currentRoute.path
         _fetch({Action:'GameConfig',GameID:lcode})
         .then(d=>{
+          if(path !== router.currentRoute.path){return}
           try{
           localStorage.removeItem('btnText')
           if (d.BackData != null) {
@@ -112,6 +114,7 @@
 
               // 进入彩种页必须先获取到  赔率/彩种配置/服务器时间
               Promise.all(reqArr).then((values)=>{
+                if(path !== router.currentRoute.path){return}
                 //校验下这个彩种存不存在，不存在就送回购彩大厅
                 var lotteryItem = state.LotteryList[lcode]
                 // var offLineLottery = ['FC3D', 'PL35']
@@ -138,6 +141,7 @@
                     vm.DefaultBarrage = textDataObj
                     vm.RandomBarrage = values[3].DefaultBarrage.shuffle()
                     vm.BroadCast = values[4].BackData
+                    vm.path = router.currentRoute.path
                   })
                 }else{
                   if(values[2].Code !== 1){
@@ -1435,6 +1439,7 @@
         DefaultBarrage:{},
         RandomBarrage:[],
         BroadCast:null,
+        path:null,
       }
     },
     computed:{
@@ -1471,6 +1476,7 @@
       reconnect(){
         _fetch({Action:"GetAnchor",GameID:this.lcode},{url:'/LiveApi'})
         .then(d=>{
+          if(this.path !== router.currentRoute.path){return}
           if (d.Code === 1) {
             d.BackData.Photo = imgHost + '/' + d.BackData.Photo
             this.Anchor = d.BackData
@@ -1480,6 +1486,7 @@
         })
         _fetch({Action:'GameConfig',GameID:this.lcode})
         .then(d=>{
+          if(this.path !== router.currentRoute.path){return}
           if (d.Code === 1) {
             this.GameConfig = d.BackData
             try{
@@ -1507,6 +1514,7 @@
         })
         _fetch({Action:"GetLiveBroadCast",GameID:this.lcode},{url:'/LiveApi'})
         .then(d=>{
+          if(this.path !== router.currentRoute.path){return}
           if (d.Code === 1) {
             this.$refs.newk3.clearBroadCast()
             this.BroadCast = d.BackData
@@ -1562,7 +1570,7 @@
         // this.autoTest()
       },
       OnlineRefresh(json){
-        console.log(json)
+        if(this.path !== router.currentRoute.path){return}
         switch(json.Type){
           case 'Reward':this.$refs.newk3.giftPush(json);break;
           case 'Barrage':this.$refs.newk3.barragePush(json);break;
@@ -1589,11 +1597,12 @@
         }
       },
       WSrefresh(json){
-        this.WS[json.type] = json.result
-        this.WS.Status = json.type
+        if(this.path !== router.currentRoute.path){return}
         if(json.result.game_code !== router.currentRoute.params.code){
           return
         }
+        this.WS[json.type] = json.result
+        this.WS.Status = json.type
         switch(json.type){
           case 'Newest':this.statusNewest(json.result);break;
           case 'GameStatus':this.statusGameStatus(json.result);break;

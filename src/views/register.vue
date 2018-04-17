@@ -40,7 +40,7 @@
           <clearInput></clearInput>
         </td>
       </tr>
-      <tr>
+      <tr v-if="isShowCode">
         <td>验证码</td>
         <td ><input class="input" type="email" maxlength="4" v-va:ImgCode tag="验证码" v-model="ImgCode" placeholder="请输入验证码" autocomplete="off"><clearInput></clearInput></td>
         <td @click = 'refreshYzm'>
@@ -84,7 +84,8 @@ export default {
       YqmReadOnly: false,  //邀请码框是否只读
       existed:'',
       exUserName:'',
-      Eyes:'open'
+      Eyes:'open',
+      isShowCode:false
     }
   },
   beforeRouteLeave: (to, from,next)=>{
@@ -104,7 +105,7 @@ export default {
         this.YqmReadOnly = true;
       }
     }
-    this.refreshYzm()      //获取验证码
+    // this.refreshYzm()      //获取验证码
   },
   methods:{
     //刷新验证码
@@ -119,9 +120,13 @@ export default {
         InvitationCode: this.InvitationCode,
         UserName: this.UserName,
         Password: this.Password,
-        ImgCode: this.ImgCode,
+        // ImgCode: this.ImgCode,
       }
       var that = this
+      if(that.isShowCode){
+        ajax.ImgCode=that.ImgCode
+      }
+      layer.msgWait("正在注册")
       _fetch(ajax).then((json)=>{
         if(json.Code===1||json.Code===0) {
          layer.open({
@@ -148,22 +153,26 @@ export default {
               })
             },
             no: function no() {
-              that.refreshYzm()
+              that.isShowCode&&that.refreshYzm()
               that.UserName= ''
               that.Password= ''
               that.checkPassword= ''
-              that.ImgCode= ''
+              that.isShowCode&&(that.ImgCode= '')
             }
           });
+        }else if(json.Code===2){
+          layer.msgWarn(json.StrCode)
+          that.isShowCode=true
+          that.refreshYzm()
         }else{
           if(json.Code === -2){
-            this.InvitationCode=''
-            this.ImgCode=''
+            that.InvitationCode=''
+            that.isShowCode&&(this.ImgCode='')
             localStorage.removeItem('InvitationCode');
             that.YqmReadOnly = false;
           }
           layer.msgWarn(json.StrCode);
-          that.refreshYzm()
+          that.isShowCode&&that.refreshYzm()
         }
       })
     },
