@@ -126,6 +126,7 @@ export default {
       if(that.isShowCode){
         ajax.ImgCode=that.ImgCode
       }
+      layer.msgWait("正在注册")
       _fetch(ajax).then((json)=>{
         if(json.Code===1||json.Code===0) {
          layer.open({
@@ -160,6 +161,7 @@ export default {
             }
           });
         }else if(json.Code===2){
+          layer.msgWarn(json.StrCode)
           that.isShowCode=true
           that.refreshYzm()
         }else{
