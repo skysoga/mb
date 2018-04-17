@@ -1,5 +1,5 @@
 import {mapState} from 'vuex'
-var StyleId={'All':'A_ALL','10':'A_SSC','14':'A_K3','11':'A_SYX5','13':'A_OTHER'}
+var StyleId={'All':'A_ALL','10':'A_SSC','14':'A_K3','11':'A_SYX5','12':'A_FC3D','13':'A_OTHER'}
 export default {
 data() {
   return {
@@ -14,7 +14,7 @@ beforeRouteEnter(to,from,next){
     next(vm => {
       var display = []
 
-      var offLineLottery = ['12','0']  //不显示在列表栏的彩种ClassID， 统一用ClassID来定位
+      var offLineLottery = ['0']  //不显示在列表栏的彩种ClassID， 统一用ClassID来定位
       display = vm.LotteryConfig.filter(item=>offLineLottery.indexOf(item.LotteryClassID) === -1)
 
       var allLottery = []

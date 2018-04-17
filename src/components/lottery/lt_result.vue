@@ -41,7 +41,7 @@ export default {
         return num
       }
     }
-    var arr = [0,0,0,0,0]
+    var arr = this.lcode!=='1201'?[0,0,0,0,0]:[0,0,0]
     this.timer = setInterval(()=>{
       arr = arr.map(circle)
       this.wait4Results = arr
@@ -49,7 +49,7 @@ export default {
   },
   data(){
     return {
-      wait4Results:[0,0,0,0,0],
+      wait4Results:'',
       ltype: '',    //彩种类型
       lcode: '',    //彩种code
       timer: null,
