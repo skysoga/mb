@@ -839,10 +839,11 @@ var _0to9 = [0,1,2,3,4,5,6,7,8,9],
 var oneRandom = (n)=>Math.floor(Math.random() * n)
 
 // 一星
-function oneStar(){
-   var line =  Math.floor(Math.random() * 5)
+function oneStar(num){
+  num=num?num:5
+   var line =  Math.floor(Math.random() * num)
    var res = []
-   for(var i = 0;i < 5;i++){
+   for(var i = 0;i < num;i++){
     var lineRes = []
     if(line === i){
       lineRes.push(Math.floor(Math.random() * 10))

@@ -350,7 +350,7 @@ var fc3dRandom = {
   B23:()=>_random([1], false, _1to17),        //组选和值
   B24:()=>_random([1], false, _0to9),         //组选包胆
   //一星
-  A11:()=>oneStar(),                          //一星
+  A11:()=>oneStar(3),                          //一星
   //大小单双
   I11:()=>_random([1,1], true, _dsds),         //前二大小单双
   I12:()=>_random([1,1], true, _dsds),         //后二大小单双
