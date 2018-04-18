@@ -201,7 +201,7 @@ var payName={
   QQpay:'QQ昵称',
   UnionPay:'银联姓名'
 }
-var OType=['金付卡','智汇付']//新开窗口数组
+// var OType=['金付卡','智汇付']//新开窗口数组
 export default {
   data(){
       return{
@@ -234,12 +234,12 @@ export default {
     RootApp.GetInitData([rechargeWay], state=>{
       var json=state[rechargeWay]
       var PayType =json&&json[0].PayType
-        if(typeof(QRCode)==="undefined"){
-          var warn=document.createElement('script')
-          warn.src='/static/public/qrcode.min.js'
-          var first=document.body.firstChild
-          document.body.insertBefore(warn,first)
-        }
+        // if(typeof(QRCode)==="undefined"){
+        //   var warn=document.createElement('script')
+        //   warn.src='/static/public/qrcode.min.js'
+        //   var first=document.body.firstChild
+        //   document.body.insertBefore(warn,first)
+        // }
         next(vm=>{
             RootApp.setTitle(state.SiteConfig.Name,payTitle[method])
             vm.method=method
@@ -301,10 +301,10 @@ export default {
       this.QrSvg=false
       this.$refs.qrcode.innerHTML=""
     },
-    setQrCode(url){
-      var qrcode = new QRCode('qrcode');
-      qrcode.makeCode(url)
-    },
+    // setQrCode(url){
+    //   var qrcode = new QRCode('qrcode');
+    //   qrcode.makeCode(url)
+    // },
     changeBank(){
       this.Bank.forEach(item=>{
         if(item.Id === this.Id){
@@ -360,12 +360,12 @@ export default {
           })
           return
         }
-        if(this.isOpenType==4){
-          // if(nowAjax.BankCode!=='智汇付'&&nowAjax.Qort===6){
-          newTab=YDB?true:window.open('about:blank')
-          console.log('新开窗口');
-          // }
-        }
+        // if(this.isOpenType==4){
+        //   // if(nowAjax.BankCode!=='智汇付'&&nowAjax.Qort===6){
+        //   newTab=YDB?true:window.open('about:blank')
+        //   console.log('新开窗口');
+        //   // }
+        // }
         this.QrBg=true
       }
       nowAjax.Money = this.vaVal.Money
@@ -390,33 +390,28 @@ export default {
           }
         }else{
           if(json.Code === 1){
-            var OpenType=json.OpenType
+            var OpenType=this.isOpenType
             layer.closeAll()
-            if(OpenType!==4){
-              newTab&&newTab.close()
-              if(OpenType===1){
+            switch(OpenType){
+              case 1:
                 this.QrImg=json.BackUrl
                 this.Styles=json.Style
                 this.Money = ''
-              }else{
-                this.QrSvg=true
-                if(OpenType===3){
-                  var qrcode=document.getElementById("qrcode")
-                  var img=document.createElement("img")
-                  img.src=this.QrImg
-                  img.width='260'
-                  qrcode.appendChild(img)
-                }else if(OpenType===2){
-                  this.setQrCode(json.BackUrl)
+              break;
+              case 2:
+              case 3:
+              case 4:
+                this.QrImg=''
+                this.QrBg=false
+                if (_App) {
+                  RootApp.OpenWin(json.BackUrl, newTab)
+                }else{
+                  location.href=json.BackUrl
                 }
-              }
-            }else{
-              this.QrBg=false
-              RootApp.OpenWin(json.BackUrl,newTab)
-              this.Money = ''
-            }            
+              break;
+            }                     
           }else{
-            newTab&&newTab.close()
+            // newTab&&newTab.close()
             this.QrBg=false
             this.Money=''
             layer.msgWarn(json.StrCode)
