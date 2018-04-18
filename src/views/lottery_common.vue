@@ -1,6 +1,6 @@
 <template>
   <div class="lottery_sscCon">
-    <div :class="{'lottery_ssc':true,'KL8':this.$parent.ltype=='KL8','PK10':this.$parent.ltype=='PK10'}" v-show = "!ifShowBasket">
+    <div :class="{'lottery_ssc':true,'KL8':this.$parent.ltype=='KL8'}" v-show = "!ifShowBasket">
       <div class="DontSelect sscActive">
         <!-- 头部： 玩法选择， 同类彩种选择-->
 
@@ -20,7 +20,8 @@
         <playArea></playArea>
 
         <!-- 倍和单位， 确认投注， 号码篮 -->
-        <lt-footer></lt-footer>
+        <ltFooterBJSC v-if="gyhlh"></ltFooterBJSC>
+        <lt-footer v-else></lt-footer>
       </div>
     </div>
 
@@ -37,9 +38,14 @@
   import lt_result from '../components/lottery/lt_result'
   import lt_timebar from '../components/lottery/lt_timebar'
   import lt_footer from '../components/lottery/lt_footer'
+  import lt_footerBJSC from '../components/lottery/lt_footerBJSC'
   import lt_PKKL from '../components/lottery/lt_PKKL'
   import playArea from '../components/lottery/play_area'
   import basket from '../components/lottery/basket'
+
+  // var BJSCres=['PK10']//北京赛车配置
+  // var arrMode=['G11','H11']//北京赛车，双面盘，冠亚和
+  var isShowBox=['PK10G11','PK10H11','SSCJ11','SSCK11','SSCL11']
   export default {
     components:{
       'lt-header': lt_header,
@@ -48,7 +54,8 @@
       'lt-footer': lt_footer,
       'playArea': playArea,
       'basket': basket,
-      'lt-PKKL':lt_PKKL
+      'lt-PKKL':lt_PKKL,
+      'ltFooterBJSC':lt_footerBJSC
     },
     created(){
       this.$store.commit('lt_initConfig')
@@ -60,6 +67,11 @@
       ifShowType(){
         var lotteryArr=['KL8','PK10']
         return lotteryArr.indexOf(this.$parent.ltype)==-1
+      },
+      mode:()=>state.lt.mode.mode,
+      lottery:()=>state.lt.lottery.LotteryType,
+      gyhlh(){
+        return isShowBox.indexOf(this.lottery+this.mode)!==-1
       }
     },
   }

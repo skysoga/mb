@@ -1,12 +1,21 @@
 <template>
   <div :class="{'sscMain':true,'quWei':getQW}">
-    <!-- 奖金详情 -->
-    <bet-tip :award = "award" :tip = "tip" :itemArr = "bonusText[lotteryMode]"></bet-tip>
+    <!-- 奖金详情 -->    
+    <div class="sscTips" v-if = "!tipDisplayFlag && tipOverLong">
+            <p>
+              {{actualTip}}
+              <span @click = "toggleDetail(true)" style = "color:#218ddd;">详细</span>
+            </p>
+          </div>
+    <bet-tip v-else :award = "notBJSC?award:[]" :tip = "tip" :itemArr = "bonusText[lotteryMode]">
+      <span v-if = "tipDisplayFlag" @click = "toggleDetail(false)" style = "color:#218ddd;">收起</span>
+    </bet-tip>
 
     <!-- 普通 -->
     <betbox v-if = "!ltCfg[mode].box"
             v-for = "alias in ltCfg[mode].render"
             :alias = "alias"
+            :awardArr="getAward(alias)"
             v-on:choose = "whenChoose">
             </betbox>
 
@@ -28,6 +37,7 @@ import {sscPlay} from '../../js/page_config/lt_ssc'
 import {syx5Play} from '../../js/page_config/lt_syx5'
 import {pk10Play} from '../../js/page_config/lt_pk10'
 import {kl8Play} from '../../js/page_config/lt_kl8'
+import {fc3dPlay} from '../../js/page_config/lt_fc3d'
 import {factorial, mul, C, combNoRepeat, unique, normalSum2, normalSum3, accumulate,
   diff2, diff3, combSum2, combSum3} from '../../js/kit'
 
@@ -39,6 +49,7 @@ var playCfg = {
   'SYX5': syx5Play,
   'PK10': pk10Play,
   'KL8': kl8Play,
+  'FC3D': fc3dPlay,
 }
 var modeArr=['定单双','趣味']
 // 奖金详情专用
@@ -62,6 +73,11 @@ var bonusText={
 'SSCD24':['**001','**123'],
 'SSCD25':['**311或**331','**345'],
 }
+
+// var BJSCres=['PK10']//北京赛车配置
+// var arrMode=['G11','H11']//北京赛车，双面盘，冠亚和
+var isShowBox=['PK10G11','PK10H11','SSCJ11','SSCK11','SSCL11']
+
 export default {
   components:{
     betbox,
@@ -89,6 +105,7 @@ export default {
     return {
       ltCfg: {},
       bonusText:bonusText,
+      ellipsisWidth: 46,
     }
   },
   computed:mapState({
@@ -105,8 +122,129 @@ export default {
     lotteryMode(){
       return [this.lottery, this.mode].join('')
     },
+    //渲染赔率-北京赛车
+    renderOdds(){
+      var line=this.ltCfg[this.mode].render
+      return this.setOddsArr(line)
+    },
+    notBJSC(){
+      return isShowBox.indexOf(this.lottery+this.mode)===-1
+    },
+    tipDisplayFlag:()=>state.lt.tipDisplayFlag,
+    tipOverLong(){
+      return this.tip.length > this.ellipsisWidth
+    },
+    actualTip(){
+      if(!this.tipOverLong){
+        return this.tip
+      }else{
+        return this.tip.slice(0, this.ellipsisWidth) + '...'
+      }
+    },
   }),
   methods:{
+    getAward(alias){      
+      return isShowBox.indexOf(this.lottery+this.mode)>-1?this.renderOdds[alias]:[]
+    },
+    toggleDetail(bool){
+      this.$store.commit('lt_showFullTip', bool)
+    },
+    setOddsArr(arr){
+      if(!this.award||this.notBJSC){
+        return {}
+        // layer.msgWarn('奖金不存在')
+      }
+      var line=[]      
+      var award=this.award?this.award.split(" "):[]
+      var obj=[]//输出数组
+      var objList={}
+      switch(this.mode){
+        case 'G11':
+        line=[50]
+        // line=[1,2,1,50]
+        objList={
+          // "igyh":4,
+          "ifirst":6,
+          "isecond":6,
+          "ithird":6,
+          "ifourth":6,
+          "ififth":6,
+          "isixth":4,
+          "iseventh":4,
+          "ieighth":4,
+          "ininth":4,
+          "itenth":4
+        }
+        break;
+        case 'H11':
+        line=[1,2,1,2,2,2,2,1,2,2,2,2]
+        objList={
+          "igyh":4,
+          "gyhz":17
+        }
+        break;
+        case 'J11':
+        line=[10]
+        objList={
+          'cbz':10
+        }
+        break;
+        case 'K11':
+        line=[34]
+        objList={
+          "zhlh":4,
+          "z10000":6,
+          "z1000":6,
+          "z100":6,
+          "z10":6,
+          "z1":6,
+        }
+        break;
+        case 'L11':
+        var arr=[]        
+        line=[2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1]
+        for(var i=0;i<10;i++){
+          arr.push(award)
+        }
+        award=arr.reduce((a,b)=>a.concat(b))
+        objList={
+          "wQian":3,
+          "wBai":3,
+          "wShi":3,
+          "wGe":3,
+          "qBai":3,
+          "qShi":3,
+          "qGe":3,
+          "bShi":3,
+          "bGe":3,
+          "sGe":3,
+        }
+        break;
+        default:
+        line=[]
+      }
+      if(line.length){
+        for(var i=0;i<award.length;i++){
+          for(var j=0;j<line[i];j++){
+            obj.push(award[i])
+          }
+        }
+      }
+      return this.setLineOdd(objList,obj)
+    },
+    setLineOdd(objList,award){
+        var obj={}        
+        for(var i in objList){
+          if(objList.hasOwnProperty(i)){
+            obj[i]=[]
+            for(var j=0;j<objList[i];j++){
+              obj[i].push(award[0])
+              award.splice(0,1)            
+            }
+          }
+      }
+      return obj
+    },
     whenChoose(alias, choose){
       var tmp = state.lt.tmp                     //即时投注号码
       // 处理胆码和拖码不可重选
@@ -224,7 +362,7 @@ function betSum(order, tmp){
 @import '../../scss/scssConfig','../../scss/mixin';
 .sscMain{
   min-height: 23em;
-  padding-bottom: 4.8em;
+  padding-bottom: 5.8em;
   margin-bottom: 0;
 }
 
