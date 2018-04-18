@@ -202,110 +202,6 @@ var payName={
   UnionPay:'银联姓名'
 }
 
-var objData={
-    // "Weixin": [{
-    //     "Id": 174,
-    //     "RealName": null,
-    //     "CodeImg": "",
-    //     "PayType": "多得宝",
-    //     "Alias": "多得宝",
-    //     "AliNo": "多得宝",
-    //     "MinMoney": 0,
-    //     "MaxMoney": 5000,
-    //     "Opentype": 1
-    // }, {
-    //     "Id": 181,
-    //     "RealName": null,
-    //     "CodeImg": "0",
-    //     "PayType": "卡诚",
-    //     "Alias": "卡诚",
-    //     "AliNo": "卡诚",
-    //     "MinMoney": 0,
-    //     "MaxMoney": 5000,
-    //     "Opentype": 1
-    // }, {
-    //     "Id": 176,
-    //     "RealName": null,
-    //     "CodeImg": "",
-    //     "PayType": "一般",
-    //     "Alias": "一般",
-    //     "AliNo": "一般",
-    //     "MinMoney": 0,
-    //     "MaxMoney": 100000,
-    //     "Opentype": 0
-    // }],
-    // "Alipay": [{
-    //     "Id": 44,
-    //     "RealName": "alipayyyyyy",
-    //     "Alias": "alipayyyyyy",
-    //     "AliNo": "alipaynnnn",
-    //     "CodeImg": "",
-    //     "PayType": "一般",
-    //     "MinMoney": 0,
-    //     "MaxMoney": 3000,
-    //     "Opentype": 0
-    // }, {
-    //     "Id": 54,
-    //     "RealName": null,
-    //     "AliNo": "智汇付",
-    //     "CodeImg": null,
-    //     "PayType": "智汇付",
-    //     "Alias": "智汇付",
-    //     "MinMoney": 0,
-    //     "MaxMoney": 12300,
-    //     "Opentype": 1
-    // }, {
-    //     "Id": 52,
-    //     "RealName": null,
-    //     "AliNo": "CTH",
-    //     "CodeImg": null,
-    //     "PayType": "金付卡",
-    //     "Alias": "金付卡",
-    //     "MinMoney": 0,
-    //     "MaxMoney": 12300,
-    //     "Opentype": 1
-    // }],
-    // "QQpay": [{
-    //     "Id": 3,
-    //     "RealName": null,
-    //     "CodeImg": "",
-    //     "PayType": "一般",
-    //     "AliNo": "一般",
-    //     "Alias": "一般",
-    //     "MinMoney": 0,
-    //     "MaxMoney": 1000,
-    //     "Opentype": 0
-    // },{
-    //     "Id": 7,
-    //     "RealName": null,
-    //     "CodeImg": "",
-    //     "PayType": "多得宝",
-    //     "Alias": "多得宝",
-    //     "AliNo": "多得宝",
-    //     "MinMoney": 1,
-    //     "MaxMoney": 9999,
-    //     "Opentype": 1
-    // }],
-    // "UnionPay": [{
-    //     "Id": 2,
-    //     "PayType": "一般",
-    //     "Alias": "一般",
-    //     "AliNo": "一般",
-    //     "CodeImg": "",
-    //     "MinMoney": 0,
-    //     "MaxMoney": 500,
-    //     "Opentype": 0
-    // }, {
-    //     "Id": 3,
-    //     "PayType": "多得宝",
-    //     "Alias": "多得宝",
-    //     "AliNo": "多得宝",
-    //     "CodeImg": "",
-    //     "MinMoney": 0,
-    //     "MaxMoney": 500,
-    //     "Opentype": 1
-    // }]
-}
 // var OType=['金付卡','智汇付']//新开窗口数组
 export default {
   data(){
@@ -337,7 +233,7 @@ export default {
     var rechargeWay = 'RechargeWay' + method
     //获取数据
     RootApp.GetInitData([rechargeWay], state=>{
-      var json=objData[method]||state[rechargeWay]
+      var json=state[rechargeWay]
       //测试数据
       
       var PayType =json&&json[0].PayType
