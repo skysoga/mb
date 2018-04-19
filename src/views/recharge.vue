@@ -16,10 +16,10 @@
       <template v-if= "method =='Alipay'||method =='QQpay'||method =='Weixin'||method =='UnionPay'">
         <table>
           <tr v-if="Bank.length>1">
-              <td>选择银行</td>
+              <td>充值方式</td>
               <td>
                 <select v-model = "Id" @change = "changeBank">
-                  <option v-for = "option in Bank" :value = "option.Id">{{option.Alias}}</option>
+                  <option v-for = "(n,k) in Bank" :value = "n.Id">充值方式{{k+1}}</option>
                 </select>
                 <i class="iconfont unfold"></i>
               </td>
@@ -115,7 +115,7 @@
           <br>2、单笔充值金额最低<ins>{{this.nowRender.MinMoney}}</ins>元，最高<ins>{{this.nowRender.MaxMoney}}</ins>元。
           <br> 3、可以使用其他手机扫二维码进行充值，也可以将二维码保存到相册再使用{{this.$route.meta.title}}识别相册中的二维码进行充值，该二维码仅当次有效，每次充值前务必重新保存最新的二维码。
           <br>
-          4、为了更准确核对您的金额，系统会随机为整数金额添加小数点。
+          4、{{payMsg[method]?'充值金额请输入整数。':'为了更准确核对您的金额，系统会随机为整数金额添加小数点。'}}
           </template>
         </div>
       </template>
@@ -201,7 +201,6 @@ var payName={
   QQpay:'QQ昵称',
   UnionPay:'银联姓名'
 }
-
 // var OType=['金付卡','智汇付']//新开窗口数组
 export default {
   data(){
@@ -222,6 +221,12 @@ export default {
         //AJAX
         PayUser: '',
         Money: '',
+        payMsg:{
+                Weixin:true,
+                Alipay: true,
+                QQpay: false,
+                UnionPay: false
+              }
       }
   },
   beforeRouteEnter(to,from,next){
