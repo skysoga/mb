@@ -33,7 +33,7 @@ beforeRouteEnter(to,from,next){
       }
 
       display.splice(0,0, whole)
-      vm.nowDisplayList = display[0].LotteryList
+      vm.nowDisplayList=vm.setArr(display[0].LotteryList)
       vm.display = display
     })
   })
@@ -41,12 +41,21 @@ beforeRouteEnter(to,from,next){
   methods: {
     changeNowLotteryClass: function(lotteryClass, lotteryList) {
       this.nowLotteryClass = lotteryClass
-      this.nowDisplayList=lotteryList
+      this.nowDisplayList=this.setArr(lotteryList)
     },
     setStyle(id){
       if(StyleId[id]){
         return StyleId[id]
       }
+    },
+    setArr(Arr){
+      var temp=[]
+      for(var i=0;i<Arr.length;i++){
+        if(Arr[i]!=='1202'){
+          temp.push(Arr[i])
+        }
+      }      
+      return temp
     }
   },
   computed:mapState({
