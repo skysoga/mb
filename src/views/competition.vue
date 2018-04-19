@@ -51,14 +51,19 @@
         var arr=this.init_bonus_data
         if(arr[0].UserName=='yj***8'){
           arr.splice(0,1)
+          store.commit('ClearInitData', ["RankingList"])
+          this.getData()
         }
-      }      
+      },
+      getData(k){
+        RootApp.GetInitData(["RankingList"],(state)=>{
+          this.init_bonus_data=state.RankingList
+          k&&this.isData()
+        })
+      }
     },
     created(){      
-       RootApp.GetInitData(["RankingList"],(data)=>{
-          this.init_bonus_data=data.RankingList
-          this.isData()
-        })
+       this.getData(1)
     }
   }
 </script>
