@@ -16,10 +16,10 @@
       <template v-if= "method =='Alipay'||method =='QQpay'||method =='Weixin'||method =='UnionPay'">
         <table>
           <tr v-if="Bank.length>1">
-              <td>充值方式</td>
+              <td>充值通道</td>
               <td>
                 <select v-model = "Id" @change = "changeBank">
-                  <option v-for = "(n,k) in Bank" :value = "n.Id">充值方式{{k+1}}</option>
+                  <option v-for = "(n,k) in Bank" :value = "n.Id">通道{{k+1}}</option>
                 </select>
                 <i class="iconfont unfold"></i>
               </td>
