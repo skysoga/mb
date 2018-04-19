@@ -46,12 +46,19 @@
           }else{
             this.serverTime=false
           }
-      }
+      },
+      isData(){
+        var arr=this.init_bonus_data
+        if(arr[0].UserName=='yj***8'){
+          arr.splice(0,1)
+        }
+      }      
     },
-    created(){
-      RootApp.GetInitData(["RankingList"],(data)=>{
-        this.init_bonus_data=data.RankingList
-      })
+    created(){      
+       RootApp.GetInitData(["RankingList"],(data)=>{
+          this.init_bonus_data=data.RankingList
+          this.isData()
+        })
     }
   }
 </script>
