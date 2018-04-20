@@ -49,7 +49,7 @@
               <tr>
                 <td>扫码支付</td>
                 <td>
-                  <img class="barcode" :src="$store.state.constant.ImgHost+nowRender.CodeImg" alt="">
+                  <img class="barcode" :src="nowRender.CodeImg" alt="">
                 </td>
               </tr>
               <tr></tr>
@@ -63,6 +63,12 @@
               <td>{{payName}}</td>
               <td><input type="text" :tag = "payName" v-va:PayUser  v-model = 'PayUser'  :placeholder="'请输入您的'+payName"></td>
             </tr>
+            <tr>
+                <td>扫码支付</td>
+                <td>
+                  <img class="barcode" :src="nowRender.CodeImg" alt="">
+                </td>
+              </tr>
           </template>
         </template>
         <template v-else>
@@ -262,14 +268,8 @@ export default {
             if(method =='Bank'){
                 vm[method] = Object.freeze(json)
                 // vm.BankCode = json[0].BankCode;
-            }else{
-              var xurl = ''
-              if(json[0].CodeImg === '0' || !json[0].CodeImg){
-                xurl = '/../system/common/other/noQRcode.png'
-              }else{
-                xurl = json[0].CodeImg
-              }
-              vm.nowRender.CodeImg =  state.constant.ImgHost + xurl
+            }else{              
+              vm.nowRender.CodeImg = vm.setImgUrl(json[0].CodeImg)
             }
             vm.underMaintain = false
             vm.Bank=json
@@ -319,6 +319,7 @@ export default {
           this.PayType = item.PayType
           this.isOpenType=item.OpenType||item.Opentype
           this.nowRender = item
+          this.nowRender.CodeImg = this.setImgUrl(item.CodeImg)
           this.vaConfig = {}
           this.vaConfig['Money'] || (this.vaConfig['Money'] = [])
           var Min=this.nowRender.MinMoney,
@@ -326,6 +327,15 @@ export default {
           this.vaConfig['Money'].push(new this.VaConfig('limit', [Min,Max], '', 'Money', payTitle[this.method]))
         }
       })
+    },
+    setImgUrl(CodeImg){
+      var xurl = ''
+          if(CodeImg.indexOf('noQRcode')===-1&&(CodeImg === '0'||!CodeImg)){
+            xurl = '/../system/common/other/noQRcode.png'
+          }else{
+            xurl = CodeImg
+          }
+      return xurl.indexOf(state.constant.ImgHost)===-1?(state.constant.ImgHost + xurl):xurl
     },
     // 提交数据
     $vaSubmit(){
