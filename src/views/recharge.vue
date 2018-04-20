@@ -49,7 +49,7 @@
               <tr>
                 <td>扫码支付</td>
                 <td>
-                  <img class="barcode" :src="nowRender.CodeImg" alt="">
+                  <img class="barcode" :src="$store.state.constant.ImgHost+nowRender.CodeImg" alt="">
                 </td>
               </tr>
               <tr></tr>
