@@ -330,11 +330,12 @@ export default {
     },
     setImgUrl(CodeImg){
       var xurl = ''
-          if(CodeImg.indexOf('noQRcode')===-1&&(CodeImg === '0'||!CodeImg)){
+          if(CodeImg === '0'||!CodeImg){
             xurl = '/../system/common/other/noQRcode.png'
           }else{
             xurl = CodeImg
           }
+      // return xurl.indexOf("http://img-google.com:8088")===-1?("http://img-google.com:8088" + xurl):xurl//本地测试
       return xurl.indexOf(state.constant.ImgHost)===-1?(state.constant.ImgHost + xurl):xurl
     },
     // 提交数据
