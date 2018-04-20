@@ -319,6 +319,11 @@ export default {
           this.PayType = item.PayType
           this.isOpenType=item.OpenType||item.Opentype
           this.nowRender = item
+          this.vaConfig = {}
+          this.vaConfig['Money'] || (this.vaConfig['Money'] = [])
+          var Min=this.nowRender.MinMoney,
+              Max=this.nowRender.MaxMoney
+          this.vaConfig['Money'].push(new this.VaConfig('limit', [Min,Max], '', 'Money', payTitle[this.method]))
         }
       })
     },
