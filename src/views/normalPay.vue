@@ -104,6 +104,20 @@
      <div class="main" v-if= "method === 'QQpay' && !underMaintain ">
       <input name="GetMoneyUser" type="hidden" value="" readonly="readonly">
       <table>
+        <template v-if="nowRender.CardNum&&nowRender.RealName">
+        <tr>
+          <td>钱包昵称</td>
+          <td>
+            <input class="cGold"  type="text" :value = "nowRender.RealName"  readonly="readonly">
+            <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i>
+          </td>
+        </tr>
+        <tr>
+          <td>钱包帐号</td>
+          <td><input class="cGold" type="text"  :value = "nowRender.CardNum" readonly="readonly">
+          <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i></td>
+        </tr>        
+        </template>
         <tr>
           <td>充值金额</td>
           <td><input  type="tel" tag = "充值金额" v-va:Money  v-model = 'Money'  placeholder="请输入充值金额"></td>
@@ -112,7 +126,7 @@
           <td>QQ昵称</td>
           <td><input type="text" tag = "QQ昵称" v-va:PayUser  v-model = 'PayUser'  placeholder="请输入您的QQ昵称"></td>
         </tr>
-        <tr>
+        <tr v-if="nowRender.CodeImg">
           <td>扫码支付</td>
           <td>
             <img class="barcode" :src="nowRender.CodeImg" alt="二维码">
@@ -133,6 +147,20 @@
      <div class="main" v-if= "method === 'UnionPay' && !underMaintain ">
       <input name="GetMoneyUser" type="hidden" value="" readonly="readonly">
       <table>
+        <template v-if="nowRender.CardNum&&nowRender.RealName">
+        <tr>
+          <td>银联姓名</td>
+          <td>
+            <input class="cGold"  type="text" :value = "nowRender.RealName"  readonly="readonly">
+            <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i>
+          </td>
+        </tr>
+        <tr>
+          <td>钱联帐号</td>
+          <td><input class="cGold" type="text"  :value = "nowRender.CardNum" readonly="readonly">
+          <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i></td>
+        </tr>        
+        </template>
         <tr>
           <td>充值金额</td>
           <td><input  type="tel" tag = "充值金额" v-va:Money  v-model = 'Money'  placeholder="请输入充值金额"></td>
@@ -141,7 +169,7 @@
           <td>您的姓名</td>
           <td><input type="text" tag = "QQ昵称" v-va:PayUser  v-model = 'PayUser'  placeholder="请输入您的您的姓名"></td>
         </tr>
-        <tr>
+        <tr v-if="nowRender.CodeImg">
           <td>扫码支付</td>
           <td>
             <img class="barcode" :src="nowRender.CodeImg" alt="二维码">
@@ -287,13 +315,10 @@ export default{
       //ajax
       PayUser: '',
       Money: '',
-      // ID:0,
+      ID:0,
     }
   },
   computed:{
-    ID (){
-      return this.nowRender.Id
-    },
     pageName () {
       return payTitle[this.method]
     }
