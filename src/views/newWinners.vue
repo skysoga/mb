@@ -134,7 +134,8 @@
         this.isDataNot=false //关闭动画
         //首屏渲染完毕，开始启动定时渲染函数
         setTimeout(()=>{
-          this.bonu_list_data2.unshift(this.config.cache.shift())
+          var cache=this.config.cache.shift()
+         cache&&this.bonu_list_data2.unshift(cache)
           this.renderInterval(this.config.timeInsert, (item) => {
             this.transitionShow(this.config.height, 200, 60, item)
           })

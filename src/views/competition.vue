@@ -49,7 +49,7 @@
       },
       isData(){
         var arr=this.init_bonus_data
-        if(arr[0].UserName=='yj***8'){
+        if(arr&&arr[0].UserName=='yj***8'){
           arr.splice(0,1)
           store.commit('ClearInitData', ["RankingList"])
           this.getData()
