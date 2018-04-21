@@ -31,7 +31,7 @@
           <i class="iconfont">&#xe60e;</i>
         </div><history v-if="history" :type="history"></history>
       </div>
-      <div class="Anchor" @click.stop="showCard(1)">
+      <div class="Anchor" @click.stop="showCard(1)" v-if="$parent.Anchor.Photo">
         <div class="AnchorImg" :style="'background: url('+$parent.Anchor.Photo+')'"></div>
         <div class="AnchorBg" :style="'background: url('+$store.state.constant.ImgHost+'/live/crown-anchor.png)'"></div>
       </div>

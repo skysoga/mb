@@ -110,7 +110,7 @@
               })
               var GetAnchor       = _fetch({Action:"GetAnchor",GameID:lcode},{url:'/LiveApi'})
               var GetLiveBroadCast= _fetch({Action:"GetLiveBroadCast",GameID:lcode},{url:'/LiveApi'})
-              var reqArr          = [getRebate, getServerTime,GetAnchor,GetDefaultBarrage,GetLiveBroadCast]
+              var reqArr          = [getRebate, getServerTime,/*GetAnchor,*/GetDefaultBarrage,GetLiveBroadCast]
 
               // 进入彩种页必须先获取到  赔率/彩种配置/服务器时间
               Promise.all(reqArr).then((values)=>{
@@ -118,7 +118,7 @@
                 //校验下这个彩种存不存在，不存在就送回购彩大厅
                 var lotteryItem = state.LotteryList[lcode]
                 // var offLineLottery = ['FC3D', 'PL35']
-                if (values[2].Code === 1) {
+                // if (values[2].Code === 1) {
                   next(vm=>{
                     //检测等级
                     var _level = state.UserUpGradeBonus.Grade
@@ -132,23 +132,27 @@
                     // vm.isRuningT = setInterval(()=>{
                     //   vm.createWS()
                     // },3000)
-                    values[2].BackData.Photo = imgHost + '/' + values[2].BackData.Photo
-                    vm.Anchor = values[2].BackData
+                    GetAnchor.then(json=>{
+                      if(json.Code===1){
+                        json.BackData.Photo = imgHost + '/' + json.BackData.Photo
+                        vm.Anchor = json.BackData
+                      }
+                    })
                     var textDataObj = {}
-                    for (var i = 0; i < values[3].DefaultBarrage.length; i++) {
-                      textDataObj[values[3].DefaultBarrage[i].ID] = values[3].DefaultBarrage[i].Content
+                    for (var i = 0; i < values[2].DefaultBarrage.length; i++) {
+                      textDataObj[values[2].DefaultBarrage[i].ID] = values[2].DefaultBarrage[i].Content
                     }
                     vm.DefaultBarrage = textDataObj
-                    vm.RandomBarrage = values[3].DefaultBarrage.shuffle()
-                    vm.BroadCast = values[4].BackData
+                    vm.RandomBarrage = values[2].DefaultBarrage.shuffle()
+                    vm.BroadCast = values[3].BackData
                     vm.path = router.currentRoute.path
                   })
-                }else{
+                /*}else{
                   if(values[2].Code !== 1){
                     layer.msgWarn(values[2].StrCode)
                   }
                   state.turning=false
-                }
+                }*/
               }).catch((e)=>{
                  //关掉loading动画
                 store.commit('toggleLoading', false)
@@ -706,7 +710,7 @@
               var LotteryPlan = localStorage.getItem("lotteryPlan"+ code)
               LotteryPlan = LotteryPlan&&JSON.parse(LotteryPlan)
 
-              if(LotteryPlan){                
+              if(LotteryPlan){
                 checkPlan(code)                   //校验计划
               }else{
                 // dispatch('lt_fetchPlan', code)    //获取计划
@@ -847,7 +851,7 @@
                 ,IssueNo = state.IssueNo
             if(_SerTime<1000) {
               // console.log("新的一天");
-              commit('lt_updateDate')              
+              commit('lt_updateDate')
               commit('lt_setIssueNo', state.IssueNo%state.PlanLen)
             }
 
@@ -1036,7 +1040,7 @@
                     btn: ["确定"]
                   });
                 }
-                
+
               }else{
                 // 获得6HC的倒计时
                 var Countdown = get6HCCountdown()
@@ -1119,7 +1123,7 @@
                   ,isCrossDay = (_issue.Start > _issue.End) && (_SerTime > _issue.Start)  //本期跨天,且当前时间大于End
                   ,isOutOfIssue = state.IssueNo === state.PlanLen                     //如果现在不在任何期内
                   ,isOneDayOneIssue=noCode.indexOf(code) > -1
-              
+
               //如果现在在一天一期的当期开奖后
               var extra = isOneDayOneIssue && (_SerTime > state.LotteryPlan[0].End)
               var needAddOneDay = isCrossDay || isOutOfIssue || extra
