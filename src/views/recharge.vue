@@ -24,8 +24,8 @@
                 <i class="iconfont unfold"></i>
               </td>
             </tr>
-        <template v-if="PayType=='一般'">
-          <template v-if="method=='Alipay'">
+        <template v-if="PayType=='一般'">          
+            <template v-if="method=='Alipay'&&nowRender.AliNo&&nowRender.RealName">
               <tr>
                 <td>支付宝姓名</td>
                 <td>
@@ -37,49 +37,65 @@
                 <td>支付宝账号</td>
                 <td><input class="cGold" type="text"  :value = "nowRender.AliNo" readonly="readonly">
                 <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i></td>
+              </tr>              
+            </template>
+            <template v-if="method=='Weixin'&&nowRender.BankName&&nowRender.CardNum&&nowRender.RealName">
+              <tr>
+                <td>收款银行</td>
+                <td><input class="cGold" type="text"  :value = "nowRender.BankName" readonly="readonly">
+                <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i></td>
               </tr>
               <tr>
-                <td>充值金额</td>
-                <td><input  type="tel" tag = "充值金额"  v-model.trim="Money" v-va:Money placeholder="请输入充值金额"></td>
-              </tr>
-              <tr>
-                <td>支付宝姓名</td>
-                <td><input type="text" tag = "支付宝姓名" v-model="PayUser" v-va:PayUser   placeholder="请输入您的支付宝姓名"></td>
-              </tr>
-              <tr>
-                <td>扫码支付</td>
+                <td>银行帐户</td>
                 <td>
-                  <img class="barcode" :src="nowRender.CodeImg" alt="">
+                  <input class="cGold"  type="text" :value = "nowRender.RealName"  readonly="readonly">
+                  <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i>
                 </td>
               </tr>
-              <tr></tr>
-          </template>
-          <template v-else>
+              <tr>
+                <td>银行帐号</td>
+                <td><input class="cGold" type="text"  :value = "nowRender.CardNum" readonly="readonly">
+                <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i></td>
+              </tr>        
+            </template>
+            <template v-if="method!=='Weixin'&&method!=='Alipay'&&nowRender.CardNum&&nowRender.RealName">
+              <tr>
+                <td>{{payName[1]}}</td>
+                <td>
+                  <input class="cGold"  type="text" :value = "nowRender.RealName"  readonly="readonly">
+                  <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i>
+                </td>
+              </tr>
+              <tr>
+                <td>{{payName[2]}}</td>
+                <td><input class="cGold" type="text"  :value = "nowRender.CardNum" readonly="readonly">
+                <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i></td>
+              </tr>
+            </template>
             <tr>
               <td>充值金额</td>
               <td><input  type="tel" tag = "充值金额" v-va:Money  v-model = 'Money'  placeholder="请输入充值金额"></td>
             </tr>
             <tr>
-              <td>{{payName}}</td>
-              <td><input type="text" :tag = "payName" v-va:PayUser  v-model = 'PayUser'  :placeholder="'请输入您的'+payName"></td>
+              <td>{{payName[0]}}</td>
+              <td><input type="text" :tag = "payName[0]" v-va:PayUser  v-model = 'PayUser'  :placeholder="'请输入您的'+payName[0]"></td>
             </tr>
-            <tr>
-                <td>扫码支付</td>
-                <td>
-                  <img class="barcode" :src="nowRender.CodeImg" alt="">
-                </td>
-              </tr>
-          </template>
+            <tr v-if="nowRender.CodeImg">
+              <td>扫码支付</td>
+              <td>
+                <img class="barcode" :src="nowRender.CodeImg" alt="">
+              </td>
+            </tr>
         </template>
         <template v-else>
           <!-- 快捷 -->
-            <tr>
-              <td>充值金额</td>
-              <td>
-                <input type="tel" tag="充值金额" v-va:Money v-model.trim='Money' placeholder="请输入充值金额">
-              </td>
-            </tr>
-            <tr></tr>
+          <tr>
+            <td>充值金额</td>
+            <td>
+              <input type="tel" tag="充值金额" v-va:Money v-model.trim='Money' placeholder="请输入充值金额">
+            </td>
+          </tr>
+          <tr></tr>
         </template>
         </table>
         <div class="loginBtn BTN"><a v-va-check>确定</a></div>
@@ -203,9 +219,10 @@ var payTitle = {
   UnionPay: '银联扫码'
 }
 var payName={
-  Weixin:'微信昵称',
-  QQpay:'QQ昵称',
-  UnionPay:'银联姓名'
+  Alipay:['支付宝姓名'],
+  Weixin:['微信昵称'],
+  QQpay:['QQ昵称','钱包昵称','钱包帐号'],
+  UnionPay:['您的姓名','银联姓名','银联帐号']
 }
 // var OType=['金付卡','智汇付']//新开窗口数组
 export default {
