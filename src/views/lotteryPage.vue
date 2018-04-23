@@ -108,7 +108,6 @@
                   res(d)
                 },{url:'/LiveApi'})
               })
-              var GetAnchor       = _fetch({Action:"GetAnchor",GameID:lcode},{url:'/LiveApi'})
               var GetLiveBroadCast= _fetch({Action:"GetLiveBroadCast",GameID:lcode},{url:'/LiveApi'})
               var reqArr          = [getRebate, getServerTime,/*GetAnchor,*/GetDefaultBarrage,GetLiveBroadCast]
 
@@ -132,6 +131,7 @@
                     // vm.isRuningT = setInterval(()=>{
                     //   vm.createWS()
                     // },3000)
+                    var GetAnchor       = _fetch({Action:"GetAnchor",GameID:lcode},{url:'/LiveApi'})
                     GetAnchor.then(json=>{
                       if(json.Code===1){
                         json.BackData.Photo = imgHost + '/' + json.BackData.Photo
