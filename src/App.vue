@@ -9,7 +9,14 @@
       <router-view :s="$store.state"></router-view>
     </transition>
     <newIframe :url="$store.state.URL" v-if="$store.state.URL"></newIframe>
-    <!-- <direction v-if="directionShow" v-show="directions === 'landscape'"></direction> -->
+    <transition name="trendchart">
+      <div v-if="ShowTrendchart" class="trendchart">
+      <trendchart></trendchart>
+      </div>
+    </transition>
+    <div class="trendchart-btn" @click="ShowTrendchart = !ShowTrendchart">
+      <a>走势图</a>
+    </div>
   </div>
 </template>
 
@@ -17,18 +24,17 @@
   import Navbar from './components/navbar';
   import TitleInfo from './components/title-info';
   import newIframe from './components/newIframe';
-  // import direction from './components/direction';
+  import trendchart from './components/trendchart';
   export default {
     components: {
       Navbar,
       TitleInfo,
       newIframe,
-      // direction,
+      trendchart,
     },
     data:()=>{
       return{
-        // directions:'portrait',
-        // directionShow:window.versions.mobile,
+        ShowTrendchart:0,
       }
     },
     // created(){
@@ -318,5 +324,34 @@ body{
 }
 .layerCenter{
   text-align: center;
+}
+
+.trendchart-btn{
+  position: fixed;
+  right: 3em;
+  bottom: 3em;
+  a{
+    display: block;
+    background: #aaa;
+  }
+}
+
+.trendchart{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  z-index: 110;
+  transform:translateX(0);
+}
+.trendchart-enter-active, .trendchart-leave-active {
+  transform:translateX(0);
+  // height: $face-height;
+  transition: .3s;
+}
+.trendchart-enter, .trendchart-leave-to{
+  transform:translateX(100%);
 }
 </style>
