@@ -41,19 +41,19 @@
             </template>
             <template v-if="method=='Weixin'&&nowRender.BankName&&nowRender.CardNum&&nowRender.RealName">
               <tr>
-                <td>收款银行</td>
+                <td>{{payName[1]}}</td>
                 <td><input class="cGold" type="text"  :value = "nowRender.BankName" readonly="readonly">
                 <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i></td>
               </tr>
               <tr>
-                <td>银行帐户</td>
+                <td>{{payName[2]}}</td>
                 <td>
                   <input class="cGold"  type="text" :value = "nowRender.RealName"  readonly="readonly">
                   <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i>
                 </td>
               </tr>
               <tr>
-                <td>银行帐号</td>
+                <td>{{payName[3]}}</td>
                 <td><input class="cGold" type="text"  :value = "nowRender.CardNum" readonly="readonly">
                 <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i></td>
               </tr>        
@@ -144,7 +144,7 @@
       <template v-if= "method =='Bank'">
         <table>
           <tr>
-            <td>选择银行</td>
+            <td>收款银行</td>
             <td>
               <select v-model = "Id" @change = "changeBankAccount">
                 <option v-for = "option in Bank" :value = "option.Id">{{option.BankName}}</option>
@@ -219,7 +219,7 @@ var payTitle = {
 }
 var payName={
   Alipay:['支付宝姓名'],
-  Weixin:['微信昵称'],
+  Weixin:['微信昵称','收款银行','收款户名','收款账号'],
   QQpay:['QQ昵称','钱包昵称','钱包帐号'],
   UnionPay:['您的姓名','银联姓名','银联帐号']
 }
