@@ -1,10 +1,11 @@
 import BottomBox from '../components/bottom-box';
+var BJSC = ['双面盘', '冠亚和','两面-','龙虎斗','猜豹子']//1元玩法
   export default{
     data(){
       return{
         BetweenType:'',
         BottomBoxShow:false,
-        BottomBoxList:{K3:"快3",SSC:"时时彩",SYX5:"11选5",FC3D:"福彩3D",PL35:"排列3",KL8:"北京快乐8",PK10:"北京PK10",LHC:"六合彩"},
+        BottomBoxList:{K3:"快3",SSC:"时时彩",SYX5:"11选5",FC3D:"福彩3D",PL35:"排列3",KL8:"北京快乐8",PK10:"PK10",LHC:"六合彩"},
         AgentRebate:'',//自身返点数组
         setObj:{Max:8.0,Min:0.0},//最大返点
         ArrObj:'',//当前总数据
@@ -70,7 +71,12 @@ import BottomBox from '../components/bottom-box';
           {"Mode":"五星-一帆风顺","Odd":[40951,100000]},
           {"Mode":"五星-好事成双","Odd":[8146,100000]},
           {"Mode":"五星-三星报喜","Odd":[856,100000]},
-          {"Mode":"五星-四季发财","Odd":[46,100000]}
+          {"Mode":"五星-四季发财","Odd":[46,100000]},
+          {"Mode":"两面-总和大小单双","Odd":[50000,100000]},
+          {"Mode":"两面-大小单双质合","Odd":[50000,100000]},
+          {"Mode":"龙虎斗-龙虎","Odd":[45,100]},
+          {"Mode":"龙虎斗-和","Odd":[10,100]},
+          {"Mode":"猜豹子","Odd":[1,100000]}
         ],
         "SYX5":[
           {"Mode":"前三直选复式","Odd":[1,990]},
@@ -190,6 +196,18 @@ import BottomBox from '../components/bottom-box';
           {"Mode":"前二-复式","Odd":[40320,3628800]},
           {"Mode":"前二-单式","Odd":[40320,3628800]},
           {"Mode":"前一-复式","Odd":[362880,3628800]},
+          {"Mode":"双面盘-大小单双龙虎","Odd":[1,2]},
+          {"Mode":"冠亚和-和大/和双","Odd":[40,90]},
+          {"Mode":"冠亚和-和小/和单","Odd":[50,90]},
+          {"Mode":"冠亚和-03/04","Odd":[2,90]},
+          {"Mode":"冠亚和-05/06","Odd":[4,90]},
+          {"Mode":"冠亚和-07/08","Odd":[6,90]},
+          {"Mode":"冠亚和-09/10","Odd":[8,90]},
+          {"Mode":"冠亚和-11","Odd":[10,90]},
+          {"Mode":"冠亚和-12/13","Odd":[8,90]},
+          {"Mode":"冠亚和-14/15","Odd":[6,90]},
+          {"Mode":"冠亚和-16/17","Odd":[4,90]},
+          {"Mode":"冠亚和-18/19","Odd":[2,90]},
         ]
       }
       this.ListArr={
@@ -327,7 +345,8 @@ import BottomBox from '../components/bottom-box';
       },
       setMsg(key,index){
         if(index>0){
-          return (key!=="K3"&&key!=="LHC")?"奖金":"赔率"
+          var isBJSC = this.ArrObj.Mode[index-1].slice(0,3)//1元玩法
+          return (key !== "K3" && key !== "LHC") ? (BJSC.indexOf(isBJSC) > -1 ?"赔率":"奖金"):"赔率"
         }else{
           return ""
         }
@@ -378,7 +397,19 @@ import BottomBox from '../components/bottom-box';
                         j=0;
                 nArr.push(reArr[i]);
                 for(;j<Data.length;j++){
-                    nArr.push(Data[j][i]);
+                  var type = Mode[j].slice(0, 3)
+                  var key = Data[j][i]
+                  if ((this.BetweenType=='PK10'||this.BetweenType=='SSC')&&BJSC.indexOf(type) > -1) {
+                    key = key/2
+                    var isNum = Mode[j].match(/[大单双虎]/g)
+                    if(!isNum){
+                      key=Math.floor(key*100)/100
+                    }else{
+                      key=key.toFixed(3)
+                    }
+                  }                  
+                  nArr.push(key);
+
                 }
               if(Onum<=this.reeData.Rebate[0]&&Onum>=this.reeData.Rebate[1]){
                 isArr.push(nArr)
@@ -427,7 +458,7 @@ import BottomBox from '../components/bottom-box';
                 set = Mname==="半波"||Mname==="一肖"||Mname==="特码"&&iMo!=="直选"||Mname==="正码"&&iMo!=="任选"&&iMo!=="正特"
               }else{
                 iMo=Mode.substr(Mode.length-2);
-                set = iMo=='三星'||iMo=='二星'||iMo=='/双'
+                set = iMo=='三星'||iMo=='二星'||iMo=='/双'||iMo=='和双'||iMo=='和单'||iMo=='龙虎'||iMo=='单双'||iMo=='质合'||iMo=='-和'
               }
               var Num=this.SetOdd(isMode[i].Odd[0],isMode[i].Odd[1],set);
               isArr.Data.push(Num);

@@ -109,12 +109,12 @@
   td{
     vertical-align: middle;
     position: relative;
-    line-height: 2em;
+    line-height: 2.4em;
     &:nth-child(2):before{
       content: "";
       position: absolute;
       left: -.21em;
-      top: .8em;
+      top: 1.1em;
       width: .7em;
       height: 1px;
       @include bgImg-linear-gradient('90deg, transparent, transparent 50%, #a7a182 50%');
@@ -133,10 +133,18 @@
     display: inline-block;
     span{
       display: inline-block;
-      margin:0 .5em;
+      margin:0 .26em;
       text-align: center;
-      color: #dc3b40;
-      vertical-align: top;
+      display: inline-block;
+      width: 1.5em;
+      height: 1.5em;
+      // background: #faf9f6;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 1.7em;
+      // background: linear-gradient(unquote('to bottom, #f86469 0%,#bf1f24 75%'));
+      // box-shadow: 0px 2px 1px #bbb59c;
+      color:#e54042;
     }
   }
 }

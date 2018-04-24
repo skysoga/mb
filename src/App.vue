@@ -45,11 +45,11 @@
 @import './scss/public.scss';
 @font-face {
   font-family: 'iconfont';  /* project id 380333 */
-  src: url('//at.alicdn.com/t/font_380333_sluopv26rabmaemi.eot');
-  src: url('//at.alicdn.com/t/font_380333_sluopv26rabmaemi.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_380333_sluopv26rabmaemi.woff') format('woff'),
-  url('//at.alicdn.com/t/font_380333_sluopv26rabmaemi.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_380333_sluopv26rabmaemi.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_380333_zidx79l05wi885mi.eot');
+  src: url('//at.alicdn.com/t/font_380333_zidx79l05wi885mi.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_380333_zidx79l05wi885mi.woff') format('woff'),
+  url('//at.alicdn.com/t/font_380333_zidx79l05wi885mi.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_380333_zidx79l05wi885mi.svg#iconfont') format('svg');
 }
 html{
   height: 100%;
@@ -74,7 +74,7 @@ body{
 .KL8{
   .sscMain{
     .sscTips{
-      padding-top: 4.7em;
+      padding-top: 5.7em;
     }
   }
   .betFilterAnd{
@@ -91,10 +91,6 @@ body{
 }
 
 .PK10{
-  .line1{
-    height: 2em;
-    line-height: 3em;
-  }
   .betFilterAnd{
     padding: .2rem !important;
     li{
@@ -104,8 +100,9 @@ body{
     }
   }
   .sscMain{
+    padding-bottom: 5.8em !important;
     .sscTips{
-      padding-top: 4.7em;
+      padding-top: 5.6em;
     }
   }
 }

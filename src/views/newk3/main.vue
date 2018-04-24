@@ -31,7 +31,7 @@
           <i class="iconfont">&#xe60e;</i>
         </div><history v-if="history" :type="history"></history>
       </div>
-      <div class="Anchor" @click.stop="showCard(1)">
+      <div class="Anchor" @click.stop="showCard(1)" v-if="$parent.Anchor.Photo">
         <div class="AnchorImg" :style="'background: url('+$parent.Anchor.Photo+')'"></div>
         <div class="AnchorBg" :style="'background: url('+$store.state.constant.ImgHost+'/live/crown-anchor.png)'"></div>
       </div>
@@ -684,11 +684,6 @@
       document.addEventListener("visibilitychange", this.visibilitychange)
     },
     watch:{
-      'activeHide'(n){
-        if(n === 1){
-          console.log('此时要上抬')
-        }
-      },
       '$parent.BroadCast'(n){
         for (var i = 0; i < n.length; i++) {
           n[i].StartTime = n[i].StartTime.replace(/-/g,'/').replace(/T/,' ').replace(/\.[\d]{0,3}/,'')

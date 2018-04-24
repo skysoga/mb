@@ -1,12 +1,16 @@
 <template>
   <div class="sscTips">
-    <p v-if = "this.type === 'noAward'">{{tip}} <slot></slot></p>
+    <p v-if = "this.type === 'noAward'">{{tip}} <i v-if="gyhlh" style="color:rgb(33, 141, 221);">1元模式</i><slot></slot></p>    
     <p v-if = "this.type === 'multiple'" >{{tip}}<span @click="showBonus">奖金详情</span> <slot></slot></p>
     <p v-if = "this.type === 'single'" >{{tip}}{{this.isOdds ? '赔率 ' : '奖金 '}}<i>{{award}}</i>{{this.isOdds ? '': '元'}}<slot></slot></p>
   </div>
 </template>
 
 <script>
+// var BJSCres=['PK10']//北京赛车配置
+// var arrMode=['G11','H11']//北京赛车，双面盘，冠亚和
+var isShowBox=['PK10G11','PK10H11','SSCJ11','SSCK11','SSCL11']
+
 export default {
   name: 'bet_tip',
   props: {
@@ -39,7 +43,11 @@ export default {
     this.checkProps()
   },
   computed:{
-
+    mode:()=>state.lt.mode.mode,
+    lottery:()=>state.lt.lottery.LotteryType,
+    gyhlh(){
+      return isShowBox.indexOf(this.lottery+this.mode)>-1
+    },
   },
   methods:{
     checkProps(){
