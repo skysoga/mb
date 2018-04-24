@@ -74,7 +74,7 @@
             </template>
             <tr>
               <td>充值金额</td>
-              <td><input  type="tel" tag = "充值金额" v-va:Money  v-model = 'Money'  placeholder="请输入充值金额"></td>
+              <td><input  type="tel" tag = "充值金额" v-va:Money  v-model.trim = 'Money'  placeholder="请输入充值金额"></td>
             </tr>
             <tr>
               <td>{{payName[0]}}</td>
@@ -330,17 +330,22 @@ export default {
     //   qrcode.makeCode(url)
     // },
     changeBank(){
+      this.vaConfig = {}
+      if(this.PayType=='一般'){
+        this.PayUser=''
+        this.vaConfig['PayUser']||(this.vaConfig['PayUser'] = [])
+      }
+      this.Money=''
+      this.vaConfig['Money'] || (this.vaConfig['Money'] = [])
       this.Bank.forEach(item=>{
         if(item.Id === this.Id){
           this.PayType = item.PayType
           this.isOpenType=item.OpenType||item.Opentype
           this.nowRender = item
           this.nowRender.CodeImg = this.setImgUrl(item.CodeImg)
-          this.vaConfig = {}
-          this.vaConfig['Money'] || (this.vaConfig['Money'] = [])
           var Min=this.nowRender.MinMoney,
               Max=this.nowRender.MaxMoney
-          this.vaConfig['Money'].push(new this.VaConfig('limit', [Min,Max], '', 'Money', payTitle[this.method]))
+          // this.vaConfig['Money'].push(new this.VaConfig('limit', [Min,Max], '', 'Money', '充值金额'))
         }
       })
     },
@@ -356,6 +361,12 @@ export default {
     },
     // 提交数据
     $vaSubmit(){
+      if(!this.Money){
+        return layer.msg('充值金额不能为空')
+      }
+      if(this.PayType=='一般'&&!this.PayUser){
+        return layer.msg(this.payName[0]+'不能为空')
+      }
       var ajax = {
         Bank:2,//银行转账
         Weixin:this.setQort([4,5]),//微信支付
@@ -380,7 +391,7 @@ export default {
         //判断是否小数
         function isDic(n){
           n=n*1
-          console.log(n);
+          // console.log(n);
           if(Math.floor(n)===n){
             // return n+0.12
             return (Math.random()/20+0.01+n).toFixed(2)*1
