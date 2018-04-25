@@ -138,7 +138,7 @@
           <br>2、单笔充值金额最低<ins>{{this.nowRender.MinMoney}}</ins>元，最高<ins>{{this.nowRender.MaxMoney}}</ins>元。
           <br> 3、可以使用其他手机扫二维码进行充值，也可以将二维码保存到相册再使用{{this.$route.meta.title}}识别相册中的二维码进行充值，该二维码仅当次有效，每次充值前务必重新保存最新的二维码。
           <br>
-          4、{{payMsg[method]?'充值金额请输入整数。':'为了更准确核对您的金额，系统会随机为整数金额添加小数点。'}}
+          <!-- 4、{{payMsg[method]?'充值金额请输入整数。':'为了更准确核对您的金额，系统会随机为整数金额添加小数点。'}} -->
           </template>
         </div>
       </template>
