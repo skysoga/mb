@@ -331,20 +331,14 @@ export default {
     //   var qrcode = new QRCode('qrcode');
     //   qrcode.makeCode(url)
     // },
-    changeBank(){
-      this.vaConfig = {}
-      if(this.PayType=='一般'){
-        this.PayUser=''
-        this.vaConfig['PayUser']||(this.vaConfig['PayUser'] = [])
-      }
-      this.Money=''
-      this.vaConfig['Money'] || (this.vaConfig['Money'] = [])
+    changeBank(){      
       this.Bank.forEach((item,key)=>{
         if(item.Id === this.Id){
+          router.push('/recharge/'+this.method+'/'+key)
           this.PayType = item.PayType
           this.isOpenType=item.OpenType||item.Opentype
           this.nowRender = item
-          router.push('/recharge/'+this.method+'/'+key)
+          return
           // this.nowRender.CodeImg = this.setImgUrl(item.CodeImg)
           // var Min=this.nowRender.MinMoney,
           //     Max=this.nowRender.MaxMoney
