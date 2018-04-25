@@ -89,7 +89,7 @@
       <!-- 第四方支付 暂定名：多功能支付-->
 
       <div class="surperise active" v-show="FourUrl.PayUrl">
-        <a class="wrap" @click="toFourUrl()">
+        <a class="wrap" :href="_App?'javascript:;':FourUrl.PayUrl" target="_blank" @click="toFourUrl()">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/fourthpay.png'">
           <div class="text">
             <strong>{{FourUrl.PayType}}</strong>
@@ -118,7 +118,8 @@ export default {
       aliMsg:'',
       qqMsg:'',
       unionMsg:'',
-      FourUrl:{}
+      FourUrl:{},
+      _App:_App
     }
   },
   beforeRouteEnter(to,from,next){
@@ -183,14 +184,17 @@ export default {
       !bool&&router.push(Url)
     },
     toFourUrl(){
-      var newtab=!_App&&!localStorage.getItem('isSelfApp')&&window.open('about:blank')
+      var newtab=null//!_App&&!localStorage.getItem('isSelfApp')&&window.open('about:blank')
       RootApp.AjaxGetInitData(['RechargeFourthParty'], state=>{
         var json=state.RechargeFourthParty
         if(json&&json.length){
           this.FourUrl=json[0]
+          if(_App){
           RootApp.OpenWin(json[0].PayUrl,newtab)
+          // return false;
+          }
         }else{
-          newtab&&newtab.close()
+          // newtab&&newtab.close()
           layer.alert(this.FourUrl.PayType+'功能已关闭')
         }
       })
