@@ -83,7 +83,7 @@
             <tr v-if="nowRender.CodeImg">
               <td>扫码支付</td>
               <td>
-                <img class="barcode" :src="nowRender.CodeImg" alt="">
+                <img class="barcode" :src="$store.state.constant.ImgHost+nowRender.CodeImg" alt="">
               </td>
             </tr>
         </template>
@@ -286,7 +286,7 @@ export default {
                 vm[method] = Object.freeze(json)
                 // vm.BankCode = json[0].BankCode;
             }else{              
-              vm.nowRender.CodeImg = vm.setImgUrl(json[key].CodeImg)
+              vm.nowRender.CodeImg = json[key].CodeImg
             }
             vm.underMaintain = false
             vm.Bank=json
@@ -344,17 +344,7 @@ export default {
           // this.vaConfig['Money'].push(new this.VaConfig('limit', [Min,Max], '', 'Money', '充值金额'))
         }
       })
-    },
-    setImgUrl(CodeImg){
-      var xurl = ''
-          if(CodeImg === '0'||!CodeImg){
-            xurl = ''//'/../system/common/other/noQRcode.png'
-          }else{
-            xurl = state.constant.ImgHost + CodeImg
-          }
-      // return xurl.indexOf("http://img-google.com:8088")===-1?("http://img-google.com:8088" + xurl):xurl//本地测试
-      return xurl
-    },
+    },    
     // 提交数据
     $vaSubmit(){     
       var ajax = {
