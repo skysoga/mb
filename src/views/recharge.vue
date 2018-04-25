@@ -58,19 +58,21 @@
                 <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i></td>
               </tr>        
             </template>
-            <template v-if="method!=='Weixin'&&method!=='Alipay'&&nowRender.CardNum&&nowRender.RealName">
-              <tr>
-                <td>{{payName[1]}}</td>
-                <td>
-                  <input class="cGold"  type="text" :value = "nowRender.RealName"  readonly="readonly">
-                  <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i>
-                </td>
-              </tr>
-              <tr>
-                <td>{{payName[2]}}</td>
-                <td><input class="cGold" type="text"  :value = "nowRender.CardNum" readonly="readonly">
-                <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i></td>
-              </tr>
+            <template v-if="method==='QQpay'||method==='UnionPay'">
+              <template v-if="nowRender.CardNum&&nowRender.RealName">
+                <tr>
+                  <td>{{payName[1]}}</td>
+                  <td>
+                    <input class="cGold"  type="text" :value = "nowRender.RealName"  readonly="readonly">
+                    <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i>
+                  </td>
+                </tr>
+                <tr>
+                  <td>{{payName[2]}}</td>
+                  <td><input class="cGold" type="text"  :value = "nowRender.CardNum" readonly="readonly">
+                  <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i></td>
+                </tr>
+              </template>
             </template>
             <tr>
               <td>充值金额</td>
@@ -281,6 +283,10 @@ export default {
                 return
             }
             vm.nowRender = json[key]
+            var RealName=vm.nowRender.RealName
+            var CardNum=vm.nowRender.CardNum
+            vm.nowRender.RealName=RealName?RealName.replace(/\s+/g,''):''
+            vm.nowRender.CardNum=CardNum?CardNum.replace(/\s+/g,''):''
             vm.isOpenType=json[key].OpenType||json[key].Opentype
             vm.Id = json[key].Id;
             if(method =='Bank'){
