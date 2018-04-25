@@ -413,7 +413,7 @@ var routes = [{
   component:ping
 },
 {
-  path:'/recharge/:ID',
+  path:'/recharge/:ID/:KEY',
   name:'充值',
   meta:{
   title:'充值',

@@ -255,7 +255,8 @@ export default {
     if(!payTitle[to.params.ID]){
       router.push('/notfound')
     }
-    var method=to.params.ID
+    var method=to.params.ID,
+        key=to.params.KEY||0
     to.meta.title = payTitle[method]
     var rechargeWay = 'RechargeWay' + method
     //获取数据
@@ -263,7 +264,7 @@ export default {
       var json=state[rechargeWay]
       //测试数据
       
-      var PayType =json&&json[0].PayType
+      var PayType =json&&json[key].PayType
         // if(typeof(QRCode)==="undefined"){
         //   var warn=document.createElement('script')
         //   warn.src='/static/public/qrcode.min.js'
@@ -274,25 +275,25 @@ export default {
             RootApp.setTitle(state.SiteConfig.Name,payTitle[method])
             vm.method=method
             vm.PayType=PayType
-            if(!json || !json[0]){
+            if(!json || !json[key]){
                 vm.underMaintain = true
                 return
             }
-            vm.nowRender = json[0]
-            vm.isOpenType=json[0].OpenType||json[0].Opentype
-            vm.Id = json[0].Id;
+            vm.nowRender = json[key]
+            vm.isOpenType=json[key].OpenType||json[key].Opentype
+            vm.Id = json[key].Id;
             if(method =='Bank'){
                 vm[method] = Object.freeze(json)
                 // vm.BankCode = json[0].BankCode;
             }else{              
-              vm.nowRender.CodeImg = vm.setImgUrl(json[0].CodeImg)
+              vm.nowRender.CodeImg = vm.setImgUrl(json[key].CodeImg)
             }
             vm.underMaintain = false
             vm.Bank=json
             vm.vaConfig ||(vm.vaConfig = {})
             vm.vaConfig['Money'] || (vm.vaConfig['Money'] = [])
-            var Min=json[0].MinMoney,
-                Max=json[0].MaxMoney
+            var Min=json[key].MinMoney,
+                Max=json[key].MaxMoney
             vm.vaConfig['Money'].push(new vm.VaConfig('limit', [Min,Max], '', 'Money', payTitle[method]))
 
         })
@@ -329,22 +330,17 @@ export default {
     //   var qrcode = new QRCode('qrcode');
     //   qrcode.makeCode(url)
     // },
-    changeBank(){
-      this.vaConfig = {}
-      if(this.PayType=='一般'){
-        this.PayUser=''
-        this.vaConfig['PayUser']||(this.vaConfig['PayUser'] = [])
-      }
-      this.Money=''
-      this.vaConfig['Money'] || (this.vaConfig['Money'] = [])
-      this.Bank.forEach(item=>{
+    changeBank(){      
+      this.Bank.forEach((item,key)=>{
         if(item.Id === this.Id){
+          router.push('/recharge/'+this.method+'/'+key)
           this.PayType = item.PayType
           this.isOpenType=item.OpenType||item.Opentype
           this.nowRender = item
-          this.nowRender.CodeImg = this.setImgUrl(item.CodeImg)
-          var Min=this.nowRender.MinMoney,
-              Max=this.nowRender.MaxMoney
+          return
+          // this.nowRender.CodeImg = this.setImgUrl(item.CodeImg)
+          // var Min=this.nowRender.MinMoney,
+          //     Max=this.nowRender.MaxMoney
           // this.vaConfig['Money'].push(new this.VaConfig('limit', [Min,Max], '', 'Money', '充值金额'))
         }
       })
@@ -360,13 +356,7 @@ export default {
       return xurl
     },
     // 提交数据
-    $vaSubmit(){
-      if(!this.Money){
-        return layer.msg('充值金额不能为空')
-      }
-      if(this.PayType=='一般'&&!this.PayUser){
-        return layer.msg(this.payName[0]+'不能为空')
-      }
+    $vaSubmit(){     
       var ajax = {
         Bank:2,//银行转账
         Weixin:this.setQort([4,5]),//微信支付
