@@ -3,7 +3,7 @@
     <div class="innerWrap">
 
       <div class="surperise active">
-        <router-link class="wrap" to = "recharge/Bank">
+        <router-link class="wrap" to = "recharge/Bank/0">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/card.png'">
           <div class="text">
             <strong>银行转账</strong>
@@ -178,7 +178,7 @@ export default {
   },
   methods:{
     setUrl(key,name,bool){
-      var Url= 'recharge/'+name
+      var Url= 'recharge/'+name+'/0'
       // var Url= key === '一般' ? 'normalPay?method='+name : 'quickPay?method='+name
       !bool&&router.push(Url)
     },
