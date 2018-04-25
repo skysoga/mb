@@ -996,9 +996,50 @@ body > * {
   transform: translateY(.1em);
 }
 .K3{
+  .tc-nav{
+    background: #2f5542;
+  }
+  .tc-content-container{
+    background: #2f5542;
+  }
   .type1{
     .title-list{
       
     }
+  }
+  .chonghao{
+    font-size: .45em;
+    position: absolute;
+    background: #f0a126;
+    display: inline-block;
+    border-radius: 50%;
+    width: 1.2em;
+    height: 1.2em;
+    margin-left: -.6em;
+    margin-top: .4em;
+    line-height: 1.2em;
+    text-align: center;
+  }
+  .open-num{
+    background: #5a7d36;
+  }
+  .da,.shuang{
+    background: #bb9431;
+  }
+  .xiao,.dan{
+    background: #597d36;
+  }
+  .sanbutong,.sanlianhao,.santonghao{
+    border-radius: 0 !important;
+    width: 3.5em !important;
+  }
+  .sanbutong{
+    background:#5a7d36;
+  }
+  .sanlianhao{
+    background:#bb9431;
+  }
+  .santonghao{
+    background:#448ed9;
   }
 }

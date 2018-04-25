@@ -193,13 +193,11 @@ export default{
   }
 }
 .tc-content-container{
-  background: #2f5542;
   color:white;
 }
 .tc-nav{
   height: 2em;
   line-height: 2em;
-  background: #2f5542;
   color:white;
   ul{
     li{

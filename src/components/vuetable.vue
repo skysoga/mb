@@ -13,7 +13,9 @@
         <div ref="fakeTable" class="fake-table" :style="{width:maxWidth+'px'}">
           <ul v-for="d in datas" class="fix">
             <li v-for="(e,i) in d" :style="{width:(widthArr[i+1]>1)?(widthArr[i+1]+'px'):'auto'}">
-              <em>{{e}}</em>
+              <!-- class 可设置为：open-num、da、shuang、xiao、dan、sanbutong、sanlianhao、santonghao -->
+              <em class="">{{e}}</em>
+              <!-- <i class="chonghao">2</i> -->
             </li>
           </ul>
         </div>
@@ -144,9 +146,15 @@ $border-color:#3a7f62;
     border-right: 1px solid $border-color;
     text-align: center;
     float: left;
+    position: relative;
   }
   em{
     font-size: .7em;
+    display: inline-block;
+    width: 1.4em;
+    height: 1.4em;
+    transform:translateY(-.1em);
+    border-radius: 50%;
   }
 }
 </style>
