@@ -78,7 +78,7 @@
             </tr>
             <tr>
               <td>{{payName[0]}}</td>
-              <td><input type="text" :tag = "payName[0]" v-va:PayUser  v-model = 'PayUser'  :placeholder="'请输入'+payName[0]"></td>
+              <td><input type="text" :tag = "(method==='UnionPay'?'':'您的')+payName[0]" v-va:PayUser  v-model = 'PayUser'  :placeholder="'请输入'+(method==='UnionPay'?'':'您的')+payName[0]"></td>
             </tr>
             <tr v-if="nowRender.CodeImg">
               <td>扫码支付</td>
@@ -179,8 +179,8 @@
             <td><input type="tel" tag = "充值金额"  v-va:Money  v-model.trim = 'Money'  placeholder="请输入充值金额"></td>
           </tr>
           <tr>
-            <td>转账户名</td>
-            <td><input type="text" tag = "转账户名"  v-va:PayUser.RealName  v-model = 'PayUser'   placeholder="请输入付款人的银行卡姓名"></td>
+            <td>银行户名</td>
+            <td><input type="text" tag = "您的银行户名"  v-va:PayUser.RealName  v-model = 'PayUser'   placeholder="请输入您的银行户名"></td>
           </tr>
         </table>
         <div class="loginBtn BTN"><a v-va-check>确定</a></div>
