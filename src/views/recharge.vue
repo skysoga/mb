@@ -352,12 +352,12 @@ export default {
     setImgUrl(CodeImg){
       var xurl = ''
           if(CodeImg === '0'||!CodeImg){
-            xurl = '/../system/common/other/noQRcode.png'
+            xurl = ''//'/../system/common/other/noQRcode.png'
           }else{
-            xurl = CodeImg
+            xurl = state.constant.ImgHost + CodeImg
           }
       // return xurl.indexOf("http://img-google.com:8088")===-1?("http://img-google.com:8088" + xurl):xurl//本地测试
-      return xurl.indexOf(state.constant.ImgHost)===-1?(state.constant.ImgHost + xurl):xurl
+      return xurl
     },
     // 提交数据
     $vaSubmit(){
