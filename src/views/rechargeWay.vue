@@ -89,7 +89,7 @@
       <!-- 第四方支付 暂定名：多功能支付-->
 
       <div class="surperise active" v-show="FourUrl.PayUrl">
-        <a class="wrap" :href="_App?'javascript:;':FourUrl.PayUrl" target="_blank" @click="toFourUrl()">
+        <a class="wrap" :href="FourUrl.PayUrl" target="_blank" @click="toFourUrl($event)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/fourthpay.png'">
           <div class="text">
             <strong>{{FourUrl.PayType}}</strong>
@@ -118,8 +118,7 @@ export default {
       aliMsg:'',
       qqMsg:'',
       unionMsg:'',
-      FourUrl:{},
-      _App:_App
+      FourUrl:{}
     }
   },
   beforeRouteEnter(to,from,next){
@@ -183,21 +182,22 @@ export default {
       // var Url= key === '一般' ? 'normalPay?method='+name : 'quickPay?method='+name
       !bool&&router.push(Url)
     },
-    toFourUrl(){
-      var newtab=null//!_App&&!localStorage.getItem('isSelfApp')&&window.open('about:blank')
-      RootApp.AjaxGetInitData(['RechargeFourthParty'], state=>{
-        var json=state.RechargeFourthParty
-        if(json&&json.length){
-          this.FourUrl=json[0]
-          if(_App){
-          RootApp.OpenWin(json[0].PayUrl,newtab)
-          // return false;
+    toFourUrl(el){
+      if(_App){
+        el.preventDefault();
+        var newtab=null//!_App&&!localStorage.getItem('isSelfApp')&&window.open('about:blank')
+        RootApp.AjaxGetInitData(['RechargeFourthParty'], state=>{
+          var json=state.RechargeFourthParty
+          if(json&&json.length){
+            this.FourUrl=json[0]
+            RootApp.OpenWin(json[0].PayUrl,newtab)
+          }else{
+            // newtab&&newtab.close()
+            layer.alert(this.FourUrl.PayType+'功能已关闭')
           }
-        }else{
-          // newtab&&newtab.close()
-          layer.alert(this.FourUrl.PayType+'功能已关闭')
-        }
-      })
+        })
+      }
+      
     },
     getLimit(obj){
       let arr=[]
