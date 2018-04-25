@@ -1,18 +1,18 @@
 <template>
   <div ref="vuetable" class="vuetable">
     <div ref="titleContainer" class="title-container">
-      <ul ref="titleList" class="title-list fix" :style="{width:maxWidth+'px'}">
-        <li v-for="(d,i) in titles" :style="{width:widthArr[i]+'px'}"><em>{{d}}</em></li>
+      <ul ref="titleList" class="title-list fix" :style="{width:(maxWidth+widthArr[0])+'px'}">
+        <li v-for="(d,i) in titles" :style="{width:(widthArr[i]>1)?(widthArr[i]+'px'):'auto'}"><em>{{d}}</em></li>
       </ul>
     </div>
     <div class="table-body fix" :style="{height:scrollHeight+'px'}">
-      <ul ref="columns" class="columns" v-if="widthArr" :style="{width:widthArr[0]+'px'}">
+      <ul ref="columns" class="columns" :style="{width:(widthArr[0]>1)?(widthArr[0]+'px'):'auto'}">
         <li v-for="d in columns"><em>{{d}}</em></li>
       </ul>
       <div class="table-container" @scroll="tableScroll" :style="{width:scrollContainerWidth+'px'}">
         <div ref="fakeTable" class="fake-table" :style="{width:maxWidth+'px'}">
           <ul v-for="d in datas" class="fix">
-            <li v-for="(e,i) in d" :style="{width:widthArr[i+1]+'px'}">
+            <li v-for="(e,i) in d" :style="{width:(widthArr[i+1]>1)?(widthArr[i+1]+'px'):'auto'}">
               <em>{{e}}</em>
             </li>
           </ul>
@@ -33,15 +33,41 @@ export default{
     }
   },
   mounted(){
-    var titleDom = this.$refs.titleList.children
-    for (var i = 0; i < titleDom.length; i++) {
-      this.widthArr.push(titleDom[i].offsetWidth+1)
-      this.maxWidth+=titleDom[i].offsetWidth+1
-    }
-    this.maxWidth = this.maxWidth - 99999
-    this.scrollContainerWidth = document.body.offsetWidth - this.widthArr[0]
+    this.init()
   },
   methods:{
+    init(){
+      var titleDom = this.$refs.titleList.children
+      var _widthArr = []
+      var _maxWidth = 0
+      var width = 0
+      var bodyWidth = document.body.offsetWidth
+      for (var i = 0; i < titleDom.length; i++) {
+        _widthArr.push(titleDom[i].offsetWidth+1)
+        _maxWidth+=titleDom[i].offsetWidth+1
+      }
+      if (_maxWidth < bodyWidth) {
+        width = bodyWidth/titleDom.length
+        for (var i = 0; i < _widthArr.length; i++) {
+          _widthArr[i] = width
+        }
+        _maxWidth = bodyWidth - width
+      }else{
+        _maxWidth -= _widthArr[0]
+      }
+      this.widthArr = _widthArr
+      this.maxWidth = _maxWidth
+      this.scrollContainerWidth = bodyWidth - this.widthArr[0]
+    },
+    changing(){
+      for (var i = 0; i < this.widthArr.length; i++) {
+        this.widthArr[i] = 0
+      }
+      this.maxWidth = 99999
+      this.$nextTick(function () {
+        this.init()
+      })
+    },
     tableScroll(e){
       this.$refs.titleContainer.scrollLeft = e.target.scrollLeft
     }
@@ -69,6 +95,7 @@ $border-color:#3a7f62;
   }
 }
 .title-list{
+  min-width: 100% !important;
   li{
     float: left;
     text-align: center;
