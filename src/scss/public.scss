@@ -995,16 +995,52 @@ body > * {
   display: inline-block;
   transform: translateY(.1em);
 }
+
+$K3-border-color:#3a7f62;
 .K3{
   .tc-nav{
     background: #2f5542;
+    color:white;
+    .curr{
+      color:#f2c742;
+    }
   }
   .tc-content-container{
     background: #2f5542;
+    color:white;
   }
   .type1{
     .title-list{
       
+    }
+  }
+  .vuetable{
+    color:#c9ebd0;
+  }
+  .table-body{
+    .columns{
+      li{
+        &:nth-child(2n+1){
+          background: #1c6a4c;
+        }
+        border-right: 1px solid $K3-border-color;
+      }
+    }
+  }
+  .title-list{
+    li{
+      border-top:1px solid $K3-border-color;
+      border-right: 1px solid $K3-border-color;
+    }
+  }
+  .fake-table{
+    ul{
+      &:nth-child(2n+1){
+        background: #1c6a4c;
+      }
+    }
+    li{
+      border-right: 1px solid $K3-border-color;
     }
   }
   .chonghao{
@@ -1041,5 +1077,139 @@ body > * {
   }
   .santonghao{
     background:#448ed9;
+  }
+}
+
+$SSC-border-color:#b4ac8c;
+$SSC-BG-color:#e1d9bc;
+.SSC{
+  .tc-nav{
+    background: $SSC-BG-color;
+    color:#333;
+    .curr{
+      color:#df303f;
+    }
+  }
+  .title-container{
+    color: #636158;
+  }
+  .tc-content-container{
+    background: $SSC-BG-color;
+    color:#333;
+  }
+  .type1{
+    .title-list{
+      
+    }
+  }
+  .vuetable{
+    color:#a5a090;
+  }
+  .table-body{
+    .columns{
+      color:#666;
+      li{
+        &:nth-child(2n+1){
+          background: #ebe8d6;
+        }
+        border-right: 1px solid $SSC-border-color;
+      }
+    }
+  }
+  .title-list{
+    li{
+      border-top:1px solid $SSC-border-color;
+      border-right: 1px solid $SSC-border-color;
+    }
+  }
+  .fake-table{
+    ul{
+      &:nth-child(2n+1){
+        background: #ebe8d6;
+      }
+    }
+    li{
+      border-right: 1px solid $SSC-border-color;
+    }
+  }
+  .chonghao{
+    font-size: .45em;
+    position: absolute;
+    background: #f0a126;
+    display: inline-block;
+    border-radius: 50%;
+    width: 1.2em;
+    height: 1.2em;
+    margin-left: -.6em;
+    margin-top: .4em;
+    line-height: 1.2em;
+    text-align: center;
+  }
+  .open-num{
+    background: #5a7d36;
+  }
+  .da,.shuang{
+    background: #bb9431;
+  }
+  .xiao,.dan{
+    background: #597d36;
+  }
+  .sanbutong,.sanlianhao,.santonghao{
+    border-radius: 0 !important;
+    width: 3.5em !important;
+  }
+  .sanbutong{
+    background:#5a7d36;
+  }
+  .sanlianhao{
+    background:#bb9431;
+  }
+  .santonghao{
+    background:#448ed9;
+  }
+}
+
+.k3-trendchart-btn,.ssc-trendchart-btn{
+  border-top:1px solid #416e5b;
+  &:before{
+    content:'\e66c';
+    font-family: 'iconfont';
+    margin-right: .6em;
+  }
+}
+.k3-timebar{
+  position: relative;
+  &:after{
+    position: absolute;
+    right: .4em;
+    top:0;
+    content:'\e66d';
+    font-family: 'iconfont';
+    transform:scale(.6);
+  }
+}
+.ssc-trendchart-btn{
+  border-top:none;
+  line-height: 2.2em !important;
+  position: relative;
+  &:after{
+    position: absolute;
+    left: 0;
+    top:0;
+    content:'';
+    width: 100%;
+    height: 1px;
+    background-image: -webkit-linear-gradient(90deg, #fff, #fff 50%, transparent 50%);
+  }
+}
+.ssc-timebar{
+  position: relative;
+  &:after{
+    position: absolute;
+    right: .4em;
+    top:0;
+    content:'\e66d';
+    font-family: 'iconfont';
+    transform:scale(.6);
   }
 }

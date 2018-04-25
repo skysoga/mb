@@ -54,6 +54,7 @@
       scrollTop()
       //从url上获取彩种type和彩种code
       var [ptype,ltype, lcode] = to.fullPath.slice(1).split('/')
+      state.LotteryType = ltype
       //获取返点
       var getRebate = new Promise(function(resolve, reject){
         var storageName = `Rebate${ltype}`

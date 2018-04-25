@@ -82,10 +82,8 @@ export default{
 }
 </script>
 <style lang="scss" scoped>
-$border-color:#3a7f62;
 
 .vuetable{
-  color:#c9ebd0;
   height: 100%;
 }
 .title-container{
@@ -102,8 +100,6 @@ $border-color:#3a7f62;
     float: left;
     text-align: center;
     height: 1.4em;
-    border-top:1px solid $border-color;
-    border-right: 1px solid $border-color;
     padding: 0 .6em;
     display: flex;
     align-items:center;
@@ -120,12 +116,6 @@ $border-color:#3a7f62;
   .columns{
     text-align: center;
     float:left;
-    li{
-      &:nth-child(2n+1){
-        background: #1c6a4c;
-      }
-      border-right: 1px solid $border-color;
-    }
     em{
       font-size: .7em;
     }
@@ -137,13 +127,7 @@ $border-color:#3a7f62;
   }
 }
 .fake-table{
-  ul{
-    &:nth-child(2n+1){
-      background: #1c6a4c;
-    }
-  }
   li{
-    border-right: 1px solid $border-color;
     text-align: center;
     float: left;
     position: relative;

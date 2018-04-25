@@ -61,7 +61,7 @@
     <!-- timebar -->
     <div v-if = "$store.state.lt.NowIssue" @click.stop = "togglePastOpen">
       <p>{{nowIssue}}期投注截止</p>
-      <div>{{TimeBar}}</div>
+      <div class="k3-timebar">{{TimeBar}}</div>
     </div>
 
     <!-- 往期开奖结果 -->
@@ -589,7 +589,4 @@ export default {
 
 <style lang="scss" scoped>
   @import '../scss/k3.scss';
-  .k3-trendchart-btn{
-    border-top:1px solid #416e5b;
-  }
 </style>

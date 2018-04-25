@@ -1,5 +1,5 @@
 <template>
-  <div ref="trendchart" class="trendchart K3"><!-- K3:代表K3彩种 -->
+  <div ref="trendchart" class="trendchart" :class="$store.state.LotteryType"><!-- K3:代表K3彩种 -->
     <div>
     <div class="tc-header">
       <div class="back-btn" @click="$store.state.ShowTrendchart = 0"></div>
@@ -192,13 +192,9 @@ export default{
     }
   }
 }
-.tc-content-container{
-  color:white;
-}
 .tc-nav{
   height: 2em;
   line-height: 2em;
-  color:white;
   ul{
     li{
       width: 25%;
@@ -211,7 +207,6 @@ export default{
     }
   }
   .curr{
-    color:#f2c742;
     box-shadow: 0 2px 0;
   }
 }

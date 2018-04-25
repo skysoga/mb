@@ -83,4 +83,5 @@ module.exports = {
   },
   URL:'',
   ShowTrendchart:0,
+  LotteryType:'',
 }
