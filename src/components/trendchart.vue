@@ -2,7 +2,7 @@
   <div ref="trendchart" class="trendchart K3"><!-- K3:代表K3彩种 -->
     <div>
     <div class="tc-header">
-      <div class="back-btn" @click="$parent.ShowTrendchart = 0"></div>
+      <div class="back-btn" @click="$store.state.ShowTrendchart = 0"></div>
       <div class="title"><em>走势图</em></div>
       <div class="lottery-type"><em>大发</em></div>
     </div>

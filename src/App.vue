@@ -10,13 +10,10 @@
     </transition>
     <newIframe :url="$store.state.URL" v-if="$store.state.URL"></newIframe>
     <transition name="trendchart">
-      <div v-if="ShowTrendchart" class="trendchart">
+      <div v-if="$store.state.ShowTrendchart" class="trendchart">
       <trendchart></trendchart>
       </div>
     </transition>
-    <div class="trendchart-btn" @click="ShowTrendchart = !ShowTrendchart">
-      <a>走势图</a>
-    </div>
   </div>
 </template>
 
@@ -34,7 +31,6 @@
     },
     data:()=>{
       return{
-        ShowTrendchart:0,
       }
     },
     // created(){
@@ -324,16 +320,6 @@ body{
 }
 .layerCenter{
   text-align: center;
-}
-
-.trendchart-btn{
-  position: fixed;
-  right: 3em;
-  bottom: 3em;
-  a{
-    display: block;
-    background: #aaa;
-  }
 }
 
 .trendchart{
