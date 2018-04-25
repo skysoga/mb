@@ -108,6 +108,8 @@ export default{
     }
     em{
       font-size: .7em;
+      display: block;
+      width: 100%;
     }
   }
 }

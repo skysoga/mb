@@ -11,20 +11,6 @@
       </span>
     </div>
 
-    <div class="fr" id="lotteryChoice" :class = "{on: ifShowTypeSelect}">
-      <!-- 彩种选择下拉框开关 -->
-      <label @click.stop= "toggleTypeSelect">{{LotteryName.slice(0,2)}}</label>
-      <i @click.stop= "toggleTypeSelect" class="iconfont xiala"></i>
-      <!-- 快三彩种切换 -->
-        <div class="fix" style ="display:block" v-show = "ifShowTypeSelect" v-if = "LotteryList.length">
-          <ins></ins>
-          <a v-for = "lottery in LotteryList"
-             @click = "changeLottery(lottery.LotteryCode)">
-            {{lottery.LotteryName}}
-          </a>
-          <router-link to="/redirect?r=/live/K3/0101" style="color:#e54042">UU快3</router-link>
-        </div>
-    </div>
     <router-link to="/index" class="iconfont back"></router-link>
 
     <!-- 玩法下拉框 -->
@@ -41,6 +27,20 @@
     </ul>
   </header>
 
+  <div class="fr" id="lotteryChoice" :class = "{on: ifShowTypeSelect}">
+    <!-- 彩种选择下拉框开关 -->
+    <label @click.stop= "toggleTypeSelect">{{LotteryName.slice(0,2)}}</label>
+    <i @click.stop= "toggleTypeSelect" class="iconfont xiala"></i>
+    <!-- 快三彩种切换 -->
+      <div class="fix" style ="display:block" v-show = "ifShowTypeSelect" v-if = "LotteryList.length">
+        <ins></ins>
+        <a v-for = "lottery in LotteryList"
+           @click = "changeLottery(lottery.LotteryCode)">
+          {{lottery.LotteryName}}
+        </a>
+        <router-link to="/redirect?r=/live/K3/0101" style="color:#e54042">UU快3</router-link>
+      </div>
+  </div>
   <section class="State" :class = "{on: ifShowPastOpen}">
     <!-- 上期开奖结果 -->
     <div v-if = "$store.state.lt.OldIssue" @click.stop = "togglePastOpen" >
@@ -356,6 +356,7 @@ export default {
       if(this.$route.params.code!=code){
         this.$store.dispatch('lt_updateLottery', code)
       }
+      state.ShowTrendchart = 0
     },
     renderRebate(mode){
       var rebate

@@ -9,11 +9,6 @@
       <router-view :s="$store.state"></router-view>
     </transition>
     <newIframe :url="$store.state.URL" v-if="$store.state.URL"></newIframe>
-    <transition name="trendchart">
-      <div v-if="$store.state.ShowTrendchart" class="trendchart">
-      <trendchart></trendchart>
-      </div>
-    </transition>
   </div>
 </template>
 
@@ -21,13 +16,11 @@
   import Navbar from './components/navbar';
   import TitleInfo from './components/title-info';
   import newIframe from './components/newIframe';
-  import trendchart from './components/trendchart';
   export default {
     components: {
       Navbar,
       TitleInfo,
       newIframe,
-      trendchart,
     },
     data:()=>{
       return{
@@ -325,7 +318,7 @@ body{
 .trendchart{
   position: fixed;
   left: 0;
-  top: 0;
+  top: 2.3em;
   width: 100%;
   height: 100%;
   background: white;

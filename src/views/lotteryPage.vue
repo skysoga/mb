@@ -7,6 +7,12 @@
 
     <Lottery6HC v-if = "$route.params.type === '6HC'"></Lottery6HC>
     <NewK3 ref="newk3" v-if = "ptype === 'live'" :lcode="lcode"></NewK3>
+
+    <transition name="trendchart">
+      <div v-if="$store.state.ShowTrendchart" class="trendchart">
+      <trendchart></trendchart>
+      </div>
+    </transition>
   </div>
 </template>
 <style lang='scss' scoped>
@@ -16,6 +22,7 @@
   }
 </style>
 <script>
+  import trendchart from '../components/trendchart';
   import LotteryCommon from './lottery_common'
   import LotteryK3 from './lottery_k3'
   import Lottery6HC from './lottery_6hc'
@@ -48,6 +55,7 @@
       LotteryK3,
       Lottery6HC,
       NewK3,
+      trendchart,
     },
     beforeRouteEnter(to, from, next){
       // 将滚动置顶
