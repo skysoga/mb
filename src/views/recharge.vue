@@ -144,7 +144,7 @@
       <template v-if= "method =='Bank'">
         <table>
           <tr>
-            <td>选择银行</td>
+            <td>收款银行</td>
             <td>
               <select v-model = "Id" @change = "changeBankAccount">
                 <option v-for = "option in Bank" :value = "option.Id">{{option.BankName}}</option>
