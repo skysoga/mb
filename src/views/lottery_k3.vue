@@ -77,6 +77,7 @@
         <td><span class="light">{{item.bigOrSmall}}</span></td>
         <td><span class="light">{{item.singleOrDouble}}</span></td>
       </tr>
+      <tr><td class="k3-trendchart-btn" colspan="5">查看更多走势</td></tr>
     </table>
 
     <!-- 我的投注 -->
@@ -588,4 +589,7 @@ export default {
 
 <style lang="scss" scoped>
   @import '../scss/k3.scss';
+  .k3-trendchart-btn{
+    border-top:1px solid #416e5b;
+  }
 </style>
