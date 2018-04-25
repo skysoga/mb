@@ -46,14 +46,14 @@
                 <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i></td>
               </tr>
               <tr>
-                <td>银行帐户</td>
+                <td>{{payName[1]}}</td>
                 <td>
                   <input class="cGold"  type="text" :value = "nowRender.RealName"  readonly="readonly">
                   <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i>
                 </td>
               </tr>
               <tr>
-                <td>银行帐号</td>
+                <td>{{payName[2]}}</td>
                 <td><input class="cGold" type="text"  :value = "nowRender.CardNum" readonly="readonly">
                 <i class="iconfont copy" v-copyBtn v-if = "isSupportCopy">复制</i></td>
               </tr>        
@@ -219,7 +219,7 @@ var payTitle = {
 }
 var payName={
   Alipay:['支付宝姓名'],
-  Weixin:['微信昵称'],
+  Weixin:['微信昵称','收款户名','收款帐号'],
   QQpay:['QQ昵称','钱包昵称','钱包帐号'],
   UnionPay:['您的姓名','银联姓名','银联帐号']
 }
