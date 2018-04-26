@@ -1,10 +1,9 @@
-
 <template>
   <div class="main">
     <div class="innerWrap">
 
       <div class="surperise active">
-        <router-link class="wrap" to = "normalPay?method=Bank">
+        <router-link class="wrap" to = "recharge/Bank/0">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/card.png'">
           <div class="text">
             <strong>银行转账</strong>
@@ -72,16 +71,16 @@
       </div>
 
       <div class="surperise active">
-        <a class = "wrap" @click = "setUrl(unionType,'UnionPay',UnionMsg)">
+        <a class = "wrap" @click = "setUrl(unionType,'UnionPay',unionMsg)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/card.png'">
           <div class="text">
             <strong>银联扫码</strong>
-            <p v-if="!UnionMsg">
+            <p v-if="!unionMsg">
               单笔最低<ins>{{payLimit['UnionPay'][0]|num}}</ins>元，
               最高<ins>{{payLimit['UnionPay'][1]|num}}</ins>元。
             </p>
             <p v-else>
-            {{UnionMsg}}
+            {{unionMsg}}
             </p>
           </div>
           <i class="iconfont right fr"></i>
@@ -90,7 +89,7 @@
       <!-- 第四方支付 暂定名：多功能支付-->
 
       <div class="surperise active" v-show="FourUrl.PayUrl">
-        <a class="wrap" @click="!isSelfApp&&toFourUrl()" :href="isSelfApp&&FourUrl.PayUrl">
+        <a class="wrap" :href="FourUrl.PayUrl" target="_blank" @click="toFourUrl($event)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/fourthpay.png'">
           <div class="text">
             <strong>{{FourUrl.PayType}}</strong>
@@ -118,8 +117,8 @@ export default {
       weixMsg:'',
       aliMsg:'',
       qqMsg:'',
-      FourUrl:{},
-      UnionMsg:'',
+      unionMsg:'',
+      FourUrl:{}
     }
   },
   beforeRouteEnter(to,from,next){
@@ -151,8 +150,8 @@ export default {
       this.aliType = json.PayType || '一般'
       obj.alipay=this.getLimit(json)
     }else{
-      this.aliMsg="支付宝支付维护中..."
       this.aliType=''
+      this.aliMsg="支付宝支付维护中..."
     }
     if(state.RechargeWayQQpay&&state.RechargeWayQQpay[0]){
       let json=state.RechargeWayQQpay[0]
@@ -160,52 +159,51 @@ export default {
       this.qqType = json.PayType || '一般'
       obj.qqpay=this.getLimit(json)
     }else{
+      this.qqType=''
       this.qqMsg="QQ钱包维护中..."
-      this.qqType=""
     }
-
     if(state.RechargeWayUnionPay&&state.RechargeWayUnionPay[0]){
       let json=state.RechargeWayUnionPay[0]
-      this.UnionMsg=false
-      this.unionType=json.PayType||'一般'
+      this.unionMsg=false
+      this.unionType = json.PayType || '一般'
       obj.UnionPay=this.getLimit(json)
     }else{
-      this.UnionMsg="银联扫码维护中..."
       this.unionType=''
+      this.unionMsg="银联扫码维护中..."
     }
-
     if(state.RechargeFourthParty&&state.RechargeFourthParty[0]){
       this.FourUrl=state.RechargeFourthParty[0]
     }
-
     this.payLimit = obj
-  },
-  computed:{
-    'isSelfApp':()=>Boolean(localStorage.getItem('isSelfApp'))
   },
   methods:{
     setUrl(key,name,bool){
-      var Url= key === '一般' ? 'normalPay?method='+name : 'quickPay?method='+name
+      var Url= 'recharge/'+name+'/0'
+      // var Url= key === '一般' ? 'normalPay?method='+name : 'quickPay?method='+name
       !bool&&router.push(Url)
     },
-    toFourUrl(){
-      var newtab=!_App&&!this.isSelfApp&&window.open('about:blank')
-      RootApp.AjaxGetInitData(['RechargeFourthParty'], state=>{
-        var json=state.RechargeFourthParty
-        if(json&&json.length){
-          this.FourUrl=json[0]
-          RootApp.OpenWin(json[0].PayUrl,newtab)
-        }else{
-          newtab&&newtab.close()
-          layer.alert(this.FourUrl.PayType+'功能已关闭')
-        }
-      })
+    toFourUrl(el){
+      if(_App){
+        el.preventDefault();
+        var newtab=null//!_App&&!localStorage.getItem('isSelfApp')&&window.open('about:blank')
+        RootApp.AjaxGetInitData(['RechargeFourthParty'], state=>{
+          var json=state.RechargeFourthParty
+          if(json&&json.length){
+            this.FourUrl=json[0]
+            RootApp.OpenWin(json[0].PayUrl,newtab)
+          }else{
+            // newtab&&newtab.close()
+            layer.alert(this.FourUrl.PayType+'功能已关闭')
+          }
+        })
+      }
+      
     },
     getLimit(obj){
       let arr=[]
-      arr.push(obj.MinMoney)
-      arr.push(obj.MaxMoney)
-    return arr
+        arr.push(obj.MinMoney)
+        arr.push(obj.MaxMoney)
+      return arr
     }
   }
 }
@@ -213,4 +211,3 @@ export default {
 <style lang = "scss" scoped>
   @import '../scss/activity.scss';
 </style>
-
