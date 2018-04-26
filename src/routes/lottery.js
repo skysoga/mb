@@ -1,8 +1,6 @@
 //广营负责页面的路由
 const register =require('../views/register')
 const rechargeWay =require('../views/rechargeWay')
-const normalPay =require('../views/normalPay')
-const quickPay =require('../views/quickPay')
 const lotteryHall =require('../views/lotteryHall')
 const lotteryPage = require('../views/lotteryPage')
 // const lottery_common = require('../views/lottery_common')
@@ -31,24 +29,6 @@ var routes = [
       user:1,
     },
     component: rechargeWay
-  },{
-    path: '/normalPay',
-    name: '普通充值',
-    meta: {
-      title: '',
-      link: '/rechargeWay',
-      user: true,
-    },
-    component: normalPay
-  },{
-    path: '/quickPay',
-    name: '快捷充值',
-    meta: {
-      title: '',
-      link: '/rechargeWay',
-      user: true
-    },
-    component: quickPay
   },{
     path: '/lotteryHall',
     name: '全部彩种',
