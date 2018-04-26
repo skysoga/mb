@@ -217,7 +217,7 @@ var payTitle = {
   Weixin:'微信支付',
   Alipay: '支付宝',
   QQpay: 'QQ钱包',
-  UnionPay: '银联扫码'
+  UnionPay: '银联支付'
 }
 var payName={
   Alipay:['支付宝姓名'],
