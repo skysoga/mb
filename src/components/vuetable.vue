@@ -11,13 +11,7 @@
       </ul>
       <div class="table-container" @scroll="tableScroll" :style="{width:scrollContainerWidth+'px'}">
         <div ref="fakeTable" class="fake-table" :style="{width:maxWidth+'px'}">
-          <ul v-for="d in datas" class="fix">
-            <li v-for="(e,i) in d" :style="{width:(widthArr[i+1]>1)?(widthArr[i+1]+'px'):'auto'}">
-              <!-- class 可设置为：open-num、da、shuang、xiao、dan、sanbutong、sanlianhao、santonghao -->
-              <em class="">{{e}}</em>
-              <!-- <i class="chonghao">2</i> -->
-            </li>
-          </ul>
+          <slot name="datas"></slot>
         </div>
       </div>
     </div>

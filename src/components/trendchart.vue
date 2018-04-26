@@ -14,7 +14,15 @@
     </div>
     <!-- type1:代表第一个查看方式（开奖记录、号码走势、和值走势、形态走势） -->
     <div class="tc-content-container" :class="'type'+showType">
-      <vuetable ref="vuetable" :height="contentHeight" :datas="getData" :titles="gettitles" :columns="getcolumns"></vuetable>
+      <vuetable ref="vuetable" :height="contentHeight" :datas="getData" :titles="gettitles" :columns="getcolumns">
+        <ul v-if="$refs.vuetable" slot="datas" v-for="d in getData" class="fix">
+          <li v-for="(e,i) in d" :style="{width:($refs.vuetable.widthArr[i+1]>1)?($refs.vuetable.widthArr[i+1]+'px'):'auto'}">
+            <!-- class 可设置为：open-num、da、shuang、xiao、dan、sanbutong、sanlianhao、santonghao -->
+            <em class="">{{e}}</em>
+            <!-- <i class="chonghao">2</i> -->
+          </li>
+        </ul>
+      </vuetable>
     </div>
     </div>
   </div>
@@ -175,6 +183,7 @@ export default{
     width: 10em;
     display: inline-block;
     text-align: center;
+    font-size: .9em;
   }
 }
 .lottery-type{
