@@ -375,29 +375,31 @@ export default {
       if(this.PayType=='一般'||this.method === 'Bank'){
         nowAjax.PayUser = this.vaVal.PayUser
       }else{
-        //判断是否小数
-        function isDic(n){
-          n=n*1
-          // console.log(n);
-          if(Math.floor(n)===n){
-            // return n+0.12
-            return (Math.random()/20+0.01+n).toFixed(2)*1
-          }else{
-            return false
+        if(this.method==='QQpay'||this.method==='UnionPay'){
+          //判断是否小数
+          function isDic(n){
+            n=n*1
+            // console.log(n);
+            if(Math.floor(n)===n){
+              // return n+0.12
+              return (Math.random()/20+0.01+n).toFixed(2)*1
+            }else{
+              return false
+            }
           }
-        }
-        var DIC=isDic(this.vaVal.Money)
-        if(DIC){
-          if(DIC>this.nowRender.MaxMoney){
-            DIC=2*this.nowRender.MaxMoney-DIC
+          var DIC=isDic(this.vaVal.Money)
+          if(DIC){
+            if(DIC>this.nowRender.MaxMoney){
+              DIC=2*this.nowRender.MaxMoney-DIC
+            }
+            this.Money=DIC
+            this.vaVal.Money=DIC
+            var vm=this
+            layer.confirm('为了更准确核对您的金额，<br>系统已将充值金额调整为:<br><span style="color:red">'+DIC+'</span>',['确定','取消'],function(){
+              vm.$vaSubmit()
+            })
+            return
           }
-          this.Money=DIC
-          this.vaVal.Money=DIC
-          var vm=this
-          layer.confirm('为了更准确核对您的金额，<br>系统已将充值金额调整为:<br><span style="color:red">'+DIC+'</span>',['确定','取消'],function(){
-            vm.$vaSubmit()
-          })
-          return
         }
         // if(this.isOpenType==4){
         //   // if(nowAjax.BankCode!=='智汇付'&&nowAjax.Qort===6){
