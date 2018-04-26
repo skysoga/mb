@@ -40,7 +40,7 @@
         <a class = "wrap" @click = "setUrl(aliType,'Alipay',aliMsg)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/alipay.png'">
           <div class="text">
-            <strong>支付宝支付</strong>
+            <strong>支付宝</strong>
             <p v-if="!aliMsg">
               单笔最低<ins>{{payLimit['alipay'][0] | num}}</ins>元，
               最高<ins>{{payLimit['alipay'][1] | num}}</ins>元。
@@ -74,7 +74,7 @@
         <a class = "wrap" @click = "setUrl(unionType,'UnionPay',unionMsg)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/card.png'">
           <div class="text">
-            <strong>银联扫码</strong>
+            <strong>银联支付</strong>
             <p v-if="!unionMsg">
               单笔最低<ins>{{payLimit['UnionPay'][0]|num}}</ins>元，
               最高<ins>{{payLimit['UnionPay'][1]|num}}</ins>元。
@@ -151,7 +151,7 @@ export default {
       obj.alipay=this.getLimit(json)
     }else{
       this.aliType=''
-      this.aliMsg="支付宝支付维护中..."
+      this.aliMsg="支付宝维护中..."
     }
     if(state.RechargeWayQQpay&&state.RechargeWayQQpay[0]){
       let json=state.RechargeWayQQpay[0]
@@ -169,7 +169,7 @@ export default {
       obj.UnionPay=this.getLimit(json)
     }else{
       this.unionType=''
-      this.unionMsg="银联扫码维护中..."
+      this.unionMsg="银联支付维护中..."
     }
     if(state.RechargeFourthParty&&state.RechargeFourthParty[0]){
       this.FourUrl=state.RechargeFourthParty[0]
