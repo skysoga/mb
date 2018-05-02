@@ -14,7 +14,7 @@
     </div>
     <!-- type1:代表第一个查看方式（开奖记录、号码走势、和值走势、形态走势） -->
     <div class="tc-content-container" :class="'type'+showType">
-      <vuetable ref="vuetable" :height="contentHeight" :datas="getData" :titles="gettitles" :columns="getcolumns">
+      <vuetable ref="vuetable" :height="contentHeight" :datas="getData" :titles="gettitles" :columns="OpenNum">
         <ul v-if="$refs.vuetable" slot="datas" v-for="d in getData" class="fix">
           <li v-for="(e,i) in d" :style="{width:($refs.vuetable.widthArr[i+1]>1)?($refs.vuetable.widthArr[i+1]+'px'):'auto'}">
             <!-- class 可设置为：open-num、da、shuang、xiao、dan、sanbutong、sanlianhao、santonghao -->
@@ -34,47 +34,16 @@ export default{
     vuetable,
   },
   computed:{
+    lCode:()=>state.lt.lottery.LotteryCode,
+    lottery:()=>state.lt.lottery.LotteryType,
     getData(){
-      if (this.showType === 1) {
-        return this.datas1
-      }
-      if (this.showType === 2) {
-        return this.datas2
-      }
-      if (this.showType === 3) {
-        return this.datas3
-      }
-      if (this.showType === 4) {
-        return this.datas4
-      }
+      // return this.datas1      
     },
     gettitles(){
-      if (this.showType === 1) {
-        return this.titles1
-      }
-      if (this.showType === 2) {
-        return this.titles2
-      }
-      if (this.showType === 3) {
-        return this.titles3
-      }
-      if (this.showType === 4) {
-        return this.titles4
-      }
+      // return this.titles1      
     },
     getcolumns(){
-      if (this.showType === 1) {
-        return this.columns1
-      }
-      if (this.showType === 2) {
-        return this.columns2
-      }
-      if (this.showType === 3) {
-        return this.columns3
-      }
-      if (this.showType === 4) {
-        return this.columns4
-      }
+      // return this.columns1
     },
   },
   data(){
@@ -108,37 +77,8 @@ export default{
         [123,12,'大','单'],
         [123,12,'大','单'],
       ],
-      titles1:['期号','开奖','和值','大小','单双'],
-      columns1:['0676','0677','0678','0679','0680','0681','0682','0683','0684','0685','0686','0687','0688','0689','0690','0691','0692','0693','0694','0695','0696','0697','0698','0699','0700'],
-      datas2:[
-        [123,12,10,1,1,1,1,1,1],
-        [123,12,10,1,1,1,1,1,1],
-        [123,12,10,1,1,1,1,1,1],
-        [123,12,10,1,1,1,1,1,1],
-        [123,12,10,1,1,1,1,1,1],
-        [123,12,10,1,1,1,1,1,1],
-        [123,12,10,1,1,1,1,1,1],
-        [123,12,10,1,1,1,1,1,1],
-        [123,12,10,1,1,1,1,1,1],
-        [123,12,10,1,1,1,1,1,1],
-        [123,12,10,1,1,1,1,1,1],
-        [123,12,10,1,1,1,1,1,1],
-        [123,12,10,1,1,1,1,1,1],
-        [123,12,10,1,1,1,1,1,1],
-        [123,12,10,1,1,1,1,1,1],
-        [123,12,10,1,1,1,1,1,1],
-        [123,12,10,1,1,1,1,1,1],
-        [123,12,10,1,1,1,1,1,1],
-        [123,12,10,1,1,1,1,1,1],
-        [123,12,10,1,1,1,1,1,1],
-        [123,12,10,1,1,1,1,1,1],
-        [123,12,10,1,1,1,1,1,1],
-        [123,12,10,1,1,1,1,1,1],
-        [123,12,10,1,1,1,1,1,1],
-        [123,12,10,1,1,1,1,1,1],
-      ],
-      titles2:['期号','开奖','和值','跨度','1','2','3','4','5','6'],
-      columns2:['0676','0677','0678','0679','0680','0681','0682','0683','0684','0685','0686','0687','0688','0689','0690','0691','0692','0693','0694','0695','0696','0697','0698','0699','0700'],
+      titles:['期号','开奖','和值','大小','单双'],
+      OpenNum:[]
     }
   },
   mounted(){
@@ -148,6 +88,21 @@ export default{
     changeShowType(v){
       this.showType = v
       this.$refs.vuetable.changing()
+    },
+    getData(Code,IssueNo,DataNum){
+      var ajax={
+        Action:"GetLotteryOpen",
+        LotteryCode:Code,
+        IssueNo:IssueNo,
+        DataNum:DataNum
+      }
+      _fetch(ajax).then(json=>{
+        if(json.Code===1){
+          this.OpenNum=json.BackData
+        }else{
+          layer.msgWarn(json.StrCode)
+        }
+      })
     }
   }
 }
