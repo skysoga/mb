@@ -86,7 +86,7 @@
                   // layer.msg(json.StrCode)
                   this.$store.commit('lt_clearBet')
                   this.$store.commit('lt_changeBox', '')
-
+                  this.$parent.betRecordRefresh = 1
                   //开奖后自己添记录到“我的投注里”
                   var totalMoney = basket.map(bet=>bet.betting_money).reduce((a,b)=>a+b)  //本注总金额
                   var issueNo = basket[0].betting_issuseNo                                  //期号

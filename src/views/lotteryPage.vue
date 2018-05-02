@@ -381,6 +381,7 @@
                 //在某期的区间中
                 state.IssueNo = i;
               }else if(StartTime>EndTime){
+
                 //某期跨天了
                 if((_SerTime<EndTime)||(_SerTime>=StartTime)){
                   state.IssueNo = i;
@@ -1405,7 +1406,14 @@
           var nowSerTime = new Date().getTime()- this.$store.state.Difftime;   //当前的服务器时间
           nowSerTime=nowSerTime+new Date().getTimezoneOffset()*60*1000-GMT_DIF
           // console.log(new Date(nowSerTime).format("yyyyMMddhhmmss"));
-          state.lt.Todaystr = new Date(nowSerTime).format("yyyyMMdd");           //今天
+          if(state.lt.Todaystr !== new Date(nowSerTime).format("yyyyMMdd")){
+            location.reload()
+          }
+          // var myDate = new Date()
+          // var hours = myDate.getHours()
+          // if (hours === 0) {
+          //   location.reload()
+          // }
         }
       }
       document.addEventListener("visibilitychange", this.visibilitychange)

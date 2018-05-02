@@ -123,18 +123,32 @@
 				},200)
 			},
 			getBet(){
-				_fetch({
-					Action:'GetBetting',
-					SourceName:'PC'
-				})
-				.then(d=>{
-					if (d.Code === 1) {
-						this.betData = d.Data
-						this.loaedBetting = 1
-					}else{
-						layer.msgWarn(d.StrCode)
+				var _BetRecord = state.lt.BetRecord
+				var isWait = 0
+				for (var i = 0; i < _BetRecord.length; i++) {
+					if(_BetRecord[i].openState === '等待开奖'){
+						isWait = 1
+						break;
 					}
-				})
+				}
+				if (!isWait && !this.$parent.betRecordRefresh) {
+					this.betData = _BetRecord
+				}else{
+					_fetch({
+						Action:'GetBetting',
+						SourceName:'PC'
+					})
+					.then(d=>{
+						if (d.Code === 1) {
+							this.betData = d.Data
+							this.loaedBetting = 1
+							this.$store.commit('lt_setBetRecord', d.Data)
+							this.$parent.betRecordRefresh = 0
+						}else{
+							layer.msgWarn(d.StrCode)
+						}
+					})
+				}
 			}
 		},
 		watch:{
