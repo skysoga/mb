@@ -220,7 +220,6 @@
         showFGbtn:0,
         visibilitychange:null,
         backPage:window.preurl,
-        betRecordRefresh:1,
       }
     },
     computed:mapState({

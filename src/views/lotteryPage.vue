@@ -312,7 +312,8 @@
           displayResults: false,  //false显示等待开奖的动画， true显示开奖结果
           tipDisplayFlag: false,  //是否省略玩法
           natal:getNatal(new Date()),
-          perbet: PERBET
+          perbet: PERBET,
+          betRecordRefresh:1,
         },
         getters: {
           // 本命
@@ -1161,12 +1162,29 @@
           },
           //获取我的投注
           lt_updateBetRecord:({state, rootState, commit, dispatch})=>{
-            // _fetch({Action: 'GetBetting'}).then((json)=>{
-            //   if(json.Code === 1){
-            //     var betting = json.Data
-            //     commit('lt_setBetRecord', betting)
-            //   }
-            // })
+            var _BetRecord = state.BetRecord
+            var needRefresh = 0
+            for (var i = 0; i < _BetRecord.length; i++) {
+              if((_BetRecord[i].openState === '等待开奖') && (state.NowIssue !== _BetRecord[i].issueNo)){
+                needRefresh = 1
+                break;
+              }
+            }
+            if (needRefresh || state.betRecordRefresh) {
+              _fetch({
+                Action:'GetBetting',
+                SourceName:'PC'
+              })
+              .then(d=>{
+                if (d.Code === 1) {
+                  commit('lt_setBetRecord', d.Data)
+                  // this.loaedBetting = 1
+                  state.betRecordRefresh = 0
+                }else{
+                  layer.msgWarn(d.StrCode)
+                }
+              })
+            }
           },
           //获得返点
           lt_getRebate:({state, rootState, commit, dispatch}, notUseLocal)=>{
@@ -1375,7 +1393,7 @@
       //设置默认的玩法
       this.setDefaultMode()
       //获取我的投注
-      this.$store.dispatch('lt_updateBetRecord')
+      // this.$store.dispatch('lt_updateBetRecord')
 
       var type = this.ltype
       var rebate = localStorage.getItem(`Rebate${type}`)

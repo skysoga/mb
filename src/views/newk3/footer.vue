@@ -91,7 +91,7 @@
                   var totalMoney = basket.map(bet=>bet.betting_money).reduce((a,b)=>a+b)  //本注总金额
                   var issueNo = basket[0].betting_issuseNo                                  //期号
                   var _betRecord = this.$store.state.lt.BetRecord.slice(0)
-                  var record = {issueNo: issueNo, normal_money:totalMoney.toFixed(2), openState: '等待开奖'}
+                  var record = {issueNo: issueNo, normal_money:totalMoney.toFixed(2), openState: '等待开奖', lotteryName: 'UU快三'}
                   _betRecord.unshift(record)
                   if(_betRecord.length > 5){
                     _betRecord.length = 5
