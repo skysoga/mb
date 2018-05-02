@@ -609,8 +609,8 @@ function computeIssue(code, index, isChase){
       var needAddOne = +(_SerTime > state.lt.LotteryPlan[0].End)
       var issueStr = ('00' + (dayDiff + baseIssue + needAddOne + index)).slice(-3)
       return data.slice(0,4) + issueStr
+    }
   }
-}
 
   //基于固定期
   function basedOnFixedIssue(baseIssue, dateStr){
