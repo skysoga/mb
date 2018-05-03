@@ -1,8 +1,8 @@
 <template>
   <div class="main">
     <div class="innerWrap">
-
-      <div class="surperise active">
+    <template v-for="n in PaySort">
+      <div class="surperise active" v-if="n==='EbankPay'">
         <router-link class="wrap" to = "recharge/Bank/0">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/card.png'">
           <div class="text">
@@ -19,7 +19,7 @@
         </router-link>
       </div>
 
-      <div class="surperise active">
+      <div class="surperise active" v-if="n==='Weixin'">
         <a class = "wrap" @click = "setUrl(wechatType,'Weixin',weixMsg)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/weixin.png'">
           <div class="text">
@@ -36,7 +36,7 @@
         </a>
       </div>
 
-      <div class="surperise active">
+      <div class="surperise active" v-if="n==='Alipay'">
         <a class = "wrap" @click = "setUrl(aliType,'Alipay',aliMsg)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/alipay.png'">
           <div class="text">
@@ -53,7 +53,7 @@
         </a>
       </div>
 
-      <div class="surperise active">
+      <div class="surperise active" v-if="n==='QQpay'">
         <a class = "wrap" @click = "setUrl(qqType,'QQpay',qqMsg)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/qqpay.png'">
           <div class="text">
@@ -70,7 +70,7 @@
         </a>
       </div>
 
-      <div class="surperise active">
+      <div class="surperise active" v-if="n==='UnionPay'">
         <a class = "wrap" @click = "setUrl(unionType,'UnionPay',unionMsg)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/card.png'">
           <div class="text">
@@ -88,7 +88,7 @@
       </div>
       <!-- 第四方支付 暂定名：多功能支付-->
 
-      <div class="surperise active" v-show="FourUrl.PayUrl">
+      <div class="surperise active" v-if="n==='FourthParty'&&FourUrl.PayUrl">
         <a class="wrap" :href="FourUrl.PayUrl" target="_blank" @click="toFourUrl($event)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/fourthpay.png'">
           <div class="text">
@@ -99,7 +99,7 @@
         </a>
       </div>
 
-
+    </template>
     </div>
   </div>
 </template>
@@ -118,16 +118,21 @@ export default {
       aliMsg:'',
       qqMsg:'',
       unionMsg:'',
-      FourUrl:{}
+      FourUrl:{},
+      PaySort:[]
     }
   },
   beforeRouteEnter(to,from,next){
-    RootApp.AjaxGetInitData(['RechargeWayWeixin', 'RechargeWayAlipay','RechargeWayBank','RechargeWayQQpay','RechargeWayUnionPay','RechargeFourthParty'], state=>{
+    RootApp.AjaxGetInitData(['RechargeSort','RechargeWayWeixin', 'RechargeWayAlipay','RechargeWayBank','RechargeWayQQpay','RechargeWayUnionPay','RechargeFourthParty'], state=>{
       next()
     })
   },
   created () {
     var obj={}
+    if(state.RechargeSort&&state.RechargeSort.length){
+      let json=state.RechargeSort
+      this.PaySort=json
+    }
     if(state.RechargeWayBank&&state.RechargeWayBank[0]){
       let json=state.RechargeWayBank[0]
       obj.bank=this.getLimit(json)

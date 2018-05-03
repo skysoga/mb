@@ -321,7 +321,8 @@
           displayResults: false,  //false显示等待开奖的动画， true显示开奖结果
           tipDisplayFlag: false,  //是否省略玩法
           natal:getNatal(new Date()),
-          perbet: PERBET
+          perbet: PERBET,
+          betRecordRefresh:1,
         },
         getters: {
           // 本命
@@ -390,6 +391,7 @@
                 //在某期的区间中
                 state.IssueNo = i;
               }else if(StartTime>EndTime){
+
                 //某期跨天了
                 if((_SerTime<EndTime)||(_SerTime>=StartTime)){
                   state.IssueNo = i;
@@ -447,7 +449,15 @@
           lt_showFullTip:(state, bool)=>{
             state.tipDisplayFlag = bool
           },
-          lt_updateTimeBar:(state, text)=>{state.TimeBar = text;},      //倒计时的内容
+          // 倒计时的内容
+          lt_updateTimeBar:(state, text)=>{
+            if (state.TimeBar !== text) {
+              if (text === '等待开局') {
+                state.betRecordRefresh = 1
+              }
+              state.TimeBar = text;
+            }
+          },
           lt_setBetRecord:(state, BetRecord)=>{state.BetRecord =BetRecord;},  //投注记录
 
                           /** 通用 **/
@@ -1169,12 +1179,29 @@
           },
           //获取我的投注
           lt_updateBetRecord:({state, rootState, commit, dispatch})=>{
-            // _fetch({Action: 'GetBetting'}).then((json)=>{
-            //   if(json.Code === 1){
-            //     var betting = json.Data
-            //     commit('lt_setBetRecord', betting)
-            //   }
-            // })
+            var _BetRecord = state.BetRecord
+            var needRefresh = 0
+            for (var i = 0; i < _BetRecord.length; i++) {
+              if((_BetRecord[i].openState === '等待开奖') && (state.NowIssue !== _BetRecord[i].issueNo)){
+                needRefresh = 1
+                break;
+              }
+            }
+            if (needRefresh || state.betRecordRefresh) {
+              _fetch({
+                Action:'GetBetting',
+                SourceName:'PC'
+              })
+              .then(d=>{
+                if (d.Code === 1) {
+                  commit('lt_setBetRecord', d.Data)
+                  // this.loaedBetting = 1
+                  state.betRecordRefresh = 0
+                }else{
+                  layer.msgWarn(d.StrCode)
+                }
+              })
+            }
           },
           //获得返点
           lt_getRebate:({state, rootState, commit, dispatch}, notUseLocal)=>{
@@ -1383,7 +1410,7 @@
       //设置默认的玩法
       this.setDefaultMode()
       //获取我的投注
-      this.$store.dispatch('lt_updateBetRecord')
+      // this.$store.dispatch('lt_updateBetRecord')
 
       var type = this.ltype
       var rebate = localStorage.getItem(`Rebate${type}`)
@@ -1414,7 +1441,14 @@
           var nowSerTime = new Date().getTime()- this.$store.state.Difftime;   //当前的服务器时间
           nowSerTime=nowSerTime+new Date().getTimezoneOffset()*60*1000-GMT_DIF
           // console.log(new Date(nowSerTime).format("yyyyMMddhhmmss"));
-          state.lt.Todaystr = new Date(nowSerTime).format("yyyyMMdd");           //今天
+          if(state.lt.Todaystr !== new Date(nowSerTime).format("yyyyMMdd")){
+            location.reload()
+          }
+          // var myDate = new Date()
+          // var hours = myDate.getHours()
+          // if (hours === 0) {
+          //   location.reload()
+          // }
         }
       }
       document.addEventListener("visibilitychange", this.visibilitychange)

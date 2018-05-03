@@ -298,7 +298,7 @@ export default {
             vm.underMaintain = false
             vm.Bank=json
             vm.vaConfig ||(vm.vaConfig = {})
-            vm.vaConfig['Money'] || (vm.vaConfig['Money'] = [])
+            vm.vaConfig['Money'] || (vm.vaConfig['Money'] = [])            
             var Min=json[key].MinMoney,
                 Max=json[key].MaxMoney
             vm.vaConfig['Money'].push(new vm.VaConfig('limit', [Min,Max], '', 'Money', payTitle[method]))
@@ -344,6 +344,11 @@ export default {
           this.PayType = item.PayType
           this.isOpenType=item.OpenType||item.Opentype
           this.nowRender = item
+          this.vaConfig ||(this.vaConfig = {})
+          this.vaConfig['Money'] || (this.vaConfig['Money'] = [])            
+          var Min=item.MinMoney,
+              Max=item.MaxMoney
+          this.vaConfig['Money'].push(new this.VaConfig('limit', [Min,Max], '', 'Money', payTitle[this.method]))
           return
           // this.nowRender.CodeImg = this.setImgUrl(item.CodeImg)
           // var Min=this.nowRender.MinMoney,
