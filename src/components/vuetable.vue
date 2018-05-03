@@ -7,7 +7,7 @@
     </div>
     <div class="table-body fix" :style="{height:scrollHeight+'px'}">
       <ul ref="columns" class="columns" :style="{width:(widthArr[0]>1)?(widthArr[0]+'px'):'auto'}">
-        <li v-for="d in columns"><em>{{d}}</em></li>
+        <li v-for="d in columns"><em>{{d.IssueNo}}</em></li>
       </ul>
       <div class="table-container" @scroll="tableScroll" :style="{width:scrollContainerWidth+'px'}">
         <div ref="fakeTable" class="fake-table" :style="{width:maxWidth+'px'}">

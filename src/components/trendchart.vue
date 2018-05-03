@@ -29,12 +29,22 @@
 </template>
 <script>
 import vuetable from './vuetable';
-var titleArr={
+//文案配置
 
+var Title={
+    K3num:[1,2,3,4,5,6],//号码分布
+    K3chrat:[3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],//号码走势
+    K3KJJL:['期号','开奖','和值','大小','单双'],
+    K3HMZS:['期号','开奖','和值','跨度',1,2,3,4,5,6],
+    K3HZZS:['期号','开奖','大小','单双',3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
+    K3XTZS:['期号，开奖，三同号，三不同，三连号']
 }
 
 var NavCfg={
-  'K3':[],
+  'K3':{
+    Title:[{Name:'号码记录',List:Title.K3KJJL},{Name:'号码走势',List:Title.K3HMZS},{Name:'和值走势',List:Title.K3HZZS},{Name:'形态走势',List:Title.K3XTZS}],
+    Body:[]
+  },
   'SSC':[],
 }
 export default{
@@ -61,30 +71,6 @@ export default{
       showType:1,
       datas1:[
         [123,12,'大','单'],
-        [123,12,'大','单'],
-        [123,12,'大','单'],
-        [123,12,'大','单'],
-        [123,12,'大','单'],
-        [123,12,'大','单'],
-        [123,12,'大','单'],
-        [123,12,'大','单'],
-        [123,12,'大','单'],
-        [123,12,'大','单'],
-        [123,12,'大','单'],
-        [123,12,'大','单'],
-        [123,12,'大','单'],
-        [123,12,'大','单'],
-        [123,12,'大','单'],
-        [123,12,'大','单'],
-        [123,12,'大','单'],
-        [123,12,'大','单'],
-        [123,12,'大','单'],
-        [123,12,'大','单'],
-        [123,12,'大','单'],
-        [123,12,'大','单'],
-        [123,12,'大','单'],
-        [123,12,'大','单'],
-        [123,12,'大','单'],
       ],
       titles:['期号','开奖','和值','大小','单双'],
       OpenNum:[]
@@ -93,12 +79,15 @@ export default{
   mounted(){
     this.contentHeight = this.$refs.trendchart.offsetHeight - (2.3+2)*em
   },
+  created(){
+    this.getBackData(this.lCode,0,20)
+  },
   methods:{
     changeShowType(v){
       this.showType = v
       this.$refs.vuetable.changing()
     },
-    getData(Code,IssueNo,DataNum){
+    getBackData(Code,IssueNo,DataNum){
       var ajax={
         Action:"GetLotteryOpen",
         LotteryCode:Code,
