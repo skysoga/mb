@@ -440,7 +440,15 @@
           lt_showFullTip:(state, bool)=>{
             state.tipDisplayFlag = bool
           },
-          lt_updateTimeBar:(state, text)=>{state.TimeBar = text;},      //倒计时的内容
+          // 倒计时的内容
+          lt_updateTimeBar:(state, text)=>{
+            if (state.TimeBar !== text) {
+              if (text === '等待开局') {
+                state.betRecordRefresh = 1
+              }
+              state.TimeBar = text;
+            }
+          },
           lt_setBetRecord:(state, BetRecord)=>{state.BetRecord =BetRecord;},  //投注记录
 
                           /** 通用 **/
