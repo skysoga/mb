@@ -719,6 +719,42 @@ var sscConfig = {
       "tag": "后三大小单双",
       "eg": ["大单大", "百位、十位、个位“大单大”，即为中奖"]
     }]
+  },
+  "两面":{
+    "1元模式":[{
+      "name": "两面",
+      "mode": "K11",
+      "tip": "总和：开奖号码相加的和，大于22为和大，小于23为和小，奇数为和单，偶数为和双。任意位置：5-9为大，0-4为小，奇数为单，偶数为双；1，2，3，5，7为质，0，4，6，8，9为合。",
+      "group": "两面",
+      "subGroup": "1元模式",
+      "tag": "两面",
+      "default": true,
+      "eg": ["和大,*", "开出号码相加之和大于22“和大”，即为中奖。"]
+    }]
+  },
+  "龙虎斗":{
+    "1元模式":[{
+      "name": "龙虎斗",
+      "mode": "L11",
+      "tip": "对应两位的号码进行比较，前者大于后者为龙，小于后者为虎，相同为和。",
+      "group": "龙虎斗",
+      "subGroup": "1元模式",
+      "tag": "龙虎斗",
+      "default": true,
+      "eg": ["龙，*", "万位大于千位为“龙”，即为中奖。"]
+    }]
+  },
+  "猜豹子":{
+    "1元模式":[{
+      "name": "猜豹子",
+      "mode": "J11",
+      "tip": "从0-9中任选一位组成一注，开奖号码5位全是该号码，即中奖",
+      "group": "猜豹子",
+      "subGroup": "1元模式",
+      "tag": "猜豹子",
+      "default": true,
+      "eg": ["3", "开出号码“33333”，即为中奖。"]
+    }]
   }
 }
 
@@ -816,6 +852,10 @@ var sscPlay = {
   I93:{render:['i10000','i1000','i100'],alg:(order,tmp)=>mul(3,betSum(order,tmp))},
   I94:{render:['i1000','i100','i10'],alg:(order,tmp)=>mul(3,betSum(order,tmp))},
   I95:{render:['i100','i10','i1'],alg:(order,tmp)=>mul(3,betSum(order,tmp))},
+  // 新玩法
+  J11:{render:['cbz'],alg:(order, tmp)=>betSum(order, tmp).reduce(function(a,b){return a + b})},
+  K11:{render:['zhlh','z10000','z1000','z100','z10','z1'],alg:(order, tmp)=>betSum(order, tmp).reduce(function(a,b){return a + b})},
+  L11:{render:['wQian','wBai','wShi','wGe','qBai','qShi','qGe','bShi','bGe','sGe'],alg:(order, tmp)=>betSum(order, tmp).reduce(function(a,b){return a + b})},
 }
 
 var sscRandom = {

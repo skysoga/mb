@@ -79,7 +79,7 @@ export default{
   .bet-item-box{
     border:1px solid #dfdfdf;
     border-radius:.15rem;
-    background: #faf9f6;
+    /* background: #faf9f6; */
     a,span{
       display: block;
       text-align: center;

@@ -32,7 +32,15 @@
           <span class="sex" :class="{girl:!$parent.$parent.Sex}"></span>
           <span class="age">{{$parent.$parent.Anchor.Age}}岁</span>
         </div>
-        <div class="bouns">本月打赏：{{$parent.$parent.Anchor.Bouns}}元</div>
+        <div class="bouns">
+          本月打赏：
+          <template v-if="$parent.$parent.Anchor.Bouns === -1">
+            数据更新中...
+          </template>
+          <template v-else>
+            {{$parent.$parent.Anchor.Bouns}}元
+          </template>
+        </div>
         <table>
           <tr>
             <td>地区：{{$parent.$parent.Anchor.City}}</td>

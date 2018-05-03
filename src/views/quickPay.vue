@@ -364,45 +364,63 @@ export default {
       layer.msgWait("正在提交")
       _fetch(nowAjax).then((json)=>{
         if(json.Code === 1){
-          var OpenType=json.OpenType
+          var OpenType=this.isOpenType//json.OpenType
           layer.closeAll()
-          if(OpenType!==4){
-           if(OpenType===1){
-            newTab&&newTab.close()
-            this.QrImg=json.BackUrl
-            this.Styles=json.Style
-            this.Money = ''
-          }else{
-            newTab&&newTab.close()
-            this.QrSvg=true
-            if(OpenType===3){
-              var qrcode=document.getElementById("qrcode")
-              var img=document.createElement("img")
-              img.src=this.QrImg
-              img.width='260'
-              qrcode.appendChild(img)
-            }else if(OpenType===2){
-              this.setQrCode(json.BackUrl)
-            }
+          switch(OpenType){
+            case 1:
+              this.QrImg=json.BackUrl
+              this.Styles=json.Style
+              this.Money = ''
+            break;
+            case 2:
+            case 3:
+            case 4:
+              this.QrImg=''
+              this.QrBg=false
+              if (_App) {
+                RootApp.OpenWin(json.BackUrl, newTab)
+              }else{
+                location.href=json.BackUrl
+              }
+            break;
           }
-        }else{
-          /*this.QrBg=false
-          if(YDB){
-            newTab&&newTab.close()
-            newTab=true
-          }
-          RootApp.OpenWin(json.BackUrl, newTab)
-          this.Money = ''*/
-          if (_App) {
-            RootApp.OpenWin(json.BackUrl, newTab)
-          }else{
-            location.href=json.BackUrl
-          }
+        //   if(OpenType!==4){
+        //    if(OpenType===1){
+        //     // newTab&&newTab.close()
+        //     this.QrImg=json.BackUrl
+        //     this.Styles=json.Style
+        //     this.Money = ''
+        //   }else{
+        //     newTab&&newTab.close()
+        //     this.QrSvg=true
+        //     if(OpenType===3){
+        //       var qrcode=document.getElementById("qrcode")
+        //       var img=document.createElement("img")
+        //       img.src=this.QrImg
+        //       img.width='260'
+        //       qrcode.appendChild(img)
+        //     }else if(OpenType===2){
+        //       this.setQrCode(json.BackUrl)
+        //     }
+        //   }
+        // }else{
+        //   /*this.QrBg=false
+        //   if(YDB){
+        //     newTab&&newTab.close()
+        //     newTab=true
+        //   }
+        //   RootApp.OpenWin(json.BackUrl, newTab)
+        //   this.Money = ''*/
+        //   if (_App) {
+        //     RootApp.OpenWin(json.BackUrl, newTab)
+        //   }else{
+        //     location.href=json.BackUrl
+        //   }
           
-        }
+        // }
 
         }else{
-          newTab&&newTab.close()
+          // newTab&&newTab.close()
           this.QrBg=false
           this.Money=''
           layer.msgWarn(json.StrCode)

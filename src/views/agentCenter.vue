@@ -1,7 +1,7 @@
 <template>
   <div class="user-main">
     <div class="topSlide">
-      <img src="http://imagess-google.com/system/mobile/other/proxySlide.png" alt="" width="100%">
+      <img :src="$store.state.constant.ImgHost+'/system/mobile/other/proxySlide.png'" alt="" width="100%">
     </div>
     <div class="user-options">
             <router-link to="agentIntro" class="active" style="">

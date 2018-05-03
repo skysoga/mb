@@ -32,6 +32,8 @@ const tool =require('../views/tool')//清缓存工具
 const ArtificialAppeal =require('../views/ArtificialAppeal')//人工申诉
 const ArtificialBank =require('../views/ArtificialBank')//人工申诉-银行卡验证
 const ArtificialPhoto =require('../views/ArtificialPhoto')//人工申诉-核实
+const recharge =require('../views/recharge')//重构充值页
+
 var routes = [{
   path: '/manageBankcard',
   name: '银行卡管理',
@@ -403,11 +405,20 @@ var routes = [{
 //   path:'/ping',
 //   name:'线路检测',
 //   meta:{
-//     title:'线路检测',
-//     link:'/index',
-//     user:true
+//   title:'线路检测',
+//   link:'/index',
+//   user:true    
 //   },
 //   component:ping
-// }
-]
+// },
+{
+  path:'/recharge/:ID/:KEY',
+  name:'充值',
+  meta:{
+  title:'充值',
+  link:'/rechargeWay',
+  user:true
+  },
+  component:recharge
+}]
 module.exports = routes

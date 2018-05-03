@@ -605,9 +605,8 @@ function computeIssue(code, index, isChase){
   function oneDayOneIssue(baseIssue, dateStr){
     return function(){
       var data = state.lt.Todaystr.replace(/^(\d{4})(\d{2})(\d{2})$/,'$1/$2/$3');
-      var dayDiff = Math.floor((Date.parse(data)-Date.parse(dateStr))/DAY_TIME) //相差天数
-      var needAddOne = +(_SerTime > 72000000)  //八点开
-      // console.log(needAddOne, _SerTime, _SerTime-72000000)
+      var dayDiff = Math.floor((Date.parse(data)-Date.parse(dateStr))/DAY_TIME)
+      var needAddOne = +(_SerTime > state.lt.LotteryPlan[0].End)
       var issueStr = ('00' + (dayDiff + baseIssue + needAddOne + index)).slice(-3)
       return data.slice(0,4) + issueStr
     }
@@ -646,9 +645,9 @@ function computeIssue(code, index, isChase){
     '1303':basedOnFixedIssue(602501-20, "2017/2/25"),
 
     //福彩3D：每天一期
-    '1201':oneDayOneIssue(1, "2018/1/1"),
+    '1201':oneDayOneIssue(1, "2018/1/8"),
     //排列3：每天一期
-    '1202':oneDayOneIssue(1, "2018/1/1"),
+    '1202':oneDayOneIssue(1, "2018/1/8"),
     '1301':function(){
       // var dateStr = new Date().getFullYear().toString()
       var year=state.lt.Todaystr.slice(0,4)
@@ -830,16 +829,20 @@ var _0to9 = [0,1,2,3,4,5,6,7,8,9],
     _syx5 = ['01','02','03','04','05','06','07','08','09','10','11'],
     _pk10 = ['01','02','03','04','05','06','07','08','09','10'],
     _gyhdsds = ['和大','和小','和单','和双'],
-    _dsdslh = ['大','小','单','双','龙','虎']
+    _dsdslh = ['大','小','单','双','龙','虎'],
+    _dsdszh = ['大','小','单','双','质','合'],
+    // _zhlh = ['和大','和小','和单','和双','龙','虎','和'],
+    _lhh = ['龙','虎','和']
 
 // 给出0-(n-1)的随机数
 var oneRandom = (n)=>Math.floor(Math.random() * n)
 
 // 一星
-function oneStar(){
-   var line =  Math.floor(Math.random() * 5)
+function oneStar(num){
+  num=num?num:5
+   var line =  Math.floor(Math.random() * num)
    var res = []
-   for(var i = 0;i < 5;i++){
+   for(var i = 0;i < num;i++){
     var lineRes = []
     if(line === i){
       lineRes.push(Math.floor(Math.random() * 10))
@@ -856,4 +859,5 @@ export {factorial, mul, C, combNoRepeat, unique, normalSum2,
     deleteCompress, Scheme, getBasketAmount,computeIssue,
     getSSCRebate,getMultipleRebate, DAY_TIME, HOUR_TIME, MINUTE_TIME, SECOND_TIME,
   GMT_DIF, PERBET,Max_Rate, Max_Chase_Issue, Max_Expect_Rate, syx5_zx2,
-  countSingle, betSum, createStringArray, _random, _0to9, _dsds, _0to27, _1to26, _0to18, _1to17, _syx5, _pk10,_3to19, _gyhdsds,_dsdslh, oneRandom, oneStar}
+  countSingle, betSum, createStringArray, _random, _0to9, _dsds, _0to27, _1to26, _0to18, _1to17,_lhh,_dsdszh,
+  _syx5, _pk10,_3to19, _gyhdsds,_dsdslh, oneRandom, oneStar}

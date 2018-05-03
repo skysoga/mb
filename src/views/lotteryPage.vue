@@ -27,6 +27,7 @@
   import {pk10Config} from '../js/page_config/lt_pk10'
   import {kl8Config} from '../js/page_config/lt_kl8'
   import {hcConfig} from '../js/page_config/lt_6hc'
+  import {fc3dConfig} from '../js/page_config/lt_fc3d'
   import getNatal from '../js/page_config/natal'
 
   import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
@@ -37,7 +38,7 @@
 
   var randomFeed = Math.floor(Math.random()*4)  //获取开奖时间的随机数，用于错开请求
   var haveGotTime = true                        //标志位-进页面时是否获取到服务器时间
-  var offLineLottery = ['FC3D', 'PL35']//不存在的彩种
+  var offLineLottery = ['PL35']//不存在的彩种,不显示的彩种
 
   function scrollTop(){document.body.scrollTop = 0}  //滚动置顶
 
@@ -94,8 +95,10 @@
 
       //设置请求的数组
       if (ptype === 'live') {
+        var path = router.currentRoute.path
         _fetch({Action:'GameConfig',GameID:lcode})
         .then(d=>{
+          if(path !== router.currentRoute.path){return}
           try{
           localStorage.removeItem('btnText')
           if (d.BackData != null) {
@@ -105,16 +108,16 @@
                   res(d)
                 },{url:'/LiveApi'})
               })
-              var GetAnchor       = _fetch({Action:"GetAnchor",GameID:lcode},{url:'/LiveApi'})
               var GetLiveBroadCast= _fetch({Action:"GetLiveBroadCast",GameID:lcode},{url:'/LiveApi'})
-              var reqArr          = [getRebate, getServerTime,GetAnchor,GetDefaultBarrage,GetLiveBroadCast]
+              var reqArr          = [getRebate, getServerTime,/*GetAnchor,*/GetDefaultBarrage,GetLiveBroadCast]
 
               // 进入彩种页必须先获取到  赔率/彩种配置/服务器时间
               Promise.all(reqArr).then((values)=>{
+                if(path !== router.currentRoute.path){return}
                 //校验下这个彩种存不存在，不存在就送回购彩大厅
                 var lotteryItem = state.LotteryList[lcode]
                 // var offLineLottery = ['FC3D', 'PL35']
-                if (values[2].Code === 1) {
+                // if (values[2].Code === 1) {
                   next(vm=>{
                     //检测等级
                     var _level = state.UserUpGradeBonus.Grade
@@ -128,22 +131,28 @@
                     // vm.isRuningT = setInterval(()=>{
                     //   vm.createWS()
                     // },3000)
-                    values[2].BackData.Photo = imgHost + '/' + values[2].BackData.Photo
-                    vm.Anchor = values[2].BackData
+                    var GetAnchor       = _fetch({Action:"GetAnchor",GameID:lcode},{url:'/LiveApi'})
+                    GetAnchor.then(json=>{
+                      if(json.Code===1){
+                        json.BackData.Photo = imgHost + '/' + json.BackData.Photo
+                        vm.Anchor = json.BackData
+                      }
+                    })
                     var textDataObj = {}
-                    for (var i = 0; i < values[3].DefaultBarrage.length; i++) {
-                      textDataObj[values[3].DefaultBarrage[i].ID] = values[3].DefaultBarrage[i].Content
+                    for (var i = 0; i < values[2].DefaultBarrage.length; i++) {
+                      textDataObj[values[2].DefaultBarrage[i].ID] = values[2].DefaultBarrage[i].Content
                     }
                     vm.DefaultBarrage = textDataObj
-                    vm.RandomBarrage = values[3].DefaultBarrage.shuffle()
-                    vm.BroadCast = values[4].BackData
+                    vm.RandomBarrage = values[2].DefaultBarrage.shuffle()
+                    vm.BroadCast = values[3].BackData
+                    vm.path = router.currentRoute.path
                   })
-                }else{
+                /*}else{
                   if(values[2].Code !== 1){
                     layer.msgWarn(values[2].StrCode)
                   }
                   state.turning=false
-                }
+                }*/
               }).catch((e)=>{
                  //关掉loading动画
                 store.commit('toggleLoading', false)
@@ -212,6 +221,7 @@
         'SYX5': syx5Config,
         'PK10': pk10Config,
         'KL8': kl8Config,
+        'FC3D': fc3dConfig,
         '6HC': hcConfig
       }
 
@@ -222,6 +232,7 @@
         'SYX5': getMultipleRebate,
         'PK10': getMultipleRebate,
         'KL8': getMultipleRebate,
+        'FC3D': getMultipleRebate,
         '6HC': getMultipleRebate,
       }
 
@@ -229,6 +240,8 @@
       var panConfig=['1407','1008','1300','1304']
       //香港六合彩1301
       var LHCConfig=['1301']
+      //非预售
+      var noCode=['1201']
 
       var wait4Results = 0, wait4BetRecord = false
       const lt = {
@@ -299,7 +312,8 @@
           displayResults: false,  //false显示等待开奖的动画， true显示开奖结果
           tipDisplayFlag: false,  //是否省略玩法
           natal:getNatal(new Date()),
-          perbet: PERBET
+          perbet: PERBET,
+          betRecordRefresh:1,
         },
         getters: {
           // 本命
@@ -368,6 +382,7 @@
                 //在某期的区间中
                 state.IssueNo = i;
               }else if(StartTime>EndTime){
+
                 //某期跨天了
                 if((_SerTime<EndTime)||(_SerTime>=StartTime)){
                   state.IssueNo = i;
@@ -425,7 +440,15 @@
           lt_showFullTip:(state, bool)=>{
             state.tipDisplayFlag = bool
           },
-          lt_updateTimeBar:(state, text)=>{state.TimeBar = text;},      //倒计时的内容
+          // 倒计时的内容
+          lt_updateTimeBar:(state, text)=>{
+            if (state.TimeBar !== text) {
+              if (text === '等待开局') {
+                state.betRecordRefresh = 1
+              }
+              state.TimeBar = text;
+            }
+          },
           lt_setBetRecord:(state, BetRecord)=>{state.BetRecord =BetRecord;},  //投注记录
 
                           /** 通用 **/
@@ -1108,8 +1131,12 @@
             function computeCountdown(issueNo, _SerTime){
               var _issue = state.LotteryPlan[state.IssueNo % state.PlanLen]
                   ,isCrossDay = (_issue.Start > _issue.End) && (_SerTime > _issue.Start)  //本期跨天,且当前时间大于End
-                  ,isOutOfIssue = state.IssueNo === state.PlanLen                       //如果现在不在任何期内
-                  ,needAddOneDay = isCrossDay || isOutOfIssue
+                  ,isOutOfIssue = state.IssueNo === state.PlanLen                     //如果现在不在任何期内
+                  ,isOneDayOneIssue=noCode.indexOf(code) > -1
+
+              //如果现在在一天一期的当期开奖后
+              var extra = isOneDayOneIssue && (_SerTime > state.LotteryPlan[0].End)
+              var needAddOneDay = isCrossDay || isOutOfIssue || extra
 
               var Countdown = state.LotteryPlan[state.IssueNo % state.PlanLen].End
                               +needAddOneDay * DAY_TIME
@@ -1127,7 +1154,7 @@
                   return
                 }
               }
-              if(Countdown>600 && LHCConfig.indexOf(code) === -1){
+              if(Countdown>600 && LHCConfig.indexOf(code) === -1&&noCode.indexOf(code)===-1){
                 commit('lt_updateTimeBar', '预售中')//如果Countdown大于10分钟，则进入预售
               }else{
                 //倒计时渲染
@@ -1143,12 +1170,29 @@
           },
           //获取我的投注
           lt_updateBetRecord:({state, rootState, commit, dispatch})=>{
-            // _fetch({Action: 'GetBetting'}).then((json)=>{
-            //   if(json.Code === 1){
-            //     var betting = json.Data
-            //     commit('lt_setBetRecord', betting)
-            //   }
-            // })
+            var _BetRecord = state.BetRecord
+            var needRefresh = 0
+            for (var i = 0; i < _BetRecord.length; i++) {
+              if((_BetRecord[i].openState === '等待开奖') && (state.NowIssue !== _BetRecord[i].issueNo)){
+                needRefresh = 1
+                break;
+              }
+            }
+            if (needRefresh || state.betRecordRefresh) {
+              _fetch({
+                Action:'GetBetting',
+                SourceName:'PC'
+              })
+              .then(d=>{
+                if (d.Code === 1) {
+                  commit('lt_setBetRecord', d.Data)
+                  // this.loaedBetting = 1
+                  state.betRecordRefresh = 0
+                }else{
+                  layer.msgWarn(d.StrCode)
+                }
+              })
+            }
           },
           //获得返点
           lt_getRebate:({state, rootState, commit, dispatch}, notUseLocal)=>{
@@ -1357,7 +1401,7 @@
       //设置默认的玩法
       this.setDefaultMode()
       //获取我的投注
-      this.$store.dispatch('lt_updateBetRecord')
+      // this.$store.dispatch('lt_updateBetRecord')
 
       var type = this.ltype
       var rebate = localStorage.getItem(`Rebate${type}`)
@@ -1388,7 +1432,14 @@
           var nowSerTime = new Date().getTime()- this.$store.state.Difftime;   //当前的服务器时间
           nowSerTime=nowSerTime+new Date().getTimezoneOffset()*60*1000-GMT_DIF
           // console.log(new Date(nowSerTime).format("yyyyMMddhhmmss"));
-          state.lt.Todaystr = new Date(nowSerTime).format("yyyyMMdd");           //今天
+          if(state.lt.Todaystr !== new Date(nowSerTime).format("yyyyMMdd")){
+            location.reload()
+          }
+          // var myDate = new Date()
+          // var hours = myDate.getHours()
+          // if (hours === 0) {
+          //   location.reload()
+          // }
         }
       }
       document.addEventListener("visibilitychange", this.visibilitychange)
@@ -1426,6 +1477,7 @@
         DefaultBarrage:{},
         RandomBarrage:[],
         BroadCast:null,
+        path:null,
       }
     },
     computed:{
@@ -1443,7 +1495,7 @@
         var defaultMode = {
           'SSC':['一星','定位胆'],
           'SYX5':['三码', '三码'],
-          'FC3D':['三星', '直选'],
+          'FC3D':['一星', '定位胆'],
           'PL35':['三星', '直选'],
           'KL8':['任选', '普通玩法'],
           'PK10':['定位胆', '标准'],
@@ -1462,6 +1514,7 @@
       reconnect(){
         _fetch({Action:"GetAnchor",GameID:this.lcode},{url:'/LiveApi'})
         .then(d=>{
+          if(this.path !== router.currentRoute.path){return}
           if (d.Code === 1) {
             d.BackData.Photo = imgHost + '/' + d.BackData.Photo
             this.Anchor = d.BackData
@@ -1471,6 +1524,7 @@
         })
         _fetch({Action:'GameConfig',GameID:this.lcode})
         .then(d=>{
+          if(this.path !== router.currentRoute.path){return}
           if (d.Code === 1) {
             this.GameConfig = d.BackData
             try{
@@ -1498,6 +1552,7 @@
         })
         _fetch({Action:"GetLiveBroadCast",GameID:this.lcode},{url:'/LiveApi'})
         .then(d=>{
+          if(this.path !== router.currentRoute.path){return}
           if (d.Code === 1) {
             this.$refs.newk3.clearBroadCast()
             this.BroadCast = d.BackData
@@ -1553,7 +1608,7 @@
         // this.autoTest()
       },
       OnlineRefresh(json){
-        console.log(json)
+        if(this.path !== router.currentRoute.path){return}
         switch(json.Type){
           case 'Reward':this.$refs.newk3.giftPush(json);break;
           case 'Barrage':this.$refs.newk3.barragePush(json);break;
@@ -1580,11 +1635,12 @@
         }
       },
       WSrefresh(json){
-        this.WS[json.type] = json.result
-        this.WS.Status = json.type
+        if(this.path !== router.currentRoute.path){return}
         if(json.result.game_code !== router.currentRoute.params.code){
           return
         }
+        this.WS[json.type] = json.result
+        this.WS.Status = json.type
         switch(json.type){
           case 'Newest':this.statusNewest(json.result);break;
           case 'GameStatus':this.statusGameStatus(json.result);break;

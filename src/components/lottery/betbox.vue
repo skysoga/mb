@@ -1,6 +1,6 @@
 <template>
    <div class="selectNumber fix">
-      <div class="title fix" v-if="!(gyhlh&&mode=='H11')">
+      <div class="title fix" v-if="!(gyhlh&&mode=='H11'||gyhlh&&mode=='J11')">
         <em><p>{{tag}}</p></em>
         <!-- 全大小奇偶清 -->
         <!-- <div class="filterNumber">
@@ -12,13 +12,13 @@
         </div> -->
       </div>
 
-      <div :class="['numberContent',gyhlh&&'yghContent',gyhlh&&mode=='H11'&&'gyhAllWidth']">
+      <div :class="['numberContent',gyhlh&&'yghContent',(gyhlh&&mode=='H11'||gyhlh&&mode=='J11'||gyhlh&&mode=='L11')&&'gyhAllWidth']">
         <a v-for = "(item,key) in itemArr"
            @click = "choose(item)"
            :class = "chosen.indexOf(item) > -1 ? 'curr': ''">
            <span>
              <em>{{item}}</em>
-            <i v-if="gyhlh&&awardArr[key]">{{mode!=='G11'&&awardArr[key].length<5?'赔率':'赔'}}{{awardArr[key]}}</i>
+            <i v-if="gyhlh&&awardArr">{{mode!=='G11'&&awardArr[key].length<5?'赔率':'赔'}}{{setArr[key]}}</i>
            </span>
         </a>
       </div>
@@ -32,8 +32,9 @@ import {unique, createStringArray} from '../../js/kit'
 function isArrayEqual(a, b){
   return a.every((item, index)=>b[index]===item ) && a.length === b.length
 }
-var BJSCres=['PK10']//北京赛车配置
-var arrMode=['G11','H11']//北京赛车，双面盘，冠亚和
+// var BJSCres=['PK10']//北京赛车配置
+// var arrMode=['G11','H11']//北京赛车，双面盘，冠亚和
+var isShowBox=['PK10G11','PK10H11','SSCJ11','SSCK11','SSCL11']
 
 var _0to9 = [0,1,2,3,4,5,6,7,8,9],
     _dsds = ['大', '小', '单', '双'],
@@ -47,7 +48,10 @@ var _0to9 = [0,1,2,3,4,5,6,7,8,9],
     _below = createStringArray(41, 80),
     _1to10String = createStringArray(1,10),
     _gyhdsds = ['和大','和小','和单','和双'],
-    _dsdslh = ['大','小','单','双','龙','虎']
+    _dsdslh = ['大','小','单','双','龙','虎'],
+    _dsdszh = ['大','小','单','双','质','合'],
+    // _zhlh = ['和大','和小','和单','和双','龙','虎','和'],
+    _lhh = ['龙','虎','和']
 
 var cfg = {
   /**时时彩**/
@@ -74,6 +78,12 @@ var cfg = {
   'i10': {tag: '十位', itemArr: _dsds},
   'i1': {tag: '个位', itemArr: _dsds},
   'whole':{itemArr: _0to9},
+  //带z大小单双质合
+  'z10000': {tag: '万位', itemArr: _dsdszh},
+  'z1000': {tag: '千位', itemArr: _dsdszh},
+  'z100': {tag: '百位', itemArr: _dsdszh},
+  'z10': {tag: '十位', itemArr: _dsdszh},
+  'z1': {tag: '个位', itemArr: _dsdszh},
 
   'psum27':{tag:'和值', itemArr: _0to27},
   'psum18':{tag:'和值', itemArr: _0to18},
@@ -136,6 +146,20 @@ var cfg = {
   'itenth':{tag:'第十', itemArr: _dsds},
   //冠亚军
   'gyhz':{tag:'冠亚和值', itemArr: _3to19},
+  //时时彩新玩法
+  'cbz':{tag:'猜豹子', itemArr: _0to9},
+  //总和/龙虎
+  'zhlh':{tag:'总和', itemArr: _gyhdsds},
+  'wQian':{tag:'万千', itemArr: _lhh},
+  'wBai':{tag:'万百', itemArr: _lhh},
+  'wShi':{tag:'万十', itemArr: _lhh},
+  'wGe':{tag:'万个', itemArr: _lhh},
+  'qBai':{tag:'千百', itemArr: _lhh},
+  'qShi':{tag:'千十', itemArr: _lhh},
+  'qGe':{tag:'千个', itemArr: _lhh},
+  'bShi':{tag:'百十', itemArr: _lhh},
+  'bGe':{tag:'百个', itemArr: _lhh},
+  'sGe':{tag:'十个', itemArr: _lhh},
 }
 
 var refer = {
@@ -175,16 +199,20 @@ export default {
       return this.$parent.lottery
     },
     gyhlh(){
-      return arrMode.indexOf(this.mode)!==-1&&BJSCres.indexOf(this.lottery)!==-1
+      return isShowBox.indexOf(this.lottery+this.mode)>-1
     },
     itemArr(){
       return cfg[this.alias].itemArr
     },
     filters(){
       return cfg[this.alias].filters
-    }    
+    },
+    setArr(){
+      var arr=this.awardArr
+      return this.gyhlh&&this.mode==='J11'?arr.map(v=>Math.floor(v)):arr
+    }
   }),
-  methods:{
+  methods:{    
     choose(item){
       var _pos = this.chosen.indexOf(item),
           _chosen = this.chosen.slice(0)

@@ -82,11 +82,14 @@
 	      })
 	      return pastOpen
 	    },
+	    betData(){
+	    	return state.lt.BetRecord;
+	    }
     }),
 		data:()=>{
 			return {
 				opened:0,
-				betData:null,
+				// betData:null,
         loaedBetting:0,
         defaultUID:0,
         defaultID:'',
@@ -123,18 +126,7 @@
 				},200)
 			},
 			getBet(){
-				_fetch({
-					Action:'GetBetting',
-					SourceName:'PC'
-				})
-				.then(d=>{
-					if (d.Code === 1) {
-						this.betData = d.Data
-						this.loaedBetting = 1
-					}else{
-						layer.msgWarn(d.StrCode)
-					}
-				})
+				this.$store.dispatch('lt_updateBetRecord')
 			}
 		},
 		watch:{

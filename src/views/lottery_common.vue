@@ -1,6 +1,6 @@
 <template>
   <div class="lottery_sscCon">
-    <div :class="{'lottery_ssc':true,'KL8':this.$parent.ltype=='KL8','PK10':this.$parent.ltype=='PK10'}" v-show = "!ifShowBasket">
+    <div :class="{'lottery_ssc':true,'KL8':this.$parent.ltype=='KL8'}" v-show = "!ifShowBasket">
       <div class="DontSelect sscActive">
         <!-- 头部： 玩法选择， 同类彩种选择-->
 
@@ -51,8 +51,9 @@
   import playArea from '../components/lottery/play_area'
   import basket from '../components/lottery/basket'
 
-  var BJSCres=['PK10']//北京赛车配置
-  var arrMode=['G11','H11']//北京赛车，双面盘，冠亚和
+  // var BJSCres=['PK10']//北京赛车配置
+  // var arrMode=['G11','H11']//北京赛车，双面盘，冠亚和
+  var isShowBox=['PK10G11','PK10H11','SSCJ11','SSCK11','SSCL11']
   export default {
     components:{
       'lt-header': lt_header,
@@ -78,7 +79,7 @@
       mode:()=>state.lt.mode.mode,
       lottery:()=>state.lt.lottery.LotteryType,
       gyhlh(){
-        return arrMode.indexOf(this.mode)!==-1&&BJSCres.indexOf(this.lottery)!==-1
+        return isShowBox.indexOf(this.lottery+this.mode)!==-1
       }
     },
   }
