@@ -29,11 +29,22 @@
 </template>
 <script>
 import vuetable from './vuetable';
+
+//配置值
+function setValue(Value,Chart,Css,Pos){
+  return {
+    Value:Value||'',
+    Chart:Chart?'openNo':'',
+    Css:Css||'',
+    Pos:Pos||false
+  }
+}
+
 //文案配置
 
 var Title={
     K3num:[1,2,3,4,5,6],//号码分布
-    K3chrat:[3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],//号码走势
+    K3chart:[3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],//号码走势
     K3KJJL:['期号','开奖','和值','大小','单双'],
     K3HMZS:['期号','开奖','和值','跨度',1,2,3,4,5,6],
     K3HZZS:['期号','开奖','大小','单双',3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
@@ -86,6 +97,12 @@ export default{
     changeShowType(v){
       this.showType = v
       this.$refs.vuetable.changing()
+    },
+    setListAll(){
+      if(NavCfg[this.lottery]){
+        NavCfg[this.lottery].Title
+
+      }
     },
     getBackData(Code,IssueNo,DataNum){
       var ajax={
