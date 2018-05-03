@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main main-security main-form">
     <div class="fullPageMsg" v-if="underMaintain">
       <div class="fullPageIcon iconfont">&#xe626;</div>
       <p>{{pageName}}维护中···
@@ -14,7 +14,7 @@
       <!-- 银联扫码UnionPay-->
       <!-- 第四方支付-->
       <template v-if= "method =='Alipay'||method =='QQpay'||method =='Weixin'||method =='UnionPay'">
-        <table>
+        <table class="table-security table-form">
           <tr v-if="Bank.length>1">
               <td>充值通道</td>
               <td>
@@ -100,8 +100,8 @@
           <tr></tr>
         </template>
         </table>
-        <div class="loginBtn BTN"><a v-va-check>确定</a></div>
-        <div class="tips">
+        <div class="loginBtn BTN BTN-form"><a v-va-check>确定</a></div>
+        <div class="tips-security">
           <template v-if="PayType=='一般'">
             <template v-if="method==='Weixin'">
               1.请使用微信转账到以上账户。<br>
@@ -144,7 +144,7 @@
       </template>
         <!-- 银行转帐Bank-->
       <template v-if= "method =='Bank'">
-        <table>
+        <table class="table-security table-form">
           <tr>
             <td>收款银行</td>
             <td>
@@ -185,8 +185,8 @@
             <td><input type="text" tag = "您的银行户名"  v-va:PayUser.RealName  v-model = 'PayUser'   placeholder="请输入您的银行户名"></td>
           </tr>
         </table>
-        <div class="loginBtn BTN"><a v-va-check>确定</a></div>
-        <div class="tips">
+        <div class="loginBtn BTN BTN-form"><a v-va-check>确定</a></div>
+        <div class="tips-security">
           1、请转账到以上收款银行账户。<br>
           2、请正确填写转账银行卡的持卡人姓名和充值金额，以便及时核对。<br>
           3、转账1笔提交1次，请勿重复提交订单。<br>
@@ -201,7 +201,7 @@
             <div id="qrcode" ref="qrcode" style="text-align:center"></div>
           </div>
           <!-- <div class="loginBtn BTN" @click="close"><a>关闭</a></div> -->
-          <div class="tips">
+          <div class="tips-security">
             温馨提示：支付成功后，会在一分钟内为您添加额度，请刷新您的账户余额!
           </div>
         </div>
