@@ -29,6 +29,14 @@
 </template>
 <script>
 import vuetable from './vuetable';
+var titleArr={
+
+}
+
+var NavCfg={
+  'K3':[],
+  'SSC':[],
+}
 export default{
   components:{
     vuetable,
@@ -36,6 +44,7 @@ export default{
   computed:{
     lCode:()=>state.lt.lottery.LotteryCode,
     lottery:()=>state.lt.lottery.LotteryType,
+    lotteryName:()=>state.lt.lottery.LotteryName,
     getData(){
       // return this.datas1      
     },
