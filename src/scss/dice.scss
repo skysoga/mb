@@ -1,4 +1,4 @@
-@import "_variable";
+@import "scssConfig";
 
 .Dice{
   background-image: unquote("url(" + $imgurl + "/system/common/dice/diceK3.png)");

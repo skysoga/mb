@@ -11,19 +11,19 @@
       <div class="textMore dataType" v-if="(res_data.State==='等待开奖')&&(UID==0)" @click='CancelBet(betID)'><em>撤单</em></div>
     </div>
   </div>
-  <div class="main">
+  <div class="main-detail main">
     <div class="tzHead">
       <div class="fl iconfont" :class="lottery_icon"></div>
       <h1>{{res_data.LotteryName}}</h1><span :style="state_color[res_data.State]">{{res_data.State}}</span><p>第{{res_data.IssueNo}}期</p>
     </div>
-    <table>
+    <table class="table-detail">
       <tr><td>投注时间</td><td>{{res_data.AddTime}}</td></tr>
       <tr><td>投注单号</td><td>{{res_data.SerialNum}}</td></tr><tr><td>投注金额</td><td>¥{{res_data.BetMoney}}元</td></tr>
       <tr><td>派送奖金</td><td>¥{{res_data.Bonus}}元</td></tr>
       <tr v-if="res_data.State==='已中奖'||res_data.State==='未中奖'"><td>开奖号码</td><td id="lotteryopen" @click="WinShow(res_data.OpenNum)">{{setNum(res_data.OpenNum)}}</td></tr>
       <tr></tr>
     </table>
-    <section>
+    <section class="section-detail">
     <header>我的投注</header>
     <ul>
       <li></li>
@@ -188,39 +188,3 @@ export default {
   }  
 }
 </script>
-<style lang="scss" scoped>
-  @import '../scss/tzDetail.scss';
-  .layShow{
-    position: fixed;
-    left: 0;
-    top:0;
-    width: 100%;
-    height: 100%;
-    z-index: 1222;
-    background: #000;
-    overflow-x: hidden;
-    overflow-y: scroll;    
-  }
-  .topBG{
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 2.55556em;
-    line-height: 2.55556em;
-    font-size: .9em;
-    text-align: center;
-    color: #fff;
-    z-index: 999;
-    background: #dc3b40;
-    background: linear-gradient(to bottom, #dc3b40 2%,#dc3b40 50%, #db3b40 51%, #d7363b 100%);
-    background: -webkit-linear-gradient(bottom, #dc3b40 2%,#dc3b40 50%, #db3b40 51%, #d7363b 100%);
-    .iconfont{
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 2.5em;
-      height: 100%;
-      fill: #fff;     
-    }
-  }  
-</style>

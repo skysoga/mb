@@ -1,5 +1,5 @@
 <template>
-<div class="main">
+<div class="main main-list">
     <div class="textMore dataType" @click="BottomBoxShow=!BottomBoxShow"><em>{{top_text}}</em> <i class="iconfont"></i></div>
   <div class="searchBtn">
     <div class="searchCon">
@@ -17,7 +17,7 @@
     </div>
     <div class="bd dontSelect">
       <div class="scrollBox" v-for="x in 3">
-        <div class="touchScroll" @touchend="scroll(x-1)" v-if="li_state==x-1" ref="div">
+        <div class="touchScroll touchScroll-list" @touchend="scroll(x-1)" v-if="li_state==x-1" ref="div">
           <template v-if="temp_ajax[newName+'%'+newDay][x-1].DataCount===0">
           <div class='fullPageMsg'>
             <div class='fullPageIcon iconfont'>&#xe63c;</div>
@@ -34,7 +34,7 @@
                         <span class="fr">{{item.TypeName}}</span>
                       </div>
                     </a>
-                    <div class="hr1px"></div>
+                    <div class="hr1px hr1px-list"></div>
                   </div>
                 </template>
                 <template v-if="x==2">
@@ -45,7 +45,7 @@
                     <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已中奖</span></div>
                     <strong class="" v-else>{{item.State}}</strong>
                   </a>
-                  <div class="hr1px"></div>
+                  <div class="hr1px hr1px-list"></div>
                 </div>
                 </template>
                 <template v-if="x==3">
@@ -56,7 +56,7 @@
                       <strong class="InMoney" v-else>+{{item.ApplyMoney}}</strong>
                       <span class="fr">{{item.State}}</span></div> </div>
                   </a>
-                  <div class="hr1px"></div>
+                  <div class="hr1px hr1px-list"></div>
                 </div>
                 </template>
                 <div class="msg noMore" v-html="msg[temp_ajax[newName+'%'+newDay][x-1].cant_scroll]" v-if="temp_ajax[newName+'%'+newDay][x-1].cant_scroll<2"></div>
@@ -224,5 +224,3 @@ export default {
 }
 
 </script>
-
-<style lang="scss" scoped>@import '../scss/detailList.scss';</style>

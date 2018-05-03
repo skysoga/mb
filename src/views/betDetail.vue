@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main-detail main">
     <div style="float:right;width:20%">
       <div class="textMore dataType" v-if="(res_data.State==='等待开奖')&&(UID==0)" @click='CancelBet($route.query.ID)'><em>撤单</em></div>
     </div>
@@ -7,14 +7,14 @@
       <div class="fl iconfont" :class="lottery_icon"></div>
       <h1>{{res_data.LotteryName}}</h1><span :style="state_color[res_data.State]">{{res_data.State}}</span><p>第{{res_data.IssueNo}}期</p>
     </div>
-    <table>
+    <table class="table-detail">
       <tr><td>投注时间</td><td>{{res_data.AddTime}}</td></tr>
       <tr><td>投注单号</td><td>{{res_data.SerialNum}}</td></tr><tr><td>投注金额</td><td>¥{{res_data.BetMoney}}元</td></tr>
       <tr><td>派送奖金</td><td>¥{{res_data.Bonus}}元</td></tr>
       <tr v-if="res_data.State==='已中奖'||res_data.State==='未中奖'"><td>开奖号码</td><td id="lotteryopen" @click="WinShow(res_data.OpenNum)">{{setNum(res_data.OpenNum)}}</td></tr>
       <tr></tr>
     </table>
-    <section>
+    <section class="section-detail">
     <header>我的投注</header>
     <ul><li></li>
       <li v-for="item in res_data.BetInfoList">
@@ -174,7 +174,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-  @import '../scss/tzDetail.scss';
-</style>

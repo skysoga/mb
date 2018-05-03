@@ -1,6 +1,6 @@
 <template>
-  <div class="main">
-    <table>
+  <div class="main main-security main-form">
+    <table class="table-form table-security">
       <tbody>
         <tr>
           <td>手机号</td>
@@ -26,10 +26,7 @@
         <tr></tr>
       </tbody>
     </table>
-    <div class="loginBtn BTN"><a v-va-check>确定</a></div>
+    <div class="loginBtn BTN BTN-form"><a v-va-check>确定</a></div>
   </div>
 </template>
 <script src="../js/setMobile.js"></script>
-<style lang="scss" scoped>
-  @import '../scss/SecurityCenter.scss';
-</style>

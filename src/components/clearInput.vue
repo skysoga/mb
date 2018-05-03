@@ -65,7 +65,6 @@
     right:.5em;
     width:2em;
     text-align:center;
-    //color:#ccc;
     color:#dc3b40;
   }
   .clearInput:before{

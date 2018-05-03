@@ -1,6 +1,6 @@
 <template>
-  <div class="main userCenter">
-      <div class="topInfo">
+  <div class="user-main userCenter">
+      <div class="user-topInfo">
           <router-link to="/personalInfo"><img v-bind:src="$store.getters.PhotoPath+$store.state.UserPhoto||$store.state.constant.DefPhoto"></router-link>
           <p>账&nbsp;号：<ins id="UserName">{{$store.state.UserName}}</ins></p>
           <span v-if="balShow">余&nbsp;额：<ins id="UserBalance" v-text="UserBalance"></ins>元 </span>
@@ -8,7 +8,7 @@
           <div v-show="balShow" :class="refreshClass"  @click="getBalance"><i class="iconfont">&#xe62f;</i></div>
       </div>
 
-      <div class="topMoney">
+      <div class="user-topMoney">
           <router-link class="active" to="/rechargeWay">
               <i class="iconfont m0">&#xe633;</i>
               <span>我要充值</span>
@@ -28,7 +28,7 @@
               <span>投注记录</span>
           </router-link>
       </div>
-      <div class="options">
+      <div class="user-options">
           <router-link class="active" to="personalInfo">
               <i class="iconfont o1">&#xe622;</i>
               <span>个人信息</span>
@@ -64,6 +64,3 @@
   </div>
 </template>
 <script src="../js/userCenter.js"></script>
-<style lang="scss" scoped>
-  @import '../scss/personalinfo.scss';
-</style>

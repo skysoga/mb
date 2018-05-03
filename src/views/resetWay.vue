@@ -1,6 +1,6 @@
 <template>
-    <div class="main">
-    <div class="options innerWrap">
+    <div class="user-main">
+    <div class="user-options innerWrap">
       <template v-if="ResetSafePwd">
         <p class="hr1px"></p>
         <router-link :to="{path:'verifySafePwd',query:{Q:reUrl}}" class="active">

@@ -1,13 +1,13 @@
-@import 'scssConfig','optionConfig','mixin';
-.main{
+@import 'scssConfig','mixin';
+.user-main{
   line-height: 1.25em;
   color: #000;
   padding-bottom:4em;
 }
-.main .hr1px{
+.user-main .hr1px{
     background-color: #fff;
 }
-.main>div{
+.user-main>div{
   width: 100%;
   background-color: #fff;
   height: auto;
@@ -38,7 +38,7 @@
   }
 }
 
-.topMoney {
+.user-topMoney {
   padding: 0;
   vertical-align: middle;
   text-align: center;
@@ -71,7 +71,7 @@
     }
   }
 }
-.main .options{
+.user-main .user-options{
   padding: 0;
 }
 

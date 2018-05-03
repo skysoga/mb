@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main main-list">
     <div class="textMore dataType" @click="BottomBoxShow=!BottomBoxShow"><em>{{top_text}}</em> <i class="iconfont"></i></div>
     <div class="" id="leftTabBox">
       <div class="hd">
@@ -7,7 +7,7 @@
       </div>
       <div class="bd dontSelect">
         <div class="scrollBox" v-for="x in 4">
-          <div class="touchScroll" @touchend="scroll(x-1)" v-if="li_state==x-1" ref="div">
+          <div class="touchScroll touchScroll-list" @touchend="scroll(x-1)" v-if="li_state==x-1" ref="div">
               <template v-if="temp_ajax[newDay][x-1].DataCount===0">
                 <div class='fullPageMsg'>
                   <div class='fullPageIcon iconfont'>&#xe63c;</div>
@@ -22,7 +22,7 @@
                       <div><p>{{item.LotteryName}}<span>￥{{item.CompleteMoney.toString().split('/')[1]}}</span></p><span>{{item.AddTime}}</span></div>
                       <strong :class="Number(item.State)?'InMoney':''">{{Number(item.State)?'+'+item.State:item.State}}</strong>
                     </a>
-                    <div class="hr1px"></div>
+                    <div class="hr1px hr1px-list"></div>
                   </div>
                 </template>
                 <template v-if="x==2">
@@ -33,7 +33,7 @@
                       <p>{{item.LotteryName}}<span>￥{{item.CompleteMoney.toString().split('/')[1]}}</span></p><span>{{item.AddTime}}</span></div>
                       <strong>{{item.State}}</strong>
                   </a>
-                  <div class="hr1px"></div>
+                  <div class="hr1px hr1px-list"></div>
                 </div>
                 </template>
                 <template v-if="x==3">
@@ -45,7 +45,7 @@
                     <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">进行中</span></div>
                     <strong class="" v-else>{{item.State}}</strong>
                   </a>
-                  <div class="hr1px"></div>
+                  <div class="hr1px hr1px-list"></div>
                 </div>
                 </template>
                 <template v-if="x==4">
@@ -56,7 +56,7 @@
                     <div class="fr" v-if="Number(item.State)"><strong class="InMoney fr">+{{item.State}}</strong><span class="InMoney fr">已结束</span></div>
                     <strong class="" v-else>{{item.State}}</strong>
                   </a>
-                  <div class="hr1px"></div>
+                  <div class="hr1px hr1px-list"></div>
                 </div>
                 </template>
                 <div class="msg noMore" v-html="msg[temp_ajax[newDay][x-1].cant_scroll]" v-if="temp_ajax[newDay][x-1].cant_scroll<2"></div>
@@ -205,9 +205,3 @@ export default {
   }
 }
 </script>
-
-
-
-<style lang="scss" scoped>
-  @import '../scss/detailList.scss';
-</style>

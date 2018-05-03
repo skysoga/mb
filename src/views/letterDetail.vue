@@ -33,7 +33,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '../scss/public.scss';
   .main {
     background: #fff;
     min-height: 100%;
@@ -68,17 +67,5 @@ export default {
   article>div strong {
     font-style: normal;
     font-weight: 400
-  }
-
-  .cGold {
-    color: #f46e00
-  }
-
-  .cGray {
-    color: #bababa
-  }
-
-  .cGreen {
-    color: #dc2e2e
   }
 </style>

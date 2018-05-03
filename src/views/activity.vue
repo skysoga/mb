@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="innerWrap">
-        <div v-for="(vlue,index) in $store.state.SysActivity" class="surperise active ">
+        <div v-for="(vlue,index) in $store.state.SysActivity" class="surperise surperise-01 active ">
             <router-link class="wrap line" :to="getHtml(vlue.Name)">
                 <div class="number"><i>{{index+1}}</i></div>
                 <div class="text">
@@ -11,7 +11,7 @@
                 <i class="iconfont right fr"></i>
             </router-link>
         </div>
-        <div v-for="(n,index) in $store.state.ActivityConfig" class="surperise active ">
+        <div v-for="(n,index) in $store.state.ActivityConfig" class="surperise surperise-01 active ">
             <router-link class="wrap line" :to="{name:'activityInfo',params:{ID:encodeURIComponent(n.Name)}}">
                 <div class="number"><i>{{Num+index+1}}</i></div>
                 <div class="text">
@@ -26,7 +26,6 @@
 </template>
 <script src="../js/activity.js"></script>
 <style lang="scss" scoped>
-  @import '../scss/activity.scss';
   .active .number{
         width: 2em;
         height: 2em;

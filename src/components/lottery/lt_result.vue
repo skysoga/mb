@@ -1,9 +1,9 @@
 <template>
-  <div class="isLotteryLine fix" v-if = "$store.state.lt.OldIssue" :class = "{active:ifShowPastOpen}">
-    <div class="isLottery" @click.stop = "togglePastOpen">
+  <div class="lotteryCloseItem fix" v-if = "$store.state.lt.OldIssue" :class = "{active:ifShowPastOpen}">
+    <div class="lotteryClose" @click.stop = "togglePastOpen">
       <span>{{oldIssue}}期开奖号码<i class="iconfont">&#xe601;</i></span>
       <!-- 开奖号码 -->
-      <div class="openNumber">
+      <div class="openNumber-01">
         <em v-for = "item in display">{{item}}</em>
       </div>
     </div>
@@ -104,5 +104,17 @@ export default {
 </script>
 
 <style lang = "scss" scoped>
-  @import '../../scss/isLotteryCon.scss';
+.lotteryCloseItem{
+  &:before{
+    width: 16rem;
+    height: 1px;
+    border-top:1px solid white;
+  }
+}
+.lotteryCloseItem.active{
+  &:after{
+    left: initial;
+    right: 0;
+  }
+}
 </style>

@@ -35,6 +35,3 @@
 </div>
 </template>
 <script src="../js/ICode.js"></script>
-<style lang="scss" scoped>
-  @import '../scss/personalinfo.scss';
-</style>

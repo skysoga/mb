@@ -1,6 +1,6 @@
 <template>
-  <div class="main">
-    <table>
+  <div class="main main-security main-form">
+    <table class="table-form table-security">
       <tbody>
         <!-- 验证登录密码 -->
         <!-- 验证银行卡 -->
@@ -27,8 +27,8 @@
         <tr></tr>
       </tbody>
     </table>
-    <div class="loginBtn BTN"><a v-va-check>确定</a></div>
-    <!-- <div class="tips" >
+    <div class="loginBtn BTN BTN-form"><a v-va-check>确定</a></div>
+    <!-- <div class="tips-security" >
      未设置密保，可通过身份核实找回安全密码！<br>
     </div> -->
   </div>
@@ -95,6 +95,3 @@ export default{
 }
 
 </script>
-<style lang="scss" scoped>
-  @import '../scss/SecurityCenter.scss';
-</style>

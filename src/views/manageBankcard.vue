@@ -1,7 +1,7 @@
 <template>
   <div class="main manageBankcard" data="">
     <div class="innerWrap">
-      <div class="surperise" v-if="$store.state.UserBankCardList">
+      <div class="surperise surperise-01" v-if="$store.state.UserBankCardList">
         <div class="wrap" v-for="n in $store.state.UserBankCardList">
           <img class="fl" :src="$store.state.constant.ImgHost+'/system/common/bank/'+setImg(n.BankName)">
           <div class="text">

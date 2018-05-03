@@ -1,5 +1,5 @@
 <template>
-  <div class="newWinner main" ref="div">
+  <div class="newWinner user-main" ref="div">
     <loading v-show="isDataNot"></loading>
     <ul ref="ul">
        <transition-group name="list">
@@ -154,32 +154,99 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '../scss/newwinners.scss';
-  @import '../scss/personalinfo.scss';
-
-  .list-enter-active{
-    animation: bounce-in .5s;
+.list-enter-active{
+  animation: bounce-in .5s;
+}
+@keyframes bounce-in {
+  0% {
+    height: 0px;
   }
-  @keyframes bounce-in {
-    0% {
-      height: 0px;
+}
+@-moz-keyframes bounce-in {
+  0% {
+    height: 0px;
+  }
+}
+@-webkit-keyframes bounce-in {
+  0% {
+    height: 0px;
+  }
+}
+@-o-keyframes bounce-in {
+  0% {
+    height: 0px;
+  }
+}
+.newWinner {
+  position: relative;
+  background: white;
+  ul {
+    font-size: 0.7em;
+    position: absolute;
+    width: 100%;
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
+    ;
+    background: white;
+    li {
+      height: 4em;
+      overflow: hidden;
+      &>div {
+        padding: 0.5em 0.8rem;
+        border: none;
+        background-image: linear-gradient(90deg, #d0d0d0, #d0d0d0 50%, transparent 50%);
+        background-image: -webkit-linear-gradient(90deg, #d0d0d0, #d0d0d0 50%, transparent 50%);
+        background-size: 100% 1px;
+        background-repeat: no-repeat;
+        background-position: top;
+        span {
+          line-height: 1.5em;
+          height: 2.6em;
+          overflow: hidden;
+        }
+      }
+      &:last-child {
+        margin-bottom: 3.6em;
+      }
     }
   }
-  @-moz-keyframes bounce-in {
-    0% {
-      height: 0px;
+  img {
+    width: 3em;
+    height: 3em;
+    border-radius: 50%;
+  }
+  .headImg {
+    display: block;
+    float: left;
+    width: 3em;
+  }
+  .right {
+    float: left;
+    width: 10rem;
+    padding: 0 1em;
+    height: 2.8em;
+    line-height: 1.5em;
+    overflow: hidden;
+    a {
+      color: #0079ff;
+    }
+    em {
+      color: #e80d2d;
     }
   }
-  @-webkit-keyframes bounce-in {
-    0% {
-      height: 0px;
-    }
+  .iconfont {
+    float: right;
+    width: 1em;
+    padding: 0;
+    font-size: 1.1em;
+    color: #ccc;
+    text-align: right;
+    line-height: 2.5em;
   }
-  @-o-keyframes bounce-in {
-    0% {
-      height: 0px;
-    }
-  }
+}
 .newWinner ul li:last-child{
   margin-bottom: 0px;
 }

@@ -2,7 +2,7 @@
   <div class="main">
     <div class="innerWrap">
     <template v-for="n in PaySort">
-      <div class="surperise active" v-if="n==='EbankPay'">
+      <div class="surperise surperise-01 active" v-if="n==='EbankPay'">
         <router-link class="wrap" to = "recharge/Bank/0">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/card.png'">
           <div class="text">
@@ -18,8 +18,7 @@
           <i class="iconfont right fr"></i>
         </router-link>
       </div>
-
-      <div class="surperise active" v-if="n==='Weixin'">
+      <div class="surperise surperise-01 active" v-if="n==='Weixin'">
         <a class = "wrap" @click = "setUrl(wechatType,'Weixin',weixMsg)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/weixin.png'">
           <div class="text">
@@ -35,8 +34,7 @@
           <i class="iconfont right fr"></i>
         </a>
       </div>
-
-      <div class="surperise active" v-if="n==='Alipay'">
+      <div class="surperise surperise-01 active" v-if="n==='Alipay'">
         <a class = "wrap" @click = "setUrl(aliType,'Alipay',aliMsg)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/alipay.png'">
           <div class="text">
@@ -52,8 +50,7 @@
           <i class="iconfont right fr"></i>
         </a>
       </div>
-
-      <div class="surperise active" v-if="n==='QQpay'">
+      <div class="surperise surperise-01 active" v-if="n==='QQpay'">
         <a class = "wrap" @click = "setUrl(qqType,'QQpay',qqMsg)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/qqpay.png'">
           <div class="text">
@@ -69,8 +66,7 @@
           <i class="iconfont right fr"></i>
         </a>
       </div>
-
-      <div class="surperise active" v-if="n==='UnionPay'">
+      <div class="surperise surperise-01 active" v-if="n==='UnionPay'">
         <a class = "wrap" @click = "setUrl(unionType,'UnionPay',unionMsg)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/card.png'">
           <div class="text">
@@ -88,7 +84,7 @@
       </div>
       <!-- 第四方支付 暂定名：多功能支付-->
 
-      <div class="surperise active" v-if="n==='FourthParty'&&FourUrl.PayUrl">
+      <div class="surperise surperise-01 active" v-if="n==='FourthParty'&&FourUrl.PayUrl">
         <a class="wrap" :href="FourUrl.PayUrl" target="_blank" @click="toFourUrl($event)">
           <img class="img" :src="imgServer + '/../system/common/bank/pay/fourthpay.png'">
           <div class="text">
@@ -213,6 +209,3 @@ export default {
   }
 }
 </script>
-<style lang = "scss" scoped>
-  @import '../scss/activity.scss';
-</style>

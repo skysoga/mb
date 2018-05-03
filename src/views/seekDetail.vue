@@ -1,11 +1,11 @@
 <template>
-  <div class="main">
+  <div class="main-detail main">
     <div class="tzHead">
       <div class="fl iconfont" :class="lottery_icon" style="font-size: 2.5em;margin: 0 .4em 0 1rem;width:1em"></div>
       <h1>{{res_data.LotteryName}}</h1>
       <p>第{{res_data.StartIssue}}期起</p>
     </div>
-    <table>
+    <table class="table-detail">
       <tr><td>追号时间</td><td>{{res_data.AddTime}}</td></tr>
       <tr><td>追号单号</td><td>{{res_data.SerialNum}}</td></tr>
       <tr><td>追号进度</td><td>{{res_data.Schedule}}</td></tr>
@@ -15,7 +15,7 @@
       <tr><td>中奖即停</td><td>{{res_data.Condition==='中奖即停'?'是':'否'}}</td></tr>
       <tr></tr>
     </table>
-    <section>
+    <section class="section-detail">
     <header>已追记录</header>
     <ul><li></li>
       <li v-for="item in res_data.ChaseInfoList" @click="$router.push({path:'/betDetail',query:{ID:item.ID}})">
@@ -85,7 +85,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-  @import '../scss/tzDetail.scss';
-</style>

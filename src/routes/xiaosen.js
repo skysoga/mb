@@ -28,8 +28,7 @@ const memberCode =require('../views/memberCode')//邀请码玩家
 const withdraw =require('../views/withdraw')//提现
 const rebateDes =require('../views/rebateDes')//返点赔率表
 const tool =require('../views/tool')//清缓存工具
-const ping =require('../views/ping')//线路检测
-
+// const ping =require('../views/ping')//线路检测
 const ArtificialAppeal =require('../views/ArtificialAppeal')//人工申诉
 const ArtificialBank =require('../views/ArtificialBank')//人工申诉-银行卡验证
 const ArtificialPhoto =require('../views/ArtificialPhoto')//人工申诉-核实
@@ -402,16 +401,16 @@ var routes = [{
   },
   component:ArtificialPhoto
 },
-{
-  path:'/ping',
-  name:'线路检测',
-  meta:{
-  title:'线路检测',
-  link:'/index',
-  user:true    
-  },
-  component:ping
-},
+// {
+//   path:'/ping',
+//   name:'线路检测',
+//   meta:{
+//   title:'线路检测',
+//   link:'/index',
+//   user:true    
+//   },
+//   component:ping
+// },
 {
   path:'/recharge/:ID/:KEY',
   name:'充值',

@@ -358,7 +358,6 @@ function betSum(order, tmp){
 </script>
 
 <style lang = "scss" scoped>
-/*@import '../../scss/newssc.scss';*/
 @import '../../scss/scssConfig','../../scss/mixin';
 .sscMain{
   min-height: 23em;

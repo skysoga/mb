@@ -113,7 +113,7 @@
   }
 </script>
 <style lang='scss' scoped>
-  @import "../scss/_variable";
+  @import "../scss/scssConfig";
   .installText {
   	text-align: center;
   	font-size: .7em;

@@ -8,7 +8,34 @@
     <router-link class="errorLogo" to="/index"><img id="Logo1" src="" alt=""></router-link>
   </div>
 </template>
-<!-- <script src="../js/notfound.js"></script> -->
 <style lang="scss" scoped>
-  @import '../scss/maintain.scss';
+  .notFound{
+    height: 455px;
+    text-align: center;
+    h1{
+        color:#59adf2;
+        font-weight: 400;
+        margin: 40px 0;
+        margin-bottom: 20px;
+        font-size:22px;
+    }
+    p{
+      line-height: 1.8;
+      color:#666;
+      text-align: left;
+      display: table;
+      margin: 0 auto;
+    }
+    a{
+      font-size: 1em;
+    }
+  }
+  .errorLogo{
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    img{
+      height:50px;
+    }
+  }
 </style>

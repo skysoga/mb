@@ -1,5 +1,5 @@
 <template>
-<div class="main levelTitle">
+<div class="user-main levelTitle">
       <div class="levelTitleHeader">
           <div class="levelTitleInfo fix">
               <img :src="$store.getters.PhotoPath+$store.state.UserPhoto" alt="">
@@ -40,6 +40,3 @@
   </div>
 </template>
 <script src="../js/personalLevel.js"></script>
-<style lang="scss" scoped>
-@import '../scss/personalinfo.scss'
-</style>

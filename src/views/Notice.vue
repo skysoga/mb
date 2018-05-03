@@ -1,6 +1,6 @@
 <template id="">
-  <div class="main">
-    <div class="touchScroll" @touchend="scroll()" ref="div">
+  <div class="main main-msg main-list">
+    <div class="touchScroll touchScroll-list touchScroll-msg" @touchend="scroll()" ref="div">
       <template v-if="data_count===0">
         <div class='fullPageMsg' ><div class='fullPageIcon iconfont'>&#xe63c;</div><p>暂无公告</p></div>
       </template>
@@ -12,7 +12,7 @@
               <span>{{item.Add_Time}}</span>
             </div>
           </a>
-          <div class="hr1px"></div>
+          <div class="hr1px hr1px-list"></div>
         </div>
         <div class="msg noMore" v-html="msg[cant_scroll]"></div>
       </template>
@@ -69,4 +69,3 @@
     }
   }
 </script>
-<style lang="scss" scoped>@import '../scss/msgList.scss';</style>

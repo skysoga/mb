@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="user-main">
     <div class="safeTop">
       <h5><span></span><em id="Slevel">您的账号安全级别为{{LevelText}}</em><span></span></h5>
       <div class="star">
@@ -7,7 +7,7 @@
       </div>
       <p id="LoginInfo">上次登录：{{LastLogin.LoginTime}}<br>{{LastLogin.LoginAddr}} | <router-link to="/verifyPwd">不是我登录?</router-link></p>
     </div>
-    <div class="options">
+    <div class="user-options">
         <router-link to="verifyPwd" class="active">
           <span>修改登录密码</span>
           <i class="fr">修改<span class="iconfont right"></span></i>
@@ -64,7 +64,7 @@
           <i class="fr">设置<span class="iconfont right"></span></i>
         </a>
     </div>
-    <div class="options">
+    <div class="user-options">
         <a id="loginOut" class="active" @click="loginOut">
           <span class="logout">退出登录</span>
           <i class="fr"><span class="iconfont right"></span></i>
@@ -74,7 +74,6 @@
 </template>
 <script src="../js/securityCenter.js"></script>
 <style lang="scss" scoped>
-  @import '../scss/personalinfo.scss';
   .icon{
     margin: 0 5px;
   }

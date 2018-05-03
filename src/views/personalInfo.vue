@@ -1,5 +1,5 @@
 <template>
-  <div class="main personalInfo">
+  <div class="user-main personalInfo">
     <ul>
         <li class="headImg" @click="HeadImgBoxShow=true">
           <div>
@@ -13,7 +13,7 @@
             <span>昵称</span>
             <i class="iconfont right"></i>
             <em v-if="!UserNickName">
-              <input va-para="NickName"
+              <input class="user-input" va-para="NickName"
                       v-va:NickName.vanow.canNull="[{reg:/^[\u4e00-\u9fa5]{1,5}$/}]"
                       regMsg="请使用五位以内的汉字"
                       tag="昵称"
@@ -33,7 +33,7 @@
           <span>Q Q</span>
           <i class="iconfont right"></i>
           <em>
-            <input v-va:QQ.vanow.canNull="[{reg:/^\d{5,12}$/}]"
+            <input class="user-input" v-va:QQ.vanow.canNull="[{reg:/^\d{5,12}$/}]"
                   regMsg="QQ号为5-12位数字"
                   va-para="QQ"
                   v-model="UserQQ"
@@ -54,7 +54,7 @@
             <span>生日</span>
             <i class="iconfont right"></i>
             <em>
-            <input v-model="UserBirthDay"
+            <input class="user-input" v-model="UserBirthDay"
                   tag="生日"
                   va-para="BirthDay"
                   type="date"
@@ -68,6 +68,3 @@
 </div>
 </template>
 <script src="../js/personalInfo.js"></script>
-<style lang="scss" scoped>
-@import '../scss/personalinfo.scss'
-</style>

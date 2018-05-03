@@ -1,5 +1,5 @@
 <template>
-  <div class="activityMian main">
+  <div class="activityMian main main-activity">
     <div class="activiTop">
         <img width="100%" v-show="Img" :src="$store.state.constant.ImgHost+Img">
         <div class="rewardStatus">
@@ -8,7 +8,7 @@
             <em class="e3">加奖比例：<i v-if="StateData.BonusRate">{{+StateData.BonusRate}}%</i><i v-else>0</i></em>
             <em class="e4">可得加奖：<i v-if="StateData.Bonus">{{StateData.Bonus}}</i><i v-else>0</i></em>
         </div>
-        <div class="BTN" :class="{unClick:UnClick}"><a @click="getBtn">{{ClickMsg}}</a></div>
+        <div class="BTN BTN-activity" :class="{unClick:UnClick}"><a @click="getBtn">{{ClickMsg}}</a></div>
     </div>
     <h3>加奖比例</h3>
     <table>
@@ -25,11 +25,7 @@
 
     </table>
     <h3>活动说明</h3>
-    <div class="wrapExplain" v-html="Content"></div>
+    <div class="wrapExplain wrapExplain-01" v-html="Content"></div>
 </div>
 </template>
 <script src="../js/dailyPrise.js"></script>
-<style lang="scss" scoped>
-  @import '../scss/activity.scss';
-  @import '../scss/activity_info.scss';
-</style>

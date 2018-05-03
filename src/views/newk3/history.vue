@@ -40,7 +40,7 @@
 				</table>
 			</div>
 			<div class="beted" v-show="type === 1">
-				<div class="touchScroll">
+				<div class="touchScroll touchScroll-list">
 					<div class="nodata" v-if="betData === null">正在加载...</div>
 					<div class="nodata" v-if="betData !== null && betData.length<=0">暂无数据</div>
 			    <div v-for="d in betData">
@@ -54,7 +54,7 @@
                     </div>
                     <strong class="" v-else>{{d.openState}}</strong>
                     </a>
-			      <div class="hr1px"></div>
+			      <div class="hr1px hr1px-list"></div>
 			    </div>
 			    <div class="msg noMore">更多记录请到"<router-link id="account" to="/userCenter">我的账户</router-link>"查看</div>
 				</div>
@@ -158,7 +158,6 @@
 	}
 </script>
 <style lang="scss" scoped>
-@import '../../scss/detailList.scss';
 @import "../../scss/dice";
 .DiceImg{
   display: inline-block;
