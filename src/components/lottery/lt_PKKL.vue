@@ -232,6 +232,7 @@ export default{
   .resultCon{
     height: 1.8em;
     line-height: 1.8em;
+    width: 14.8em;
   }
   span{
     height:1.8em;
@@ -349,14 +350,14 @@ export default{
     .left,.right{
       float: left;
       height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
     .left{
       width: 7.8em;
       text-align: center;
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       &:after{
         content:'';
         position: absolute;
