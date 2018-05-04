@@ -7,6 +7,11 @@
 
     <Lottery6HC v-if = "$route.params.type === '6HC'"></Lottery6HC>
     <NewK3 ref="newk3" v-if = "ptype === 'live'" :lcode="lcode"></NewK3>
+    <transition name="betandchase">
+      <div v-if="$store.state.lt.box === 'BetRecord'" class="betandchase">
+        <betandchase></betandchase>
+      </div>
+    </transition>
   </div>
 </template>
 <style lang='scss' scoped>
@@ -16,6 +21,7 @@
   }
 </style>
 <script>
+  import betandchase from '../components/bet-and-chase';
   import LotteryCommon from './lottery_common'
   import LotteryK3 from './lottery_k3'
   import Lottery6HC from './lottery_6hc'
@@ -48,6 +54,7 @@
       LotteryK3,
       Lottery6HC,
       NewK3,
+      betandchase,
     },
     beforeRouteEnter(to, from, next){
       // 将滚动置顶
