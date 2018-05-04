@@ -15,8 +15,8 @@
         <ul v-if="$refs.vuetable&&getData" slot="datas" v-for="d in getData" class="fix">
           <li v-for="(e,i) in d" :style="{width:($refs.vuetable.widthArr[i+1]>1)?($refs.vuetable.widthArr[i+1]+'px'):'auto'}">
             <!-- class 可设置为：open-num、da、shuang、xiao、dan、sanbutong、sanlianhao、santonghao -->
-            <em class="">{{e}}</em>
-            <!-- <i class="chonghao">2</i> -->
+            <em :class="e.Css">{{e.Value}}</em>
+            <i v-if="e.Pos" class="chonghao">{{e.Pos}}</i>
           </li>
         </ul>
       </vuetable>
@@ -26,6 +26,17 @@
 </template>
 <script>
 import vuetable from './vuetable';
+
+//文案配置
+
+var Title={
+    K3Num:[1,2,3,4,5,6],//号码分布
+    K3Chart:[3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],//号码走势
+    K3KJJL:['期号','开奖','和值','大小','单双'],
+    K3HMZS:['期号','开奖','和值','跨度',1,2,3,4,5,6],
+    K3HZZS:['期号','开奖','大小','单双',3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
+    K3XTZS:['期号','开奖','三同号','三不同','三连号']
+}
 
 //配置值
 /**@augments
@@ -37,9 +48,9 @@ import vuetable from './vuetable';
 function setValue(Value,Chart,Css,Pos){
   return {
     Value:Value||'',
-    Chart:Chart?'openNo':'',
+    Chart:Chart?'OpenNo':'',
     Css:Css||'',
-    Pos:Pos||false
+    Pos:Pos||''
   }
 }
 
@@ -65,12 +76,13 @@ function QiHao(key,lCode){//期号
 }
 
 function KaiJiang(key,type){
-  return key.LotteryOpen
+  return setValue(key.LotteryOpen,0,0,0)
 }
 
 function HeZhi(key,type){
   var num=key.LotteryOpen.split(',')
-  return num.reduce((a,b)=>Number(a)+Number(b))
+      num=num.reduce((a,b)=>Number(a)+Number(b))
+  return setValue(num,0,0,0)
 }
 function HeDaXiao(key,type){
   var num=HeZhi(key)
@@ -83,41 +95,70 @@ function HeDaXiao(key,type){
     str=num>22?'大':'小'
     break;
   }
-  return str
+  return setValue(str,0,0,0)
 }
+//计算重复数
+function getNum(arr,num){
+  var n=0
+  for(var i=0;i<arr.length;i++){
+    if(arr[i]===num){
+      n+=1
+    }
+  }
+  return n>1?n:''
+}
+
+function setNumber(key){
+  var num=key.LotteryOpen.split(',')
+  var n=[]
+  for(var i=0,l=num.length;i<l;i++){
+    if(n.indexOf(num[i])===-1){
+      n.push(num[i])
+    }
+  }
+  return n
+}
+
+
 function DanShuang(key,type){
   var num=HeZhi(key)
-  return num%2?'单':'双'
+      num=num%2?'单':'双'
+  return setValue(num,0,0,0)
 }
 function KuaDu(key,type){
-  return ''
+  var num=key.LotteryOpen.split(',')
+  var max=Math.max.apply(null,num)
+  var min=Math.min.apply(null,num)
+  return setValue(max-min,0,0,0)
 }
 function FengBu(key,type){
-  return ''
+  var Arr=Title.K3Num
+  var num=key.LotteryOpen.split(',')  
+  return Arr.map((v,i,a)=>{
+          return num.indexOf(v+'')>-1?setValue(v,0,'open-num',getNum(num,v+'')):setValue('',0,0,0)
+        })
 }
 function Chart(key,type){
   return ''
 }
 function SanTongHao(key,type){
-  return ''
+  var n=setNumber(key)
+  return n.length===1?setValue('三同号',0,'santonghao',0):setValue('',0,0,0)
 }
 function SanBuTong(key,type){
-  return ''
+  var n=setNumber(key)
+  return n.length===3?setValue('三不同',0,'sanbutong',0):setValue('',0,0,0)
 }
 function SanLianHao(key,type){
-  return ''
+  var strNum = key.toString();
+      for(var i = 0,test = strNum[0];i<strNum.length;i++,test = parseInt(test),test++){
+          if(strNum[i]!==test+""){
+              return '';
+          }
+      }  
+  return setValue('三连号',0,'sanlianhao',0)
 }
 
-//文案配置
-
-var Title={
-    K3Num:[1,2,3,4,5,6],//号码分布
-    K3Chart:[3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],//号码走势
-    K3KJJL:['期号','开奖','和值','大小','单双'],
-    K3HMZS:['期号','开奖','和值','跨度',1,2,3,4,5,6],
-    K3HZZS:['期号','开奖','大小','单双',3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
-    K3XTZS:['期号','开奖','三同号','三不同','三连号']
-}
 
 var NavCfg={
   'K3':{
@@ -125,7 +166,11 @@ var NavCfg={
     Body:[],
     fun:[[KaiJiang,HeZhi,HeDaXiao,DanShuang],[KaiJiang,HeZhi,KuaDu,FengBu],[KaiJiang,HeDaXiao,DanShuang,Chart],[KaiJiang,SanTongHao,SanBuTong,SanLianHao]]
   },
-  'SSC':[],
+  'SSC':{
+    Title:[{Name:'号码记录',List:Title.K3KJJL},{Name:'号码走势',List:Title.K3HMZS},{Name:'龙虎斗',List:[]},{Name:'和值',List:[]},{Name:'跨度',List:[]}],
+    Body:[],
+    fun:[]
+  },
 }
 export default{
   components:{
@@ -190,7 +235,15 @@ export default{
           var cos=[]
           var key=OpenNum[j]
           for(var k=0;k<FArr.length;k++){
-            cos.push(FArr[k](key,this.lottery))
+            var name=FArr[k].name
+            switch(name){
+              case 'FengBu':
+              cos=cos.concat(FArr[k](key,this.lottery))
+              break;
+              default:
+              cos.push(FArr[k](key,this.lottery))
+              break;
+            }
           }
           line.push(cos)
         }
