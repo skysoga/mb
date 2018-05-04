@@ -31,6 +31,10 @@ export default{
   mounted(){
     this.init()
   },
+  computed:{
+    lCode:()=>state.lt.lottery.LotteryCode,
+    lottery:()=>state.lt.lottery.LotteryType
+  },
   methods:{
     init(){
       var titleDom = this.$refs.titleList.children
