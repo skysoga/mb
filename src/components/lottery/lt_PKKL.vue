@@ -350,14 +350,16 @@ export default{
     .left,.right{
       float: left;
       height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-flow: row wrap;
+      flex-direction: column;
     }
     .left{
       width: 7.8em;
       text-align: center;
       position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       &:after{
         content:'';
         position: absolute;
