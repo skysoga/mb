@@ -1,5 +1,5 @@
 <template>
-<div class="isLotteryCon">
+<div class="isLotteryCon line-white-before-">
   <!-- 开奖号码 -->
   <div class="result"  v-if="$store.state.lt.OldIssue" @click.stop="togglePastOpen">
     <span class="text-small" :class="{'show-list':ifShowPastOpen}">
@@ -35,17 +35,17 @@
     <h4>{{TimeBar}}</h4>
   </div>
 
-  <div class = "past-open" v-if = "ifShowPastOpen">
+  <div class="past-open line-white-before-" v-if = "ifShowPastOpen">
     <table class = "past-open-table">
       <thead>
         <tr>
-          <th>期号</th><th>开奖号码</th><th>开奖日期</th>
+          <th class="line-white-after-">期号</th><th>开奖号码</th><th>开奖日期</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for = "item in pastOpen" >
           <td>{{item.IssueNo}}</td>
-          <td class = "past-open-result">
+          <td class="past-open-result line-white-after1">
             <template v-for = "(numStr, index) in item.LotteryOpen">
               <div class = "past-open-result-box" v-if="index === 6"><span class = "symbol">+</span></div>
               <div class = "past-open-result-box">
@@ -196,14 +196,14 @@ export default {
 .result{
   float: left;
   padding-top:.24em;
-  border-top: 1px solid white;
+  border-top: 1px solid #e1d9ba;
   width: 68%;
 }
 
 .timebar{
   float: left;
   position: relative;
-  border-top: 1px solid white;
+  border-top: 1px solid #e1d9ba;
   width: 32%;
   &:before{
     content:'';
@@ -306,7 +306,6 @@ export default {
   left:0;
   width:100%;
   min-height:10rem;
-  border-top:1px solid #fff;
   background: #e1d9ba;
 }
 
@@ -316,8 +315,12 @@ export default {
   th{
     font-weight:400;
     line-height:2.4em;
-    border-bottom:1px solid #bdb48b;
     color:#666;
+    position: relative;
+    &:after{
+      background-image:-webkit-linear-gradient(90deg,transparent,transparent 50%,#a7a182 0);
+      width:16rem;
+    }
   }
   td{
     padding:0.2rem 0.4rem;
@@ -330,7 +333,7 @@ export default {
 
 .past-open-result{
   position: relative;
-  border-left: 1px solid #bdb48b;
+  /*border-left: 1px solid #bdb48b;*/
 }
 
 td.past-open-result{
@@ -342,10 +345,13 @@ td.past-open-result{
   content:"";
   width: .8em;
   height: 1px;
-  background: #a7a182;
+  background-image:-webkit-linear-gradient(90deg,transparent,transparent 50%,#a7a182 0);
   position:absolute;
   left:-.4em;
   top:50%;
+}
+.past-open-result::after{
+  background-image: -webkit-linear-gradient(0deg,#bdb48b,#bdb48b 50%,transparent 0);
 }
 
 .past-open-result-box{

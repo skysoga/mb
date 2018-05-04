@@ -1,5 +1,5 @@
 <template>
-  <div class="lotteryCloseItem fix" v-if = "$store.state.lt.OldIssue" :class = "{active:ifShowPastOpen}">
+  <div class="lotteryCloseItem line-white-before- fix" v-if = "$store.state.lt.OldIssue" :class = "{open:ifShowPastOpen}">
     <div class="lotteryClose" @click.stop = "togglePastOpen">
       <span>{{oldIssue}}期开奖号码<i class="iconfont">&#xe601;</i></span>
       <!-- 开奖号码 -->
@@ -103,14 +103,7 @@ export default {
 </script>
 
 <style lang = "scss" scoped>
-.lotteryCloseItem{
-  &:before{
-    width: 16rem;
-    height: 1px;
-    border-top:1px solid white;
-  }
-}
-.lotteryCloseItem.active{
+.lotteryCloseItem.open{
   &:after{
     left: initial;
     right: 0;

@@ -227,7 +227,7 @@ export default{
     top:0;
     width: 16rem;
     height: 1px;
-    border-top: 1px solid #fff;
+    background-image: -webkit-linear-gradient(-90deg,#fff,#fff 50%,transparent 0);
   }
   .resultCon{
     height: 1.8em;

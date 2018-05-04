@@ -1,7 +1,7 @@
 <template>
-  <div class="lotteryCloseItem fix" v-if = "$store.state.lt.OldIssue" :class = "{active:ifShowBetRecord}">
+  <div class="lotteryCloseItem fix" v-if = "$store.state.lt.OldIssue" :class = "{open:ifShowBetRecord}">
     <!-- 倒计时 -->
-    <div class="lotteryClose"
+    <div class="lotteryClose line-white-before-"
          @click.stop = "togglePastOpen">
       <span>{{nowIssue}}期投注截止</span>
       <div class="openNumber-01">
@@ -97,7 +97,7 @@ export default{
     box-shadow: none;
   }
 }
-.lotteryCloseItem.active{
+.lotteryCloseItem.open{
   &:after{
     left: initial;
     right: 0;

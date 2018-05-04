@@ -77,7 +77,36 @@ input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{
 .fr{
     float: right;
 }
-
+.line-white-before-:before,.line-white-after-:after{
+  position: absolute;
+  content:'';
+  width: 100%;
+  height: 1px;
+  left: 0;
+  z-index: 2;
+}
+.line-white-before-:before{
+  background-image: -webkit-linear-gradient(-90deg,#fff,#fff 50%,transparent 0);
+  top: 0;
+}
+.line-white-after-:after{
+  background-image: -webkit-linear-gradient(90deg,#fff,#fff 50%,transparent 0);
+  bottom: 0;
+}
+.line-white-before1:before,.line-white-after1:after{
+  position: absolute;
+  content:'';
+  background-image: -webkit-linear-gradient(0deg,#fff,#fff 50%,transparent 0);
+  width: 1px;
+  height: 100%;
+  left: 0;
+}
+.line-white-before1:before{
+  top: 0;
+}
+.line-white-after1:after{
+  bottom: 0;
+}
 
 
 
@@ -101,13 +130,7 @@ input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{
   content: "\e60e";
 }
 .iconfont.info:after { content: "\e610"; }
-.iconfont.gonggao:after {
-  content: "\e649";
-  color:#dc3b40;
-  transform: translate(0,.1em);
-  display: inline-block;
-  font-size: 1.2em;
-}
+.iconfont.gonggao:after {content: "\e649";}
 .iconfont.xiala:after { content: "\e61e"; }
 .iconfont.copy:after { content: "\e61f"; }
 
@@ -2080,7 +2103,7 @@ body > * {
     transition:.6s;
     display: inline-block;
   }
-  &.active{
+  &.open{
     .iconfont{
       transform:rotate(180deg)
     }
