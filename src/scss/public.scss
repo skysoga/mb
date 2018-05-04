@@ -2056,6 +2056,16 @@ body > * {
   height: 3em;
   float: left;
   width: 50%;
+  position: relative;
+  &:last-child:before{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 1px;
+    background-image: -webkit-linear-gradient(0deg,#bdb48b,#bdb48b 50%,transparent 0);
+  }
   &:after{
     content:"";
     position: absolute;
@@ -2064,7 +2074,7 @@ body > * {
     height: 1px;
     width: 16rem;
     z-index: 3;
-    // @include bgImg-linear-gradient('90deg, #d0d0d0, #d0d0d0 50%, transparent 50%');
+    background-image: -webkit-linear-gradient(90deg, #fff, #fff 50%, transparent 50%);
   }
   .iconfont{
     transition:.6s;
@@ -2077,13 +2087,9 @@ body > * {
     &:after{
       @include bgImg-linear-gradient('90deg, #fff, #fff 50%, transparent 50%');
       z-index: 5;
+      left: initial;
+      right: 0;
     }
-  }
-}
-.lotteryCloseItem.active{
-  &:after{
-    left: initial;
-    right: 0;
   }
 }
 .openNumber-01{

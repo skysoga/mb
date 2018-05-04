@@ -88,6 +88,15 @@ body{
       }
     }
   }
+  .past,.current{
+    height: 6.14em !important;
+  }
+  .StateStyle2{
+    span{
+      height: 1.6em !important;
+      line-height: 1.6em !important;
+    }
+  }
 }
 
 .PK10{
