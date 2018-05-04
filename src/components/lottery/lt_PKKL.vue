@@ -22,12 +22,19 @@
       </ul>
       <div :class="{'lernMore':true,'close':!isShow}"><em class="iconfont"><i>&#xe64c;</i></em></div>
   </template> -->
-    <div class="StateStyle2">
-      <div class="past">{{openNum(oldIssue)}}开奖：<div class="resultCon">
-          <em v-for="(d,i) in display" v-if="i<10">{{d}}</em><ins v-show="display.length>10">&nbsp;...</ins>
+    <div class="StateStyle2 fix" :class="{'open':ifShowPastOpen,'row3': results.length>10}">
+      <div class="past">
+        <span>{{openNum(oldIssue)}}期开奖号码&nbsp;<b class="iconfont">&#xe601;</b></span>
+        <div class="resultCon">
+          <em v-for="(d,i) in display">{{d.substring(0,2)}}</em>
+          <em v-if="results.length > 10 && display.length < 20" v-for="(d,i) in display">{{d.substring(0,2)}}</em>
         </div>
       </div>
-      <div class="current" :class="{'open':ifShowPastOpen}">{{nowIssue}}投注：<em>{{TimeBar}}</em>&nbsp;<i class="iconfont">&#xe601;</i></div>
+      <div class="current">
+        <span>{{nowIssue}}期</span>
+        <span v-if="results.length > 10">投注截止</span>
+        <em>{{TimeBar}}</em>
+      </div>
       <ul :class="{'record':true,'open':ifShowPastOpen}">
         <li class="title">
           <div class="left"><i>期号</i></div>
@@ -165,19 +172,11 @@ export default{
 .StateStyle2{
   font-size: .65em;
   background: #e1d9ba;
-  .resultCon{
-    display: inline-block;
-    em{
-      &:first-child{
-        margin-left: 0;
-      }
-      &:last-child{
-        margin-right: 0;
-      }
+  position: relative;
+  &.open{
+    b{
+      transform:rotate(180deg);
     }
-  }
-  ins{
-    position: absolute;
   }
 }
 .resultCon em{
@@ -208,39 +207,73 @@ export default{
   // font-size: 0.95em;
 }
 .current,.past{
-  padding-left: 1em;
-  height: 2.308em;
+  float: left;
+  height: 4.6em;
   line-height: 2.308em;
+  span{
+    color:#333;
+    font-size: 1.08em;
+    display: block;
+  }
 }
-.past::before{
-  content: "";
+.past{
+  width: 68%;
+  padding: .4em 0;
+  padding-left: 1em;
+  &::before{
+    content: "";
     position: absolute;
     left: 0;
+    top:0;
     width: 16rem;
     height: 1px;
     border-top: 1px solid #fff;
-}
-.current{
-  &:before{
-    position: absolute;
-    margin-left: -1em;
-    content:'';
-    width: 100%;
-    height: 1px;
-    display: block;
-    background-image: -webkit-linear-gradient(90deg, #bdb48b, #bdb48b 50%, transparent 50%);
   }
-  &.open{
-    i{
-      transform:rotate(180deg);
+  .resultCon{
+    height: 1.8em;
+    line-height: 1.8em;
+  }
+  span{
+    height:1.8em;
+    line-height: 1.8em;
+  }
+  b{
+    transition: .5s;
+    position: absolute;
+  }
+  .resultCon{
+    em{
+      &:first-child{
+        margin-left: 0;
+      }
+      &:last-child{
+        margin-right: 0;
+      }
     }
   }
-  em{
-    color:#dc3b40;
+}
+.current{
+  width: 32%;
+  text-align: center;
+  padding: .4em 0;
+  &:before{
+    position: absolute;
+    content:'';
+    width: 1px;
+    height: 100%;
+    display: block;
+    top:0;
+    background-image: -webkit-linear-gradient(0deg,#bdb48b,#bdb48b 50%,transparent 0);
   }
-  i{
-    transition: .5s;
-    display: inline-block;
+  span{
+    line-height: 1.8em;
+    height: 1.8em;
+  }
+  em{
+    display: block;
+    color:black;
+    font-size: 1.3em;
+    line-height: 1.5em;
   }
 }
 .minIsLotteryCon{
