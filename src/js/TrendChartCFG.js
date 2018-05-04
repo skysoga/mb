@@ -65,8 +65,11 @@ function HeDaXiao(key,type){
     case 'SSC':
     str=num>22?'大':'小'
     break;
+    default:
+    str=''
+    break;
   }
-  return setValue(str,0,0,0)
+  return setValue(str,0,str?(str==='大'?'da':'xiao'):'',0)
 }
 //计算重复数
 function getNum(arr,num){
@@ -92,8 +95,8 @@ function setNumber(key){
 //单双
 function DanShuang(key,type){
   var num=HeZhi(key)
-      num=num%2?'单':'双'
-  return setValue(num,0,0,0)
+      num=num%2?setValue('单',0,'dan',0):setValue('双',0,'shuang',0)
+  return num
 }
 //跨度
 function KuaDu(key,type){

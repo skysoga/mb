@@ -58,7 +58,7 @@ export default{
     this.contentHeight = this.$refs.trendchart.offsetHeight - (2.3+2)*em    
   },
   created(){
-    this.getBackData(this.lCode,0,20,()=>{
+    this.getBackData(this.lCode,0,30,()=>{
       this.setListAll()
       this.$refs.vuetable.changing()
     })
