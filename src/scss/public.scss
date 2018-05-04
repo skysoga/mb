@@ -1947,6 +1947,7 @@ body > * {
 .main-detail{
   background:#fff;
   min-height: 100%;
+  padding-top:3em;
 }
 .tzHead{
   height:3em;
@@ -1985,10 +1986,23 @@ body > * {
   }
 }
 .table-detail{
+  width: 100%;
+  background-color: #fff;
+  tr{
+    height: 2.5em;
+    font-size: .8em;
+    line-height: 2.5em;
+  }
   tr:before{
-    width:15.4rem;
     right:0;
     left:auto;
+    content: "";
+    position: absolute;
+    background: #d0d0d0;
+    width:15.4rem;
+    height: 1px;
+    transform: scaleY(.5);
+    transform-origin: 0 0;
   }
   td:nth-of-type(1){
     text-align: center;
@@ -2755,4 +2769,8 @@ body > * {
 }
 .cGreen{
     color:$green;
+}
+.barcode{
+  margin: .4em;
+  width: 100px;
 }
