@@ -2756,3 +2756,22 @@ body > * {
 .cGreen{
     color:$green;
 }
+
+.betandchase{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  z-index: 1000;
+  transform:translateX(0);
+}
+.betandchase-enter-active, .betandchase-leave-active {
+  transform:translateX(0);
+  // height: $face-height;
+  transition: .3s;
+}
+.betandchase-enter, .betandchase-leave-to{
+  transform:translateX(100%);
+}
