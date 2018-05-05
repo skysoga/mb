@@ -26,7 +26,7 @@
 </template>
 <script>
 import vuetable from './vuetable';
-import {Title,NavCfg,SanLianHao,SanBuTong,SanTongHao,Chart,FengBu,QiHao,KuaDu,DanShuang,setNumber,getNum,KaiJiang,HeDaXiao,HeZhi,setValue} from '../js/TrendChartCFG'
+import {Title,NavCfg,SanLianHao,SanBuTong,SanTongHao,Chart,FengBu,QiHao,KuaDu,DanShuang,setNumber,getNum,KaiJiang,HeDaXiao,HeZhi,setValue,Unique} from '../js/TrendChartCFG'
 
 export default{
   components:{
@@ -52,6 +52,7 @@ export default{
       showType:0,
       Trend:0,
       AllList:[],
+      DataNone:[],
       OpenNum:[]//初始数据
     }
   },
@@ -133,7 +134,9 @@ export default{
       }
       _fetch(ajax).then(json=>{
         if(json.Code===1){
-          this.OpenNum=json.BackData
+          var data=JSON.parse(JSON.stringify(this.OpenNum))
+          var arr=data.concat(json.BackData)
+          this.OpenNum=Unique(arr)
           fun()
         }else{
           layer.msgWarn(json.StrCode)

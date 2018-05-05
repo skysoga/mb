@@ -6,7 +6,10 @@ var Title={
     K3KJJL:['期号','开奖','和值','大小','单双'],
     K3HMZS:['期号','开奖','和值','跨度',1,2,3,4,5,6],
     K3HZZS:['期号','开奖','大小','单双',3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
-    K3XTZS:['期号','开奖','三同号','三不同','三连号']
+    K3XTZS:['期号','开奖','三同号','三不同','三连号'],
+    SSCKJJL:['期号','开奖号码','万位','千位','百位','十位','个位'],
+    SSCHMZS:['期号','大小','单双','质合','0','1','2','3','4','5','6','7','8','9'],
+    SSCLHD:['期号','万千','万百','万十','万个','千百','千十','千个','百十','百个','十个'],
 }
 
 //配置值
@@ -48,6 +51,10 @@ function QiHao(key,lCode){//期号
 
 function KaiJiang(key,type){
   return setValue(key.LotteryOpen,0,0,0)
+}
+
+function SSCKaiJiang(key,type){
+  return setValue(key.LotteryOpen.replace(/\,/g,' '),0,0,0)
 }
 
 function getAnd(key){
@@ -145,6 +152,19 @@ function SanLianHao(key,type){
   return n?setValue('三连号',0,'sanlianhao',0):setValue('',0,0,0)
 }
 
+function Unique(data){
+  var arr=[]
+  var obj={}
+  for(var i=0,l=data.length;i<l;i++){
+    var str=data[i].OpenTime
+    if(!obj[str]){
+      obj[str]=1
+      arr.push(data[i])
+    }
+  }
+  return arr.sort((a,b)=>new Date(b.OpenTime).getTime()-new Date(a.OpenTime).getTime())
+}
+
 
 var NavCfg={
   'K3':{
@@ -153,10 +173,10 @@ var NavCfg={
     fun:[[KaiJiang,HeZhi,HeDaXiao,DanShuang],[KaiJiang,HeZhi,KuaDu,FengBu],[KaiJiang,HeDaXiao,DanShuang,Chart],[KaiJiang,SanTongHao,SanBuTong,SanLianHao]]
   },
   'SSC':{
-    Title:[{Name:'号码记录',List:Title.K3KJJL},{Name:'号码走势',List:Title.K3HMZS},{Name:'龙虎斗',List:[]},{Name:'和值',List:[]},{Name:'跨度',List:[]}],
+    Title:[{Name:'号码记录',List:Title.SSCKJJL},{Name:'号码走势',List:Title.SSCHMZS},{Name:'龙虎斗',List:Title.SSCLHD}],
     Body:[],
-    fun:[]
+    fun:[[KaiJiang],[KaiJiang],[KaiJiang]]
   },
 }
 
-export {Title,NavCfg,SanLianHao,SanBuTong,SanTongHao,Chart,FengBu,QiHao,KuaDu,DanShuang,setNumber,getNum,KaiJiang,HeDaXiao,HeZhi,setValue}
+export {Title,NavCfg,SanLianHao,SanBuTong,SanTongHao,Chart,FengBu,QiHao,KuaDu,DanShuang,setNumber,getNum,KaiJiang,HeDaXiao,HeZhi,setValue,Unique}

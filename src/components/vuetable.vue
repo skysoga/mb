@@ -5,7 +5,7 @@
         <li v-for="(d,i) in titles" :style="{width:(widthArr[i]>1)?(widthArr[i]+'px'):'auto'}"><em>{{d}}</em></li>
       </ul>
     </div>
-    <div class="table-body fix" :style="{height:scrollHeight+'px'}">
+    <div class="table-body fix" @scroll="getDataNext" :style="{height:scrollHeight+'px'}">
       <ul ref="columns" class="columns" :style="{width:(widthArr[0]>1)?(widthArr[0]+'px'):'auto'}">
         <li v-for="d in columns"><em>{{d.IssueNo}}</em></li>
       </ul>
@@ -93,7 +93,6 @@ export default{
     setChartLine(start_pos,end_pos,Canvas_cont){
       //获取画布的大小
       var _cavans_w = Math.abs(start_pos.offsetLeft - end_pos.offsetLeft)
-      console.log(start_pos.offsetLeft,end_pos.offsetLeft,_cavans_w)
       if (_cavans_w == 0) {
         _cavans_w = 2
       }
@@ -103,7 +102,6 @@ export default{
       _canvasObj.id=_cavans_id
       _canvasObj.width=_cavans_w
       _canvasObj.height=_cavans_h
-      console.log(_cavans_h)
       _canvasObj.style.position = "absolute"
         Canvas_cont.appendChild(_canvasObj)
       //计算位置
@@ -121,7 +119,6 @@ export default{
         saveNum = this.mathNum(0, 0, _cavans_w, _cavans_h, 7.5)
       }
       drawline_obj.beginPath()
-      console.log(saveNum)
       drawline_obj.moveTo(saveNum[0], saveNum[1])
       drawline_obj.lineTo(saveNum[2], saveNum[3])
       drawline_obj.lineWidth = 1.5
@@ -137,6 +134,20 @@ export default{
       _a = Math.round((a * r) / c),
       _b = Math.round((b * r) / c);
       return [x2 + _a, y2 + _b, x1 - _a, y1 - _b]
+    },
+    getDataNext(e){
+      //offsetHeight  offsetTop scrollTop scrollHeight
+      var el=e.target
+      var height=el.scrollHeight-el.scrollTop
+      var sHeight=el.offsetHeight
+      var OpenLength=this.$parent.OpenNum.length
+      if(height===sHeight&&OpenLength<=80){
+        console.log('到底了')
+        this.$parent.getBackData(this.$parent.lCode,0,20,()=>{
+          this.$parent.setListAll()      
+          this.changing()
+        })
+      }
     }
   },
   watch:{
