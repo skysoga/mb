@@ -194,6 +194,9 @@ export default{
   .columns{
     text-align: center;
     float:left;
+    li{
+      height: 1.4em;
+    }
     em{
       font-size: .7em;
     }
@@ -201,24 +204,29 @@ export default{
   .table-container{
     position: relative;
     float:left;
-    overflow: auto;
+    overflow-y: hidden;
+    overflow-x: auto;
     width: 100px;
+    li{
+      height: 1.4em;
+    }
   }
 }
 .fake-table{
   li{
     text-align: center;
     float: left;
+    overflow: hidden;
     // position: relative;
+    display: flex;
+    justify-content:center;
+    align-items: center;
   }
   em{
     position: relative;
     font-size: .7em;
-    display: inline-block;
-    width: 1.4em;
-    height: 1.4em;
-    transform:translateY(-.1em);
     border-radius: 50%;
+    width: 100%;
   }
 }
 .ChartCanvas{
