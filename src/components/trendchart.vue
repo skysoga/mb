@@ -93,7 +93,8 @@ export default{
     setFun(Arr){
       var list=[]
       var fun=Arr&&Arr.fun
-      var OpenNum=this.OpenNum
+      var OpenNum=this.OpenNum      
+      var lottery=this.lottery
       for(var i=0;i<fun.length;i++){
         var line=[]
         var FArr=fun[i]
@@ -101,17 +102,15 @@ export default{
         for(var j=0;j<OpenNum.length;j++){
           var cos=[]
           var key=OpenNum[j]
-          for(var k=0;k<FArr.length;k++){
-            var name=FArr[k].name
-            switch(name){
-              case 'FengBu':
-              case 'Chart':
-              cos=cos.concat(FArr[k](key,this.lottery))
-              break;
-              default:
-              cos.push(FArr[k](key,this.lottery))
-              break;
-            }
+          for(var k=0;k<FArr.length;k++){            
+            var name=FArr[k].toString()
+            var K3Num=name.indexOf('K3Num')>-1
+            var K3Chart=name.indexOf('K3Chart')>-1
+            if(K3Num||K3Chart){
+              cos=cos.concat(FArr[k](key,lottery))
+            }else{
+              cos.push(FArr[k](key,lottery))
+            }            
           }
           line.push(cos)
         }

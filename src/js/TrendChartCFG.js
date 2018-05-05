@@ -18,7 +18,7 @@ var Title={
  */
 function setValue(Value,Chart,Css,Pos){
   return {
-    Value:Value||'',
+    Value:Value,
     Chart:Chart?'OpenNo':'',
     Css:Css||'',
     Pos:Pos||''
@@ -113,10 +113,10 @@ function KuaDu(key,type){
 //号码分布
 function FengBu(key,type){
   var Arr=Title.K3Num
-  var num=key.LotteryOpen.split(',')  
+  var num=key.LotteryOpen.split(',')
   return Arr.map((v,i,a)=>{
-          return num.indexOf(v+'')>-1?setValue(v,0,'open-num',getNum(num,v+'')):setValue('',0,0,0)
-        })
+    return num.indexOf(v+'')>-1?setValue(v,0,'open-num',getNum(num,v+'')):setValue('',0,0,0)
+  })
 }
 //和值走势
 function Chart(key,type){
@@ -135,13 +135,14 @@ function SanBuTong(key,type){
   return n.length===3?setValue('三不同',0,'sanbutong',0):setValue('',0,0,0)
 }
 function SanLianHao(key,type){
-  var strNum = key.toString();
+  var strNum = key.LotteryOpen.replace(/\,/g,'').toString();
+  var n=true
       for(var i = 0,test = strNum[0];i<strNum.length;i++,test = parseInt(test),test++){
           if(strNum[i]!==test+""){
-              return '';
+            n=false
           }
-      }  
-  return setValue('三连号',0,'sanlianhao',0)
+      }
+  return n?setValue('三连号',0,'sanlianhao',0):setValue('',0,0,0)
 }
 
 
