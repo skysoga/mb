@@ -50,13 +50,18 @@ function KaiJiang(key,type){
   return setValue(key.LotteryOpen,0,0,0)
 }
 
-function HeZhi(key,type){
+function getAnd(key){
   var num=key.LotteryOpen.split(',')
-      num=num.reduce((a,b)=>Number(a)+Number(b))
+  num=num.reduce((a,b)=>Number(a)+Number(b))
+  return num
+}
+
+function HeZhi(key,type){
+  var num=getAnd(key)
   return setValue(num,0,0,0)
 }
 function HeDaXiao(key,type){
-  var num=HeZhi(key)
+  var num=getAnd(key)
   var str=''
   switch(type){
     case 'K3':
@@ -115,8 +120,11 @@ function FengBu(key,type){
 }
 //和值走势
 function Chart(key,type){
-  var num=key.LotteryOpen.split(',')
-  return ''
+  var Arr=Title.K3Chart
+  var num=getAnd(key)
+  return Arr.map((v,i,a)=>{
+          return num===v?setValue(v,1,'open-num',0):setValue('',0,0,0)
+        })
 }
 function SanTongHao(key,type){
   var n=setNumber(key)

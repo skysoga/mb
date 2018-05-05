@@ -11,11 +11,11 @@
     </div>
     <!-- type1:代表第一个查看方式（开奖记录、号码走势、和值走势、形态走势） -->
     <div class="tc-content-container" :class="'type'+showType">
-      <vuetable ref="vuetable" :height="contentHeight" :datas="getData" :titles="gettitles" :columns="getcolumns">
+      <vuetable ref="vuetable" :height="contentHeight" :datas="getData" :titles="gettitles" :Trend="Trend" :columns="getcolumns">
         <ul v-if="$refs.vuetable&&getData" slot="datas" v-for="d in getData" class="fix">
           <li v-for="(e,i) in d" :style="{width:($refs.vuetable.widthArr[i+1]>1)?($refs.vuetable.widthArr[i+1]+'px'):'auto'}">
             <!-- class 可设置为：open-num、da、shuang、xiao、dan、sanbutong、sanlianhao、santonghao -->
-            <em :class="e.Css">{{e.Value}}</em>
+            <em :class="[e.Css,e.Chart]">{{e.Value}}</em>
             <i v-if="e.Pos" class="chonghao">{{e.Pos}}</i>
           </li>
         </ul>
@@ -50,6 +50,7 @@ export default{
     return {
       contentHeight:0,
       showType:0,
+      Trend:0,
       AllList:[],
       OpenNum:[]//初始数据
     }
@@ -58,8 +59,8 @@ export default{
     this.contentHeight = this.$refs.trendchart.offsetHeight - (2.3+2)*em    
   },
   created(){
-    this.getBackData(this.lCode,0,30,()=>{
-      this.setListAll()
+    this.getBackData(this.lCode,0,20,()=>{
+      this.setListAll()      
       this.$refs.vuetable.changing()
     })
   },
@@ -77,6 +78,16 @@ export default{
     changeShowType(v){
       this.showType = v
       this.$refs.vuetable.changing()
+      if((this.lottery+v)==='K32'){
+        this.Trend=1
+        this.$nextTick(()=>{
+          setTimeout(()=>{
+            this.$refs.vuetable.getListNum()
+          },0)
+        })
+      }else{
+        this.Trend=0
+      }
     },
     // 设置各行数据
     setFun(Arr){
