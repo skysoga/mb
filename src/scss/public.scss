@@ -1041,10 +1041,16 @@ $K3-border-color:#3a7f62;
     border-radius: 50%;
     width: 1.2em;
     height: 1.2em;
-    margin-left: -.6em;
-    margin-top: .4em;
+    margin-left: .9em;
+    margin-top: -.7em;
     line-height: 1.2em;
     text-align: center;
+  }
+  .open-num,.da,.shuang,.xiao,.dan{
+    // font-size: .6em !important;
+    width: 1.4em !important;
+    height: 1.4em !important;
+    line-height: 1.4em !important;
   }
   .open-num{
     background: #5a7d36;
@@ -1130,8 +1136,8 @@ $SSC-BG-color:#e1d9bc;
     border-radius: 50%;
     width: 1.2em;
     height: 1.2em;
-    margin-left: -.6em;
-    margin-top: .4em;
+    margin-left: .6em;
+    margin-top: -.4em;
     line-height: 1.2em;
     text-align: center;
   }
