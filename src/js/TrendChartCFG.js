@@ -3,6 +3,8 @@
 var Title={
     K3Num:[1,2,3,4,5,6],//号码分布
     K3Chart:[3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],//号码走势
+    Zhi:[1,2,3,5,7],//质
+    He:[0,4,6,8,9],//合
     K3KJJL:['期号','开奖','和值','大小','单双'],
     K3HMZS:['期号','开奖','和值','跨度',1,2,3,4,5,6],
     K3HZZS:['期号','开奖','大小','单双',3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
@@ -83,6 +85,62 @@ function HeDaXiao(key,type){
   }
   return setValue(str,0,str?(str==='大'?'da':'xiao'):'',0)
 }
+
+//单值大小
+function DaXiao(num,type){
+  var str=''
+  switch(type){
+    case 'K3':
+    str=num>11?'大':'小'
+    break;
+    case 'SSC':
+    str=num>4?'大':'小'
+    break;
+    default:
+    str=''
+    break;
+  }
+  return setValue(str,0,str?(str==='大'?'da':'xiao'):'',0)
+}
+//单值单双
+function DanShuang(num){
+  return num%2?setValue('单',0,'dan',0):setValue('双',0,'shuang',0)  
+}
+//单值质合
+function ZhiHe(num){
+  var He=Title.He
+  return He.indexOf(num)>-1?setValue('合',0,'da',0):setValue('质',0,'xiao',0)
+}
+
+//大小单双万位
+function dxdsWan(key,type){  
+  return setdxds(key,type,0)
+}
+//大小单双千位
+function dxdsQian(key,type){
+  return setdxds(key,type,1)
+}
+//大小单双百位
+function dxdsBai(key,type){
+  return setdxds(key,type,2)
+}
+//大小单双十位
+function dxdsShi(key,type){
+  return setdxds(key,type,3)
+}
+//大小单双个位
+function dxdsGe(key,type){
+  return setdxds(key,type,4)
+}
+
+function setdxds(key,type,n){
+  var Arr=[]
+  var num=key.LotteryOpen.split(',')[n]
+      Arr.push(DaXiao(num,type))
+      Arr.push(DanShuang(num))
+  return Arr
+}
+
 //计算重复数
 function getNum(arr,num){
   var n=0
@@ -104,10 +162,10 @@ function setNumber(key){
   }
   return n
 }
-//单双
-function DanShuang(key,type){
+//和单双
+function HeDanShuang(key,type){
   var num=HeZhi(key)
-      num=num%2?setValue('单',0,'dan',0):setValue('双',0,'shuang',0)
+      num=DanShuang(num)
   return num
 }
 //跨度
@@ -125,14 +183,21 @@ function FengBu(key,type){
     return num.indexOf(v+'')>-1?setValue(v,0,'open-num',getNum(num,v+'')):setValue('',0,0,0)
   })
 }
+
 //和值走势
 function Chart(key,type){
   var Arr=Title.K3Chart
   var num=getAnd(key)
-  return Arr.map((v,i,a)=>{
-          return num===v?setValue(v,1,'open-num',0):setValue('',0,0,0)
-        })
+  return setChart(Arr,num)
 }
+
+//号码走势
+function setChart(Arr,num){
+  return Arr.map((v,i,a)=>{
+    return num===v?setValue(v,1,'open-num',0):setValue('',0,0,0)
+  })
+}
+
 function SanTongHao(key,type){
   var n=setNumber(key)
   return n.length===1?setValue('三同号',0,'santonghao',0):setValue('',0,0,0)
@@ -157,7 +222,7 @@ function Unique(data){
   var obj={}
   for(var i=0,l=data.length;i<l;i++){
     var str=data[i].OpenTime
-    if(!obj[str]){
+    if(!obj[str]&&arr.length<100){
       obj[str]=1
       arr.push(data[i])
     }
@@ -165,18 +230,19 @@ function Unique(data){
   return arr.sort((a,b)=>new Date(b.OpenTime).getTime()-new Date(a.OpenTime).getTime())
 }
 
+//渲染各彩种走势配置
 
 var NavCfg={
   'K3':{
     Title:[{Name:'号码记录',List:Title.K3KJJL},{Name:'号码走势',List:Title.K3HMZS},{Name:'和值走势',List:Title.K3HZZS},{Name:'形态走势',List:Title.K3XTZS}],
     Body:[],
-    fun:[[KaiJiang,HeZhi,HeDaXiao,DanShuang],[KaiJiang,HeZhi,KuaDu,FengBu],[KaiJiang,HeDaXiao,DanShuang,Chart],[KaiJiang,SanTongHao,SanBuTong,SanLianHao]]
+    fun:[[KaiJiang,HeZhi,HeDaXiao,HeDanShuang],[KaiJiang,HeZhi,KuaDu,FengBu],[KaiJiang,HeDaXiao,HeDanShuang,Chart],[KaiJiang,SanTongHao,SanBuTong,SanLianHao]]
   },
   'SSC':{
     Title:[{Name:'号码记录',List:Title.SSCKJJL},{Name:'号码走势',List:Title.SSCHMZS},{Name:'龙虎斗',List:Title.SSCLHD}],
     Body:[],
-    fun:[[KaiJiang],[KaiJiang],[KaiJiang]]
+    fun:[[KaiJiang,dxdsWan,dxdsQian,dxdsBai,dxdsShi,dxdsGe],[HeDaXiao,HeDanShuang],[KaiJiang]]
   },
 }
 
-export {Title,NavCfg,SanLianHao,SanBuTong,SanTongHao,Chart,FengBu,QiHao,KuaDu,DanShuang,setNumber,getNum,KaiJiang,HeDaXiao,HeZhi,setValue,Unique}
+export {Title,NavCfg,SanLianHao,SanBuTong,SanTongHao,Chart,FengBu,QiHao,KuaDu,HeDanShuang,setNumber,getNum,KaiJiang,HeDaXiao,HeZhi,setValue,setChart,Unique,DanShuang,DaXiao,ZhiHe}

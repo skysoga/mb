@@ -141,9 +141,11 @@ export default{
       var height=el.scrollHeight-el.scrollTop
       var sHeight=el.offsetHeight
       var OpenLength=this.$parent.OpenNum.length
-      if(height===sHeight&&OpenLength<=80){
+      if(height===sHeight&&OpenLength<100){
         console.log('到底了')
-        this.$parent.getBackData(this.$parent.lCode,0,20,()=>{
+        var OpenNum=this.$parent.OpenNum
+            OpenNum=OpenNum&&OpenNum.length?OpenNum[OpenNum.length-1].IssueNo:0
+        this.$parent.getBackData(this.$parent.lCode,OpenNum,20,()=>{
           this.$parent.setListAll()      
           this.changing()
         })

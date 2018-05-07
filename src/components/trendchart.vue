@@ -15,8 +15,13 @@
         <ul v-if="$refs.vuetable&&getData" slot="datas" v-for="d in getData" class="fix">
           <li v-for="(e,i) in d" :style="{width:($refs.vuetable.widthArr[i+1]>1)?($refs.vuetable.widthArr[i+1]+'px'):'auto'}">
             <!-- class 可设置为：open-num、da、shuang、xiao、dan、sanbutong、sanlianhao、santonghao -->
-            <em :class="[e.Css,e.Chart]">{{e.Value}}</em>
-            <i v-if="e.Pos" class="chonghao">{{e.Pos}}</i>
+            <template v-if="Object.prototype.toString.call(e)==='[object Array]'">
+              <em v-for="n in e" :class="[n.Css,n.Chart]">{{n.Value}}</em>
+            </template>
+            <template v-else>
+              <em :class="[e.Css,e.Chart]">{{e.Value}}</em>
+              <i v-if="e.Pos" class="chonghao">{{e.Pos}}</i>
+            </template>
           </li>
         </ul>
       </vuetable>
@@ -26,7 +31,7 @@
 </template>
 <script>
 import vuetable from './vuetable';
-import {Title,NavCfg,SanLianHao,SanBuTong,SanTongHao,Chart,FengBu,QiHao,KuaDu,DanShuang,setNumber,getNum,KaiJiang,HeDaXiao,HeZhi,setValue,Unique} from '../js/TrendChartCFG'
+import {Title,NavCfg,SanLianHao,SanBuTong,SanTongHao,Chart,FengBu,QiHao,KuaDu,HeDanShuang,setNumber,getNum,KaiJiang,HeDaXiao,HeZhi,setValue,setChart,Unique,DanShuang,DaXiao,ZhiHe} from '../js/TrendChartCFG'
 
 export default{
   components:{
@@ -52,7 +57,6 @@ export default{
       showType:0,
       Trend:0,
       AllList:[],
-      DataNone:[],
       OpenNum:[]//初始数据
     }
   },
@@ -68,7 +72,7 @@ export default{
   methods:{
     setOpenNum(){
       //重置期号 IssueNo  QiHao
-      var OpenNum=this.OpenNum
+      var OpenNum=JSON.parse(JSON.stringify(this.OpenNum))
       var Arr=[]
       for(var i=0;i<OpenNum.length;i++){
         OpenNum[i].IssueNo=QiHao(OpenNum[i],this.lCode)
@@ -135,7 +139,8 @@ export default{
       _fetch(ajax).then(json=>{
         if(json.Code===1){
           var data=JSON.parse(JSON.stringify(this.OpenNum))
-          var arr=data.concat(json.BackData)
+          var BackData=json.BackData
+          var arr=data.concat(BackData)       
           this.OpenNum=Unique(arr)
           fun()
         }else{
