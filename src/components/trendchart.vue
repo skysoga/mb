@@ -6,14 +6,11 @@
     <div style="display: none;" class="lottery-type"><em>大发</em></div>
     <div class="tc-nav">
       <ul class="fix">
-        <li v-for="n,key in AllList.Title" :class="{curr:showType===key}" @click="changeShowType(key)"><em>{{n.Name}}</em></li>
+        <li v-for="n in AllList.Title" :class="{curr:NavType===n.NavType}" @click="changeShowType(n.Key,n.NavType,n.SubType)"><em>{{n.Name}}</em></li>
       </ul>
       <div class="son-of-tcnav">
-        <ul class="fix">
-          <li>子菜单</li>
-          <li>子菜单</li>
-          <li>子菜单</li>
-          <li>子菜单</li>
+        <ul class="fix" v-if="AllList.Title&&AllList.Title[NavType].Nav">
+          <li :class="{curr:SubType===n.SubType}" v-for="n in AllList.Title[NavType].Nav"  @click="changeShowType(n.Key,n.NavType,n.SubType)">{{n.Name}}</li>
         </ul>
       </div>
     </div>
@@ -39,7 +36,7 @@
 </template>
 <script>
 import vuetable from './vuetable';
-import {Title,NavCfg,SanLianHao,SanBuTong,SanTongHao,Chart,FengBu,QiHao,KuaDu,HeDanShuang,setNumber,getNum,KaiJiang,HeDaXiao,HeZhi,setValue,setChart,Unique,DanShuang,DaXiao,ZhiHe} from '../js/TrendChartCFG'
+import {NavCfg,Unique,QiHao} from '../js/TrendChartCFG'
 
 export default{
   components:{
@@ -53,7 +50,7 @@ export default{
       return this.AllList.Body&&this.AllList.Body[this.showType]
     },
     gettitles(){
-      return this.AllList.Title&&this.AllList.Title[this.showType].List
+      return this.AllList.Title&&this.AllList.Title[this.NavType].List
     },
     getcolumns(){
       return this.OpenNum&&this.setOpenNum()
@@ -63,6 +60,8 @@ export default{
     return {
       contentHeight:0,
       showType:0,
+      NavType:0,
+      SubType:0,
       Trend:0,
       AllList:[],
       OpenNum:[]//初始数据
@@ -73,7 +72,7 @@ export default{
   },
   created(){
     this.getBackData(this.lCode,0,20,()=>{
-      this.setListAll()      
+      this.setListAll()
       this.$refs.vuetable.changing()
     })
   },
@@ -88,14 +87,20 @@ export default{
       }
       return Arr
     },
-    changeShowType(v){
+    changeShowType(v,NavType,SubType){
       this.showType = v
+      this.NavType = NavType
+      this.SubType = SubType
       this.$refs.vuetable.changing()
-      if((this.lottery+v)==='K32'){
+      this.setChartLine()
+    },
+    setChartLine(){
+      var key=this.lottery+this.NavType
+      if(key==='K32'||key==='SSC1'){
         this.Trend=1
         this.$nextTick(()=>{
           setTimeout(()=>{
-            this.$refs.vuetable.getListNum()
+            this.$refs.vuetable.getListNum()            
           },0)
         })
       }else{
@@ -119,7 +124,8 @@ export default{
             var name=FArr[k].toString()
             var K3Num=name.indexOf('K3Num')>-1
             var K3Chart=name.indexOf('K3Chart')>-1
-            if(K3Num||K3Chart){
+            var SSCChart=name.indexOf('SSCChart')>-1
+            if(K3Num||K3Chart||SSCChart){
               cos=cos.concat(FArr[k](key,lottery))
             }else{
               cos.push(FArr[k](key,lottery))
@@ -160,6 +166,12 @@ export default{
 }
 </script>
 <style lang="scss" scoped>
+.son-of-tcnav{
+  float: left;
+  .curr{
+    color: #f2c742;
+  }
+}
 .trendchart-container{
   height: 100%;
 }

@@ -88,7 +88,7 @@ export default{
       }
     },
     clearChart(){
-      document.getElementById('ChartCanvas').innerHTML&&(document.getElementById('ChartCanvas').innerHTML='')
+      document.getElementById('ChartCanvas')!==null&&(document.getElementById('ChartCanvas').innerHTML='')
     },
     setChartLine(start_pos,end_pos,Canvas_cont){
       //获取画布的大小
@@ -148,6 +148,7 @@ export default{
         this.$parent.getBackData(this.$parent.lCode,OpenNum,20,()=>{
           this.$parent.setListAll()      
           this.changing()
+          this.$parent.setChartLine()
         })
       }
     }
