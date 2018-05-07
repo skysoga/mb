@@ -8,6 +8,14 @@
       <ul class="fix">
         <li v-for="n,key in AllList.Title" :class="{curr:showType===key}" @click="changeShowType(key)"><em>{{n.Name}}</em></li>
       </ul>
+      <div class="son-of-tcnav">
+        <ul class="fix">
+          <li>子菜单</li>
+          <li>子菜单</li>
+          <li>子菜单</li>
+          <li>子菜单</li>
+        </ul>
+      </div>
     </div>
     <!-- type1:代表第一个查看方式（开奖记录、号码走势、和值走势、形态走势） -->
     <div class="tc-content-container" :class="'type'+showType">
