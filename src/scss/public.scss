@@ -1142,6 +1142,11 @@ $SSC-BG-color:#e1d9bc;
       border-top:1px solid $SSC-border-color;
       border-right: 1px solid $SSC-border-color;
     }
+    .vuetable-corner{
+      background: $SSC-BG-color;
+      border-top:1px solid $SSC-border-color;
+      border-right: 1px solid $SSC-border-color;
+    }
   }
   .fake-table{
     color:#df303f;
@@ -1181,17 +1186,11 @@ $SSC-BG-color:#e1d9bc;
   .open-num{
     background: #5a7d36;
   }
-  .da{
+  .da,.shuang{
     background: #df303f;
   }
-  .xiao{
-    background: #6175bf;
-  }
-  .dan{
+  .dan,.xiao{
     background: #00ab99;
-  }
-  .shuang{
-    background: #00a3ee;
   }
   .sanbutong,.sanlianhao,.santonghao{
     border-radius: 0 !important;

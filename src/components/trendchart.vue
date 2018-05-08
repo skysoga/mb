@@ -214,6 +214,8 @@ export default{
 .tc-nav{
   height: 2em;
   line-height: 2em;
+  position: relative;
+  z-index: 2;
   ul{
     li{
       width: 25%;

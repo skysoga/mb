@@ -3,6 +3,7 @@
     <div ref="titleContainer" class="title-container">
       <ul ref="titleList" class="title-list fix" :style="{width:(maxWidth+widthArr[0])+'px'}">
         <li v-for="(d,i) in titles" :style="{width:(widthArr[i]>1)?(widthArr[i]+'px'):'auto'}"><em>{{d}}</em></li>
+        <div v-if="widthArr.length>0" class="vuetable-corner" :style="{width:(widthArr[0]>1)?(widthArr[0]+'px'):'0',position: 'absolute'}"><em>期号</em></div>
       </ul>
     </div>
     <div class="table-body fix" @scroll="getDataNext" :style="{height:scrollHeight+'px'}">
@@ -61,9 +62,10 @@ export default{
       this.scrollContainerWidth = bodyWidth - this.widthArr[0]
     },
     changing(){
-      for (var i = 0; i < this.widthArr.length; i++) {
-        this.widthArr[i] = 0
-      }
+      // for (var i = 0; i < this.widthArr.length; i++) {
+      //   this.widthArr[i] = 0
+      // }
+      this.widthArr = []
       this.maxWidth = 99999
       this.$nextTick(function () {
         this.init()
@@ -161,9 +163,9 @@ export default{
 }
 </script>
 <style lang="scss" scoped>
-
 .vuetable{
   height: 100%;
+  position: relative;
 }
 .title-container{
   width: 100%;
@@ -190,6 +192,18 @@ export default{
       display: block;
       width: 100%;
     }
+  }
+}
+
+.vuetable-corner{
+  height: 1.4em;
+  padding: 0 .6em;
+  display: flex;
+  align-items:center;
+  em{
+    font-size: .7em;
+    display: block;
+    width: 100%;
   }
 }
 .table-body{
