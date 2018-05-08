@@ -109,7 +109,7 @@ export default{
       //计算位置
       var theLeft = start_pos.offsetLeft < end_pos.offsetLeft ? start_pos.offsetLeft : end_pos.offsetLeft
       var theTop = start_pos.offsetTop < end_pos.offsetTop ? start_pos.offsetTop : end_pos.offsetTop
-      var _thePointW = end_pos.clientWidth / 2-2
+      var _thePointW = end_pos.clientWidth / 2+1.5
       var drawline_canvas=document.getElementById(_cavans_id)
       drawline_canvas.style.left=(theLeft + _thePointW - 1) + "px"
       drawline_canvas.style.top=(theTop + _thePointW - 2) + "px"
