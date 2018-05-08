@@ -1001,7 +1001,6 @@ $K3-border-color:#3a7f62;
   }
   .type1{
     .title-list{
-      
     }
   }
   .vuetable{
@@ -1019,6 +1018,11 @@ $K3-border-color:#3a7f62;
   }
   .title-list{
     li{
+      border-top:1px solid $K3-border-color;
+      border-right: 1px solid $K3-border-color;
+    }
+    .vuetable-corner{
+      background: #2f5542;
       border-top:1px solid $K3-border-color;
       border-right: 1px solid $K3-border-color;
     }

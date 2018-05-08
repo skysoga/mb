@@ -200,6 +200,7 @@ export default{
   padding: 0 .6em;
   display: flex;
   align-items:center;
+  text-align: center;
   em{
     font-size: .7em;
     display: block;
