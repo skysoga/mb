@@ -123,7 +123,7 @@ export default{
       drawline_obj.beginPath()
       drawline_obj.moveTo(saveNum[0], saveNum[1])
       drawline_obj.lineTo(saveNum[2], saveNum[3])
-      drawline_obj.lineWidth = 1.5
+      drawline_obj.lineWidth = 1
       drawline_obj.strokeStyle = "#5a7d36"
       drawline_obj.fill()
       drawline_obj.stroke()
