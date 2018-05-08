@@ -88,7 +88,7 @@ function HeDaXiao(key,type){
 }
 
 //单值大小
-function DaXiao(num,type){
+function DaXiao(num,type,bool){
   var str=''
   switch(type){
     case 'K3':
@@ -101,16 +101,16 @@ function DaXiao(num,type){
     str=''
     break;
   }
-  return setValue(str,0,str?(str==='大'?'da':'xiao'):'',0)
+  return setValue(str,0,str?(str==='大'?'da':(!bool?'dan':'xiao')):'',0)
 }
 //单值单双
-function DanShuang(num){
-  return num%2?setValue('单',0,'dan',0):setValue('双',0,'shuang',0)  
+function DanShuang(num,bool){
+  return num%2?setValue('单',0,'dan',0):setValue('双',0,!bool?'da':'shuang',0)  
 }
 //单值质合
 function ZhiHe(num){
   var He=Title.He
-  return He.indexOf(+num)>-1?setValue('合',0,'da',0):setValue('质',0,'xiao',0)
+  return He.indexOf(+num)>-1?setValue('合',0,'da',0):setValue('质',0,'dan',0)
 }
 
 //大小单双万位
@@ -137,8 +137,8 @@ function dxdsGe(key,type){
 function setdxds(key,type,n){
   var Arr=[]
   var num=key.LotteryOpen.split(',')[n]
-      Arr.push(DaXiao(num,type))
-      Arr.push(DanShuang(num))
+      Arr.push(DaXiao(num,type,true))
+      Arr.push(DanShuang(num,true))
   return Arr
 }
 
