@@ -10,7 +10,7 @@
       </ul>
       <div class="son-of-tcnav">
         <ul class="fix" v-if="AllList.Title&&AllList.Title[NavType].Nav">
-          <li :class="{curr:SubType===n.SubType}" v-for="n in AllList.Title[NavType].Nav"  @click="changeShowType(n.Key,n.NavType,n.SubType)">{{n.Name}}</li>
+          <li :class="{'curr-son':SubType===n.SubType}" v-for="n in AllList.Title[NavType].Nav"  @click="changeShowType(n.Key,n.NavType,n.SubType)"><em>{{n.Name}}</em></li>
         </ul>
       </div>
     </div>
@@ -166,12 +166,6 @@ export default{
 }
 </script>
 <style lang="scss" scoped>
-.son-of-tcnav{
-  float: left;
-  .curr{
-    color: #f2c742;
-  }
-}
 .trendchart-container{
   height: 100%;
 }

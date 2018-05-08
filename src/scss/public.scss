@@ -1086,9 +1086,6 @@ $SSC-BG-color:#e1d9bc;
       color:#df303f;
     }
   }
-  .title-container{
-    color: #636158;
-  }
   .tc-content-container{
     background: $SSC-BG-color;
     color:#333;
@@ -1098,12 +1095,40 @@ $SSC-BG-color:#e1d9bc;
       
     }
   }
+  .son-of-tcnav{
+    width: 100%;
+    float: left;
+    ul{
+      display: flex;
+      border-top: 1px solid $SSC-border-color;
+      li{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 2.2em;
+        font-size: .85em;
+        em{
+          display: block;
+          width: 4.8em;
+          height: 2.1em;
+          line-height: 2.1em;
+          border-radius: .2em;
+        }
+      }
+      .curr-son{
+        color: #df303f;
+        em{
+          color:white;
+          background:#df303f; 
+        }
+      }
+    }
+  }
   .vuetable{
-    color:#a5a090;
+    color:#666;
   }
   .table-body{
     .columns{
-      color:#666;
       li{
         &:nth-child(2n+1){
           background: #ebe8d6;
@@ -1119,6 +1144,7 @@ $SSC-BG-color:#e1d9bc;
     }
   }
   .fake-table{
+    color:#df303f;
     ul{
       &:nth-child(2n+1){
         background: #ebe8d6;
@@ -1126,6 +1152,11 @@ $SSC-BG-color:#e1d9bc;
     }
     li{
       border-right: 1px solid $SSC-border-color;
+      em{
+        &+em{
+          margin-left: .2em;
+        }
+      }
     }
   }
   .chonghao{
@@ -1136,19 +1167,31 @@ $SSC-BG-color:#e1d9bc;
     border-radius: 50%;
     width: 1.2em;
     height: 1.2em;
-    margin-left: .6em;
-    margin-top: -.4em;
+    margin-left: .9em;
+    margin-top: -.7em;
     line-height: 1.2em;
     text-align: center;
+  }
+  .open-num,.da,.shuang,.xiao,.dan{
+    width: 1.4em !important;
+    height: 1.4em !important;
+    line-height: 1.4em !important;
+    color:white;
   }
   .open-num{
     background: #5a7d36;
   }
-  .da,.shuang{
-    background: #bb9431;
+  .da{
+    background: #df303f;
   }
-  .xiao,.dan{
-    background: #597d36;
+  .xiao{
+    background: #6175bf;
+  }
+  .dan{
+    background: #00ab99;
+  }
+  .shuang{
+    background: #00a3ee;
   }
   .sanbutong,.sanlianhao,.santonghao{
     border-radius: 0 !important;
