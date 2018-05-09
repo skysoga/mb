@@ -1,15 +1,15 @@
 <template>
   <div @click = "closeBox" class="lotteryOutCon">
     <!-- 普通彩种 -->
-    <LotteryCommon v-if = "ptype !== 'live' && $route.params.type !== 'K3' && $route.params.type !== '6HC'"></LotteryCommon>
+    <LotteryCommon v-if="ptype !== 'live' && $route.params.type !== 'K3' && $route.params.type !== '6HC' && !$store.state.ShowTrendchart"></LotteryCommon>
     <!-- 快三彩种 -->
-    <LotteryK3 v-if = "ptype !== 'live' && $route.params.type === 'K3'"></LotteryK3>
+    <LotteryK3 v-if="ptype !== 'live' && $route.params.type === 'K3' && !$store.state.ShowTrendchart"></LotteryK3>
 
-    <Lottery6HC v-if = "$route.params.type === '6HC'"></Lottery6HC>
-    <NewK3 ref="newk3" v-if = "ptype === 'live'" :lcode="lcode"></NewK3>
+    <Lottery6HC v-if="$route.params.type === '6HC' && !$store.state.ShowTrendchart"></Lottery6HC>
+    <NewK3 ref="newk3" v-if="ptype === 'live' && !$store.state.ShowTrendchart" :lcode="lcode"></NewK3>
 
     <transition name="trendchart">
-      <div v-if="$store.state.ShowTrendchart" class="trendchart">
+      <div v-if="$store.state.ShowTrendchart" class="trendchart" :class="$store.state.LotteryType">
       <trendchart></trendchart>
       </div>
     </transition>
