@@ -77,7 +77,36 @@ input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{
 .fr{
     float: right;
 }
-
+.line-white-before-:before,.line-white-after-:after{
+  position: absolute;
+  content:'';
+  width: 100%;
+  height: 1px;
+  left: 0;
+  z-index: 2;
+}
+.line-white-before-:before{
+  background-image: -webkit-linear-gradient(-90deg,#fff,#fff 50%,transparent 0);
+  top: 0;
+}
+.line-white-after-:after{
+  background-image: -webkit-linear-gradient(90deg,#fff,#fff 50%,transparent 0);
+  bottom: 0;
+}
+.line-white-before1:before,.line-white-after1:after{
+  position: absolute;
+  content:'';
+  background-image: -webkit-linear-gradient(0deg,#fff,#fff 50%,transparent 0);
+  width: 1px;
+  height: 100%;
+  left: 0;
+}
+.line-white-before1:before{
+  top: 0;
+}
+.line-white-after1:after{
+  bottom: 0;
+}
 
 
 
@@ -101,13 +130,7 @@ input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{
   content: "\e60e";
 }
 .iconfont.info:after { content: "\e610"; }
-.iconfont.gonggao:after {
-  content: "\e649";
-  color:#dc3b40;
-  transform: translate(0,.1em);
-  display: inline-block;
-  font-size: 1.2em;
-}
+.iconfont.gonggao:after {content: "\e649";}
 .iconfont.xiala:after { content: "\e61e"; }
 .iconfont.copy:after { content: "\e61f"; }
 
@@ -2210,6 +2233,7 @@ $SSC-BG-color:#e1d9bc;
 .main-detail{
   background:#fff;
   min-height: 100%;
+  padding-top:3em;
 }
 .tzHead{
   height:3em;
@@ -2248,10 +2272,23 @@ $SSC-BG-color:#e1d9bc;
   }
 }
 .table-detail{
+  width: 100%;
+  background-color: #fff;
+  tr{
+    height: 2.5em;
+    font-size: .8em;
+    line-height: 2.5em;
+  }
   tr:before{
-    width:15.4rem;
     right:0;
     left:auto;
+    content: "";
+    position: absolute;
+    background: #d0d0d0;
+    width:15.4rem;
+    height: 1px;
+    transform: scaleY(.5);
+    transform-origin: 0 0;
   }
   td:nth-of-type(1){
     text-align: center;
@@ -2342,6 +2379,16 @@ $SSC-BG-color:#e1d9bc;
   height: 3em;
   float: left;
   width: 50%;
+  position: relative;
+  &:last-child:before{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 1px;
+    background-image: -webkit-linear-gradient(0deg,#bdb48b,#bdb48b 50%,transparent 0);
+  }
   &:after{
     content:"";
     position: absolute;
@@ -2350,26 +2397,22 @@ $SSC-BG-color:#e1d9bc;
     height: 1px;
     width: 16rem;
     z-index: 3;
-    // @include bgImg-linear-gradient('90deg, #d0d0d0, #d0d0d0 50%, transparent 50%');
+    background-image: -webkit-linear-gradient(90deg, #fff, #fff 50%, transparent 50%);
   }
   .iconfont{
     transition:.6s;
     display: inline-block;
   }
-  &.active{
+  &.open{
     .iconfont{
       transform:rotate(180deg)
     }
     &:after{
       @include bgImg-linear-gradient('90deg, #fff, #fff 50%, transparent 50%');
       z-index: 5;
+      left: initial;
+      right: 0;
     }
-  }
-}
-.lotteryCloseItem.active{
-  &:after{
-    left: initial;
-    right: 0;
   }
 }
 .openNumber-01{
@@ -3026,3 +3069,9 @@ $SSC-BG-color:#e1d9bc;
   z-index: 151;
   transform:translateY(0);
 }
+.barcode{
+  margin: .4em;
+  width: 100px;
+}
+
+

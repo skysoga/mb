@@ -90,7 +90,7 @@ body{
 .KL8{
   .sscMain{
     .sscTips{
-      padding-top: 5.7em;
+      padding-top: 6.8em;
     }
   }
   .betFilterAnd{
@@ -102,6 +102,15 @@ body{
       span{
         display: none;
       }
+    }
+  }
+  .past,.current{
+    height: 6.14em !important;
+  }
+  .StateStyle2{
+    span{
+      height: 1.6em !important;
+      line-height: 1.6em !important;
     }
   }
 }

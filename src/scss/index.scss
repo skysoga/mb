@@ -20,30 +20,36 @@
   line-height: 2em;
   overflow: hidden;
   background-color: #fff;
-/*   margin-top: -0.5px; */
   a{
     font-size: .7em;
     display:block;
     padding: 0 .4rem;
     height: 100%;
     overflow: hidden;
+    >*{
+      height: 100%;
+    }
     .iconfont{
-      display: inline-block;
+      display: block;
       margin-right: .2rem;
-      vertical-align: middle;
     }
     span{
-      display: inline-block;
+      display: block;
       width: 11.8rem;
+      float: left;
     }
     .right{
-      // display: inline-block;
+      display: block;
       color: $font-gray;
       margin-right:0;
     }
     .gonggao{
-      // font-size: 1.2em;
-      // margin-top: -.07em;
+      &:after{
+        color:#dc3b40;
+        display: block;
+        transform: scale(1.2);
+        margin-right: .2em;
+      }
     }
   }
   .moreBtn{
