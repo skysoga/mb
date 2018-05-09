@@ -368,6 +368,79 @@ function Unique(data){
   return arr.sort((a,b)=>new Date(b.OpenTime).getTime()-new Date(a.OpenTime).getTime())
 }
 
+function ChartTrend(Type){
+  var Objdiv=document.getElementById('fakeTable')
+  var chart_canvas=document.getElementById('ChartCanvas')      
+  clearChart()
+  var Nums=Objdiv.querySelectorAll('ul').length
+  if(!Nums)return;
+  var tdleng=Objdiv.querySelectorAll('ul')[0].querySelectorAll('.OpenNo').length
+  for(var i=0;i<tdleng;i++){
+    for(var x=0;x<Nums-1;x++){
+      var start=Objdiv.querySelectorAll('ul')[x].querySelectorAll('.OpenNo')[i]
+      var end=Objdiv.querySelectorAll('ul')[x+1].querySelectorAll('.OpenNo')[i]          
+      setChartLine(start,end,chart_canvas,Type)
+    }
+  }
+}
+function clearChart(){
+  document.getElementById('ChartCanvas')!==null&&(document.getElementById('ChartCanvas').innerHTML='')
+}
+function setChartLine(start_pos,end_pos,Canvas_cont,Type){
+  //获取画布的大小
+  var _cavans_w = Math.abs(start_pos.offsetLeft - end_pos.offsetLeft)
+  if (_cavans_w == 0) {
+    _cavans_w = 2
+  }
+  var _cavans_h = Math.abs(start_pos.offsetTop - end_pos.offsetTop)
+  var _cavans_id = "canvas_" + parseInt(Math.random() * 1000) + "_" + parseInt(Math.random() * 1500)
+  var _canvasObj = document.createElement('canvas')
+  _canvasObj.id=_cavans_id
+  _canvasObj.width=_cavans_w
+  _canvasObj.height=_cavans_h
+  _canvasObj.style.position = "absolute"
+    Canvas_cont.appendChild(_canvasObj)
+  //计算位置
+  var theLeft = start_pos.offsetLeft < end_pos.offsetLeft ? start_pos.offsetLeft : end_pos.offsetLeft
+  var theTop = start_pos.offsetTop < end_pos.offsetTop ? start_pos.offsetTop : end_pos.offsetTop
+  var _thePointW = end_pos.clientWidth / 2+1.5
+  var drawline_canvas=document.getElementById(_cavans_id)
+  drawline_canvas.style.left=(theLeft + _thePointW - 1) + "px"
+  drawline_canvas.style.top=(theTop + _thePointW - 2) + "px"
+  var drawline_obj = drawline_canvas.getContext("2d")
+  var saveNum=""
+  if (start_pos.offsetLeft > end_pos.offsetLeft) {
+    saveNum = mathNum(_cavans_w, 0, 0, _cavans_h, 7.5)
+  } else {
+    saveNum = mathNum(0, 0, _cavans_w, _cavans_h, 7.5)
+  }
+  var color=""
+  switch(Type){
+    case "SSC":
+    color="#df303f"
+    break;
+    default:
+    color="#5a7d36"
+    break;    
+  }
+  drawline_obj.beginPath()
+  drawline_obj.moveTo(saveNum[0], saveNum[1])
+  drawline_obj.lineTo(saveNum[2], saveNum[3])
+  drawline_obj.lineWidth = 1
+  drawline_obj.strokeStyle = color
+  drawline_obj.fill()
+  drawline_obj.stroke()
+  drawline_obj.closePath()
+}
+function mathNum(x1, y1, x2, y2, r) {
+  var a = x1 - x2,
+  b = y1 - y2,
+  c = Math.round(Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))),
+  _a = Math.round((a * r) / c),
+  _b = Math.round((b * r) / c);
+  return [x2 + _a, y2 + _b, x1 - _a, y1 - _b]
+}
+
 //渲染各彩种走势配置
 
 var NavCfg={
@@ -383,4 +456,4 @@ var NavCfg={
   },
 }
 
-export {NavCfg,QiHao,Unique}
+export {NavCfg,QiHao,Unique,ChartTrend}

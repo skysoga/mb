@@ -39,7 +39,7 @@
 </template>
 <script>
 import vuetable from './vuetable';
-import {NavCfg,Unique,QiHao} from '../js/TrendChartCFG'
+import {NavCfg,Unique,QiHao,ChartTrend} from '../js/TrendChartCFG'
 
 export default{
   components:{
@@ -104,7 +104,7 @@ export default{
         this.Trend=1
         this.$nextTick(()=>{
           setTimeout(()=>{
-            this.$refs.vuetable.getListNum()            
+            ChartTrend(this.lottery)
           },0)
         })
       }else{
