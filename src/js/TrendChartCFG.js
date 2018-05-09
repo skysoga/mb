@@ -360,7 +360,7 @@ function Unique(data){
   var obj={}
   for(var i=0,l=data.length;i<l;i++){
     var str=data[i].OpenTime
-    if(!obj[str]&&arr.length<100){
+    if(!obj[str]&&arr.length<20){
       obj[str]=1
       arr.push(data[i])
     }

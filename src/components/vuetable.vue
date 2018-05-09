@@ -138,12 +138,11 @@ export default{
       return [x2 + _a, y2 + _b, x1 - _a, y1 - _b]
     },
     getDataNext(e){
-      //offsetHeight  offsetTop scrollTop scrollHeight
       var el=e.target
       var height=el.scrollHeight-el.scrollTop
       var sHeight=el.offsetHeight
       var OpenLength=this.$parent.OpenNum.length
-      if(height===sHeight&&OpenLength<100){
+      if(height===sHeight&&OpenLength<20){
         console.log('到底了')
         var OpenNum=this.$parent.OpenNum
             OpenNum=OpenNum&&OpenNum.length?OpenNum[OpenNum.length-1].IssueNo:0
