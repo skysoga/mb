@@ -1119,33 +1119,9 @@ $SSC-BG-color:#e1d9bc;
     }
   }
   .son-of-tcnav{
-    width: 100%;
-    float: left;
     background: $SSC-BG-color;
     ul{
-      display: flex;
       border-top: 1px solid $SSC-border-color;
-      li{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 2.2em;
-        font-size: .85em;
-        em{
-          display: block;
-          width: 4.8em;
-          height: 2.1em;
-          line-height: 2.1em;
-          border-radius: .2em;
-        }
-      }
-      .curr-son{
-        color: #df303f;
-        em{
-          color:white;
-          background:#df303f; 
-        }
-      }
     }
   }
   .vuetable{
@@ -1210,10 +1186,7 @@ $SSC-BG-color:#e1d9bc;
     line-height: 1.4em !important;
     color:white;
   }
-  .open-num{
-    background: #5a7d36;
-  }
-  .da{
+  .da,.open-num{
     background: #df303f;
   }
   .xiao{

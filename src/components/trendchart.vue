@@ -180,7 +180,33 @@ export default{
   }
 }
 .son-of-tcnav{
+  width: 100%;
+  float: left;
   height: 1.87em;
+  ul{
+    display: flex;
+    li{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 2.2em;
+      font-size: .85em;
+      em{
+        display: block;
+        width: 4.8em;
+        height: 2.1em;
+        line-height: 2.2em;
+        border-radius: .2em;
+      }
+    }
+    .curr-son{
+      color: #df303f;
+      em{
+        color:white;
+        background:#df303f; 
+      }
+    }
+  }
 }
 .tc-back-btn,.tc-title,.lottery-type{
   position: absolute;
