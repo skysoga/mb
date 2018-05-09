@@ -290,11 +290,4 @@ export default{
     box-shadow: 0 -2px 0 inset;
   }
 }
-.msg{
-  height: 2.5em;
-  text-align: center;
-  font-size: 0.7em;
-  padding: 1.9em 0;
-  color: #4c4c4c;
-}
 </style>
