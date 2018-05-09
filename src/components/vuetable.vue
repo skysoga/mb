@@ -1,10 +1,12 @@
 <template>
   <div ref="vuetable" class="vuetable">
-    <div ref="titleContainer" class="title-container">
-      <ul ref="titleList" class="title-list fix" :style="{width:(maxWidth+widthArr[0])+'px'}">
-        <li v-for="(d,i) in titles" :style="{width:(widthArr[i]>1)?(widthArr[i]+'px'):'auto'}"><em>{{d}}</em></li>
-        <div v-if="widthArr.length>0" class="vuetable-corner" :style="{width:(widthArr[0]>1)?(widthArr[0]+'px'):'0',position: 'absolute'}"><em>期号</em></div>
-      </ul>
+    <div class="title-container">
+      <div ref="titleContainer" class="title-container-position">
+        <ul ref="titleList" class="title-list fix" :style="{width:(maxWidth+widthArr[0])+'px'}">
+          <li v-for="(d,i) in titles" :style="{width:(widthArr[i]>1)?(widthArr[i]+'px'):'auto'}"><em>{{d}}</em></li>
+          <div v-if="widthArr.length>0" class="vuetable-corner" :style="{width:(widthArr[0]>1)?(widthArr[0]+'px'):'0',position: 'absolute'}"><em>期号</em></div>
+        </ul>
+      </div>
     </div>
     <div class="table-body fix" @scroll="getDataNext" >
       <ul ref="columns" class="columns" :style="{width:(widthArr[0]>1)?(widthArr[0]+'px'):'auto'}">
@@ -168,11 +170,13 @@ export default{
 }
 .title-container{
   width: 100%;
-  overflow: auto;
-  pointer-events: none;
   position: fixed;
   top: 4.3em;
   z-index: 2;
+}
+.title-container-position{
+  overflow: auto;
+  pointer-events: none;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -203,6 +207,7 @@ export default{
   display: flex;
   align-items:center;
   text-align: center;
+  z-index: 2;
   em{
     font-size: .7em;
     display: block;
@@ -254,7 +259,7 @@ export default{
   display:block;
   width:auto;
   height:auto;
-  z-index: 99;
+  z-index: 1;
   left: 0;
   top:0;
 }

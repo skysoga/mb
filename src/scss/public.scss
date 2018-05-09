@@ -1018,6 +1018,9 @@ $K3-border-color:#3a7f62;
   }
   .vuetable{
     color:#c9ebd0;
+    .title-container{
+      background: $K3-BG-color;
+    }
   }
   .table-body{
     .columns{
