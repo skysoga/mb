@@ -2,7 +2,7 @@
   <div ref="trendchart" class="trendchart-container" :class="$store.state.LotteryType"><!-- K3:代表K3彩种 -->
     <div>
     <div class="tc-title">
-      <em>走势图</em>
+      <em>{{lotteryName}}走势图</em>
       <div class="tc-back-btn" @click="$store.state.ShowTrendchart = 0"></div>
     </div>
     <div style="display: none;" class="lottery-type"><em>大发</em></div>
