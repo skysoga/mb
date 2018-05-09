@@ -218,23 +218,24 @@ export default{
 }
 .tc-back-btn{
   width: 4em;
-  padding-left: .4em;
   z-index: 2;
   right: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid #ffffff59;
+  border-radius: 2em;
+  width: 3em;
+  height: 1.5em;
+  transform: translate(-.4em,.4em);
   &:before{
     content: '\E66E';
     font-family: 'iconfont';
     font-size: .9em;
-    border: 1px solid #ffffff59;
-    width: 3em;
-    height: 1.5em;
-    border-radius: 2em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    height: 1em;
+    line-height: 1em;
+    display: block;
+    transform:translateY(-.05em);
   }
 }
 .tc-title{
