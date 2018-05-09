@@ -993,6 +993,15 @@ body > * {
       top: 6.17em;
     }
   }
+  .msg{
+    height: 2.5em;
+    text-align: center;
+    font-size: 0.7em;
+    padding: 1.9em 0;
+  }
+  .svgLoad{
+    fill:#ffffff;
+  }
 }
 
 $K3-BG-color:#2f5542;
@@ -1011,6 +1020,9 @@ $K3-border-color:#3a7f62;
   .tc-content-container{
     background: #2f5542;
     color:white;
+    .msg{
+      color: #FDFBFB;
+    }
   }
   .type1{
     .title-list{
@@ -1112,6 +1124,9 @@ $SSC-BG-color:#e1d9bc;
   .tc-content-container{
     background: $SSC-BG-color;
     color:#333;
+    .msg{
+      color: #4c4c4c;
+    }
   }
   .type1{
     .title-list{
@@ -1209,7 +1224,7 @@ $SSC-BG-color:#e1d9bc;
     background:#bb9431;
   }
   .santonghao{
-    background:#448ed9;
+    background:#578b0d;
   }
 }
 

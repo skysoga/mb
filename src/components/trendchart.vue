@@ -18,7 +18,7 @@
     </div>
     <!-- type1:代表第一个查看方式（开奖记录、号码走势、和值走势、形态走势） -->
     <div class="tc-content-container" :class="{['type'+showType]:1,hasson:AllList.Title&&AllList.Title[NavType].Nav}">
-      <div class="msg noMore" v-if="!getData" v-html="msg[0]"></div>
+      <div class="msg noMore" v-if="getData" v-html="msg[0]"></div>
       <vuetable ref="vuetable" :height="contentHeight" :datas="getData" :titles="gettitles" :Trend="Trend" :columns="getcolumns">
         <ul v-if="$refs.vuetable&&getData" slot="datas" v-for="d in getData" class="fix">
           <li v-for="(e,i) in d" :style="{width:($refs.vuetable.widthArr[i+1]>1)?($refs.vuetable.widthArr[i+1]+'px'):'auto'}">
@@ -288,12 +288,5 @@ export default{
   .curr{
     box-shadow: 0 -2px 0 inset;
   }
-}
-.msg{
-  height: 2.5em;
-  text-align: center;
-  font-size: 0.7em;
-  padding: 1.9em 0;
-  color: #4c4c4c;
 }
 </style>
