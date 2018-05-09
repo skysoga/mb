@@ -6,7 +6,7 @@
         <div v-if="widthArr.length>0" class="vuetable-corner" :style="{width:(widthArr[0]>1)?(widthArr[0]+'px'):'0',position: 'absolute'}"><em>期号</em></div>
       </ul>
     </div>
-    <div class="table-body fix" @scroll="getDataNext" :style="{height:scrollHeight+'px'}">
+    <div class="table-body fix" @scroll="getDataNext" >
       <ul ref="columns" class="columns" :style="{width:(widthArr[0]>1)?(widthArr[0]+'px'):'auto'}">
         <li v-for="d in columns"><em>{{d.IssueNo}}</em></li>
       </ul>
@@ -171,6 +171,9 @@ export default{
   width: 100%;
   overflow: auto;
   pointer-events: none;
+  position: fixed;
+  top: 4.3em;
+  z-index: 2;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -208,7 +211,7 @@ export default{
   }
 }
 .table-body{
-  overflow: auto;
+  overflow: hidden;
   .columns{
     text-align: center;
     float:left;

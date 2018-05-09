@@ -10,14 +10,14 @@
       <ul class="fix">
         <li v-for="n in AllList.Title" :class="{curr:NavType===n.NavType}" @click="changeShowType(n.Key,n.NavType,n.SubType)"><em>{{n.Name}}</em></li>
       </ul>
-      <div class="son-of-tcnav">
-        <ul class="fix" v-if="AllList.Title&&AllList.Title[NavType].Nav">
+      <div class="son-of-tcnav" v-if="AllList.Title&&AllList.Title[NavType].Nav">
+        <ul class="fix">
           <li :class="{'curr-son':SubType===n.SubType}" v-for="n in AllList.Title[NavType].Nav"  @click="changeShowType(n.Key,n.NavType,n.SubType)"><em>{{n.Name}}</em></li>
         </ul>
       </div>
     </div>
     <!-- type1:代表第一个查看方式（开奖记录、号码走势、和值走势、形态走势） -->
-    <div class="tc-content-container" :class="'type'+showType">
+    <div class="tc-content-container" :class="{['type'+showType]:1,hasson:AllList.Title&&AllList.Title[NavType].Nav}">
       <vuetable ref="vuetable" :height="contentHeight" :datas="getData" :titles="gettitles" :Trend="Trend" :columns="getcolumns">
         <ul v-if="$refs.vuetable&&getData" slot="datas" v-for="d in getData" class="fix">
           <li v-for="(e,i) in d" :style="{width:($refs.vuetable.widthArr[i+1]>1)?($refs.vuetable.widthArr[i+1]+'px'):'auto'}">
@@ -169,14 +169,22 @@ export default{
 </script>
 <style lang="scss" scoped>
 .trendchart-container{
-  height: 100%;
+  // height: 100%;
+}
+.tc-content-container{
+  padding-top:5.7em;
+  &.hasson{
+    padding-top:7.57em;
+  }
+}
+.son-of-tcnav{
+  height: 1.87em;
 }
 .tc-back-btn,.tc-title,.lottery-type{
   position: absolute;
   margin-top:-2.3em;
   height: 2.3em;
   line-height: 1em;
-  background: black;
   line-height: 2.3em;
   color: white;
 }
@@ -202,9 +210,13 @@ export default{
   }
 }
 .tc-title{
+  position: fixed;
+  top:2.3em;
+  left: 0;
   width: 100%;
   text-align: center;
-  z-index: 1;
+  z-index: 19999999;
+  background: black;
   em{
     width: 10em;
     display: inline-block;
@@ -227,8 +239,10 @@ export default{
 .tc-nav{
   height: 2em;
   line-height: 2em;
-  position: relative;
+  position: fixed;
   z-index: 2;
+  top:2.3em;
+  width: 100%;
   >ul li em{
     height: 2.85714em;
   }
