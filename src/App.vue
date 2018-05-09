@@ -61,11 +61,11 @@
 @import './scss/public.scss';
 @font-face {
   font-family: 'iconfont';  /* project id 380333 */
-  src: url('//at.alicdn.com/t/font_380333_nxuc98lvdqxs9k9.eot');
-  src: url('//at.alicdn.com/t/font_380333_nxuc98lvdqxs9k9.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_380333_nxuc98lvdqxs9k9.woff') format('woff'),
-  url('//at.alicdn.com/t/font_380333_nxuc98lvdqxs9k9.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_380333_nxuc98lvdqxs9k9.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_380333_4deepb102pj5rk9.eot');
+  src: url('//at.alicdn.com/t/font_380333_4deepb102pj5rk9.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_380333_4deepb102pj5rk9.woff') format('woff'),
+  url('//at.alicdn.com/t/font_380333_4deepb102pj5rk9.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_380333_4deepb102pj5rk9.svg#iconfont') format('svg');
 }
 html{
   height: 100%;
@@ -313,24 +313,5 @@ body{
 }
 .layerCenter{
   text-align: center;
-}
-
-.trendchart{
-  position: fixed;
-  left: 0;
-  top: 2.3em;
-  width: 100%;
-  height: 100%;
-  background: white;
-  z-index: 110;
-  transform:translateX(0);
-}
-.trendchart-enter-active, .trendchart-leave-active {
-  transform:translateX(0);
-  // height: $face-height;
-  transition: .3s;
-}
-.trendchart-enter, .trendchart-leave-to{
-  transform:translateX(100%);
 }
 </style>

@@ -2993,3 +2993,22 @@ $SSC-BG-color:#e1d9bc;
   padding-top: 2.3em;
   padding-bottom: 0;
 }
+
+.trendchart{
+  position: fixed;
+  left: 0;
+  top: 2.3em;
+  width: 100%;
+  height: 100%;
+  background: white;
+  z-index: 151;
+  transform:translateY(0);
+}
+.trendchart-enter-active, .trendchart-leave-active {
+  transform:translateY(0);
+  // height: $face-height;
+  transition: .3s;
+}
+.trendchart-enter, .trendchart-leave-to{
+  transform:translateY(100%);
+}

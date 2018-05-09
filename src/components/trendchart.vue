@@ -1,8 +1,10 @@
 <template>
   <div ref="trendchart" class="trendchart-container" :class="$store.state.LotteryType"><!-- K3:代表K3彩种 -->
     <div>
-    <div class="tc-back-btn" @click="$store.state.ShowTrendchart = 0"></div>
-    <div class="tc-title"><em>走势图</em></div>
+    <div class="tc-title">
+      <em>走势图</em>
+      <div class="tc-back-btn" @click="$store.state.ShowTrendchart = 0"></div>
+    </div>
     <div style="display: none;" class="lottery-type"><em>大发</em></div>
     <div class="tc-nav">
       <ul class="fix">
@@ -182,13 +184,24 @@ export default{
   width: 4em;
   padding-left: .4em;
   z-index: 2;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   &:before{
-    content:'\e60a';
+    content: '\E66E';
     font-family: 'iconfont';
+    font-size: .9em;
+    border: 1px solid #ffffff59;
+    width: 3em;
+    height: 1.5em;
+    border-radius: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 .tc-title{
-  pointer-events: none;
   width: 100%;
   text-align: center;
   z-index: 1;
@@ -216,6 +229,9 @@ export default{
   line-height: 2em;
   position: relative;
   z-index: 2;
+  >ul li em{
+    height: 2.85714em;
+  }
   ul{
     li{
       width: 25%;
@@ -228,7 +244,7 @@ export default{
     }
   }
   .curr{
-    box-shadow: 0 2px 0;
+    box-shadow: 0 -2px 0 inset;
   }
 }
 </style>
