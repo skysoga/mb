@@ -4,9 +4,9 @@
       <div ref="titleContainer" class="title-container-position">
         <ul ref="titleList" class="title-list fix" :style="{width:(maxWidth+widthArr[0])+'px'}">
           <li v-for="(d,i) in titles" :style="{width:(widthArr[i]>1)?(widthArr[i]+'px'):'auto'}"><em>{{d}}</em></li>
-          <div v-if="widthArr.length>0" class="vuetable-corner" :style="{width:(widthArr[0]>1)?(widthArr[0]+'px'):'0',position: 'absolute'}"><em>期号</em></div>
         </ul>
       </div>
+      <div v-if="widthArr.length>0" class="vuetable-corner" :style="{width:(widthArr[0]>1)?(widthArr[0]+'px'):'0',position: 'absolute',left:0, top:0}"><em>期号</em></div>
     </div>
     <div class="table-body fix" @scroll="getDataNext" >
       <ul ref="columns" class="columns" :style="{width:(widthArr[0]>1)?(widthArr[0]+'px'):'auto'}">
@@ -134,6 +134,7 @@ export default{
       font-size: .7em;
       display: block;
       width: 100%;
+      white-space: nowrap;
     }
   }
 }

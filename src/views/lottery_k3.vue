@@ -77,7 +77,7 @@
         <td><span class="light">{{item.bigOrSmall}}</span></td>
         <td><span class="light">{{item.singleOrDouble}}</span></td>
       </tr>
-      <tr><td class="k3-trendchart-btn" colspan="5" @click="$store.state.ShowTrendchart = !$store.state.ShowTrendchart">查看更多走势</td></tr>
+      <div class="k3-trendchart-btn-c"><div class="k3-trendchart-btn" @click="$store.state.ShowTrendchart = !$store.state.ShowTrendchart"><em>查看更多走势</em></div></div>
     </table>
 
     <!-- 我的投注 -->
