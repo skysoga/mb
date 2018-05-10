@@ -1021,10 +1021,7 @@ body > * {
     text-align: center;
     font-size: 0.7em;
     padding: 1.9em 0;
-  }
-  .svgLoad{
-    fill:#ffffff;
-  }
+  }  
 }
 
 $K3-BG-color:#2f5542;
@@ -1044,7 +1041,10 @@ $K3-border-color:#3a7f62;
     background: #2f5542;
     color:white;
     .msg{
-      color: #FDFBFB;
+      color: white;
+    }
+    .svgLoad{
+      fill:white;
     }
   }
   .type1{
