@@ -3089,6 +3089,8 @@ $SSC-BG-color:#e1d9bc;
 
 .trendchart{
   width: 100%;
+  position: absolute;
+  top: 0;
   background: white;
   z-index: 151;
   min-height: 100%;
