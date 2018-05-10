@@ -18,6 +18,7 @@
         </div>
         <div class="ChartCanvas" ref="ChartCanvas" id="ChartCanvas" v-if="Trend"></div>
       </div>
+      <div class="table-msg" v-if="datas&&columns">已显示最近{{columns.length}}期走势</div>
     </div>
   </div>
 </template>

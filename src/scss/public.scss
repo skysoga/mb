@@ -1088,6 +1088,16 @@ $K3-border-color:#3a7f62;
       border-right: 1px solid $K3-border-color;
     }
   }
+  .table-msg{
+    float: left;
+    width: 100%;
+    display: block;
+    font-size: .7em;
+    padding: 0.9em 0;
+    text-align: center;
+    // line-height: 2em;
+    border-top:1px solid #3a7f62;
+  }
   .chonghao{
     font-size: .45em;
     position: absolute;
@@ -1204,6 +1214,16 @@ $SSC-BG-color:#e1d9bc;
         }
       }
     }
+  }
+  .table-msg{
+    float: left;
+    width: 100%;
+    display: block;
+    font-size: .7em;
+    padding: 0.9em 0;
+    text-align: center;
+    // line-height: 2em;
+    border-top:1px solid #b4ac8c;
   }
   .chonghao{
     font-size: .45em;
