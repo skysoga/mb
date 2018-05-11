@@ -48,7 +48,7 @@ $qingse:#caebda;
 }
 
 .top{
-  z-index: 10;
+  z-index: 105;
   height:map-get($l,top);
   line-height:map-get($l,top);
   background:#000;
@@ -140,6 +140,12 @@ $qingse:#caebda;
         border-color:$glode;
       }
     }
+  }
+  .xiala{
+    font-size: .8em;
+    margin: 0 .2em;
+    line-height: 2.5em;
+    height: 2.5em;
   }
 }
 .State{
