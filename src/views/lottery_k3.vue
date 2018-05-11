@@ -59,7 +59,7 @@
     </div>
 
     <!-- timebar -->
-    <div v-if = "$store.state.lt.NowIssue" @click.stop = "togglePastOpen">
+    <div v-if = "$store.state.lt.NowIssue" @click.stop = "toggleBetRecord">
       <p>{{nowIssue}}期投注截止</p>
       <div class="k3-timebar">{{TimeBar}}</div>
     </div>
@@ -81,7 +81,7 @@
     </table>
 
     <!-- 我的投注 -->
-    <table class="myBet" style="display: block" v-show = "ifShowBetRecord">
+<!--     <table class="myBet" style="display: block" v-show = "ifShowBetRecord">
       <tr><td>期号</td> <td>投注金额</td><td>奖金</td></tr>
       <tr v-for = "item in BetRecord">
         <td>{{item.issueNo.length < 7 ? item.issueNo : item.issueNo.slice(4)}}</td>
@@ -89,7 +89,7 @@
           {{item.normal_money}}
         </td>
         <td>{{item.openState}}</td>
-      </tr>
+      </tr> -->
     </table>
   </section>
 

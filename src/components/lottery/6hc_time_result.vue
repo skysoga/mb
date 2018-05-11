@@ -27,7 +27,7 @@
   </div>
 
   <!-- 倒计时 -->
-  <div class="timebar"  v-if = "$store.state.lt.NowIssue"  @click.stop = "togglePastOpen"  >
+  <div class="timebar"  v-if = "$store.state.lt.NowIssue"  @click.stop = "toggleBetRecord"  >
     <div class = "timebar-issue">
       <p>{{nowIssue}}期</p>
       <p>投注截止</p>
@@ -92,7 +92,12 @@ export default {
       }else{
         this.$store.commit('lt_changeBox', 'pastOpen')
       }
-    }
+    },
+    toggleBetRecord(){
+      this.$store.state.lt.box === 'BetRecord' ?
+         this.$store.commit('lt_changeBox', '') :
+           this.$store.commit('lt_changeBox', 'BetRecord')
+    },
   },
   created(){
     function circle(numStr){

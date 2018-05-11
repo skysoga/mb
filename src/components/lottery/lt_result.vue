@@ -1,6 +1,6 @@
 <template>
   <div class="lotteryCloseItem line-white-before- fix" v-if = "$store.state.lt.OldIssue" :class = "{open:ifShowPastOpen}">
-    <div class="lotteryClose" @click.stop = "togglePastOpen">
+    <div class="lotteryClose" @click.stop="togglePastOpen">
       <span>{{oldIssue}}期开奖号码<i class="iconfont">&#xe601;</i></span>
       <!-- 开奖号码 -->
       <div class="openNumber-01">
