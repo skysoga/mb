@@ -61,11 +61,8 @@
       LotteryK3,
       Lottery6HC,
       NewK3,
-<<<<<<< HEAD
       betandchase,
-=======
       trendchart,
->>>>>>> 走势图
     },
     beforeRouteEnter(to, from, next){
       // 将滚动置顶
