@@ -1150,6 +1150,11 @@ $SSC-BG-color:#e1d9bc;
   .tc-nav{
     background: $SSC-BG-color;
     color:#333;
+    ul{
+      li{
+        width:33.33% !important;
+      }
+    }
     .curr{
       color:#df303f;
     }
