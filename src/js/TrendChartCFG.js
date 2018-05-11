@@ -445,12 +445,12 @@ function mathNum(x1, y1, x2, y2, r) {
 
 var NavCfg={
   'K3':{
-    Title:[{Name:'号码记录',Key:0,NavType:0,SubType:0,List:Title.K3KJJL},{Name:'号码走势',Key:1,NavType:1,SubType:0,List:Title.K3HMZS},{Name:'和值走势',Key:2,NavType:2,SubType:0,List:Title.K3HZZS},{Name:'形态走势',Key:3,NavType:3,SubType:0,List:Title.K3XTZS}],
+    Title:[{Name:'开奖记录',Key:0,NavType:0,SubType:0,List:Title.K3KJJL},{Name:'号码走势',Key:1,NavType:1,SubType:0,List:Title.K3HMZS},{Name:'和值走势',Key:2,NavType:2,SubType:0,List:Title.K3HZZS},{Name:'形态走势',Key:3,NavType:3,SubType:0,List:Title.K3XTZS}],
     Body:[],
     fun:[[KaiJiang,HeZhi,HeDaXiao,HeDanShuang],[KaiJiang,HeZhi,KuaDu,FengBu],[KaiJiang,HeDaXiao,HeDanShuang,Chart],[KaiJiang,SanTongHao,SanBuTong,SanLianHao]]
   },
   'SSC':{
-    Title:[{Name:'号码记录',Key:0,NavType:0,SubType:0,List:Title.SSCKJJL},{Name:'号码走势',Key:1,NavType:1,SubType:0,List:Title.SSCHMZS,Nav:[{Name:'万位走势',Key:1,NavType:1,SubType:0,List:Title.SSCHMZS},{Name:'千位走势',Key:2,NavType:1,SubType:1,List:Title.SSCHMZS},{Name:'百位走势',Key:3,NavType:1,SubType:2,List:Title.SSCHMZS},{Name:'十位走势',Key:4,NavType:1,SubType:3,List:Title.SSCHMZS},{Name:'个位走势',Key:5,NavType:1,SubType:4,List:Title.SSCHMZS}]},{Name:'龙虎斗',Key:6,NavType:2,SubType:0,List:Title.SSCLHD}],
+    Title:[{Name:'开奖记录',Key:0,NavType:0,SubType:0,List:Title.SSCKJJL},{Name:'号码走势',Key:1,NavType:1,SubType:0,List:Title.SSCHMZS,Nav:[{Name:'万位走势',Key:1,NavType:1,SubType:0,List:Title.SSCHMZS},{Name:'千位走势',Key:2,NavType:1,SubType:1,List:Title.SSCHMZS},{Name:'百位走势',Key:3,NavType:1,SubType:2,List:Title.SSCHMZS},{Name:'十位走势',Key:4,NavType:1,SubType:3,List:Title.SSCHMZS},{Name:'个位走势',Key:5,NavType:1,SubType:4,List:Title.SSCHMZS}]},{Name:'龙虎斗',Key:6,NavType:2,SubType:0,List:Title.SSCLHD}],
     Body:[],
     fun:[[SSCKaiJiang,dxdsWan,dxdsQian,dxdsBai,dxdsShi,dxdsGe],[WanDaXiao,WanDanShuang,WanZhihe,WanChart],[QianDaXiao,QianDanShuang,QianZhihe,QianChart],[BaiDaXiao,BaiDanShuang,BaiZhihe,BaiChart],[ShiDaXiao,ShiDanShuang,ShiZhihe,ShiChart],[GeDaXiao,GeDanShuang,GeZhihe,GeChart],[WanQianLh,WanBaiLh,WanShiLh,WanGeLh,QianBaiLh,QianShiLh,QianGeLh,BaiShiLh,BaiGeLh,ShiGeLh]]
   },
