@@ -75,7 +75,7 @@ function HeDaXiao(key,type){
   var str=''
   switch(type){
     case 'K3':
-    str=num>11?'大':'小'
+    str=num>10?'大':'小'
     break;
     case 'SSC':
     str=num>22?'大':'小'
