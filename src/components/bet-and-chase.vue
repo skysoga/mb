@@ -7,7 +7,7 @@
     </div>
     <div class="betboxlist">
       <betbox v-for="d in 5"></betbox>
-      <div class="msg noMore">更多记录请到"<a href="/userCenter" class="" id="account">我的账户</a>"查看</div>
+      <div class="msg noMore">更多记录请到"<router-link to="/userCenter" class="" id="account">我的账户</router-link>"查看</div>
     </div>
   </div>
 </template>
