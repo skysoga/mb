@@ -1315,14 +1315,14 @@ $SSC-BG-color:#e1d9bc;
 }
 .k3-timebar{
   position: relative;
-  &:after{
-    position: absolute;
-    right: .4em;
-    top:0;
-    content:'\e66d';
-    font-family: 'iconfont';
-    transform:scale(.6);
-  }
+  // &:after{
+  //   position: absolute;
+  //   right: .4em;
+  //   top:0;
+  //   content:'\e66d';
+  //   font-family: 'iconfont';
+  //   transform:scale(.6);
+  // }
 }
 .ssc-timebar{
   position: relative;
