@@ -81,5 +81,7 @@ module.exports = {
     ServiceUrl:'',
     ImgUrl:''
   },
-  URL:''
+  URL:'',
+  ShowTrendchart:0,
+  LotteryType:'',
 }

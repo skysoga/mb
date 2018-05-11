@@ -1,15 +1,21 @@
 <template>
   <div @click = "closeBox" class="lotteryOutCon">
     <!-- 普通彩种 -->
-    <LotteryCommon v-if = "ptype !== 'live' && $route.params.type !== 'K3' && $route.params.type !== '6HC'"></LotteryCommon>
+    <LotteryCommon v-if="ptype !== 'live' && $route.params.type !== 'K3' && $route.params.type !== '6HC'"></LotteryCommon>
     <!-- 快三彩种 -->
-    <LotteryK3 v-if = "ptype !== 'live' && $route.params.type === 'K3'"></LotteryK3>
-
-    <Lottery6HC v-if = "$route.params.type === '6HC'"></Lottery6HC>
-    <NewK3 ref="newk3" v-if = "ptype === 'live'" :lcode="lcode"></NewK3>
+    <LotteryK3 v-if="ptype !== 'live' && $route.params.type === 'K3'"></LotteryK3>
+    <Lottery6HC v-if="$route.params.type === '6HC'"></Lottery6HC>
+    <NewK3 ref="newk3" v-if="ptype === 'live'" :lcode="lcode"></NewK3>
+    
     <transition name="betandchase">
       <div v-if="$store.state.lt.box === 'BetRecord'" class="betandchase">
         <betandchase></betandchase>
+      </div>
+    </transition>
+
+    <transition name="trendchart">
+      <div v-if="$store.state.ShowTrendchart" class="trendchart" :class="$store.state.LotteryType">
+        <trendchart></trendchart>
       </div>
     </transition>
   </div>
@@ -22,6 +28,7 @@
 </style>
 <script>
   import betandchase from '../components/bet-and-chase';
+  import trendchart from '../components/trendchart';
   import LotteryCommon from './lottery_common'
   import LotteryK3 from './lottery_k3'
   import Lottery6HC from './lottery_6hc'
@@ -54,13 +61,18 @@
       LotteryK3,
       Lottery6HC,
       NewK3,
+<<<<<<< HEAD
       betandchase,
+=======
+      trendchart,
+>>>>>>> 走势图
     },
     beforeRouteEnter(to, from, next){
       // 将滚动置顶
       scrollTop()
       //从url上获取彩种type和彩种code
       var [ptype,ltype, lcode] = to.fullPath.slice(1).split('/')
+      state.LotteryType = ltype
       //获取返点
       var getRebate = new Promise(function(resolve, reject){
         var storageName = `Rebate${ltype}`

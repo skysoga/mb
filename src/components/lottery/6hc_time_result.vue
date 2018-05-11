@@ -189,7 +189,7 @@ export default {
   left: 0;
   width: 100%;
   background: #e1d9ba;
-  z-index: 5;
+  z-index: 6;
   height: 3.75em;
 }
 

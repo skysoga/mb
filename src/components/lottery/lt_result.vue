@@ -23,6 +23,7 @@
           </td>
           <td>{{item.OpenTime}}</td>
         </tr>
+        <div class="normal-trendchart-btn-c" v-if="$store.state.LotteryType === 'SSC'"><div class="normal-trendchart-btn" @click="$store.state.ShowTrendchart = !$store.state.ShowTrendchart"><em>查看更多走势</em></div></div>
       </table>
     </template>
   </div>
