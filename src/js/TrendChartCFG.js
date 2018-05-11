@@ -302,8 +302,8 @@ function setNumber(key){
 }
 //和单双
 function HeDanShuang(key,type){
-  var num=HeZhi(key)
-      num=DanShuang(num)
+  var num=getAnd(key)
+      num=DanShuang(+num)
   return num
 }
 //跨度
