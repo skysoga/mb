@@ -43,7 +43,7 @@
 <script>
 import betDetailShow from '../components/betDetailShow'
 export default {
-  props:['betID','UID'],
+  props:['betID','UID','noShow'],
   data(){
     return {
       defaultUID:0,
@@ -55,7 +55,7 @@ export default {
   },
   watch:{
     'betID':function(n,v){
-      this.getList(n,this.UID)
+      !this.noShow&&this.getList(n,this.UID)
     }
   },
   components: {
@@ -117,6 +117,7 @@ export default {
       }
     },
     getList:function(id,uid){
+      if(!id)return;
       _fetch({Action:"GetChaseDetail",ID:id}).then((data)=>{
           if(data.Code===1){
             this.res_data=data.BackData

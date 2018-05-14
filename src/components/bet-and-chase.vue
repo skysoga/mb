@@ -1,28 +1,74 @@
 <template>
   <div class="b-a-c" @click.stop="">
     <div class="b-a-c-top fix">
-      <a @click="toggleBetRecord" class="back"><em class="iconfont">&#xe60a;</em></a>
-      <div class="mybet curr"><em>我的投注</em></div>
-      <div class="mychase"><em>我的追号</em></div>
+      <a @click.stop="toggleBetRecord" class="back"><em class="iconfont">&#xe60a;</em></a>
+      <div :class="['mybet',Type==1&&'curr']" @click.stop="getChange(1)"><em>我的投注</em></div>
+      <div :class="['mychase',Type==2&&'curr']" @click.stop="getChange(2)"><em>我的追号</em></div>
     </div>
     <div class="betboxlist">
-      <betbox v-for="d in 5"></betbox>
-      <div class="msg noMore">更多记录请到"<router-link to="/userCenter" class="" id="account">我的账户</router-link>"查看</div>
+      <betbox v-if="!isShow" :Arr="Arr" :Type="Type"></betbox>
+      <div class="msg noMore" v-else v-html="msg[0]"></div>
+      <div class="msg noMore">更多记录请到"<router-link to="/userCenter" id="account">我的账户</router-link>"查看</div>
     </div>
+    <seekDetailShow v-show="Type===2&&defaultShow" :betID="defaultID" :UID="defaultUID" :noShow="Type!==2"/>
+    <betDetailShow v-show="Type===1&&defaultShow" :betID="defaultID" :UID="defaultUID" :noShow="Type!==1"/>
   </div>
 </template>
 <script>
 import betbox from '../components/betbox';
+import betDetailShow from '../components/betDetailShow';
+import seekDetailShow from '../components/seekDetailShow';
 export default{
   components:{
-    betbox
+    betbox,
+    seekDetailShow,
+    betDetailShow
+  },
+  data(){
+    return{
+      Type:1,
+      Arr:[],
+      isShow:false,
+      defaultUID:0,
+      defaultID:'',
+      defaultShow:false,
+      msg:[this.$store.state.tpl.load + "正在加载..."]
+    }
+  },
+  created(){
+    this.getList(1)
   },
   methods:{
+    getShow(ID,UID){//追号详情
+      this.defaultShow=true
+      this.defaultUID=UID
+      this.defaultID=ID
+    },
     toggleBetRecord(){
       this.$store.state.lt.box === 'BetRecord' ?
          this.$store.commit('lt_changeBox', '') :
            this.$store.commit('lt_changeBox', 'BetRecord')
     },
+    getChange(num){
+      this.defaultUID=0
+      this.defaultID=0
+      this.defaultShow=false
+      if(this.Type==num)return;
+      this.Type=num
+      this.getList(num)
+    },
+    getList(num){
+      this.isShow=true
+      var key=num==1?"GetBetting":"GetChaseBetting"
+      _fetch({Action:key}).then(json=>{
+        if(json.Code==1){
+          this.Arr=json.Data
+          this.isShow=false
+        }else{
+          layer.msgWarn(json.StrCode)
+        }
+      })
+    }
   }
 }
 </script>

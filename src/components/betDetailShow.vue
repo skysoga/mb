@@ -45,7 +45,7 @@ import {getAnimal} from '../js/page_config/lt_6hc'
 import getNatal from '../js/page_config/natal'
 
 export default {
-  props:['betID','UID'],
+  props:['betID','UID','noShow'],
   data(){
     return {
       res_data:{},
@@ -60,7 +60,7 @@ export default {
   },
   watch:{
     'betID':function(n,v){
-      this.getList(n,this.UID)
+      !this.noShow&&this.getList(n,this.UID)
     }
   },
   methods:{
@@ -140,6 +140,7 @@ export default {
       }
     },
     getList:function(id,uid){
+      if(!id)return;
         _fetch({Action:"GetBetDetail",UserId:uid,ID:id}).then((data)=>{
             if(data.Code===1){
             var res_data = data.BackData

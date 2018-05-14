@@ -1,16 +1,39 @@
 <template>
   <div class="betbox">
-    <a class="active">
-      <div>
-        <p>北京快乐8<span>￥210.00</span></p><span>887109 期</span></div>
-        <div class="fr">
-          <strong class="InMoney fr">+14.950</strong>
-          <span class="InMoney fr">已中奖</span>
+    <template v-for="n in Arr">
+      <a class="active" v-if="Type===1" @click.stop="$parent.getShow(n.ID,0)">
+        <div>
+          <p>{{n.lotteryName}}<span>￥{{n.normal_money}}</span></p><span>{{n.issueNo}} 期</span>
         </div>
-    </a>
-    <div class="hr1px hr1px-list"></div>
+        <div class="fr">
+          <strong :class="[getBool(n.openState)&&'InMoney',n.openState==='等待开奖'&&'OutMoney','fr']">{{getBool(n.openState)?('+'+n.openState):n.openState}}</strong>
+          <span class="InMoney fr" v-if="getBool(n.openState)">已中奖</span>
+        </div>
+      </a>
+      <a class="active" @click.stop="$parent.getShow(n.url.split('/')[1],0)" v-else>
+        <div>
+          <p>{{n.LotteryName}}<span>￥{{n.chase_money}}</span></p><span>{{n.AddTime}}</span>
+        </div>
+        <div class="fr">
+          <strong :class="[n.Bonus&&'InMoney',n.state==='未开始'&&'OutMoney','fr']">{{n.state==='未开始'?'未开始':(n.Bonus?('+'+n.Bonus):'未中奖')}}</strong>
+          <span class="fr" v-if="n.state!=='未开始'">{{n.state}}({{n.complete_count}})</span>
+        </div>
+      </a>
+      <div class="hr1px hr1px-list"></div>
+    </template>    
   </div>
 </template>
+<script>
+export default {
+  props:['Arr','Type'],
+  methods:{
+    getBool(key){
+      return key!=='等待开奖'&&key!=='未中奖'
+    }
+  }
+}
+</script>
+
 <style lang="scss">
 .betbox{
   a{
