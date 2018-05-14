@@ -10,8 +10,8 @@
       <div class="msg noMore" v-else v-html="msg[0]"></div>
       <div class="msg noMore">更多记录请到"<router-link to="/userCenter" id="account">我的账户</router-link>"查看</div>
     </div>
-    <seekDetailShow v-show="Type===2&&defaultShow" :betID="defaultID" :UID="defaultUID" :noShow="Type!==2"/>
-    <betDetailShow v-show="Type===1&&defaultShow" :betID="defaultID" :UID="defaultUID" :noShow="Type!==1"/>
+    <seekDetailShow v-show="Type==2&&defaultShow" :betID="defaultID" :UID="defaultUID" :noShow="Type!=2"/>
+    <betDetailShow v-show="Type==1&&defaultShow" :betID="defaultID" :UID="defaultUID" :noShow="Type!=1"/>
   </div>
 </template>
 <script>
@@ -19,10 +19,16 @@ import betbox from '../components/betbox';
 import betDetailShow from '../components/betDetailShow';
 import seekDetailShow from '../components/seekDetailShow';
 export default{
+  porps:['key'],
   components:{
     betbox,
     seekDetailShow,
     betDetailShow
+  },
+  watch:{
+    'key'(n){
+      this.getChange(n)
+    }
   },
   data(){
     return{
@@ -35,8 +41,14 @@ export default{
       msg:[this.$store.state.tpl.load + "正在加载..."]
     }
   },
+  computed:{
+    BetRecord(){      
+      return state.lt.BetRecord
+    }    
+  },
   created(){
-    this.getList(1)
+    this.getBet()
+    this.getChange(this.Type)
   },
   methods:{
     getShow(ID,UID){//追号详情
@@ -53,21 +65,30 @@ export default{
       this.defaultUID=0
       this.defaultID=0
       this.defaultShow=false
-      if(this.Type==num)return;
       this.Type=num
       this.getList(num)
     },
+    getBet(){
+      this.$store.dispatch('lt_updateBetRecord')
+    },
     getList(num){
       this.isShow=true
-      var key=num==1?"GetBetting":"GetChaseBetting"
-      _fetch({Action:key}).then(json=>{
-        if(json.Code==1){
-          this.Arr=json.Data
-          this.isShow=false
-        }else{
-          layer.msgWarn(json.StrCode)
-        }
-      })
+      // this.getBet()
+      if(num===1){
+        this.Arr=this.BetRecord
+        this.isShow=false
+      }else{
+        // var key=num==1?"GetBetting":"GetChaseBetting"
+        var obj={Action:"GetChaseBetting"}
+        _fetch(obj).then(json=>{
+          if(json.Code==1){
+            this.Arr=json.Data
+            this.isShow=false
+          }else{
+            layer.msgWarn(json.StrCode)
+          }
+        })
+      }
     }
   }
 }

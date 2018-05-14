@@ -8,8 +8,8 @@
     <NewK3 ref="newk3" v-if="ptype === 'live'" :lcode="lcode"></NewK3>
     
     <transition name="betandchase">
-      <div v-if="$store.state.lt.box === 'BetRecord'" class="betandchase">
-        <betandchase></betandchase>
+      <div v-show="$store.state.lt.box === 'BetRecord'" class="betandchase">
+        <betandchase :key="BetKey"></betandchase>
       </div>
     </transition>
 
@@ -329,7 +329,7 @@
           tipDisplayFlag: false,  //是否省略玩法
           natal:getNatal(new Date()),
           perbet: PERBET,
-          betRecordRefresh:1,
+          betRecordRefresh:1
         },
         getters: {
           // 本命
@@ -1270,23 +1270,26 @@
                 scrollTop()  //滚动复原
 
                 //投注后自己添记录到“我的投注里”
-                var totalMoney = _basket.map(bet=>bet.betting_money).reduce((a,b)=>a+b)  //本注总金额
-                var issueNo = _basket[0].betting_issuseNo                                  //期号
-                var _betRecord = state.BetRecord.slice(0)
-                var record = {issueNo: issueNo, normal_money:totalMoney.toFixed(2), openState: '等待开奖'}
-                _betRecord.unshift(record)
-                if(_betRecord.length > 5){
-                  _betRecord.length = 5
-                }
+                // var totalMoney = _basket.map(bet=>bet.betting_money).reduce((a,b)=>a+b)  //本注总金额
+                // var issueNo = _basket[0].betting_issuseNo                                  //期号
+                // var _betRecord = state.BetRecord.slice(0)
+                // var record = {issueNo: issueNo, normal_money:totalMoney.toFixed(2), openState: '等待开奖'}
+                // _betRecord.unshift(record)
+                // if(_betRecord.length > 5){
+                //   _betRecord.length = 5
+                // }
 
-                commit('lt_setBetRecord', _betRecord)
+                // commit('lt_setBetRecord', _betRecord)
 
                 // //隔3s获取我的投注
                 // this.timer3 = setTimeout(()=>{
                 //   dispatch('lt_updateBetRecord')
                 // }, 3000)
 
-                layer.confirm(`<span style = "color:red">投注成功</span>，您可以在我的账户查看注单详情`,['继续投注','查看注单'], ()=>{},()=>{this.$router.push('/userCenter')})
+                layer.confirm(`<span style = "color:red">投注成功</span>，您可以在我的账户查看注单详情`,['继续投注','查看注单'], ()=>{},()=>{
+                  // this.$router.push('/userCenter')
+                  this.setChangBox('BetRecord',1)
+                  })
               }else if(json.Code === -9){
                 //清除rebate
                 layer.alert(json.StrCode)
@@ -1314,16 +1317,16 @@
                 scrollTop()  //滚动复原
 
                 //投注后自己添记录到“我的投注里”
-                var totalMoney = basket.map(bet=>bet.betting_money).reduce((a,b)=>a+b)  //本注总金额
-                var issueNo = basket[0].betting_issuseNo                                  //期号
-                var _betRecord = state.BetRecord.slice(0)
-                var record = {issueNo: issueNo, normal_money:totalMoney.toFixed(2), openState: '等待开奖'}
-                _betRecord.unshift(record)
-                if(_betRecord.length > 5){
-                  _betRecord.length = 5
-                }
+                // var totalMoney = basket.map(bet=>bet.betting_money).reduce((a,b)=>a+b)  //本注总金额
+                // var issueNo = basket[0].betting_issuseNo                                  //期号
+                // var _betRecord = state.BetRecord.slice(0)
+                // var record = {issueNo: issueNo, normal_money:totalMoney.toFixed(2), openState: '等待开奖'}
+                // _betRecord.unshift(record)
+                // if(_betRecord.length > 5){
+                //   _betRecord.length = 5
+                // }
 
-                commit('lt_setBetRecord', _betRecord)
+                // commit('lt_setBetRecord', _betRecord)
 
                 success()
 
@@ -1332,7 +1335,10 @@
                 //   dispatch('lt_updateBetRecord')
                 // }, 3000)
 
-                layer.confirm(`<span style = "color:red">投注成功</span>，您可以在我的账户查看注单详情`,['继续投注','查看注单'], ()=>{},()=>{this.$router.push('/userCenter')})
+                layer.confirm(`<span style = "color:red">投注成功</span>，您可以在我的账户查看注单详情`,['继续投注','查看注单'], ()=>{},()=>{
+                  // this.$router.push('/userCenter')
+                  this.setChangBox('BetRecord',1)
+                  })
               }else if(json.Code === -9){
                 //清除rebate
                 layer.alert(json.StrCode)
@@ -1386,7 +1392,11 @@
                 //   dispatch('lt_updateBetRecord')
                 // }, 3000)
 
-                layer.confirm(`<span style = "color:red">投注成功</span>，您可以在我的账户查看注单详情`,['继续投注','查看注单'], ()=>{},()=>{this.$router.push('/userCenter')})
+                layer.confirm(`<span style = "color:red">投注成功</span>，您可以在我的账户查看注单详情`,['继续投注','查看注单'], ()=>{},()=>{
+                  // 我的追号
+                  this.setChangBox('BetRecord',2)
+                  // this.$router.push('/userCenter')
+                  })
               }else if(json.Code === -9){
                 //清除rebate
                 layer.alert(json.StrCode)
@@ -1494,6 +1504,7 @@
         RandomBarrage:[],
         BroadCast:null,
         path:null,
+        BetKey:1
       }
     },
     computed:{
@@ -1503,6 +1514,11 @@
       },
     },
     methods:{
+      //开打1我的投注/2我的追号
+      setChangBox(BetRecord,num){
+        this.$store.state.lt.box = BetRecord
+        this.BetKey=num
+      },
       //点击页面其他部分关闭所有盒子
       closeBox(){
         store.commit('lt_changeBox', '')
