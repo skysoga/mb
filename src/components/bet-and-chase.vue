@@ -34,7 +34,7 @@ export default{
         this.getChase()
       }
       this.Type=n
-      this.getChange(n)      
+      this.getChange(n)
     }    
   },
   data(){
@@ -60,13 +60,14 @@ export default{
     }
   },
   created(){
-    this.Type=this.Types
-    if(this.Type==1){
+    var Type=this.Types
+    this.Type=Type
+    if(Type==1){
       this.getBet()
     }else{
       this.getChase()
     }
-    // this.getChange(this.Type)
+    this.getChange(Type)
   },
   methods:{
     getShow(ID,UID){//追号详情
@@ -84,9 +85,9 @@ export default{
       this.defaultID=0
       this.defaultShow=false      
       this.$parent.BetKey=num
-      if(this.Type==num)return;
-      // this.Type=num
-      this.getList(num)
+      // if(this.Type==num)return;
+      this.Type=num
+      // this.getList(num)
     },
     getBet(){
       this.$store.dispatch('lt_updateBetRecord')
@@ -94,14 +95,14 @@ export default{
     getChase(){
       this.$store.dispatch('lt_updateChaseRecord')
     },
-    getList(num){
-      this.isShow=true
-      if(num===1){
-        this.isShow=false
-      }else{
-       this.isShow=false
-      }
-    }
+    // getList(num){
+    //   this.isShow=true
+    //   if(num===1){
+    //     this.isShow=false
+    //   }else{
+    //    this.isShow=false
+    //   }
+    // }
   }
 }
 </script>

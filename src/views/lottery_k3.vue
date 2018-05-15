@@ -536,6 +536,8 @@ export default {
                   ,()=>{}
                   ,()=>{
                     // this.$router.push('/userCenter')
+                    state.betRecordRefresh = 1
+                    this.$store.dispatch('lt_updateBetRecord')
                     this.$parent.setChangBox('BetRecord',1)
                     })
 
