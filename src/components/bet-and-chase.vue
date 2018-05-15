@@ -33,15 +33,14 @@ export default{
       }else if(n==2){
         this.getChase()
       }
-      setTimeout(()=>{
-        this.getChange(n)
-      },0)
-    }
+      this.Type=n
+      this.getChange(n)      
+    }    
   },
   data(){
     return{
       Type:1,
-      Arr:[],
+      // Arr:[],
       isShow:false,
       defaultUID:0,
       defaultID:'',
@@ -55,12 +54,16 @@ export default{
     },
     ChaseRecord(){
       return state.lt.ChaseRecord
+    },
+    Arr(){
+      return this.Type==1?this.BetRecord:this.ChaseRecord
     }
   },
   created(){
     this.getBet()
     this.getChase()
-    this.getChange(this.Type)
+    this.Type=this.Types
+    // this.getChange(this.Type)
   },
   methods:{
     getShow(ID,UID){//追号详情
@@ -79,9 +82,8 @@ export default{
       this.defaultShow=false      
       if(this.Type==num)return;
       this.$parent.BetKey=num
-      // this.Arr=[]
       this.Type=num
-      this.getList(num)
+      // this.getList(num)
     },
     getBet(){
       this.$store.dispatch('lt_updateBetRecord')
@@ -89,27 +91,14 @@ export default{
     getChase(){
       this.$store.dispatch('lt_updateChaseRecord')
     },
-    getList(num){
-      this.isShow=true
-      // this.getBet()
-      if(num===1){
-        this.Arr=this.BetRecord
-        this.isShow=false
-      }else{
-        this.Arr=this.ChaseRecord
-        this.isShow=false
-        // var key=num==1?"GetBetting":"GetChaseBetting"
-        // var obj={Action:"GetChaseBetting"}
-        // _fetch(obj).then(json=>{
-        //   if(json.Code==1){
-        //     this.Arr=json.Data
-        //     this.isShow=false
-        //   }else{
-        //     layer.msgWarn(json.StrCode)
-        //   }
-        // })
-      }
-    }
+    // getList(num){
+    //   this.isShow=true
+    //   if(num===1){
+    //     this.isShow=false
+    //   }else{
+    //    this.isShow=false
+    //   }
+    // }
   }
 }
 </script>

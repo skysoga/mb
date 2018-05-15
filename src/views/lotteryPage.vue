@@ -8,7 +8,7 @@
     <NewK3 ref="newk3" v-if="ptype === 'live'" :lcode="lcode"></NewK3>
     
     <transition name="betandchase">
-      <div v-show="$store.state.lt.box === 'BetRecord'" class="betandchase">
+      <div v-if="$store.state.lt.box === 'BetRecord'" class="betandchase">
         <betandchase :Types="BetKey"></betandchase>
       </div>
     </transition>
