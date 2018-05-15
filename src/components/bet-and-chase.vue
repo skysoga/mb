@@ -83,8 +83,8 @@ export default{
       this.defaultUID=0
       this.defaultID=0
       this.defaultShow=false      
-      if(this.Type==num)return;
       this.$parent.BetKey=num
+      if(this.Type==num)return;
       // this.Type=num
       this.getList(num)
     },
