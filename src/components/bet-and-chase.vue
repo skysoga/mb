@@ -60,9 +60,12 @@ export default{
     }
   },
   created(){
-    this.getBet()
-    this.getChase()
     this.Type=this.Types
+    if(this.Type==1){
+      this.getBet()
+    }else{
+      this.getChase()
+    }
     // this.getChange(this.Type)
   },
   methods:{
@@ -82,8 +85,8 @@ export default{
       this.defaultShow=false      
       if(this.Type==num)return;
       this.$parent.BetKey=num
-      this.Type=num
-      // this.getList(num)
+      // this.Type=num
+      this.getList(num)
     },
     getBet(){
       this.$store.dispatch('lt_updateBetRecord')
@@ -91,14 +94,14 @@ export default{
     getChase(){
       this.$store.dispatch('lt_updateChaseRecord')
     },
-    // getList(num){
-    //   this.isShow=true
-    //   if(num===1){
-    //     this.isShow=false
-    //   }else{
-    //    this.isShow=false
-    //   }
-    // }
+    getList(num){
+      this.isShow=true
+      if(num===1){
+        this.isShow=false
+      }else{
+       this.isShow=false
+      }
+    }
   }
 }
 </script>
