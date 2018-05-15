@@ -5,9 +5,10 @@
       <div :class="['mybet',Type==1&&'curr']" @click.stop="getChange(1)"><em>我的投注</em></div>
       <div :class="['mychase',Type==2&&'curr']" @click.stop="getChange(2)"><em>我的追号</em></div>
     </div>
-    <div class="betboxlist">
-      <betbox v-if="!isShow" :Arr="Arr" :Type="Type"></betbox>
-      <div class="msg noMore" v-else v-html="msg[0]"></div>
+    <div class='fullPageMsg' v-if="!Arr.length"><div class='fullPageIcon iconfont'>&#xe63c;</div><p>暂无记录</p></div>
+    <div class="betboxlist" v-else>
+        <betbox v-if="!isShow" :Arr="Arr" :Type="Type"></betbox>
+        <div class="msg noMore" v-else v-html="msg[0]"></div>
       <div class="msg noMore">更多记录请到"<router-link to="/userCenter" id="account">我的账户</router-link>"查看</div>
     </div>
     <seekDetailShow v-show="Type==2&&defaultShow" :betID="defaultID" :UID="defaultUID" :noShow="Type!=2"/>
@@ -19,15 +20,22 @@ import betbox from '../components/betbox';
 import betDetailShow from '../components/betDetailShow';
 import seekDetailShow from '../components/seekDetailShow';
 export default{
-  porps:['key'],
+  props:['Types'],
   components:{
     betbox,
     seekDetailShow,
     betDetailShow
   },
   watch:{
-    'key'(n){
-      this.getChange(n)
+    'Types'(n){
+      if(n==1){
+        this.getBet()
+      }else if(n==2){
+        this.getChase()
+      }
+      setTimeout(()=>{
+        this.getChange(n)
+      },0)
     }
   },
   data(){
@@ -42,12 +50,16 @@ export default{
     }
   },
   computed:{
-    BetRecord(){      
+    BetRecord(){
       return state.lt.BetRecord
-    }    
+    },
+    ChaseRecord(){
+      return state.lt.ChaseRecord
+    }
   },
   created(){
     this.getBet()
+    this.getChase()
     this.getChange(this.Type)
   },
   methods:{
@@ -64,12 +76,18 @@ export default{
     getChange(num){
       this.defaultUID=0
       this.defaultID=0
-      this.defaultShow=false
+      this.defaultShow=false      
+      if(this.Type==num)return;
+      this.$parent.BetKey=num
+      // this.Arr=[]
       this.Type=num
       this.getList(num)
     },
     getBet(){
       this.$store.dispatch('lt_updateBetRecord')
+    },
+    getChase(){
+      this.$store.dispatch('lt_updateChaseRecord')
     },
     getList(num){
       this.isShow=true
@@ -78,16 +96,18 @@ export default{
         this.Arr=this.BetRecord
         this.isShow=false
       }else{
+        this.Arr=this.ChaseRecord
+        this.isShow=false
         // var key=num==1?"GetBetting":"GetChaseBetting"
-        var obj={Action:"GetChaseBetting"}
-        _fetch(obj).then(json=>{
-          if(json.Code==1){
-            this.Arr=json.Data
-            this.isShow=false
-          }else{
-            layer.msgWarn(json.StrCode)
-          }
-        })
+        // var obj={Action:"GetChaseBetting"}
+        // _fetch(obj).then(json=>{
+        //   if(json.Code==1){
+        //     this.Arr=json.Data
+        //     this.isShow=false
+        //   }else{
+        //     layer.msgWarn(json.StrCode)
+        //   }
+        // })
       }
     }
   }

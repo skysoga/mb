@@ -3,7 +3,7 @@
 父级传入参数： :betID="defaultID" :UID="defaultUID"
 -->
 <template>
-<div class="layShow">
+<div class="layShow" ref="layShow">
   <div class="topBG">
     <a class="iconfont back" @click="close"></a>
     <div><em>追号详情</em></div>    
@@ -55,6 +55,7 @@ export default {
   },
   watch:{
     'betID':function(n,v){
+      this.$refs.layShow.scrollTop=0
       !this.noShow&&this.getList(n,this.UID)
     }
   },

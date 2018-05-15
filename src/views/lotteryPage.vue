@@ -9,7 +9,7 @@
     
     <transition name="betandchase">
       <div v-show="$store.state.lt.box === 'BetRecord'" class="betandchase">
-        <betandchase :key="BetKey"></betandchase>
+        <betandchase :Types="BetKey"></betandchase>
       </div>
     </transition>
 
@@ -309,6 +309,7 @@
           LotteryPlan:[],    //当前彩种的彩种计划
           LotteryResults:{},//各彩种开奖结果的缓存（包含不同彩种）
           BetRecord:[],      //投注记录
+          ChaseRecord:[],      //追号记录
           PlanLen:0,        //当前彩种的彩种计划长度
           IssueNo:0,        //期号索引:从0开始，到PlanLen-1
           //新增的变量
@@ -329,7 +330,8 @@
           tipDisplayFlag: false,  //是否省略玩法
           natal:getNatal(new Date()),
           perbet: PERBET,
-          betRecordRefresh:1
+          betRecordRefresh:1,//是否请求我的投注
+          ChaseRecordRefresh:1//是否请求我的追号
         },
         getters: {
           // 本命
@@ -466,6 +468,7 @@
             }
           },
           lt_setBetRecord:(state, BetRecord)=>{state.BetRecord =BetRecord;},  //投注记录
+          lt_setChaseRecord:(state, ChaseRecord)=>{state.ChaseRecord =ChaseRecord;},  //我的追号
 
                           /** 通用 **/
           //变更弹出框
@@ -1197,13 +1200,39 @@
             if (needRefresh || state.betRecordRefresh) {
               _fetch({
                 Action:'GetBetting',
-                SourceName:'PC'
+                // SourceName:'PC'
               })
               .then(d=>{
                 if (d.Code === 1) {
                   commit('lt_setBetRecord', d.Data)
                   // this.loaedBetting = 1
                   state.betRecordRefresh = 0
+                }else{
+                  layer.msgWarn(d.StrCode)
+                }
+              })
+            }
+          },
+          //获取追号记录
+          lt_updateChaseRecord:({state,rootState,commit,dispatch})=>{
+            var _ChaseRecord=state.ChaseRecord
+            var needRefresh = 0
+            for (var i = 0; i < _ChaseRecord.length; i++) {
+              if((_ChaseRecord[i].state === '未开始') && (state.NowIssue !== _ChaseRecord[i].issueNo)){
+                needRefresh = 1
+                break;
+              }
+            }
+            if (needRefresh || state.ChaseRecordRefresh) {
+              _fetch({
+                Action:'GetChaseBetting',
+                // SourceName:'PC'
+              })
+              .then(d=>{
+                if (d.Code === 1) {
+                  commit('lt_setChaseRecord', d.Data)
+                  // this.loaedBetting = 1
+                  state.ChaseRecordRefresh = 0
                 }else{
                   layer.msgWarn(d.StrCode)
                 }
@@ -1516,8 +1545,8 @@
     methods:{
       //开打1我的投注/2我的追号
       setChangBox(BetRecord,num){
-        this.$store.state.lt.box = BetRecord
         this.BetKey=num
+        this.$store.state.lt.box = BetRecord
       },
       //点击页面其他部分关闭所有盒子
       closeBox(){
