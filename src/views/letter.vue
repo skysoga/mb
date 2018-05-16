@@ -12,7 +12,7 @@
               <span style="color:#666;">{{item.PosUserName}}</span>
               <span>{{item.Post_Time}}</span>
             </div>
-            <i class="fr iconfont" @click="delLIst(item.ID)">&#xe620;</i>
+            <i class="fr iconfont" v-if="item.Is_Read!==2" @click="delLIst(item.ID)">&#xe620;</i>
           </a>
           <div class="hr1px hr1px-list"></div>
         </div>
