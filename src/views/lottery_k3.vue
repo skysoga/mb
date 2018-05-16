@@ -530,13 +530,12 @@ export default {
                 // this.timer3 = setTimeout(()=>{
                 //   this.$store.dispatch('lt_updateBetRecord')
                 // }, 3000)
-
+                state.lt.betRecordRefresh = 1
                 layer.confirm(`<span style = "color:red">投注成功</span>，您可以在我的账户查看注单详情`
                   ,['继续投注','查看注单']
                   ,()=>{}
                   ,()=>{
-                    // this.$router.push('/userCenter')
-                    state.betRecordRefresh = 1
+                    // this.$router.push('/userCenter')                    
                     this.$store.dispatch('lt_updateBetRecord')
                     this.$parent.setChangBox('BetRecord',1)
                     })

@@ -1314,10 +1314,9 @@
                 // this.timer3 = setTimeout(()=>{
                 //   dispatch('lt_updateBetRecord')
                 // }, 3000)
-
+                state.betRecordRefresh = 1
                 layer.confirm(`<span style = "color:red">投注成功</span>，您可以在我的账户查看注单详情`,['继续投注','查看注单'], ()=>{},()=>{
                   // this.$router.push('/userCenter')
-                  state.betRecordRefresh = 1
                   dispatch('lt_updateBetRecord')                  
                   this.setChangBox('BetRecord',1)
                   })
@@ -1365,11 +1364,10 @@
                 // this.timer3 = setTimeout(()=>{
                 //   dispatch('lt_updateBetRecord')
                 // }, 3000)
-
+                state.betRecordRefresh = 1
                 layer.confirm(`<span style = "color:red">投注成功</span>，您可以在我的账户查看注单详情`,['继续投注','查看注单'], ()=>{},()=>{
                   // this.$router.push('/userCenter')
-                  state.betRecordRefresh = 1
-                  dispatch('lt_updateBetRecord')                  
+                  dispatch('lt_updateBetRecord')
                   this.setChangBox('BetRecord',1)
                   })
               }else if(json.Code === -9){
@@ -1425,10 +1423,10 @@
                 //   dispatch('lt_updateBetRecord')
                 // }, 3000)
 
+                state.ChaseRecordRefresh = 1
                 layer.confirm(`<span style = "color:red">投注成功</span>，您可以在我的账户查看注单详情`,['继续投注','查看注单'], ()=>{},()=>{
                   // 我的追号
-                  state.ChaseRecordRefresh = 1
-                  dispatch('lt_updateChaseRecord')                  
+                  dispatch('lt_updateChaseRecord')
                   this.setChangBox('BetRecord',2)
                   // this.$router.push('/userCenter')
                   })
@@ -1553,6 +1551,9 @@
       setChangBox(BetRecord,num){
         this.BetKey=num
         this.$store.state.lt.box = BetRecord
+      },
+      setBetKey(n){
+        this.BetKey=n
       },
       //点击页面其他部分关闭所有盒子
       closeBox(){

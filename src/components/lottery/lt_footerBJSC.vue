@@ -427,6 +427,7 @@ export default{
             type: 'lt_confirmBet1',
             basket: basket,
             success: function(){
+              that.$parent.$parent.setBetKey(1)
               //清空每注单价
               that.betvalue = ''
             }
