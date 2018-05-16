@@ -59,9 +59,10 @@
     </div>
 
     <!-- timebar -->
-    <div v-if = "$store.state.lt.NowIssue" @click.stop = "toggleBetRecord">
+    <div v-if = "$store.state.lt.NowIssue" @click.stop = "toggleBetRecord" style="position: relative;">
       <p>{{nowIssue}}期投注截止</p>
       <div class="k3-timebar">{{TimeBar}}</div>
+      <div class="betrecord-icon"></div>
     </div>
 
     <!-- 往期开奖结果 -->

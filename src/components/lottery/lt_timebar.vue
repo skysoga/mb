@@ -43,6 +43,7 @@
         </tr>
       </table>
     </template>
+    <div class="betrecord-icon"></div>
   </div>
 </template>
 

@@ -3138,3 +3138,36 @@ $SSC-BG-color:#e1d9bc;
 .betandchase-enter, .betandchase-leave-to{
   transform:translateX(100%);
 }
+.betrecord-icon{
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100% !important;
+  width: 2px;
+  background: #beb58d;
+  display: flex;
+  align-items: center;
+  &:after{
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 0.3em solid transparent;
+    border-right: 0.3em solid #beb58c;
+    border-bottom: 0.3em solid transparent;
+    position: absolute;
+    left: -.2em;
+  }
+}
+.StateStyle2{
+  .betrecord-icon{
+    font-size: 1.5384em;
+  }
+}
+.k3{
+  .betrecord-icon{
+    background: #174430;
+    &:after{
+      border-right: 0.3em solid #174430;
+    }
+  }
+}

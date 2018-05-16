@@ -34,6 +34,7 @@
         <span>{{nowIssue}}期</span>
         <span v-if="results.length > 10">投注截止</span>
         <em>{{TimeBar}}</em>
+        <div class="betrecord-icon"></div>
       </div>
       <ul :class="{'record':true,'open':ifShowPastOpen}">
         <li class="title">
