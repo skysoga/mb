@@ -3143,19 +3143,20 @@ $SSC-BG-color:#e1d9bc;
   right: 0;
   top: 0;
   height: 100% !important;
-  width: 2px;
+  width: 4px;
   background: #beb58d;
   display: flex;
   align-items: center;
   &:after{
-    content: '';
-    width: 0;
-    height: 0;
-    border-top: 0.3em solid transparent;
-    border-right: 0.3em solid #beb58c;
-    border-bottom: 0.3em solid transparent;
-    position: absolute;
-    left: -.2em;
+    content: '\e61e';
+    display: block;
+    font-family: 'iconfont';
+    font-size: 1em;
+    width: 1em;
+    height: 1em;
+    text-align: center;
+    transform: rotate(90deg) translateY(.25em);
+    color: #beb58c;
   }
 }
 .StateStyle2{
@@ -3167,7 +3168,7 @@ $SSC-BG-color:#e1d9bc;
   .betrecord-icon{
     background: #174430;
     &:after{
-      border-right: 0.3em solid #174430;
+      color: #174430;
     }
   }
 }
