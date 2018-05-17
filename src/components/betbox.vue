@@ -5,7 +5,7 @@
         <div>
           <p>{{n.lotteryName}}<span>￥{{n.normal_money}}</span></p><span>{{n.issueNo}} 期</span>
         </div>
-        <strong v-if="!getBool(n.openState)" :class="[n.openState==='等待开奖'&&'OutMoney',n.openState==='已撤单'&&'InMoney']">{{n.openState}}</strong>
+        <strong v-if="!getBool(n.openState)" :class="[n.openState==='等待开奖'&&'OutMoney']">{{n.openState}}</strong>
         <div v-else class="fr">
           <strong :class="['InMoney','fr']">{{'+'+n.openState}}</strong>
           <span class="InMoney fr">已中奖</span>

@@ -97,6 +97,8 @@ export default {
           _fetch({Action:"CancelBet",ID:id}).then((data)=>{
             if(data.Code===1){
               layer.msg(data.StrCode)
+              state.lt.betRecordRefresh = 1
+              vm.$store.dispatch('lt_updateBetRecord')
               vm.res_data.State='已撤单'
             }else {
               layer.msgWarn(data.StrCode)
