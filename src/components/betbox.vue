@@ -15,9 +15,9 @@
         <div>
           <p>{{n.LotteryName}}<span>￥{{n.chase_money}}</span></p><span>{{n.AddTime}}</span>
         </div>
-        <strong :class="[n.state==='未开始'&&'OutMoney']" v-if="n.state==='未开始'||!n.Bonus">{{n.state==='未开始'?'未开始':(!n.Bonus&&'未中奖')}}</strong>
+        <strong :class="[n.state==='未开始'&&'OutMoney']" v-if="n.state==='未开始'">{{n.state}}</strong>
         <div v-else class="fr">
-          <strong :class="['InMoney','fr']">{{'+'+n.Bonus}}</strong>
+          <strong :class="[n.Bonus&&'InMoney','fr']">{{n.Bonus?('+'+n.Bonus):'未中奖'}}</strong>
           <span class="fr">{{n.state}}({{n.complete_count}})</span>
         </div>
       </a>
