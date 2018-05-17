@@ -3140,35 +3140,34 @@ $SSC-BG-color:#e1d9bc;
 }
 .betrecord-icon{
   position: absolute;
+  float: inherit !important;
+  width: 1em !important;
+  display: flex;
+  align-items: center;
   right: 0;
   top: 0;
   height: 100% !important;
-  width: 4px;
-  background: #beb58d;
-  display: flex;
-  align-items: center;
   &:after{
-    content: '\e61e';
     display: block;
     font-family: 'iconfont';
-    font-size: 1em;
-    width: 1em;
-    height: 1em;
-    text-align: center;
-    transform: rotate(90deg) translateY(.25em);
-    color: #beb58c;
+    transform: rotate(90deg);
+    color:#333;
   }
 }
-.StateStyle2{
+.minIsLotteryCon,.lotteryCloseItem,.isLotteryCon{
   .betrecord-icon{
-    font-size: 1.5384em;
+    font-size: 0.65em;
+    &:after{
+      content: "\e601";
+      font-size: 1.08em;
+    }
   }
 }
 .k3{
   .betrecord-icon{
-    background: #174430;
     &:after{
-      color: #174430;
+      content: "\E61E";
+      color:#76bb9f;
     }
   }
 }

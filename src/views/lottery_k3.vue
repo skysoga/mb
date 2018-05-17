@@ -62,7 +62,6 @@
     <div v-if = "$store.state.lt.NowIssue" @click.stop = "toggleBetRecord" style="position: relative;">
       <p>{{nowIssue}}期投注截止</p>
       <div class="k3-timebar">{{TimeBar}}</div>
-      <div class="betrecord-icon"></div>
     </div>
 
     <!-- 往期开奖结果 -->
@@ -92,6 +91,7 @@
         <td>{{item.openState}}</td>
       </tr> -->
     </table>
+    <div class="betrecord-icon"></div>
   </section>
 
   <!-- 玩法区 -->

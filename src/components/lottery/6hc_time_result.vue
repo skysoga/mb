@@ -33,7 +33,6 @@
       <p>投注截止</p>
     </div>
     <h4>{{TimeBar}}</h4>
-    <div class="betrecord-icon"></div>
   </div>
 
   <div class="past-open line-white-before-" v-if = "ifShowPastOpen">
@@ -61,7 +60,7 @@
       </tbody>
     </table>
   </div>
-
+  <div class="betrecord-icon"></div>
 </div>
 </template>
 
