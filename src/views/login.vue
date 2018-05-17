@@ -44,7 +44,7 @@
     </div>
     <div class="otherBtn">
       <router-link class='signup' to = "/register">立即注册</router-link><router-link class='forget' to = "/forgetPwd?Q=ResetPwd">忘记密码</router-link>
-      <span class="downUrl" v-show="isAPP=='ios'">APP下载与修复网址：<em>fa789.com</em></span>
+      <span class="downUrl" v-show="isAPP=='ios'">APP下载与修复网址：<em>https://fa789.com</em></span>
     </div>
     <!-- 区分是否登录记录数据 -->
     <bottom-box v-show = "BottomBoxShow"
