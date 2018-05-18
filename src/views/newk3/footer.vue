@@ -104,7 +104,7 @@
                   // }, 3000)
                   state.lt.betRecordRefresh = 1
 
-                  layer.confirm(`<span style = "color:red">投注成功</span>，您可以在我的账户查看注单详情`
+                  layer.confirm(`<span style = "color:red">投注成功</span>，点击左上角向右箭头可查看投注记录`
                     ,['继续投注','查看注单']
                     ,()=>{}
                     ,()=>{
