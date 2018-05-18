@@ -3141,23 +3141,22 @@ $SSC-BG-color:#e1d9bc;
 .betrecord-icon{
   position: absolute;
   float: inherit !important;
-  width: 2px !important;
+  width: 1.2em !important;
   display: flex;
   align-items: center;
   right: 0;
   top: 0;
   height: 100% !important;
-  background: #beb58d;
+  border-right: 1px solid #beb58d;
+  pointer-events: none;
+  justify-content: flex-end;
   &:after{
     width: 1em;
     height: 1em;
-    position: absolute;
     display: block;
     content:'\e61e';
     font-family: 'iconfont';
-    transform: rotate(90deg);
-    color:#333;
-    margin-left: -0.7em;
+    transform: rotate(90deg) translateY(-0.4em);
     color: #beb58d;
   }
 }
@@ -3171,10 +3170,10 @@ $SSC-BG-color:#e1d9bc;
 }
 .k3{
   .betrecord-icon{
-    right: -1px;
+    border-right: 2px solid #76bb9f !important;
     &:after{
       color:#76bb9f;
-      margin-left: -0.46em;
+      transform: rotate(90deg) translateY(-0.55em);
     }
   }
 }
