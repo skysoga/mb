@@ -1,5 +1,5 @@
 <template>
-  <div class="main table-form main-security">
+  <div class="main main-security main-form">
     <table class="table-form table-security">
       <tbody>
         <!-- 验证登录密码 -->
@@ -88,5 +88,4 @@ export default{
     }
   }
 }
-
 </script>

@@ -1315,7 +1315,7 @@
                 //   dispatch('lt_updateBetRecord')
                 // }, 3000)
                 state.betRecordRefresh = 1
-                layer.confirm(`<span style = "color:red">投注成功</span>，您可以在我的账户查看注单详情`,['继续投注','查看注单'], ()=>{},()=>{
+                layer.confirm(`<span style = "color:red">投注成功</span>，点击右上角向左箭头可查看投注记录`,['继续投注','查看注单'], ()=>{},()=>{
                   // this.$router.push('/userCenter')
                   dispatch('lt_updateBetRecord')                  
                   this.setChangBox('BetRecord',1)
@@ -1365,7 +1365,7 @@
                 //   dispatch('lt_updateBetRecord')
                 // }, 3000)
                 state.betRecordRefresh = 1
-                layer.confirm(`<span style = "color:red">投注成功</span>，您可以在我的账户查看注单详情`,['继续投注','查看注单'], ()=>{},()=>{
+                layer.confirm(`<span style = "color:red">投注成功</span>，点击右上角向左箭头可查看投注记录`,['继续投注','查看注单'], ()=>{},()=>{
                   // this.$router.push('/userCenter')
                   dispatch('lt_updateBetRecord')
                   this.setChangBox('BetRecord',1)
@@ -1424,7 +1424,7 @@
                 // }, 3000)
 
                 state.ChaseRecordRefresh = 1
-                layer.confirm(`<span style = "color:red">投注成功</span>，您可以在我的账户查看注单详情`,['继续投注','查看注单'], ()=>{},()=>{
+                layer.confirm(`<span style = "color:red">投注成功</span>，点击右上角向左箭头可查看投注记录`,['继续投注','查看注单'], ()=>{},()=>{
                   // 我的追号
                   dispatch('lt_updateChaseRecord')
                   this.setChangBox('BetRecord',2)

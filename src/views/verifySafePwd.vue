@@ -26,5 +26,6 @@
     line-height: 1.5em;
     font-size: .7em;
     width: 10rem;
+    margin-bottom: .6em;
   }
 </style>
