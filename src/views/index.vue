@@ -10,14 +10,7 @@
             <router-link v-if="i.Url && i.Url[0]==='/'" :to="setUrl(i.Url,true)"><img :src="s.constant.ImgHost+i.Image"></router-link>
             <a v-else @click="setUrl(i.Url)"><img :src="s.constant.ImgHost+i.Image"></a>
           </template>
-        </swiper-slide>
-        <swiper-slide v-for="i in s.BannerList||s.SysBanner">
-          <a v-if="i.Url==null||i.Url=='null'"><img :src="s.constant.ImgHost+i.Image"></a>
-          <template v-else>
-            <router-link v-if="i.Url && i.Url[0]==='/'" :to="setUrl(i.Url,true)"><img :src="s.constant.ImgHost+i.Image"></router-link>
-            <a v-else @click="setUrl(i.Url)"><img :src="s.constant.ImgHost+i.Image"></a>
-          </template>
-        </swiper-slide>
+        </swiper-slide>        
       </swiper>
     </div>
     <div id="notice" v-if="!s.UserName||(s.NoticeData&&s.NoticeData.length)">
