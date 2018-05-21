@@ -15,7 +15,7 @@
     </div>
     <div id="notice" v-if="!s.UserName||(s.NoticeData&&s.NoticeData.length)">
       <template v-if="s.UserName">
-        <router-link v-for="i in s.NoticeData" class="active" :to="'/NoticeDetail?ID='+i.ID" :key="i"><i class="iconfont gonggao fl"></i><span>{{i.Title}}</span><i class="iconfont right fr"></i></router-link>
+        <router-link v-for="(i, index) in s.NoticeData" class="active" :to="'/NoticeDetail?ID='+i.ID" :key="index"><i class="iconfont gonggao fl"></i><span>{{i.Title}}</span><i class="iconfont right fr"></i></router-link>
       </template>
       <a v-else><i class="iconfont gonggao fl"></i><span>欢迎来到{{s.constant._App?'彩神争霸':s.SiteConfig.Name}}</span></a>
     </div>
