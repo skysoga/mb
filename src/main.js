@@ -180,6 +180,7 @@ import {DAY_TIME, GMT_DIF} from './js/kit'
 require('./js/svga.min')
 import md5 from 'js-md5/build/md5.min'
 var localState={}
+window.md5=md5
 window.Vue=Vue
 Vue.use(Va)
 Vue.use(VueRouter)
