@@ -1,4 +1,4 @@
-const CityJson=require("./CityJson.js")
+import CityJson from "./CityJson.js"
 export default {
   data:()=>{
     return{

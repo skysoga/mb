@@ -1,43 +1,41 @@
-// https://github.com/shelljs/shelljs
-require('shelljs/global')
-env.NODE_ENV = 'production'
+'use strict'
+require('./check-versions')()
 
-var path = require('path')
-var config = require('../config')
-var ora = require('ora')          // 一个很好看的 loading 插件
-var webpack = require('webpack')
-var webpackConfig = require('./webpack.prod.conf')
+process.env.NODE_ENV = 'production'
 
-console.log(      //  输出提示信息 ～ 提示用户请在 http 服务下查看本页面，否则为空白页
-  '  Tip:\n' +
-  '  Built files are meant to be served over an HTTP server.\n' +
-  '  Opening index.html over file:// won\'t work.\n'
-)
+const rm = require('rimraf')
+const path = require('path')
+const config = require('../config')
+const ora = require('ora')          // 一个很好看的 loading 插件
+const chalk = require('chalk')
+const webpack = require('webpack')
+const webpackConfig = require('./webpack.prod.conf')
 
-var spinner = ora('building for production...')  // 使用 ora 打印出 loading + log
+const spinner = ora('building for production...')  // 使用 ora 打印出 loading + log
 spinner.start()                                  // 开始 loading 动画
 
-/* 拼接编译输出文件路径 */
-var assetsPath = path.join(config.build.assetsRoot, config.build.assetsSubDirectory)
-/* 删除这个文件夹 （递归删除） */
-rm('-rf', assetsPath)
-/* 创建此文件夹 */
-mkdir('-p', assetsPath)
-var time = (new Date().getTime()+'').slice(4,9)
-echo(time).to(config.build.assetsRoot+'/iver')
-/* 复制 static 文件夹到我们的编译输出目录 */
-cp('-R', 'static/*', assetsPath)
-
-//  开始 webpack 的编译
-webpack(webpackConfig, function (err, stats) {
-  // 编译成功的回调函数
-  spinner.stop()
+rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
   if (err) throw err
-  process.stdout.write(stats.toString({
-    colors: true,
-    modules: false,
-    children: false,
-    chunks: false,
-    chunkModules: false
-  }) + '\n')
+  webpack(webpackConfig, (err, stats) => {
+    spinner.stop()
+    if (err) throw err
+    process.stdout.write(stats.toString({
+      colors: true,
+      modules: false,
+      children: false, // If you are using ts-loader, setting this to true will make TypeScript errors show up during build.
+      chunks: false,
+      chunkModules: false
+    }) + '\n\n')
+
+    if (stats.hasErrors()) {
+      console.log(chalk.red('  Build failed with errors.\n'))
+      process.exit(1)
+    }
+
+    console.log(chalk.cyan('  Build complete.\n'))
+    console.log(chalk.yellow(
+      '  Tip: built files are meant to be served over an HTTP server.\n' +
+      '  Opening index.html over file:// won\'t work.\n'
+    ))
+  })
 })

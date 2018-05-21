@@ -126,7 +126,7 @@ if((typeof(layer)||typeof(filterXSS))=='undefined'){
   sessionStorage.removeItem('_HT_')
 }
 window._iver=localStorage.getItem('iver')
-var getIver = (function(){
+var getIver = (function()  {
   var time
   return function(s){
     if (!s) {
@@ -178,7 +178,7 @@ import routes from './routes/routes'
 import Va from './plugins/va'
 import {DAY_TIME, GMT_DIF} from './js/kit'
 require('./js/svga.min')
-window.md5=require('./plugins/md5.min')
+import md5 from 'js-md5/build/md5.min'
 var localState={}
 window.Vue=Vue
 Vue.use(Va)

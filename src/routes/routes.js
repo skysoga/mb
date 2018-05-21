@@ -2,24 +2,24 @@ import lottery from './lottery'
 import zhiming from './zhiming'
 import xiaosen from './xiaosen'
 
-const login =require('../views/login')
-const index =require('../views/index')
-const liveList =require('../views/liveList')
-const _redirect =require('../views/newk3/redirect')
-const reload =require('../views/reload')
-const activity =require('../views/activity')
-const newWinners =require('../views/newWinners')
-const center =require('../views/center')
-const userCenter =require('../views/userCenter')
-const service =require('../views/service')
-const notfound =require('../views/notfound')
-const securityCenter =require('../views/securityCenter')
-const lottery_k3 =require('../views/lottery_k3')
-const competition =require('../views/competition')
-const maintain = require('../views/maintain')
-const AppDownload = require('../views/AppDownload')
-const AppPackage = require('../views/AppPackage')
-const lotteryPage = require('../views/lotteryPage')
+import login from '../views/login'
+import index from '../views/index'
+import liveList from '../views/liveList'
+import _redirect from '../views/newk3/redirect'
+import reload from '../views/reload'
+import activity from '../views/activity'
+import newWinners from '../views/newWinners'
+import center from '../views/center'
+import userCenter from '../views/userCenter'
+import service from '../views/service'
+import notfound from '../views/notfound'
+import securityCenter from '../views/securityCenter'
+import lottery_k3 from '../views/lottery_k3'
+import competition from '../views/competition'
+import maintain from '../views/maintain'
+import AppDownload from '../views/AppDownload'
+import AppPackage from '../views/AppPackage'
+import lotteryPage from '../views/lotteryPage'
 
 
 var publicRoute = [
@@ -206,5 +206,4 @@ var routes = [{
 
 routes = routes.concat(lottery).concat(zhiming).concat(xiaosen).concat(publicRoute)
 
-
-module.exports = routes
+export default routes

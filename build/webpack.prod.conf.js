@@ -1,34 +1,38 @@
-var path = require('path')
-var config = require('../config')
-var utils = require('./utils')
-var webpack = require('webpack')
-var merge = require('webpack-merge')
-var baseWebpackConfig = require('./webpack.base.conf')
+'use strict'
+const path = require('path')
+const config = require('../config')
+const utils = require('./utils')
+const webpack = require('webpack')
+const merge = require('webpack-merge')
+const baseWebpackConfig = require('./webpack.base.conf')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 /* 一个 webpack 扩展，可以提取一些代码并且将它们和文件分离开 */
 /* 如果我们想将 webpack 打包成一个文件 css js 分离开，那我们需要这个插件 */
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 /* 一个可以插入 html 并且创建新的 .html 文件的插件 */
-var HtmlWebpackPlugin = require('html-webpack-plugin')
-var env = config.build.env
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+
+const env = process.env.NODE_ENV === 'testing'
+  ? require('../config/test.env')
+  : require('../config/prod.env')
 
 /* 合并 webpack.base.conf.js */
-var webpackConfig = merge(baseWebpackConfig, {
+const webpackConfig = merge(baseWebpackConfig, {
   module: {
-    loaders: utils.styleLoaders({ sourceMap: config.build.productionSourceMap, extract: true })
+    rules: utils.styleLoaders({
+      sourceMap: config.build.productionSourceMap,
+      extract: true,
+      usePostCSS: true
+    })
   },
   /* 是否使用 #source-map 开发工具，更多信息可以查看 DDFE 往期文章 */
-  devtool: config.build.productionSourceMap ? '#source-map' : false,
+  devtool: config.build.productionSourceMap ? config.build.devtool : false,
   output: {
     path: config.build.assetsRoot,  /* 编译输出目录 */
     filename: utils.assetsPath('js/[name].[chunkhash].js'),    /* 编译输出文件名 */
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')  // 没有指定输出名的文件输出的文件名
-  },
-  vue: {
-    /* 编译 .vue 文件时使用的 loader */
-    loaders: utils.cssLoaders({
-      sourceMap: config.build.productionSourceMap,
-      extract: true
-    })
   },
   plugins: [
     // http://vuejs.github.io/vue-loader/workflow/production.html
@@ -37,21 +41,43 @@ var webpackConfig = merge(baseWebpackConfig, {
       'process.env': env
     }),
     /* 压缩 js (同样可以压缩 css) */
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      }
+    new UglifyJsPlugin({
+      uglifyOptions: {
+        compress: {
+          warnings: false,
+          drop_console: true,
+          pure_funcs: ['console.log']
+        }
+      },
+      sourceMap: config.build.productionSourceMap,
+      parallel: true
     }),
-    new webpack.optimize.OccurenceOrderPlugin(),
+    // new webpack.optimize.OccurenceOrderPlugin(),
     // extract css into its own file
     /* 将 css 文件分离出来 */
-    new ExtractTextPlugin(utils.assetsPath('css/[name].[contenthash].css')),
+    new ExtractTextPlugin({
+      filename: utils.assetsPath('css/[name].[contenthash].css'),
+      // Setting the following option to `false` will not extract CSS from codesplit chunks.
+      // Their CSS will instead be inserted dynamically with style-loader when the codesplit chunk has been loaded by webpack.
+      // It's currently set to `true` because we are seeing that sourcemaps are included in the codesplit bundle as well when it's `false`,
+      // increasing file size: https://github.com/vuejs-templates/webpack/issues/1110
+      allChunks: true,
+    }),
+    // Compress extracted CSS. We are using this plugin so that possible
+    // duplicated CSS from different components can be deduped.
+    new OptimizeCSSPlugin({
+      cssProcessorOptions: config.build.productionSourceMap
+        ? { safe: true, map: { inline: false } }
+        : { safe: true }
+    }),
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
     // see https://github.com/ampedandwired/html-webpack-plugin
     /* 输入输出的 .html 文件 */
     new HtmlWebpackPlugin({
-      filename: config.build.index,
+      filename: process.env.NODE_ENV === 'testing'
+        ? 'index.html'
+        : config.build.index,
       template: 'index.html',
       inject: true,        // 是否注入 html
       minify: {            // 压缩的方式
@@ -64,11 +90,15 @@ var webpackConfig = merge(baseWebpackConfig, {
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'
     }),
+    // keep module.id stable when vendor modules does not change
+    new webpack.HashedModuleIdsPlugin(),
+    // enable scope hoisting
+    new webpack.optimize.ModuleConcatenationPlugin(),
     // split vendor js into its own file
      /* 没有指定输出文件名的文件输出的静态文件名 */
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      minChunks: function (module, count) {
+      minChunks (module) {
         // any required modules inside node_modules are extracted to vendor
         return (
           module.resource &&
@@ -84,14 +114,32 @@ var webpackConfig = merge(baseWebpackConfig, {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
       chunks: ['vendor']
-    })
+    }),
+    // This instance extracts shared chunks from code splitted chunks and bundles them
+    // in a separate chunk, similar to the vendor chunk
+    // see: https://webpack.js.org/plugins/commons-chunk-plugin/#extra-async-commons-chunk
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'app',
+      async: 'vendor-async',
+      children: true,
+      minChunks: 3
+    }),
+
+    // copy custom static assets
+    new CopyWebpackPlugin([
+      {
+        from: path.resolve(__dirname, '../static'),
+        to: config.build.assetsSubDirectory,
+        ignore: ['.*']
+      }
+    ])
   ]
 })
 
 /* 开启 gzip 的情况下使用下方的配置 */
 if (config.build.productionGzip) {
    /* 加载 compression-webpack-plugin 插件 */
-  var CompressionWebpackPlugin = require('compression-webpack-plugin')
+  const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
    /* 向webpackconfig.plugins中加入下方的插件 */
   webpackConfig.plugins.push(
@@ -108,6 +156,10 @@ if (config.build.productionGzip) {
       minRatio: 0.8
     })
   )
+}
+if (config.build.bundleAnalyzerReport) {
+  const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+  webpackConfig.plugins.push(new BundleAnalyzerPlugin())
 }
 
 module.exports = webpackConfig
