@@ -43,8 +43,8 @@
                       :to="'/lotteryHall'">
             <p>更多彩种</p>
           </router-link>
-          <li v-for="l in 3-((nowDisplayList.length+1)%3||3)"></li>
         </li>
+        <li v-for="l in 3-((nowDisplayList.length+1)%3||3)"></li>
       </ul>
     </div>
   </div>
