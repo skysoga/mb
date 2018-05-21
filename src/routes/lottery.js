@@ -1,11 +1,11 @@
 //广营负责页面的路由
-const register =require('../views/register')
-const rechargeWay =require('../views/rechargeWay')
-const lotteryHall =require('../views/lotteryHall')
-const lotteryPage = require('../views/lotteryPage')
-// const lottery_common = require('../views/lottery_common')
-// const lottery_k3 = require('../views/lottery_k3')
-// const lottery_syx5 = require('../views/lottery_syx5')
+import register from '../views/register'
+import rechargeWay from '../views/rechargeWay'
+import lotteryHall from '../views/lotteryHall'
+import lotteryPage from '../views/lotteryPage'
+// import lottery_common from '../views/lottery_common'
+// import lottery_k3 from '../views/lottery_k3'
+// import lottery_syx5 from '../views/lottery_syx5'
 
 var routes = [
   {
@@ -50,4 +50,4 @@ var routes = [
   }
 ]
 
-module.exports = routes
+export default routes

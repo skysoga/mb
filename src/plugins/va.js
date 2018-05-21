@@ -301,4 +301,4 @@ va.install = function(Vue, options){
   Vue.prototype.VaConfig = VaConfig
 }
 
-module.exports = va
+export default va

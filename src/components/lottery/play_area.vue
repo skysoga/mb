@@ -1,6 +1,6 @@
 <template>
   <div :class="{'sscMain':true,'quWei':getQW}">
-    <!-- 奖金详情 -->    
+    <!-- 奖金详情 -->
     <div class="sscTips" v-if = "!tipDisplayFlag && tipOverLong">
             <p>
               {{actualTip}}
@@ -16,7 +16,8 @@
             v-for = "alias in ltCfg[mode].render"
             :alias = "alias"
             :awardArr="getAward(alias)"
-            v-on:choose = "whenChoose">
+            v-on:choose = "whenChoose"
+            :key="alias">
             </betbox>
 
 
@@ -143,7 +144,7 @@ export default {
     },
   }),
   methods:{
-    getAward(alias){      
+    getAward(alias){
       return isShowBox.indexOf(this.lottery+this.mode)>-1?this.renderOdds[alias]:[]
     },
     toggleDetail(bool){
@@ -154,7 +155,7 @@ export default {
         return {}
         // layer.msgWarn('奖金不存在')
       }
-      var line=[]      
+      var line=[]
       var award=this.award?this.award.split(" "):[]
       var obj=[]//输出数组
       var objList={}
@@ -201,7 +202,7 @@ export default {
         }
         break;
         case 'L11':
-        var arr=[]        
+        var arr=[]
         line=[2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1]
         for(var i=0;i<10;i++){
           arr.push(award)
@@ -233,13 +234,13 @@ export default {
       return this.setLineOdd(objList,obj)
     },
     setLineOdd(objList,award){
-        var obj={}        
+        var obj={}
         for(var i in objList){
           if(objList.hasOwnProperty(i)){
             obj[i]=[]
             for(var j=0;j<objList[i];j++){
               obj[i].push(award[0])
-              award.splice(0,1)            
+              award.splice(0,1)
             }
           }
       }

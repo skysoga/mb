@@ -1,38 +1,38 @@
-const dailyPrise =require('../views/dailyPrise')//每日加奖
-const upgrade =require('../views/upgrade')//晋级奖励
-const activityInfo =require('../views/activityInfo')//站长活动
-const setPwd =require('../views/setPwd')//设置密码
-const verifyPwd =require('../views/verifyPwd')//修改登录密码
-const verifySafePwd =require('../views/verifySafePwd')//修改安全密码
-const setSafePwd =require('../views/setSafePwd')//设置安全密码
-const verifyMobile =require('../views/verifyMobile')//修改手机
-const setMobile =require('../views/setMobile')//设置手机
-const verifyQuestion =require('../views/verifyQuestion')//修改密码问题
-const setQuestion =require('../views/setQuestion')//设置密保问题
-const verifyMail =require('../views/verifyMail')//修改邮箱
-const setMail =require('../views/setMail')//设置邮箱
-const manageBankcard =require('../views/manageBankcard')//银行卡管理
-const resetWay =require('../views/resetWay')//找回方式
-const forgetPwd =require('../views/forgetPwd')//忘记密码
-const agentCenter =require('../views/agentCenter')//代理中心
-const agentReport =require('../views/agentReport')//代理报表
-const manageInvite =require('../views/manageInvite')//下级开户
-const manageIcode =require('../views/manageIcode')//邀请码
-const personalInfo =require('../views/personalInfo')//个人信息
-const personalLevel =require('../views/personalLevel')//等级头衔
-const PLstatement =require('../views/PLstatement')//今日盈亏
-const setBankcard =require('../views/setBankcard')//设置银行卡
-const verifyBankcard =require('../views/verifyBankcard')//验证银行卡
-const AgentCode =require('../views/AgentCode')//邀请码代理
-const memberCode =require('../views/memberCode')//邀请码玩家
-const withdraw =require('../views/withdraw')//提现
-const rebateDes =require('../views/rebateDes')//返点赔率表
-const tool =require('../views/tool')//清缓存工具
-// const ping =require('../views/ping')//线路检测
-const ArtificialAppeal =require('../views/ArtificialAppeal')//人工申诉
-const ArtificialBank =require('../views/ArtificialBank')//人工申诉-银行卡验证
-const ArtificialPhoto =require('../views/ArtificialPhoto')//人工申诉-核实
-const recharge =require('../views/recharge')//重构充值页
+import dailyPrise from '../views/dailyPrise' //每日加奖
+import upgrade from '../views/upgrade' //晋级奖励
+import activityInfo from '../views/activityInfo' //站长活动
+import setPwd from '../views/setPwd' //设置密码
+import verifyPwd from '../views/verifyPwd' //修改登录密码
+import verifySafePwd from '../views/verifySafePwd' //修改安全密码
+import setSafePwd from '../views/setSafePwd' //设置安全密码
+import verifyMobile from '../views/verifyMobile' //修改手机
+import setMobile from '../views/setMobile' //设置手机
+import verifyQuestion from '../views/verifyQuestion' //修改密码问题
+import setQuestion from '../views/setQuestion' //设置密保问题
+import verifyMail from '../views/verifyMail' //修改邮箱
+import setMail from '../views/setMail' //设置邮箱
+import manageBankcard from '../views/manageBankcard' //银行卡管理
+import resetWay from '../views/resetWay' //找回方式
+import forgetPwd from '../views/forgetPwd' //忘记密码
+import agentCenter from '../views/agentCenter' //代理中心
+import agentReport from '../views/agentReport' //代理报表
+import manageInvite from '../views/manageInvite' //下级开户
+import manageIcode from '../views/manageIcode' //邀请码
+import personalInfo from '../views/personalInfo' //个人信息
+import personalLevel from '../views/personalLevel' //等级头衔
+import PLstatement from '../views/PLstatement' //今日盈亏
+import setBankcard from '../views/setBankcard' //设置银行卡
+import verifyBankcard from '../views/verifyBankcard' //验证银行卡
+import AgentCode from '../views/AgentCode' //邀请码代理
+import memberCode from '../views/memberCode' //邀请码玩家
+import withdraw from '../views/withdraw' //提现
+import rebateDes from '../views/rebateDes' //返点赔率表
+import tool from '../views/tool' //清缓存工具
+// import ping from '../views/ping' //线路检测
+import ArtificialAppeal from '../views/ArtificialAppeal' //人工申诉
+import ArtificialBank from '../views/ArtificialBank' //人工申诉-银行卡验证
+import ArtificialPhoto from '../views/ArtificialPhoto' //人工申诉-核实
+import recharge from '../views/recharge' //重构充值页
 
 var routes = [{
   path: '/manageBankcard',
@@ -407,7 +407,7 @@ var routes = [{
 //   meta:{
 //   title:'线路检测',
 //   link:'/index',
-//   user:true    
+//   user:true
 //   },
 //   component:ping
 // },
@@ -421,4 +421,4 @@ var routes = [{
   },
   component:recharge
 }]
-module.exports = routes
+export default routes
