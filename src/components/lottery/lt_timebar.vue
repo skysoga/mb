@@ -70,6 +70,11 @@ export default{
       return state.lt.box === 'pastOpen'
     }
   }),
+  data(){
+    return{
+      lcode:''
+    }
+  },
   methods:{
     //彩种选择框，切换
     toggleBetRecord(){
