@@ -45,7 +45,8 @@ export default{
   },
   computed:{
     'WithdrawText':()=>{
-      return state.AgentRebate?'中奖所得奖金+代理返点':'中奖所得奖金'
+      // return state.AgentRebate?'中奖所得奖金+代理返点':'中奖所得奖金'
+      return state.AgentRebate?'投注金额+中奖金额+代理返点':'投注金额+中奖金额'
     }
   },
   beforeRouteEnter(to,from,next){
