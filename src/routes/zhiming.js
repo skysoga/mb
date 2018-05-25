@@ -2,7 +2,7 @@
 // const found = require('../views/found')
 const letter = require('../views/letter')
 const newWinners =require('../views/newWinners')
-const letterDetail = require('../views/letterDetail')
+// const letterDetail = require('../views/letterDetail')//失效
 const Notice = require('../views/Notice')
 const NoticeDetail = require('../views/NoticeDetail')
 const playerHome = require('../views/playerHome')

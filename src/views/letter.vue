@@ -7,12 +7,12 @@
       <template v-else>
         <div class="" v-for="item in res_data">
           <a class="active">
-            <div @click="jump(item.ID)">
+            <div @click="jump(item.ID,item.Is_Read)">
               <p>{{item.Title}}<i class="iconfont noRead" v-if="!item.Is_Read">&#xe619;</i></p>
               <span style="color:#666;">{{item.PosUserName}}</span>
               <span>{{item.Post_Time}}</span>
             </div>
-            <i class="fr iconfont" @click="delLIst(item.ID)">&#xe620;</i>
+            <i class="fr iconfont" v-if="item.Is_Read!==2" @click="delLIst(item.ID)">&#xe620;</i>
           </a>
           <div class="hr1px hr1px-list"></div>
         </div>
@@ -39,8 +39,8 @@
       }
     },
     methods:{
-      jump:function(id){
-        this.$router.push({path:"letterDetail",query:{ID:id}})
+      jump:function(id,Type){
+        this.$router.push({path:"letterDetail",query:{ID:id,PostType:(Type===2?2:1)}})
       },
       getData:function(){
         this.cant_scroll=1//防止无限加载

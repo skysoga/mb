@@ -20,10 +20,14 @@
     },
     created() {
       this.isNotice=this.$route.path.toLowerCase().search('notice')>0
-      _fetch({
-        Action: this.isNotice?"GetNoticeContent":"GetLetterContent",
-        ID: this.$route.query.ID
-      }).then((data) => {
+      var obj={
+          Action: this.isNotice?"GetNoticeContent":"GetLetterContent",
+          ID: this.$route.query.ID
+        }
+      if(!this.isNotice){
+        obj.PostType=this.$route.query.PostType
+      }
+      _fetch(obj).then((data) => {
         if (data.Code === 1) {
           var initData = this.isNotice?data.BackData[0]:data.BackData
           if (!initData) {
