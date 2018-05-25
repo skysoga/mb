@@ -285,7 +285,7 @@ export default {
             vm.nowRender = json[key]
             var RealName=vm.nowRender.RealName
             var CardNum=vm.nowRender.CardNum
-            vm.nowRender.RealName=RealName?RealName.replace(/\s+/g,''):''
+            // vm.nowRender.RealName=RealName?RealName.replace(/\s+/g,''):''
             vm.nowRender.CardNum=CardNum?CardNum.replace(/\s+/g,''):''
             vm.isOpenType=json[key].OpenType||json[key].Opentype
             vm.Id = json[key].Id;
