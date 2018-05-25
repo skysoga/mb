@@ -58,7 +58,7 @@
   }
 </script>
 <style scoped>
-  .clearInput{
+  .clearInput {
     opacity:0;
     position:absolute;
     top:0;
@@ -68,14 +68,14 @@
     color:#dc3b40;
   }
   .clearInput:before{
-      content:'\e607';
-      font-family:'iconfont';
-      font-size:.7em;
-    }
-  input:focus~.clearInput{
+    content:'\e607';
+    font-family:'iconfont';
+    font-size:.7em;
+  }
+  input:focus ~ .clearInput{
     opacity:1;
   }
-  input+span+.clearInput{
+  input + span + .clearInput{
     right:2em;
   }
 </style>

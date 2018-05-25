@@ -8,11 +8,12 @@ const baseWebpackConfig = require('./webpack.base.conf')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 /* 一个 webpack 扩展，可以提取一些代码并且将它们和文件分离开 */
 /* 如果我们想将 webpack 打包成一个文件 css js 分离开，那我们需要这个插件 */
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 /* 一个可以插入 html 并且创建新的 .html 文件的插件 */
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const { VueLoaderPlugin } = require('vue-loader')
 
 const env = process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
@@ -20,6 +21,7 @@ const env = process.env.NODE_ENV === 'testing'
 
 /* 合并 webpack.base.conf.js */
 const webpackConfig = merge(baseWebpackConfig, {
+  mode: 'production',
   module: {
     rules: utils.styleLoaders({
       sourceMap: config.build.productionSourceMap,
@@ -36,11 +38,8 @@ const webpackConfig = merge(baseWebpackConfig, {
   },
   plugins: [
     // http://vuejs.github.io/vue-loader/workflow/production.html
-    /* definePlugin 接收字符串插入到代码当中, 所以你需要的话可以写上 JS 的字符串 */
-    new webpack.DefinePlugin({
-      'process.env': env
-    }),
-    /* 压缩 js (同样可以压缩 css) */
+
+    /* 压缩 js (同样可以压缩 css) //可以不用，用4自带的压缩*/
     new UglifyJsPlugin({
       uglifyOptions: {
         compress: {
@@ -55,13 +54,9 @@ const webpackConfig = merge(baseWebpackConfig, {
     // new webpack.optimize.OccurenceOrderPlugin(),
     // extract css into its own file
     /* 将 css 文件分离出来 */
-    new ExtractTextPlugin({
-      filename: utils.assetsPath('css/[name].[contenthash].css'),
-      // Setting the following option to `false` will not extract CSS from codesplit chunks.
-      // Their CSS will instead be inserted dynamically with style-loader when the codesplit chunk has been loaded by webpack.
-      // It's currently set to `true` because we are seeing that sourcemaps are included in the codesplit bundle as well when it's `false`,
-      // increasing file size: https://github.com/vuejs-templates/webpack/issues/1110
-      allChunks: true,
+    new MiniCssExtractPlugin({
+      filename: 'css/app.[name].css',
+      chunkFilename: 'css/app.[contenthash:12].css'  // use contenthash *
     }),
     // Compress extracted CSS. We are using this plugin so that possible
     // duplicated CSS from different components can be deduped.
@@ -94,36 +89,6 @@ const webpackConfig = merge(baseWebpackConfig, {
     new webpack.HashedModuleIdsPlugin(),
     // enable scope hoisting
     new webpack.optimize.ModuleConcatenationPlugin(),
-    // split vendor js into its own file
-     /* 没有指定输出文件名的文件输出的静态文件名 */
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks (module) {
-        // any required modules inside node_modules are extracted to vendor
-        return (
-          module.resource &&
-          /\.js$/.test(module.resource) &&
-          module.resource.indexOf(
-            path.join(__dirname, '../node_modules')
-          ) === 0
-        )
-      }
-    }),
-    // extract webpack runtime and module manifest to its own file in order to
-    // prevent vendor hash from being updated whenever app bundle is updated
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest',
-      chunks: ['vendor']
-    }),
-    // This instance extracts shared chunks from code splitted chunks and bundles them
-    // in a separate chunk, similar to the vendor chunk
-    // see: https://webpack.js.org/plugins/commons-chunk-plugin/#extra-async-commons-chunk
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'app',
-      async: 'vendor-async',
-      children: true,
-      minChunks: 3
-    }),
 
     // copy custom static assets
     new CopyWebpackPlugin([
@@ -132,8 +97,41 @@ const webpackConfig = merge(baseWebpackConfig, {
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
-  ]
+    ]),
+    new VueLoaderPlugin()
+  ],
+  optimization: {
+    minimize: true,
+    splitChunks: {
+      chunks: "all",
+      minSize: 30000,
+      minChunks: 1,
+      maxAsyncRequests: 5,
+      maxInitialRequests: 3,
+      name: true,
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendor',
+          chunks: 'all'
+        },
+        manifest: {
+          name: 'manifest',
+          minChunks: Infinity
+        },
+        // 处理异步chunk
+        'async-vendors': {
+          test: /[\\/]node_modules[\\/]/,
+          minChunks: 2,
+          chunks: 'async',
+          name: 'async-vendors'
+        }
+
+      }
+    },
+    runtimeChunk: { name: 'manifest' }, // true
+    noEmitOnErrors: true
+  }
 })
 
 /* 开启 gzip 的情况下使用下方的配置 */
