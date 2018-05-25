@@ -122,7 +122,7 @@ export default {
       _fetch({Action:"GetChaseDetail",ID:id}).then((data)=>{
           if(data.Code===1){
             this.res_data=data.BackData
-            let type=data.BackData.LotteryName.substr(data.BackData.LotteryName.length-2)
+            let type=data.BackData.LotteryName&&data.BackData.LotteryName.substr(data.BackData.LotteryName.length-2)
             this.transType(type)
           }else {
             layer.msgWarn(data.StrCode)
