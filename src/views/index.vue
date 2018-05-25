@@ -3,15 +3,24 @@
     <!-- <router-link v-if="!s.constant._App" v-show="s.UserUpGradeBonus&&s.UserUpGradeBonus.Grade>2" tag="div" to="/ping" class='textMore dataType'><em>线路</em></router-link> -->
     <router-link v-if="notApp" tag="div" to="/AppDownload" class='textMore dataType'><em>APP <i class="iconfont">&#xe655;</i></em></router-link>
     <div id="banner">
-      <swiper>
-        <swiper-slide v-for="(i, index) in s.BannerList||s.SysBanner" :key="index">
-          <a v-if="i.Url==null||i.Url=='null'"><img :src="s.constant.ImgHost+i.Image"></a>
+      <!--<swiper ref="swiper">-->
+        <!--<slide v-for="(i, index) in s.BannerList || s.SysBanner" :key="index">-->
+          <!--<a v-if="i.Url==null||i.Url=='null'"><img :src="s.constant.ImgHost+i.Image" alt=""></a>-->
+          <!--<template v-else>-->
+            <!--<router-link v-if="i.Url && i.Url[0]==='/'" :to="setUrl(i.Url,true)"><img :src="s.constant.ImgHost+i.Image" alt=""></router-link>-->
+            <!--<a v-else @click="setUrl(i.Url)"><img :src="s.constant.ImgHost+i.Image" alt=""></a>-->
+          <!--</template>-->
+        <!--</slide>-->
+      <!--</swiper>-->
+      <wc-swiper>
+        <wc-slide v-for="(i, index) in s.BannerList || s.SysBanner" :key="index">
+          <a v-if="i.Url==null||i.Url=='null'"><img :src="s.constant.ImgHost+i.Image" alt=""></a>
           <template v-else>
-            <router-link v-if="i.Url && i.Url[0]==='/'" :to="setUrl(i.Url,true)"><img :src="s.constant.ImgHost+i.Image"></router-link>
-            <a v-else @click="setUrl(i.Url)"><img :src="s.constant.ImgHost+i.Image"></a>
+            <router-link v-if="i.Url && i.Url[0]==='/'" :to="setUrl(i.Url,true)"><img :src="s.constant.ImgHost+i.Image" alt=""></router-link>
+            <a v-else @click="setUrl(i.Url)"><img :src="s.constant.ImgHost+i.Image" alt=""></a>
           </template>
-        </swiper-slide>
-      </swiper>
+        </wc-slide>
+      </wc-swiper>
     </div>
     <div id="notice" v-if="!s.UserName||(s.NoticeData&&s.NoticeData.length)">
       <template v-if="s.UserName">
@@ -36,8 +45,9 @@
                       :to="'/lotteryHall'">
             <p>更多彩种</p>
           </router-link>
-          <li v-for="l in 3-((nowDisplayList.length+1)%3||3)"></li>
+
         </li>
+        <li v-for="l in 3-((nowDisplayList.length+1)%3||3)"></li>
       </ul>
     </div>
   </div>

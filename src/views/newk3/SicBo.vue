@@ -13,7 +13,8 @@
   </div>
 </template>
 <script>
-  import {mapState}    from 'vuex'
+  import {mapState} from 'vuex'
+  import '@/js/svga.min'
   export default {
     props:['lcode'],
     computed:mapState({

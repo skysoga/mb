@@ -16,6 +16,7 @@
 	</div>
 </template>
 <script>
+  import '@/js/svga.min'
   export default {
     data:()=>{
 			return {

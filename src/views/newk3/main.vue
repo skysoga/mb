@@ -107,6 +107,7 @@
   import userinfo      from './userinfo'
   import broadCast     from './broadCast'
   import SicBo         from './SicBo'
+  import '@/js/svga.min'
   var eachLen = data=>data.map(arr=>arr.length)
   var getBetStr = (data, mode)=>{
     var line =  data.map(arr=>arr.join(' '))
@@ -325,10 +326,7 @@
       betMoneyStr(){
         return (state.lt.bet.betting_money && this.showPrice)  ? `，${state.lt.bet.betting_money}元` : ''
       },
-      basket:()=>state.lt.basket,
-      swiper() {
-        return this.$refs.mySwiper.swiper
-      }
+      basket:()=>state.lt.basket
     }),
     created(){
       _pushType('in')

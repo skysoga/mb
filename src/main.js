@@ -166,9 +166,9 @@ var getIver = (function()  {
 })()
 getIver(1)
 
-if(!localStorage.getItem("console")){
-  console.log=function(){return}
-}
+// if(!localStorage.getItem("console")){
+//   console.log=function(){return}
+// }
 import Vue from 'vue'
 const isDebug_mode = process.env.NODE_ENV !== 'production'; Vue.config.debug = isDebug_mode; Vue.config.devtools = isDebug_mode; Vue.config.productionTip = isDebug_mode;
 import VueRouter from 'vue-router'
@@ -177,7 +177,7 @@ import App from './App'
 import routes from './routes/routes'
 import Va from './plugins/va'
 import {DAY_TIME, GMT_DIF} from './js/kit'
-require('./js/svga.min')
+// require('./js/svga.min')
 import md5 from 'js-md5/build/md5.min'
 var localState={}
 window.md5=md5
