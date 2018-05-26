@@ -12,12 +12,13 @@
           <!--</template>-->
         <!--</slide>-->
       <!--</swiper>-->
-      <wc-swiper>
+      <!--{{s.BannerList}}-->
+      <wc-swiper :interval="3000" :duration="1000" @transitionend="swiperTransition">
         <wc-slide v-for="(i, index) in s.BannerList || s.SysBanner" :key="index">
-          <a v-if="i.Url==null||i.Url=='null'"><img :src="s.constant.ImgHost+i.Image" alt=""></a>
+          <a v-if="i.Url === null"><img :src="slideIndex === index ? s.constant.ImgHost+i.Image : ''" alt="">1</a>
           <template v-else>
-            <router-link v-if="i.Url && i.Url[0]==='/'" :to="setUrl(i.Url,true)"><img :src="s.constant.ImgHost+i.Image" alt=""></router-link>
-            <a v-else @click="setUrl(i.Url)"><img :src="s.constant.ImgHost+i.Image" alt=""></a>
+            <router-link v-if="i.Url && i.Url[0]==='/'" :to="setUrl(i.Url,true)"><img :src="slideIndex === index ? s.constant.ImgHost+i.Image : ''"  alt=""></router-link>
+            <a v-else @click="setUrl(i.Url)"><img :src="slideIndex === index ? s.constant.ImgHost+i.Image : ''"  alt=""></a>
           </template>
         </wc-slide>
       </wc-swiper>

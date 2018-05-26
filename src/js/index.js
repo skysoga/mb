@@ -12,7 +12,8 @@ export default {
     return{
       notApp:!window._App&&!localStorage.getItem('isSelfApp'),
       hotLottery:[],
-      NologApp:''
+      NologApp:'',
+      slideIndex: 0
     }
   },
   components: {
@@ -80,6 +81,9 @@ export default {
       }
       return hotLottery;
     },
+    swiperTransition (index) {
+      this.slideIndex = index
+    }
   },
 	computed:mapState({
 		LotteryConfig:'LotteryConfig',
