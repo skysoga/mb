@@ -3,22 +3,12 @@
     <!-- <router-link v-if="!s.constant._App" v-show="s.UserUpGradeBonus&&s.UserUpGradeBonus.Grade>2" tag="div" to="/ping" class='textMore dataType'><em>线路</em></router-link> -->
     <router-link v-if="notApp" tag="div" to="/AppDownload" class='textMore dataType'><em>APP <i class="iconfont">&#xe655;</i></em></router-link>
     <div id="banner">
-      <!--<swiper ref="swiper">-->
-        <!--<slide v-for="(i, index) in s.BannerList || s.SysBanner" :key="index">-->
-          <!--<a v-if="i.Url==null||i.Url=='null'"><img :src="s.constant.ImgHost+i.Image" alt=""></a>-->
-          <!--<template v-else>-->
-            <!--<router-link v-if="i.Url && i.Url[0]==='/'" :to="setUrl(i.Url,true)"><img :src="s.constant.ImgHost+i.Image" alt=""></router-link>-->
-            <!--<a v-else @click="setUrl(i.Url)"><img :src="s.constant.ImgHost+i.Image" alt=""></a>-->
-          <!--</template>-->
-        <!--</slide>-->
-      <!--</swiper>-->
-      <!--{{s.BannerList}}-->
-      <wc-swiper :interval="3000" :duration="1000" @transitionend="swiperTransition">
+      <wc-swiper :interval="3000" :duration="1000" @transitionend="swiperTransition" ref="swiper">
         <wc-slide v-for="(i, index) in s.BannerList || s.SysBanner" :key="index">
-          <a v-if="i.Url === null"><img :src="slideIndex === index ? s.constant.ImgHost+i.Image : ''" alt="">1</a>
+          <a v-if="i.Url === null"><img :data-src="s.constant.ImgHost+i.Image" alt="">1</a>
           <template v-else>
-            <router-link v-if="i.Url && i.Url[0]==='/'" :to="setUrl(i.Url,true)"><img :src="slideIndex === index ? s.constant.ImgHost+i.Image : ''"  alt=""></router-link>
-            <a v-else @click="setUrl(i.Url)"><img :src="slideIndex === index ? s.constant.ImgHost+i.Image : ''"  alt=""></a>
+            <router-link v-if="i.Url && i.Url[0]==='/'" :to="setUrl(i.Url,true)"><img :data-src="s.constant.ImgHost+i.Image"  alt=""></router-link>
+            <a v-else @click="setUrl(i.Url)"><img :data-src="s.constant.ImgHost+i.Image"  alt=""></a>
           </template>
         </wc-slide>
       </wc-swiper>

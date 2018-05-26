@@ -41,6 +41,9 @@ export default {
       next();
     })
   },
+  mounted () {
+    this.swiperTransition(0)
+  },
   methods:{
     setUrl(url,filterHtml){
       if(filterHtml){
@@ -83,6 +86,12 @@ export default {
     },
     swiperTransition (index) {
       this.slideIndex = index
+      let img = this.$refs.swiper.$children[index].$children[0].$el.children[0]
+      let attr = img.getAttribute('data-src')
+      if (attr) {
+        img.setAttribute('src', attr)
+        img.removeAttribute('data-src')
+      }
     }
   },
 	computed:mapState({
