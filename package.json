@@ -60,7 +60,6 @@
     "webpack-dev-server": "^3.1.4",
     "webpack-merge": "^4.1.0"
   },
-  "sideEffects": ["*.css", "*.scss"],
   "engines": {
     "node": ">= 6.0.0",
     "npm": ">= 3.0.0"
