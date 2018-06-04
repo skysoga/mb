@@ -1,14 +1,12 @@
-//志明负责的路由
-<<<<<<< HEAD
-// const found = require('../views/found'
+
 import letter from '../views/letter'
-import newWinners from '../views/newWinners'
-import letterDetail from '../views/letterDetail'
+// import newWinners from '../views/newWinners'
+// import letterDetail from '../views/letterDetail'
 import Notice from '../views/Notice'
 import NoticeDetail from '../views/NoticeDetail'
 import playerHome from '../views/playerHome'
-import competition from '../views/competition'
-import billRecord from '../views/billRecord'
+// import competition from '../views/competition'
+// import billRecord from '../views/billRecord'
 import agentMember from '../views/agentMember'
 import lowerReport from '../views/lowerReport'
 import betCenter from '../views/betCenter'
@@ -17,29 +15,9 @@ import betDetail from '../views/betDetail'
 import seekDetail from '../views/seekDetail'
 import seekOrder from '../views/seekOrder'
 import agentIntro from '../views/agentIntro'
-import agentBetRecord from '../views/agentBetRecord'
-import agentBillRecord from '../views/agentBillRecord'
-=======
-// const found = require('../views/found')
-const letter = require('../views/letter')
-const newWinners =require('../views/newWinners')
-// const letterDetail = require('../views/letterDetail')//失效
-const Notice = require('../views/Notice')
-const NoticeDetail = require('../views/NoticeDetail')
-const playerHome = require('../views/playerHome')
-const competition = require('../views/competition')
-const billRecord = require('../views/billRecord')
-const agentMember = require('../views/agentMember')
-const lowerReport = require('../views/lowerReport')
-const betCenter = require('../views/betCenter')
-const betRecord = require('../views/betRecord')
-const betDetail = require('../views/betDetail')
-const seekDetail = require('../views/seekDetail')
-const seekOrder = require('../views/seekOrder')
-const agentIntro = require('../views/agentIntro')
-const agentBetRecord = require('../views/agentBetRecord')
-const agentBillRecord = require('../views/agentBillRecord')
->>>>>>> origin/投注与追号
+// import agentBetRecord from '../views/agentBetRecord'
+// import agentBillRecord from '../views/agentBillRecord'
+
 var routes = [{
   path: '/Notice',
   name:"公告",
@@ -77,15 +55,15 @@ var routes = [{
     link: "/Notice"
   },
   component: NoticeDetail
-},{
-  path: "/letterDetail",
-  name: "私信详情",
-  meta: {
-    title: "私信",
-    user: 1,
-    link: "/letter"
-  },
-  component: NoticeDetail
+// },{
+//   path: "/letterDetail",
+//   name: "私信详情",
+//   meta: {
+//     title: "私信",
+//     user: 1,
+//     link: "/letter"
+//   },
+//   component: NoticeDetail
 }, {
   path: "/playerHome",
   name: "玩家详情",

@@ -115,7 +115,8 @@ export default {
       qqMsg:'',
       unionMsg:'',
       FourUrl:{},
-      PaySort:[]
+      PaySort:[],
+      bankMsg: null
     }
   },
   beforeRouteEnter(to,from,next){
@@ -198,7 +199,7 @@ export default {
           }
         })
       }
-      
+
     },
     getLimit(obj){
       let arr=[]

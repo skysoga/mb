@@ -1,13 +1,7 @@
-<<<<<<< HEAD
 import WcSwiper from 'wc-swiper'
 import 'wc-swiper/style.css'
 import Vue from 'vue'
 Vue.use(WcSwiper)
-// import 'swiper/dist/css/swiper.css' //幻灯片显示有问题时，需引入此依赖
-=======
-import { swiper, swiperSlide, swiperPlugins } from 'vue-awesome-swiper'
-import 'swiper/dist/css/swiper.min.css' //幻灯片显示有问题时，需引入此依赖
->>>>>>> origin/投注与追号
 import {mapState} from 'vuex'
 var hotDefault = ["1407","1406","1402","1008","1000","1001","1300","1301","1303","1302","1100","1201"]
 export default {
