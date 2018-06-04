@@ -50,8 +50,4 @@
   -webkit-transform-origin: 0 0;
   -webkit-transform: scale(0.33333, 0.33333);
 }
-.swiper-wrapper{
-  overflow:auto;
-  height:130px !important;
-}
 </style>

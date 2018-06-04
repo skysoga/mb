@@ -62,7 +62,7 @@
   pointer-events: none;
 }
 .scrollText{
-  display: block;
+  display: block !important;
   max-width: 10rem;
   overflow: scroll;
   transform: translateY(.05em);

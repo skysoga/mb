@@ -17,32 +17,33 @@
       <img :src="$store.state.constant.ImgHost
       +'/system/app/appleapp/apple-down-head.png'" alt="" width="100%">
       <span class="logo" :style="`background-image:url(${$store.state.constant.ImgHost}${data.AppImg});border-radius: 1em;`"></span>
-      <a @click="download" class="detail-downbtn" :class="{nochange:text=='请到桌面查看进度'}" :href="data.AppleUrl"><img v-if="text!='点击安装'" class="loading" src="/static/img/rolling.svg" alt="">{{text}}</a>
-			
+      <a @click="download" class="detail-downbtn" :class="{nochange:text=='请到桌面查看进度'}" :href="data.AppleUrl">
+        <img v-if="text!='点击安装'" class="loading" src="/static/img/rolling.svg" alt="">{{text}}</a>
+
 			<p class="installText">安装后请打开手机设置<br />
 			通用-设备管理-选择-信任 才能使用<br />
 			可参照以下图文步骤进行操作</p>
-			
+
 			<hr class="line" />
-			
+
 			<p class="tip">部分浏览器可能无法安装，建议使用Safari浏览器操作</p>
-			
-			
+
+
 			<img :src="$store.state.constant.ImgHost
 			+'/system/app/appleapp/down-1.png'" alt="" width="100%">
-			
+
 			<br /><br />
-			
+
 			<img :src="$store.state.constant.ImgHost
 			+'/system/app/appleapp/down-2.png'" alt="" width="100%">
-			
+
 			<br /><br />
-			
+
 			<img :src="$store.state.constant.ImgHost
 			+'/system/app/appleapp/down-3.png'" alt="" width="100%">
-			
+
 			<br /><br />
-			
+
 			<img :src="$store.state.constant.ImgHost
 			+'/system/app/appleapp/down-4.png'" alt="" width="100%">
 			<p class="end"><span>已经到底啦</span></p>

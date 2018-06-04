@@ -12,7 +12,7 @@
       <div v-show="showFGbtn" :style="'background-image: url('+$store.state.constant.ImgHost+'/live/4g-bg.jpg);'"></div>
     </div>
     <div class="middleBox iframe">
-      <iframe ref="iframe" src="/static/video.html"></iframe>
+      <iframe ref="iframe" src="/static/video.html" sandbox="allow-same-origin allow-scripts"></iframe>
     </div>
     <div class="changeShow" @click="changeShow"></div>
     <div class="g4view">
