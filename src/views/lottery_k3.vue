@@ -59,7 +59,7 @@
     </div>
 
     <!-- timebar -->
-    <div v-if = "$store.state.lt.NowIssue" @click.stop = "togglePastOpen">
+    <div v-if = "$store.state.lt.NowIssue" @click.stop = "toggleBetRecord" style="position: relative;">
       <p>{{nowIssue}}期投注截止</p>
       <div class="k3-timebar">{{TimeBar}}</div>
     </div>
@@ -81,7 +81,7 @@
     </table>
 
     <!-- 我的投注 -->
-    <table class="myBet" style="display: block" v-show = "ifShowBetRecord">
+<!--     <table class="myBet" style="display: block" v-show = "ifShowBetRecord">
       <tr><td>期号</td> <td>投注金额</td><td>奖金</td></tr>
       <tr v-for = "item in BetRecord">
         <td>{{item.issueNo.length < 7 ? item.issueNo : item.issueNo.slice(4)}}</td>
@@ -89,8 +89,9 @@
           {{item.normal_money}}
         </td>
         <td>{{item.openState}}</td>
-      </tr>
+      </tr> -->
     </table>
+    <div class="betrecord-icon"></div>
   </section>
 
   <!-- 玩法区 -->
@@ -515,26 +516,30 @@ export default {
                 this.$store.commit('lt_changeBox', '')
 
                 //开奖后自己添记录到“我的投注里”
-                var totalMoney = basket.map(bet=>bet.betting_money).reduce((a,b)=>a+b)  //本注总金额
-                var issueNo = basket[0].betting_issuseNo                                  //期号
-                var _betRecord = this.$store.state.lt.BetRecord.slice(0)
-                var record = {issueNo: issueNo, normal_money:totalMoney.toFixed(2), openState: '等待开奖'}
-                _betRecord.unshift(record)
-                if(_betRecord.length > 5){
-                  _betRecord.length = 5
-                }
+                // var totalMoney = basket.map(bet=>bet.betting_money).reduce((a,b)=>a+b)  //本注总金额
+                // var issueNo = basket[0].betting_issuseNo                                  //期号
+                // var _betRecord = this.$store.state.lt.BetRecord.slice(0)
+                // var record = {issueNo: issueNo, normal_money:totalMoney.toFixed(2), openState: '等待开奖'}
+                // _betRecord.unshift(record)
+                // if(_betRecord.length > 5){
+                //   _betRecord.length = 5
+                // }
 
-                this.$store.commit('lt_setBetRecord', _betRecord)
+                // this.$store.commit('lt_setBetRecord', _betRecord)
 
                 // //隔3s获取我的投注
                 // this.timer3 = setTimeout(()=>{
                 //   this.$store.dispatch('lt_updateBetRecord')
                 // }, 3000)
-
-                layer.confirm(`<span style = "color:red">投注成功</span>，您可以在我的账户查看注单详情`
+                state.lt.betRecordRefresh = 1
+                layer.confirm(`<span style = "color:red">投注成功</span>，点击右上角向左箭头可查看投注记录`
                   ,['继续投注','查看注单']
                   ,()=>{}
-                  ,()=>{this.$router.push('/userCenter')})
+                  ,()=>{
+                    // this.$router.push('/userCenter')                    
+                    this.$store.dispatch('lt_updateBetRecord')
+                    this.$parent.setChangBox('BetRecord',1)
+                    })
 
               }else if(json.Code === -9){
                 //清除rebate

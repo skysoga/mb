@@ -3,7 +3,7 @@
 父级传入参数： :betID="defaultID" :UID="defaultUID"
 -->
 <template>
-<div class="layShow">
+<div class="layShow" ref="layShow">
   <div class="topBG">
     <a class="iconfont back" @click="close"></a>
     <div><em>追号详情</em></div>    
@@ -43,7 +43,7 @@
 <script>
 import betDetailShow from '../components/betDetailShow'
 export default {
-  props:['betID','UID'],
+  props:['betID','UID','noShow'],
   data(){
     return {
       defaultUID:0,
@@ -55,7 +55,8 @@ export default {
   },
   watch:{
     'betID':function(n,v){
-      this.getList(n,this.UID)
+      this.$refs.layShow.scrollTop=0
+      !this.noShow&&this.getList(n,this.UID)
     }
   },
   components: {
@@ -117,10 +118,11 @@ export default {
       }
     },
     getList:function(id,uid){
+      if(!id)return;
       _fetch({Action:"GetChaseDetail",ID:id}).then((data)=>{
           if(data.Code===1){
             this.res_data=data.BackData
-            let type=data.BackData.LotteryName.substr(data.BackData.LotteryName.length-2)
+            let type=data.BackData.LotteryName&&data.BackData.LotteryName.substr(data.BackData.LotteryName.length-2)
             this.transType(type)
           }else {
             layer.msgWarn(data.StrCode)

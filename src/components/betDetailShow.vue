@@ -3,7 +3,7 @@
 父级传入参数： :betID="defaultID" :UID="defaultUID"
 -->
 <template>
-<div class="layShow">
+<div class="layShow" ref="layShow">
   <div class="topBG">
     <a class="iconfont back" @click="close"></a>
     <div><em>注单详情</em></div>    
@@ -45,7 +45,7 @@ import {getAnimal} from '../js/page_config/lt_6hc'
 import getNatal from '../js/page_config/natal'
 
 export default {
-  props:['betID','UID'],
+  props:['betID','UID','noShow'],
   data(){
     return {
       res_data:{},
@@ -60,7 +60,8 @@ export default {
   },
   watch:{
     'betID':function(n,v){
-      this.getList(n,this.UID)
+      this.$refs.layShow.scrollTop=0
+      !this.noShow&&this.getList(n,this.UID)
     }
   },
   methods:{
@@ -96,6 +97,8 @@ export default {
           _fetch({Action:"CancelBet",ID:id}).then((data)=>{
             if(data.Code===1){
               layer.msg(data.StrCode)
+              state.lt.betRecordRefresh = 1
+              vm.$store.dispatch('lt_updateBetRecord')
               vm.res_data.State='已撤单'
             }else {
               layer.msgWarn(data.StrCode)
@@ -140,6 +143,7 @@ export default {
       }
     },
     getList:function(id,uid){
+      if(!id)return;
         _fetch({Action:"GetBetDetail",UserId:uid,ID:id}).then((data)=>{
             if(data.Code===1){
             var res_data = data.BackData

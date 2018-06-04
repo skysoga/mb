@@ -82,7 +82,7 @@
       lottery:()=>state.lt.lottery.LotteryType,
       gyhlh(){
         return isShowBox.indexOf(this.lottery+this.mode)!==-1
-      }
+      }    
     },
   }
 </script>

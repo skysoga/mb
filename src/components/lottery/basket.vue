@@ -225,6 +225,7 @@ export default {
         return this.$store.state.lt.isChase
       },
       set(val){
+        this.$parent.$parent.setBetKey(val?2:1)
         this.$store.commit('lt_setIsChase', val)
       }
     },
@@ -277,7 +278,8 @@ export default {
             content: msg,
             btn: ['确定', '取消'],
             yes: ()=>{
-               this.$store.dispatch('lt_chase')      //追号投注
+              this.$parent.$parent.setBetKey(2)
+              this.$store.dispatch('lt_chase')      //追号投注
             },
             no:()=>{}
           })
@@ -299,6 +301,7 @@ export default {
             content: msg,
             btn: ['确定', '取消'],
             yes: ()=>{
+              this.$parent.$parent.setBetKey(1)
               this.$store.dispatch('lt_confirmBet')
             },
             no:()=>{}

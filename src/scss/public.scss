@@ -3120,4 +3120,60 @@ $SSC-BG-color:#e1d9bc;
   width: 100px;
 }
 
-
+.betandchase{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  z-index: 1000;
+  transform:translateX(0);
+}
+.betandchase-enter-active, .betandchase-leave-active {
+  transform:translateX(0);
+  // height: $face-height;
+  transition: .3s;
+}
+.betandchase-enter, .betandchase-leave-to{
+  transform:translateX(100%);
+}
+.betrecord-icon{
+  position: absolute;
+  float: inherit !important;
+  width: 1.2em !important;
+  display: flex;
+  align-items: center;
+  right: 0;
+  top: 0;
+  height: 100% !important;
+  border-right: 1px solid #beb58d;
+  pointer-events: none;
+  justify-content: flex-end;
+  &:after{
+    width: 1em;
+    height: 1em;
+    display: block;
+    content:'\e61e';
+    font-family: 'iconfont';
+    transform: rotate(90deg) translateY(-0.4em);
+    color: #beb58d;
+  }
+}
+.minIsLotteryCon,.lotteryCloseItem,.isLotteryCon{
+  .betrecord-icon{
+    font-size: 0.65em;
+    &:after{
+      font-size: 1.08em;
+    }
+  }
+}
+.k3{
+  .betrecord-icon{
+    border-right: 1px solid #76bb9f !important;
+    &:after{
+      color:#76bb9f;
+      transform: rotate(90deg) translateY(-0.55em);
+    }
+  }
+}

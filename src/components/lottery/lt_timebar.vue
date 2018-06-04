@@ -2,7 +2,7 @@
   <div class="lotteryCloseItem fix" v-if = "$store.state.lt.OldIssue" :class = "{open:ifShowBetRecord}">
     <!-- 倒计时 -->
     <div class="lotteryClose line-white-before-"
-         @click.stop = "togglePastOpen">
+         @click.stop = "toggleBetRecord">
       <span>{{nowIssue}}期投注截止</span>
       <div class="openNumber-01">
         <em>{{TimeBar}}</em>
@@ -10,7 +10,7 @@
     </div>
 
     <!-- 我的投注 -->
-    <table class="pastOpen" v-show = "ifShowBetRecord">
+    <!-- <table class="pastOpen" v-show = "ifShowBetRecord">
       <tr>
         <th>期号</th>
         <th>投注金额</th>
@@ -24,7 +24,7 @@
         </td>
         <td :class = "{award: !isNaN(+item.openState)}">{{item.openState}}</td>
       </tr>
-    </table>
+    </table> -->
 
     <template v-if = "$store.state.lt.LotteryResults[lcode]">
       <table class="pastOpen" v-show = "ifShowPastOpen" >
@@ -43,6 +43,7 @@
         </tr>
       </table>
     </template>
+    <div class="betrecord-icon"></div>
   </div>
 </template>
 

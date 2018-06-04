@@ -1,5 +1,5 @@
 <template>
-  <div class="minIsLotteryCon" @click.stop="togglePastOpen">
+  <div class="minIsLotteryCon">
 <!--     <template>
       <div class="title">{{nowIssue}}期投注截至：<em>{{TimeBar}}</em></div>
       <ul :class="{'record':true,'open':isShow}">
@@ -23,14 +23,14 @@
       <div :class="{'lernMore':true,'close':!isShow}"><em class="iconfont"><i>&#xe64c;</i></em></div>
   </template> -->
     <div class="StateStyle2 fix" :class="{'open':ifShowPastOpen,'row3': results.length>10}">
-      <div class="past">
-        <span>{{openNum(oldIssue)}}期开奖号码&nbsp;<b class="iconfont">&#xe601;</b></span>
+      <div class="past" @click.stop="togglePastOpen">
+        <span>{{openNum(oldIssue)}}期开奖1号码&nbsp;<b class="iconfont">&#xe601;</b></span>
         <div class="resultCon">
           <em v-for="(d,i) in display">{{d.substring(0,2)}}</em>
           <em v-if="results.length > 10 && display.length < 20" v-for="(d,i) in display">{{d.substring(0,2)}}</em>
         </div>
       </div>
-      <div class="current">
+      <div class="current" @click.stop="toggleBetRecord">
         <span>{{nowIssue}}期</span>
         <span v-if="results.length > 10">投注截止</span>
         <em>{{TimeBar}}</em>
@@ -60,6 +60,7 @@
         <li class="space"><div class="left"></div><div class="right"></div></li>
       </ul>
     </div>
+    <div class="betrecord-icon"></div>
   </div>
 </template>
 
@@ -153,6 +154,11 @@ export default{
       this.$store.state.lt.box === 'pastOpen' ?
          this.$store.commit('lt_changeBox', '') :
            this.$store.commit('lt_changeBox', 'pastOpen')
+    },
+    toggleBetRecord(){
+      this.$store.state.lt.box === 'BetRecord' ?
+         this.$store.commit('lt_changeBox', '') :
+           this.$store.commit('lt_changeBox', 'BetRecord')
     },
   },
   beforeDestroy(){
